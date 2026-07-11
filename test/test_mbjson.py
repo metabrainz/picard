@@ -391,6 +391,8 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~recording_firstreleasedate'], '2014-06-20')
         self.assertEqual(m['~video'], '')
         self.assertEqual(m['~artists_countries'], 'GB')
+        self.assertEqual(m['~artistcomment'], 'famous UK singer-songwriter')
+        self.assertEqual(m.getall('~artists_comments'), ['famous UK singer-songwriter'])
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
         self.assertEqual(t.folksonomy_tags, {'blue-eyed soul': 1, 'pop': 3})
@@ -433,6 +435,7 @@ class RecordingMultiArtistsTest1(MBJSONTest):
             ['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'],
             ['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'],
             ['GB', 'US', 'US'],
+            ['UK singer-songwriter, \u201cShape of You\u201d', '', ''],
         )
         self.assertEqual(expected, credits)
 
@@ -452,6 +455,11 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         self.assertEqual(['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'], m.getall('artists'))
         self.assertEqual(['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'], m.getall('~artists_sort'))
         self.assertEqual(['GB', 'US', 'US'], m.getall('~artists_countries'))
+        self.assertEqual(
+            ['UK singer-songwriter, \u201cShape of You\u201d', '', ''],
+            m.getall('~artists_comments'),
+        )
+        self.assertEqual('', m['~artistcomment'])
 
     def test_artist_credit_to_metadata_release(self):
         m = Metadata()
@@ -469,6 +477,11 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         self.assertEqual(['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'], m.getall('~albumartists'))
         self.assertEqual(['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'], m.getall('~albumartists_sort'))
         self.assertEqual(['GB', 'US', 'US'], m.getall('~albumartists_countries'))
+        self.assertEqual(
+            ['UK singer-songwriter, \u201cShape of You\u201d', '', ''],
+            m.getall('~albumartists_comments'),
+        )
+        self.assertEqual('', m['~albumartistcomment'])
 
 
 class RecordingMultiArtistsTest2(MBJSONTest):
