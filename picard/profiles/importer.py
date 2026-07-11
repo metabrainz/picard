@@ -39,6 +39,10 @@ from picard.config import (
     Option,
 )
 from picard.config_upgrade import apply_settings_upgrades_for_import
+from picard.i18n import (
+    gettext as _,
+    ngettext,
+)
 from picard.profiles import PROFILE_FORMAT_VERSION
 
 
@@ -145,7 +149,8 @@ def import_profile(
                 e,
             )
             result.warnings.append(
-                f"Settings upgrade from Picard {picard_version} failed: {e}. Some settings may not have been converted."
+                _("Settings upgrade from Picard %s failed: %s. Some settings may not have been converted.")
+                % (picard_version, e)
             )
         else:
             if upgrade_descriptions:
@@ -184,15 +189,26 @@ def import_profile(
 
     # Report skipped options
     if result.skipped_options:
+        count = len(result.skipped_options)
         result.warnings.append(
-            f"{len(result.skipped_options)} settings were not recognized and were skipped: "
-            f"{', '.join(result.skipped_options)}"
+            ngettext(
+                "%d setting was not recognized and was skipped: %s",
+                "%d settings were not recognized and were skipped: %s",
+                count,
+            )
+            % (count, ', '.join(result.skipped_options))
         )
 
     # Report upgraded settings
     if result.upgraded_settings:
+        count = len(result.upgraded_settings)
         result.warnings.append(
-            f"{len(result.upgraded_settings)} setting(s) were automatically upgraded from Picard {picard_version}."
+            ngettext(
+                "%d setting was automatically upgraded from Picard %s.",
+                "%d settings were automatically upgraded from Picard %s.",
+                count,
+            )
+            % (count, picard_version)
         )
 
     return result
@@ -227,7 +243,7 @@ def _import_naming_script(config: Config, naming_section: dict, result: ProfileI
     script_content = naming_section.get('script')
     title = naming_section.get('title')
     if not script_content or not title:
-        result.warnings.append("Naming script section missing 'script' or 'title' field, skipped.")
+        result.warnings.append(_("Naming script section missing 'script' or 'title' field, skipped."))
         return None
 
     script_id = naming_section.get('id') or str(uuid.uuid4())
@@ -296,7 +312,14 @@ def _import_tagger_scripts(
         imported_count += 1
 
     if duplicate_count:
-        result.warnings.append(f"{duplicate_count} duplicate script(s) skipped (same title and content already exist).")
+        result.warnings.append(
+            ngettext(
+                "%d duplicate script skipped (same title and content already exist).",
+                "%d duplicate scripts skipped (same title and content already exist).",
+                duplicate_count,
+            )
+            % duplicate_count
+        )
 
     if existing_scripts:
         profile_settings['list_of_scripts'] = existing_scripts
