@@ -33,6 +33,7 @@ from itertools import groupby
 from typing import (
     Any,
     NamedTuple,
+    TypeAlias,
 )
 
 from picard import log
@@ -53,6 +54,8 @@ from picard.version import (
 # (base config at startup).
 Settings = dict | SettingConfigSection
 
+SettingsUpgradeFunc: TypeAlias = Callable[[Settings], None]
+ConfigUpgradeFunc: TypeAlias = Callable[[Config], None]
 
 # TO ADD AN UPGRADE HOOK:
 # See config_upgrade_hooks.py
@@ -90,7 +93,7 @@ class _UpgradeEntry(NamedTuple):
 _UPGRADES_REGISTRY: list[_UpgradeEntry] = []
 
 
-def upgrade_settings(version_str: str):
+def upgrade_settings(version_str: str) -> Callable[[SettingsUpgradeFunc], None]:
     """Decorator to register a settings upgrade function.
 
     The decorated function receives a single argument: either a plain dict
@@ -117,7 +120,7 @@ def upgrade_settings(version_str: str):
     return decorator
 
 
-def upgrade_config(version_str: str):
+def upgrade_config(version_str: str) -> Callable[[ConfigUpgradeFunc], None]:
     """Decorator to register a config upgrade function (non-settings operations).
 
     The decorated function receives the full Config object. Use this for
@@ -210,7 +213,7 @@ def upgrade_option_value(
     Polymorphic: works on both plain dicts (profile overrides, imported
     settings) and ConfigSection objects (base config at startup).
 
-    The transform function receives the current value and must return the
+    The transform function receives the current raw value and must return the
     new value. Settings with None value (tracked but not overridden in
     profile dicts) are left unchanged.
 
@@ -232,38 +235,38 @@ def upgrade_option_value(
                     settings[name] = transform(value)
 
 
-def get_option(
+def get_option_value(
     settings: Settings,
     name: str,
-    option_type: type[Option] | None = None,
-    default: ConfigValueType | None = None,
+    option_type: type[Option],
+    default: ConfigValueType,
 ) -> Any:
-    """Read an option value from settings without removing it.
+    """Read an option value from settings.
 
     Polymorphic: works on both plain dicts and ConfigSection objects.
 
-    For plain dicts, the value is already a Python object (bool, int, str, etc.)
-    and is returned directly.
-
-    For ConfigSection, the option_type is needed to deserialize the raw value
-    from QSettings (via a temporarily registered Option).
+    The option_type is required to apply necessary type transformations.
 
     Args:
         settings: A plain dict or a ConfigSection instance.
         name: The option key name to read.
-        option_type: Option class (e.g., BoolOption). Required for ConfigSection,
-                     ignored for plain dicts.
-        default: Default value if the key is missing. Required for ConfigSection,
-                 ignored for plain dicts (returns None if missing and no default).
+        option_type: Option class (e.g., BoolOption).
+        default: Default value if the key is missing. Must not be None.
 
     Returns:
         The option value (deserialized), or default if the key is not present.
     """
+    assert option_type is not None
+    assert default is not None
+
     if isinstance(settings, dict):
-        return settings.get(name, default)
+        value = settings.get(name, default)
+        if value is None:
+            return None
+        with temp_option(option_type, 'upgrade', name, default) as opt:
+            value = opt.convert(value)
+        return value
     else:
-        assert option_type is not None
-        assert default is not None
         if name not in settings:
             return default
         with temp_option(option_type, settings.section_name, name, default) as opt:

@@ -21,9 +21,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import os
+from unittest.mock import patch
 
-import PyQt6.QtCore
-from PyQt6.QtCore import QByteArray
+from PyQt6 import QtCore
 
 from test.test_config import TestPicardConfigCommon
 
@@ -35,6 +35,7 @@ from picard.config import (
     Option,
     TextOption,
 )
+from picard.config_upgrade import _UPGRADES_REGISTRY
 import picard.config_upgrade_hooks as hooks
 from picard.const.cover_processing import ImageFormat
 from picard.const.defaults import (
@@ -44,6 +45,7 @@ from picard.const.defaults import (
     DEFAULT_THEME_NAME,
 )
 from picard.options import StandardizeArtistNames
+from picard.script import get_file_naming_script_presets
 from picard.util import unique_numbered_title
 
 from picard.ui.theme import UiTheme
@@ -52,7 +54,6 @@ from picard.ui.theme import UiTheme
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
     def test_all_hooks_have_tests(self):
         """Ensure every upgrade hook has at least one corresponding test method."""
-        from picard.config_upgrade import _UPGRADES_REGISTRY
 
         def has_test(test_methods, func_name):
             """Check for test_{name} exactly or test_{name}_* (underscore boundary)."""
@@ -315,8 +316,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         )
 
     def test_reset_main_splitter_states(self):
-        Option("persist", "splitter_state", QByteArray())
-        Option("persist", "bottom_splitter_state", QByteArray())
+        Option("persist", "splitter_state", QtCore.QByteArray())
+        Option("persist", "bottom_splitter_state", QtCore.QByteArray())
         self.config.persist["splitter_state"] = b'foo'
         self.config.persist["bottom_splitter_state"] = b'bar'
         hooks.reset_main_splitter_states(self.config)
@@ -342,8 +343,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_clear_fpcalc_path_frozen(self):
-        from unittest.mock import patch
-
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
         with patch.object(hooks, 'IS_FROZEN', True):
@@ -464,8 +463,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
 
     def test_add_preset_naming_scripts(self):
-        from picard.script import get_file_naming_script_presets
-
         Option('setting', 'file_renaming_scripts', {})
         self.config.setting['file_renaming_scripts'] = {}
         hooks.add_preset_naming_scripts(self.config)
@@ -508,8 +505,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertTrue(settings['allow_multi_dirs_selection'])
 
     def test_reset_locked_header_states(self):
-        Option('persist', 'album_view_header_state', QByteArray())
-        Option('persist', 'file_view_header_state', QByteArray())
+        Option('persist', 'album_view_header_state', QtCore.QByteArray())
+        Option('persist', 'file_view_header_state', QtCore.QByteArray())
         BoolOption('persist', 'album_view_header_locked', False)
         BoolOption('persist', 'file_view_header_locked', False)
 
@@ -581,8 +578,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertFalse(settings['enable_tag_saving'])
 
     def test_remove_old_plugin_options(self):
-        from PyQt6 import QtCore
-
         # Add old plugin options that should be removed
         Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder)
         Option('persist', 'plugins_list_sort_section', 0)
@@ -676,8 +671,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected_script, settings['list_of_scripts'][0][3])
 
     def test_remove_persisted_column_config(self):
-        Option('persist', 'album_view_header_state', PyQt6.QtCore.QByteArray())
-        Option('persist', 'file_view_header_state', PyQt6.QtCore.QByteArray())
+        Option('persist', 'album_view_header_state', QtCore.QByteArray())
+        Option('persist', 'file_view_header_state', QtCore.QByteArray())
         self.config.persist['album_view_header_state'] = b'a'
         self.config.persist['file_view_header_state'] = b'a'
 

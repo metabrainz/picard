@@ -21,43 +21,61 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from enum import (
+    Enum,
+    IntEnum,
+)
+
 from test.picardtestcase import PicardTestCase
+
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    Option,
+    TextOption,
+)
+from picard.config_upgrade import (
+    _UPGRADES_REGISTRY,
+    _get_sorted_upgrades,
+    _UpgradeEntry,
+    _UpgradeType,
+    apply_settings_upgrades_for_import,
+    get_option_value,
+    remove_option,
+    rename_option,
+    upgrade_config,
+    upgrade_option_value,
+    upgrade_settings,
+    write_option,
+)
+from picard.version import Version
 
 
 class TestRenameOptionInSettingsPolymorphic(PicardTestCase):
     """Tests for the new polymorphic rename_option (dict path)."""
 
     def test_rename_existing_key(self):
-        from picard.config_upgrade import rename_option
-
         settings = {'old_name': 'value', 'other': 42}
         rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'new_name': 'value', 'other': 42}, settings)
 
     def test_rename_with_reverse(self):
-        from picard.config_upgrade import rename_option
-
         settings = {'old_name': True}
         rename_option(settings, 'old_name', 'new_name', reverse=True)
         self.assertEqual({'new_name': False}, settings)
 
     def test_rename_missing_key(self):
-        from picard.config_upgrade import rename_option
-
         settings = {'other': 'value'}
         rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'other': 'value'}, settings)
 
     def test_rename_none_value(self):
-        from picard.config_upgrade import rename_option
-
         settings = {'old_name': None}
         rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'new_name': None}, settings)
 
     def test_rename_none_value_reverse(self):
-        from picard.config_upgrade import rename_option
-
         settings = {'old_name': None}
         rename_option(settings, 'old_name', 'new_name', reverse=True)
         self.assertEqual({'new_name': None}, settings)
@@ -67,29 +85,21 @@ class TestUpgradeOptionValueInSettingsPolymorphic(PicardTestCase):
     """Tests for the new polymorphic upgrade_option_value (dict path)."""
 
     def test_transform_existing_key(self):
-        from picard.config_upgrade import upgrade_option_value
-
         settings = {'my_opt': 'HELLO', 'other': 42}
         upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'my_opt': 'hello', 'other': 42}, settings)
 
     def test_transform_missing_key(self):
-        from picard.config_upgrade import upgrade_option_value
-
         settings = {'other': 42}
         upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'other': 42}, settings)
 
     def test_transform_none_value_unchanged(self):
-        from picard.config_upgrade import upgrade_option_value
-
         settings = {'my_opt': None}
         upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'my_opt': None}, settings)
 
     def test_transform_list(self):
-        from picard.config_upgrade import upgrade_option_value
-
         settings = {'items': [('Whitelist', True), ('Other', False)]}
         upgrade_option_value(
             settings,
@@ -103,13 +113,6 @@ class TestUpgradeSettingsDecorator(PicardTestCase):
     """Tests for the @upgrade_settings decorator and registry."""
 
     def test_decorator_registers_function(self):
-        from picard.config_upgrade import (
-            _UPGRADES_REGISTRY,
-            _UpgradeType,
-            upgrade_settings,
-        )
-        from picard.version import Version
-
         original_len = len(_UPGRADES_REGISTRY)
 
         @upgrade_settings('99.0.0dev1')
@@ -127,11 +130,6 @@ class TestUpgradeSettingsDecorator(PicardTestCase):
         _UPGRADES_REGISTRY.pop()
 
     def test_multiple_decorators_same_version(self):
-        from picard.config_upgrade import (
-            _UPGRADES_REGISTRY,
-            upgrade_settings,
-        )
-
         original_len = len(_UPGRADES_REGISTRY)
 
         @upgrade_settings('99.0.0dev2')
@@ -153,13 +151,6 @@ class TestUpgradeConfigDecorator(PicardTestCase):
     """Tests for the @upgrade_config decorator and registry."""
 
     def test_decorator_registers_function(self):
-        from picard.config_upgrade import (
-            _UPGRADES_REGISTRY,
-            _UpgradeType,
-            upgrade_config,
-        )
-        from picard.version import Version
-
         original_len = len(_UPGRADES_REGISTRY)
 
         @upgrade_config('99.0.0dev1')
@@ -181,8 +172,6 @@ class TestApplySettingsUpgradesForImport(PicardTestCase):
     """Tests for apply_settings_upgrades_for_import."""
 
     def test_applies_upgrades_after_version(self):
-        from picard.config_upgrade import apply_settings_upgrades_for_import
-
         # toolbar_multiselect was renamed at 3.0.0dev3
         settings = {'toolbar_multiselect': True}
         descriptions = apply_settings_upgrades_for_import(settings, '3.0.0dev2')
@@ -191,8 +180,6 @@ class TestApplySettingsUpgradesForImport(PicardTestCase):
         self.assertTrue(len(descriptions) > 0)
 
     def test_skips_upgrades_at_or_before_version(self):
-        from picard.config_upgrade import apply_settings_upgrades_for_import
-
         # If from_version >= the upgrade version, it should not apply
         settings = {'toolbar_multiselect': True}
         apply_settings_upgrades_for_import(settings, '3.0.0dev3')
@@ -201,8 +188,6 @@ class TestApplySettingsUpgradesForImport(PicardTestCase):
         self.assertNotIn('allow_multi_dirs_selection', settings)
 
     def test_invalid_version_returns_empty(self):
-        from picard.config_upgrade import apply_settings_upgrades_for_import
-
         settings = {'toolbar_multiselect': True}
         descriptions = apply_settings_upgrades_for_import(settings, 'not_a_version')
         self.assertEqual(descriptions, [])
@@ -210,8 +195,6 @@ class TestApplySettingsUpgradesForImport(PicardTestCase):
         self.assertIn('toolbar_multiselect', settings)
 
     def test_no_matching_keys_is_noop(self):
-        from picard.config_upgrade import apply_settings_upgrades_for_import
-
         settings = {'some_other_option': 'value'}
         apply_settings_upgrades_for_import(settings, '3.0.0dev2')
         self.assertEqual(settings, {'some_other_option': 'value'})
@@ -221,13 +204,6 @@ class TestGetSortedUpgrades(PicardTestCase):
     """Tests for _get_sorted_upgrades."""
 
     def test_sorts_by_version(self):
-        from picard.config_upgrade import (
-            _get_sorted_upgrades,
-            _UpgradeEntry,
-            _UpgradeType,
-        )
-        from picard.version import Version
-
         v1 = Version(3, 0, 0, 'dev', 3)
         v2 = Version(2, 0, 0, 'final', 0)
         v3 = Version(3, 0, 0, 'dev', 1)
@@ -249,13 +225,6 @@ class TestGetSortedUpgrades(PicardTestCase):
         self.assertEqual(result[2], _UpgradeEntry(v1, S, f1))
 
     def test_preserves_order_within_same_version(self):
-        from picard.config_upgrade import (
-            _get_sorted_upgrades,
-            _UpgradeEntry,
-            _UpgradeType,
-        )
-        from picard.version import Version
-
         v = Version(3, 0, 0, 'dev', 3)
         S = _UpgradeType.SETTINGS
         C = _UpgradeType.CONFIG
@@ -276,59 +245,63 @@ class TestGetOption(PicardTestCase):
     """Tests for the polymorphic get_option (dict path)."""
 
     def test_read_existing_key(self):
-        from picard.config_upgrade import get_option
-
         settings = {'old_key': 'value', 'other': 42}
-        result = get_option(settings, 'old_key')
+        result = get_option_value(settings, 'old_key', option_type=TextOption, default='')
         self.assertEqual(result, 'value')
         # Key is NOT removed
         self.assertIn('old_key', settings)
 
     def test_read_missing_key_returns_default(self):
-        from picard.config_upgrade import get_option
-
         settings = {'other': 42}
-        result = get_option(settings, 'old_key', default='fallback')
+        result = get_option_value(settings, 'old_key', option_type=TextOption, default='fallback')
         self.assertEqual(result, 'fallback')
         self.assertEqual(settings, {'other': 42})
 
-    def test_read_missing_key_no_default_returns_none(self):
-        from picard.config_upgrade import get_option
-
-        settings = {'other': 42}
-        result = get_option(settings, 'old_key')
-        self.assertIsNone(result)
-
     def test_read_bool_value(self):
-        from picard.config_upgrade import get_option
-
         settings = {'flag': True}
-        result = get_option(settings, 'flag')
+        result = get_option_value(settings, 'flag', option_type=BoolOption, default=False)
         self.assertTrue(result)
         self.assertIn('flag', settings)
 
     def test_read_none_value(self):
-        from picard.config_upgrade import get_option
-
         settings = {'tracked': None}
-        result = get_option(settings, 'tracked', default=False)
+        result = get_option_value(settings, 'tracked', option_type=Option, default=False)
         self.assertIsNone(result)
+
+    def test_read_list_value(self):
+        settings = {'opt1': ['foo', 'bar']}
+        result = get_option_value(settings, 'opt1', option_type=ListOption, default=[])
+        self.assertEqual(result, ['foo', 'bar'])
+
+    def test_read_enum_value(self):
+        class MyEnum(Enum):
+            VALUE1 = 'value1'
+            VALUE2 = 'value2'
+
+        settings = {'enum_opt': 'value2'}
+        result = get_option_value(settings, 'enum_opt', option_type=Option, default=MyEnum.VALUE1)
+        self.assertEqual(result, MyEnum.VALUE2)
+
+    def test_read_int_enum_value(self):
+        class MyEnum(IntEnum):
+            VALUE1 = 1
+            VALUE2 = 2
+
+        settings = {'enum_opt': 2}
+        result = get_option_value(settings, 'enum_opt', option_type=IntOption, default=MyEnum.VALUE1)
+        self.assertEqual(result, MyEnum.VALUE2)
 
 
 class TestRemoveOption(PicardTestCase):
     """Tests for the polymorphic remove_option (dict path)."""
 
     def test_remove_existing_key(self):
-        from picard.config_upgrade import remove_option
-
         settings = {'old_key': 'value', 'other': 42}
         remove_option(settings, 'old_key')
         self.assertNotIn('old_key', settings)
         self.assertIn('other', settings)
 
     def test_remove_missing_key_is_noop(self):
-        from picard.config_upgrade import remove_option
-
         settings = {'other': 42}
         remove_option(settings, 'old_key')
         self.assertEqual(settings, {'other': 42})
@@ -338,31 +311,21 @@ class TestWriteOption(PicardTestCase):
     """Tests for the polymorphic write_option (dict path)."""
 
     def test_write_string(self):
-        from picard.config_upgrade import write_option
-
         settings = {}
         write_option(settings, 'key', 'value')
         self.assertEqual(settings, {'key': 'value'})
 
     def test_write_bool(self):
-        from picard.config_upgrade import write_option
-
         settings = {}
         write_option(settings, 'flag', True)
         self.assertEqual(settings, {'flag': True})
 
     def test_write_int(self):
-        from picard.config_upgrade import write_option
-
         settings = {}
         write_option(settings, 'count', 42)
         self.assertEqual(settings, {'count': 42})
 
     def test_write_enum_stores_value(self):
-        from enum import Enum
-
-        from picard.config_upgrade import write_option
-
         class MyEnum(Enum):
             FOO = 'foo'
             BAR = 'bar'
@@ -372,10 +335,6 @@ class TestWriteOption(PicardTestCase):
         self.assertEqual(settings, {'choice': 'foo'})
 
     def test_write_int_enum_stores_value(self):
-        from enum import IntEnum
-
-        from picard.config_upgrade import write_option
-
         class Priority(IntEnum):
             LOW = 1
             HIGH = 2
@@ -385,8 +344,6 @@ class TestWriteOption(PicardTestCase):
         self.assertEqual(settings, {'priority': 2})
 
     def test_write_overwrites_existing(self):
-        from picard.config_upgrade import write_option
-
         settings = {'key': 'old'}
         write_option(settings, 'key', 'new')
         self.assertEqual(settings, {'key': 'new'})
