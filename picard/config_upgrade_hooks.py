@@ -29,8 +29,10 @@
 
 """Config upgrade hook functions.
 
-All upgrade_to_v* functions are auto-detected by
-picard.config_upgrade.autodetect_upgrade_hooks().
+Config upgrade hook functions.
+
+All hooks are registered via @upgrade_settings or @upgrade_config decorators.
+See the comment block below for instructions on adding new hooks.
 """
 
 import os
@@ -46,9 +48,14 @@ from picard.config import (
     TextOption,
 )
 from picard.config_upgrade import (
+    get_option_value,
+    remove_option,
     rename_option,
     temp_option,
+    upgrade_config,
     upgrade_option_value,
+    upgrade_settings,
+    write_option,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -67,44 +74,62 @@ from picard.util import unique_numbered_title
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
 #
-# 1. Add a new method here, named using the following scheme:
-#    UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
+# Use one of two decorators:
 #
-#    For example:
-#    `upgrade_to_v1_0_0dev1(config)` for an upgrade hook upgrading to 1.0.0dev1
+#   @upgrade_settings('x.y.z')  — for settings transforms (renames, value changes)
+#   @upgrade_config('x.y.z')    — for non-settings operations (persist, UI state)
 #
-#    The only parameter passed when hooks are executed at startup is `config`.
-#    Extra parameters can be added for testability (see `upgrade_to_v1_0_0final0`).
+# @upgrade_settings functions receive a `settings` argument (dict or ConfigSection).
+# They automatically run on base config + all profile overrides + imported profiles.
 #
-#    Describe changes using a docstring — it is logged when the hook is executed.
+# @upgrade_config functions receive the full `config` object. They do NOT run on
+# profiles or imported data. Only use for persist, allKeys(), interactive dialogs.
 #
-# 2. Update `PICARD_VERSION` to match the new hook version.
+# Multiple functions can share the same version. All decorator types share a
+# single registry: execution order follows source file order regardless of type.
+# This lets you control sequencing when a settings change and a config change
+# at the same version depend on each other.
 #
-# 3. Add a corresponding test in test/test_config_upgrade_hooks.py, named
-#    `test_` + the hook function name (e.g. `test_upgrade_to_v1_0_0dev1`).
+# Function names are descriptive (no version encoding). The version is in the
+# decorator argument only.
+#
+# Describe changes using a docstring — it is logged when the hook is executed.
+#
+# After adding a hook:
+# 1. Update `PICARD_VERSION` to match the new hook version.
+# 2. Add a corresponding test in test/test_config_upgrade_hooks.py, named
+#    `test_` + the hook function name (e.g. `test_my_rename`).
 #    The `test_all_hooks_have_tests` test will fail if a test is missing.
 #
 #
 # COMMON PATTERNS:
 # ---------------
 #
-# Rename an option:
-#   rename_option(config, 'old_name', 'new_name', BoolOption, False)
+# Rename an option (works on both dict and ConfigSection):
+#   rename_option(settings, 'old_name', 'new_name', BoolOption, False)
 #
-# Rename an option with reversed boolean value:
-#   rename_option(config, 'old_name', 'new_name', BoolOption, False, reverse=True)
+# Rename with reversed boolean:
+#   rename_option(settings, 'old_name', 'new_name', BoolOption, False, reverse=True)
 #
-# Read and remove a legacy option using a temporary registration
-# (needed so config.setting.value() knows the type for deserialization):
+# Value transform:
+#   upgrade_option_value(settings, 'name', lambda v: v.lower())
+#
+# Read old option, write new option, remove old (type change / one→many):
+#   value = get_option(settings, 'old_name', BoolOption, False)
+#   write_option(settings, 'new_name', new_value)
+#   remove_option(settings, 'old_name')
+#
+# Remove an obsolete option:
+#   remove_option(settings, 'old_name')
+#
+# Read and remove a legacy option in @upgrade_config (QSettings deserialization):
 #   with temp_option(TextOption, 'setting', 'old_name', '') as old_opt:
 #       value = config.setting.value(old_opt)
 #   config.setting.remove('old_name')
-#
-# Remove an obsolete option:
-#   config.setting.remove('old_name')
 
 
-def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
+@upgrade_config('1.0.0final0')
+def merge_va_file_naming(config, interactive=True, merge=True):
     """In version 1.0, the file naming formats for single and various artist releases were merged."""
     _s = config.setting
 
@@ -173,14 +198,14 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
             remove_va_file_naming_format(merge=False)
 
 
-def upgrade_to_v1_3_0dev1(config):
+@upgrade_settings('1.3.0dev1')
+def rename_windows_compatible_filenames(settings):
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110)."""
-    old_opt = 'windows_compatible_filenames'
-    new_opt = 'windows_compatibility'
-    rename_option(config, old_opt, new_opt, BoolOption, True)
+    rename_option(settings, 'windows_compatible_filenames', 'windows_compatibility', BoolOption, True)
 
 
-def upgrade_to_v1_3_0dev2(config):
+@upgrade_config('1.3.0dev2')
+def convert_preserved_tags_separator(config):
     """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)"""
     _s = config.setting
     opt = 'preserved_tags'
@@ -188,7 +213,8 @@ def upgrade_to_v1_3_0dev2(config):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
 
-def upgrade_to_v1_3_0dev3(config):
+@upgrade_config('1.3.0dev3')
+def convert_options_to_lists(config):
     """Options were made to support lists (solving PICARD-144 and others)"""
     _s = config.setting
     option_separators = {
@@ -206,7 +232,8 @@ def upgrade_to_v1_3_0dev3(config):
                 pass
 
 
-def upgrade_to_v1_3_0dev4(config):
+@upgrade_config('1.3.0dev4')
+def convert_release_type_scores(config):
     """Option "release_type_scores" is now a list of tuples"""
     _s = config.setting
 
@@ -229,7 +256,8 @@ def upgrade_to_v1_3_0dev4(config):
             pass
 
 
-def upgrade_to_v1_4_0dev2(config):
+@upgrade_config('1.4.0dev2')
+def remove_username_password(config):
     """Options "username" and "password" are removed and
     replaced with OAuth tokens
     """
@@ -240,7 +268,8 @@ def upgrade_to_v1_4_0dev2(config):
         _s.remove(opt)
 
 
-def upgrade_to_v1_4_0dev3(config):
+@upgrade_config('1.4.0dev3')
+def convert_ca_providers_to_tuples(config):
     """Cover art providers options were moved to a list of tuples"""
     _s = config.setting
     map_ca_provider = [
@@ -268,19 +297,22 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = (
 )
 
 
-def upgrade_to_v1_4_0dev4(config):
+@upgrade_config('1.4.0dev4')
+def update_default_file_naming_format_v1_3(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
     if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
         _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
-def upgrade_to_v1_4_0dev5(config):
+@upgrade_config('1.4.0dev5')
+def migrate_to_ini_config(config):
     """Using Picard.ini configuration file on all platforms"""
     # this is done in Config.__init__()
 
 
-def upgrade_to_v1_4_0dev6(config):
+@upgrade_config('1.4.0dev6')
+def convert_tagger_scripts_to_list(config):
     """Adds support for multiple and selective tagger scripts"""
     _s = config.setting
     old_enabled_option = 'enable_tagger_script'
@@ -305,14 +337,14 @@ def upgrade_to_v1_4_0dev6(config):
     _s.remove(old_script_text_option)
 
 
-def upgrade_to_v1_4_0dev7(config):
+@upgrade_settings('1.4.0dev7')
+def rename_save_only_front_images_to_tags(settings):
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
-    old_opt = 'save_only_front_images_to_tags'
-    new_opt = 'embed_only_one_front_image'
-    rename_option(config, old_opt, new_opt, BoolOption, True)
+    rename_option(settings, 'save_only_front_images_to_tags', 'embed_only_one_front_image', BoolOption, True)
 
 
-def upgrade_to_v2_0_0dev3(config):
+@upgrade_config('2.0.0dev3')
+def convert_caa_image_size(config):
     """Option "caa_image_size" value has different meaning."""
     _s = config.setting
     opt = 'caa_image_size'
@@ -331,20 +363,23 @@ def upgrade_to_v2_0_0dev3(config):
             _s[opt] = _CAA_SIZE_COMPAT[value]
 
 
-def upgrade_to_v2_1_0dev1(config):
+@upgrade_settings('2.1.0dev1')
+def upgrade_genre_options(settings):
     """Upgrade genre related options"""
-    _s = config.setting
-    if 'folksonomy_tags' in _s and _s['folksonomy_tags']:
-        _s['use_genres'] = True
-    rename_option(config, 'max_tags', 'max_genres', IntOption, 5)
-    rename_option(config, 'min_tag_usage', 'min_genre_usage', IntOption, 90)
-    rename_option(config, 'ignore_tags', 'ignore_genres', TextOption, '')
-    rename_option(config, 'join_tags', 'join_genres', TextOption, '')
-    rename_option(config, 'only_my_tags', 'only_my_genres', BoolOption, False)
-    rename_option(config, 'artists_tags', 'artists_genres', BoolOption, False)
+    if 'folksonomy_tags' in settings:
+        value = get_option_value(settings, 'folksonomy_tags', BoolOption, False)
+        if value:
+            write_option(settings, 'use_genres', True)
+    rename_option(settings, 'max_tags', 'max_genres', IntOption, 5)
+    rename_option(settings, 'min_tag_usage', 'min_genre_usage', IntOption, 90)
+    rename_option(settings, 'ignore_tags', 'ignore_genres', TextOption, '')
+    rename_option(settings, 'join_tags', 'join_genres', TextOption, '')
+    rename_option(settings, 'only_my_tags', 'only_my_genres', BoolOption, False)
+    rename_option(settings, 'artists_tags', 'artists_genres', BoolOption, False)
 
 
-def upgrade_to_v2_2_0dev3(config):
+@upgrade_config('2.2.0dev3')
+def convert_ignore_genres_to_filter(config):
     """Option ignore_genres was replaced by option genres_filter"""
     _s = config.setting
     old_opt = 'ignore_genres'
@@ -366,14 +401,16 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = (
 )
 
 
-def upgrade_to_v2_2_0dev4(config):
+@upgrade_config('2.2.0dev4')
+def update_default_file_naming_format_v2_1(config):
     """Improved default file naming script"""
     _s = config.setting
     if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1:
         _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
-def upgrade_to_v2_4_0beta3(config):
+@upgrade_config('2.4.0beta3')
+def convert_preserved_tags_to_list(config):
     """Convert preserved tags to list"""
     _s = config.setting
     opt = 'preserved_tags'
@@ -382,34 +419,39 @@ def upgrade_to_v2_4_0beta3(config):
         _s[opt] = [t.strip() for t in value.split(',')]
 
 
-def upgrade_to_v2_5_0dev1(config):
+@upgrade_settings('2.5.0dev1')
+def rename_whitelist_ca_provider(settings):
     """Rename whitelist cover art provider"""
     upgrade_option_value(
-        config,
+        settings,
         'ca_providers',
         lambda providers: [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in providers],
     )
 
 
-def upgrade_to_v2_5_0dev2(config):
+@upgrade_config('2.5.0dev2')
+def reset_main_splitter_states(config):
     """Reset main view splitter states"""
     config.persist['splitter_state'] = b''
     config.persist['bottom_splitter_state'] = b''
 
 
-def upgrade_to_v2_6_0dev1(config):
+@upgrade_config('2.6.0dev1')
+def clear_fpcalc_path(config):
     """Unset fpcalc path in environments where auto detection is preferred."""
     if IS_FROZEN or config.setting['acoustid_fpcalc'].startswith('/snap/picard/'):
         config.setting['acoustid_fpcalc'] = ''
 
 
-def upgrade_to_v2_6_0beta2(config):
+@upgrade_settings('2.6.0beta2')
+def rename_caa_image_options(settings):
     """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
-    rename_option(config, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
-    rename_option(config, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
+    rename_option(settings, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
+    rename_option(settings, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
 
 
-def upgrade_to_v2_6_0beta3(config):
+@upgrade_config('2.6.0beta3')
+def convert_use_system_theme(config):
     """Replace use_system_theme with ui_theme options"""
     _s = config.setting
     with temp_option(BoolOption, 'setting', 'use_system_theme', False) as old_opt:
@@ -418,7 +460,8 @@ def upgrade_to_v2_6_0beta3(config):
     _s.remove('use_system_theme')
 
 
-def upgrade_to_v2_7_0dev2(config):
+@upgrade_config('2.7.0dev2')
+def restructure_splitter_persist(config):
     """Replace manually set persistent splitter settings with automated system."""
 
     def upgrade_persisted_splitter(new_persist_key, key_map):
@@ -460,7 +503,8 @@ def upgrade_to_v2_7_0dev2(config):
     )
 
 
-def upgrade_to_v2_7_0dev3(config):
+@upgrade_config('2.7.0dev3')
+def convert_naming_scripts_to_dict(config):
     """Save file naming scripts to dictionary."""
     # Avoid init-order issue: config_upgrade runs during config init before full module graph is ready
     from picard.script import get_file_naming_script_presets
@@ -492,7 +536,8 @@ def upgrade_to_v2_7_0dev3(config):
     config.setting.remove('file_naming_format')
 
 
-def upgrade_to_v2_7_0dev4(config):
+@upgrade_config('2.7.0dev4')
+def convert_script_exception_to_list(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
     with temp_option(TextOption, 'setting', 'artist_script_exception', '') as old_opt:
@@ -505,7 +550,8 @@ def upgrade_to_v2_7_0dev4(config):
     _s.remove('artist_locale')
 
 
-def upgrade_to_v2_7_0dev5(config):
+@upgrade_config('2.7.0dev5')
+def convert_script_exceptions_with_weighting(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
     with temp_option(IntOption, 'setting', 'artist_script_exception_weighting', 0) as old_opt:
@@ -519,17 +565,22 @@ def upgrade_to_v2_7_0dev5(config):
     _s.remove('artist_script_exception_weighting')
 
 
-def upgrade_to_v2_8_0dev2(config):
+@upgrade_settings('2.8.0dev2')
+def remove_acousticbrainz_from_toolbar(settings):
     """Remove AcousticBrainz settings from options"""
-    toolbar_layout = config.setting['toolbar_layout']
-    try:
+
+    def _remove_action(toolbar_layout):
         toolbar_layout.remove('extract_and_submit_acousticbrainz_features_action')
-        config.setting['toolbar_layout'] = toolbar_layout
+        return toolbar_layout
+
+    try:
+        upgrade_option_value(settings, 'toolbar_layout', _remove_action)
     except ValueError:
         pass
 
 
-def upgrade_to_v2_9_0alpha2(config):
+@upgrade_config('2.9.0alpha2')
+def add_preset_naming_scripts(config):
     """Add preset file naming scripts to editable user scripts dictionary"""
     # Avoid init-order issue: config_upgrade runs during config init before full module graph is ready
     from picard.script import get_file_naming_script_presets
@@ -540,7 +591,8 @@ def upgrade_to_v2_9_0alpha2(config):
     config.setting['file_renaming_scripts'] = scripts
 
 
-def upgrade_to_v3_0_0dev1(config):
+@upgrade_config('3.0.0dev1')
+def clear_qt5_state(config):
     """Clear Qt5 state config"""
     # A lot of persisted data is serialized Qt5 data that is not compatible with Qt6.
     # Keep only the data that is still useful and definitely supported.
@@ -573,19 +625,20 @@ def upgrade_to_v3_0_0dev1(config):
             config.remove(key)
 
 
-def upgrade_to_v3_0_0dev2(config):
+@upgrade_config('3.0.0dev2')
+def reset_options_dialog_splitters(config):
     """Reset option dialog splitter states"""
     config.persist['splitters_OptionsDialog'] = b''
 
 
-def upgrade_to_v3_0_0dev3(config):
+@upgrade_settings('3.0.0dev3')
+def rename_toolbar_multiselect(settings):
     """Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection"."""
-    old_opt = 'toolbar_multiselect'
-    new_opt = 'allow_multi_dirs_selection'
-    rename_option(config, old_opt, new_opt, BoolOption, False)
+    rename_option(settings, 'toolbar_multiselect', 'allow_multi_dirs_selection', BoolOption, False)
 
 
-def upgrade_to_v3_0_0dev4(config):
+@upgrade_config('3.0.0dev4')
+def reset_locked_header_states(config):
     """Reset "file/album_view_header_state" if there were saved while locked."""
     if config.persist['album_view_header_locked']:
         config.persist.remove('album_view_header_state')
@@ -593,38 +646,47 @@ def upgrade_to_v3_0_0dev4(config):
         config.persist.remove('file_view_header_state')
 
 
-def upgrade_to_v3_0_0dev5(config):
+@upgrade_settings('3.0.0dev5')
+def sanitize_replace_dir_separator(settings):
     """Ensure "replace_dir_separator" contains no directory separator"""
-    replace_dir_separator = config.setting['replace_dir_separator']
-    replace_dir_separator = replace_dir_separator.replace(os.sep, DEFAULT_REPLACEMENT)
-    if os.altsep:
-        replace_dir_separator = replace_dir_separator.replace(os.altsep, DEFAULT_REPLACEMENT)
-    config.setting['replace_dir_separator'] = replace_dir_separator
+
+    def _sanitize(value):
+        value = value.replace(os.sep, DEFAULT_REPLACEMENT)
+        if os.altsep:
+            value = value.replace(os.altsep, DEFAULT_REPLACEMENT)
+        return value
+
+    upgrade_option_value(settings, 'replace_dir_separator', _sanitize)
 
 
-def upgrade_to_v3_0_0dev6(config):
+@upgrade_settings('3.0.0dev6')
+def copy_standardize_instruments_to_vocals(settings):
     """New independent option "standardize_vocals" should use the value of the old shared option"""
-    standardize_instruments_and_vocals = config.setting['standardize_instruments']
-    config.setting['standardize_vocals'] = standardize_instruments_and_vocals
+    if 'standardize_instruments' in settings:
+        value = get_option_value(settings, 'standardize_instruments', BoolOption, False)
+        write_option(settings, 'standardize_vocals', value)
 
 
-def upgrade_to_v3_0_0dev7(config):
+@upgrade_settings('3.0.0dev7')
+def change_theme_system_to_default(settings):
     """Change theme option SYSTEM to DEFAULT"""
     # Avoid loading UI modules in headless/CLI contexts
     from picard.ui.theme import UiTheme
 
-    if config.setting['ui_theme'] == "system":
-        config.setting['ui_theme'] = UiTheme.DEFAULT
+    def _fix_theme(value):
+        return UiTheme.DEFAULT.value if value == "system" else value
+
+    upgrade_option_value(settings, 'ui_theme', _fix_theme)
 
 
-def upgrade_to_v3_0_0dev8(config):
+@upgrade_settings('3.0.0dev8')
+def rename_dont_write_tags(settings):
     """Option "dont_write_tags" was renamed to "enable_tag_saving" (value is reversed)."""
-    old_opt = 'dont_write_tags'
-    new_opt = 'enable_tag_saving'
-    rename_option(config, old_opt, new_opt, BoolOption, False, reverse=True)
+    rename_option(settings, 'dont_write_tags', 'enable_tag_saving', BoolOption, False, reverse=True)
 
 
-def upgrade_to_v3_0_0dev9(config):
+@upgrade_config('3.0.0dev9')
+def remove_old_plugin_options(config):
     """Remove obsolete old plugin system options"""
     # Remove old plugin UI state options (unused)
     config.persist.remove('plugins_list_sort_order')
@@ -635,17 +697,19 @@ def upgrade_to_v3_0_0dev9(config):
     config.setting.remove('enabled_plugins')
 
 
-def upgrade_to_v3_0_0dev10(config):
+@upgrade_settings('3.0.0dev10')
+def lowercase_cover_art_formats(settings):
     """Update cover art processing format options"""
     for setting_key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
         upgrade_option_value(
-            config,
+            settings,
             setting_key,
             lambda value: value.lower() if isinstance(value, str) else value,
         )
 
 
-def upgrade_to_v3_0_0a2(config):
+@upgrade_settings('3.0.0a2')
+def fix_matchedtracks_in_scripts(settings):
     """Update $matchedtracks() usage in scripts"""
 
     matched_tracks_regex = re.compile(r'\$matchedtracks\([^)$]+\)')
@@ -653,70 +717,78 @@ def upgrade_to_v3_0_0a2(config):
     def fix_matchedtracks(script):
         return matched_tracks_regex.sub('$matchedtracks()', script)
 
+    def fix_renaming_scripts(scripts):
+        for script_item in scripts.values():
+            script_item['script'] = fix_matchedtracks(script_item['script'])
+        return scripts
+
     def fix_tagger_scripts(scripts):
         return [(pos, name, enabled, fix_matchedtracks(script)) for pos, name, enabled, script in scripts]
 
-    renaming_scripts = config.setting.raw_value('file_renaming_scripts') or {}
-    for script_item in renaming_scripts.values():
-        script_item['script'] = fix_matchedtracks(script_item['script'])
-    config.setting['file_renaming_scripts'] = renaming_scripts
-
-    upgrade_option_value(config, 'list_of_scripts', fix_tagger_scripts)
+    upgrade_option_value(settings, 'file_renaming_scripts', fix_renaming_scripts)
+    upgrade_option_value(settings, 'list_of_scripts', fix_tagger_scripts)
 
 
-def upgrade_to_v3_0_0a3(config):
+@upgrade_config('3.0.0a3')
+def remove_persisted_column_config(config):
     """Remove persisted column configuration"""
     config.persist.remove('album_view_header_state')
     config.persist.remove('file_view_header_state')
 
 
-def upgrade_to_v3_0_0b2(config):
+@upgrade_settings('3.0.0b2')
+def rename_artist_locales(settings):
     """Option "artist_locales" was renamed to "translation_locales"."""
-    old_opt = 'artist_locales'
-    new_opt = 'translation_locales'
-    rename_option(config, old_opt, new_opt, ListOption, ['en'])
+    rename_option(settings, 'artist_locales', 'translation_locales', ListOption, ['en'])
 
 
-def upgrade_to_v3_0_0b3(config):
+@upgrade_settings('3.0.0b3')
+def remove_similarity_thresholds(settings):
     """Replace absolute similarity thresholds with floor + margin.
 
     Old thresholds were tuned to a specific score distribution and are
     meaningless under the new tiered matching algorithm. Remove them so
     the new defaults (match_min_similarity, match_min_margin) take effect.
     """
-    config.setting.remove('file_lookup_threshold')
-    config.setting.remove('cluster_lookup_threshold')
+    remove_option(settings, 'file_lookup_threshold')
+    remove_option(settings, 'cluster_lookup_threshold')
 
 
-def upgrade_to_v3_0_0b5(config):
-    """Rename active script key and add toggles to quick_menu_items.
+@upgrade_settings('3.0.0b5')
+def rename_selected_file_naming_script_id(settings):
+    """Option "selected_file_naming_script_id" was renamed to "active_file_naming_script_id"."""
+    rename_option(settings, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
 
-    Rename 'selected_file_naming_script_id' to 'active_file_naming_script_id'.
-    Add rename_files, move_files, enable_tag_saving to quick_menu_items
-    (previously dedicated menu actions, now in configurable quick settings).
-    """
-    rename_option(config, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
 
+@upgrade_settings('3.0.0b5')
+def add_quick_menu_items(settings):
+    """Add rename_files, move_files, enable_tag_saving to quick_menu_items."""
     new_items = ['rename_files', 'move_files', 'enable_tag_saving']
 
-    def add_quick_menu_items(items):
+    def _add_items(items):
         for item in reversed(new_items):
             if item not in items:
                 items.insert(0, item)
         return items
 
-    upgrade_option_value(config, 'quick_menu_items', add_quick_menu_items)
+    upgrade_option_value(settings, 'quick_menu_items', _add_items)
 
 
-def upgrade_to_v3_0_0b6(config):
+@upgrade_settings('3.0.0b6')
+def convert_standardize_artists(settings):
     """Convert "standardize_artists" to "standardize_artist_names"."""
-    if config.setting['standardize_artists']:
-        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
-    else:
-        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
-    config.setting.remove('standardize_artists')
+    if 'standardize_artists' not in settings:
+        return
+    value = get_option_value(settings, 'standardize_artists', BoolOption, False)
+    write_option(
+        settings,
+        'standardize_artist_names',
+        StandardizeArtistNames.ALL if value else StandardizeArtistNames.NONE,
+    )
+    remove_option(settings, 'standardize_artists')
 
 
-def upgrade_to_v3_0_0b7(config):
+@upgrade_settings('3.0.0b7')
+def remove_rtd_updates_ask(settings):
     """Remove "rtd_updates_ask"."""
-    config.setting.remove('rtd_updates_ask')
+    remove_option(settings, 'rtd_updates_ask')
