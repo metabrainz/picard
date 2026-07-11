@@ -33,10 +33,12 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
+from picard import log
 from picard.config import (
     Config,
     Option,
 )
+from picard.config_upgrade import apply_settings_upgrades_for_import
 from picard.profiles import PROFILE_FORMAT_VERSION
 
 
@@ -51,6 +53,7 @@ class ProfileImportResult:
         profile_id: UUID of the created profile.
         title: Title of the imported profile.
         skipped_options: List of option names that were not recognized.
+        upgraded_settings: List of descriptions of settings upgrades applied.
         warnings: List of warning messages for the user.
     """
 
@@ -58,6 +61,7 @@ class ProfileImportResult:
         self.profile_id = profile_id
         self.title = title
         self.skipped_options: list[str] = []
+        self.upgraded_settings: list[str] = []
         self.warnings: list[str] = []
 
 
@@ -130,6 +134,17 @@ def import_profile(
 
     settings_section = data.get('settings', {})
 
+    # Apply settings upgrades if the profile is from an older version
+    picard_version = profile_section.get('picard_version')
+    if picard_version and settings_section:
+        upgrade_descriptions = apply_settings_upgrades_for_import(settings_section, picard_version)
+        if upgrade_descriptions:
+            result.upgraded_settings = upgrade_descriptions
+            log.debug(
+                "Applied %d settings upgrade(s) during profile import",
+                len(upgrade_descriptions),
+            )
+
     # Process [settings] section
     for key, value in settings_section.items():
         opt = Option.get('setting', key)
@@ -162,6 +177,12 @@ def import_profile(
         result.warnings.append(
             f"{len(result.skipped_options)} settings were not recognized and were skipped: "
             f"{', '.join(result.skipped_options)}"
+        )
+
+    # Report upgraded settings
+    if result.upgraded_settings:
+        result.warnings.append(
+            f"{len(result.upgraded_settings)} setting(s) were automatically upgraded from Picard {picard_version}."
         )
 
     return result

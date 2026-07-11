@@ -21,7 +21,8 @@ for specific use cases (e.g., optimizing for Navidrome, Plex, Jellyfin, etc.).
 4. **Safe by default** — Security-sensitive options (credentials, tokens) and
    user-specific options (filesystem paths) are excluded from export.
 5. **Forward/backward compatible** — Unknown settings are ignored on import.
-   The `picard_version` field identifies the source version for upgrade transforms.
+   The `picard_version` field identifies the source version, enabling automatic
+   settings upgrades via the unified config upgrade framework.
 
 ---
 
@@ -418,25 +419,27 @@ sections for uninstalled plugins are skipped with a warning.
 
 1. Parse TOML, validate `[profile]` section exists
 2. Create a new profile with `title` from `[profile]`
-3. If `[scripts.naming]` exists:
+3. If `picard_version` is present and older than current, apply settings upgrades
+   from the unified config upgrade framework to the `[settings]` dict in place
+4. If `[scripts.naming]` exists:
    - Register the script in `file_renaming_scripts` (generate ID if not provided)
    - Set the profile's `active_file_naming_script_id` override to that ID
-4. If `[[scripts.tagging]]` entries exist:
+5. If `[[scripts.tagging]]` entries exist:
    - Append to the profile's `list_of_scripts` override
    - Respect the `enabled` field if present (default: `true`)
    - Set `enable_tagger_scripts = true` in the profile
-5. If `[plugins.*]` sections exist:
+6. If `[plugins.*]` sections exist:
    - For each plugin UUID, check if the plugin is installed
    - If installed: apply settings as profile overrides (keyed as
      `plugin.<uuid>/option_name`)
    - If not installed: collect for warning message, skip settings
-6. Apply `[settings]` as profile overrides:
+7. Apply `[settings]` as profile overrides:
    - Skip unknown option names (forward compatibility)
    - Skip options where `in_profile=False` (cannot be overridden by a profile)
    - `active_file_naming_script_id`, `enable_tagger_scripts`, and `list_of_scripts`
-     are handled implicitly by steps 3-4 when scripts are present
-7. Show warnings (if any): unrecognized options, missing plugins
-8. Profile is created in disabled state — user can review and enable it
+     are handled implicitly by steps 4-5 when scripts are present
+8. Show warnings (if any): unrecognized options, missing plugins, upgraded settings
+9. Profile is created in disabled state — user can review and enable it
 
 ### Conflict Handling
 
@@ -452,14 +455,24 @@ sections for uninstalled plugins are skipped with a warning.
 Profiles may reference options that no longer exist in the current Picard version
 (removed, renamed, or not yet introduced). Handling:
 
-1. **Unknown options are skipped** — import does not fail
-2. **Warnings are collected and shown to the user** after import:
-   *"2 settings were not recognized and were skipped: `old_name`, `other_name`"*
-3. **The profile is still created** with whatever settings *could* be applied.
+1. **Automatic settings upgrades** — if the profile's `picard_version` is older
+   than the current version, all applicable `@upgrade_settings` transforms from
+   the unified config upgrade framework are applied to the settings dict *before*
+   option validation. This handles renames, reversed booleans, and value format
+   changes transparently (e.g., `dont_write_tags` → `enable_tag_saving`).
+2. **Unknown options are skipped** — any settings still unrecognized after
+   upgrades (truly removed options, or options from a newer version) do not
+   cause import failure.
+3. **Warnings are collected and shown to the user** after import:
+   - Upgraded settings: *"3 setting(s) were automatically upgraded from Picard 2.8.0."*
+   - Skipped settings: *"2 settings were not recognized and were skipped: `old_name`, `other_name`"*
+4. **The profile is still created** with whatever settings *could* be applied.
    Scripts always import successfully since they are plain text.
 
-This mirrors Picard's existing config upgrade strategy: unrecognized keys are
-silently dropped. Profiles degrade gracefully rather than failing entirely.
+The upgrade transforms are the same ones used at startup for base config and
+existing profile overrides — defined once in `config_upgrade_hooks.py` via the
+`@upgrade_settings` decorator. See `docs/UnifiedConfigUpgrades.md` for the
+framework design.
 
 ---
 

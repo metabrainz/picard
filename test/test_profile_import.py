@@ -416,3 +416,121 @@ script = "$set(foo,bar)"
         # Only the imported script should be present — replace is a full override
         self.assertEqual(len(scripts), 1)
         self.assertEqual(scripts[0][1], 'Enabled Script')
+
+    def test_import_upgrades_old_settings(self):
+        """Profile from an older version has its renamed options upgraded."""
+        # The new option name that toolbar_multiselect was renamed to
+        BoolOption('setting', 'allow_multi_dirs_selection', False, title="Multi dirs", in_profile=True)
+
+        # Profile exported from before the rename (version < 3.0.0dev3)
+        toml = """\
+[profile]
+title = "Old Profile"
+picard_version = "3.0.0dev2"
+
+[settings]
+toolbar_multiselect = true
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        # Old name should be upgraded to the new name
+        self.assertNotIn('toolbar_multiselect', settings)
+        self.assertTrue(settings['allow_multi_dirs_selection'])
+        # Upgrade was tracked
+        self.assertTrue(len(result.upgraded_settings) > 0)
+        # Warning about upgrades was added
+        self.assertTrue(any('automatically upgraded' in w for w in result.warnings))
+
+    def test_import_upgrades_reversed_bool(self):
+        """Profile upgrade correctly reverses boolean for dont_write_tags → enable_tag_saving."""
+        BoolOption('setting', 'enable_tag_saving', True, title="Tag saving", in_profile=True)
+
+        # Profile from before the rename (version < 3.0.0dev8)
+        toml = """\
+[profile]
+title = "Tag Profile"
+picard_version = "3.0.0dev7"
+
+[settings]
+dont_write_tags = true
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        # dont_write_tags=True should become enable_tag_saving=False (reversed)
+        self.assertNotIn('dont_write_tags', settings)
+        self.assertFalse(settings['enable_tag_saving'])
+        self.assertTrue(len(result.upgraded_settings) > 0)
+
+    def test_import_no_upgrades_for_current_version(self):
+        """Profile from the current version has no upgrades applied."""
+        from picard import PICARD_VERSION_STR
+
+        BoolOption('setting', 'allow_multi_dirs_selection', False, title="Multi dirs", in_profile=True)
+
+        toml = f"""\
+[profile]
+title = "Current Profile"
+picard_version = "{PICARD_VERSION_STR}"
+
+[settings]
+allow_multi_dirs_selection = true
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertTrue(settings['allow_multi_dirs_selection'])
+        # No upgrades should have been applied
+        self.assertEqual(result.upgraded_settings, [])
+        # No upgrade warning
+        self.assertFalse(any('automatically upgraded' in w for w in result.warnings))
+
+    def test_import_no_upgrades_without_picard_version(self):
+        """Profile without picard_version skips upgrades gracefully."""
+        BoolOption('setting', 'toolbar_multiselect', False, title="Toolbar", in_profile=True)
+
+        toml = """\
+[profile]
+title = "No Version"
+
+[settings]
+toolbar_multiselect = true
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        # No upgrade should be attempted — old name stays as-is
+        self.assertIn('toolbar_multiselect', settings)
+        self.assertEqual(result.upgraded_settings, [])
+
+    def test_import_upgrades_invalid_version_skips(self):
+        """Profile with invalid picard_version skips upgrades gracefully."""
+        BoolOption('setting', 'toolbar_multiselect', False, title="Toolbar", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Bad Version"
+picard_version = "not_a_version"
+
+[settings]
+toolbar_multiselect = true
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        # No upgrade applied — old name stays
+        self.assertIn('toolbar_multiselect', settings)
+        self.assertEqual(result.upgraded_settings, [])
+
+    def test_import_upgrade_with_empty_settings(self):
+        """Profile with picard_version but no settings does not error."""
+        toml = """\
+[profile]
+title = "Empty Settings"
+picard_version = "2.0.0"
+"""
+        result = import_profile(self.config, toml)
+
+        self.assertEqual(result.title, 'Empty Settings')
+        self.assertEqual(result.upgraded_settings, [])
