@@ -239,41 +239,36 @@ def get_option_value(
     settings: Settings,
     name: str,
     option_type: type[Option],
-    default: ConfigValueType | None,
+    default: ConfigValueType,
 ) -> Any:
     """Read an option value from settings.
 
     Polymorphic: works on both plain dicts and ConfigSection objects.
 
-    For plain dicts, the value is already a Python object (bool, int, str, etc.)
-    and is returned directly.
-
-    For ConfigSection, the option_type is needed to deserialize the raw value
-    from QSettings (via a temporarily registered Option).
+    The option_type is required to apply necessary type transformations.
 
     Args:
         settings: A plain dict or a ConfigSection instance.
         name: The option key name to read.
-        option_type: Option class (e.g., BoolOption). Required for ConfigSection,
-                     ignored for plain dicts.
-        default: Default value if the key is missing. Required for ConfigSection,
-                 ignored for plain dicts (returns None if missing and no default).
+        option_type: Option class (e.g., BoolOption).
+        default: Default value if the key is missing. Must not be None.
 
     Returns:
         The option value (deserialized), or default if the key is not present.
     """
+    assert option_type is not None
+    assert default is not None
+
     if isinstance(settings, dict):
         value = settings.get(name, default)
         if value is None:
             return None
-        assert default is not None
         with temp_option(option_type, 'upgrade', name, default) as opt:
             value = opt.convert(value)
         return value
     else:
         if name not in settings:
             return default
-        assert default is not None
         with temp_option(option_type, settings.section_name, name, default) as opt:
             return settings.value(opt, default)
 

@@ -257,11 +257,6 @@ class TestGetOption(PicardTestCase):
         self.assertEqual(result, 'fallback')
         self.assertEqual(settings, {'other': 42})
 
-    def test_read_missing_key_no_default_returns_none(self):
-        settings = {'other': 42}
-        result = get_option_value(settings, 'old_key', option_type=IntOption, default=None)
-        self.assertIsNone(result)
-
     def test_read_bool_value(self):
         settings = {'flag': True}
         result = get_option_value(settings, 'flag', option_type=BoolOption, default=False)
