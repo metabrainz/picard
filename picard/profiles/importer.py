@@ -93,24 +93,27 @@ def import_profile(
     try:
         data = tomllib.loads(toml_string)
     except tomllib.TOMLDecodeError as e:
-        raise ProfileImportError(f"Invalid TOML: {e}") from e
+        raise ProfileImportError(_("Invalid TOML: %s") % e) from e
 
     # Validate [profile] section
     profile_section = data.get('profile')
     if not profile_section:
-        raise ProfileImportError("Missing required [profile] section")
+        raise ProfileImportError(_("Missing required [profile] section"))
 
     title = profile_section.get('title')
     if not title:
-        raise ProfileImportError("Missing required 'title' in [profile] section")
+        raise ProfileImportError(_("Missing required 'title' in [profile] section"))
 
     # Check format version compatibility
     format_version = profile_section.get('format_version', 1)
     if not isinstance(format_version, int) or format_version > PROFILE_FORMAT_VERSION:
         raise ProfileImportError(
-            f"Unsupported profile format version {format_version} "
-            f"(this version of Picard supports format version {PROFILE_FORMAT_VERSION}). "
-            f"Please upgrade Picard to import this profile."
+            _(
+                "Unsupported profile format version %s "
+                "(this version of Picard supports format version %s). "
+                "Please upgrade Picard to import this profile."
+            )
+            % (format_version, PROFILE_FORMAT_VERSION)
         )
 
     # Determine profile ID and whether we're replacing
@@ -119,7 +122,7 @@ def import_profile(
         profiles_list = config.profiles['user_profiles']
         existing = [p for p in profiles_list if p['id'] == replace_id]
         if not existing:
-            raise ProfileImportError(f"No existing profile with id '{replace_id}' to replace")
+            raise ProfileImportError(_("No existing profile with id '%s' to replace") % replace_id)
         profile_id = replace_id
         unique_title = title
     else:
