@@ -35,13 +35,14 @@
 # yvanz, 2016
 # Laurent Monin <i18n@norz.org>, 2013
 # Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024, 2026.
+# rez00 <sylvain.mengue@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-10 10:21+0200\n"
-"PO-Revision-Date: 2026-01-06 09:11+0000\n"
-"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-07-11 15:12+0000\n"
+"Last-Translator: rez00 <sylvain.mengue@gmail.com>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -50,7 +51,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:205
@@ -347,7 +348,7 @@ msgstr "Débogage"
 #, fuzzy
 #| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Erreur d’authentification inattendue"
+msgstr "Erreur de révocation du jeton inattendue"
 
 #: picard/oauth.py:364 picard/oauth.py:391
 msgid "Unexpected authentication error"
@@ -9049,7 +9050,7 @@ msgstr[2] "Utiliser les valeurs d’origine"
 #| msgid "Use Original Value"
 #| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Utiliser la valeur d’origine"
+msgstr "Fusionner les valeur d’origine"
 
 #: picard/ui/metadatabox/edittagdialog.py:150
 msgid "YYYY-MM-DD"
@@ -9234,15 +9235,19 @@ msgstr "Connecté en tant que <b>%s</b>."
 #, fuzzy
 #| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Erreur lors de la recherche du CD"
+msgstr "Erreur lors de la déconnexion"
 
 #: picard/ui/options/general.py:157
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Une erreur du serveur est survenue pendant la révocation de l'accès au "
+"serveur MusicBrainz: %s \n"
+"\n"
+"Retirer les identifiants stocké localement quand même ?"
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -10333,7 +10338,7 @@ msgstr "Script vide"
 #, fuzzy
 #| msgid "Script"
 msgid "New Script"
-msgstr "Script"
+msgstr "Nouveau Script"
 
 #: picard/ui/scripteditor/__init__.py:391
 #, fuzzy
