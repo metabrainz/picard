@@ -105,10 +105,9 @@ def export_profile(
         if key in _SCRIPT_OPTIONS:
             continue
 
-        # Handle plugin options separately
+        # Plugin settings are not yet supported for export.
+        # A future version may add opt-in per-plugin export support.
         if is_plugin_profile_key(key):
-            # Plugin settings are only exported if explicitly requested
-            # (mode doesn't apply here — they're always opt-in)
             continue
 
         # Look up the Option to check shareable flag
