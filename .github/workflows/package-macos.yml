@@ -15,8 +15,8 @@ jobs:
           python-sha256sum: 167c4e2d9f172a617ba6f3b08783cf376dec429386378066eb2f865c98030dd7
           disable-webp: 1
         - macos-deployment-version: 10.14
-          python-version: 3.11.5-macos11
-          python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
+          python-version: 3.12.10-macos11
+          python-sha256sum: 8373e58da4ea146b3eb1c1f9834f19a319440b6b679b06050b1f9ee3237aa8e4
           disable-webp: 0
       fail-fast: false
     env:
