@@ -430,3 +430,38 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertNotIn('version', naming)
         self.assertNotIn('last_updated', naming)
         self.assertNotIn('script_language_version', naming)
+
+    def test_export_tuple_option_transforms_elements(self):
+        """Tuples should be recursively transformed, same as lists."""
+        Option('setting', 'tuple_opt', (), title="Tuple option", in_profile=True)
+
+        self._setup_profile('p1', {'tuple_opt': (ImageFormat.JPEG, ImageFormat.PNG)})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        # Enum values inside the tuple should be exported as their .value
+        self.assertEqual(parsed['settings']['tuple_opt'], ['jpeg', 'png'])
+
+    def test_export_list_with_enum_elements(self):
+        """List elements that are Enums should be converted to their values."""
+        Option('setting', 'format_list', [], title="Format list", in_profile=True)
+
+        self._setup_profile('p1', {'format_list': [ImageFormat.JPEG, ImageFormat.PNG]})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        self.assertEqual(parsed['settings']['format_list'], ['jpeg', 'png'])
+
+    def test_export_dict_with_complex_values(self):
+        """Dict values should be recursively transformed."""
+        Option('setting', 'complex_dict', {}, title="Complex dict", in_profile=True)
+
+        self._setup_profile('p1', {'complex_dict': {'format': ImageFormat.PNG, 'count': 5}})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        expected = {'format': 'png', 'count': 5}
+        self.assertEqual(parsed['settings']['complex_dict'], expected)

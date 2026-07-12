@@ -141,11 +141,9 @@ def _export_value(value):
         return value.value
     if isinstance(value, dict):
         table = tomlkit.inline_table()
-        table.update(value)
+        table.update({k: _export_value(v) for k, v in value.items()})
         return table
-    if isinstance(value, tuple):
-        return list(value)
-    if isinstance(value, list):
+    if isinstance(value, (tuple, list)):
         return [_export_value(item) for item in value]
     return value
 
