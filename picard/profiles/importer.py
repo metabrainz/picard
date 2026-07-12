@@ -218,16 +218,14 @@ def import_profile(
 
 
 def _make_unique_title(config: Config, title: str) -> str:
-    """Ensure the profile title is unique, appending (copy) if needed."""
+    """Ensure the profile title is unique, appending a number if needed."""
     existing_titles = {p['title'] for p in config.profiles['user_profiles']}
     if title not in existing_titles:
         return title
-    candidate = f"{title} (copy)"
     counter = 2
-    while candidate in existing_titles:
-        candidate = f"{title} (copy {counter})"
+    while f"{title} ({counter})" in existing_titles:
         counter += 1
-    return candidate
+    return f"{title} ({counter})"
 
 
 def _import_value(value, opt: Option):

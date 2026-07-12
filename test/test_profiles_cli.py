@@ -249,6 +249,6 @@ class TestProfileCLI(TestPicardConfigCommon):
         profiles = self.config.profiles['user_profiles']
         self.assertEqual(len(profiles), 2)
         imported = profiles[0]  # New profile inserted at top
-        self.assertEqual(imported['title'], 'Original (copy)')
+        self.assertEqual(imported['title'], 'Original (2)')
         settings = self.config.profiles['user_profile_settings'][imported['id']]
         self.assertTrue(settings['rename_files'])

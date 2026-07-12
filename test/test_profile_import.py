@@ -288,7 +288,7 @@ script = "$noop()"
         self.assertTrue(scripts[0][2])  # enabled
         self.assertFalse(scripts[1][2])  # disabled
 
-    def test_import_duplicate_title_gets_copy_suffix(self):
+    def test_import_duplicate_title_gets_number_suffix(self):
         # Create an existing profile with the same title
         self.config.profiles['user_profiles'] = [
             {'id': 'existing', 'title': 'Test Profile', 'enabled': True, 'position': 0},
@@ -296,7 +296,18 @@ script = "$noop()"
 
         result = import_profile(self.config, MINIMAL_PROFILE)
 
-        self.assertEqual(result.title, 'Test Profile (copy)')
+        self.assertEqual(result.title, 'Test Profile (2)')
+
+    def test_import_duplicate_title_increments_number(self):
+        # Create existing profiles with the base title and (2)
+        self.config.profiles['user_profiles'] = [
+            {'id': 'existing1', 'title': 'Test Profile', 'enabled': True, 'position': 0},
+            {'id': 'existing2', 'title': 'Test Profile (2)', 'enabled': True, 'position': 1},
+        ]
+
+        result = import_profile(self.config, MINIMAL_PROFILE)
+
+        self.assertEqual(result.title, 'Test Profile (3)')
 
     def test_import_invalid_toml_raises(self):
         with self.assertRaises(ProfileImportError):
