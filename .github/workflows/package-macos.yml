@@ -11,8 +11,8 @@ jobs:
       matrix:
         setup:
         - macos-deployment-version: 10.12
-          python-version: 3.9.12-macosx10.9
-          python-sha256sum: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
+          python-version: 3.9.13-macosx10.9
+          python-sha256sum: 167c4e2d9f172a617ba6f3b08783cf376dec429386378066eb2f865c98030dd7
           disable-webp: 1
         - macos-deployment-version: 10.14
           python-version: 3.11.5-macos11
