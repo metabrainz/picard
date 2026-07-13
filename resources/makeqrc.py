@@ -30,10 +30,11 @@ It will update qrc file only if images newer than it are found
 """
 
 from distutils import log
-from distutils.dep_util import newer
 import fnmatch
 import os
 import re
+
+from setuptools.modified import newer
 
 
 def tryint(s):
