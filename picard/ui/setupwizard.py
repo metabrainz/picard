@@ -130,17 +130,19 @@ class WelcomePage(SetupWizardPage):
         super().__init__(parent)
         self.setTitle(_("Welcome to MusicBrainz Picard"))
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = QtWidgets.QHBoxLayout(self)
 
         illustration = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap(":/images/wizard-welcome.png")
         illustration.setPixmap(
             pixmap.scaled(
-                150, 150, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
+                128, 128, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
             )
         )
-        illustration.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(illustration)
+        illustration.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(illustration, 0)
+
+        text_layout = QtWidgets.QVBoxLayout()
 
         doc_url = get_url('/getting_started/screen_main.html')
         text = QtWidgets.QLabel(
@@ -153,7 +155,7 @@ class WelcomePage(SetupWizardPage):
             )
         )
         text.setWordWrap(True)
-        layout.addWidget(text)
+        text_layout.addWidget(text)
         link = QtWidgets.QLabel(
             '<a href="{url}">{text}</a>'.format(
                 url=doc_url,
@@ -162,8 +164,10 @@ class WelcomePage(SetupWizardPage):
         )
         link.setToolTip(doc_url)
         link.setOpenExternalLinks(True)
-        layout.addWidget(link)
-        layout.addStretch()
+        text_layout.addWidget(link)
+        text_layout.addStretch()
+
+        layout.addLayout(text_layout, 1)
 
 
 class FileOrganizationPage(SetupWizardPage):
