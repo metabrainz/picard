@@ -226,8 +226,6 @@ standardize_artists = true
         # All imported scripts are enabled by default
         self.assertTrue(scripts[0][2])
         self.assertTrue(scripts[1][2])
-        # Master toggle is enabled
-        self.assertTrue(settings['enable_tagger_scripts'])
 
     def test_import_tagger_scripts_deduplication(self):
         ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)

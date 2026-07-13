@@ -324,7 +324,6 @@ def _import_tagger_scripts(
 
     if existing_scripts:
         profile_settings['list_of_scripts'] = existing_scripts
-        profile_settings['enable_tagger_scripts'] = True
 
 
 def _register_profile(
