@@ -1215,21 +1215,25 @@ class PluginApi:
         """
         return register_script_function(function, name, eval_args, check_argcount, documentation, signature)
 
-    def register_script_variable(self, name: str, documentation: str | None = None) -> None:
+    def register_script_variable(self, name: str, documentation: str | None = None, title: str | None = None) -> None:
         """Register a variable name for script autocomplete.
 
         Args:
             name: The variable name without the surrounding ``%`` symbols.
             documentation: Optional help text shown for the variable.
+            title: Optional display title for the metadata box (e.g.,
+                "Pinned Tags"). If provided, the tag shows this title
+                instead of the raw name.
 
         Example:
             def enable(api):
                 api.register_script_variable(
                     "my_plugin_var",
                     documentation="A custom variable from my plugin",
+                    title="My Variable",
                 )
         """
-        return register_script_variable(name, documentation, self)
+        return register_script_variable(name, documentation, self, title=title)
 
     # Menu actions
     def register_album_action(self, action: type[BaseAction]) -> None:
