@@ -131,6 +131,7 @@ class WelcomePage(SetupWizardPage):
         self.setTitle(_("Welcome to MusicBrainz Picard"))
 
         layout = QtWidgets.QHBoxLayout(self)
+        layout.setSpacing(24)
 
         illustration = QtWidgets.QLabel()
         pixmap = QtGui.QPixmap(":/images/wizard-welcome.png")
