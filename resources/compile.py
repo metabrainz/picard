@@ -25,13 +25,14 @@
 
 
 from distutils import log
-from distutils.dep_util import newer
 from distutils.spawn import (
     DistutilsExecError,
-    find_executable,
     spawn,
 )
 import os.path
+from shutil import which
+
+from setuptools.modified import newer
 
 
 def fix_qtcore_import(path):
@@ -49,7 +50,7 @@ def main():
     qrcfile = os.path.join(topdir, "resources", "picard.qrc")
     if newer(qrcfile, pyfile):
         rcc = 'rcc'
-        rcc_path = find_executable(rcc, path='/usr/lib/qt6/libexec/') or find_executable(rcc)
+        rcc_path = which(rcc, path='/usr/lib/qt6/libexec/') or which(rcc)
         if rcc_path is None:
             log.error("%s command not found, cannot build resource file !", rcc)
         else:
