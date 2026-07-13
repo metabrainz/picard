@@ -166,12 +166,12 @@ class TagsDocumentationPage(DocumentationPage):
             )
 
         # Process plugin variables separately to allow plugin descriptions for duplicated variables.
-        for tag_name, tag_desc, plugin in ext_point_script_variables:
+        for var in ext_point_script_variables:
             tags.append(
                 DocItem(
-                    name=tag_name,
-                    desc=display_plugin_tag_full_description(tag_name, tag_desc),
-                    plugin=plugin,
+                    name=var.name,
+                    desc=display_plugin_tag_full_description(var.name, var.documentation),
+                    plugin=var.plugin_name,
                 )
             )
 
