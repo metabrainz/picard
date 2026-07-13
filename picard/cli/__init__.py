@@ -102,6 +102,7 @@ def build_root_parser():
 
     # Register available subcommands
     _register_plugins_subcommand(subparsers)
+    _register_profiles_subcommand(subparsers)
 
     return parser
 
@@ -110,6 +111,13 @@ def _register_plugins_subcommand(subparsers):
     """Register the 'plugins' subcommand group."""
     # Lazy import to avoid loading heavy dependencies at parse time
     from picard.cli.plugins import register_subcommand
+
+    register_subcommand(subparsers)
+
+
+def _register_profiles_subcommand(subparsers):
+    """Register the 'profiles' subcommand group."""
+    from picard.profiles.cli import register_subcommand
 
     register_subcommand(subparsers)
 

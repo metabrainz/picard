@@ -143,6 +143,22 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         opt.unregister()
         self.assertNotIn(("setting", "theoption"), Option.registry)
 
+    def test_shareable_default_true(self):
+        Option("setting", "option", "abc")
+        opt = Option.get("setting", "option")
+        self.assertTrue(opt.shareable)
+
+    def test_shareable_explicit_false(self):
+        Option("setting", "option", "secret", shareable=False)
+        opt = Option.get("setting", "option")
+        self.assertFalse(opt.shareable)
+
+    def test_shareable_with_in_profile(self):
+        Option("setting", "option", "value", title="Title", in_profile=True, shareable=False)
+        opt = Option.get("setting", "option")
+        self.assertTrue(opt.in_profile)
+        self.assertFalse(opt.shareable)
+
 
 class TestPicardConfigSection(TestPicardConfigCommon):
     def test_as_dict(self):
