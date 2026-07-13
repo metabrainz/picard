@@ -259,5 +259,7 @@
     <file>images/track-saved@2x.png</file>
     <file>images/track-video.png</file>
     <file>images/track-video@2x.png</file>
+    <file>images/wizard-welcome.png</file>
+    <file>images/wizard-welcome@2x.png</file>
 </qresource>
 </RCC>

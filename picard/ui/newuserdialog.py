@@ -23,6 +23,7 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -50,7 +51,12 @@ class NewUserDialog:
         show_again_text = _("Show this message again the next time you start Picard.")
 
         self.msg = QtWidgets.QMessageBox(parent)
-        self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+        pixmap = QtGui.QPixmap(":/images/wizard-welcome.png")
+        self.msg.setIconPixmap(
+            pixmap.scaled(
+                128, 128, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
+            )
+        )
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Warning"))
         self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
