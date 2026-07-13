@@ -218,7 +218,6 @@
     <file>images/file@2x.png</file>
     <file>images/image-missing.png</file>
     <file>images/loader.gif</file>
-    <file>images/mayhem.jpg</file>
     <file>images/match-50.png</file>
     <file>images/match-50@2x.png</file>
     <file>images/match-60.png</file>
@@ -243,6 +242,7 @@
     <file>images/match-pending-90@2x.png</file>
     <file>images/match-pending-100.png</file>
     <file>images/match-pending-100@2x.png</file>
+    <file>images/mayhem.jpg</file>
     <file>images/plugin-dark.png</file>
     <file>images/plugin.png</file>
     <file>images/star-gray.png</file>

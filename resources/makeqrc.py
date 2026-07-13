@@ -64,7 +64,7 @@ def main():
     topdir = os.path.abspath(os.path.join(scriptdir, ".."))
     resourcesdir = os.path.join(topdir, "resources")
     qrcfile = os.path.join(resourcesdir, "picard.qrc")
-    images = [i for i in find_files(resourcesdir, 'images', ['*.gif', '*.png'])]
+    images = [i for i in find_files(resourcesdir, 'images', ['*.gif', '*.png', '*.jpg'])]
     newimages = 0
     for filename in images:
         filepath = os.path.join(resourcesdir, filename)
