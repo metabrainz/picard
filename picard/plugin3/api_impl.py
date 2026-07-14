@@ -64,6 +64,9 @@ from picard.extension_points.cover_art_processors import (
 from picard.extension_points.cover_art_providers import (
     register_cover_art_provider,
 )
+from picard.extension_points.disc_log_readers import (
+    register_disc_log_reader,
+)
 from picard.extension_points.event_hooks import (
     register_album_post_removal_processor,
     register_file_post_addition_to_track_processor,
@@ -114,6 +117,7 @@ except (ImportError, ModuleNotFoundError):
 
 
 if TYPE_CHECKING:
+    from picard.disc.utils import TocNumbers
     from picard.tagger import Tagger
 
 
@@ -1150,6 +1154,43 @@ class PluginApi:
                 api.register_format(MyFormat)
         """
         return self._tagger.format_registry.register(format)
+
+    # Disc log readers
+    def register_disc_log_reader(self, function: Callable[[str], 'TocNumbers']) -> None:
+        """Register a custom disc log reader.
+
+        A disc log reader parses CD ripping log files and extracts table of
+        contents (TOC) data for disc ID calculation. When a user opens a log
+        file via *Lookup CD log file*, all registered readers are tried in
+        sequence until one succeeds.
+
+        The function should raise any exception if it cannot parse the file
+        (e.g., wrong format). Picard will catch the exception and try the
+        next reader.
+
+        Args:
+            function: A callable that takes a file path (``str``) and returns
+                ``TocNumbers`` — a tuple of ints representing the MusicBrainz
+                disc TOC:
+                ``(first_track, last_track, leadout_offset, offset_1, offset_2, ...)``.
+
+        Example:
+            import re
+            from picard.disc.utils import TocEntry, calculate_mb_toc_numbers
+
+            def my_ripper_toc_from_file(path):
+                entries = []
+                with open(path) as f:
+                    for line in f:
+                        m = re.match(r"Track (\\d+): (\\d+)-(\\d+)", line)
+                        if m:
+                            entries.append(TocEntry(int(m[1]), int(m[2]), int(m[3])))
+                return calculate_mb_toc_numbers(entries)
+
+            def enable(api):
+                api.register_disc_log_reader(my_ripper_toc_from_file)
+        """
+        return register_disc_log_reader(function)
 
     # Scripting
     def register_script_function(

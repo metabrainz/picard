@@ -871,6 +871,62 @@ def enable(api):
 
 ---
 
+### Disc Log Readers
+
+#### `register_disc_log_reader(function)`
+
+Register a custom CD ripping log parser for the *Lookup CD log file* feature.
+
+When a user opens a log file, all registered readers are tried in sequence until
+one succeeds. The function should raise any exception if it cannot parse the file
+(e.g., wrong format); Picard will catch the exception and try the next reader.
+
+**Signature**: `function(path: str) -> TocNumbers`
+
+The returned `TocNumbers` (a `tuple[int, ...]`) must be a MusicBrainz TOC:
+`(first_track, last_track, leadout_offset, offset_1, offset_2, ...)`
+
+```python
+import re
+
+from picard.disc.utils import (
+    TocEntry,
+    calculate_mb_toc_numbers,
+    NotSupportedTOCError,
+)
+
+def my_ripper_toc_from_file(path):
+    """Parse MyRipper log files for disc ID lookup."""
+    entries = []
+    with open(path, encoding='utf-8') as f:
+        first_line = f.readline()
+        if not first_line.startswith('MyRipper'):
+            raise NotSupportedTOCError("Not a MyRipper log")
+        for line in f:
+            m = re.match(r"Track (\d+): (\d+)-(\d+)", line)
+            if m:
+                entries.append(TocEntry(int(m[1]), int(m[2]), int(m[3])))
+    return calculate_mb_toc_numbers(entries)
+
+def enable(api):
+    api.register_disc_log_reader(my_ripper_toc_from_file)
+```
+
+**Parameters**:
+- `function`: A callable taking a file path (`str`) and returning `TocNumbers`
+  (from `picard.disc.utils`). Should raise an exception (e.g.,
+  `NotSupportedTOCError`) if it cannot parse the file.
+
+**Tips**:
+- Validate the file format early (e.g., check a header line) so that
+  unrecognized files fail fast without reading the entire file.
+- Use `picard.disc.utils.TocEntry` and `calculate_mb_toc_numbers()` to build
+  the TOC from track start/end sectors.
+- Built-in readers support EAC, XLD, fre:ac, Whipper, Cyanrip, dBpoweramp,
+  and SCSI TOC formats. Plugin readers are tried after all built-in readers.
+
+---
+
 ## Album Background Task Management
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.

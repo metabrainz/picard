@@ -120,11 +120,8 @@ from picard.coverart.image import DataHash
 from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
-    dbpoweramplog,
-    eaclog,
-    scsitoc,
-    whipperlog,
 )
+from picard.extension_points.disc_log_readers import ext_point_disc_log_readers
 from picard.file import File
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
@@ -1334,13 +1331,7 @@ class Tagger(QtWidgets.QApplication):
         )
 
     def _parse_disc_ripping_log(self, disc, path):
-        log_readers = (
-            eaclog.toc_from_file,
-            whipperlog.toc_from_file,
-            dbpoweramplog.toc_from_file,
-            scsitoc.toc_from_file,
-        )
-        for reader in log_readers:
+        for reader in ext_point_disc_log_readers:
             module_name = reader.__module__
             try:
                 log.debug('Trying to parse "%s" with %s…', path, module_name)

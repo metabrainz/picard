@@ -37,6 +37,12 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
+from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
+from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
+from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
+from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
+from picard.extension_points.disc_log_readers import register_disc_log_reader
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
@@ -188,3 +194,11 @@ class Disc:
 discid_version: str | None = None
 if discid is not None:
     discid_version = "discid %s, %s" % (discid.__version__, discid.LIBDISCID_VERSION_STRING)
+
+
+# Register built-in disc log readers
+register_disc_log_reader(_eac_toc_from_file)
+register_disc_log_reader(_whipper_toc_from_file)
+register_disc_log_reader(_cyanrip_toc_from_file)
+register_disc_log_reader(_dbpoweramp_toc_from_file)
+register_disc_log_reader(_scsitoc_toc_from_file)

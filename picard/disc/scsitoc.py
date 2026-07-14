@@ -26,13 +26,14 @@ from picard.disc.utils import (
     DATA_TRACK_GAP,
     PREGAP_LENGTH,
     NotSupportedTOCError,
+    TocNumbers,
 )
 
 
 ScsiTocEntry = namedtuple('ScsiTocEntry', 'number start_sector is_data')
 
 
-def parse_toc_entries(f: BinaryIO) -> tuple[int, ...]:
+def parse_toc_entries(f: BinaryIO) -> TocNumbers:
     """Parse a TOC in the format used by SCSI's READ TOC command."""
 
     data = f.read()
@@ -73,7 +74,7 @@ def parse_toc_entries(f: BinaryIO) -> tuple[int, ...]:
     return (first_track, last_track, leadout_offset + PREGAP_LENGTH) + offsets
 
 
-def toc_from_file(path: str) -> tuple[int, ...]:
+def toc_from_file(path: str) -> TocNumbers:
     """Reads a TOC in the SCSI format, generates MusicBrainz disc TOC listing for use as discid."""
 
     with open(path, 'rb') as f:

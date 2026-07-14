@@ -24,11 +24,12 @@ import yaml
 
 from picard.disc.utils import (
     TocEntry,
+    TocNumbers,
     calculate_mb_toc_numbers,
 )
 
 
-def toc_from_file(path: str) -> tuple[int, ...]:
+def toc_from_file(path: str) -> TocNumbers:
     """Reads whipper log files, generates musicbrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong
