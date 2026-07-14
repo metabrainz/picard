@@ -156,6 +156,7 @@ class PicardTestCase(unittest.TestCase):
         self.format_registry = FormatRegistry()
         for format in DEFAULT_FORMATS:
             self.format_registry.register(format)
+        self.tagger.format_registry = self.format_registry
 
 
 def get_test_data_path(*paths):

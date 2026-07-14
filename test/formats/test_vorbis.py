@@ -22,6 +22,7 @@
 
 
 import base64
+from functools import partial
 import os
 from unittest.mock import patch
 
@@ -78,6 +79,10 @@ PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AA
 # prevent unittest to run tests in those classes
 class CommonVorbisTests:
     class VorbisTestCase(CommonTests.TagFormatsTestCase):
+        def setUp(self):
+            super().setUp()
+            self.patch_tagger_instance('picard.formats.vorbis')
+
         def test_invalid_rating(self):
             filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
             metadata = load_metadata(self.format_registry, filename)
@@ -481,6 +486,7 @@ class OggAudioVideoFileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
+        self.patch_tagger_instance('picard.formats.vorbis')
         self.setup_test_format_registry()
 
     def test_ogg_audio(self):
@@ -524,9 +530,42 @@ class OggAudioVideoFileTest(PicardTestCase):
             vorbis.OggTheoraFile,
         )
 
+    def test_guess_format_with_factory_classes(self):
+        options = (
+            vorbis.OggAudioFile,
+            vorbis.OggVideoFile,
+            vorbis.OggContainerFile,
+        )
+
+        guess_format = partial(self.format_registry.guess_format, options=options)
+
+        self._test_file_is_type(
+            guess_format,
+            self._copy_file_tmp('test.ogv', '.unknown'),
+            vorbis.OggTheoraFile,
+        )
+        self._test_file_is_type(
+            guess_format,
+            self._copy_file_tmp('test.ogg', '.unknown'),
+            vorbis.OggVorbisFile,
+        )
+        self._test_file_is_type(
+            guess_format,
+            self._copy_file_tmp('test.spx', '.oga'),
+            vorbis.OggSpeexFile,
+        )
+        self._test_file_is_type(
+            guess_format,
+            self._copy_file_tmp('test.mp3', '.ogg'),
+            None,
+        )
+
     def _test_file_is_type(self, factory, filename, expected_type):
         f = factory(filename)
-        self.assertIsInstance(f, expected_type)
+        if expected_type is None:
+            self.assertIsNone(f)
+        else:
+            self.assertIsInstance(f, expected_type)
 
     def _copy_file_tmp(self, filename, ext):
         path = os.path.join('test', 'data', filename)

@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2025 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2026 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -486,43 +486,52 @@ class OggOpusFile(VCommentFile):
         return VCommentFile.supports_tag(name)
 
 
-def OggAudioFile(filename):
+class _OggFactoryFile(File):
+    """Base factory class for generic Ogg files."""
+
+    _FILE_OPTIONS: list[type[VCommentFile]] = []
+
+    def __new__(cls, filename):
+        file_obj = _guess_format(filename, cls._FILE_OPTIONS)
+        return file_obj
+
+    @classmethod
+    def supports_tag(cls, name):
+        return VCommentFile.supports_tag(name)
+
+    @classmethod
+    def score(cls, filename, fileobj, header_data) -> int:
+        return max(candidate.score(filename, fileobj, header_data) for candidate in cls._FILE_OPTIONS)
+
+
+class OggAudioFile(_OggFactoryFile):
     """Generic Ogg audio file."""
-    options = [OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile]
-    return _guess_format(filename, options)
+
+    EXTENSIONS = [".oga"]
+    NAME = "Ogg Audio"
+    _FILE_OPTIONS = [OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile]
 
 
-OggAudioFile.EXTENSIONS = [".oga"]  # type: ignore[attr-defined]
-OggAudioFile.NAME = "Ogg Audio"  # type: ignore[attr-defined]
-OggAudioFile.supports_tag = VCommentFile.supports_tag  # type: ignore[attr-defined]
-
-
-def OggVideoFile(filename):
+class OggVideoFile(_OggFactoryFile):
     """Generic Ogg video file."""
-    options = [OggTheoraFile]
-    return _guess_format(filename, options)
+
+    EXTENSIONS = [".ogv"]
+    NAME = "Ogg Video"
+    _FILE_OPTIONS = [OggTheoraFile]
 
 
-OggVideoFile.EXTENSIONS = [".ogv"]  # type: ignore[attr-defined]
-OggVideoFile.NAME = "Ogg Video"  # type: ignore[attr-defined]
-OggVideoFile.supports_tag = VCommentFile.supports_tag
-
-
-def OggContainerFile(filename):
+class OggContainerFile(_OggFactoryFile):
     """Generic Ogg file."""
-    options = [
+
+    EXTENSIONS = [".ogg", ".ogx"]
+    NAME = "Ogg"
+    _FILE_OPTIONS = [
         OggFLACFile,
         OggOpusFile,
         OggSpeexFile,
         OggTheoraFile,
         OggVorbisFile,
     ]
-    return _guess_format(filename, options)
-
-
-OggContainerFile.EXTENSIONS = [".ogg", ".ogx"]
-OggContainerFile.NAME = "Ogg"
-OggContainerFile.supports_tag = VCommentFile.supports_tag
 
 
 def _guess_format(filename, options):
