@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-10 10:21+0200\n"
-"PO-Revision-Date: 2026-06-30 07:12+0000\n"
+"PO-Revision-Date: 2026-07-14 09:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:205
@@ -730,10 +730,8 @@ msgid "Translation script exceptions"
 msgstr "Excepcions de l'script de traducció"
 
 #: picard/options.py:480
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names"
-msgstr "Fes servir els noms d'artista estandarditzats"
+msgstr "Estandarditza els noms dels artistes"
 
 #: picard/options.py:483 picard/ui/forms/ui_options_metadata.py:191
 msgid "Use standardized instrument credits"
@@ -1461,14 +1459,12 @@ msgid "UI"
 msgstr "Interfície d'usuari"
 
 #: picard/plugin3/plugin_metadata.py:128
-#, fuzzy
-#| msgid "Local"
 msgid "local"
-msgstr "Local"
+msgstr "local"
 
 #: picard/plugin3/plugin_metadata.py:129
 msgid "local-dev"
-msgstr ""
+msgstr "local-dev"
 
 #: picard/plugin3/ref_item.py:102
 #, python-brace-format
@@ -3870,18 +3866,20 @@ msgid ""
 "When you save tagged files, their filenames will be updated based on the new "
 "tags."
 msgstr ""
+"Quan deseu els fitxers etiquetats, els noms dels fitxers s'actualitzaran "
+"segons les etiquetes noves."
 
 #: picard/ui/setupwizard.py:176
-#, fuzzy
-#| msgid "Move files to a directory structure based on tags"
 msgid "Move files to a folder structure based on tags"
-msgstr "Mou els fitxers a una estructura de directoris segons les etiquetes"
+msgstr "Mou els fitxers a una estructura de carpetes segons les etiquetes"
 
 #: picard/ui/setupwizard.py:177
 msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
 msgstr ""
+"Els fitxers desats s'organitzaran en subcarpetes (p. ex., artista/àlbum/) a "
+"la carpeta que trieu a continuació."
 
 #: picard/ui/setupwizard.py:198
 msgid ""
@@ -3892,16 +3890,16 @@ msgstr ""
 "Nom dels fitxers»."
 
 #: picard/ui/setupwizard.py:221
-#, fuzzy
-#| msgid "Authentication required"
 msgid "Destination folder required"
-msgstr "Autentificació necessària"
+msgstr "Es requereix una carpeta de destinació"
 
 #: picard/ui/setupwizard.py:222
 msgid ""
 "Please choose a destination folder for your music files, or uncheck the move "
 "files option."
 msgstr ""
+"Trieu una carpeta de destinació per als fitxers de música o desmarqueu "
+"l'opció de moure els fitxers."
 
 #: picard/ui/setupwizard.py:234
 msgid "Select destination directory"
@@ -3920,6 +3918,8 @@ msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
 msgstr ""
+"La imatge de caràtula s'emmagatzemarà dins del fitxer d'àudio en si perquè "
+"aparegui en qualsevol reproductor de música."
 
 #: picard/ui/setupwizard.py:258
 msgid "Save cover art as separate image files"
@@ -3930,47 +3930,47 @@ msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
 msgstr ""
+"Es desarà un fitxer d'imatge de caràtula (p. ex., cover.jpg) juntament amb "
+"els fitxers d'àudio, a la mateixa carpeta."
 
 #: picard/ui/setupwizard.py:265
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr "Podeu canviar-ho més tard a «Opcions → Opcions → Caràtules»."
 
 #: picard/ui/setupwizard.py:285
-#, fuzzy
-#| msgid "Update"
 msgid "Updates"
-msgstr "Actualitza"
+msgstr "Actualitzacions"
 
 #: picard/ui/setupwizard.py:286
-#, fuzzy
-#| msgid "Choose how Picard should handle album cover art."
 msgid "Choose how Picard should check for updates."
-msgstr "Trieu com ha de tractar Picard les caràtules dels àlbums."
+msgstr "Trieu com Picard ha de comprovar si hi ha actualitzacions."
 
 #: picard/ui/setupwizard.py:298
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
 msgstr ""
+"Comprova si hi ha noves versions del programa en línia i mostra un quadre de "
+"diàleg d'actualització si n'hi ha."
 
 #: picard/ui/setupwizard.py:306
-#, fuzzy
-#| msgid "Check for plugin updates during startup"
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
-msgstr "Comprova si hi ha actualitzacions dels connectors en iniciar"
+msgstr ""
+"Comprova si hi ha actualitzacions en línia i mostra una notificació a la "
+"barra d'estat."
 
 #: picard/ui/setupwizard.py:314
 msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
 msgstr ""
+"Comprova si hi ha traduccions de la documentació disponibles perquè l'ajuda "
+"en línia es pugui mostrar en la vosttra llengua."
 
 #: picard/ui/setupwizard.py:320
-#, fuzzy
-#| msgid "You can change these later under Options → Options → Cover Art."
 msgid "You can change these later under Options → General → Startup."
-msgstr "Podeu canviar-ho més tard a «Opcions → Opcions → Caràtules»."
+msgstr "Podeu canviar-ho més tard a «Opcions → General → Inici»."
 
 #: picard/ui/setupwizard.py:361
 msgid "Picard Setup"
@@ -4348,13 +4348,16 @@ msgstr "Directori:"
 
 #: picard/ui/dialogs/installplugin.py:188
 msgid "Load in-place (ignore git)"
-msgstr ""
+msgstr "Carrega localment (ignora el Git)"
 
 #: picard/ui/dialogs/installplugin.py:191
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
 msgstr ""
+"Si es marca, el connector es carregarà directament del disc sense les "
+"característiques del Git (sense actualitzacions ni canvi de referències). És "
+"útil per al desenvolupament actiu."
 
 #: picard/ui/dialogs/installplugin.py:201 picard/ui/dialogs/plugininfo.py:239
 msgid "Local"
@@ -4386,6 +4389,8 @@ msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
 msgstr ""
+"S'inhabilitaran les característiques del Git (actualitzacions, referències). "
+"El connector es carregarà directament des d'aquest directori."
 
 #: picard/ui/dialogs/installplugin.py:370
 msgid "Official plugin - reviewed by Picard team"
@@ -5359,10 +5364,8 @@ msgid "Minimal similarity for matching files to tracks:"
 msgstr "Similitud mínima per a fer coincidir els fitxers amb pistes:"
 
 #: picard/ui/forms/ui_options_metadata.py:190
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names:"
-msgstr "Fes servir els noms d'artista estandarditzats"
+msgstr "Estandarditza els noms dels artistes:"
 
 #: picard/ui/forms/ui_options_metadata.py:193
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -7435,7 +7438,7 @@ msgstr "&Comprova si hi ha actualitzacions…"
 
 #: picard/ui/mainwindow/actions.py:562
 msgid "Show Setup &Wizard…"
-msgstr ""
+msgstr "Mostra l'a&ssistent de configuració…"
 
 #: picard/ui/mainwindow/actions.py:570
 msgid "Save Session &As…"
@@ -8164,20 +8167,17 @@ msgid "Are you sure you want to remove the selected option settings?"
 msgstr "Segur que voleu suprimir els paràmetres seleccionats?"
 
 #: picard/ui/options/metadata.py:124
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Do not standardize artist names"
-msgstr "Fes servir els noms d'artista estandarditzats"
+msgstr "No estandarditzis els noms dels artistes"
 
 #: picard/ui/options/metadata.py:126
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist name variations only"
-msgstr "Fes servir els noms d'artista estandarditzats"
+msgstr "Estandarditza només les variacions dels noms dels artistes"
 
 #: picard/ui/options/metadata.py:129
 msgid "Standardize artist name variations and name changes"
 msgstr ""
+"Estandarditza les variacions dels noms dels artistes i els canvis de nom"
 
 #: picard/ui/options/metadata.py:260
 #, python-brace-format
@@ -9211,10 +9211,8 @@ msgid "Could not find plugin repository URL"
 msgstr "No s'ha trobat l'URL del repositori del connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:782
-#, fuzzy
-#| msgid "Uninstall Plugin"
 msgid "Reinstall Local Plugin"
-msgstr "Desinstal·lació del connector"
+msgstr "Reinstal·la el connector local"
 
 #: picard/ui/widgets/pluginlistwidget.py:785
 msgid ""
@@ -9223,16 +9221,18 @@ msgid ""
 "Do you want to keep it in local mode, or switch to git-managed mode (cloned "
 "to plugin directory)?"
 msgstr ""
+"Aquest connector s'ha carregat en mode local (s'ignora el Git).\n"
+"\n"
+"Voleu mantenir-lo en mode local o voleu canviar al mode administrat pel Git "
+"(clonat al directori de connectors)?"
 
 #: picard/ui/widgets/pluginlistwidget.py:790
 msgid "Keep local"
-msgstr ""
+msgstr "Mantén en mode local"
 
 #: picard/ui/widgets/pluginlistwidget.py:791
-#, fuzzy
-#| msgid "Switch Git Ref"
 msgid "Switch to git"
-msgstr "Canvia la referència del Git"
+msgstr "Canvia al Git"
 
 #: picard/ui/widgets/pluginlistwidget.py:850
 #, python-brace-format
