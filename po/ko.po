@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-10 10:21+0200\n"
+"POT-Creation-Date: 2026-07-14 13:21+0200\n"
 "PO-Revision-Date: 2026-04-11 05:11+0000\n"
 "Last-Translator: coldified_ <me@coldified.dev>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
@@ -99,11 +99,11 @@ msgstr[0] "\"%(name)s\" 컬렉션에서 %(count)i 개의 릴리즈가 제거됨"
 msgid "Error loading collections: %(error)s"
 msgstr "컬렉션 로드 오류: %(error)s"
 
-#: picard/config_upgrade_hooks.py:137 picard/config_upgrade_hooks.py:154
+#: picard/config_upgrade_hooks.py:162 picard/config_upgrade_hooks.py:179
 msgid "Various Artists file naming scheme removal"
 msgstr "알 수 없는 아티스트 파일 명명 규칙 제거"
 
-#: picard/config_upgrade_hooks.py:139
+#: picard/config_upgrade_hooks.py:164
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -114,7 +114,7 @@ msgstr ""
 "제거되었습니다.\n"
 "파일 명명 규칙이 단일 아티스트 앨범의 명명 규칙으로 자동 병합됩니다."
 
-#: picard/config_upgrade_hooks.py:157
+#: picard/config_upgrade_hooks.py:182
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -128,18 +128,18 @@ msgstr ""
 "현재 이 옵션을 사용하지 않지만, 별도 파일 명명 규칙이 정의되어 있습니다.\n"
 "단일 아티스트 앨범의 파일 명명 규칙과 병합하거나 제거하시겠습니까?"
 
-#: picard/config_upgrade_hooks.py:166
+#: picard/config_upgrade_hooks.py:191
 msgid "Merge"
 msgstr "병합"
 
-#: picard/config_upgrade_hooks.py:167
+#: picard/config_upgrade_hooks.py:192
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:532
-#: picard/ui/options/interface_toolbar.py:114
+#: picard/ui/options/interface_toolbar.py:114 picard/ui/options/profiles.py:155
 msgid "Remove"
 msgstr "제거"
 
-#: picard/config_upgrade_hooks.py:484
+#: picard/config_upgrade_hooks.py:528
 msgid "Primary file naming script"
 msgstr "초기 파일 이름 생성 스크립트"
 
@@ -192,7 +192,7 @@ msgid "Log detailed plugin version checking and update detection"
 msgstr "플러그인 버전 및 업데이트 확인 상세 기록"
 
 #: picard/debug_opts.py:168 picard/plugin3/categories.py:33
-#: picard/ui/options/cover.py:57 picard/ui/setupwizard.py:246
+#: picard/ui/options/cover.py:57 picard/ui/setupwizard.py:261
 msgid "Cover Art"
 msgstr "커버 아트"
 
@@ -659,478 +659,478 @@ msgstr ""
 msgid "Begin browsing in a specific directory"
 msgstr "이 특정 디렉토리 브라우징 시작하기"
 
-#: picard/options.py:384 picard/ui/forms/ui_options_interface.py:140
+#: picard/options.py:387 picard/ui/forms/ui_options_interface.py:140
 msgid "Directory to begin browsing"
 msgstr ""
 
-#: picard/options.py:386 picard/ui/forms/ui_options_interface.py:127
+#: picard/options.py:391 picard/ui/forms/ui_options_interface.py:127
 msgid "Show text labels under icons"
 msgstr "아이콘 아래에 텍스트 레이블 보이기"
 
-#: picard/options.py:387
+#: picard/options.py:392
 #, fuzzy
 msgid "User interface language"
 msgstr "사용자 인터페이스 언어:"
 
-#: picard/options.py:388
+#: picard/options.py:393
 msgid "User interface color theme"
 msgstr ""
 
-#: picard/options.py:389
+#: picard/options.py:394
 #, fuzzy
 msgid "Use advanced search syntax"
 msgstr "고급 쿼리 구문 사용"
 
-#: picard/options.py:393
+#: picard/options.py:398
 msgid "Enable \"now playing\" notifications"
 msgstr ""
 
-#: picard/options.py:395
+#: picard/options.py:400
 msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
-#: picard/options.py:401
+#: picard/options.py:406
 msgid "Submit only tagged files ListenBrainz"
 msgstr ""
 
-#: picard/options.py:404 picard/ui/forms/ui_options_player.py:64
+#: picard/options.py:409 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
 msgstr ""
 
-#: picard/options.py:412
+#: picard/options.py:417
 msgid "Colors to use for light theme"
 msgstr ""
 
-#: picard/options.py:418
+#: picard/options.py:423
 msgid "Colors to use for dark theme"
 msgstr ""
 
-#: picard/options.py:423
+#: picard/options.py:428
 #, fuzzy
 #| msgid "Encoder Settings"
 msgid "Quick Menu options"
 msgstr "인코더 설정"
 
-#: picard/options.py:442
+#: picard/options.py:447
 msgid "Layout of the tool bar"
 msgstr ""
 
-#: picard/options.py:448
+#: picard/options.py:453
 msgid "Tags to show at the top"
 msgstr ""
 
-#: picard/options.py:456
+#: picard/options.py:461
 #, fuzzy
 #| msgid "Configuration Required"
 msgid "Configuration backup directory"
 msgstr "설정 필요"
 
-#: picard/options.py:462
+#: picard/options.py:468
 msgid "Minimum similarity"
 msgstr ""
 
-#: picard/options.py:463
+#: picard/options.py:469
 msgid "Minimum margin"
 msgstr ""
 
-#: picard/options.py:465
+#: picard/options.py:471
 #, fuzzy
 msgid "Similarity for matching files to tracks"
 msgstr "파일을 트랙과 일치시키는 최소한의 유사성:"
 
-#: picard/options.py:470
+#: picard/options.py:476
 msgid "Translation locales"
 msgstr "로케일값 번역"
 
-#: picard/options.py:471
+#: picard/options.py:477
 #, fuzzy
 #| msgid "Convert Unicode punctuation characters to ASCII"
 msgid "Convert Unicode punctuation to ASCII"
 msgstr "유니코드 구분문자를 ASCII로 변환"
 
-#: picard/options.py:472
+#: picard/options.py:478
 #, fuzzy
 #| msgid "Guess track number and title from filename if empty"
 msgid "Guess track number and title"
 msgstr "파일이름에 트랙 넘버와 타이틀이 비었는지 추정하세요"
 
-#: picard/options.py:473
+#: picard/options.py:479
 msgid "Standalone recordings name"
 msgstr "독립된 레코딩 이름"
 
-#: picard/options.py:474 picard/ui/forms/ui_options_metadata.py:194
+#: picard/options.py:480 picard/ui/forms/ui_options_metadata.py:194
 msgid "Use release relationships"
 msgstr "릴리즈 관계 사용"
 
-#: picard/options.py:475
+#: picard/options.py:481
 msgid "Translation script exceptions"
 msgstr "스크립트 번역 제외"
 
-#: picard/options.py:480
+#: picard/options.py:486
 #, fuzzy
 #| msgid "Use standardized artist names"
 msgid "Standardize artist names"
 msgstr "표준화된 아티스트명 사용"
 
-#: picard/options.py:483 picard/ui/forms/ui_options_metadata.py:191
+#: picard/options.py:489 picard/ui/forms/ui_options_metadata.py:191
 #, fuzzy
 #| msgid "Use standardized artist names"
 msgid "Use standardized instrument credits"
 msgstr "표준화된 아티스트명 사용"
 
-#: picard/options.py:484 picard/ui/forms/ui_options_metadata.py:192
+#: picard/options.py:490 picard/ui/forms/ui_options_metadata.py:192
 #, fuzzy
 #| msgid "Use standardized artist names"
 msgid "Use standardized vocal credits"
 msgstr "표준화된 아티스트명 사용"
 
-#: picard/options.py:485
+#: picard/options.py:491
 #, fuzzy
 #| msgid "Use release relationships"
 msgid "Use track and release relationships"
 msgstr "릴리즈 관계 사용"
 
-#: picard/options.py:487
+#: picard/options.py:493
 msgid "Translate artist names"
 msgstr "아티스트 이름들을 번역하시오."
 
-#: picard/options.py:488
+#: picard/options.py:494
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate album titles"
 msgstr "아티스트 이름들을 번역하시오."
 
-#: picard/options.py:489
+#: picard/options.py:495
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate track titles"
 msgstr "아티스트 이름들을 번역하시오."
 
-#: picard/options.py:491 picard/ui/forms/ui_options_metadata.py:206
+#: picard/options.py:497 picard/ui/forms/ui_options_metadata.py:206
 msgid "Use artist sort name for translation"
 msgstr ""
 
-#: picard/options.py:497
+#: picard/options.py:503
 msgid "Translate artist names exception"
 msgstr "아티스트 이름들을 번역하는데 예외두기"
 
-#: picard/options.py:500
+#: picard/options.py:506
 msgid "Various Artists name"
 msgstr "여러 아티스트들의 이름"
 
-#: picard/options.py:505
+#: picard/options.py:511
 msgid "Don't sanitize dates for these formats"
 msgstr ""
 
-#: picard/options.py:511
+#: picard/options.py:517
 #, fuzzy
 msgid "Browser integration"
 msgstr "브라우저 통합"
 
-#: picard/options.py:512 picard/ui/forms/ui_options_network.py:187
+#: picard/options.py:518 picard/ui/forms/ui_options_network.py:187
 msgid "Listen only on localhost"
 msgstr "내부서버에서만 수신"
 
-#: picard/options.py:513
+#: picard/options.py:519
 #, fuzzy
 msgid "Default listening port"
 msgstr "기본 수신 포트:"
 
-#: picard/options.py:518
+#: picard/options.py:524
 msgid "Network cache size (bytes)"
 msgstr ""
 
-#: picard/options.py:521
+#: picard/options.py:527
 msgid "Request timeout (seconds)"
 msgstr ""
 
-#: picard/options.py:522
+#: picard/options.py:528
 msgid "Proxy password"
 msgstr ""
 
-#: picard/options.py:523
+#: picard/options.py:529
 msgid "Proxy server address"
 msgstr ""
 
-#: picard/options.py:524
+#: picard/options.py:530
 msgid "Proxy server port"
 msgstr ""
 
-#: picard/options.py:525
+#: picard/options.py:531
 msgid "Type of proxy server"
 msgstr ""
 
-#: picard/options.py:526
+#: picard/options.py:532
 msgid "Proxy username"
 msgstr ""
 
-#: picard/options.py:527
+#: picard/options.py:533
 msgid "Use a web proxy server"
 msgstr ""
 
-#: picard/options.py:531
+#: picard/options.py:537
 msgid "Plugins execution order"
 msgstr ""
 
-#: picard/options.py:540 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:546 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr "트랙 등급 사용"
 
-#: picard/options.py:543
+#: picard/options.py:549
 #, fuzzy
 #| msgid "Enable track ratings"
 msgid "Email for saving ratings"
 msgstr "트랙 등급 사용"
 
-#: picard/options.py:545 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:551 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr "MusicBrainz 등급 등록"
 
-#: picard/options.py:549 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:555 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr "선호하는 릴리즈 국가"
 
-#: picard/options.py:550 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:556 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr ""
 
-#: picard/options.py:552 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:558 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr "선호하는 릴리즈 유형"
 
-#: picard/options.py:557 picard/ui/forms/ui_options_renaming.py:140
+#: picard/options.py:563 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
 msgstr "빈 디렉토리 삭제"
 
-#: picard/options.py:558
+#: picard/options.py:564
 msgid "Move additional files"
 msgstr "추가 파일들을 옮기시오."
 
-#: picard/options.py:560
+#: picard/options.py:566
 msgid "Additional file patterns"
 msgstr "추가 파일 패턴들"
 
-#: picard/options.py:562
+#: picard/options.py:568
 msgid "Move files"
 msgstr "파일들을 옮기시오."
 
-#: picard/options.py:563
+#: picard/options.py:570
 #, fuzzy
 msgid "Destination directory"
 msgstr "대상 디렉토리:"
 
-#: picard/options.py:564 picard/ui/forms/ui_options_renaming.py:141
+#: picard/options.py:572 picard/ui/forms/ui_options_renaming.py:141
 #, fuzzy
 #| msgid "Overwrite existing image files"
 msgid "Overwrite existing files"
 msgstr "현재있는 이미지 파일을 덮어씌우기."
 
-#: picard/options.py:565
+#: picard/options.py:573
 msgid "Rename files"
 msgstr "파일 이름을 다시 지이시오."
 
-#: picard/options.py:569 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:577 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "ASCII 문자가 아닌 문자 바꾸기"
 
-#: picard/options.py:574
+#: picard/options.py:582
 msgid "Directory separators character"
 msgstr ""
 
-#: picard/options.py:578 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:586 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr ""
 
-#: picard/options.py:584
+#: picard/options.py:592
 #, fuzzy
 #| msgid "Windows compatibility"
 msgid "Windows compatibility characters"
 msgstr "Windows 호환성"
 
-#: picard/options.py:587 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:595 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Windows 호환성"
 
-#: picard/options.py:588 picard/ui/options/renaming_compat.py:136
+#: picard/options.py:600 picard/ui/options/renaming_compat.py:136
 msgid "Windows long path support"
 msgstr ""
 
-#: picard/options.py:593
+#: picard/options.py:608
 msgid "Enable tagger scripts"
 msgstr "테거 스크립트를 활성화 하세요."
 
-#: picard/options.py:594
+#: picard/options.py:609
 msgid "Tagger scripts"
 msgstr "태거 스크립트"
 
-#: picard/options.py:599 picard/ui/setupwizard.py:313
+#: picard/options.py:614 picard/ui/setupwizard.py:328
 msgid "Check for documentation updates"
 msgstr ""
 
-#: picard/options.py:600 picard/ui/setupwizard.py:305
+#: picard/options.py:615 picard/ui/setupwizard.py:320
 msgid "Check for plugin updates"
 msgstr ""
 
-#: picard/options.py:601 picard/ui/setupwizard.py:297
+#: picard/options.py:616 picard/ui/setupwizard.py:312
 msgid "Check for program updates"
 msgstr ""
 
-#: picard/options.py:602
+#: picard/options.py:617
 msgid "Days between update checks"
 msgstr ""
 
-#: picard/options.py:603
+#: picard/options.py:618
 #, fuzzy
 msgid "Update types to check"
 msgstr "업데이트 체크"
 
-#: picard/options.py:604
+#: picard/options.py:619
 msgid "Log verbosity level"
 msgstr ""
 
-#: picard/options.py:609 picard/ui/forms/ui_options_tags.py:94
+#: picard/options.py:624 picard/ui/forms/ui_options_tags.py:94
 msgid "Clear existing tags"
 msgstr "이미 존재하는 태그 지우기"
 
-#: picard/options.py:610
+#: picard/options.py:625
 #, fuzzy
 #| msgid "Write tags to files"
 msgid "Save tags to files"
 msgstr "파일에 태그 쓰기"
 
-#: picard/options.py:611
+#: picard/options.py:626
 msgid "Fix missing seekpoints in FLAC"
 msgstr ""
 
-#: picard/options.py:612
+#: picard/options.py:627
 msgid "Preserved tags list"
 msgstr "보존된 태그 리스트"
 
-#: picard/options.py:613
+#: picard/options.py:628
 #, fuzzy
 #| msgid "Embed cover images into tags"
 msgid "Keep embedded images"
 msgstr "태그에 커버 이미지 첨부"
 
-#: picard/options.py:614
+#: picard/options.py:629
 #, fuzzy
 #| msgid "Preserve timestamps of tagged files"
 msgid "Preserve timestamps"
 msgstr "태그된 파일의 타임스탬프 보존"
 
-#: picard/options.py:615
+#: picard/options.py:630
 #, fuzzy
 #| msgid "Remove APEv2 tags from MP3 files"
 msgid "Remove APEv2 tags from MP3"
 msgstr "MP3 파일에서 APEv2 태그 제거"
 
-#: picard/options.py:616
+#: picard/options.py:631
 #, fuzzy
 #| msgid "Remove ID3 tags from FLAC files"
 msgid "Remove ID3 tags from FLAC"
 msgstr "FLAC 파일에서 ID3 태그 제거"
 
-#: picard/options.py:620
+#: picard/options.py:635
 msgid "Save APEv2 tags to AAC"
 msgstr "APEv2 태그를 AAC로 저장"
 
-#: picard/options.py:621
+#: picard/options.py:636
 #, fuzzy
 #| msgid "Remove APEv2 tags from AAC files"
 msgid "Remove APEv2 tags from AAC"
 msgstr "AAC 파일에서 APEv2 태그 제거"
 
-#: picard/options.py:625
+#: picard/options.py:640
 msgid "Save APEv2 tags to AC3"
 msgstr "APEv2 태그를 AC3로 저장"
 
-#: picard/options.py:626
+#: picard/options.py:641
 #, fuzzy
 #| msgid "Remove APEv2 tags from AC3 files"
 msgid "Remove APEv2 tags from AC3"
 msgstr "AC3 파일에서 APEv2 태그 제거"
 
-#: picard/options.py:630
+#: picard/options.py:645
 msgid "ID3v2.3 join character"
 msgstr ""
 
-#: picard/options.py:631
+#: picard/options.py:646
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "ID3v2 텍스트 암호화"
 
-#: picard/options.py:633
+#: picard/options.py:648
 #, fuzzy
 #| msgid "Save iTunes compatible grouping and work"
 msgid "iTunes compatible grouping / work"
 msgstr "아이튠즈 호환 그룹핑 및 작업 저장하기"
 
-#: picard/options.py:635
+#: picard/options.py:650
 msgid "Write ID3v1 tags"
 msgstr "ID3v1 태그를 쓰시오"
 
-#: picard/options.py:636
+#: picard/options.py:651
 msgid "ID3v2 version to write"
 msgstr ""
 
-#: picard/options.py:640
+#: picard/options.py:655
 #, fuzzy
 #| msgid "Remove existing RIFF INFO tags from WAVE files"
 msgid "Remove RIFF INFO tags from WAVE"
 msgstr "존재하는 RIFF INFO태그를 WAVE파일에서 제거하기"
 
-#: picard/options.py:641
+#: picard/options.py:656
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "RIFF INFO 텍스트 암호화"
 
-#: picard/options.py:642
+#: picard/options.py:657
 #, fuzzy
 #| msgid "Write RIFF INFO tags to WAVE files"
 msgid "Write RIFF INFO tags to WAVE"
 msgstr "RIFF INFO태그 WAVE파일로 쓰기"
 
-#: picard/options.py:648
+#: picard/options.py:663
 #, fuzzy
 #| msgid "Selected file naming script"
 msgid "Active file naming script"
 msgstr "선택된 파일 이름 스크립트"
 
-#: picard/options.py:656 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:671 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr ""
 
-#: picard/options.py:663
+#: picard/options.py:678
 msgid "Start with last saved session"
 msgstr ""
 
-#: picard/options.py:670
+#: picard/options.py:685
 msgid "Auto-save interval"
 msgstr ""
 
-#: picard/options.py:677
+#: picard/options.py:692
 msgid "Backup session on unexpected exit"
 msgstr ""
 
-#: picard/options.py:684
+#: picard/options.py:699
 #, fuzzy
 #| msgid "MusicBrainz Picard"
 msgid "Include MusicBrainz data"
 msgstr "MusicBrainz Picard"
 
-#: picard/options.py:691
+#: picard/options.py:706
 #, fuzzy
 #| msgid "MusicBrainz Server"
 msgid "No MusicBrainz requests on restore"
 msgstr "MusicBrainz 서버"
 
-#: picard/options.py:698
+#: picard/options.py:713
 #, fuzzy
 msgid "Sessions directory"
 msgstr "대상 디렉토리:"
 
-#: picard/options.py:727
+#: picard/options.py:742
 msgid "Plugins to exclude from updates"
 msgstr ""
 
@@ -1157,7 +1157,7 @@ msgstr "트랙"
 
 #: picard/coverart/utils.py:50 picard/plugin.py:127
 #: picard/ui/dialogs/plugininfo.py:241 picard/ui/dialogs/plugininfo.py:251
-#: picard/ui/widgets/pluginlistwidget.py:299
+#: picard/ui/options/profiles.py:687 picard/ui/widgets/pluginlistwidget.py:299
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -1218,28 +1218,28 @@ msgstr "[바코드 없음]"
 msgid "[no release info]"
 msgstr "[릴리즈 정보 없음]"
 
-#: picard/tagger.py:441
+#: picard/tagger.py:438
 msgid "Git backend not available"
 msgstr ""
 
-#: picard/tagger.py:443
+#: picard/tagger.py:440
 msgid "Disabled by command line parameter"
 msgstr ""
 
-#: picard/tagger.py:636 picard/ui/forms/ui_options_general.py:134
+#: picard/tagger.py:633 picard/ui/forms/ui_options_general.py:134
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz 계정"
 
-#: picard/tagger.py:637
+#: picard/tagger.py:634
 msgid "Authorization code:"
 msgstr "인증 코드:"
 
-#: picard/tagger.py:763 picard/ui/mainwindow/__init__.py:1505
+#: picard/tagger.py:760 picard/ui/mainwindow/__init__.py:1505
 #: picard/ui/mainwindow/__init__.py:1531
 msgid "Failed to load session"
 msgstr ""
 
-#: picard/tagger.py:764 picard/ui/mainwindow/__init__.py:1506
+#: picard/tagger.py:761 picard/ui/mainwindow/__init__.py:1506
 #: picard/ui/mainwindow/__init__.py:1532
 #, fuzzy, python-format
 #| msgid "Loading album %(id)s …"
@@ -1249,7 +1249,7 @@ msgid ""
 "%(error)s"
 msgstr "앨범 %(id)s 을(를) 로드 중…"
 
-#: picard/tagger.py:807
+#: picard/tagger.py:804
 #, python-brace-format
 msgid ""
 "The following plugins have been blacklisted and disabled:\n"
@@ -1260,17 +1260,17 @@ msgid ""
 "have been automatically disabled for your protection."
 msgstr ""
 
-#: picard/tagger.py:812
+#: picard/tagger.py:809
 msgid "Blacklisted Plugins Detected"
 msgstr ""
 
-#: picard/tagger.py:819
+#: picard/tagger.py:816
 #, fuzzy
 #| msgid "Translation locales"
 msgid "Plugin Initialization Failed"
 msgstr "로케일값 번역"
 
-#: picard/tagger.py:820
+#: picard/tagger.py:817
 #, python-brace-format
 msgid ""
 "The following plugins failed to load and have been disabled:\n"
@@ -1278,26 +1278,26 @@ msgid ""
 "{plugin_list}"
 msgstr ""
 
-#: picard/tagger.py:1249
+#: picard/tagger.py:1246
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "%(id)s 앨범 제거중: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1278
+#: picard/tagger.py:1275
 #, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
 msgstr ""
 
-#: picard/tagger.py:1283
+#: picard/tagger.py:1280
 #, python-format
 msgid "Moved %(count)i files to trash"
 msgstr ""
 
-#: picard/tagger.py:1289
+#: picard/tagger.py:1286
 msgid "CD Lookup Error"
 msgstr "CD 검색 실패"
 
-#: picard/tagger.py:1289
+#: picard/tagger.py:1286
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1308,53 +1308,53 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1316
+#: picard/tagger.py:1313
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1317
+#: picard/tagger.py:1314
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1318
+#: picard/tagger.py:1315
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/tagger.py:1319
+#: picard/tagger.py:1316
 msgid "SCSI TOC file"
 msgstr ""
 
-#: picard/script/serializer.py:385 picard/tagger.py:1320
+#: picard/script/serializer.py:385 picard/tagger.py:1317
 #: picard/ui/coverartbox/__init__.py:386 picard/ui/mainwindow/__init__.py:1237
 #: picard/ui/options/maintenance.py:212 picard/ui/options/scripting.py:139
 msgid "All files"
 msgstr "모든 파일들"
 
-#: picard/tagger.py:1352
+#: picard/tagger.py:1343
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/tagger.py:1372 picard/tagger.py:1387
+#: picard/tagger.py:1363 picard/tagger.py:1378
 msgid "Disc information could not be found"
 msgstr ""
 
-#: picard/tagger.py:1374 picard/tagger.py:1389 picard/tagger.py:1397
+#: picard/tagger.py:1365 picard/tagger.py:1380 picard/tagger.py:1388
 #, fuzzy
 #| msgid "CD Lookup Error"
 msgid "Lookup Error"
 msgstr "CD 검색 실패"
 
-#: picard/tagger.py:1395
+#: picard/tagger.py:1386
 msgid "Selected files contain tags with conflicting disc information"
 msgstr ""
 
-#: picard/tagger.py:1412
+#: picard/tagger.py:1403
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
 msgstr ""
 
-#: picard/tagger.py:1421
+#: picard/tagger.py:1412
 msgid "Looking up disc from tags…"
 msgstr ""
 
@@ -1555,6 +1555,62 @@ msgstr ""
 #, python-brace-format
 msgid "{base} (current)"
 msgstr ""
+
+#: picard/profiles/importer.py:96
+#, fuzzy, python-format
+#| msgid "Invalid Title"
+msgid "Invalid TOML: %s"
+msgstr "무효한 타이틀"
+
+#: picard/profiles/importer.py:101
+msgid "Missing required [profile] section"
+msgstr ""
+
+#: picard/profiles/importer.py:105
+msgid "Missing required 'title' in [profile] section"
+msgstr ""
+
+#: picard/profiles/importer.py:112
+#, python-format
+msgid ""
+"Unsupported profile format version %s (this version of Picard supports "
+"format version %s). Please upgrade Picard to import this profile."
+msgstr ""
+
+#: picard/profiles/importer.py:125
+#, python-format
+msgid "No existing profile with id '%s' to replace"
+msgstr ""
+
+#: picard/profiles/importer.py:155
+#, python-format
+msgid ""
+"Settings upgrade from Picard %s failed: %s. Some settings may not have been "
+"converted."
+msgstr ""
+
+#: picard/profiles/importer.py:198
+#, python-format
+msgid "%d setting was not recognized and was skipped: %s"
+msgid_plural "%d settings were not recognized and were skipped: %s"
+msgstr[0] ""
+
+#: picard/profiles/importer.py:210
+#, python-format
+msgid "%d setting was automatically upgraded from Picard %s."
+msgid_plural "%d settings were automatically upgraded from Picard %s."
+msgstr[0] ""
+
+#: picard/profiles/importer.py:247
+msgid "Naming script section missing 'script' or 'title' field, skipped."
+msgstr ""
+
+#: picard/profiles/importer.py:318
+#, python-format
+msgid "%d duplicate script skipped (same title and content already exist)."
+msgid_plural ""
+"%d duplicate scripts skipped (same title and content already exist)."
+msgstr[0] ""
 
 #: picard/script/__init__.py:184
 msgid ""
@@ -3321,7 +3377,7 @@ msgstr ""
 msgid "Activity History"
 msgstr "활동 이력"
 
-#: picard/ui/newuserdialog.py:36
+#: picard/ui/newuserdialog.py:37
 #, python-brace-format
 msgid ""
 "<p><strong>Changes made by Picard are not reversible.</strong></p><p>Picard "
@@ -3333,11 +3389,11 @@ msgid ""
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
 
-#: picard/ui/newuserdialog.py:50
+#: picard/ui/newuserdialog.py:51
 msgid "Show this message again the next time you start Picard."
 msgstr ""
 
-#: picard/ui/newuserdialog.py:55
+#: picard/ui/newuserdialog.py:61
 msgid "New User Warning"
 msgstr ""
 
@@ -3418,7 +3474,7 @@ msgstr ""
 msgid "Welcome to MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/setupwizard.py:138
+#: picard/ui/setupwizard.py:151
 msgid ""
 "<p>Picard helps you tag and organize your music collection using the "
 "MusicBrainz database.</p><p>This wizard will help you configure a few "
@@ -3426,130 +3482,130 @@ msgid ""
 "in the Options dialog.</p>"
 msgstr ""
 
-#: picard/ui/setupwizard.py:150
+#: picard/ui/setupwizard.py:163
 #, fuzzy
 #| msgid "Documentation"
 msgid "Read the documentation"
 msgstr "다큐먼트"
 
-#: picard/ui/setupwizard.py:164
+#: picard/ui/setupwizard.py:179
 #, fuzzy
 #| msgid "Select all"
 msgid "File Organization"
 msgstr "모두 선택"
 
-#: picard/ui/setupwizard.py:165
+#: picard/ui/setupwizard.py:180
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr ""
 
-#: picard/ui/setupwizard.py:170
+#: picard/ui/setupwizard.py:185
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr ""
 
-#: picard/ui/setupwizard.py:171
+#: picard/ui/setupwizard.py:186
 msgid ""
 "When you save tagged files, their filenames will be updated based on the new "
 "tags."
 msgstr ""
 
-#: picard/ui/setupwizard.py:176
+#: picard/ui/setupwizard.py:191
 msgid "Move files to a folder structure based on tags"
 msgstr ""
 
-#: picard/ui/setupwizard.py:177
+#: picard/ui/setupwizard.py:192
 msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
 msgstr ""
 
-#: picard/ui/setupwizard.py:198
+#: picard/ui/setupwizard.py:213
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
 msgstr ""
 
-#: picard/ui/setupwizard.py:221
+#: picard/ui/setupwizard.py:236
 #, fuzzy
 #| msgid "Authentication required"
 msgid "Destination folder required"
 msgstr "인증 필요"
 
-#: picard/ui/setupwizard.py:222
+#: picard/ui/setupwizard.py:237
 msgid ""
 "Please choose a destination folder for your music files, or uncheck the move "
 "files option."
 msgstr ""
 
-#: picard/ui/setupwizard.py:234
+#: picard/ui/setupwizard.py:249
 #, fuzzy
 msgid "Select destination directory"
 msgstr "대상 디렉토리:"
 
-#: picard/ui/setupwizard.py:247
+#: picard/ui/setupwizard.py:262
 msgid "Choose how Picard should handle album cover art."
 msgstr ""
 
-#: picard/ui/setupwizard.py:252
+#: picard/ui/setupwizard.py:267
 #, fuzzy
 #| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
 msgstr "태그에 커버 이미지 첨부"
 
-#: picard/ui/setupwizard.py:253
+#: picard/ui/setupwizard.py:268
 msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
 msgstr ""
 
-#: picard/ui/setupwizard.py:258
+#: picard/ui/setupwizard.py:273
 #, fuzzy
 #| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
 msgstr "커버 이미지를 별도 파일로 저장"
 
-#: picard/ui/setupwizard.py:259
+#: picard/ui/setupwizard.py:274
 msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
 msgstr ""
 
-#: picard/ui/setupwizard.py:265
+#: picard/ui/setupwizard.py:280
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr ""
 
-#: picard/ui/setupwizard.py:285
+#: picard/ui/setupwizard.py:300
 #, fuzzy
 #| msgid "Last Updated:"
 msgid "Updates"
 msgstr "최근에 업데이트된"
 
-#: picard/ui/setupwizard.py:286
+#: picard/ui/setupwizard.py:301
 msgid "Choose how Picard should check for updates."
 msgstr ""
 
-#: picard/ui/setupwizard.py:298
+#: picard/ui/setupwizard.py:313
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
 msgstr ""
 
-#: picard/ui/setupwizard.py:306
+#: picard/ui/setupwizard.py:321
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
 msgstr ""
 
-#: picard/ui/setupwizard.py:314
+#: picard/ui/setupwizard.py:329
 msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
 msgstr ""
 
-#: picard/ui/setupwizard.py:320
+#: picard/ui/setupwizard.py:335
 msgid "You can change these later under Options → General → Startup."
 msgstr ""
 
-#: picard/ui/setupwizard.py:361
+#: picard/ui/setupwizard.py:376
 #, fuzzy
 #| msgid "Picard Update"
 msgid "Picard Setup"
@@ -5276,11 +5332,11 @@ msgstr "선택된 태거 스크립트 제거하기"
 msgid "Remove tagger script"
 msgstr "태거 스크립트 제거하기"
 
-#: picard/ui/forms/ui_options_script.py:134
+#: picard/ui/forms/ui_options_script.py:134 picard/ui/options/profiles.py:169
 msgid "Import"
 msgstr "불러오기"
 
-#: picard/ui/forms/ui_options_script.py:135
+#: picard/ui/forms/ui_options_script.py:135 picard/ui/options/profiles.py:162
 msgid "Export"
 msgstr "내보내기"
 
@@ -6051,7 +6107,7 @@ msgid "Manage Custom Columns"
 msgstr "오디오 볼륨 바꾸기"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:119
-#: picard/ui/options/profiles.py:115
+#: picard/ui/options/profiles.py:141
 msgid "New"
 msgstr "새로 만들기"
 
@@ -6060,7 +6116,6 @@ msgid "Duplicate"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:122
-#: picard/ui/options/profiles.py:129
 msgid "Delete"
 msgstr "삭제"
 
@@ -7533,7 +7588,7 @@ msgid "Cover Art Box"
 msgstr "커버 아트"
 
 #: picard/ui/options/interface_quick_menu.py:81
-#: picard/ui/options/profiles.py:222
+#: picard/ui/options/profiles.py:265
 #, fuzzy
 #| msgid "Title"
 msgid "title"
@@ -7737,7 +7792,7 @@ msgid "Select Configuration File to Load"
 msgstr "구성 파일들"
 
 #: picard/ui/options/maintenance.py:368
-#: picard/ui/widgets/profilelistwidget.py:91
+#: picard/ui/widgets/profilelistwidget.py:110
 #: picard/ui/widgets/scriptlistwidget.py:98
 msgid "Confirm Remove"
 msgstr "제거 확인"
@@ -7923,98 +7978,275 @@ msgstr ""
 msgid "Failed to update plugin: {errmsg}"
 msgstr ""
 
-#: picard/ui/options/profiles.py:69
+#: picard/ui/options/profiles.py:91
 msgid "Option Profiles"
 msgstr "옵션 프로필"
 
-#: picard/ui/options/profiles.py:116
+#: picard/ui/options/profiles.py:142
 msgid "Create a new profile"
 msgstr "새 프로필을 만들기"
 
-#: picard/ui/options/profiles.py:122 picard/ui/scripteditor/__init__.py:960
+#: picard/ui/options/profiles.py:148 picard/ui/scripteditor/__init__.py:960
 msgid "Copy"
 msgstr "복사하기"
 
-#: picard/ui/options/profiles.py:123
+#: picard/ui/options/profiles.py:149
 msgid "Copy to a new profile"
 msgstr "새 프로필로 복사하기"
 
-#: picard/ui/options/profiles.py:130
-msgid "Delete the profile"
-msgstr "프로필을 지우시오"
+#: picard/ui/options/profiles.py:156
+#, fuzzy
+#| msgid "Remove profile"
+msgid "Remove the profile"
+msgstr "프로필 지우기"
 
-#: picard/ui/options/profiles.py:217
+#: picard/ui/options/profiles.py:163
+#, fuzzy
+#| msgid "Export the script to a file"
+msgid "Export the profile to a file"
+msgstr "스크립트를 파일로 내보내기"
+
+#: picard/ui/options/profiles.py:170
+msgid "Import a profile from a file or clipboard"
+msgstr ""
+
+#: picard/ui/options/profiles.py:172
+#, fuzzy
+#| msgid "Tags From &File Names…"
+msgid "From file…"
+msgstr "파일 이름으로 태그 작성하기(&F)…"
+
+#: picard/ui/options/profiles.py:173
+msgid "From clipboard"
+msgstr ""
+
+#: picard/ui/options/profiles.py:260
 msgid "Settings to include in profile"
 msgstr ""
 
-#: picard/ui/options/profiles.py:287
+#: picard/ui/options/profiles.py:330
 msgid "Unknown script"
 msgstr "알려지지 않은 스크립트"
 
-#: picard/ui/options/profiles.py:292
+#: picard/ui/options/profiles.py:335
 #, fuzzy
 #| msgid "Rename script"
 msgid "No enabled scripts"
 msgstr "스크립트 이름 변경"
 
-#: picard/ui/options/profiles.py:293
+#: picard/ui/options/profiles.py:336
 #, fuzzy
 #| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
 msgstr "테거 스크립트를 활성화 하세요."
 
-#: picard/ui/options/profiles.py:298
+#: picard/ui/options/profiles.py:341
 #, fuzzy
 #| msgid "Cover art providers"
 msgid "No enabled providers"
 msgstr "아트 제공자들을 커버하세요."
 
-#: picard/ui/options/profiles.py:299
+#: picard/ui/options/profiles.py:342
 msgid "Enabled providers:"
 msgstr ""
 
-#: picard/ui/options/profiles.py:303
+#: picard/ui/options/profiles.py:346
 #, fuzzy
 #| msgid "Remove selected tags"
 msgid "No mode selected"
 msgstr "선택된 테그 제거하기"
 
-#: picard/ui/options/profiles.py:307
+#: picard/ui/options/profiles.py:350
 #, fuzzy
 #| msgid "Invalid fpcalc executable"
 msgid "Invalid mode selected"
 msgstr "잘못된 fpcalc 실행 파일"
 
-#: picard/ui/options/profiles.py:311
+#: picard/ui/options/profiles.py:354
 msgid "No format selected"
 msgstr ""
 
-#: picard/ui/options/profiles.py:313
+#: picard/ui/options/profiles.py:358
 #, fuzzy
 #| msgid "Invalid fpcalc executable"
 msgid "Invalid format selected"
 msgstr "잘못된 fpcalc 실행 파일"
 
-#: picard/ui/options/profiles.py:319
+#: picard/ui/options/profiles.py:364
 msgid "None"
 msgstr ""
 
-#: picard/ui/options/profiles.py:335
+#: picard/ui/options/profiles.py:380
 #, python-format
 msgid "List of %i items"
 msgstr ""
 
-#: picard/ui/options/profiles.py:336
+#: picard/ui/options/profiles.py:381
 msgid "Unknown value format"
 msgstr "알려지지 않은 포맷 값"
 
-#: picard/ui/options/profiles.py:411
+#: picard/ui/options/profiles.py:453
 msgid "Invalid Title"
 msgstr "무효한 타이틀"
 
-#: picard/ui/options/profiles.py:412
+#: picard/ui/options/profiles.py:454
 msgid "The profile title cannot be blank."
 msgstr "프로필 타이틀이 빈칸 일수 없습니다."
+
+#: picard/ui/options/profiles.py:551
+msgid "Copy to Clipboard"
+msgstr ""
+
+#: picard/ui/options/profiles.py:552
+#, python-format
+msgid "Profile '%s' copied to clipboard."
+msgstr ""
+
+#: picard/ui/options/profiles.py:570
+msgid "Share (exclude sensitive data)"
+msgstr ""
+
+#: picard/ui/options/profiles.py:570
+msgid "Backup (include everything)"
+msgstr ""
+
+#: picard/ui/options/profiles.py:573 picard/ui/options/profiles.py:587
+#, fuzzy
+#| msgid "Option Profiles"
+msgid "Export Profile"
+msgstr "옵션 프로필"
+
+#: picard/ui/options/profiles.py:574
+#, fuzzy
+#| msgid "Export"
+msgid "Export mode:"
+msgstr "내보내기"
+
+#: picard/ui/options/profiles.py:589 picard/ui/options/profiles.py:665
+#: picard/ui/options/profiles.py:786
+#, fuzzy
+#| msgid "Move files"
+msgid "TOML files"
+msgstr "파일들을 옮기시오."
+
+#: picard/ui/options/profiles.py:605
+#, fuzzy
+#| msgid "Script Error"
+msgid "Export Error"
+msgstr "스크립트 오류"
+
+#: picard/ui/options/profiles.py:605
+#, python-format
+msgid "Failed to write file: %s"
+msgstr ""
+
+#: picard/ui/options/profiles.py:608
+#, fuzzy
+#| msgid "Export Script"
+msgid "Export Complete"
+msgstr "스크립트 내보내기"
+
+#: picard/ui/options/profiles.py:608
+#, python-format
+msgid "Profile exported to: %s"
+msgstr ""
+
+#: picard/ui/options/profiles.py:616 picard/ui/options/profiles.py:629
+#: picard/ui/options/profiles.py:637
+msgid "Import from Clipboard"
+msgstr ""
+
+#: picard/ui/options/profiles.py:617
+#, fuzzy
+#| msgid "The file was empty"
+msgid "The clipboard is empty."
+msgstr "파일이 비었습니다."
+
+#: picard/ui/options/profiles.py:630
+msgid "The clipboard does not contain a valid Picard profile."
+msgstr ""
+
+#: picard/ui/options/profiles.py:638 picard/ui/options/profiles.py:723
+msgid "Enable this profile after import?"
+msgstr ""
+
+#: picard/ui/options/profiles.py:663 picard/ui/options/profiles.py:722
+#, fuzzy
+#| msgid "Option Profiles"
+msgid "Import Profile"
+msgstr "옵션 프로필"
+
+#: picard/ui/options/profiles.py:674 picard/ui/options/profiles.py:762
+#: picard/ui/options/profiles.py:795
+#, fuzzy
+#| msgid "Script Error"
+msgid "Import Error"
+msgstr "스크립트 오류"
+
+#: picard/ui/options/profiles.py:674 picard/ui/options/profiles.py:795
+#, python-format
+msgid "Failed to read file: %s"
+msgstr ""
+
+#: picard/ui/options/profiles.py:690
+#, fuzzy
+#| msgid "Option Profiles"
+msgid "Profile Exists"
+msgstr "옵션 프로필"
+
+#: picard/ui/options/profiles.py:692
+#, fuzzy, python-format
+#| msgid "Overwrite the file if it already exists"
+msgid "A profile '%s' with the same ID already exists."
+msgstr "이미 파일이 존재할 경우 덮어쓰기"
+
+#: picard/ui/options/profiles.py:695
+#, python-format
+msgid "The existing profile '%s' has the same ID as the imported profile '%s'."
+msgstr ""
+
+#: picard/ui/options/profiles.py:700
+msgid ""
+"Replacing will completely overwrite the existing profile's settings and "
+"scripts with the imported ones. Any data in the existing profile that is not "
+"in the imported file will be lost."
+msgstr ""
+
+#: picard/ui/options/profiles.py:707
+#, python-format
+msgid "Replace '%s'"
+msgstr ""
+
+#: picard/ui/options/profiles.py:710
+#, fuzzy
+#| msgid "Create a new profile"
+msgid "Create new copy"
+msgstr "새 프로필을 만들기"
+
+#: picard/ui/options/profiles.py:769
+#, fuzzy
+#| msgid "Warning"
+msgid "Import Warnings"
+msgstr "경고"
+
+#: picard/ui/options/profiles.py:784
+msgid "Import and Replace Profile"
+msgstr ""
+
+#: picard/ui/options/profiles.py:801
+#, fuzzy
+#| msgid "Rename profile"
+msgid "Replace Profile"
+msgstr "프로필 이름 다시 쓰기"
+
+#: picard/ui/options/profiles.py:803
+#, python-format
+msgid ""
+"This will completely replace profile '%s'. All existing settings and scripts "
+"in this profile will be overwritten.\n"
+"\n"
+"Continue?"
+msgstr ""
 
 #: picard/ui/options/ratings.py:37
 msgid "Ratings"
@@ -8896,15 +9128,33 @@ msgstr ""
 msgid "Please select or enter a ref to switch to."
 msgstr ""
 
-#: picard/ui/widgets/profilelistwidget.py:48
+#: picard/ui/widgets/profilelistwidget.py:53
 msgid "Rename profile"
 msgstr "프로필 이름 다시 쓰기"
 
-#: picard/ui/widgets/profilelistwidget.py:51
+#: picard/ui/widgets/profilelistwidget.py:56
 msgid "Remove profile"
 msgstr "프로필 지우기"
 
-#: picard/ui/widgets/profilelistwidget.py:88
+#: picard/ui/widgets/profilelistwidget.py:60
+#, fuzzy
+#| msgid "Configuration files"
+msgid "Export profile…"
+msgstr "구성 파일들"
+
+#: picard/ui/widgets/profilelistwidget.py:63
+msgid "Copy to clipboard"
+msgstr ""
+
+#: picard/ui/widgets/profilelistwidget.py:67
+msgid "Import and replace…"
+msgstr ""
+
+#: picard/ui/widgets/profilelistwidget.py:70
+msgid "Import from clipboard"
+msgstr ""
+
+#: picard/ui/widgets/profilelistwidget.py:107
 msgid "Are you sure you want to remove this profile?"
 msgstr "이 프로필을 지우기를 정말 원하십니까?"
 
@@ -9141,6 +9391,9 @@ msgstr ""
 "웹 브라우저 실행 오류:\n"
 "\n"
 "%s"
+
+#~ msgid "Delete the profile"
+#~ msgstr "프로필을 지우시오"
 
 #~ msgid "Log"
 #~ msgstr "로그"
