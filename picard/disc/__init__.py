@@ -37,6 +37,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
 from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
 from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
@@ -198,5 +199,6 @@ if discid is not None:
 # Register built-in disc log readers
 register_disc_log_reader(_eac_toc_from_file)
 register_disc_log_reader(_whipper_toc_from_file)
+register_disc_log_reader(_cyanrip_toc_from_file)
 register_disc_log_reader(_dbpoweramp_toc_from_file)
 register_disc_log_reader(_scsitoc_toc_from_file)

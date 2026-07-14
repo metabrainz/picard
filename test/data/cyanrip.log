@@ -1,0 +1,139 @@
+cyanrip 0.9.3 (c23f1c4)
+System device: /dev/cdrom
+Device model: Dell DVD+/-RW DW316 A1C3 SCSI CD-ROM
+Offset: +0 samples
+Overread: +0 frames
+Overread mode: fill with silence in lead-in/lead-out
+Speed: default (unchangeable)
+C2 errors: supported by drive
+Paranoia level: max
+Frame retries: 10
+HDCD decoding: disabled
+Album Art: none
+Outputs: flac
+Disc tracks: 2
+Tracks to rip: all
+DiscID: 7rGk5fXmuE8VcWYpbwoobOZIcIE-
+CDDB ID: 140C2C02
+Album: Norns
+Album artist: Natural Snow Buildings
+AccurateRip: not found
+Total time: 00:51:56.306
+Gaps: None signalled
+Tracks:
+
+Track 1 ripped and encoded successfully!
+
+  Summary:
+    Integrated loudness:    I:    -8.9 LUFS
+    Threshold:             -18.9 LUFS
+    Loudness range:        LRA:     3.2 LU
+    Threshold:             -28.9 LUFS
+    LRA low:               -10.8 LUFS
+    LRA high:               -7.6 LUFS
+    True peak:             Peak:   -0.7 dBFS
+
+  Preemphasis: none detected
+
+  Properties:
+    Duration: 00:30:25.180
+    Samples: 80508960
+    Frames: 136920
+    Pregap LSN: none
+    Start LSN: 0
+    End LSN: 136919
+
+    EAC CRC32: E84207DD
+    Accurip: not found
+    Accurip v1: 4D32A287
+    Accurip v2: 29FCBEFC
+    Accurip 450: 15DA27EA
+
+  Metadata:
+    track: 1
+    tracktotal: 2
+    discid: 7rGk5fXmuE8VcWYpbwoobOZIcIE-
+    cddb: 140C2C02
+    media_type: CD
+    comment: cyanrip 0.9.3
+    title: Norns
+    album: Norns
+    album_artist: Natural Snow Buildings
+    artist: Natural Snow Buildings
+    creation_time: 2026-07-12T13:49:04
+    REPLAYGAIN_TRACK_GAIN: -9.09 dB
+    R128_TRACK_GAIN: -1046
+    REPLAYGAIN_TRACK_RANGE: 3.19 dB
+    REPLAYGAIN_TRACK_PEAK: 0.919832
+    REPLAYGAIN_REFERENCE_LOUDNESS: -18.00 LUFS
+
+  File(s):
+    Norns [FLAC]/1 - Norns.flac
+
+
+Track 2 ripped and encoded successfully!
+
+  Summary:
+    Integrated loudness:    I:    -9.9 LUFS
+    Threshold:             -19.9 LUFS
+    Loudness range:        LRA:     0.9 LU
+    Threshold:             -29.9 LUFS
+    LRA low:               -10.4 LUFS
+    LRA high:               -9.4 LUFS
+    True peak:             Peak:   -1.3 dBFS
+
+  Preemphasis: none detected
+
+  Properties:
+    Duration: 00:21:31.126
+    Samples: 56938980
+    Frames: 96835
+    Pregap LSN: none
+    Start LSN: 136920
+    End LSN: 233754
+
+    EAC CRC32: 023E6E8C
+    Accurip: not found
+    Accurip v1: 09BAC5C2
+    Accurip v2: EFCDD99F
+    Accurip 450: 0BE9A70E
+
+  Metadata:
+    track: 2
+    tracktotal: 2
+    discid: 7rGk5fXmuE8VcWYpbwoobOZIcIE-
+    cddb: 140C2C02
+    media_type: CD
+    comment: cyanrip 0.9.3
+    title: Radiant Maid of the Underworld
+    album: Norns
+    album_artist: Natural Snow Buildings
+    artist: Natural Snow Buildings
+    creation_time: 2026-07-12T14:01:10
+    REPLAYGAIN_TRACK_GAIN: -8.07 dB
+    R128_TRACK_GAIN: -787
+    REPLAYGAIN_TRACK_RANGE: 0.93 dB
+    REPLAYGAIN_TRACK_PEAK: 0.860882
+    REPLAYGAIN_REFERENCE_LOUDNESS: -18.00 LUFS
+
+  File(s):
+    Norns [FLAC]/2 - Radiant Maid of the Underworld.flac
+
+
+Album Loudness Summary:
+  Integrated loudness:    I:    -9.3 LUFS
+  Threshold:             -19.3 LUFS
+  Loudness range:        LRA:     2.9 LU
+  Threshold:             -29.3 LUFS
+  LRA low:               -10.5 LUFS
+  LRA high:               -7.7 LUFS
+  True peak:             Peak:   -0.7 dBFS
+
+Paranoia status counts:
+  READ: 18773
+  VERIFY: 1287
+  OVERLAP: 382
+
+Ripping errors: 0
+Ripping finished at 2026-07-12T14:08:47
+Log FUN512: 6o0EbHpOpwkSSakBU7as7Xkj78qhx4Dis_tHVhU5GLDp.x3LkQvfVmkcE5s01iP1UCc5LjhQ.Wpcr4CdJlhNMg
