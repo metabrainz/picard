@@ -45,7 +45,7 @@ dependencies = [
     "pygit2>=1.18.2, <1.19; python_version < '3.11'",
     "pygit2~=1.19; python_version >= '3.11'",
     "tomli>=2.3.0; python_version < '3.11'",
-    "tomlkit>=0.13.3",
+    "tomlkit>=0.12.4",
 ]
 
 [project.urls]

@@ -642,7 +642,7 @@ requires-dist = [
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "pyyaml", specifier = ">=5.1,<7" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.3.0" },
-    { name = "tomlkit", specifier = ">=0.13.3" },
+    { name = "tomlkit", specifier = ">=0.12.4" },
     { name = "zstandard", marker = "extra == 'plugins'", specifier = ">=0.25.0" },
 ]
 provides-extras = ["plugins"]
