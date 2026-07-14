@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025-2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
-from collections.abc import Iterator
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from pathlib import Path
 
 from PyQt6.QtCore import (
@@ -127,7 +130,7 @@ class FormatRegistry(QObject):
         # If extension-based opening failed, try format guessing
         return self.guess_format(path)
 
-    def guess_format(self, filename: str | Path, options: list[type[File]] | None = None) -> File | None:
+    def guess_format(self, filename: str | Path, options: Iterable[type[File]] | None = None) -> File | None:
         """Guesses the format of a file by reading its header.
 
         This method reads the first 128 bytes of the file and uses each format's
@@ -154,8 +157,6 @@ class FormatRegistry(QObject):
                 # Score each format
                 results = []
                 for file_format in options:
-                    if not hasattr(file_format, 'score'):
-                        continue
                     try:
                         score = file_format.score(str(path), fileobj, header)
                         results.append((score, file_format.__name__, file_format))
