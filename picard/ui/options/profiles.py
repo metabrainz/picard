@@ -396,10 +396,7 @@ class ProfilesOptionsPage(OptionsPage):
         Returns:
             ProfileListWidgetItem: Currently selected item
         """
-        items = self.ui.profile_list.selectedItems()
-        if items:
-            return items[0]
-        return None
+        return self.ui.profile_list.currentItem()
 
     def profile_selected(self, update_settings=True):
         """Update working profile information for the selected item in the profiles list.
@@ -472,12 +469,6 @@ class ProfilesOptionsPage(OptionsPage):
             new_item (ProfileListWidgetItem): Newly selected item
             old_item (ProfileListWidgetItem): Previously selected item
         """
-        if self.loading:
-            return
-        # Set self.loading to avoid looping through the `.currentItemChanged` event.
-        self.loading = True
-        self.ui.profile_list.setCurrentItem(new_item)
-        self.loading = False
         self.profile_selected()
 
     def _get_settings_from_children(self, parent_item, settings=None):
