@@ -34,12 +34,16 @@ DATA_TRACK_GAP: int = 11400
 
 TocEntry = namedtuple('TocEntry', 'number start_sector end_sector')
 
+# Type alias for MusicBrainz TOC numbers tuple:
+# (first_track, last_track, leadout_offset, offset_1, offset_2, ...)
+TocNumbers = tuple[int, ...]
+
 
 class NotSupportedTOCError(Exception):
     pass
 
 
-def calculate_mb_toc_numbers(toc: Iterable[TocEntry]) -> tuple[int, ...]:
+def calculate_mb_toc_numbers(toc: Iterable[TocEntry]) -> TocNumbers:
     """
     Take iterator of TOC entries, return a tuple of numbers for MusicBrainz disc id
 
