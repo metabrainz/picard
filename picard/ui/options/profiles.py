@@ -152,8 +152,8 @@ class ProfilesOptionsPage(OptionsPage):
             self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
 
-        self.delete_profile_button = QtWidgets.QPushButton(_("Delete"))
-        self.delete_profile_button.setToolTip(_("Delete the profile"))
+        self.delete_profile_button = QtWidgets.QPushButton(_("Remove"))
+        self.delete_profile_button.setToolTip(_("Remove the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(
             self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
@@ -539,15 +539,11 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def delete_profile(self):
-        """Delete the current profile."""
+        """Delete the currently selected profile."""
         self.ui.profile_list.remove_selected_profile()
         self.profile_selected()
         self.update_config_overrides()
         self.reload_all_page_settings()
-
-    def export_profile_item(self, item):
-        """Export a specific profile item (from context menu)."""
-        self.export_profile(item)
 
     def copy_profile_to_clipboard(self, item):
         """Copy a profile to the clipboard as TOML text (share mode)."""
@@ -565,10 +561,13 @@ class ProfilesOptionsPage(OptionsPage):
             _("Profile '%s' copied to clipboard.") % item.name,
         )
 
-    def export_profile(self, item=None):
-        """Export the selected profile to a TOML file."""
-        if item is None:
-            item = self.get_current_selected_item()
+    def export_profile(self):
+        """Export the currently selected profile to a TOML file."""
+        item = self.get_current_selected_item()
+        self.export_profile_item(item)
+
+    def export_profile_item(self, item):
+        """Export the the given profile item to a TOML file."""
         if not item:
             return
 
