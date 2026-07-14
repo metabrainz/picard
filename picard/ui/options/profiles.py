@@ -152,8 +152,8 @@ class ProfilesOptionsPage(OptionsPage):
             self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
 
-        self.delete_profile_button = QtWidgets.QPushButton(_("Delete"))
-        self.delete_profile_button.setToolTip(_("Delete the profile"))
+        self.delete_profile_button = QtWidgets.QPushButton(_("Remove"))
+        self.delete_profile_button.setToolTip(_("Remove the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(
             self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
