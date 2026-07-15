@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import NamedTuple
+
 from picard import (
     log,
     tagger_instance,
@@ -26,6 +28,16 @@ from picard.i18n import N_
 from picard.util.isrc import valid_isrc
 
 from picard.ui.enums import MainAction
+
+
+class ISRCTrackDetail(NamedTuple):
+    """Details for a track in the ISRC submission dialog."""
+
+    track_number: str
+    title: str
+    existing_isrcs: list[str]
+    new_isrcs: list[str]
+    submittable: bool
 
 
 class ISRCSubmitEntry:
@@ -112,13 +124,12 @@ class ISRCSubmitManager:
         """Number of files with pending ISRC submissions."""
         return sum(1 for entry in self._entries.values() if not entry.is_submitted)
 
-    def pending_details(self) -> dict[tuple[str, str], list[tuple[str, str, list[str], list[str], bool]]]:
+    def pending_details(self) -> dict[tuple[str, str], list[ISRCTrackDetail]]:
         """Return details for ISRC submissions, grouped by release.
 
         Returns a dict keyed by (album, albumartist) with values being lists
-        of tuples: (track_number, title, existing_isrcs, new_isrcs, submittable),
-        sorted by track number. Shows all tracks from affected albums;
-        tracks with no pending ISRCs have submittable=False.
+        of ISRCTrackDetail, sorted by track number. Shows all tracks from
+        affected albums; tracks with no pending ISRCs have submittable=False.
         """
         # Collect all albums that have pending entries
         albums = set()
@@ -130,7 +141,7 @@ class ISRCSubmitManager:
             if album:
                 albums.add(album)
 
-        by_release: dict[tuple[str, str], list[tuple[str, str, list[str], list[str], bool]]] = {}
+        by_release: dict[tuple[str, str], list[ISRCTrackDetail]] = {}
         for album in albums:
             album_name = album.metadata.get('album', '')
             albumartist = album.metadata.get('albumartist', '')
@@ -143,9 +154,10 @@ class ISRCSubmitManager:
                 existing_isrcs = track.metadata.getall('isrc')
                 new_isrcs = pending_map.get(track, set())
                 existing = [isrc for isrc in existing_isrcs if isrc.upper() not in new_isrcs]
-                submittable = bool(new_isrcs)
-                by_release[release_key].append((track_number, title, existing, sorted(new_isrcs), submittable))
-            by_release[release_key].sort(key=lambda x: int(x[0]) if x[0].isdigit() else 999)
+                by_release[release_key].append(
+                    ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), bool(new_isrcs))
+                )
+            by_release[release_key].sort(key=lambda x: int(x.track_number) if x.track_number.isdigit() else 999)
         return by_release
 
     def _pending_isrcs(self, isrcs_to_submit: set[str] | None = None) -> dict[str, list[str]]:

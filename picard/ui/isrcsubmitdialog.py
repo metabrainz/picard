@@ -57,23 +57,26 @@ class ISRCSubmitDialog(QtWidgets.QDialog):
             release_item.setText(0, release_label)
             release_item.setFirstColumnSpanned(True)
             release_item.setExpanded(True)
-            for track_number, title, existing_isrcs, new_isrcs, submittable in tracks:
+            for detail in tracks:
                 track_item = QtWidgets.QTreeWidgetItem(release_item)
                 track_item.setFlags(track_item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-                if submittable:
+                if detail.submittable:
                     track_item.setCheckState(0, QtCore.Qt.CheckState.Checked)
                 else:
                     track_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
                     track_item.setDisabled(True)
-                track_item.setText(0, str(track_number))
-                track_item.setText(1, title)
+                track_item.setText(0, detail.track_number)
+                track_item.setText(1, detail.title)
                 track_item.setText(
                     2,
-                    ', '.join(format_isrc(isrc) for isrc in existing_isrcs) if existing_isrcs else '',
+                    ', '.join(format_isrc(isrc) for isrc in detail.existing_isrcs) if detail.existing_isrcs else '',
                 )
-                track_item.setText(3, ', '.join(format_isrc(isrc) for isrc in new_isrcs) if new_isrcs else '')
-                if submittable:
-                    self._track_items.append((track_item, new_isrcs))
+                track_item.setText(
+                    3,
+                    ', '.join(format_isrc(isrc) for isrc in detail.new_isrcs) if detail.new_isrcs else '',
+                )
+                if detail.submittable:
+                    self._track_items.append((track_item, detail.new_isrcs))
 
         for i in range(self._tree.columnCount()):
             self._tree.resizeColumnToContents(i)
