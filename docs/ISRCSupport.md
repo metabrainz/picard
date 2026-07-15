@@ -122,7 +122,6 @@ ISRC"), not part of the automatic flow:
 - For a **cluster**: look up one ISRC to identify the release from the
   recording's release list, then load that release normally (2 calls total,
   regardless of album size).
-- If the ISRC is not found in MB, fall back to the existing metadata search.
 
 Optionally, a future setting could allow preferring direct ISRC lookup over
 search in the automatic flow — as a replacement for the search call (not an
@@ -135,8 +134,6 @@ addition), keeping the total call count the same.
 - **Cluster strategy:** Pick one ISRC from the cluster, look it up, use the
   returned recording's releases to find the best release candidate, then load
   that release. This avoids per-file lookups.
-- **Fallback:** If the ISRC lookup returns no results, fall back to the
-  existing metadata search.
 
 ### Feature 3: ISRC Submission
 
