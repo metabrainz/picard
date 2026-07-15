@@ -196,7 +196,7 @@ class CDLookupDialog(PicardDialog):
             for release in releases:
                 release_id = release.get('id')
                 if release_id:
-                    self.tagger.load_album(release_id, discid=self.disc.id)
+                    self.tagger.load_album(release_id, discid=self.disc.id, disc_isrcs=self.disc.isrcs)
                     self.accept()
                     return
         self.tagger.window.set_statusbar_message(
@@ -213,7 +213,7 @@ class CDLookupDialog(PicardDialog):
         release_list = self.ui.release_list
         for index in release_list.selectionModel().selectedRows():
             release_id = release_list.itemFromIndex(index).data(_DATA_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
-            self.tagger.load_album(release_id, discid=self.disc.id)
+            self.tagger.load_album(release_id, discid=self.disc.id, disc_isrcs=self.disc.isrcs)
         super().accept()
 
     def get_selected_release_id(self):

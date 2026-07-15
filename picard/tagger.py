@@ -1142,14 +1142,14 @@ class Tagger(QtWidgets.QApplication):
         else:
             log.warning("Unknown type to load: %s", type)
 
-    def load_album(self, album_id, discid=None):
+    def load_album(self, album_id, discid=None, disc_isrcs=None):
         album_id = self.mbid_redirects.get(album_id, album_id)
         album = self.albums.get(album_id)
         if album:
             log.debug("Album %s already loaded.", album_id)
             album.add_discid(discid)
             return album
-        album = Album(album_id, discid=discid)
+        album = Album(album_id, discid=discid, disc_isrcs=disc_isrcs)
         self.albums[album_id] = album
         self.album_added.emit(album)
         album.load()

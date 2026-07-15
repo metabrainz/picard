@@ -188,7 +188,7 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-    def __init__(self, album_id, discid=None):
+    def __init__(self, album_id, discid=None, disc_isrcs=None):
         super().__init__(album_id)
         self.tracks: list[Track] = []
         self.loaded = False
@@ -198,6 +198,7 @@ class Album(MetadataItem):
         self._pending_tasks = {}
         self._tracks_loaded = False
         self._discids = set()
+        self._disc_isrcs: dict[int, str] = disc_isrcs or {}
         self._recordings_map = {}
         if discid:
             self._discids.add(discid)
@@ -349,6 +350,28 @@ class Album(MetadataItem):
                 for file in track.files:
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
+
+    def _submit_disc_isrcs(self):
+        """Add disc ISRCs to track metadata and register for submission."""
+        if not self._disc_isrcs:
+            return
+        config = get_config()
+        submit = config.setting['submit_isrcs']
+        for track in self.tracks:
+            track_number = int(track.metadata.get('tracknumber', 0))
+            disc_isrc = self._disc_isrcs.get(track_number)
+            if not disc_isrc:
+                continue
+            # Add ISRC to track metadata if not already present
+            existing_isrcs = set(isrc.upper() for isrc in track.metadata.getall('isrc'))
+            if disc_isrc not in existing_isrcs:
+                track.metadata.add('isrc', disc_isrc)
+            # Register for submission if enabled
+            if submit:
+                recording_id = track.metadata['musicbrainz_recordingid']
+                if recording_id:
+                    mb_isrcs = track.orig_metadata.getall('isrc')
+                    self.tagger.isrc_submit_manager.add(track, recording_id, [disc_isrc], mb_isrcs)
 
     def get_next_track(self, track):
         try:
@@ -746,6 +769,7 @@ class Album(MetadataItem):
         for func, _run_on_error in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
+        self._submit_disc_isrcs()
         if self.ui_item and self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
             self.tagger.window.cover_art_box.update_metadata()
