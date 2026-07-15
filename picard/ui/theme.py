@@ -298,10 +298,6 @@ class BaseTheme:
 class WindowsTheme(BaseTheme):
     """Windows dark mode theme."""
 
-    def setup(self, app):
-        app.setStyle('Fusion')
-        super().setup(app)
-
     @property
     def is_dark_theme(self):
         if self._loaded_config_theme != UiTheme.DEFAULT:
