@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.i18n import gettext as _
 from picard.util.isrc import format_isrc
@@ -36,35 +39,45 @@ class ISRCSubmitDialog(QtWidgets.QDialog):
         super().__init__(parent=parent)
         self.setWindowTitle(_("Submit ISRCs"))
         self.resize(700, 450)
+        self._details = details
         layout = QtWidgets.QVBoxLayout(self)
 
         label = QtWidgets.QLabel(_("The following ISRCs will be submitted to MusicBrainz:"), self)
         layout.addWidget(label)
 
-        tree = QtWidgets.QTreeWidget(self)
-        tree.setHeaderLabels([_("Track"), _("Title"), _("Existing ISRCs"), _("New ISRC")])
-        tree.setRootIsDecorated(True)
-        tree.setAlternatingRowColors(True)
+        self._tree = QtWidgets.QTreeWidget(self)
+        self._tree.setHeaderLabels([_("Track"), _("Title"), _("Existing ISRCs"), _("New ISRC")])
+        self._tree.setRootIsDecorated(True)
+        self._tree.setAlternatingRowColors(True)
 
+        self._track_items = []
         for (album, albumartist), tracks in details.items():
             release_label = f"{albumartist} - {album}" if albumartist else album
-            release_item = QtWidgets.QTreeWidgetItem(tree)
+            release_item = QtWidgets.QTreeWidgetItem(self._tree)
             release_item.setText(0, release_label)
             release_item.setFirstColumnSpanned(True)
             release_item.setExpanded(True)
-            for track_number, title, existing_isrcs, new_isrcs in tracks:
+            for track_number, title, existing_isrcs, new_isrcs, submittable in tracks:
                 track_item = QtWidgets.QTreeWidgetItem(release_item)
+                track_item.setFlags(track_item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+                if submittable:
+                    track_item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+                else:
+                    track_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
+                    track_item.setDisabled(True)
                 track_item.setText(0, str(track_number))
                 track_item.setText(1, title)
                 track_item.setText(
                     2,
                     ', '.join(format_isrc(isrc) for isrc in existing_isrcs) if existing_isrcs else '',
                 )
-                track_item.setText(3, ', '.join(format_isrc(isrc) for isrc in new_isrcs))
+                track_item.setText(3, ', '.join(format_isrc(isrc) for isrc in new_isrcs) if new_isrcs else '')
+                if submittable:
+                    self._track_items.append((track_item, new_isrcs))
 
-        for i in range(tree.columnCount()):
-            tree.resizeColumnToContents(i)
-        layout.addWidget(tree)
+        for i in range(self._tree.columnCount()):
+            self._tree.resizeColumnToContents(i)
+        layout.addWidget(self._tree)
 
         button_box = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel,
@@ -74,3 +87,11 @@ class ISRCSubmitDialog(QtWidgets.QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
+
+    def get_submitted_isrcs(self) -> set[str]:
+        """Return the set of ISRCs checked for submission."""
+        included = set()
+        for track_item, new_isrcs in self._track_items:
+            if track_item.checkState(0) == QtCore.Qt.CheckState.Checked:
+                included.update(new_isrcs)
+        return included

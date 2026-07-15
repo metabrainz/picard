@@ -727,7 +727,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
         dialog = ISRCSubmitDialog(details, parent=self)
         if dialog.exec():
-            manager.submit()
+            manager.submit(isrcs_to_submit=dialog.get_submitted_isrcs())
 
     def _on_lookup_isrc(self):
         objects = self.selected_objects

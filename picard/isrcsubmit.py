@@ -53,6 +53,7 @@ class ISRCSubmitManager:
         self.tagger = tagger_instance()
         self._mb_api = mb_api
         self._entries: dict[object, ISRCSubmitEntry] = {}
+        self._last_submitted: dict[str, list[str]] = {}
 
     def add(self, file, recording_id: str, file_isrcs: list[str], mb_isrcs: list[str]) -> None:
         """Register ISRCs from a file that are not yet in MusicBrainz.
@@ -111,52 +112,67 @@ class ISRCSubmitManager:
         """Number of files with pending ISRC submissions."""
         return sum(1 for entry in self._entries.values() if not entry.is_submitted)
 
-    def pending_details(self) -> dict[tuple[str, str], list[tuple[str, str, list[str], list[str]]]]:
-        """Return details for pending ISRC submissions, grouped by release.
+    def pending_details(self) -> dict[tuple[str, str], list[tuple[str, str, list[str], list[str], bool]]]:
+        """Return details for ISRC submissions, grouped by release.
 
         Returns a dict keyed by (album, albumartist) with values being lists
-        of tuples: (track_number, title, existing_isrcs, new_isrcs),
-        sorted by track number.
+        of tuples: (track_number, title, existing_isrcs, new_isrcs, submittable),
+        sorted by track number. Shows all tracks from affected albums;
+        tracks with no pending ISRCs have submittable=False.
         """
-        by_release: dict[tuple[str, str], list[tuple[str, str, list[str], list[str]]]] = {}
+        # Collect all albums that have pending entries
+        albums = set()
+        pending_map: dict[object, set[str]] = {}
         for obj, entry in self._entries.items():
-            if entry.is_submitted:
-                continue
-            metadata = getattr(obj, 'metadata', None) or getattr(obj, 'orig_metadata', None)
-            if metadata:
-                track_number = metadata.get('tracknumber', '?')
-                title = metadata.get('title', '')
-                album = metadata.get('album', '')
-                albumartist = metadata.get('albumartist', metadata.get('artist', ''))
-                existing_isrcs = metadata.getall('isrc')
-            else:
-                track_number = '?'
-                title = ''
-                album = ''
-                albumartist = ''
-                existing_isrcs = []
-            existing = [isrc for isrc in existing_isrcs if isrc.upper() not in entry.new_isrcs]
-            release_key = (album, albumartist)
+            if not entry.is_submitted:
+                pending_map[obj] = entry.new_isrcs
+            album = getattr(obj, 'album', None)
+            if album:
+                albums.add(album)
+
+        by_release: dict[tuple[str, str], list[tuple[str, str, list[str], list[str], bool]]] = {}
+        for album in albums:
+            album_name = album.metadata.get('album', '')
+            albumartist = album.metadata.get('albumartist', '')
+            release_key = (album_name, albumartist)
             if release_key not in by_release:
                 by_release[release_key] = []
-            by_release[release_key].append((track_number, title, existing, sorted(entry.new_isrcs)))
-        for tracks in by_release.values():
-            tracks.sort(key=lambda x: int(x[0]) if x[0].isdigit() else 999)
+            for track in album.tracks:
+                track_number = track.metadata.get('tracknumber', '?')
+                title = track.metadata.get('title', '')
+                existing_isrcs = track.metadata.getall('isrc')
+                new_isrcs = pending_map.get(track, set())
+                existing = [isrc for isrc in existing_isrcs if isrc.upper() not in new_isrcs]
+                submittable = bool(new_isrcs)
+                by_release[release_key].append((track_number, title, existing, sorted(new_isrcs), submittable))
+            by_release[release_key].sort(key=lambda x: int(x[0]) if x[0].isdigit() else 999)
         return by_release
 
-    def _pending_isrcs(self) -> dict[str, list[str]]:
-        """Build the submission payload: {recording_id: [isrcs]}."""
+    def _pending_isrcs(self, isrcs_to_submit: set[str] | None = None) -> dict[str, list[str]]:
+        """Build the submission payload: {recording_id: [isrcs]}.
+
+        Args:
+            isrcs_to_submit: If provided, only include these ISRCs.
+        """
         result: dict[str, list[str]] = {}
         for entry in self._entries.values():
             if not entry.is_submitted:
-                existing = result.get(entry.recording_id, [])
-                existing.extend(sorted(entry.new_isrcs))
-                result[entry.recording_id] = existing
+                isrcs = entry.new_isrcs
+                if isrcs_to_submit is not None:
+                    isrcs = isrcs & isrcs_to_submit
+                if isrcs:
+                    existing = result.get(entry.recording_id, [])
+                    existing.extend(sorted(isrcs))
+                    result[entry.recording_id] = existing
         return result
 
-    def submit(self) -> None:
-        """Submit all pending ISRCs to MusicBrainz."""
-        pending = self._pending_isrcs()
+    def submit(self, isrcs_to_submit: set[str] | None = None) -> None:
+        """Submit pending ISRCs to MusicBrainz.
+
+        Args:
+            isrcs_to_submit: If provided, only submit these ISRCs.
+        """
+        pending = self._pending_isrcs(isrcs_to_submit)
         if not pending:
             self._check_unsubmitted()
             return
@@ -166,6 +182,7 @@ class ISRCSubmitManager:
             N_("Submitting ISRCs …"),
             echo=None,
         )
+        self._last_submitted = pending
         self._mb_api.submit_isrcs(pending, self._submission_finished)
 
     def _submission_finished(self, document, http, error) -> None:
@@ -178,15 +195,19 @@ class ISRCSubmitManager:
                 timeout=3000,
             )
         else:
-            # Mark all entries as submitted by clearing their new_isrcs
+            # Mark only the submitted ISRCs as done
+            submitted = set()
+            for isrcs in self._last_submitted.values():
+                submitted.update(isrcs)
             for entry in self._entries.values():
-                entry.new_isrcs = set()
+                entry.new_isrcs -= submitted
             log.debug("ISRC submission finished successfully")
             self.tagger.window.set_statusbar_message(
                 N_("ISRC submission finished successfully"),
                 echo=None,
                 timeout=3000,
             )
+        self._last_submitted = {}
         self._check_unsubmitted()
 
     def _check_unsubmitted(self) -> None:
