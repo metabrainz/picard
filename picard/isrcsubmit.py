@@ -201,6 +201,8 @@ class ISRCSubmitManager:
                 submitted.update(isrcs)
             for entry in self._entries.values():
                 entry.new_isrcs -= submitted
+            # Clean up fully submitted entries
+            self._entries = {k: v for k, v in self._entries.items() if not v.is_submitted}
             log.debug("ISRC submission finished successfully")
             self.tagger.window.set_statusbar_message(
                 N_("ISRC submission finished successfully"),
