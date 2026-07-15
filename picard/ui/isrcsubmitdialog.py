@@ -65,6 +65,10 @@ class ISRCSubmitDialog(QtWidgets.QDialog):
                 else:
                     track_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
                     track_item.setDisabled(True)
+                    if detail.disabled_reason:
+                        reason_text = _(detail.disabled_reason)
+                        for col in range(self._tree.columnCount()):
+                            track_item.setToolTip(col, reason_text)
                 track_item.setText(0, detail.track_number)
                 track_item.setText(1, detail.title)
                 track_item.setText(

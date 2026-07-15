@@ -38,6 +38,7 @@ class ISRCTrackDetail(NamedTuple):
     existing_isrcs: list[str]
     new_isrcs: list[str]
     submittable: bool
+    disabled_reason: str = ''
 
 
 class ISRCSubmitEntry:
@@ -129,7 +130,8 @@ class ISRCSubmitManager:
 
         Returns a dict keyed by (album, albumartist) with values being lists
         of ISRCTrackDetail, sorted by track number. Shows all tracks from
-        affected albums; tracks with no pending ISRCs have submittable=False.
+        affected albums; tracks with no pending ISRCs have submittable=False
+        with a reason explaining why.
         """
         # Collect all albums that have pending entries
         albums = set()
@@ -140,6 +142,8 @@ class ISRCSubmitManager:
             album = getattr(obj, 'album', None)
             if album:
                 albums.add(album)
+
+        duplicate_isrcs = self.find_duplicate_isrcs()
 
         by_release: dict[tuple[str, str], list[ISRCTrackDetail]] = {}
         for album in albums:
@@ -154,11 +158,44 @@ class ISRCSubmitManager:
                 existing_isrcs = track.metadata.getall('isrc')
                 new_isrcs = pending_map.get(track, set())
                 existing = [isrc for isrc in existing_isrcs if isrc.upper() not in new_isrcs]
+                submittable, reason = self.check_track_submittable(track, new_isrcs, existing_isrcs, duplicate_isrcs)
                 by_release[release_key].append(
-                    ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), bool(new_isrcs))
+                    ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), submittable, reason)
                 )
             by_release[release_key].sort(key=lambda x: int(x.track_number) if x.track_number.isdigit() else 999)
         return by_release
+
+    def find_duplicate_isrcs(self) -> set[str]:
+        """Find ISRCs that are pending for multiple different recordings."""
+        isrc_to_recordings: dict[str, set[str]] = {}
+        for entry in self._entries.values():
+            if not entry.is_submitted:
+                for isrc in entry.new_isrcs:
+                    isrc_to_recordings.setdefault(isrc, set()).add(entry.recording_id)
+        return {isrc for isrc, recs in isrc_to_recordings.items() if len(recs) > 1}
+
+    @staticmethod
+    def check_track_submittable(
+        track, new_isrcs: set[str], existing_isrcs: list[str], duplicate_isrcs: set[str]
+    ) -> tuple[bool, str]:
+        """Determine if a track's ISRCs can be submitted.
+
+        Returns (submittable, reason) where reason is a translatable string
+        explaining why the track is disabled, or empty if submittable.
+        """
+        if new_isrcs:
+            dupes = new_isrcs & duplicate_isrcs
+            if dupes:
+                return False, N_("Same ISRC found for different recordings")
+            return True, ''
+        elif existing_isrcs:
+            return False, N_("ISRC already submitted")
+        else:
+            files = getattr(track, 'files', [])
+            has_multi = any(len(f.orig_metadata.getall('isrc')) > 1 for f in files)
+            if has_multi:
+                return False, N_("File has multiple ISRCs (uncertain source)")
+            return False, ''
 
     def _pending_isrcs(self, isrcs_to_submit: set[str] | None = None) -> dict[str, list[str]]:
         """Build the submission payload: {recording_id: [isrcs]}.

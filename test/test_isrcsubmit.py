@@ -170,3 +170,72 @@ class ISRCSubmitManagerTest(PicardTestCase):
         # Both ISRCs should be included for the same recording
         self.assertIn('USRC17607839', pending['rec-1'])
         self.assertIn('GBAYE0000351', pending['rec-1'])
+
+
+class FindDuplicateIsrcsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.isrcsubmit')
+        self.mock_api = MagicMock()
+        self.mock_api.submit_isrcs = Mock()
+        self.manager = ISRCSubmitManager(self.mock_api)
+        self.tagger.window = MagicMock()
+        self.tagger.window.enable_action = MagicMock()
+
+    def test_no_duplicates(self):
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-2', ['GBAYE0000351'], [])
+        self.assertEqual(set(), self.manager.find_duplicate_isrcs())
+
+    def test_same_isrc_different_recordings(self):
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-2', ['USRC17607839'], [])
+        self.assertEqual({'USRC17607839'}, self.manager.find_duplicate_isrcs())
+
+    def test_same_isrc_same_recording(self):
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
+        # Same recording is fine — not a duplicate
+        self.assertEqual(set(), self.manager.find_duplicate_isrcs())
+
+    def test_ignores_submitted(self):
+        file1 = object()
+        file2 = object()
+        self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
+        self.manager.add(file2, 'rec-2', ['USRC17607839'], [])
+        # Simulate submission of file1's ISRC
+        self.manager._entries[file1].new_isrcs = set()
+        self.assertEqual(set(), self.manager.find_duplicate_isrcs())
+
+
+class CheckTrackSubmittableTest(PicardTestCase):
+    def test_new_isrcs_no_duplicates(self):
+        submittable, reason = ISRCSubmitManager.check_track_submittable(None, {'USRC17607839'}, [], set())
+        self.assertTrue(submittable)
+        self.assertEqual('', reason)
+
+    def test_new_isrcs_with_duplicates(self):
+        submittable, reason = ISRCSubmitManager.check_track_submittable(None, {'USRC17607839'}, [], {'USRC17607839'})
+        self.assertFalse(submittable)
+        self.assertIn('different recordings', reason)
+
+    def test_existing_isrcs_no_new(self):
+        submittable, reason = ISRCSubmitManager.check_track_submittable(None, set(), ['USRC17607839'], set())
+        self.assertFalse(submittable)
+        self.assertIn('already submitted', reason)
+
+    def test_no_isrcs_at_all(self):
+        track = MagicMock()
+        track.files = []
+        submittable, reason = ISRCSubmitManager.check_track_submittable(track, set(), [], set())
+        self.assertFalse(submittable)
+        self.assertEqual('', reason)
+
+    def test_file_has_multiple_isrcs(self):
+        file_mock = MagicMock()
+        file_mock.orig_metadata.getall.return_value = ['ISRC1', 'ISRC2']
+        track = MagicMock()
+        track.files = [file_mock]
+        submittable, reason = ISRCSubmitManager.check_track_submittable(track, set(), [], set())
+        self.assertFalse(submittable)
+        self.assertIn('multiple ISRCs', reason)

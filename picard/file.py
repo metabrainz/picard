@@ -903,6 +903,10 @@ class File(MetadataItem):
         file_isrcs = self.orig_metadata.getall('isrc')
         if not file_isrcs:
             return
+        # Skip files with multiple ISRCs — they likely come from a previous
+        # tagging session rather than an authoritative source
+        if len(file_isrcs) > 1:
+            return
         mb_isrcs = self.parent_item.orig_metadata.getall('isrc')
         self.tagger.isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
 
