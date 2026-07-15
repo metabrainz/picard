@@ -243,7 +243,7 @@ def detect_lxqt_dark_wrapper() -> bool:
     return False
 
 
-def get_linux_dark_mode_strategies() -> list:
+def get_linux_dark_mode_strategies() -> list[Callable[[], bool]]:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
         # Pure D-Bus methods (will gracefully fail if D-Bus unavailable)
