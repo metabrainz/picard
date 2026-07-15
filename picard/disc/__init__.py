@@ -37,6 +37,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.config import get_config
 from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
 from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
 from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
@@ -82,7 +83,9 @@ class Disc:
         log.debug("Reading CD using device: %r", device)
         features = ['mcn']
         if 'isrc' in discid.FEATURES:
-            features.append('isrc')
+            config = get_config()
+            if config.setting['read_isrcs_from_disc']:
+                features.append('isrc')
         try:
             disc = discid.read(device, features=features)
             self._set_disc_details(disc)

@@ -331,6 +331,7 @@ BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save Acoust
 
 # ISRC submission
 BoolOption('setting', 'submit_isrcs', False, title=N_('Submit ISRCs to MusicBrainz'))
+BoolOption('setting', 'read_isrcs_from_disc', True, title=N_('Read ISRCs from CD'))
 
 # picard/ui/options/general.py
 # General
