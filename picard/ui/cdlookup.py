@@ -50,6 +50,7 @@ from picard.util import (
     compare_barcodes,
     restore_method,
 )
+from picard.util.isrc import format_isrc
 
 from picard.ui import PicardDialog
 from picard.ui.columns import (
@@ -133,6 +134,7 @@ class CDLookupDialog(PicardDialog):
             release_list.sortByColumn(_COLUMNS.pos('dates'), QtCore.Qt.SortOrder.DescendingOrder)
         else:
             self.ui.results_view.setCurrentIndex(1)
+            self._add_isrc_lookup_button()
         if self.disc.submission_url:
             self.ui.lookup_button.clicked.connect(self.lookup)
             self.ui.submit_button.clicked.connect(self.lookup)
@@ -141,6 +143,71 @@ class CDLookupDialog(PicardDialog):
             self.ui.submit_button.hide()
         self.restore_header_state()
         self.finished.connect(self.save_header_state)
+        self._show_disc_isrcs()
+
+    def _show_disc_isrcs(self):
+        """Add a button to view per-track ISRCs extracted from the disc."""
+        if not self.disc.isrcs:
+            return
+        isrc_count = len(self.disc.isrcs)
+        button = QtWidgets.QPushButton(_("View ISRCs (%(count)d)") % {'count': isrc_count}, self)
+        button.clicked.connect(self._show_isrc_dialog)
+        # Insert before the button layout (last item in vboxlayout)
+        layout = self.ui.vboxlayout
+        layout.insertWidget(layout.count() - 1, button)
+
+    def _add_isrc_lookup_button(self):
+        """Add a 'Lookup by ISRC' button when disc ID is not found but ISRCs are available."""
+        if not self.disc.isrcs:
+            return
+        button = QtWidgets.QPushButton(_("Lookup by ISRC"), self)
+        button.clicked.connect(self._lookup_by_isrc)
+        # Add to the no_results_page layout, before the bottom spacer
+        layout = self.ui.verticalLayout_3
+        layout.insertWidget(layout.count() - 1, button, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+
+    def _lookup_by_isrc(self):
+        """Search for recordings matching any of the disc's ISRCs in a single query."""
+        # Build a Lucene OR query with all ISRCs from the disc
+        isrc_clauses = ' OR '.join(f'isrc:{isrc}' for isrc in self.disc.isrcs.values())
+        self.tagger.window.set_statusbar_message(
+            N_("Looking up disc ISRCs …"),
+            echo=None,
+        )
+        self.tagger.mb_api.find_tracks(
+            self._on_isrc_lookup_finished,
+            search=True,
+            advanced_search=True,
+            query=isrc_clauses,
+            limit=25,
+        )
+
+    def _on_isrc_lookup_finished(self, document, http, error):
+        if error:
+            self.tagger.window.set_statusbar_message(
+                N_("ISRC lookup failed"),
+                echo=None,
+                timeout=3000,
+            )
+            return
+        recordings = document.get('recordings', [])
+        for recording in recordings:
+            releases = recording.get('releases', [])
+            for release in releases:
+                release_id = release.get('id')
+                if release_id:
+                    self.tagger.load_album(release_id, discid=self.disc.id)
+                    self.accept()
+                    return
+        self.tagger.window.set_statusbar_message(
+            N_("No releases found for disc ISRCs"),
+            echo=None,
+            timeout=3000,
+        )
+
+    def _show_isrc_dialog(self):
+        dialog = DiscISRCDialog(self.disc, parent=self)
+        dialog.exec()
 
     def accept(self):
         release_list = self.ui.release_list
@@ -197,3 +264,37 @@ class CDLookupDialog(PicardDialog):
         for medium in release.get('media', []):
             if any(disc.get('id') == self.disc.id for disc in medium.get('discs', [])):
                 return medium
+
+
+class DiscISRCDialog(QtWidgets.QDialog):
+    """Dialog showing per-track ISRCs extracted from a disc."""
+
+    def __init__(self, disc, parent=None):
+        super().__init__(parent=parent)
+        self.setWindowTitle(_("Disc ISRCs"))
+        self.resize(400, 300)
+        layout = QtWidgets.QVBoxLayout(self)
+
+        table = QtWidgets.QTableWidget(self)
+        table.setColumnCount(2)
+        table.setHorizontalHeaderLabels([_("Track"), _("ISRC")])
+        table.horizontalHeader().setStretchLastSection(True)
+        table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+        table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        table.verticalHeader().setVisible(False)
+
+        sorted_isrcs = sorted(disc.isrcs.items())
+        table.setRowCount(len(sorted_isrcs))
+        for row, (track_num, isrc) in enumerate(sorted_isrcs):
+            table.setItem(row, 0, QtWidgets.QTableWidgetItem(str(track_num)))
+            table.setItem(row, 1, QtWidgets.QTableWidgetItem(format_isrc(isrc)))
+        table.resizeColumnsToContents()
+
+        layout.addWidget(table)
+
+        close_button = QtWidgets.QPushButton(_("&Close"), self)
+        close_button.clicked.connect(self.accept)
+        button_layout = QtWidgets.QHBoxLayout()
+        button_layout.addStretch()
+        button_layout.addWidget(close_button)
+        layout.addLayout(button_layout)
