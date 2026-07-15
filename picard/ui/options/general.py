@@ -81,28 +81,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.hide()
         self.update_login_logout()
 
-        # Submission group box
-        submission_group = QtWidgets.QGroupBox(_("Submission"), self)
-        submission_layout = QtWidgets.QVBoxLayout(submission_group)
-        self.ui.read_isrcs_from_disc = QtWidgets.QCheckBox(_("Read ISRCs from CD"), submission_group)
-        self.ui.read_isrcs_from_disc.setToolTip(
-            _(
-                "When enabled, ISRCs will be read from the CD during disc lookup. "
-                "This may significantly slow down the disc read on some drives."
-            )
-        )
-        submission_layout.addWidget(self.ui.read_isrcs_from_disc)
-        self.ui.submit_isrcs = QtWidgets.QCheckBox(_("Submit ISRCs to MusicBrainz when tagging"), submission_group)
-        self.ui.submit_isrcs.setToolTip(
-            _(
-                "When enabled, ISRCs found in files that are not yet associated "
-                "with the matched recording in MusicBrainz can be submitted."
-            )
-        )
-        submission_layout.addWidget(self.ui.submit_isrcs)
-        # Insert after the general_box (index 3 in the vboxlayout)
-        self.ui.vboxlayout.insertWidget(3, submission_group)
-
     def load(self):
         config = get_config()
         self.ui.server_host.setEditText(config.setting['server_host'])
