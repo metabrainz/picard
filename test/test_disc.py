@@ -147,3 +147,121 @@ class DiscTest(PicardTestCase):
         disc = picard.disc.Disc()
         disc.read()
         self.assertEqual(mock_disc_submission_url(), disc.submission_url)
+
+
+class MockTrack:
+    def __init__(self, number, isrc=None):
+        self.number = number
+        self.isrc = isrc
+
+
+class MockDiscWithIsrcs:
+    id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
+    mcn = '5029343070452'
+    tracks = [
+        MockTrack(1, 'USRC17607839'),
+        MockTrack(2, 'GBAYE0000351'),
+        MockTrack(3, None),
+        MockTrack(4, 'FRZ039100014'),
+    ]
+    toc_string = ' '.join(str(i) for i in test_toc)
+
+
+class MockDiscWithInvalidIsrcs:
+    id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
+    mcn = None
+    tracks = [
+        MockTrack(1, 'USRC17607839'),
+        MockTrack(2, 'INVALID'),
+        MockTrack(3, ''),
+        MockTrack(4, 'GBAYE0000351'),
+    ]
+    toc_string = ' '.join(str(i) for i in test_toc)
+
+
+class MockDiscNoIsrcAttr:
+    """Simulates disc tracks without isrc attribute (feature not available)."""
+
+    id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
+    mcn = None
+    tracks = list(range(0, 4))
+    toc_string = ' '.join(str(i) for i in test_toc)
+
+
+class DiscIsrcTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.disc')
+
+    @patch.object(picard.disc, 'discid')
+    def test_read_with_isrc_feature(self, mock_discid):
+        self.set_config_values(
+            setting={
+                'server_host': 'musicbrainz.org',
+                'server_port': 443,
+                'use_server_for_submission': False,
+            }
+        )
+        mock_discid.FEATURES = ['mcn', 'isrc']
+        mock_discid.read = Mock(return_value=MockDiscWithIsrcs())
+        device = '/dev/cdrom1'
+        disc = picard.disc.Disc()
+        disc.read(device)
+        mock_discid.read.assert_called_with(device, features=['mcn', 'isrc'])
+        self.assertEqual({1: 'USRC17607839', 2: 'GBAYE0000351', 4: 'FRZ039100014'}, disc.isrcs)
+
+    @patch.object(picard.disc, 'discid')
+    def test_read_without_isrc_feature(self, mock_discid):
+        self.set_config_values(
+            setting={
+                'server_host': 'musicbrainz.org',
+                'server_port': 443,
+                'use_server_for_submission': False,
+            }
+        )
+        mock_discid.FEATURES = ['mcn']
+        mock_discid.read = Mock(return_value=MockDiscNoIsrcAttr())
+        device = '/dev/cdrom1'
+        disc = picard.disc.Disc()
+        disc.read(device)
+        mock_discid.read.assert_called_with(device, features=['mcn'])
+        self.assertEqual({}, disc.isrcs)
+
+    @patch.object(picard.disc, 'discid')
+    def test_read_with_invalid_isrcs(self, mock_discid):
+        self.set_config_values(
+            setting={
+                'server_host': 'musicbrainz.org',
+                'server_port': 443,
+                'use_server_for_submission': False,
+            }
+        )
+        mock_discid.FEATURES = ['mcn', 'isrc']
+        mock_discid.read = Mock(return_value=MockDiscWithInvalidIsrcs())
+        device = '/dev/cdrom1'
+        disc = picard.disc.Disc()
+        disc.read(device)
+        # Only valid ISRCs should be stored
+        self.assertEqual({1: 'USRC17607839', 4: 'GBAYE0000351'}, disc.isrcs)
+
+    def test_extract_isrcs_with_tracks(self):
+        tracks = [
+            MockTrack(1, 'US-RC1-76-07839'),
+            MockTrack(2, 'gbaye0000351'),
+            MockTrack(3, None),
+        ]
+        result = picard.disc.Disc._extract_isrcs(tracks)
+        self.assertEqual({1: 'USRC17607839', 2: 'GBAYE0000351'}, result)
+
+    def test_extract_isrcs_empty(self):
+        result = picard.disc.Disc._extract_isrcs([])
+        self.assertEqual({}, result)
+
+    def test_extract_isrcs_no_attr(self):
+        # Tracks without isrc attribute (like plain integers from old MockDisc)
+        result = picard.disc.Disc._extract_isrcs([1, 2, 3])
+        self.assertEqual({}, result)
+
+    def test_isrcs_initialized_empty(self):
+        disc = picard.disc.Disc()
+        self.assertEqual({}, disc.isrcs)

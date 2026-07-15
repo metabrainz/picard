@@ -43,6 +43,10 @@ from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
 from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.util.isrc import (
+    format_isrc,
+    valid_isrc,
+)
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
@@ -67,6 +71,7 @@ class Disc:
         self.mcn = None
         self.tracks = 0
         self.toc_string = None
+        self.isrcs: dict[int, str] = {}
         self._skip_dialog = False
         self._files_to_match = None
 
@@ -75,8 +80,11 @@ class Disc:
         if device is None:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
+        features = ['mcn']
+        if 'isrc' in discid.FEATURES:
+            features.append('isrc')
         try:
-            disc = discid.read(device, features=['mcn'])
+            disc = discid.read(device, features=features)
             self._set_disc_details(disc)
         except discid.DiscError as e:
             log.error("Error while reading %r: %s", device, e)
@@ -101,7 +109,27 @@ class Disc:
         self.mcn = disc.mcn
         self.tracks = len(disc.tracks)
         self.toc_string = disc.toc_string
+        self.isrcs = self._extract_isrcs(disc.tracks)
         log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
+        if self.isrcs:
+            for track_num, isrc in sorted(self.isrcs.items()):
+                log.debug("  Track %d: ISRC %s", track_num, format_isrc(isrc))
+
+    @staticmethod
+    def _extract_isrcs(tracks) -> dict[int, str]:
+        """Extract validated ISRCs from disc tracks.
+
+        Returns a dict mapping track number to normalized ISRC.
+        Tracks without ISRCs or with invalid ISRCs are skipped.
+        """
+        isrcs: dict[int, str] = {}
+        for track in tracks:
+            isrc = getattr(track, 'isrc', None)
+            if isrc:
+                normalized = valid_isrc(isrc)
+                if normalized:
+                    isrcs[track.number] = normalized
+        return isrcs
 
     @staticmethod
     def _submission_url(id, tracks, toc_string):
