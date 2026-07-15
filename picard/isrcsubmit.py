@@ -81,7 +81,9 @@ class ISRCSubmitManager:
         new_isrcs = set()
         for isrc in file_isrcs:
             normalized = valid_isrc(isrc)
-            if normalized and normalized not in mb_isrcs_set:
+            if not normalized:
+                log.warning("Skipping invalid ISRC: %r", isrc)
+            elif normalized not in mb_isrcs_set:
                 new_isrcs.add(normalized)
         if new_isrcs:
             self._entries[file] = ISRCSubmitEntry(recording_id, new_isrcs)
