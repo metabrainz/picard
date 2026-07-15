@@ -80,12 +80,6 @@ def _try_dbus_detection(detection_method: Callable[[DBusThemeDetector], bool | N
 
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
-    # Try D-Bus first (secure method)
-    result = _try_dbus_detection(lambda detector: detector.gnome_color_scheme_is_dark(), "gnome color scheme")
-    if result is not None:
-        return result
-
-    # Fallback to subprocess method (legacy support)
     value = gsettings_get("color-scheme")
     if value and "dark" in value.lower():
         log.debug("Detected GNOME color-scheme: dark")
