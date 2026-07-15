@@ -120,7 +120,10 @@ class Disc:
         """Extract validated ISRCs from disc tracks.
 
         Returns a dict mapping track number to normalized ISRC.
-        Tracks without ISRCs or with invalid ISRCs are skipped.
+        Tracks without ISRCs, with invalid ISRCs, or with duplicate
+        ISRCs (same ISRC on multiple tracks) are skipped.
+        Duplicate ISRCs are a known issue with some CD drives that
+        report the same ISRC for adjacent tracks.
         """
         isrcs: dict[int, str] = {}
         for track in tracks:
@@ -129,6 +132,20 @@ class Disc:
                 normalized = valid_isrc(isrc)
                 if normalized:
                     isrcs[track.number] = normalized
+        # Detect duplicates: same ISRC assigned to multiple tracks
+        seen: dict[str, list[int]] = {}
+        for track_num, isrc in isrcs.items():
+            seen.setdefault(isrc, []).append(track_num)
+        duplicates = {isrc: tracks for isrc, tracks in seen.items() if len(tracks) > 1}
+        if duplicates:
+            for isrc, track_nums in duplicates.items():
+                log.warning(
+                    "Duplicate ISRC %s found on tracks %s (possible drive read error), skipping",
+                    format_isrc(isrc),
+                    ', '.join(str(n) for n in track_nums),
+                )
+                for track_num in track_nums:
+                    del isrcs[track_num]
         return isrcs
 
     @staticmethod

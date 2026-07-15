@@ -265,3 +265,14 @@ class DiscIsrcTest(PicardTestCase):
     def test_isrcs_initialized_empty(self):
         disc = picard.disc.Disc()
         self.assertEqual({}, disc.isrcs)
+
+    def test_extract_isrcs_duplicates_skipped(self):
+        # Same ISRC on multiple tracks should be skipped (drive read error)
+        tracks = [
+            MockTrack(1, 'USRC17607839'),
+            MockTrack(2, 'USRC17607839'),
+            MockTrack(3, 'GBAYE0000351'),
+        ]
+        result = picard.disc.Disc._extract_isrcs(tracks)
+        # Duplicate ISRC removed, unique one kept
+        self.assertEqual({3: 'GBAYE0000351'}, result)
