@@ -69,3 +69,44 @@ def format_isrc(value: str) -> str:
     if len(value) != 12:
         return value
     return f"{value[:2]}-{value[2:5]}-{value[5:7]}-{value[7:]}"
+
+
+def best_release_from_isrc_results(releases, metadata=None) -> str:
+    """Pick the best matching release from ISRC lookup results.
+
+    Uses album title and artist similarity from the provided metadata
+    to disambiguate when multiple releases are returned.
+
+    Args:
+        releases: List of release dicts from MB API (must have 'id').
+        metadata: Optional file metadata for disambiguation.
+
+    Returns:
+        The release MBID of the best match.
+    """
+    if not releases:
+        return ''
+    if not metadata or len(releases) == 1:
+        return releases[0]['id']
+    # Inline imports to break circular dependency:
+    # picard.similarity -> picard.util -> picard.util.isrc
+    from picard.mbjson import artist_credit_from_node
+    from picard.similarity import similarity2
+
+    best_score = -1
+    best_id = releases[0]['id']
+    file_album = metadata.get('album', '')
+    file_artist = metadata.get('artist', '')
+    for release in releases:
+        score = 0.0
+        title = release.get('title', '')
+        if file_album and title:
+            score += similarity2(file_album, title) * 2
+        artist_credit = release.get('artist-credit', [])
+        if file_artist and artist_credit:
+            release_artist = artist_credit_from_node(artist_credit).name
+            score += similarity2(file_artist, release_artist)
+        if score > best_score:
+            best_score = score
+            best_id = release['id']
+    return best_id

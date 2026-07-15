@@ -97,7 +97,6 @@ from picard.i18n import (
     ngettext,
 )
 from picard.item import Item
-from picard.mbjson import artist_credit_from_node
 from picard.options import (
     Option,
     get_option_title,
@@ -109,7 +108,6 @@ from picard.session.session_manager import (
     load_session_from_path,
     save_session_to_path,
 )
-from picard.similarity import similarity2
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -129,7 +127,10 @@ from picard.util.cdrom import (
     discid,
     get_cdrom_drives,
 )
-from picard.util.isrc import valid_isrc
+from picard.util.isrc import (
+    best_release_from_isrc_results,
+    valid_isrc,
+)
 from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import (
@@ -779,32 +780,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             )
             return
         # Pick the best release using file metadata for disambiguation
-        release_id = self._best_release_from_isrc_lookup(releases)
+        release_id = best_release_from_isrc_results(releases, self._isrc_lookup_metadata)
         self.tagger.load_album(release_id)
         self._isrc_lookup_metadata = None
-
-    def _best_release_from_isrc_lookup(self, releases):
-        """Pick the best matching release using file metadata."""
-        metadata = self._isrc_lookup_metadata
-        if not metadata or len(releases) == 1:
-            return releases[0]['id']
-        best_score = -1
-        best_id = releases[0]['id']
-        file_album = metadata.get('album', '')
-        file_artist = metadata.get('artist', '')
-        for release in releases:
-            score = 0.0
-            title = release.get('title', '')
-            if file_album and title:
-                score += similarity2(file_album, title) * 2
-            artist_credit = release.get('artist-credit', [])
-            if file_artist and artist_credit:
-                release_artist = artist_credit_from_node(artist_credit).name
-                score += similarity2(file_artist, release_artist)
-            if score > best_score:
-                best_score = score
-                best_id = release['id']
-        return best_id
 
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
