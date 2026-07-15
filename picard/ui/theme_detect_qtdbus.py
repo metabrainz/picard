@@ -36,7 +36,6 @@ class DBusThemeDetector:
     def __init__(self):
         self.session_bus = None
         self.portal_interface = None
-        self.gnome_interface = None
         self._initialize_dbus()
 
     def _initialize_dbus(self) -> None:
@@ -55,18 +54,9 @@ class DBusThemeDetector:
                     self.session_bus,
                 )
 
-            if self._is_service_available("ca.desrt.dconf"):
-                self.gnome_interface = QDBusInterface(
-                    "ca.desrt.dconf",
-                    "/ca/desrt/dconf/Writer/user",
-                    "ca.desrt.dconf.Writer",
-                    self.session_bus,
-                )
-
         except Exception:  # noqa: BLE001
             self.session_bus = None
             self.portal_interface = None
-            self.gnome_interface = None
 
     def _is_service_available(self, service_name: str) -> bool:
         """Check if a D-Bus service is available."""
@@ -119,40 +109,6 @@ class DBusThemeDetector:
         else:
             return None
 
-    def gnome_color_scheme_is_dark(self) -> bool | None:
-        """
-        Detect GNOME color scheme using D-Bus dconf interface.
-        Returns
-        -------
-            True for dark theme, False for light theme, None if unavailable
-        """
-        try:
-            if not self.gnome_interface or not self.gnome_interface.isValid():
-                return None
-            # Get the color-scheme property from org.gnome.desktop.interface using dconf
-            reply = self.gnome_interface.call("Read", "/org/gnome/desktop/interface/color-scheme")
-
-            if reply.type() != QDBusMessage.MessageType.ErrorMessage:
-                value = reply.arguments()[0] if reply.arguments() else None
-                if value:
-                    return isinstance(value, str) and "dark" in value.lower()
-        except (RuntimeError, AttributeError, TypeError):
-            pass
-
-        # Try gtk-theme as fallback
-        try:
-            reply = self.gnome_interface.call("Read", "/org/gnome/desktop/interface/gtk-theme")
-
-            if reply.type() != QDBusMessage.MessageType.ErrorMessage:
-                value = reply.arguments()[0] if reply.arguments() else None
-                if value and isinstance(value, str) and "dark" in value.lower():
-                    return True
-
-        except (RuntimeError, AttributeError, TypeError):
-            pass
-
-        return None
-
 
 # Global D-Bus detector instance
 _dbus_detector = None
@@ -171,17 +127,6 @@ def detect_freedesktop_color_scheme_dbus() -> bool:
     try:
         detector = get_dbus_detector()
         result = detector.freedesktop_portal_color_scheme_is_dark()
-    except (RuntimeError, AttributeError, TypeError):
-        return False
-    else:
-        return result is True
-
-
-def detect_gnome_color_scheme_dbus() -> bool:
-    """Detect GNOME color scheme using D-Bus interface."""
-    try:
-        detector = get_dbus_detector()
-        result = detector.gnome_color_scheme_is_dark()
     except (RuntimeError, AttributeError, TypeError):
         return False
     else:

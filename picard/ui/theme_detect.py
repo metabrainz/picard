@@ -32,7 +32,6 @@ from picard import log
 from picard.ui.theme_detect_qtdbus import (
     DBusThemeDetector,
     detect_freedesktop_color_scheme_dbus,
-    detect_gnome_color_scheme_dbus,
     get_dbus_detector,
 )
 
@@ -206,10 +205,9 @@ def detect_lxqt_dark_wrapper() -> bool:
 def get_linux_dark_mode_strategies() -> list[Callable[[], bool]]:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
-        # Pure D-Bus methods (will gracefully fail if D-Bus unavailable)
+        # D-Bus based detection using the using org.freedesktop.portal.Settings interface
         detect_freedesktop_color_scheme_dbus,
-        detect_gnome_color_scheme_dbus,
-        # Hybrid methods (D-Bus with subprocess fallback)
+        # Legacy methods (settings based on desktop environment)
         detect_gnome_dark_wrapper,
         detect_kde_dark_wrapper,
         detect_xfce_dark_wrapper,
