@@ -211,6 +211,15 @@ def _create_submit_acoustid_action(parent):
     return action
 
 
+@add_action(MainAction.SUBMIT_ISRC)
+def _create_submit_isrc_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-save'), _("Submit &ISRCs"), parent)
+    action.setStatusTip(_("Submit ISRCs to MusicBrainz"))
+    action.setEnabled(False)
+    action.triggered.connect(parent._on_submit_isrc)
+    return action
+
+
 @add_action(MainAction.EXIT)
 def _create_exit_action(parent):
     action = QtGui.QAction(_("E&xit"), parent)

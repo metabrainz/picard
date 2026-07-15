@@ -715,6 +715,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.tagger.acoustidmanager.submit()
 
+    def _on_submit_isrc(self):
+        self.tagger.isrc_submit_manager.submit()
+
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
 
@@ -913,6 +916,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SAVE,
             MainAction.SUBMIT_ACOUSTID,
+            MainAction.SUBMIT_ISRC,
             MainAction.TRASH,
             '-',
             MainAction.LOAD_SESSION,
