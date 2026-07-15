@@ -133,7 +133,7 @@ class MacOverrideStyle(QtWidgets.QProxyStyle):
         return super().styleHint(hint, option, widget, returnData)
 
 
-def apply_dark_palette_colors(palette):
+def apply_dark_palette_colors(palette: QtGui.QPalette) -> None:
     """Apply dark palette colors to the given palette."""
     for key, value in DARK_PALETTE_COLORS.items():
         if isinstance(key, tuple):
@@ -143,7 +143,7 @@ def apply_dark_palette_colors(palette):
             palette.setColor(key, value)
 
 
-def set_color_scheme(color_scheme):
+def set_color_scheme(color_scheme: QtCore.Qt.ColorScheme) -> None:
     """Set the color scheme using style hints if available.
 
     Args:
@@ -158,7 +158,7 @@ def set_color_scheme(color_scheme):
         style_hints.setColorScheme(color_scheme)
 
 
-def apply_dark_theme_to_palette(palette: QtGui.QPalette):
+def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
     """Apply dark theme colors to the given palette using Qt's color scheme or manual fallback.
 
     This method tries to use Qt's built-in color scheme first, and falls back to
@@ -179,9 +179,9 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette):
 
 class BaseTheme:
     def __init__(self):
-        self._loaded_config_theme = UiTheme.DEFAULT
-        self._dark_theme = False
-        self._accent_color = None
+        self._loaded_config_theme: UiTheme = UiTheme.DEFAULT
+        self._dark_theme: bool = False
+        self._accent_color: QtGui.QColor | None = None
         # Registry of dark mode detection strategies for Linux DEs
         self._dark_mode_strategies = get_linux_dark_mode_strategies()
 
@@ -193,7 +193,7 @@ class BaseTheme:
         log.debug("No Linux system dark mode detected, defaulting to light mode.")
         return False
 
-    def setup(self, app):
+    def setup(self, app: QtWidgets.QApplication) -> None:
         config = get_config()
         ui_theme = config.setting['ui_theme']
         self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
@@ -266,7 +266,7 @@ class BaseTheme:
         app.setPalette(palette)
 
     @property
-    def is_dark_theme(self):
+    def is_dark_theme(self) -> bool:
         if self._loaded_config_theme == UiTheme.DARK:
             return True
         elif self._loaded_config_theme == UiTheme.LIGHT:
@@ -275,11 +275,11 @@ class BaseTheme:
             return self._dark_theme
 
     @property
-    def accent_color(self):  # pylint: disable=no-self-use
+    def accent_color(self) -> QtGui.QColor | None:  # pylint: disable=no-self-use
         return self._accent_color
 
     # pylint: disable=no-self-use
-    def update_palette(self, palette, dark_theme, accent_color):
+    def update_palette(self, palette: QtGui.QPalette, dark_theme: bool, accent_color: QtGui.QColor | None) -> None:
         if accent_color:
             accent_text_color = (
                 QtCore.Qt.GlobalColor.white if accent_color.lightness() < 160 else QtCore.Qt.GlobalColor.black
@@ -299,7 +299,7 @@ class WindowsTheme(BaseTheme):
     """Windows dark mode theme."""
 
     @property
-    def is_dark_theme(self):
+    def is_dark_theme(self) -> bool:
         if self._loaded_config_theme != UiTheme.DEFAULT:
             return self._loaded_config_theme == UiTheme.DARK
         dark_theme = False
@@ -314,7 +314,7 @@ class WindowsTheme(BaseTheme):
         return dark_theme
 
     @property
-    def accent_color(self):
+    def accent_color(self) -> QtGui.QColor | None:
         accent_color = None
         try:
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
@@ -325,7 +325,7 @@ class WindowsTheme(BaseTheme):
             log.warning("Failed reading ColorizationColor from registry")
         return accent_color
 
-    def update_palette(self, palette, dark_theme, accent_color):
+    def update_palette(self, palette: QtGui.QPalette, dark_theme: bool, accent_color: QtGui.QColor | None) -> None:
         # Adapt to Windows 10 color scheme (dark / light theme and accent color)
         super().update_palette(palette, dark_theme, accent_color)
         if dark_theme:
@@ -353,7 +353,7 @@ elif IS_MACOS:
             pass
 
     class MacTheme(BaseTheme):
-        def setup(self, app):
+        def setup(self, app: QtWidgets.QApplication) -> None:
             super().setup(app)
 
             if self._loaded_config_theme != UiTheme.DEFAULT:
@@ -374,7 +374,7 @@ elif IS_MACOS:
                     pass
 
         @property
-        def is_dark_theme(self):
+        def is_dark_theme(self) -> bool:
             if not OS_SUPPORTS_THEMES:
                 # Fall back to generic dark color palette detection
                 return super().is_dark_theme
@@ -384,7 +384,7 @@ elif IS_MACOS:
                 return self._loaded_config_theme == UiTheme.DARK
 
         # pylint: disable=no-self-use
-        def update_palette(self, palette, dark_theme, accent_color):
+        def update_palette(self, palette: QtGui.QPalette, dark_theme: bool, accent_color: QtGui.QColor | None) -> None:
             pass  # No palette changes, theme is fully handled by Qt
 
     theme = MacTheme()
@@ -393,5 +393,5 @@ else:
     theme = BaseTheme()
 
 
-def setup(app):
+def setup(app: QtWidgets.QApplication) -> None:
     theme.setup(app)
