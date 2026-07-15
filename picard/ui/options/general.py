@@ -63,6 +63,7 @@ class GeneralOptionsPage(OptionsPage):
         'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},
         'enable_user_collections': {'widgets': ['enable_user_collections']},
+        'submit_isrcs': {},
     }
 
     def __init__(self, parent=None):
@@ -79,6 +80,20 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.hide()
         self.update_login_logout()
 
+        # Submission group box
+        submission_group = QtWidgets.QGroupBox(_("Submission"), self)
+        submission_layout = QtWidgets.QVBoxLayout(submission_group)
+        self.ui.submit_isrcs = QtWidgets.QCheckBox(_("Submit ISRCs to MusicBrainz when tagging"), submission_group)
+        self.ui.submit_isrcs.setToolTip(
+            _(
+                "When enabled, ISRCs found in files that are not yet associated "
+                "with the matched recording in MusicBrainz can be submitted."
+            )
+        )
+        submission_layout.addWidget(self.ui.submit_isrcs)
+        # Insert after the general_box (index 3 in the vboxlayout)
+        self.ui.vboxlayout.insertWidget(3, submission_group)
+
     def load(self):
         config = get_config()
         self.ui.server_host.setEditText(config.setting['server_host'])
@@ -89,6 +104,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
         self.ui.enable_user_collections.setChecked(config.setting['enable_user_collections'])
+        self.ui.submit_isrcs.setChecked(config.setting['submit_isrcs'])
 
     def save(self):
         config = get_config()
@@ -99,6 +115,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
         self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
+        config.setting['submit_isrcs'] = self.ui.submit_isrcs.isChecked()
 
     def _update_user_collections(self, config, new_enable_user_collections):
         old_enable_user_collections = config.setting['enable_user_collections']

@@ -329,6 +329,9 @@ BoolOption(
 )
 BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save AcoustID fingerprints'), in_profile=True)
 
+# ISRC submission
+BoolOption('setting', 'submit_isrcs', False, title=N_('Submit ISRCs to MusicBrainz'))
+
 # picard/ui/options/general.py
 # General
 TextOption('persist', 'oauth_access_token', '')

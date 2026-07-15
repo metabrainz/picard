@@ -891,6 +891,9 @@ class File(MetadataItem):
 
     def isrc_update(self):
         """Update ISRC submission state based on current file-to-track match."""
+        config = get_config()
+        if not config.setting['submit_isrcs']:
+            return
         if not self.parent_item or not self.parent_item.can_link_fingerprint:
             self.tagger.isrc_submit_manager.remove(self)
             return
