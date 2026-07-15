@@ -852,6 +852,7 @@ class File(MetadataItem):
             if self.parent_item:
                 self.parent_item.add_file(self, new_album=new_album)
             self.acoustid_update()
+            self.isrc_update()
             return True
         else:
             return False
@@ -863,6 +864,7 @@ class File(MetadataItem):
                 self.parent_item.remove_file(self)
             self.parent_item = to_parent_item
             self.acoustid_update()
+            self.isrc_update()
 
     def set_acoustid_fingerprint(self, fingerprint, length=None):
         if not fingerprint:
@@ -886,6 +888,20 @@ class File(MetadataItem):
                 recording_id = self.metadata['musicbrainz_recordingid']
         self.tagger.acoustidmanager.update(self, recording_id)
         self.update_item()
+
+    def isrc_update(self):
+        """Update ISRC submission state based on current file-to-track match."""
+        if not self.parent_item or not self.parent_item.can_link_fingerprint:
+            self.tagger.isrc_submit_manager.remove(self)
+            return
+        recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
+        if not recording_id:
+            return
+        file_isrcs = self.orig_metadata.getall('isrc')
+        if not file_isrcs:
+            return
+        mb_isrcs = self.parent_item.orig_metadata.getall('isrc')
+        self.tagger.isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
 
     @classmethod
     def supports_tag(cls, name: str) -> bool:
