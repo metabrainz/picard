@@ -97,6 +97,7 @@ from picard.i18n import (
     ngettext,
 )
 from picard.item import Item
+from picard.mbjson import artist_credit_from_node
 from picard.options import (
     Option,
     get_option_title,
@@ -108,6 +109,7 @@ from picard.session.session_manager import (
     load_session_from_path,
     save_session_to_path,
 )
+from picard.similarity import similarity2
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -127,6 +129,7 @@ from picard.util.cdrom import (
     discid,
     get_cdrom_drives,
 )
+from picard.util.isrc import valid_isrc
 from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import (
@@ -717,6 +720,93 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _on_submit_isrc(self):
         self.tagger.isrc_submit_manager.submit()
+
+    def _on_lookup_isrc(self):
+        objects = self.selected_objects
+        if not objects:
+            return
+        # Find the first file with a valid ISRC
+        source_metadata = None
+        isrc = None
+        for obj in objects:
+            if hasattr(obj, 'metadata'):
+                for value in obj.metadata.getall('isrc'):
+                    isrc = valid_isrc(value)
+                    if isrc:
+                        source_metadata = obj.metadata
+                        break
+            if not isrc and hasattr(obj, 'files'):
+                for file in obj.files:
+                    for value in file.metadata.getall('isrc'):
+                        isrc = valid_isrc(value)
+                        if isrc:
+                            source_metadata = file.metadata
+                            break
+                    if isrc:
+                        break
+            if isrc:
+                break
+        if not isrc:
+            return
+        self._isrc_lookup_metadata = source_metadata
+        self.tagger.mb_api.lookup_isrc(
+            isrc,
+            self._on_lookup_isrc_finished,
+            inc=('artist-credits', 'releases'),
+        )
+        self.set_statusbar_message(
+            N_("Looking up ISRC %(isrc)s …"),
+            {'isrc': isrc},
+        )
+
+    def _on_lookup_isrc_finished(self, document, http, error):
+        if error:
+            self.set_statusbar_message(N_("ISRC lookup failed"), echo=None, timeout=3000)
+            return
+        recordings = document.get('recordings', [])
+        if not recordings:
+            self.set_statusbar_message(N_("No recordings found for this ISRC"), echo=None, timeout=3000)
+            return
+        # Collect all releases from all recordings
+        releases = []
+        for recording in recordings:
+            for release in recording.get('releases', []):
+                if release.get('id'):
+                    releases.append(release)
+        if not releases:
+            self.set_statusbar_message(
+                N_("Found %(count)d recording(s) but no associated release"),
+                {'count': len(recordings)},
+                timeout=3000,
+            )
+            return
+        # Pick the best release using file metadata for disambiguation
+        release_id = self._best_release_from_isrc_lookup(releases)
+        self.tagger.load_album(release_id)
+        self._isrc_lookup_metadata = None
+
+    def _best_release_from_isrc_lookup(self, releases):
+        """Pick the best matching release using file metadata."""
+        metadata = self._isrc_lookup_metadata
+        if not metadata or len(releases) == 1:
+            return releases[0]['id']
+        best_score = -1
+        best_id = releases[0]['id']
+        file_album = metadata.get('album', '')
+        file_artist = metadata.get('artist', '')
+        for release in releases:
+            score = 0.0
+            title = release.get('title', '')
+            if file_album and title:
+                score += similarity2(file_album, title) * 2
+            artist_credit = release.get('artist-credit', [])
+            if file_artist and artist_credit:
+                release_artist = artist_credit_from_node(artist_credit).name
+                score += similarity2(file_artist, release_artist)
+            if score > best_score:
+                best_score = score
+                best_id = release['id']
+        return best_id
 
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
@@ -1839,6 +1929,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.SIMILAR_ITEMS_SEARCH, is_file or is_cluster)
         self.enable_action(MainAction.TRACK_SEARCH, is_file)
         self.enable_action(MainAction.ALBUM_SEARCH, is_cluster)
+        self.enable_action(MainAction.LOOKUP_ISRC, have_files or is_cluster)
         self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
 
     def enable_action(self, action_id, enabled):
