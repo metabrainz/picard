@@ -154,40 +154,6 @@ def detect_lxqt_dark_theme() -> bool:
     return False
 
 
-def detect_freedesktop_color_scheme_dark() -> bool:
-    """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
-    # Try D-Bus first (secure method)
-    result = _try_dbus_detection(
-        lambda detector: detector.freedesktop_portal_color_scheme_is_dark(), "freedesktop color scheme"
-    )
-    if result is not None:
-        return result
-
-    # Fallback to subprocess method (legacy support)
-    try:
-        proc_result = subprocess.run(  # nosec B603 B607
-            [
-                "gsettings",
-                "get",
-                "org.freedesktop.appearance",
-                "color-scheme",
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        value = proc_result.stdout.strip().strip("'\"")
-        if value == "1":
-            log.debug("Detected org.freedesktop.appearance.color-scheme: dark (1)")
-            return True
-        if value == "0":
-            log.debug("Detected org.freedesktop.appearance.color-scheme: light (0)")
-            return False
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        log.debug("gsettings get org.freedesktop.appearance.color-scheme failed.")
-    return False
-
-
 def get_current_desktop_environment() -> str:
     """Detect the current desktop environment (DE) as a lowercase string."""
     de = os.environ.get("XDG_CURRENT_DESKTOP")
@@ -244,7 +210,6 @@ def get_linux_dark_mode_strategies() -> list[Callable[[], bool]]:
         detect_freedesktop_color_scheme_dbus,
         detect_gnome_color_scheme_dbus,
         # Hybrid methods (D-Bus with subprocess fallback)
-        detect_freedesktop_color_scheme_dark,
         detect_gnome_dark_wrapper,
         detect_kde_dark_wrapper,
         detect_xfce_dark_wrapper,

@@ -205,13 +205,13 @@ def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
             mock_get_detector.side_effect = RuntimeError("D-Bus unavailable")
 
             with patch("subprocess.run") as mock_run:
-                # First call: freedesktop (returns '1' for dark)
+                # First call: gnome gsettings
                 # Other calls: return '' (should not be called, but if so, not dark)
-                mock_run.return_value.stdout = "1"
+                mock_run.return_value.stdout = "dark"
                 mock_run.return_value.returncode = 0
 
                 # Test the specific function that should work with subprocess fallback
-                result = theme_detect.detect_freedesktop_color_scheme_dark()
+                result = theme_detect.detect_gnome_color_scheme_dark()
                 assert result is True
 
 
@@ -305,49 +305,6 @@ def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: 
                 assert theme_detect.detect_lxqt_dark_theme() is False
         elif not file_exists:
             assert theme_detect.detect_lxqt_dark_theme() is False
-
-
-@pytest.mark.parametrize(
-    ("gsettings_value", "expected"),
-    [
-        ("1", True),
-        ("0", False),
-        ("", False),
-    ],
-)
-def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool) -> None:
-    with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("subprocess.run") as mock_run,
-    ):
-        # Mock D-Bus detector to return None (force fallback to subprocess)
-        mock_detector = Mock()
-        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
-        mock_get_detector.return_value = mock_detector
-
-        mock_run.return_value.stdout = gsettings_value
-        mock_run.return_value.returncode = 0
-        assert theme_detect.detect_freedesktop_color_scheme_dark() is expected
-
-
-@pytest.mark.parametrize(
-    "side_effect",
-    [
-        FileNotFoundError(),
-        subprocess.CalledProcessError(1, "gsettings"),
-    ],
-)
-def test_freedesktop_color_scheme_detection_failure(side_effect) -> None:
-    with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("subprocess.run", side_effect=side_effect),
-    ):
-        # Mock D-Bus detector to return None (force fallback to subprocess)
-        mock_detector = Mock()
-        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
-        mock_get_detector.return_value = mock_detector
-
-        assert theme_detect.detect_freedesktop_color_scheme_dark() is False
 
 
 # Shared expected dark palette colors (should match DARK_PALETTE_COLORS in theme.py)
