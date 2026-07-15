@@ -233,6 +233,7 @@ QCheckBox { color: black }</string>
   <tabstop>use_server_for_submission</tabstop>
   <tabstop>login</tabstop>
   <tabstop>logout</tabstop>
+  <tabstop>enable_user_collections</tabstop>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>cluster_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>

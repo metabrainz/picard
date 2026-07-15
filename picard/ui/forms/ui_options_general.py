@@ -121,7 +121,8 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.server_port, self.use_server_for_submission)
         GeneralOptionsPage.setTabOrder(self.use_server_for_submission, self.login)
         GeneralOptionsPage.setTabOrder(self.login, self.logout)
-        GeneralOptionsPage.setTabOrder(self.logout, self.analyze_new_files)
+        GeneralOptionsPage.setTabOrder(self.logout, self.enable_user_collections)
+        GeneralOptionsPage.setTabOrder(self.enable_user_collections, self.analyze_new_files)
         GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.cluster_new_files)
         GeneralOptionsPage.setTabOrder(self.cluster_new_files, self.ignore_file_mbids)
 
