@@ -165,8 +165,8 @@ def test_detect_linux_dark_mode_integration(
         patch.dict(os.environ, {"XDG_CURRENT_DESKTOP": de}, clear=True),
         patch("pathlib.Path.home", return_value=kde_config_dir.parent),
         patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings,
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("picard.ui.theme_detect.detect_freedesktop_color_scheme_dbus", return_value=False),
+        patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector,
+        patch("picard.ui.theme_detect_qtdbus.detect_freedesktop_color_scheme_dbus", return_value=False),
     ):
         # Mock D-Bus detector to return None (force fallback to subprocess)
         mock_detector = Mock()
@@ -194,11 +194,11 @@ def test_detect_linux_dark_mode_integration(
 def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
     # If freedesktop returns dark, it should take priority over others
     with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
+        patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector,
         patch("subprocess.run") as mock_run,
     ):
         # Mock D-Bus to fail so we test subprocess fallback
-        with patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector:
+        with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
             # Mock D-Bus detector to raise exception (simulating D-Bus unavailable)
             mock_get_detector.side_effect = RuntimeError("D-Bus unavailable")
 

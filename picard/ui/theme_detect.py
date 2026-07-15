@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2022, 2024-2025 Philipp Wolfer
+# Copyright (C) 2019-2022, 2024-2026 Philipp Wolfer
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021-2024 Laurent Monin
 #
@@ -29,11 +29,7 @@ import subprocess  # noqa: S404
 
 from picard import log
 
-from picard.ui.theme_detect_qtdbus import (
-    DBusThemeDetector,
-    detect_freedesktop_color_scheme_dbus,
-    get_dbus_detector,
-)
+from picard.ui.theme_detect_qtdbus import detect_freedesktop_color_scheme_dbus
 
 
 def gsettings_get(key: str) -> str | None:
@@ -54,27 +50,6 @@ def gsettings_get(key: str) -> str | None:
     except (subprocess.CalledProcessError, FileNotFoundError):
         log.debug(f"gsettings get {key} failed.")
         return None
-
-
-def _try_dbus_detection(detection_method: Callable[[DBusThemeDetector], bool | None], method_name: str) -> bool | None:
-    """
-    Helper function to safely attempt D-Bus theme detection.
-
-    Args:
-        detection_method: The detection method to call on the detector
-        method_name: Name of the method for logging purposes
-
-    Returns:
-        The result of the detection method, or None if detection fails
-    """
-    try:
-        detector = get_dbus_detector()
-        result = detection_method(detector)
-        if result is not None:
-            return result
-    except (RuntimeError, AttributeError, TypeError):
-        log.debug(f"Unable to detect {method_name} with dbus.")
-    return None
 
 
 def detect_gnome_color_scheme_dark() -> bool:
