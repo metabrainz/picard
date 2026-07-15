@@ -394,7 +394,8 @@ class TestWindowsTheme:
             mock_winreg.QueryValueEx.assert_called_once_with(
                 mock_winreg.OpenKey.return_value.__enter__.return_value, 'ColorizationColor'
             )
-            assert result == QtGui.QColor(0xAABBCC11)
+            # The code masks out the alpha byte (& 0xFFFFFF), so only RGB is used
+            assert result == QtGui.QColor('#bbcc11')
 
     def test_get_system_accent_color_error_fallback(self):
         theme = theme_mod.WindowsTheme()
