@@ -111,6 +111,39 @@ class ISRCSubmitManager:
         """Number of files with pending ISRC submissions."""
         return sum(1 for entry in self._entries.values() if not entry.is_submitted)
 
+    def pending_details(self) -> dict[tuple[str, str], list[tuple[str, str, list[str], list[str]]]]:
+        """Return details for pending ISRC submissions, grouped by release.
+
+        Returns a dict keyed by (album, albumartist) with values being lists
+        of tuples: (track_number, title, existing_isrcs, new_isrcs),
+        sorted by track number.
+        """
+        by_release: dict[tuple[str, str], list[tuple[str, str, list[str], list[str]]]] = {}
+        for obj, entry in self._entries.items():
+            if entry.is_submitted:
+                continue
+            metadata = getattr(obj, 'metadata', None) or getattr(obj, 'orig_metadata', None)
+            if metadata:
+                track_number = metadata.get('tracknumber', '?')
+                title = metadata.get('title', '')
+                album = metadata.get('album', '')
+                albumartist = metadata.get('albumartist', metadata.get('artist', ''))
+                existing_isrcs = metadata.getall('isrc')
+            else:
+                track_number = '?'
+                title = ''
+                album = ''
+                albumartist = ''
+                existing_isrcs = []
+            existing = [isrc for isrc in existing_isrcs if isrc.upper() not in entry.new_isrcs]
+            release_key = (album, albumartist)
+            if release_key not in by_release:
+                by_release[release_key] = []
+            by_release[release_key].append((track_number, title, existing, sorted(entry.new_isrcs)))
+        for tracks in by_release.values():
+            tracks.sort(key=lambda x: int(x[0]) if x[0].isdigit() else 999)
+        return by_release
+
     def _pending_isrcs(self) -> dict[str, list[str]]:
         """Build the submission payload: {recording_id: [isrcs]}."""
         result: dict[str, list[str]] = {}
