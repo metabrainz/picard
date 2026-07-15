@@ -76,6 +76,18 @@ class MBAPITest(PicardTestCase):
         self.assertInPath(self.ws.get_url, "/recording/1")
         self._test_inc_args(self.ws.get_url, inc_args_list)
 
+    def test_lookup_isrc(self):
+        self.api.lookup_isrc("USRC17607839", None)
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "/isrc/USRC17607839")
+
+    def test_lookup_isrc_with_inc(self):
+        inc_args_list = ['artist-credits', 'releases']
+        self.api.lookup_isrc("GBAYE0000351", None, inc=inc_args_list)
+        self._test_ws_function_args(self.ws.get_url)
+        self.assertInPath(self.ws.get_url, "/isrc/GBAYE0000351")
+        self._test_inc_args(self.ws.get_url, inc_args_list)
+
     def test_get_collection(self):
         inc_args_list = ["releases", "artist-credits", "media"]
         self.api.get_collection("1", None)

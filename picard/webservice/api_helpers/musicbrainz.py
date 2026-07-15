@@ -134,6 +134,28 @@ class MBAPIHelper(APIHelper):
             refresh=refresh,
         )
 
+    def lookup_isrc(
+        self,
+        isrc: str,
+        handler: ReplyHandler,
+        inc: Iterable[str] | None = None,
+        priority: bool = True,
+        important: bool = True,
+    ) -> PendingRequest:
+        """Lookup recordings by ISRC.
+
+        Returns a list of recordings associated with the given ISRC.
+        Supports the same inc= arguments as a recording lookup.
+        """
+        return self._get_by_id(
+            'isrc',
+            isrc,
+            handler,
+            inc,
+            priority=priority,
+            important=important,
+        )
+
     def _find(self, entitytype: str, handler: ReplyHandler, **kwargs) -> PendingRequest:
         filters = {}
 
