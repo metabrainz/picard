@@ -53,18 +53,9 @@ def mock_portal_interface() -> Mock:
 
 
 @pytest.fixture
-def mock_gnome_interface() -> Mock:
-    """Create a mock GNOME dconf interface."""
-    mock_interface = Mock()
-    mock_interface.isValid.return_value = True
-    return mock_interface
-
-
-@pytest.fixture
 def mock_dbus_detector(
     mock_dbus_connection: Mock,
     mock_portal_interface: Mock,
-    mock_gnome_interface: Mock,
 ) -> DBusThemeDetector:
     """Create a DBusThemeDetector with mocked D-Bus components."""
     with (
@@ -77,14 +68,12 @@ def mock_dbus_detector(
         def qdbus_interface_side_effect(*args, **kwargs):
             if "org.freedesktop.portal.Settings" in args:
                 return mock_portal_interface
-            elif "ca.desrt.dconf.Writer" in args:
-                return mock_gnome_interface
             elif "org.freedesktop.DBus" in args:
                 # Mock for service availability checking
                 mock_db_interface = Mock()
                 mock_db_message = Mock()
                 mock_db_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-                mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop", "ca.desrt.dconf"]]
+                mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop"]]
                 mock_db_interface.call.return_value = mock_db_message
                 return mock_db_interface
             return Mock()
@@ -214,20 +203,16 @@ class TestDBusThemeDetector:
         assert result is None
 
     @pytest.mark.parametrize(
-        ("portal_service_available", "gnome_service_available", "expected_portal", "expected_gnome"),
+        ("portal_service_available", "expected_portal"),
         [
-            (True, True, True, True),  # Both services available
-            (True, False, True, False),  # Only portal available
-            (False, True, False, True),  # Only GNOME available
-            (False, False, False, False),  # Neither service available
+            (True, True),  # Portal service available
+            (False, False),  # Portal service not available
         ],
     )
     def test_detection_with_service_availability(
         self,
         portal_service_available: bool,
-        gnome_service_available: bool,
         expected_portal: bool,
-        expected_gnome: bool,
     ) -> None:
         """Test detection methods when services are not available."""
         with (
@@ -242,15 +227,13 @@ class TestDBusThemeDetector:
             def service_availability_side_effect(service_name: str) -> bool:
                 if "portal" in service_name:
                     return portal_service_available
-                elif "dconf" in service_name:
-                    return gnome_service_available
                 return False
 
             # Mock the D-Bus interface for service listing
             mock_db_interface = Mock()
             mock_db_message = Mock()
             mock_db_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop", "ca.desrt.dconf"]]
+            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop"]]
             mock_db_interface.call.return_value = mock_db_message
 
             # Configure QDBusInterface to return different mocks for different calls
@@ -265,14 +248,6 @@ class TestDBusThemeDetector:
                     mock_portal_message.arguments.return_value = [1]  # Dark theme
                     mock_portal.call.return_value = mock_portal_message
                     return mock_portal
-                elif "ca.desrt.dconf.Writer" in args:
-                    mock_gnome = Mock()
-                    mock_gnome.isValid.return_value = True
-                    mock_gnome_message = Mock()
-                    mock_gnome_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-                    mock_gnome_message.arguments.return_value = ["dark"]
-                    mock_gnome.call.return_value = mock_gnome_message
-                    return mock_gnome
                 return Mock()
 
             mock_qdbus_interface.side_effect = qdbus_interface_side_effect
@@ -292,10 +267,10 @@ class TestServiceAvailability:
     @pytest.mark.parametrize(
         ("service_name", "available_services", "expected"),
         [
-            ("org.freedesktop.portal.Desktop", ["org.freedesktop.portal.Desktop", "ca.desrt.dconf"], True),
-            ("ca.desrt.dconf", ["org.freedesktop.portal.Desktop", "ca.desrt.dconf"], True),
-            ("org.freedesktop.portal.Desktop", ["ca.desrt.dconf"], False),
-            ("ca.desrt.dconf", ["org.freedesktop.portal.Desktop"], False),
+            ("org.freedesktop.portal.Desktop", ["org.freedesktop.portal.Desktop", "org.example.Service"], True),
+            ("org.example.Service", ["org.freedesktop.portal.Desktop", "org.example.Service"], True),
+            ("org.freedesktop.portal.Desktop", ["org.example.Service"], False),
+            ("org.example.Service", ["org.freedesktop.portal.Desktop"], False),
             ("org.freedesktop.portal.Desktop", [], False),
         ],
     )
