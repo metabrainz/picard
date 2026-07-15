@@ -357,9 +357,10 @@ class Album(MetadataItem):
             return
         config = get_config()
         submit = config.setting['submit_isrcs']
-        for track in self.tracks:
-            track_number = int(track.metadata.get('tracknumber', 0))
-            disc_isrc = self._disc_isrcs.get(track_number)
+        # Find tracks belonging to the medium of the read disc
+        medium_tracks = self._get_disc_medium_tracks()
+        for position, track in enumerate(medium_tracks, 1):
+            disc_isrc = self._disc_isrcs.get(position)
             if not disc_isrc:
                 continue
             # Add ISRC to track metadata if not already present
@@ -372,6 +373,26 @@ class Album(MetadataItem):
                 if recording_id:
                     mb_isrcs = track.orig_metadata.getall('isrc')
                     self.tagger.isrc_submit_manager.add(track, recording_id, [disc_isrc], mb_isrcs)
+
+    def _get_disc_medium_tracks(self):
+        """Get the tracks belonging to the medium of the read disc.
+
+        Uses disc ID to identify the correct medium.  Falls back to all
+        tracks if the release has only one medium or the disc ID is unknown.
+        """
+        discid = next(iter(self._discids), None)
+        if not discid:
+            return self.tracks
+        # Try to find tracks on the medium matching our disc ID
+        medium_tracks = [track for track in self.tracks if discid in track.metadata.getall('~musicbrainz_discids')]
+        if medium_tracks:
+            return medium_tracks
+        # Disc ID not known to MB — fall back to all tracks if single medium
+        disc_numbers = set(track.metadata.get('discnumber', '1') for track in self.tracks)
+        if len(disc_numbers) <= 1:
+            return self.tracks
+        # Multi-disc but unknown disc ID — can't safely determine medium
+        return []
 
     def get_next_track(self, track):
         try:
