@@ -732,7 +732,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         objects = self.selected_objects
         if not objects:
             return
-        # Find the first file with a valid ISRC
+        # Find the first valid ISRC from selected files
         source_metadata = None
         isrc = None
         for obj in objects:
@@ -741,15 +741,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     isrc = valid_isrc(value)
                     if isrc:
                         source_metadata = obj.metadata
-                        break
-            if not isrc and hasattr(obj, 'files'):
-                for file in obj.files:
-                    for value in file.metadata.getall('isrc'):
-                        isrc = valid_isrc(value)
-                        if isrc:
-                            source_metadata = file.metadata
-                            break
-                    if isrc:
                         break
             if isrc:
                 break
@@ -1936,7 +1927,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.SIMILAR_ITEMS_SEARCH, is_file or is_cluster)
         self.enable_action(MainAction.TRACK_SEARCH, is_file)
         self.enable_action(MainAction.ALBUM_SEARCH, is_cluster)
-        self.enable_action(MainAction.LOOKUP_ISRC, have_files or is_cluster)
+        self.enable_action(MainAction.LOOKUP_ISRC, is_file)
         self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
 
     def enable_action(self, action_id, enabled):

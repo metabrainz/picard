@@ -252,7 +252,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.VIEW_INFO if can_view_info else None,
                 MainAction.PLAY if can_play else None,
                 MainAction.BROWSER_LOOKUP,
-                MainAction.LOOKUP_ISRC,
                 MainAction.SUBMIT_CLUSTER,
                 '-',
                 MainAction.AUTOTAG,
