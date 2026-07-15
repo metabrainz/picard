@@ -748,10 +748,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not isrc:
             return
         self._isrc_lookup_metadata = source_metadata
-        self.tagger.mb_api.lookup_isrc(
-            isrc,
+        self.tagger.mb_api.find_tracks(
             self._on_lookup_isrc_finished,
-            inc=('artist-credits', 'releases'),
+            search=True,
+            advanced_search=True,
+            query=f'isrc:{isrc}',
+            limit=25,
         )
         self.set_statusbar_message(
             N_("Looking up ISRC %(isrc)s …"),
