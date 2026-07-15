@@ -13,7 +13,6 @@ optionally submitting them to MusicBrainz after tagging.
 |--------|-------|--------|-----------|
 | [PICARD-163](https://tickets.metabrainz.org/browse/PICARD-163) | ISRC support in Picard | Open | Primary ticket — use ISRCs for lookup and submission |
 | [PICARD-2961](https://tickets.metabrainz.org/browse/PICARD-2961) | Add a "Lookup by..." menu for files and clusters | Open | UI for ISRC-based lookup |
-| [PICARD-604](https://tickets.metabrainz.org/browse/PICARD-604) | Ripping support (extra mode/tab) | Open | CD ISRC extraction context |
 | [MBS-9367](https://tickets.metabrainz.org/browse/MBS-9367) | Allow submitting ISRCs when adding a release | Open | Server-side submission UX |
 | [MBS-10053](https://tickets.metabrainz.org/browse/MBS-10053) | Add a release-level ISRC editor/submission tool with seeding support | Open | Server-side batch submission |
 | [PICARD-506](https://tickets.metabrainz.org/browse/PICARD-506) | Allow Picard to submit/lookup to services other than AcoustID | Closed | Historical context |
