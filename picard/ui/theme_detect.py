@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2022, 2024-2025 Philipp Wolfer
+# Copyright (C) 2019-2022, 2024-2026 Philipp Wolfer
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021-2024 Laurent Monin
 #
@@ -29,12 +29,7 @@ import subprocess  # noqa: S404
 
 from picard import log
 
-from picard.ui.theme_detect_qtdbus import (
-    DBusThemeDetector,
-    detect_freedesktop_color_scheme_dbus,
-    detect_gnome_color_scheme_dbus,
-    get_dbus_detector,
-)
+from picard.ui.theme_detect_qtdbus import detect_freedesktop_color_scheme_dbus
 
 
 def gsettings_get(key: str) -> str | None:
@@ -57,35 +52,8 @@ def gsettings_get(key: str) -> str | None:
         return None
 
 
-def _try_dbus_detection(detection_method: Callable[[DBusThemeDetector], bool | None], method_name: str) -> bool | None:
-    """
-    Helper function to safely attempt D-Bus theme detection.
-
-    Args:
-        detection_method: The detection method to call on the detector
-        method_name: Name of the method for logging purposes
-
-    Returns:
-        The result of the detection method, or None if detection fails
-    """
-    try:
-        detector = get_dbus_detector()
-        result = detection_method(detector)
-        if result is not None:
-            return result
-    except (RuntimeError, AttributeError, TypeError):
-        log.debug(f"Unable to detect {method_name} with dbus.")
-    return None
-
-
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
-    # Try D-Bus first (secure method)
-    result = _try_dbus_detection(lambda detector: detector.gnome_color_scheme_is_dark(), "gnome color scheme")
-    if result is not None:
-        return result
-
-    # Fallback to subprocess method (legacy support)
     value = gsettings_get("color-scheme")
     if value and "dark" in value.lower():
         log.debug("Detected GNOME color-scheme: dark")
@@ -160,40 +128,6 @@ def detect_lxqt_dark_theme() -> bool:
     return False
 
 
-def detect_freedesktop_color_scheme_dark() -> bool:
-    """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
-    # Try D-Bus first (secure method)
-    result = _try_dbus_detection(
-        lambda detector: detector.freedesktop_portal_color_scheme_is_dark(), "freedesktop color scheme"
-    )
-    if result is not None:
-        return result
-
-    # Fallback to subprocess method (legacy support)
-    try:
-        proc_result = subprocess.run(  # nosec B603 B607
-            [
-                "gsettings",
-                "get",
-                "org.freedesktop.appearance",
-                "color-scheme",
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        value = proc_result.stdout.strip().strip("'\"")
-        if value == "1":
-            log.debug("Detected org.freedesktop.appearance.color-scheme: dark (1)")
-            return True
-        if value == "0":
-            log.debug("Detected org.freedesktop.appearance.color-scheme: light (0)")
-            return False
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        log.debug("gsettings get org.freedesktop.appearance.color-scheme failed.")
-    return False
-
-
 def get_current_desktop_environment() -> str:
     """Detect the current desktop environment (DE) as a lowercase string."""
     de = os.environ.get("XDG_CURRENT_DESKTOP")
@@ -243,14 +177,12 @@ def detect_lxqt_dark_wrapper() -> bool:
     return False
 
 
-def get_linux_dark_mode_strategies() -> list:
+def get_linux_dark_mode_strategies() -> list[Callable[[], bool]]:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
-        # Pure D-Bus methods (will gracefully fail if D-Bus unavailable)
+        # D-Bus based detection using the using org.freedesktop.portal.Settings interface
         detect_freedesktop_color_scheme_dbus,
-        detect_gnome_color_scheme_dbus,
-        # Hybrid methods (D-Bus with subprocess fallback)
-        detect_freedesktop_color_scheme_dark,
+        # Legacy methods (settings based on desktop environment)
         detect_gnome_dark_wrapper,
         detect_kde_dark_wrapper,
         detect_xfce_dark_wrapper,

@@ -32,7 +32,6 @@ import pytest
 from picard.ui.theme_detect_qtdbus import (
     DBusThemeDetector,
     detect_freedesktop_color_scheme_dbus,
-    detect_gnome_color_scheme_dbus,
     get_dbus_detector,
 )
 
@@ -54,18 +53,9 @@ def mock_portal_interface() -> Mock:
 
 
 @pytest.fixture
-def mock_gnome_interface() -> Mock:
-    """Create a mock GNOME dconf interface."""
-    mock_interface = Mock()
-    mock_interface.isValid.return_value = True
-    return mock_interface
-
-
-@pytest.fixture
 def mock_dbus_detector(
     mock_dbus_connection: Mock,
     mock_portal_interface: Mock,
-    mock_gnome_interface: Mock,
 ) -> DBusThemeDetector:
     """Create a DBusThemeDetector with mocked D-Bus components."""
     with (
@@ -78,14 +68,12 @@ def mock_dbus_detector(
         def qdbus_interface_side_effect(*args, **kwargs):
             if "org.freedesktop.portal.Settings" in args:
                 return mock_portal_interface
-            elif "ca.desrt.dconf.Writer" in args:
-                return mock_gnome_interface
             elif "org.freedesktop.DBus" in args:
                 # Mock for service availability checking
                 mock_db_interface = Mock()
                 mock_db_message = Mock()
                 mock_db_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-                mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop", "ca.desrt.dconf"]]
+                mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop"]]
                 mock_db_interface.call.return_value = mock_db_message
                 return mock_db_interface
             return Mock()
@@ -109,16 +97,12 @@ class TestDBusThemeDetector:
     """Test the DBusThemeDetector class."""
 
     @pytest.mark.parametrize(
-        ("connection_connected", "expected_session_bus"),
-        [
-            (True, Mock()),
-            (False, None),
-        ],
+        ("connection_connected"),
+        [True, False],
     )
     def test_initialize_dbus_success(
         self,
         connection_connected: bool,
-        expected_session_bus: Mock | None,
     ) -> None:
         """Test successful D-Bus initialization."""
         with (
@@ -133,7 +117,7 @@ class TestDBusThemeDetector:
             mock_db_interface = Mock()
             mock_db_message = Mock()
             mock_db_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop", "ca.desrt.dconf"]]
+            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop"]]
             mock_db_interface.call.return_value = mock_db_message
 
             # Configure QDBusInterface to return different mocks for different calls
@@ -149,12 +133,10 @@ class TestDBusThemeDetector:
             if connection_connected:
                 assert detector.session_bus is not None
                 assert detector.portal_interface is not None
-                assert detector.gnome_interface is not None
             else:
                 # When connection is not connected, the session_bus is still set but interfaces are None
                 assert detector.session_bus is not None
                 assert detector.portal_interface is None
-                assert detector.gnome_interface is None
 
     def test_initialize_dbus_exception(self) -> None:
         """Test D-Bus initialization with exception."""
@@ -167,7 +149,6 @@ class TestDBusThemeDetector:
             # When an exception occurs during initialization, all interfaces should be None
             assert detector.session_bus is None
             assert detector.portal_interface is None
-            assert detector.gnome_interface is None
 
     @pytest.mark.parametrize(
         ("portal_valid", "message_type", "arguments", "expected"),
@@ -222,113 +203,16 @@ class TestDBusThemeDetector:
         assert result is None
 
     @pytest.mark.parametrize(
-        (
-            "gnome_valid",
-            "color_scheme_message_type",
-            "color_scheme_args",
-            "gtk_theme_message_type",
-            "gtk_theme_args",
-            "expected",
-        ),
+        ("portal_service_available", "expected_portal"),
         [
-            # Color scheme tests - when color scheme returns a valid response
-            (True, QDBusMessage.MessageType.ReplyMessage, ["dark"], QDBusMessage.MessageType.ErrorMessage, [], True),
-            (True, QDBusMessage.MessageType.ReplyMessage, ["light"], QDBusMessage.MessageType.ErrorMessage, [], False),
-            (
-                True,
-                QDBusMessage.MessageType.ReplyMessage,
-                ["default"],
-                QDBusMessage.MessageType.ErrorMessage,
-                [],
-                False,
-            ),
-            # Color scheme fails, fallback to gtk theme
-            (
-                True,
-                QDBusMessage.MessageType.ErrorMessage,
-                [],
-                QDBusMessage.MessageType.ReplyMessage,
-                ["Adwaita-dark"],
-                True,
-            ),
-            (True, QDBusMessage.MessageType.ErrorMessage, [], QDBusMessage.MessageType.ReplyMessage, ["Adwaita"], None),
-            (True, QDBusMessage.MessageType.ErrorMessage, [], QDBusMessage.MessageType.ReplyMessage, ["default"], None),
-            # Invalid interface
-            (False, QDBusMessage.MessageType.ReplyMessage, ["dark"], QDBusMessage.MessageType.ErrorMessage, [], None),
-        ],
-    )
-    def test_detect_gnome_color_scheme_dbus(
-        self,
-        gnome_valid: bool,
-        color_scheme_message_type: QDBusMessage.MessageType,
-        color_scheme_args: list[str],
-        gtk_theme_message_type: QDBusMessage.MessageType,
-        gtk_theme_args: list[str],
-        expected: bool | None,
-        mock_dbus_detector: DBusThemeDetector,
-        mock_gnome_interface: Mock,
-    ) -> None:
-        """Test GNOME color scheme detection via D-Bus."""
-        # Mock service availability to return True for GNOME service
-        with patch.object(mock_dbus_detector, '_is_service_available', return_value=True):
-            mock_gnome_interface.isValid.return_value = gnome_valid
-
-            # Create mock messages for color scheme and gtk theme calls
-            color_scheme_message = Mock()
-            color_scheme_message.type.return_value = color_scheme_message_type
-            color_scheme_message.arguments.return_value = color_scheme_args
-
-            gtk_theme_message = Mock()
-            gtk_theme_message.type.return_value = gtk_theme_message_type
-            gtk_theme_message.arguments.return_value = gtk_theme_args
-
-            # Configure the call method to return different messages based on the argument
-            def call_side_effect(method: str, *args: str) -> Mock:
-                if "color-scheme" in args[0]:
-                    return color_scheme_message
-                else:
-                    return gtk_theme_message
-
-            mock_gnome_interface.call.side_effect = call_side_effect
-
-            result = mock_dbus_detector.gnome_color_scheme_is_dark()
-            assert result == expected
-
-    @pytest.mark.parametrize(
-        ("exception_type",),
-        [
-            (RuntimeError,),
-            (AttributeError,),
-            (TypeError,),
-        ],
-    )
-    def test_detect_gnome_color_scheme_dbus_exception(
-        self,
-        exception_type: type[Exception],
-        mock_dbus_detector: DBusThemeDetector,
-        mock_gnome_interface: Mock,
-    ) -> None:
-        """Test GNOME color scheme detection with exceptions."""
-        mock_gnome_interface.call.side_effect = exception_type("Test exception")
-
-        result = mock_dbus_detector.gnome_color_scheme_is_dark()
-        assert result is None
-
-    @pytest.mark.parametrize(
-        ("portal_service_available", "gnome_service_available", "expected_portal", "expected_gnome"),
-        [
-            (True, True, True, True),  # Both services available
-            (True, False, True, False),  # Only portal available
-            (False, True, False, True),  # Only GNOME available
-            (False, False, False, False),  # Neither service available
+            (True, True),  # Portal service available
+            (False, False),  # Portal service not available
         ],
     )
     def test_detection_with_service_availability(
         self,
         portal_service_available: bool,
-        gnome_service_available: bool,
         expected_portal: bool,
-        expected_gnome: bool,
     ) -> None:
         """Test detection methods when services are not available."""
         with (
@@ -343,15 +227,13 @@ class TestDBusThemeDetector:
             def service_availability_side_effect(service_name: str) -> bool:
                 if "portal" in service_name:
                     return portal_service_available
-                elif "dconf" in service_name:
-                    return gnome_service_available
                 return False
 
             # Mock the D-Bus interface for service listing
             mock_db_interface = Mock()
             mock_db_message = Mock()
             mock_db_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop", "ca.desrt.dconf"]]
+            mock_db_message.arguments.return_value = [["org.freedesktop.portal.Desktop"]]
             mock_db_interface.call.return_value = mock_db_message
 
             # Configure QDBusInterface to return different mocks for different calls
@@ -366,14 +248,6 @@ class TestDBusThemeDetector:
                     mock_portal_message.arguments.return_value = [1]  # Dark theme
                     mock_portal.call.return_value = mock_portal_message
                     return mock_portal
-                elif "ca.desrt.dconf.Writer" in args:
-                    mock_gnome = Mock()
-                    mock_gnome.isValid.return_value = True
-                    mock_gnome_message = Mock()
-                    mock_gnome_message.type.return_value = QDBusMessage.MessageType.ReplyMessage
-                    mock_gnome_message.arguments.return_value = ["dark"]
-                    mock_gnome.call.return_value = mock_gnome_message
-                    return mock_gnome
                 return Mock()
 
             mock_qdbus_interface.side_effect = qdbus_interface_side_effect
@@ -386,10 +260,6 @@ class TestDBusThemeDetector:
                 portal_result = detector.freedesktop_portal_color_scheme_is_dark()
                 assert portal_result == (True if expected_portal else None)
 
-                # Test GNOME detection
-                gnome_result = detector.gnome_color_scheme_is_dark()
-                assert gnome_result == (True if expected_gnome else None)
-
 
 class TestServiceAvailability:
     """Test the _is_service_available method."""
@@ -397,10 +267,10 @@ class TestServiceAvailability:
     @pytest.mark.parametrize(
         ("service_name", "available_services", "expected"),
         [
-            ("org.freedesktop.portal.Desktop", ["org.freedesktop.portal.Desktop", "ca.desrt.dconf"], True),
-            ("ca.desrt.dconf", ["org.freedesktop.portal.Desktop", "ca.desrt.dconf"], True),
-            ("org.freedesktop.portal.Desktop", ["ca.desrt.dconf"], False),
-            ("ca.desrt.dconf", ["org.freedesktop.portal.Desktop"], False),
+            ("org.freedesktop.portal.Desktop", ["org.freedesktop.portal.Desktop", "org.example.Service"], True),
+            ("org.example.Service", ["org.freedesktop.portal.Desktop", "org.example.Service"], True),
+            ("org.freedesktop.portal.Desktop", ["org.example.Service"], False),
+            ("org.example.Service", ["org.freedesktop.portal.Desktop"], False),
             ("org.freedesktop.portal.Desktop", [], False),
         ],
     )
@@ -598,88 +468,9 @@ class TestGlobalFunctions:
             result = detect_freedesktop_color_scheme_dbus()
             assert result is False
 
-    @pytest.mark.parametrize(
-        ("detector_result", "expected"),
-        [
-            (True, True),
-            (False, False),
-            (None, False),
-        ],
-    )
-    def test_detect_gnome_color_scheme_dbus(
-        self,
-        detector_result: bool | None,
-        expected: bool,
-    ) -> None:
-        """Test the global detect_gnome_color_scheme_dbus function."""
-        with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
-            mock_detector = Mock()
-            mock_detector.gnome_color_scheme_is_dark.return_value = detector_result
-            mock_get_detector.return_value = mock_detector
-
-            result = detect_gnome_color_scheme_dbus()
-            assert result == expected
-
-    @pytest.mark.parametrize(
-        ("exception_type",),
-        [
-            (RuntimeError,),
-            (AttributeError,),
-            (TypeError,),
-        ],
-    )
-    def test_detect_gnome_color_scheme_dbus_exception(
-        self,
-        exception_type: type[Exception],
-    ) -> None:
-        """Test detect_gnome_color_scheme_dbus with exceptions."""
-        with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector", side_effect=exception_type("Test exception")):
-            result = detect_gnome_color_scheme_dbus()
-            assert result is False
-
 
 class TestIntegration:
     """Integration tests for the D-Bus theme detection."""
-
-    @pytest.mark.parametrize(
-        ("portal_dark", "gnome_dark", "expected_dark"),
-        [
-            (True, False, True),  # Portal takes precedence
-            (False, True, False),  # Portal takes precedence
-            (None, True, True),  # Fallback to GNOME
-            (None, False, False),  # Fallback to GNOME
-            (None, None, False),  # No detection
-        ],
-    )
-    def test_detection_priority(
-        self,
-        portal_dark: bool | None,
-        gnome_dark: bool | None,
-        expected_dark: bool,
-    ) -> None:
-        """Test that freedesktop portal detection takes priority over GNOME detection."""
-        # Mock the detector methods to return the expected values
-        with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
-            mock_detector = Mock()
-
-            # Configure the detector methods to return the test values
-            def freedesktop_side_effect():
-                return portal_dark
-
-            def gnome_side_effect():
-                return gnome_dark
-
-            mock_detector.freedesktop_portal_color_scheme_is_dark.side_effect = freedesktop_side_effect
-            mock_detector.gnome_color_scheme_is_dark.side_effect = gnome_side_effect
-            mock_get_detector.return_value = mock_detector
-
-            # Test portal detection
-            portal_result = detect_freedesktop_color_scheme_dbus()
-            assert portal_result == (portal_dark is True)
-
-            # Test GNOME detection
-            gnome_result = detect_gnome_color_scheme_dbus()
-            assert gnome_result == (gnome_dark is True)
 
     def test_dbus_message_types(self) -> None:
         """Test handling of different D-Bus message types."""

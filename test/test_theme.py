@@ -165,14 +165,12 @@ def test_detect_linux_dark_mode_integration(
         patch.dict(os.environ, {"XDG_CURRENT_DESKTOP": de}, clear=True),
         patch("pathlib.Path.home", return_value=kde_config_dir.parent),
         patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings,
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("picard.ui.theme_detect.detect_freedesktop_color_scheme_dbus", return_value=False),
-        patch("picard.ui.theme_detect.detect_gnome_color_scheme_dbus", return_value=False),
+        patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector,
+        patch("picard.ui.theme_detect_qtdbus.detect_freedesktop_color_scheme_dbus", return_value=False),
     ):
         # Mock D-Bus detector to return None (force fallback to subprocess)
         mock_detector = Mock()
         mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
-        mock_detector.gnome_color_scheme_is_dark.return_value = None
         mock_get_detector.return_value = mock_detector
 
         def gsettings_get_side_effect(key):
@@ -196,22 +194,22 @@ def test_detect_linux_dark_mode_integration(
 def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
     # If freedesktop returns dark, it should take priority over others
     with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
+        patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector,
         patch("subprocess.run") as mock_run,
     ):
         # Mock D-Bus to fail so we test subprocess fallback
-        with patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector:
+        with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
             # Mock D-Bus detector to raise exception (simulating D-Bus unavailable)
             mock_get_detector.side_effect = RuntimeError("D-Bus unavailable")
 
             with patch("subprocess.run") as mock_run:
-                # First call: freedesktop (returns '1' for dark)
+                # First call: gnome gsettings
                 # Other calls: return '' (should not be called, but if so, not dark)
-                mock_run.return_value.stdout = "1"
+                mock_run.return_value.stdout = "dark"
                 mock_run.return_value.returncode = 0
 
                 # Test the specific function that should work with subprocess fallback
-                result = theme_detect.detect_freedesktop_color_scheme_dark()
+                result = theme_detect.detect_gnome_color_scheme_dark()
                 assert result is True
 
 
@@ -307,49 +305,6 @@ def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: 
             assert theme_detect.detect_lxqt_dark_theme() is False
 
 
-@pytest.mark.parametrize(
-    ("gsettings_value", "expected"),
-    [
-        ("1", True),
-        ("0", False),
-        ("", False),
-    ],
-)
-def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool) -> None:
-    with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("subprocess.run") as mock_run,
-    ):
-        # Mock D-Bus detector to return None (force fallback to subprocess)
-        mock_detector = Mock()
-        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
-        mock_get_detector.return_value = mock_detector
-
-        mock_run.return_value.stdout = gsettings_value
-        mock_run.return_value.returncode = 0
-        assert theme_detect.detect_freedesktop_color_scheme_dark() is expected
-
-
-@pytest.mark.parametrize(
-    "side_effect",
-    [
-        FileNotFoundError(),
-        subprocess.CalledProcessError(1, "gsettings"),
-    ],
-)
-def test_freedesktop_color_scheme_detection_failure(side_effect) -> None:
-    with (
-        patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector,
-        patch("subprocess.run", side_effect=side_effect),
-    ):
-        # Mock D-Bus detector to return None (force fallback to subprocess)
-        mock_detector = Mock()
-        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
-        mock_get_detector.return_value = mock_detector
-
-        assert theme_detect.detect_freedesktop_color_scheme_dark() is False
-
-
 # Shared expected dark palette colors (should match DARK_PALETTE_COLORS in theme.py)
 EXPECTED_DARK_PALETTE_COLORS = {
     QtGui.QPalette.ColorRole.Window: QtGui.QColor(51, 51, 51),
@@ -431,15 +386,15 @@ def assert_palette_not_dark(palette, expected_colors):
 
 
 @pytest.mark.parametrize(
-    ("already_dark_theme", "dark_mode", "expect_dark_palette"),
+    ("already_dark_theme", "system_theme", "expect_dark_palette"),
     [
-        (True, True, False),  # Already dark, detection True: do NOT override
-        (True, False, False),  # Already dark, detection False: do NOT override
-        (False, True, True),  # Not dark, detection True: override
-        (False, False, False),  # Not dark, detection False: do NOT override
+        (True, theme_mod.UiTheme.DARK, False),  # Already dark, detection dark: do NOT override
+        (True, theme_mod.UiTheme.LIGHT, False),  # Already dark, detection light: do NOT override
+        (False, theme_mod.UiTheme.DARK, True),  # Not dark, detection dark: override
+        (False, theme_mod.UiTheme.LIGHT, False),  # Not dark, detection light: do NOT override
     ],
 )
-def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, expect_dark_palette):
+def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, system_theme, expect_dark_palette):
     # Simulate Linux (not Windows, not macOS, not Haiku)
     monkeypatch.setattr(theme_mod, "IS_WIN", False)
     monkeypatch.setattr(theme_mod, "IS_MACOS", False)
@@ -448,9 +403,9 @@ def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, ex
     config_mock = MagicMock()
     config_mock.setting = {"ui_theme": "default"}
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
-    # Patch _detect_linux_dark_mode to return dark_mode
+    # Patch get_system_theme to return dark_mode
     theme = theme_mod.BaseTheme()
-    theme._detect_linux_dark_mode = lambda: dark_mode
+    theme.get_system_theme = lambda app: system_theme
 
     # Mock QGuiApplication.styleHints() to return None to force manual fallback
     monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
@@ -613,38 +568,3 @@ def test_de_specific_wrappers_only_run_for_matching_de_param(args):
         else:
             mock_detect.assert_not_called()
             assert result is False
-
-
-@pytest.mark.parametrize(
-    ("already_dark_theme", "linux_dark_mode_detected", "expect_dark_palette"),
-    [
-        (True, True, False),  # Already dark, detection True: do NOT override
-        (True, False, False),  # Already dark, detection False: do NOT override
-        (False, True, True),  # Not dark, detection True: override
-        (False, False, False),  # Not dark, detection False: do NOT override
-    ],
-)
-def test_linux_dark_palette_override_only_if_not_already_dark(
-    monkeypatch, already_dark_theme, linux_dark_mode_detected, expect_dark_palette
-):
-    monkeypatch.setattr(theme_mod, "IS_WIN", False)
-    monkeypatch.setattr(theme_mod, "IS_MACOS", False)
-    monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
-    config_mock = MagicMock()
-    config_mock.setting = {"ui_theme": "default"}
-    monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
-    # Force manual fallback for palette changes
-    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
-    app = DummyApp(already_dark_theme)
-    theme = theme_mod.BaseTheme()
-    theme._detect_linux_dark_mode = lambda: linux_dark_mode_detected
-    theme.setup(app)
-    palette = app._palette
-    if expect_dark_palette:
-        assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
-    else:
-        # The Window color should remain the unique color if not overridden
-        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
-        assert window_color == QtGui.QColor(123, 123, 123), (
-            f"Palette should not be overridden, got {window_color.getRgb()}"
-        )
