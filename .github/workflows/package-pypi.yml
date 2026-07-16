@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CODESIGN: 0
+      UV_FROZEN: 1
     steps:
     - uses: actions/checkout@v7
       with:
@@ -21,25 +22,24 @@ jobs:
       with:
         python-version: '3.14'
         cache: 'pip'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v8.2.0
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
         sudo apt-get install libegl1 libgit2-dev gettext
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade .
-        pip install --upgrade build pytest setuptools
+      run: uv sync
     - name: Patch build version
-      run: ./scripts/tools/patch-version.sh
+      run: uv run ./scripts/tools/patch-version.sh
     - name: Run tests
       timeout-minutes: 30
-      run: pytest
+      run: uv run pytest --verbose
     - name: Build Python source distribution
       run: |
         git clean -dfx
-        python -m build --sdist
+        uv build --sdist
     - name: Prepare GPG signing key
       run: |
         if [ -n "$CODESIGN_GPG_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
@@ -68,8 +68,7 @@ jobs:
         CODESIGN_GPG_IDENTITY: 68990DD0B1EDC129B856958167997E14D563DA7C
     - name: Cleanup
       if: env.CODESIGN == '1'
-      run: |
-        rm -rf "$HOME/.gnupg"
+      run: rm -rf "$HOME/.gnupg"
     - name: Upload artifacts
       uses: actions/upload-artifact@v7
       with:
@@ -83,6 +82,8 @@ jobs:
       matrix:
         os: [macos-14, windows-2022]
         python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
+    env:
+      UV_FROZEN: 1
     steps:
     - uses: actions/checkout@v7
       with:
@@ -94,6 +95,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v8.2.0
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
@@ -110,19 +113,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install libegl1 libgit2-dev gettext
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade .
-        pip install --upgrade build pytest setuptools
+      run: uv sync
     - name: Patch build version
-      run: ./scripts/tools/patch-version.sh
+      run: uv run bash -c "./scripts/tools/patch-version.sh"
     - name: Run tests
       timeout-minutes: 30
-      run: |
-        pytest
+      run: uv run pytest --verbose
     - name: Build Python binary distribution
-      run: |
-        python -m build --wheel
+      run: uv build --wheel
     - name: Upload artifacts
       uses: actions/upload-artifact@v7
       with:
