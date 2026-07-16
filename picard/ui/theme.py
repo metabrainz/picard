@@ -185,10 +185,10 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
 def get_accent_color_from_palette(palette: QtGui.QPalette) -> QtGui.QColor:
     """Returns the accent color from the palette."""
     if hasattr(QtGui.QPalette.ColorRole, 'Accent'):
-        accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Accent)
+        color_role = QtGui.QPalette.ColorRole.Accent
     else:
-        accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
-    return accent_color
+        color_role = QtGui.QPalette.ColorRole.Highlight
+    return palette.color(QtGui.QPalette.ColorGroup.Active, color_role)
 
 
 def apply_accent_color_to_palette(palette: QtGui.QPalette, accent_color: QtGui.QColor) -> None:
@@ -257,9 +257,8 @@ class BaseTheme:
 
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
         # Iterate through all registered strategies
-        for strategy in self._dark_mode_strategies:
-            if strategy():
-                return UiTheme.DARK
+        if any(strategy() for strategy in self._dark_mode_strategies):
+            return UiTheme.DARK
 
         if palette_is_dark(app.palette()):
             log.debug("No system dark mode detected, but palette is already dark.")
@@ -282,10 +281,7 @@ class BaseTheme:
 
     @property
     def is_dark_theme(self) -> bool:
-        if self._applied_theme == UiTheme.DARK:
-            return True
-        else:
-            return False
+        return self._applied_theme == UiTheme.DARK
 
     @property
     def accent_color(self) -> QtGui.QColor | None:  # pylint: disable=no-self-use
