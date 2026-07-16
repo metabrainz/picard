@@ -559,11 +559,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def set_profiles_button_and_highlight(self, page):
         option_group = profile_groups_group_from_page(page)
-        enabled = False
-        if option_group:
-            working_profiles, _ = self.get_working_profile_data()
-            enabled = any(p['enabled'] for p in working_profiles)
-        self.ui.attached_profiles_button.setEnabled(enabled)
+        defined_profiles = self.get_page('profiles')._clean_and_get_all_profiles()
+        # Only enable the dialog button if there are profiles defined and an option group on the page
+        self.ui.attached_profiles_button.setEnabled(bool(option_group) and bool(defined_profiles))
         self.update_profile_save_warning(page)
 
     def update_profile_save_warning(self, page):
@@ -883,8 +881,8 @@ class AttachedProfilesDialog(PicardDialog):
 
         self.setWindowTitle(_("Profiles Attached to Options in %s Section") % self.option_group['title'])
 
-        # Only show enabled profiles
-        self._enabled_profiles = [p for p in self.profile_page._clean_and_get_all_profiles() if p['enabled']]
+        # Show all profiles because even disabled profiles can be attached to options
+        self._enabled_profiles = self.profile_page._clean_and_get_all_profiles()
 
         self._populate_profile_list()
         self.ui.profile_list.setIndentation(0)
@@ -921,7 +919,11 @@ class AttachedProfilesDialog(PicardDialog):
         marker_height = fm.boundingRect(self.MARKER_ACTIVE).height()
         marker_size = QtCore.QSize(marker_width, marker_height)
         for profile in self._enabled_profiles:
-            item = QtWidgets.QTreeWidgetItem([self.MARKER_INACTIVE, profile['title']])
+            # Identify profiles that are disabled but still attached to options with the "(disabled)" suffix,
+            # but keep them selectable so users can manage their attached options from the page.
+            item = QtWidgets.QTreeWidgetItem(
+                [self.MARKER_INACTIVE, profile['title'] + (_(" (disabled)") if not profile['enabled'] else "")]
+            )
             item.setData(0, QtCore.Qt.ItemDataRole.UserRole, profile['id'])
             item.setSizeHint(0, marker_size)
             self.ui.profile_list.addTopLevelItem(item)
@@ -985,13 +987,6 @@ class AttachedProfilesDialog(PicardDialog):
             if in_count == len(selected_ids):
                 return QtCore.Qt.CheckState.Checked
             if in_count > 0:
-                return QtCore.Qt.CheckState.PartiallyChecked
-        # Check if any other enabled profile has it
-        selected_set = set(selected_ids)
-        for profile in self._enabled_profiles:
-            if profile['id'] in selected_set:
-                continue
-            if pkey in self.profile_page.profile_settings.get(profile['id'], {}):
                 return QtCore.Qt.CheckState.PartiallyChecked
         return QtCore.Qt.CheckState.Unchecked
 
