@@ -1,9 +1,38 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b7 - 2026-07-16
+
+### Bugfixes
+- [PICARD-3330](https://tickets.metabrainz.org/browse/PICARD-3330) - Config upgrade hooks do not update profile overrides for value transforms
+- [PICARD-3331](https://tickets.metabrainz.org/browse/PICARD-3331) - Encoding error when saving file metadata
+- [PICARD-3332](https://tickets.metabrainz.org/browse/PICARD-3332) - Enums are not stored as values in option profiles
+- [PICARD-3333](https://tickets.metabrainz.org/browse/PICARD-3333) - Cover art provider plugin option pages cannot have profile highlights
+- [PICARD-3334](https://tickets.metabrainz.org/browse/PICARD-3334) - Enabling track title translation always uses the recording title
+- [PICARD-3336](https://tickets.metabrainz.org/browse/PICARD-3336) - Can not go back to main app window after viewing Picard > About Picard
+- [PICARD-3338](https://tickets.metabrainz.org/browse/PICARD-3338) - `PICARD_PLUGIN_REGISTRY_URL` env var ignored when official registry cache exists
+- [PICARD-3339](https://tickets.metabrainz.org/browse/PICARD-3339) - Plugin boolean options show up in quick settings, but are not usable as such
+- [PICARD-3342](https://tickets.metabrainz.org/browse/PICARD-3342) - Profile highlights broken if same option name is used by different plugins
+- [PICARD-3344](https://tickets.metabrainz.org/browse/PICARD-3344) - Crash when refreshing collections list
+- [PICARD-3345](https://tickets.metabrainz.org/browse/PICARD-3345) - Exception when reading `SYLT` tag with newline
+
+### New Feature
+- [PICARD-30](https://tickets.metabrainz.org/browse/PICARD-30) - Add `_artistcomment` and `_albumartistcomment` variables
+- [PICARD-3328](https://tickets.metabrainz.org/browse/PICARD-3328) - Support TOML-based exportable/importable profiles
+- [PICARD-3346](https://tickets.metabrainz.org/browse/PICARD-3346) - Cyanrip log support
+
+### Improvements
+- [PICARD-2673](https://tickets.metabrainz.org/browse/PICARD-2673) - Standardize artist name variations by default
+- [PICARD-2845](https://tickets.metabrainz.org/browse/PICARD-2845) - Add wizard illustration to first run information dialog and setup wizard
+- [PICARD-2999](https://tickets.metabrainz.org/browse/PICARD-2999) - Automatic update check should be opt-in
+- [PICARD-3335](https://tickets.metabrainz.org/browse/PICARD-3335) - Replace `picard-plugins` with `picard-cli` subcommand architecture
+- [PICARD-3337](https://tickets.metabrainz.org/browse/PICARD-3337) - Add a `picard-cli plugins compile-ui` command
+- [PICARD-3343](https://tickets.metabrainz.org/browse/PICARD-3343) - Allow starting the setup wizard again from the help menu
+- [PICARD-3347](https://tickets.metabrainz.org/browse/PICARD-3347) - Add a plugin v3 extension point to register a custom CD ripping log parser
+
+
 ## Version 3.0.0b5 - 2026-06-30
 
 ### Bugfixes
-
 - [PICARD-507](https://tickets.metabrainz.org/browse/PICARD-507) - Wrong matching to already loaded release
 - [PICARD-1696](https://tickets.metabrainz.org/browse/PICARD-1696) - No stable sort order for cover art saved to ID3
 - [PICARD-3308](https://tickets.metabrainz.org/browse/PICARD-3308) - macOS: System locale detection fails
@@ -11,7 +40,6 @@
 - [PICARD-3327](https://tickets.metabrainz.org/browse/PICARD-3327) - MBID auto-loading and auto-analyze do not work after loading session with "No auto-matching on load" enabled
 
 ### Improvements
-
 - [PICARD-3080](https://tickets.metabrainz.org/browse/PICARD-3080) - Consider track no. when matching files to AcoustID results
 - [PICARD-3092](https://tickets.metabrainz.org/browse/PICARD-3092) - Support reading duration from 3GP files (.m4a)
 - [PICARD-3138](https://tickets.metabrainz.org/browse/PICARD-3138) - Make user-collections retrieval optional, similar to genres and ratings
