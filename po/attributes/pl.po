@@ -19,11 +19,12 @@
 # Michal77 <michal_wilk@poczta.fm>, 2025.
 # PS <weblate@wp.pl>, 2025.
 # Echelon <weblate@wp.pl>, 2025.
+# Denatura <kowalskaewelina34@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-10-13 10:02+0000\n"
-"Last-Translator: Echelon <weblate@wp.pl>\n"
+"PO-Revision-Date: 2026-07-14 23:12+0000\n"
+"Last-Translator: Denatura <kowalskaewelina34@gmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/pl/>\n"
 "Language: pl\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -61,7 +62,7 @@ msgstr ""
 #: DB:medium_format/name:205
 msgctxt "medium_format"
 msgid "10\" Acetate"
-msgstr ""
+msgstr "10-calowa płyta acetatowa"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -76,7 +77,7 @@ msgstr "10-calowy winyl"
 #: DB:medium_format/name:206
 msgctxt "medium_format"
 msgid "12\" Acetate"
-msgstr ""
+msgstr "12-calowa płyta acetatowa"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -111,7 +112,7 @@ msgstr "Dyskietka 5,25 cala"
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr ""
+msgstr "7-calowa płyta acetatowa"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -149,12 +150,9 @@ msgid "8cm CD+G"
 msgstr "8cm CD+G"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "8-centymetrowa płyta kompaktowa"
+msgstr "8-centymetrowa płyta CD"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -384,20 +382,14 @@ msgid "A Dorian"
 msgstr "A w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1070
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Locrian"
-msgstr "A w skali doryckiej"
+msgstr "A w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1063
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "A w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
@@ -407,7 +399,7 @@ msgstr "A w skali miksolidyjskiej"
 #: DB:work_attribute_type_allowed_value/value:1056
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Phrygian"
-msgstr ""
+msgstr "A w skali frygijskiej"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -428,6 +420,11 @@ msgid ""
 "being played. Programs/programmes are most often made available for music "
 "festivals and for stage and classical performances."
 msgstr ""
+"Broszura rozdawana lub sprzedawana uczestnikom wydarzenia, zawierająca "
+"informacje takie jak harmonogram, dane dotyczące wykonawców oraz szczegóły "
+"dotyczące wykonywanej muzyki. Takie programy są najczęściej udostępniane "
+"podczas festiwali muzycznych oraz przedstawień teatralnych i koncertów "
+"muzyki klasycznej."
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -517,15 +514,14 @@ msgstr ""
 
 #. name:Slipcase
 #: DB:release_packaging/description:122
-#, fuzzy
 msgctxt "release_packaging"
 msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
 "Pudełko o czterech lub pięciu bokach, zwykle wykonane z tektury lub "
-"plastiku, otaczające drugie wewnętrzne opakowanie, na przykład pudełko na "
-"biżuterię."
+"plastiku, otaczające drugie wewnętrzne opakowanie, na przykład opakowanie "
+"typu jewel."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -604,6 +600,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
+"Logo stworzone specjalnie na potrzeby konkretnego wydarzenia i "
+"wykorzystywane wyłącznie w tym celu, a nie jako logo cyklu wydarzeń (takie "
+"jak logo festiwalu, które jest ponownie wykorzystywane przez wiele lat)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -788,7 +787,6 @@ msgstr ""
 
 #. name:Expunged
 #: DB:release_status/description:38
-#, fuzzy
 msgctxt "release_status"
 msgid ""
 "A previously official release that was actively expunged from an artist or "
@@ -801,7 +799,7 @@ msgstr ""
 "artysty lub wytwórni płytowej. Nie należy go używać w przypadkach, gdy "
 "wydanie zostało właśnie wycofane, musi istnieć znany zamiar artysty lub "
 "wytwórni, aby odrzucić wydanie i nie uważać go już za część swojej "
-"dyskografii. Jeśli nie jest to jasne, użyj Withdrawn."
+"dyskografii. Jeśli nie jest to jasne, użyj Wycofane."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -823,6 +821,9 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
+"Owijka ochronna (zwykle „wewnętrzna owijka”) otaczająca nośnik (zazwyczaj "
+"płytę winylową, ale czasami płytę CD), często z nadrukowanymi informacjami "
+"lub obrazkami."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -910,7 +911,6 @@ msgstr "Seria wydarzeń."
 
 #. name:Run
 #: DB:series_type/description:9
-#, fuzzy
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
 msgstr "Seria przedstawień tego samego pokazu w tym samym miejscu."
@@ -968,23 +968,19 @@ msgstr "Seria wydań."
 
 #. name:Series award
 #: DB:series_type/description:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of recordings honoured by the same award."
 msgctxt "series_type"
 msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
-msgstr "Seria nagrań wyróżnionych tą samą nagrodą."
+msgstr ""
+"Seria cykli (takich jak podcasty czy festiwale), które zostały wyróżnione tą "
+"samą nagrodą."
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Seria wydarzeń."
+msgstr "Seria cykli."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -1000,10 +996,9 @@ msgstr "Seria utworów stanowiąca katalog kompozycji klasycznych."
 
 #. name:Work series
 #: DB:series_type/description:4
-#, fuzzy
 msgctxt "series_type"
 msgid "A series of works."
-msgstr "Seria prac."
+msgstr "Seria dzieł."
 
 #. name:Club
 #: DB:place_type/description:42
@@ -1465,7 +1460,6 @@ msgstr ""
 
 #. name:Pseudo-Release
 #: DB:release_status/description:4
-#, fuzzy
 msgctxt "release_status"
 msgid ""
 "An alternate version of a release where the titles have been changed. These "
@@ -1474,7 +1468,7 @@ msgid ""
 msgstr ""
 "Alternatywna wersja wydania, w której zmieniono tytuły. Nie odpowiadają one "
 "żadnemu prawdziwemu wydaniu i powinny być powiązane z oryginalnym wydaniem "
-"za pomocą relacji transl(iter)ation."
+"za pomocą relacji \"transl(iter)ation\"."
 
 #. name:Aria
 #: DB:work_type/description:1
@@ -1626,7 +1620,7 @@ msgstr ""
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
-msgstr ""
+msgstr "Wydanie zawierające wywiad zawiera wywiad, zazwyczaj z artystą."
 
 #. name:Withdrawn
 #: DB:release_status/description:5
@@ -1683,6 +1677,8 @@ msgid ""
 "An organization that mostly concentrates on broadcasting audio or video "
 "content, be it on television, radio or the internet."
 msgstr ""
+"Organizacja, która zajmuje się głównie nadawaniem treści audio lub wideo, "
+"zarówno w telewizji, radiu, jak i w Internecie."
 
 #. name:Creative Agency
 #: DB:label_type/description:11
@@ -1726,7 +1722,6 @@ msgstr ""
 
 #. name:Étude
 #: DB:work_type/description:20
-#, fuzzy
 msgctxt "work_type"
 msgid ""
 "An étude is an instrumental musical composition, most commonly of "
@@ -1865,7 +1860,7 @@ msgstr ""
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "Uczestnictwo"
 
 #: DB:release_group_secondary_type/name:11
 msgctxt "release_group_secondary_type"
@@ -1885,7 +1880,7 @@ msgstr "Audiobook"
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "Automatyczny"
 
 #: DB:event_type/name:7
 msgctxt "event_type"
@@ -1995,28 +1990,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "B w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1071
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "A w skali doryckiej"
+msgstr "B w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1064
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "B w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "B w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1057
 msgctxt "work_attribute_type_allowed_value"
@@ -2407,7 +2396,7 @@ msgstr ""
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "Pudełko"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -2425,12 +2414,9 @@ msgid "Broadcast"
 msgstr "Audycja"
 
 #: DB:label_type/name:12
-#, fuzzy
-#| msgctxt "release_group_primary_type"
-#| msgid "Broadcast"
 msgctxt "label_type"
 msgid "Broadcaster"
-msgstr "Audycja"
+msgstr "Stacja telewizyjna"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
@@ -2496,28 +2482,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "C w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1065
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "A w skali doryckiej"
+msgstr "C w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1058
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "C w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "C w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1051
 msgctxt "work_attribute_type_allowed_value"
@@ -2658,7 +2638,7 @@ msgstr ""
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
 msgid "Cardboard/Paper Sleeve"
-msgstr ""
+msgstr "Osłonka z tektury/papieru"
 
 #: DB:medium_format/name:9
 msgctxt "medium_format"
@@ -2678,7 +2658,7 @@ msgstr "Kaseta magnetofonowa"
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr ""
+msgstr "Pudełko na kasetę"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
@@ -2708,7 +2688,7 @@ msgstr ""
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr ""
+msgstr "Postać"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
@@ -2742,28 +2722,26 @@ msgstr "Miasto"
 
 #. name:City
 #: DB:area_type/description:3
-#, fuzzy
 msgctxt "area_type"
 msgid "City is used for settlements of any size, including towns and villages."
-msgstr "Miastem określa się osady dowolnej wielkości, w tym miasta i wsie."
+msgstr ""
+"Termin „miasto” odnosi się do wszelkich osad, niezależnie od ich wielkości, "
+"w tym do miasteczek i wsi."
 
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
-msgstr ""
+msgstr "Etui typu clamshell"
 
 #: DB:place_type/name:42
 msgctxt "place_type"
 msgid "Club"
-msgstr ""
+msgstr "Klub"
 
 #: DB:event_type/name:40
-#, fuzzy
-#| msgctxt "release_group_secondary_type"
-#| msgid "Compilation"
 msgctxt "event_type"
 msgid "Competition"
-msgstr "Kompilacja"
+msgstr "Konkurs"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -2773,7 +2751,7 @@ msgstr "Kompilacja"
 #: DB:event_type/name:1
 msgctxt "event_type"
 msgid "Concert"
-msgstr ""
+msgstr "Koncert"
 
 #: DB:place_type/name:44
 msgctxt "place_type"
@@ -2893,28 +2871,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "D w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1066
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Locrian"
-msgstr "A w skali doryckiej"
+msgstr "D w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1059
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "D w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "D w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1052
 msgctxt "work_attribute_type_allowed_value"
@@ -2984,7 +2956,7 @@ msgstr "DVD-Audio"
 #: DB:medium_format/name:92
 msgctxt "medium_format"
 msgid "DVD-R Video"
-msgstr ""
+msgstr "DVD-R Video"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
@@ -2994,7 +2966,7 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:medium_format/name:70
 msgctxt "medium_format"
@@ -3190,12 +3162,12 @@ msgstr ""
 #: DB:release_packaging/name:17
 msgctxt "release_packaging"
 msgid "Digibook"
-msgstr ""
+msgstr "Digibook"
 
 #: DB:release_packaging/name:89
 msgctxt "release_packaging"
 msgid "Digifile"
-msgstr ""
+msgstr "Digifile"
 
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
@@ -3443,28 +3415,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "E w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1067
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Locrian"
-msgstr "A w skali doryckiej"
+msgstr "E w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1060
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "E w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "E w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1053
 msgctxt "work_attribute_type_allowed_value"
@@ -3519,12 +3485,12 @@ msgstr "EP"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
-msgstr ""
+msgstr "Dysk Edisona"
 
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "Placówka oświatowa"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -3534,7 +3500,7 @@ msgstr "Instrument elektroniczny"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
-msgstr ""
+msgstr "CD-Extra"
 
 #. name:Ultra HD Blu-ray
 #: DB:medium_format/description:211
@@ -3639,7 +3605,7 @@ msgstr ""
 #: DB:release_status/name:38
 msgctxt "release_status"
 msgid "Expunged"
-msgstr ""
+msgstr "Usunięte"
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -3649,28 +3615,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "F w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "A w skali doryckiej"
+msgstr "F w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1061
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "F w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr "F w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1054
 msgctxt "work_attribute_type_allowed_value"
@@ -3770,17 +3730,17 @@ msgstr ""
 #: DB:event_type/name:2
 msgctxt "event_type"
 msgid "Festival"
-msgstr ""
+msgstr "Festiwal"
 
 #: DB:series_type/name:8
 msgctxt "series_type"
 msgid "Festival"
-msgstr ""
+msgstr "Festiwal"
 
 #: DB:place_type/name:45
 msgctxt "place_type"
 msgid "Festival stage"
-msgstr ""
+msgstr "Scena festiwalowa"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -3814,19 +3774,18 @@ msgstr ""
 
 #. name:Phonograph record
 #: DB:medium_format/description:73
-#, fuzzy
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically."
 msgstr ""
 "Płaskie płyty z rowkami używane w fonografach/gramofonach. W przypadku płyt "
-"szelakowych i winylowych używaj ich specjalnie."
+"szelakowych i winylowych należy używać właśnie tej opcji."
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr ""
+msgstr "Pocztówka dźwiękowa"
 
 #. name:Flexi-disc
 #: DB:medium_format/description:51
@@ -3835,19 +3794,19 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with "
 "a molded-in groove, designed to be playable on a normal phonograph turntable."
 msgstr ""
-"Flexi-disc to płyty gramofonowe wykonane z cienkiej, elastycznej płyty "
-"winylowej z wytłoczonym rowkiem, zaprojektowane tak, aby można je było "
+"Pocztówki dźwiękowe to płyty gramofonowe wykonane z cienkiej, elastycznej "
+"płyty winylowej z wytłoczonym rowkiem, zaprojektowane tak, aby można je było "
 "odtwarzać na normalnym gramofonie."
 
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "Dyskietka"
 
 #: DB:event_art_archive.art_type/name:6
 msgctxt "event_art_type"
 msgid "Flyer"
-msgstr ""
+msgstr "Ulotka"
 
 #. name:Not applicable
 #: DB:gender/description:4
@@ -3882,28 +3841,22 @@ msgstr "Przód"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "G w skali doryckiej"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "A w skali doryckiej"
+msgstr "G w skali lokrycka"
 
 #: DB:work_attribute_type_allowed_value/value:1062
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Lydian"
-msgstr "A w skali miksolidyjskiej"
+msgstr "G w skali lidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr "G w skali miksolidyjskiej"
 
 #: DB:work_attribute_type_allowed_value/value:1055
 msgctxt "work_attribute_type_allowed_value"
@@ -3968,7 +3921,7 @@ msgstr ""
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
 msgid "Gatefold Cover"
-msgstr ""
+msgstr "Okładka typu gatefold"
 
 #: DB:work_attribute_type_allowed_value/value:911
 msgctxt "work_attribute_type_allowed_value"
@@ -4180,9 +4133,6 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
 msgstr "HDS-ZAMP ID"
@@ -4190,7 +4140,7 @@ msgstr "HDS-ZAMP ID"
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
-msgstr ""
+msgstr "HFA ID"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
@@ -4275,7 +4225,7 @@ msgstr ""
 #: DB:medium_format/name:75
 msgctxt "medium_format"
 msgid "HiPac"
-msgstr ""
+msgstr "HiPac"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -4614,14 +4564,10 @@ msgstr ""
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
 msgstr ""
-"Identyfikator nikaraguańskiego stowarzyszenia praw autorskich twórców "
-"NICAUTOR"
+"Identyfikator bułgarskiego stowarzyszenia praw autorskich twórców MUSICAUTOR"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4758,7 +4704,7 @@ msgstr ""
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr ""
+msgstr "Identyfikator hongkońskiego stowarzyszenia praw autorskich twórców CASH"
 
 #. name:ARTISJUS ID
 #: DB:work_attribute_type/description:48
@@ -4789,7 +4735,7 @@ msgstr "ID indonezyjskiego stowarzyszenia praw autorskich twórców WAMI"
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr ""
+msgstr "Identyfikator Międzynarodowego Przedsiębiorstwa ds. Praw Autorskich"
 
 #. name:IMRO ID
 #: DB:work_attribute_type/description:52
@@ -4993,13 +4939,10 @@ msgstr ""
 
 #. name:AllTrack ID
 #: DB:work_attribute_type/description:216
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the US rights society ASCAP"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society AllTrack"
 msgstr ""
-"Identyfikator amerykańskiego stowarzyszenia praw autorskich twórców ASCAP"
+"Identyfikator amerykańskiego stowarzyszenia praw autorskich twórców AllTrack"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7
@@ -5115,16 +5058,15 @@ msgstr ""
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "Muzyka ilustracyjna"
 
 #. name:Incidental music
 #: DB:work_type/description:30
-#, fuzzy
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre play."
 msgstr ""
-"Muzyka rozrywkowa to muzyka napisana jako tło (zazwyczaj) do sztuki "
+"Muzyka ilustracyjna to muzyka napisana jako tło (zazwyczaj) dla sztuki "
 "teatralnej."
 
 #: DB:area_type/name:9
@@ -5218,7 +5160,7 @@ msgstr ""
 #: DB:area_type/name:6
 msgctxt "area_type"
 msgid "Island"
-msgstr ""
+msgstr "Wyspa"
 
 #. name:Island
 #: DB:area_type/description:6
@@ -5797,7 +5739,7 @@ msgstr ""
 #| msgid "APRA ID"
 msgctxt "work_attribute_type"
 msgid "LATGA ID"
-msgstr "APRA ID"
+msgstr "LATGA ID"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -5907,7 +5849,7 @@ msgstr "Na żywo"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -5935,12 +5877,9 @@ msgid "MCT ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "AUTODIA ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "AUTODIA ID"
+msgstr "MUSICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6185,7 +6124,7 @@ msgstr ""
 #: DB:area_type/name:8
 msgctxt "area_type"
 msgid "Military base"
-msgstr ""
+msgstr "Baza wojskowa"
 
 #. name:Military base
 #: DB:area_type/description:8
@@ -6200,17 +6139,17 @@ msgstr ""
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
-msgstr ""
+msgstr "MiniDVD"
 
 #: DB:medium_format/name:168
 msgctxt "medium_format"
 msgid "MiniDVD-Audio"
-msgstr ""
+msgstr "MiniDVD-Audio"
 
 #: DB:medium_format/name:169
 msgctxt "medium_format"
 msgid "MiniDVD-Video"
-msgstr ""
+msgstr "MiniDVD-Video"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6220,22 +6159,22 @@ msgstr "MiniDisc"
 #: DB:medium_format/name:165
 msgctxt "medium_format"
 msgid "Minimax CD"
-msgstr ""
+msgstr "Minimax CD"
 
 #: DB:medium_format/name:167
 msgctxt "medium_format"
 msgid "Minimax DVD"
-msgstr ""
+msgstr "Minimax DVD"
 
 #: DB:medium_format/name:170
 msgctxt "medium_format"
 msgid "Minimax DVD-Audio"
-msgstr ""
+msgstr "Minimax DVD-Audio"
 
 #: DB:medium_format/name:171
 msgctxt "medium_format"
 msgid "Minimax DVD-Video"
-msgstr ""
+msgstr "Minimax DVD-Video"
 
 #: DB:work_attribute_type_allowed_value/value:644
 msgctxt "work_attribute_type_allowed_value"
@@ -6390,7 +6329,7 @@ msgstr ""
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
-msgstr ""
+msgstr "Gmina"
 
 #. name:Municipality
 #: DB:area_type/description:4
@@ -6862,13 +6801,13 @@ msgstr ""
 #: DB:gender/name:5
 msgctxt "gender"
 msgid "Non-binary"
-msgstr ""
+msgstr "Osoba niebinarna"
 
 #. name:Spokenword
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
-msgstr ""
+msgstr "Wydawnictwa z recytacją tekstów niebędących utworami muzycznymi."
 
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
@@ -6878,7 +6817,7 @@ msgstr "Brak"
 #: DB:gender/name:4
 msgctxt "gender"
 msgid "Not applicable"
-msgstr ""
+msgstr "Nie dotyczy"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -6980,17 +6919,17 @@ msgstr ""
 #: DB:work_type/name:10
 msgctxt "work_type"
 msgid "Opera"
-msgstr ""
+msgstr "Opera"
 
 #: DB:work_type/name:24
 msgctxt "work_type"
 msgid "Operetta"
-msgstr ""
+msgstr "Operetka"
 
 #: DB:work_type/name:11
 msgctxt "work_type"
 msgid "Oratorio"
-msgstr ""
+msgstr "Oratorium"
 
 #: DB:artist_type/name:5
 msgctxt "artist_type"
@@ -7045,17 +6984,17 @@ msgstr "Inny instrument"
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr ""
+msgstr "Uwertura"
 
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
 msgid "Owned music"
-msgstr ""
+msgstr "Muzyka z własnej kolekcji"
 
 #: DB:editor_collection_type/name:17
 msgctxt "collection_type"
 msgid "Owned recordings"
-msgstr ""
+msgstr "Posiadane nagrania"
 
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
@@ -7080,7 +7019,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:81
 msgctxt "cover_art_type"
 msgid "Panel"
-msgstr ""
+msgstr "Panel"
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -7105,7 +7044,7 @@ msgstr ""
 #: DB:place_type/name:9
 msgctxt "place_type"
 msgid "Park"
-msgstr ""
+msgstr "Park"
 
 #: DB:work_type/name:13
 msgctxt "work_type"
@@ -7115,7 +7054,7 @@ msgstr ""
 #: DB:medium_format/name:58
 msgctxt "medium_format"
 msgid "Pathé disc"
-msgstr ""
+msgstr "Płyta Pathé"
 
 #: DB:work_attribute_type_allowed_value/value:995
 msgctxt "work_attribute_type_allowed_value"
@@ -7217,22 +7156,22 @@ msgstr ""
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr "Odtwórz"
+msgstr "Sztuka teatralna"
 
 #: DB:medium_format/name:74
 msgctxt "medium_format"
 msgid "PlayTape"
-msgstr ""
+msgstr "PlayTape"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
-msgstr ""
+msgstr "Playbutton"
 
 #: DB:series_type/name:80
 msgctxt "series_type"
 msgid "Podcast"
-msgstr ""
+msgstr "Podkast"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -7250,9 +7189,6 @@ msgid "Poster"
 msgstr "Plakat"
 
 #: DB:event_art_archive.art_type/name:1
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Poster"
 msgctxt "event_art_type"
 msgid "Poster"
 msgstr "Plakat"
@@ -7265,7 +7201,7 @@ msgstr ""
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "Zakład tłoczenia"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -7321,7 +7257,7 @@ msgstr "Proza"
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr ""
+msgstr "Pseudo-wydanie"
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -7385,9 +7321,6 @@ msgid "Quartet"
 msgstr "Kwartet"
 
 #: DB:medium_format/name:208
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Cartridge"
 msgctxt "medium_format"
 msgid "ROM cartridge"
 msgstr "Kartridż"
@@ -7500,12 +7433,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Surowy/Nieedytowany"
 
 #: DB:event_art_archive.art_type/name:9
 msgctxt "event_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Surowy/Nieedytowany"
 
 #: DB:series_type/name:48
 msgctxt "series_type"
@@ -7530,7 +7463,7 @@ msgstr ""
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Taśma szpulowa"
 
 #: DB:work_attribute_type_allowed_value/value:514
 msgctxt "work_attribute_type_allowed_value"
@@ -7585,7 +7518,7 @@ msgstr ""
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr ""
+msgstr "Budynek sakralny"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
@@ -7751,12 +7684,12 @@ msgstr "SACD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (2-kanałowy)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (wielokanałowy)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -7811,7 +7744,7 @@ msgstr ""
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "Karta SD"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -7836,17 +7769,17 @@ msgstr "SHM-CD"
 #: DB:medium_format/name:57
 msgctxt "medium_format"
 msgid "SHM-SACD"
-msgstr ""
+msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
 msgid "SHM-SACD (2 channels)"
-msgstr ""
+msgstr "SHM-SACD (2-kanałowy)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
 msgid "SHM-SACD (multichannel)"
-msgstr ""
+msgstr "SHM-SACD (wielokanałowy)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
@@ -8103,9 +8036,6 @@ msgid "Series name"
 msgstr "Nazwa serii"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "alias_type"
-#| msgid "Series name"
 msgctxt "series_type"
 msgid "Series series"
 msgstr "Nazwa serii"
@@ -8274,7 +8204,7 @@ msgstr "Stadion"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr ""
+msgstr "Występ sceniczny"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -8294,11 +8224,10 @@ msgstr "Studio"
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr ""
+msgstr "Podział"
 
 #. name:Subdivision
 #: DB:area_type/description:2
-#, fuzzy
 msgctxt "area_type"
 msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g. "
@@ -8327,7 +8256,7 @@ msgstr ""
 #: DB:work_type/name:6
 msgctxt "work_type"
 msgid "Suite"
-msgstr ""
+msgstr "Suita"
 
 #: DB:work_attribute_type_allowed_value/value:534
 msgctxt "work_attribute_type_allowed_value"
@@ -8382,7 +8311,7 @@ msgstr ""
 #: DB:release_packaging/name:16
 msgctxt "release_packaging"
 msgid "Super Jewel Box"
-msgstr ""
+msgstr "Super Jewel Box"
 
 #: DB:work_attribute_type_allowed_value/value:1037
 msgctxt "work_attribute_type_allowed_value"
@@ -8587,7 +8516,7 @@ msgstr ""
 #: DB:medium_format/name:90
 msgctxt "medium_format"
 msgid "Tefifon"
-msgstr ""
+msgstr "Tefifon"
 
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
@@ -8658,7 +8587,6 @@ msgstr ""
 
 #. name:VinylDisc (CD side)
 #: DB:medium_format/description:82
-#, fuzzy
 msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
@@ -8735,7 +8663,6 @@ msgstr ""
 
 #. name:VinylDisc (DVD side)
 #: DB:medium_format/description:80
-#, fuzzy
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a "
@@ -8921,14 +8848,12 @@ msgstr ""
 
 #. name:SACD (multichannel)
 #: DB:medium_format/description:85
-#, fuzzy
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
 msgstr "Przedstawia wielokanałowy spis treści na płycie SACD."
 
 #. name:SHM-SACD (multichannel)
 #: DB:medium_format/description:88
-#, fuzzy
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
 msgstr "Przedstawia wielokanałowy spis treści na płycie SHM-SACD."
@@ -8944,12 +8869,9 @@ msgstr ""
 "SACD."
 
 #: DB:event_art_archive.art_type/name:2
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Sticker"
 msgctxt "event_art_type"
 msgid "Ticket"
-msgstr "Naklejka"
+msgstr "Bilet"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -9009,7 +8931,7 @@ msgstr "Utwór"
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr "Zasobnik"
+msgstr "Tacka"
 
 #: DB:work_attribute_type_allowed_value/value:1046
 msgctxt "work_attribute_type_allowed_value"
@@ -9209,7 +9131,7 @@ msgstr ""
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
@@ -9319,22 +9241,22 @@ msgstr "Winyl"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "VinylDisc"
 
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr ""
+msgstr "VinylDisc (strona CD)"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr ""
+msgstr "VinylDisc (strona DVD)"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr ""
+msgstr "VinylDisc (strona winylowa)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
@@ -9375,12 +9297,12 @@ msgstr "WAMI ID"
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
-msgstr ""
+msgstr "Znak wodny"
 
 #: DB:event_art_archive.art_type/name:10
 msgctxt "event_art_type"
 msgid "Watermark"
-msgstr ""
+msgstr "Znak wodny"
 
 #: DB:medium_format/name:14
 msgctxt "medium_format"
@@ -9395,12 +9317,12 @@ msgstr "Instrument dęty"
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
 msgid "Wishlist"
-msgstr ""
+msgstr "Lista życzeń"
 
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "Wycofany"
 
 #: DB:series_type/name:46
 msgctxt "series_type"
@@ -9541,7 +9463,7 @@ msgstr ""
 #: DB:medium_format/name:77
 msgctxt "medium_format"
 msgid "Zip Disk"
-msgstr ""
+msgstr "Dysk Zip"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"
@@ -9558,7 +9480,7 @@ msgstr ""
 #: DB:medium_format/name:164
 msgctxt "medium_format"
 msgid "microSD"
-msgstr ""
+msgstr "microSD"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"

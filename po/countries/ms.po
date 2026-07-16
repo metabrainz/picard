@@ -1,11 +1,11 @@
 # Languages add-on <noreply-addon-languages@weblate.org>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# Jeluang <adli98@yahoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2026-06-27 21:12+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-06-30 15:12+0000\n"
+"Last-Translator: Jeluang <adli98@yahoo.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/ms/>\n"
 "Language: ms\n"
@@ -303,7 +303,7 @@ msgstr "Cyprus"
 #. iso.code:CZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:56
 msgid "Czechia"
-msgstr ""
+msgstr "Republik Czech"
 
 #. iso.code:XC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:245
@@ -378,7 +378,7 @@ msgstr "Estonia"
 #. iso.code:SZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:201
 msgid "Eswatini"
-msgstr ""
+msgstr "Negara Swati"
 
 #. iso.code:ET
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:68
@@ -853,7 +853,7 @@ msgstr "Korea Utara"
 #. iso.code:MK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:126
 msgid "North Macedonia"
-msgstr ""
+msgstr "Macedonia Utara"
 
 #. iso.code:MP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:159
@@ -1198,7 +1198,7 @@ msgstr "Tuvalu"
 #. iso.code:TR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
 msgid "Türkiye"
-msgstr ""
+msgstr "Turki"
 
 #. iso.code:VI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:231

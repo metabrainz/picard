@@ -13,12 +13,12 @@
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
 # "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025, 2026.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
+# GABG <musicbrainz@gabg.email>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-02-14 01:11+0000\n"
-"Last-Translator: \"salo.rock\" "
-"<salo.rock@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-07-05 19:12+0000\n"
+"Last-Translator: GABG <musicbrainz@gabg.email>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/it/>\n"
 "Language: it\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.7\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -597,6 +597,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
+"Un logo specifico per un determinato evento e utilizzato esclusivamente per "
+"quello, anziché essere il logo di una serie (come ad esempio il logo di un "
+"festival riutilizzato per diversi anni)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -822,6 +825,8 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
+"Una custodia protettiva (di solito interna) che avvolge un supporto (spesso "
+"un disco in vinile, raramente un CD), spesso contenente note o immagini."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -972,23 +977,19 @@ msgstr "Una serie di pubblicazioni."
 
 #. name:Series award
 #: DB:series_type/description:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of recordings honoured by the same award."
 msgctxt "series_type"
 msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
-msgstr "Una serie di registrazioni onorate dello stesso premio."
+msgstr ""
+"Una serie di altre serie (come podcast o festival) onorate dello stesso "
+"premio."
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Una serie di eventi."
+msgstr "Una serie di altre serie."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5805,7 +5806,7 @@ msgstr "Dal vivo"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -7975,12 +7976,9 @@ msgid "Serbest"
 msgstr "Serbest"
 
 #: DB:series_type/name:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist award"
 msgctxt "series_type"
 msgid "Series award"
-msgstr "Premio per artisti"
+msgstr "Premio per serie"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
@@ -7993,12 +7991,9 @@ msgid "Series name"
 msgstr "Nome della serie"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist series"
 msgctxt "series_type"
 msgid "Series series"
-msgstr "Serie di artisti"
+msgstr "Serie di altre serie"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"

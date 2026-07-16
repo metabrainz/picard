@@ -1,11 +1,11 @@
 # Languages add-on <noreply-addon-languages@weblate.org>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# Jeluang <adli98@yahoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2026-06-27 21:12+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-07-01 11:12+0000\n"
+"Last-Translator: Jeluang <adli98@yahoo.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ms/>\n"
 "Language: ms\n"
@@ -23,6 +23,8 @@ msgid ""
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
 msgstr ""
+"“Motet” merujuk kepada karya paduan suara (selalunya tanpa iringan). Karya "
+"yang boleh dianggap sebagai motet bergantung kepada masa dan zaman."
 
 #. name:Sonata
 #: DB:work_type/description:5
@@ -31,26 +33,28 @@ msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
+"“Sonata” merupakan istilah umum yang merujuk kepada karya alatan muzik barok "
+"(kerap kali solo atau solo berserta papan nada) skala kecil."
 
 #: DB:medium_format/name:205
 msgctxt "medium_format"
 msgid "10\" Acetate"
-msgstr ""
+msgstr "Piring hitam asetat 10″"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Syelek 10″"
+msgstr "Piring hitam syelek 10″"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "Vinil 10″"
+msgstr "Piring hitam vinil 10″"
 
 #: DB:medium_format/name:206
 msgctxt "medium_format"
 msgid "12\" Acetate"
-msgstr ""
+msgstr "Piring hitam asetat 12″"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -60,17 +64,17 @@ msgstr "Cakera Laser 12″"
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Syelek 12″"
+msgstr "Piring hitam syelek 12″"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "Vinil 12″"
+msgstr "Piring hitam vinil 12″"
 
 #: DB:medium_format/name:207
 msgctxt "medium_format"
 msgid "3\" Vinyl"
-msgstr ""
+msgstr "Piring hitam vinil 3″"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -85,7 +89,7 @@ msgstr "Cakera Liut 5.25″"
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr ""
+msgstr "Piring hitam asetat 7″"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -95,12 +99,12 @@ msgstr "Cakera Lentur 7″"
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "Syelek 7″"
+msgstr "Piring hitam syelek 7″"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "Vinil 7″"
+msgstr "Piring hitam vinil 7″"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
@@ -125,7 +129,7 @@ msgstr "CD+G 8cm"
 #: DB:medium_format/name:210
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr ""
+msgstr "CD-R 8cm"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -319,6 +323,8 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
 msgstr ""
+"Lazimnya sebuah kotak yang mengandungi berbilang cakera sebagai sebahagian "
+"peranggu kotak."
 
 #. name:Cantata
 #: DB:work_type/description:3
