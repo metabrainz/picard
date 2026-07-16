@@ -14,7 +14,8 @@ For development or building from source, follow the instructions below.
 * [PyQt 6.6.1 or newer](https://riverbankcomputing.com/software/pyqt/download)
 * [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
-* [pygit2](https://www.pygit2.org/) - For plugin system
+* [pygit2 1.18.2 or newer](https://www.pygit2.org/) - For plugin system
+* [tomlkit 0.12.4 or newer](https://github.com/python-poetry/tomlkit) - For profile exports
 * gettext (`msgfmt`):
   * **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add to PATH
   * **Linux:** `sudo apt install gettext` (Ubuntu/Debian) or equivalent
