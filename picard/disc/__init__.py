@@ -37,12 +37,17 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.config import get_config
 from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
 from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
 from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
 from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.util.isrc import (
+    format_isrc,
+    valid_isrc,
+)
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
@@ -67,6 +72,7 @@ class Disc:
         self.mcn = None
         self.tracks = 0
         self.toc_string = None
+        self.isrcs: dict[int, str] = {}
         self._skip_dialog = False
         self._files_to_match = None
 
@@ -75,8 +81,13 @@ class Disc:
         if device is None:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
+        features = ['mcn']
+        if 'isrc' in discid.FEATURES:
+            config = get_config()
+            if config.setting['read_isrcs_from_disc']:
+                features.append('isrc')
         try:
-            disc = discid.read(device, features=['mcn'])
+            disc = discid.read(device, features=features)
             self._set_disc_details(disc)
         except discid.DiscError as e:
             log.error("Error while reading %r: %s", device, e)
@@ -101,7 +112,45 @@ class Disc:
         self.mcn = disc.mcn
         self.tracks = len(disc.tracks)
         self.toc_string = disc.toc_string
+        self.isrcs = self._extract_isrcs(disc.tracks)
         log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
+        if self.isrcs:
+            log.info("Read %d ISRCs from disc:", len(self.isrcs))
+            for track_num, isrc in sorted(self.isrcs.items()):
+                log.info("  Track %d: ISRC %s", track_num, format_isrc(isrc))
+
+    @staticmethod
+    def _extract_isrcs(tracks) -> dict[int, str]:
+        """Extract validated ISRCs from disc tracks.
+
+        Returns a dict mapping track number to normalized ISRC.
+        Tracks without ISRCs, with invalid ISRCs, or with duplicate
+        ISRCs (same ISRC on multiple tracks) are skipped.
+        Duplicate ISRCs are a known issue with some CD drives that
+        report the same ISRC for adjacent tracks.
+        """
+        isrcs: dict[int, str] = {}
+        for track in tracks:
+            isrc = getattr(track, 'isrc', None)
+            if isrc:
+                normalized = valid_isrc(isrc)
+                if normalized:
+                    isrcs[track.number] = normalized
+        # Detect duplicates: same ISRC assigned to multiple tracks
+        seen: dict[str, list[int]] = {}
+        for track_num, isrc in isrcs.items():
+            seen.setdefault(isrc, []).append(track_num)
+        duplicates = {isrc: tracks for isrc, tracks in seen.items() if len(tracks) > 1}
+        if duplicates:
+            for isrc, track_nums in duplicates.items():
+                log.warning(
+                    "Duplicate ISRC %s found on tracks %s (possible drive read error), skipping",
+                    format_isrc(isrc),
+                    ', '.join(str(n) for n in track_nums),
+                )
+                for track_num in track_nums:
+                    del isrcs[track_num]
+        return isrcs
 
     @staticmethod
     def _submission_url(id, tracks, toc_string):

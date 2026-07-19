@@ -54,6 +54,7 @@ class CDLookupOptionsPage(OptionsPage):
 
     OPTIONS: PageOptionConfigs = {
         'cd_lookup_device': {'widgets': ['cd_lookup_device']},
+        'read_isrcs_from_disc': {'widgets': ['read_isrcs_from_disc']},
     }
 
     def __init__(self, parent=None):
@@ -74,6 +75,7 @@ class CDLookupOptionsPage(OptionsPage):
                 pass
         else:
             self.ui.cd_lookup_device.setText(device)
+        self.ui.read_isrcs_from_disc.setChecked(config.setting['read_isrcs_from_disc'])
 
     def save(self):
         config = get_config()
@@ -82,6 +84,7 @@ class CDLookupOptionsPage(OptionsPage):
         else:
             device = self.ui.cd_lookup_device.text()
         config.setting['cd_lookup_device'] = device
+        config.setting['read_isrcs_from_disc'] = self.ui.read_isrcs_from_disc.isChecked()
         device_list = get_cdrom_drives()
         self.tagger.window.update_cd_lookup_menu(device_list)
 
