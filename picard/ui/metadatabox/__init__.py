@@ -78,7 +78,15 @@ from .tagdiff import (
 )
 
 from picard.ui.colors import interface_colors
+from picard.ui.metadatabox.difftextdocument import (
+    compute_diff_html,
+    create_diff_document,
+)
 from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
+
+
+# Custom data role for storing diff HTML on table items
+DIFF_HTML_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -89,10 +97,34 @@ class TableTagEditorDelegate(TagEditorDelegate):
     editing of tag values within metadata box QTableWidget.
     It ensures that the editor is sized appropriately for multiline content
     and that the row height is adjusted to fit the editor.
+
+    When diff HTML is stored on an item (via DIFF_HTML_ROLE), the delegate
+    renders the HTML with highlighted character differences instead of
+    plain text.
     """
 
     MIN_EDITOR_HEIGHT = 80  # The minimum height for the editor widget
     MAX_ROW_HEIGHT = 160  # The maximum height for a row
+
+    def paint(self, painter, option, index):
+        """Render HTML diff highlighting if available, otherwise use default painting."""
+        diff_html = index.data(DIFF_HTML_ROLE)
+        if diff_html:
+            painter.save()
+            # Draw background/selection using the base delegate
+            self.drawBackground(painter, option, index)
+            # Render the diff HTML document within the cell rect
+            doc = create_diff_document(diff_html, option.font)
+            doc.setTextWidth(option.rect.width())
+            painter.translate(option.rect.topLeft())
+            painter.setClipRect(option.rect.translated(-option.rect.topLeft()))
+            doc.drawContents(painter)
+            painter.restore()
+            # Draw focus rect if needed
+            if option.state & QtWidgets.QStyle.StateFlag.State_HasFocus:
+                self.drawFocus(painter, option, option.rect)
+        else:
+            super().paint(painter, option, index)
 
     def createEditor(self, parent, option, index):
         """
@@ -873,6 +905,20 @@ class MetadataBox(QtWidgets.QTableWidget):
             strikeout = tag_status == TagStatus.REMOVED
             new_color = placeholder_color if tag_status == TagStatus.UNCHANGED else color
             self._set_item_value(new_item, self.tag_diff.new, tag, new_color, strikeout=strikeout)
+
+            # Compute character-level diff for changed tags with concrete values
+            old_diff_html = None
+            new_diff_html = None
+            if tag_status == TagStatus.CHANGED:
+                old_status = self.tag_diff.old.status(tag)
+                new_status = self.tag_diff.new.status(tag)
+                if not old_status.is_grouped and not new_status.is_grouped:
+                    old_text = MULTI_VALUED_JOINER.join(self.tag_diff.old[tag])
+                    new_text = MULTI_VALUED_JOINER.join(self.tag_diff.new[tag])
+                    text_color = interface_colors.get_qcolor('tagstatus_changed')
+                    old_diff_html, new_diff_html = compute_diff_html(old_text, new_text, text_color)
+            orig_item.setData(DIFF_HTML_ROLE, old_diff_html)
+            new_item.setData(DIFF_HTML_ROLE, new_diff_html)
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
