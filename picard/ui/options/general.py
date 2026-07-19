@@ -63,6 +63,7 @@ class GeneralOptionsPage(OptionsPage):
         'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},
         'submit_isrcs': {'widgets': ['submit_isrcs']},
+        'read_isrcs_from_disc': {'widgets': ['read_isrcs_from_disc']},
         'enable_user_collections': {'widgets': ['enable_user_collections']},
     }
 
@@ -90,6 +91,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
         self.ui.submit_isrcs.setChecked(config.setting['submit_isrcs'])
+        self.ui.read_isrcs_from_disc.setChecked(config.setting['read_isrcs_from_disc'])
         self.ui.enable_user_collections.setChecked(config.setting['enable_user_collections'])
 
     def save(self):
@@ -101,6 +103,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
         config.setting['submit_isrcs'] = self.ui.submit_isrcs.isChecked()
+        config.setting['read_isrcs_from_disc'] = self.ui.read_isrcs_from_disc.isChecked()
         self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
 
     def _update_user_collections(self, config, new_enable_user_collections):

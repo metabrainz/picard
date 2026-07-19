@@ -98,6 +98,7 @@ from picard.util import (
     format_time,
     mbid_validate,
 )
+from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
 from picard.webservice import PendingRequest
 
@@ -188,7 +189,7 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-    def __init__(self, album_id, discid=None):
+    def __init__(self, album_id, discid=None, disc_isrcs=None):
         super().__init__(album_id)
         self.tracks: list[Track] = []
         self.loaded = False
@@ -198,6 +199,7 @@ class Album(MetadataItem):
         self._pending_tasks = {}
         self._tracks_loaded = False
         self._discids = set()
+        self._disc_isrcs: dict[int, str] = disc_isrcs or {}
         self._recordings_map = {}
         if discid:
             self._discids.add(discid)
@@ -349,6 +351,61 @@ class Album(MetadataItem):
                 for file in track.files:
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
+
+    def _submit_disc_isrcs(self):
+        """Add disc ISRCs to track metadata and register for submission."""
+        if not self._disc_isrcs:
+            return
+        config = get_config()
+        submit = config.setting['submit_isrcs']
+        # Find tracks belonging to the medium of the read disc
+        medium_tracks = self._get_disc_medium_tracks()
+        for position, track in enumerate(medium_tracks, 1):
+            disc_isrc = self._disc_isrcs.get(position)
+            if not disc_isrc:
+                continue
+            # Always add ISRC to track metadata if not already present
+            current_isrcs = normalized_isrcs(track.metadata.getall('isrc'))
+            if disc_isrc not in current_isrcs:
+                track.metadata.add('isrc', disc_isrc)
+            # Register for submission if enabled
+            if not submit:
+                continue
+            recording_id = track.metadata['musicbrainz_recordingid']
+            if not recording_id:
+                continue
+            # Combine ISRCs from MB data and current metadata to avoid
+            # submitting ISRCs already added by other means (e.g. plugins
+            # or metadata processors running before this point).
+            known_isrcs = normalized_isrcs(track.orig_metadata.getall('isrc')) | current_isrcs
+            if disc_isrc in known_isrcs:
+                log.debug(
+                    "Disc ISRC %s for track %d already known, skipping submission",
+                    disc_isrc,
+                    position,
+                )
+                continue
+            self.tagger.isrc_submit_manager.add(track, recording_id, [disc_isrc], list(known_isrcs))
+
+    def _get_disc_medium_tracks(self):
+        """Get the tracks belonging to the medium of the read disc.
+
+        Uses disc ID to identify the correct medium.  Falls back to all
+        tracks if the release has only one medium or the disc ID is unknown.
+        """
+        discid = next(iter(self._discids), None)
+        if not discid:
+            return self.tracks
+        # Try to find tracks on the medium matching our disc ID
+        medium_tracks = [track for track in self.tracks if discid in track.metadata.getall('~musicbrainz_discids')]
+        if medium_tracks:
+            return medium_tracks
+        # Disc ID not known to MB — fall back to all tracks if single medium
+        disc_numbers = set(track.metadata.get('discnumber', '1') for track in self.tracks)
+        if len(disc_numbers) <= 1:
+            return self.tracks
+        # Multi-disc but unknown disc ID — can't safely determine medium
+        return []
 
     def get_next_track(self, track):
         try:
@@ -746,6 +803,7 @@ class Album(MetadataItem):
         for func, _run_on_error in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
+        self._submit_disc_isrcs()
         if self.ui_item and self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
             self.tagger.window.cover_art_box.update_metadata()
