@@ -19,10 +19,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from unittest.mock import MagicMock
+
 from test.picardtestcase import PicardTestCase
 
 from picard.util.isrc import (
     _normalize_isrc,
+    best_release_from_isrc_results,
     format_isrc,
     normalized_isrcs,
     valid_isrc,
@@ -135,3 +138,59 @@ class TestNormalizedIsrcs(PicardTestCase):
     def test_deduplicates(self):
         result = normalized_isrcs(['USRC17607839', 'usrc17607839', 'US-RC1-76-07839'])
         self.assertEqual({'USRC17607839'}, result)
+
+
+class TestBestReleaseFromIsrcResults(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.set_config_values(setting={'standardize_artist_names': False})
+        self.releases = [
+            {
+                'id': 'release-1',
+                'title': 'Some Album',
+                'artist-credit': [
+                    {'name': 'Some Artist', 'artist': {'name': 'Some Artist', 'sort-name': 'Artist, Some'}}
+                ],
+            },
+            {
+                'id': 'release-2',
+                'title': 'My Album',
+                'artist-credit': [{'name': 'My Artist', 'artist': {'name': 'My Artist', 'sort-name': 'Artist, My'}}],
+            },
+            {
+                'id': 'release-3',
+                'title': 'Another Album',
+                'artist-credit': [
+                    {'name': 'Another Artist', 'artist': {'name': 'Another Artist', 'sort-name': 'Artist, Another'}}
+                ],
+            },
+        ]
+
+    def test_empty_releases(self):
+        self.assertEqual('', best_release_from_isrc_results([]))
+
+    def test_single_release(self):
+        releases = [{'id': 'only-one', 'title': 'X'}]
+        self.assertEqual('only-one', best_release_from_isrc_results(releases))
+
+    def test_no_metadata_returns_first(self):
+        self.assertEqual('release-1', best_release_from_isrc_results(self.releases))
+
+    def test_picks_best_title_match(self):
+        metadata = MagicMock()
+        metadata.get = lambda key, default='': {'album': 'My Album', 'artist': ''}.get(key, default)
+        result = best_release_from_isrc_results(self.releases, metadata)
+        self.assertEqual('release-2', result)
+
+    def test_picks_best_artist_match(self):
+        metadata = MagicMock()
+        metadata.get = lambda key, default='': {'album': '', 'artist': 'Another Artist'}.get(key, default)
+        result = best_release_from_isrc_results(self.releases, metadata)
+        self.assertEqual('release-3', result)
+
+    def test_title_weighted_more_than_artist(self):
+        # Title has 2x weight, so title match wins over artist match
+        metadata = MagicMock()
+        metadata.get = lambda key, default='': {'album': 'Some Album', 'artist': 'My Artist'}.get(key, default)
+        result = best_release_from_isrc_results(self.releases, metadata)
+        self.assertEqual('release-1', result)
