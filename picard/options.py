@@ -343,6 +343,7 @@ TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server ad
 IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True)
 BoolOption('setting', 'use_server_for_submission', False, title=N_("Submit to configured server"), in_profile=True)
 BoolOption('setting', 'submit_isrcs', False, title=N_("Submit ISRCs to MusicBrainz"), in_profile=True)
+BoolOption('setting', 'read_isrcs_from_disc', True, title=N_("Read ISRCs from CD"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
 
 # picard/ui/options/genres.py
