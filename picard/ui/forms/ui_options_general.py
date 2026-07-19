@@ -112,6 +112,14 @@ class Ui_GeneralOptionsPage(object):
         self.ignore_file_mbids.setObjectName("ignore_file_mbids")
         self.verticalLayout.addWidget(self.ignore_file_mbids)
         self.vboxlayout.addWidget(self.general_box)
+        self.submission_box = QtWidgets.QGroupBox(parent=GeneralOptionsPage)
+        self.submission_box.setObjectName("submission_box")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.submission_box)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.submit_isrcs = QtWidgets.QCheckBox(parent=self.submission_box)
+        self.submit_isrcs.setObjectName("submit_isrcs")
+        self.verticalLayout_2.addWidget(self.submit_isrcs)
+        self.vboxlayout.addWidget(self.submission_box)
         spacerItem2 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem2)
 
@@ -125,6 +133,7 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.enable_user_collections, self.analyze_new_files)
         GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.cluster_new_files)
         GeneralOptionsPage.setTabOrder(self.cluster_new_files, self.ignore_file_mbids)
+        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.submit_isrcs)
 
     def retranslateUi(self, GeneralOptionsPage):
         self.musicbrainz_server_box.setTitle(_("MusicBrainz Server"))
@@ -140,3 +149,6 @@ class Ui_GeneralOptionsPage(object):
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.cluster_new_files.setText(_("Automatically cluster all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
+        self.submission_box.setTitle(_("Submission"))
+        self.submit_isrcs.setToolTip(_("When enabled, ISRCs found in files that are not yet associated with the matched recording in MusicBrainz can be submitted."))
+        self.submit_isrcs.setText(_("Submit ISRCs to MusicBrainz when tagging"))
