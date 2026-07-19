@@ -102,6 +102,7 @@ class MainAction(str, Enum):
     SUBMIT_CLUSTER = 'submit_cluster_action'
     SUBMIT_FILE_AS_RECORDING = 'submit_file_as_recording_action'
     SUBMIT_FILE_AS_RELEASE = 'submit_file_as_release_action'
+    SUBMIT_ISRC = 'submit_isrc_action'
     SUPPORT_FORUM = 'support_forum_action'
     TAGS_FROM_FILENAMES = 'tags_from_filenames_action'
     TRASH = 'trash_action'
