@@ -36,6 +36,7 @@ from picard.acoustid.json_helpers import (
 from picard.cluster import CLUSTER_COMPARISON_WEIGHTS
 from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.matching import (
+    _SKIP_RELEASE_WEIGHT,
     ReleaseMatchParts,
     _catno_label_score,
     _compare_to_release_parts,
@@ -45,6 +46,7 @@ from picard.matching import (
     _trackcount_score,
     _weights_from_preferred_countries,
     _weights_from_preferred_formats,
+    _weights_from_preferred_release_types,
     _weights_from_release_type_scores,
     compare_to_release,
     compare_to_track,
@@ -420,6 +422,45 @@ class PreferredWeightsTest(PicardTestCase):
         self.assertEqual(parts[0], (0.75, 123))
         _weights_from_release_type_scores(parts, release, {}, 123)
         self.assertEqual(parts[1], (0.5, 123))
+
+    def test_preferred_release_types_preferred(self):
+        release = load_test_json('release.json')  # primary-type = Album
+        parts = []
+        _weights_from_preferred_release_types(parts, release, ['Album'], [], 10)
+        score, weight = parts[0]
+        self.assertGreater(score, 0.5)
+        self.assertEqual(weight, 10)
+
+    def test_preferred_release_types_preferred_order(self):
+        release = load_test_json('release.json')  # primary-type = Album
+        parts1 = []
+        _weights_from_preferred_release_types(parts1, release, ['Album', 'EP'], [], 10)
+        parts2 = []
+        _weights_from_preferred_release_types(parts2, release, ['EP', 'Album'], [], 10)
+        # Album is first in parts1 → higher score
+        self.assertGreater(parts1[0][0], parts2[0][0])
+
+    def test_preferred_release_types_discouraged(self):
+        release = load_test_json('release.json')  # primary-type = Album
+        parts = []
+        _weights_from_preferred_release_types(parts, release, [], ['Album'], 10)
+        # Discouraged triggers skip
+        self.assertEqual(parts[0], _SKIP_RELEASE_WEIGHT)
+
+    def test_preferred_release_types_unlisted(self):
+        release = load_test_json('release.json')  # primary-type = Album
+        parts = []
+        _weights_from_preferred_release_types(parts, release, ['EP'], [], 10)
+        # Album is unlisted → neutral 0.5
+        self.assertAlmostEqual(parts[0][0], 0.5)
+
+    def test_preferred_release_types_no_type(self):
+        release = load_test_json('release_no_type.json')
+        parts = []
+        _weights_from_preferred_release_types(parts, release, ['Album'], ['Compilation'], 10)
+        # No type → neutral 0.5
+        self.assertAlmostEqual(parts[0][0], 0.5)
+        self.assertEqual(parts[0][1], 10)
 
     def test_get_weighted_release_parts(self):
         weights = {

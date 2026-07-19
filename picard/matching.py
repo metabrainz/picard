@@ -129,6 +129,10 @@ class MatchResult(Generic[S]):
 # Type for a pair of score and weight (e.g. (0.8, 12))
 ScoreWeightPair: TypeAlias = tuple[float, int]
 
+# Weight tuple used to effectively skip a release during matching.
+# A large weight with score 0 means it only gets picked if there are no other options.
+_SKIP_RELEASE_WEIGHT: ScoreWeightPair = (0, 999)
+
 # Type for the tiered weights dict structure
 TieredWeights: TypeAlias = dict[str, dict[str, int]]
 
@@ -619,7 +623,50 @@ def _weights_from_release_type_scores(parts, release, release_type_scores, weigh
         score = other_score
 
     if skip_release:
-        parts.append((0, 9999))
+        parts.append(_SKIP_RELEASE_WEIGHT)
+    else:
+        parts.append((score, weight_release_type))
+
+
+def _weights_from_preferred_release_types(
+    parts: list[ScoreWeightPair],
+    release: dict,
+    preferred_types: list[str],
+    discouraged_types: list[str],
+    weight_release_type: int = 1,
+) -> None:
+    """Score a release based on preferred/discouraged release type lists.
+
+    Scoring:
+    - Preferred types: position-based score (first = highest), range (0.5, 1.0]
+    - Discouraged types: score 0, triggers skip (large zero weight)
+    - Unlisted types: neutral score 0.5
+
+    If a release has multiple types (primary + secondary), the scores are averaged.
+    If any type is discouraged, the release is skipped entirely.
+    """
+    skip_release = False
+    score = 0.0
+    total_preferred = len(preferred_types)
+
+    if 'release-group' in release and 'primary-type' in release['release-group']:
+        types_found = [release['release-group']['primary-type']]
+        if 'secondary-types' in release['release-group']:
+            types_found += release['release-group']['secondary-types']
+        for release_type in types_found:
+            if release_type in discouraged_types:
+                skip_release = True
+            elif total_preferred and release_type in preferred_types:
+                i = preferred_types.index(release_type)
+                score += 0.5 + 0.5 * (total_preferred - i) / total_preferred
+            else:
+                score += 0.5
+        score /= len(types_found)
+    else:
+        score = 0.5
+
+    if skip_release:
+        parts.append(_SKIP_RELEASE_WEIGHT)
     else:
         parts.append((score, weight_release_type))
 
