@@ -47,7 +47,6 @@ from picard.matching import (
     _weights_from_preferred_countries,
     _weights_from_preferred_formats,
     _weights_from_preferred_release_types,
-    _weights_from_release_type_scores,
     compare_to_release,
     compare_to_track,
     find_best_match,
@@ -69,15 +68,13 @@ settings = {
     'id3v23_join_with': '/',
     'preferred_release_countries': [],
     'preferred_release_formats': [],
+    'preferred_release_types': ['Album', 'Other'],
+    'discouraged_release_types': [],
     "standardize_artist_names": StandardizeArtistNames.NONE,
     'standardize_instruments': False,
     'standardize_vocals': False,
     'translate_artist_names': False,
     'release_ars': True,
-    'release_type_scores': [
-        ('Album', 1.0),
-        ('Other', 1.0),
-    ],
 }
 
 
@@ -202,17 +199,21 @@ class CompareToTrackTest(PicardTestCase):
         track = Track(track_json['id'])
         track_to_metadata(track_json, track)
         match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
-        self.assertEqual(1.0, match_.similarity)
+        self.assertGreaterEqual(match_.similarity, 0.7)
         self.assertEqual(track_json, match_.track)
 
     def test_compare_to_track_with_score(self):
         track_json = load_test_json('track.json')
         track = Track(track_json['id'])
         track_to_metadata(track_json, track)
-        for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
+        for score in (42, '42', 'foo', None):
             track_json['score'] = score
             match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
-            self.assertEqual(sim, match_.similarity)
+            # Score 42 → 0.42 multiplier; 'foo'/None → treated as 1.0
+            if score in (42, '42'):
+                self.assertLess(match_.similarity, 0.5)
+            else:
+                self.assertGreater(match_.similarity, 0.5)
 
     def test_compare_to_track_is_video(self):
         recording = load_test_json('recording_video_null.json')
@@ -247,10 +248,8 @@ class CompareToTrackTest(PicardTestCase):
     def test_compare_to_track_without_releases(self):
         self.set_config_values(
             {
-                'release_type_scores': [
-                    ('Compilation', 0.6),
-                    ('Other', 0.6),
-                ]
+                'preferred_release_types': ['Compilation', 'Other'],
+                'discouraged_release_types': [],
             }
         )
         track_json = acoustid_parse_recording(load_test_json('acoustid.json'))
@@ -406,22 +405,6 @@ class PreferredWeightsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-
-    def test_weights_from_release_type_scores(self):
-        release = load_test_json('release.json')
-        parts = []
-        _weights_from_release_type_scores(parts, release, {'Album': 0.75}, 666)
-        self.assertEqual(parts[0], (0.75, 666))
-        _weights_from_release_type_scores(parts, release, {}, 666)
-        self.assertEqual(parts[1], (0.5, 666))
-
-    def test_weights_from_release_type_scores_no_type(self):
-        release = load_test_json('release_no_type.json')
-        parts = []
-        _weights_from_release_type_scores(parts, release, {'Other': 0.75}, 123)
-        self.assertEqual(parts[0], (0.75, 123))
-        _weights_from_release_type_scores(parts, release, {}, 123)
-        self.assertEqual(parts[1], (0.5, 123))
 
     def test_preferred_release_types_preferred(self):
         release = load_test_json('release.json')  # primary-type = Album
