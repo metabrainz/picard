@@ -792,3 +792,28 @@ def convert_standardize_artists(settings):
 def remove_rtd_updates_ask(settings):
     """Remove "rtd_updates_ask"."""
     remove_option(settings, 'rtd_updates_ask')
+
+
+@upgrade_settings('3.0.0b8')
+def convert_release_type_scores_to_lists(settings):
+    """Convert release_type_scores to preferred/discouraged release type lists.
+
+    Old format: release_type_scores = [('Album', 0.9), ('Single', 0.5), ('Compilation', 0.0)]
+    New format:
+      preferred_release_types = ['Album']        (score > 0.5, sorted by score desc)
+      discouraged_release_types = ['Compilation'] (score < 0.5)
+    """
+    if 'release_type_scores' not in settings:
+        return
+    scores = get_option_value(settings, 'release_type_scores', ListOption, [])
+    preferred = []
+    discouraged = []
+    for release_type, score in scores:
+        if score < 0.5:
+            discouraged.append(release_type)
+        elif score > 0.5:
+            preferred.append((release_type, score))
+    # Sort preferred by score descending (highest priority first)
+    preferred.sort(key=lambda x: x[1], reverse=True)
+    write_option(settings, 'preferred_release_types', [t for t, _s in preferred])
+    write_option(settings, 'discouraged_release_types', discouraged)

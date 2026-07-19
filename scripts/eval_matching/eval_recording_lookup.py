@@ -410,7 +410,8 @@ def main():
     mock_config.setting = defaultdict(lambda: False)
     mock_config.setting.update(
         {
-            "release_type_scores": [],
+            "preferred_release_types": [],
+            "discouraged_release_types": [],
             "preferred_release_countries": [],
             "preferred_release_formats": [],
         }

@@ -557,6 +557,8 @@ ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred mediu
 ListOption(
     'setting', 'release_type_scores', DEFAULT_RELEASE_TYPE_SCORES, title=N_("Preferred release types"), in_profile=True
 )
+ListOption('setting', 'preferred_release_types', [], title=N_("Preferred release types"), in_profile=True)
+ListOption('setting', 'discouraged_release_types', [], title=N_("Discouraged release types"), in_profile=True)
 
 # picard/ui/options/renaming.py
 # File Naming
