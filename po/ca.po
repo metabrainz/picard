@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-14 13:21+0200\n"
-"PO-Revision-Date: 2026-07-14 09:12+0000\n"
+"PO-Revision-Date: 2026-07-19 18:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -1472,18 +1472,17 @@ msgid "{base} (current)"
 msgstr "{base} (actual)"
 
 #: picard/profiles/importer.py:96
-#, fuzzy, python-format
-#| msgid "Invalid column: %s"
+#, python-format
 msgid "Invalid TOML: %s"
-msgstr "Columna no vàlida: %s"
+msgstr "TOML no vàlid: %s"
 
 #: picard/profiles/importer.py:101
 msgid "Missing required [profile] section"
-msgstr ""
+msgstr "Falta la secció [profile] obligatòria"
 
 #: picard/profiles/importer.py:105
 msgid "Missing required 'title' in [profile] section"
-msgstr ""
+msgstr "Falta l'element «title» obligatori a la secció [profile]"
 
 #: picard/profiles/importer.py:112
 #, python-format
@@ -1491,11 +1490,13 @@ msgid ""
 "Unsupported profile format version %s (this version of Picard supports "
 "format version %s). Please upgrade Picard to import this profile."
 msgstr ""
+"No s'admet la versió de format del perfil %s (aquesta versió de Picard admet "
+"la versió de format %s). Actualitzeu Picard per a importar aquest perfil."
 
 #: picard/profiles/importer.py:125
 #, python-format
 msgid "No existing profile with id '%s' to replace"
-msgstr ""
+msgstr "No hi ha cap perfil existent amb l'ID «%s» per substituir"
 
 #: picard/profiles/importer.py:155
 #, python-format
@@ -1503,32 +1504,36 @@ msgid ""
 "Settings upgrade from Picard %s failed: %s. Some settings may not have been "
 "converted."
 msgstr ""
+"No s'han pogut actualitzar els paràmetres de Picard %s: %s. És possible que "
+"no s'hagin convertit alguns paràmetres."
 
 #: picard/profiles/importer.py:198
 #, python-format
 msgid "%d setting was not recognized and was skipped: %s"
 msgid_plural "%d settings were not recognized and were skipped: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "No s'ha reconegut %d paràmetre i s'ha omès: %s"
+msgstr[1] "No s'han reconegut %d paràmetres i s'han omès: %s"
 
 #: picard/profiles/importer.py:210
 #, python-format
 msgid "%d setting was automatically upgraded from Picard %s."
 msgid_plural "%d settings were automatically upgraded from Picard %s."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha actualitzat automàticament %d paràmetre de Picard %s."
+msgstr[1] "S'han actualitzat automàticament %d paràmetres de Picard %s."
 
 #: picard/profiles/importer.py:247
 msgid "Naming script section missing 'script' or 'title' field, skipped."
 msgstr ""
+"Falta el camp «script» o «title» de la secció de scripts de nom, s'ha omès."
 
 #: picard/profiles/importer.py:318
 #, python-format
 msgid "%d duplicate script skipped (same title and content already exist)."
 msgid_plural ""
 "%d duplicate scripts skipped (same title and content already exist)."
-msgstr[0] ""
+msgstr[0] "S'ha omès %d script duplicat (ja existeix el mateix títol i contingut)."
 msgstr[1] ""
+"S'han omès %d scripts duplicats (ja existeix el mateix títol i contingut)."
 
 #: picard/script/__init__.py:184
 msgid ""
@@ -8423,32 +8428,24 @@ msgid "Copy to a new profile"
 msgstr "Copia-ho a un perfil nou"
 
 #: picard/ui/options/profiles.py:156
-#, fuzzy
-#| msgid "Remove profile"
 msgid "Remove the profile"
 msgstr "Suprimeix el perfil"
 
 #: picard/ui/options/profiles.py:163
-#, fuzzy
-#| msgid "Export the script to a file"
 msgid "Export the profile to a file"
-msgstr "Exporta l'script a un fitxer"
+msgstr "Exporta el perfil a un fitxer"
 
 #: picard/ui/options/profiles.py:170
-#, fuzzy
-#| msgid "Import a file as a new script"
 msgid "Import a profile from a file or clipboard"
-msgstr "Importa un fitxer com a script nou"
+msgstr "Importa un perfil des d'un fitxer o des del porta-retalls"
 
 #: picard/ui/options/profiles.py:172
-#, fuzzy
-#| msgid "Type to filter…"
 msgid "From file…"
-msgstr "Escriviu per a filtrar…"
+msgstr "Des d'un fitxer…"
 
 #: picard/ui/options/profiles.py:173
 msgid "From clipboard"
-msgstr ""
+msgstr "Des del porta-retalls"
 
 #: picard/ui/options/profiles.py:260
 msgid "Settings to include in profile"
@@ -8513,122 +8510,96 @@ msgstr "El títol del perfil no pot estar en blanc."
 
 #: picard/ui/options/profiles.py:551
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Copia al porta-retalls"
 
 #: picard/ui/options/profiles.py:552
 #, python-format
 msgid "Profile '%s' copied to clipboard."
-msgstr ""
+msgstr "S'ha copiat el perfil «%s» al porta-retalls."
 
 #: picard/ui/options/profiles.py:570
 msgid "Share (exclude sensitive data)"
-msgstr ""
+msgstr "Comparteix (exclou les dades confidencials)"
 
 #: picard/ui/options/profiles.py:570
 msgid "Backup (include everything)"
-msgstr ""
+msgstr "Fes una còpia de seguretat (inclou-ho tot)"
 
 #: picard/ui/options/profiles.py:573 picard/ui/options/profiles.py:587
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Export Profile"
-msgstr "Perfils d'opcions"
+msgstr "Exporta el perfil"
 
 #: picard/ui/options/profiles.py:574
-#, fuzzy
-#| msgid "Export"
 msgid "Export mode:"
-msgstr "Exporta"
+msgstr "Mode d'exportació:"
 
 #: picard/ui/options/profiles.py:589 picard/ui/options/profiles.py:665
 #: picard/ui/options/profiles.py:786
-#, fuzzy
-#| msgid "Move files"
 msgid "TOML files"
-msgstr "Mou els fitxers"
+msgstr "Fitxers TOML"
 
 #: picard/ui/options/profiles.py:605
-#, fuzzy
-#| msgid "Script Error"
 msgid "Export Error"
-msgstr "S'ha produït un error a l'script"
+msgstr "Error d'exportació"
 
 #: picard/ui/options/profiles.py:605
-#, fuzzy, python-format
-#| msgid "Failed to save Log View to file"
+#, python-format
 msgid "Failed to write file: %s"
-msgstr "No s'ha pogut desar la visualització de registre al fitxer"
+msgstr "No s'ha pogut escriure el fitxer: %s"
 
 #: picard/ui/options/profiles.py:608
-#, fuzzy
-#| msgid "Export Script"
 msgid "Export Complete"
-msgstr "Exporta l'script"
+msgstr "Exportació completada"
 
 #: picard/ui/options/profiles.py:608
-#, fuzzy, python-format
-#| msgid "Script successfully exported to %s"
+#, python-format
 msgid "Profile exported to: %s"
-msgstr "L'script s'ha exportat correctament a %s"
+msgstr "S'ha exportat el perfil a: %s"
 
 #: picard/ui/options/profiles.py:616 picard/ui/options/profiles.py:629
 #: picard/ui/options/profiles.py:637
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from Clipboard"
-msgstr "S'ha importat %s"
+msgstr "Importa des del porta-retalls"
 
 #: picard/ui/options/profiles.py:617
-#, fuzzy
-#| msgid "The file was empty"
 msgid "The clipboard is empty."
-msgstr "El fitxer estava buit"
+msgstr "El porta-retalls està buit."
 
 #: picard/ui/options/profiles.py:630
-#, fuzzy
-#| msgid "The directory does not contain a MANIFEST.toml file."
 msgid "The clipboard does not contain a valid Picard profile."
-msgstr "El directori no conté un fitxer MANIFEST.toml."
+msgstr "El porta-retalls no conté un perfil de Picard vàlid."
 
 #: picard/ui/options/profiles.py:638 picard/ui/options/profiles.py:723
 msgid "Enable this profile after import?"
-msgstr ""
+msgstr "Voleu habilitar aquest perfil després de la importació?"
 
 #: picard/ui/options/profiles.py:663 picard/ui/options/profiles.py:722
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Import Profile"
-msgstr "Perfils d'opcions"
+msgstr "Importa un perfil"
 
 #: picard/ui/options/profiles.py:674 picard/ui/options/profiles.py:762
 #: picard/ui/options/profiles.py:795
-#, fuzzy
-#| msgid "Script Error"
 msgid "Import Error"
-msgstr "S'ha produït un error a l'script"
+msgstr "Error d'importació"
 
 #: picard/ui/options/profiles.py:674 picard/ui/options/profiles.py:795
-#, fuzzy, python-format
-#| msgid "Failed to load session"
+#, python-format
 msgid "Failed to read file: %s"
-msgstr "No s'ha pogut carregar la sessió"
+msgstr "No s'ha pogut llegir el fitxer: %s"
 
 #: picard/ui/options/profiles.py:690
-#, fuzzy
-#| msgid "Profiles"
 msgid "Profile Exists"
-msgstr "Perfils"
+msgstr "El perfil existeix"
 
 #: picard/ui/options/profiles.py:692
-#, fuzzy, python-format
-#| msgid "Overwrite the file if it already exists"
+#, python-format
 msgid "A profile '%s' with the same ID already exists."
-msgstr "Sobreescriu el fitxer si ja existeix"
+msgstr "Ja existeix un perfil «%s» amb el mateix ID."
 
 #: picard/ui/options/profiles.py:695
 #, python-format
 msgid "The existing profile '%s' has the same ID as the imported profile '%s'."
-msgstr ""
+msgstr "El perfil existent «%s» té el mateix ID que el perfil importat «%s»."
 
 #: picard/ui/options/profiles.py:700
 msgid ""
@@ -8636,36 +8607,30 @@ msgid ""
 "scripts with the imported ones. Any data in the existing profile that is not "
 "in the imported file will be lost."
 msgstr ""
+"Substituir el perfil sobreescriurà completament els paràmetres i scripts amb "
+"els importats. Qualsevol dada del perfil existent que no sigui al fitxer "
+"importat es perdrà."
 
 #: picard/ui/options/profiles.py:707
-#, fuzzy, python-format
-#| msgid "Replacement"
+#, python-format
 msgid "Replace '%s'"
-msgstr "Substitució"
+msgstr "Substitueix «%s»"
 
 #: picard/ui/options/profiles.py:710
-#, fuzzy
-#| msgid "Create a new profile"
 msgid "Create new copy"
-msgstr "Crea un perfil nou"
+msgstr "Crea una còpia nova"
 
 #: picard/ui/options/profiles.py:769
-#, fuzzy
-#| msgid "Warning"
 msgid "Import Warnings"
-msgstr "Avís"
+msgstr "Avisos d'importació"
 
 #: picard/ui/options/profiles.py:784
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and Replace Profile"
-msgstr "&Importa un fitxer de script"
+msgstr "Importa i substitueix el perfil"
 
 #: picard/ui/options/profiles.py:801
-#, fuzzy
-#| msgid "Rename profile"
 msgid "Replace Profile"
-msgstr "Canvia el nom del perfil"
+msgstr "Substitueix el perfil"
 
 #: picard/ui/options/profiles.py:803
 #, python-format
@@ -8675,6 +8640,10 @@ msgid ""
 "\n"
 "Continue?"
 msgstr ""
+"Això substituirà completament el perfil «%s». Tots els paràmetres i scripts "
+"existents d'aquest perfil se sobreescriuran.\n"
+"\n"
+"Voleu continuar?"
 
 #: picard/ui/options/ratings.py:37
 msgid "Ratings"
@@ -9569,26 +9538,20 @@ msgid "Remove profile"
 msgstr "Suprimeix el perfil"
 
 #: picard/ui/widgets/profilelistwidget.py:60
-#, fuzzy
-#| msgid "Configure profiles…"
 msgid "Export profile…"
-msgstr "Configura els perfils…"
+msgstr "Exporta el perfil…"
 
 #: picard/ui/widgets/profilelistwidget.py:63
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Copia al porta-retalls"
 
 #: picard/ui/widgets/profilelistwidget.py:67
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and replace…"
-msgstr "&Importa un fitxer de script"
+msgstr "Importa i substitueix…"
 
 #: picard/ui/widgets/profilelistwidget.py:70
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from clipboard"
-msgstr "S'ha importat %s"
+msgstr "Importa des del porta-retalls"
 
 #: picard/ui/widgets/profilelistwidget.py:107
 msgid "Are you sure you want to remove this profile?"
