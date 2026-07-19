@@ -842,6 +842,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
             TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed')),
         }
+        placeholder_color = self.palette().color(QtGui.QPalette.ColorRole.PlaceholderText)
 
         def get_table_item(row, column):
             """
@@ -860,7 +861,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_item = get_table_item(row, self.COLUMN_TAG)
             self._set_item_tag(tag_item, tag)
 
-            color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
+            tag_status = self.tag_diff.tag_status(tag)
+            color = colors.get(tag_status, colors[TagStatus.UNCHANGED])
 
             orig_item = get_table_item(row, self.COLUMN_ORIG)
             self._set_item_value(orig_item, self.tag_diff.old, tag, color)
@@ -868,8 +870,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_item = get_table_item(row, self.COLUMN_NEW)
             if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
-            self._set_item_value(new_item, self.tag_diff.new, tag, color, strikeout=strikeout)
+            strikeout = tag_status == TagStatus.REMOVED
+            new_color = placeholder_color if tag_status == TagStatus.UNCHANGED else color
+            self._set_item_value(new_item, self.tag_diff.new, tag, new_color, strikeout=strikeout)
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
