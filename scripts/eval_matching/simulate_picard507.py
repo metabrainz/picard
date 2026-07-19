@@ -57,7 +57,8 @@ def make_config():
     settings = defaultdict(lambda: False)
     settings.update(
         {
-            "release_type_scores": [("Album", 1.0), ("Single", 0.5), ("EP", 0.7), ("Other", 0.3)],
+            "preferred_release_types": ["Album", "EP", "Single"],
+            "discouraged_release_types": [],
             "preferred_release_countries": [],
             "preferred_release_formats": [],
         }

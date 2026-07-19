@@ -300,10 +300,11 @@ def _compare_to_release_parts(
         )
 
     if 'releasetype' in pref_w:
-        _weights_from_release_type_scores(
+        _weights_from_preferred_release_types(
             result.preferences,
             release,
-            config.setting['release_type_scores'],
+            config.setting['preferred_release_types'],
+            config.setting['discouraged_release_types'],
             pref_w['releasetype'],
         )
 
@@ -360,9 +361,9 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
 
         search_score = get_score(track)
         if not releases:
-            config = get_config()
-            score = dict(config.setting['release_type_scores']).get('Other', 0.5)
-            release_parts = _get_weighted_release_parts(weights, score)
+            # No releases available — use neutral score (0.5) for all
+            # release-level weights, ensuring tracks with releases are preferred.
+            release_parts = _get_weighted_release_parts(weights, 0.5)
             track_parts = track_parts.merged_with(release_parts)
             sim = track_parts.combine_tiers() * search_score
             return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
@@ -592,40 +593,6 @@ def _get_weighted_release_parts(weights: dict[str, dict[str, int]], score: float
             total_weight = sum(value for key, value in weights[tier].items() if key in keys)
             getattr(result, tier).append((score, total_weight))
     return result
-
-
-def _weights_from_release_type_scores(parts, release, release_type_scores, weight_release_type=1):
-    # This function generates a score that determines how likely this release will be selected in a lookup.
-    # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
-    # This score is based on the preferences of release-types found in this release
-    # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
-    # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
-    # It appends (score, weight_release_type) to passed parts list
-
-    # if our preference is zero for the release_type, force to never return this recording
-    # by using a large zero weight. This means it only gets picked if there are no others at all.
-    skip_release = False
-
-    type_scores = dict(release_type_scores)
-    score = 0.0
-    other_score = type_scores.get('Other', 0.5)
-    if 'release-group' in release and 'primary-type' in release['release-group']:
-        types_found = [release['release-group']['primary-type']]
-        if 'secondary-types' in release['release-group']:
-            types_found += release['release-group']['secondary-types']
-        for release_type in types_found:
-            type_score = type_scores.get(release_type, other_score)
-            if type_score == 0:
-                skip_release = True
-            score += type_score
-        score /= len(types_found)
-    else:
-        score = other_score
-
-    if skip_release:
-        parts.append(_SKIP_RELEASE_WEIGHT)
-    else:
-        parts.append((score, weight_release_type))
 
 
 def _weights_from_preferred_release_types(
