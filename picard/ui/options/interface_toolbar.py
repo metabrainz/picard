@@ -122,6 +122,10 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             N_("Submit AcoustIDs"),
             'acoustid-fingerprinter',
         ),
+        MainAction.SUBMIT_ISRC: ToolbarButtonDesc(
+            N_("Submit ISRCs"),
+            'isrc-submit',
+        ),
         MainAction.DISCID_FROM_TAGS: ToolbarButtonDesc(
             N_("Lookup TOC tag…"),
             'media-optical-disc-id',
