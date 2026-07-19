@@ -131,6 +131,7 @@ from picard.i18n import (
     setup_i18n,
 )
 from picard.i18n.qt import Translators
+from picard.isrcsubmit import ISRCSubmitManager
 from picard.options import init_options
 
 
@@ -408,6 +409,7 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid.init()
         self.register_cleanup(self._acoustid.done)
         self.acoustidmanager = AcoustIDManager(acoustid_api)
+        self.isrc_submit_manager = ISRCSubmitManager(self.mb_api)
 
     def _init_plugins(self):
         """Initialize and load plugins"""
@@ -1195,6 +1197,7 @@ class Tagger(QtWidgets.QApplication):
         album.stop_loading()
         album.cancel_tasks()
         self.remove_files(list(album.iterfiles()))
+        self.isrc_submit_manager.remove_album(album)
         del self.albums[album.id]
         if album.release_group:
             album.release_group.remove_album(album.id)
