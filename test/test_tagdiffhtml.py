@@ -66,6 +66,21 @@ class TestTokenize(PicardTestCase):
             ["Hello", ",", " ", "world", "!", " ", "(", "test", ")"],
         )
 
+    def test_cjk_characters_split_individually(self):
+        self.assertEqual(tokenize("周杰倫"), ["周", "杰", "倫"])
+
+    def test_cjk_mixed_with_latin(self):
+        self.assertEqual(
+            tokenize("周杰倫 Jay Chou"),
+            ["周", "杰", "倫", " ", "Jay", " ", "Chou"],
+        )
+
+    def test_cjk_with_punctuation(self):
+        self.assertEqual(
+            tokenize("周杰倫feat.蔡依林"),
+            ["周", "杰", "倫", "feat", ".", "蔡", "依", "林"],
+        )
+
 
 class TestComputeDiff(PicardTestCase):
     def test_identical_strings_returns_none(self):
@@ -237,3 +252,13 @@ class TestComputeDiffEdgeCases(PicardTestCase):
         old_html, new_html = highlight_full("3:30", "4:06", REMOVED_BG, ADDED_BG, TEXT_COLOR)
         self.assertEqual(old_html, _wrap(_hl_removed("3:30")))
         self.assertEqual(new_html, _wrap(_hl_added("4:06")))
+
+    def test_cjk_single_character_change(self):
+        # "周杰倫" vs "周杰伦" - last character differs (traditional vs simplified)
+        old_html, new_html = compute_diff("周杰倫", "周杰伦", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # "周" and "杰" should be common (not highlighted)
+        self.assertIn("周", old_html)
+        self.assertIn("杰", old_html)
+        # "倫" vs "伦" should be highlighted
+        self.assertIn(_hl_removed("倫"), old_html)
+        self.assertIn(_hl_added("伦"), new_html)
