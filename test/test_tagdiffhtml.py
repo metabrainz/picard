@@ -41,7 +41,7 @@ def _hl_added(text: str) -> str:
 
 
 def _wrap(inner: str) -> str:
-    return f'<span style="color: {TEXT_COLOR};">{inner}</span>'
+    return f'<span style="color: {TEXT_COLOR}; white-space: pre;">{inner}</span>'
 
 
 class TestTokenize(PicardTestCase):
