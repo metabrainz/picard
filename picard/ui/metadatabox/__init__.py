@@ -897,32 +897,60 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_status = self.tag_diff.tag_status(tag)
             color = colors.get(tag_status, colors[TagStatus.UNCHANGED])
 
+            # Tag name column gets the status color
+            tag_item.setForeground(color)
+
             orig_item = get_table_item(row, self.COLUMN_ORIG)
             self._set_item_value(orig_item, self.tag_diff.old, tag, color)
 
             new_item = get_table_item(row, self.COLUMN_NEW)
             if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            strikeout = tag_status == TagStatus.REMOVED
             new_color = placeholder_color if tag_status == TagStatus.UNCHANGED else color
-            self._set_item_value(new_item, self.tag_diff.new, tag, new_color, strikeout=strikeout)
+            if tag_status == TagStatus.REMOVED:
+                # For removed tags, leave the new value column empty
+                new_item.setText("")
+                new_item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
+                font = new_item.font()
+                font.setItalic(False)
+                font.setStrikeOut(False)
+                new_item.setFont(font)
+            else:
+                self._set_item_value(new_item, self.tag_diff.new, tag, new_color)
 
             # Compute diff highlights for changed tags with concrete values.
             # For opaque identifiers (MBIDs), use full-string highlight.
             # For other tags, use hybrid word/character-level diff.
+            # For removed tags, highlight the entire old value.
+            # When diff HTML is active, use normal text color since the
+            # background highlights carry the change information.
             old_diff_html = None
             new_diff_html = None
-            if tag_status == TagStatus.CHANGED:
+            if tag_status == TagStatus.REMOVED:
+                old_status = self.tag_diff.old.status(tag)
+                if not old_status.is_grouped:
+                    old_text = MULTI_VALUED_JOINER.join(self.tag_diff.old[tag])
+                    normal_text_color = self.palette().color(QtGui.QPalette.ColorRole.Text)
+                    old_diff_html, new_diff_html = compute_full_diff_html(old_text, "", normal_text_color)
+                    new_diff_html = None
+            elif tag_status == TagStatus.ADDED:
+                new_status = self.tag_diff.new.status(tag)
+                if not new_status.is_grouped:
+                    new_text = MULTI_VALUED_JOINER.join(self.tag_diff.new[tag])
+                    normal_text_color = self.palette().color(QtGui.QPalette.ColorRole.Text)
+                    old_diff_html, new_diff_html = compute_full_diff_html("", new_text, normal_text_color)
+                    old_diff_html = None
+            elif tag_status == TagStatus.CHANGED:
                 old_status = self.tag_diff.old.status(tag)
                 new_status = self.tag_diff.new.status(tag)
                 if not old_status.is_grouped and not new_status.is_grouped:
                     old_text = MULTI_VALUED_JOINER.join(self.tag_diff.old[tag])
                     new_text = MULTI_VALUED_JOINER.join(self.tag_diff.new[tag])
-                    text_color = interface_colors.get_qcolor('tagstatus_changed')
+                    normal_text_color = self.palette().color(QtGui.QPalette.ColorRole.Text)
                     if tag in self.LOOKUP_TAGS:
-                        old_diff_html, new_diff_html = compute_full_diff_html(old_text, new_text, text_color)
+                        old_diff_html, new_diff_html = compute_full_diff_html(old_text, new_text, normal_text_color)
                     else:
-                        old_diff_html, new_diff_html = compute_diff_html(old_text, new_text, text_color)
+                        old_diff_html, new_diff_html = compute_diff_html(old_text, new_text, normal_text_color)
             orig_item.setData(DIFF_HTML_ROLE, old_diff_html)
             new_item.setData(DIFF_HTML_ROLE, new_diff_html)
 
