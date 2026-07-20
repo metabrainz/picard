@@ -211,6 +211,15 @@ def _create_submit_acoustid_action(parent):
     return action
 
 
+@add_action(MainAction.SUBMIT_ISRC)
+def _create_submit_isrc_action(parent):
+    action = QtGui.QAction(icontheme.lookup('isrc-submit'), _("Submit &ISRCs"), parent)
+    action.setStatusTip(_("Submit ISRCs to MusicBrainz"))
+    action.setEnabled(False)
+    action.triggered.connect(parent._on_submit_isrc)
+    return action
+
+
 @add_action(MainAction.EXIT)
 def _create_exit_action(parent):
     action = QtGui.QAction(_("E&xit"), parent)
@@ -238,6 +247,15 @@ def _create_browser_lookup_action(parent):
     # TR: Keyboard shortcut for "Lookup in Browser"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+L")))
     action.triggered.connect(parent.browser_lookup)
+    return action
+
+
+@add_action(MainAction.LOOKUP_ISRC)
+def _create_lookup_isrc_action(parent):
+    action = QtGui.QAction(_("Lookup by &ISRC"), parent)
+    action.setStatusTip(_("Lookup selected item by ISRC"))
+    action.setEnabled(False)
+    action.triggered.connect(parent._on_lookup_isrc)
     return action
 
 
