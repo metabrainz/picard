@@ -222,3 +222,18 @@ class TestComputeDiffEdgeCases(PicardTestCase):
         old_html, new_html = compute_diff("a", "b", REMOVED_BG, ADDED_BG, TEXT_COLOR)
         self.assertEqual(old_html, _wrap(_hl_removed("a")))
         self.assertEqual(new_html, _wrap(_hl_added("b")))
+
+    def test_formatted_time_diff(self):
+        # Simulates ~length handling: formatted time strings like "4:05" vs "4:06"
+        old_html, new_html = compute_diff("4:05", "4:06", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # The "4:" prefix is common, only "05" vs "06" differs
+        self.assertIn("4", old_html)
+        self.assertIn("4", new_html)
+        self.assertIn(REMOVED_BG, old_html)
+        self.assertIn(ADDED_BG, new_html)
+
+    def test_formatted_time_full_diff(self):
+        # Very different times get full highlight
+        old_html, new_html = highlight_full("3:30", "4:06", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        self.assertEqual(old_html, _wrap(_hl_removed("3:30")))
+        self.assertEqual(new_html, _wrap(_hl_added("4:06")))
