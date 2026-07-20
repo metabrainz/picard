@@ -44,9 +44,13 @@ CHAR_DIFF_RATIO_THRESHOLD = 0.5
 
 # Split text into tokens: runs of word characters, or individual non-word
 # characters (punctuation, symbols), or whitespace runs.
+# CJK ideographs are split as individual characters since each character
+# is semantically a word in Chinese/Japanese kanji.
 # This ensures punctuation is a separate token from the word it's attached to,
 # e.g. "Rock'n'Roll!" -> ["Rock", "'", "n", "'", "Roll", "!"]
-_TOKEN_RE = re.compile(r"(\w+|[^\w\s]|\s+)")
+# e.g. "周杰倫" -> ["周", "杰", "倫"]
+_CJK_IDEOGRAPH = r'[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff\U00020000-\U0002a6df]'
+_TOKEN_RE = re.compile(rf"({_CJK_IDEOGRAPH}|\w+|[^\w\s]|\s+)")
 
 
 def tokenize(text: str) -> list[str]:
