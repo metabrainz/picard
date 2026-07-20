@@ -87,6 +87,31 @@ def _wrap_diff(content: str, text_color: str) -> str:
     return f'<span style="color: {text_color}; white-space: pre;">{content}</span>'
 
 
+def _common_prefix_len(a: str, b: str) -> int:
+    """Return the length of the common prefix of two strings."""
+    max_len = min(len(a), len(b))
+    for i in range(max_len):
+        if a[i] != b[i]:
+            return i
+    return max_len
+
+
+def _common_suffix_len(a: str, b: str, prefix_len: int) -> int:
+    """Return the length of the common suffix of two strings.
+
+    Args:
+        a: First string.
+        b: Second string.
+        prefix_len: Length of the already-matched common prefix,
+                    to avoid overlapping.
+    """
+    max_len = min(len(a), len(b)) - prefix_len
+    for i in range(1, max_len + 1):
+        if a[-i] != b[-i]:
+            return i - 1
+    return max_len
+
+
 def _char_diff_within_token(
     old_token: str,
     new_token: str,
@@ -95,6 +120,11 @@ def _char_diff_within_token(
 ) -> tuple[str, str]:
     """Compute character-level diff within a pair of similar tokens.
 
+    Uses the common prefix/suffix approach (like git's diff-highlight):
+    find the common prefix and suffix, and highlight everything in the
+    middle as changed. This avoids confusing results from SequenceMatcher
+    on short strings with transpositions (e.g. "10" vs "09").
+
     Args:
         old_token: The original token string.
         new_token: The new token string.
@@ -102,26 +132,31 @@ def _char_diff_within_token(
         added_bg: CSS color for added character background.
 
     Returns:
-        Tuple (old_html, new_html) with per-character highlights.
+        Tuple (old_html, new_html) with highlighted differences.
     """
-    matcher = SequenceMatcher(None, old_token, new_token)
-    old_parts: list[str] = []
-    new_parts: list[str] = []
+    prefix_len = _common_prefix_len(old_token, new_token)
+    suffix_len = _common_suffix_len(old_token, new_token, prefix_len)
 
-    for op, i1, i2, j1, j2 in matcher.get_opcodes():
-        if op == 'equal':
-            chunk = escape(old_token[i1:i2])
-            old_parts.append(chunk)
-            new_parts.append(chunk)
-        elif op == 'replace':
-            old_parts.append(_highlight(old_token[i1:i2], removed_bg))
-            new_parts.append(_highlight(new_token[j1:j2], added_bg))
-        elif op == 'delete':
-            old_parts.append(_highlight(old_token[i1:i2], removed_bg))
-        elif op == 'insert':
-            new_parts.append(_highlight(new_token[j1:j2], added_bg))
+    # -suffix_len works as a slice end when suffix_len > 0;
+    # when suffix_len == 0, -0 == 0 (falsy), so `or None` means "to end".
+    end = -suffix_len or None
+    prefix = escape(old_token[:prefix_len])
+    suffix = escape(old_token[end:]) if suffix_len else ""
 
-    return ''.join(old_parts), ''.join(new_parts)
+    old_middle = old_token[prefix_len:end]
+    new_middle = new_token[prefix_len:end]
+
+    old_html = prefix
+    if old_middle:
+        old_html += _highlight(old_middle, removed_bg)
+    old_html += suffix
+
+    new_html = prefix
+    if new_middle:
+        new_html += _highlight(new_middle, added_bg)
+    new_html += suffix
+
+    return old_html, new_html
 
 
 def _process_replace(

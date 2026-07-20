@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from functools import partial
 import json
 
@@ -62,6 +63,7 @@ from picard.tags.preserved import UserPreservedTags
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
+    format_time,
     icontheme,
     restore_method,
     thread,
@@ -92,6 +94,12 @@ DIFF_HTML_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
 # Alpha values for diff highlight backgrounds (0-255)
 DIFF_HIGHLIGHT_ALPHA_LIGHT = 60
 DIFF_HIGHLIGHT_ALPHA_DARK = 90
+
+
+# Colors resolved from the main thread for use in background diff computation.
+# Qt widget palette can only be accessed from the main thread. These colors are
+# resolved before dispatching to the background thread and passed as CSS strings.
+DiffColors = namedtuple('DiffColors', ('text', 'placeholder', 'removed_bg', 'added_bg'))
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -764,18 +772,23 @@ class MetadataBox(QtWidgets.QTableWidget):
             return
         if new_selection:
             self._update_selection()
+        # Resolve palette colors in the main thread (Qt widgets are not thread-safe).
+        diff_alpha = DIFF_HIGHLIGHT_ALPHA_DARK if interface_colors.dark_theme else DIFF_HIGHLIGHT_ALPHA_LIGHT
+        diff_colors = DiffColors(
+            text=self.palette().color(QtGui.QPalette.ColorRole.Text).name(QtGui.QColor.NameFormat.HexArgb),
+            placeholder=self.palette()
+            .color(QtGui.QPalette.ColorRole.PlaceholderText)
+            .name(QtGui.QColor.NameFormat.HexArgb),
+            removed_bg=interface_colors.get_color_css_rgba('tagstatus_removed', alpha=diff_alpha),
+            added_bg=interface_colors.get_color_css_rgba('tagstatus_added', alpha=diff_alpha),
+        )
         thread.run_task(
-            partial(
-                self._update_tags,
-                new_selection,
-                drop_album_caches,
-                self.palette().color(QtGui.QPalette.ColorRole.Text).name(),
-            ),
+            partial(self._update_tags, new_selection, drop_album_caches, diff_colors),
             self._update_items,
             thread_pool=self.tagger.priority_thread_pool,
         )
 
-    def _update_tags(self, new_selection=True, drop_album_caches=False, text_color_css=None):
+    def _update_tags(self, new_selection=True, drop_album_caches=False, diff_colors=None):
         """
         Build a TagDiff object representing the differences between original and new metadata
         for the current selection of files and tracks.
@@ -808,7 +821,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._add_tracks_to_tag_diff(tracks, tag_diff, config)
 
         tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
-        self._compute_diff_html(tag_diff, text_color_css)
+        self._compute_diff_html(tag_diff, diff_colors)
         return tag_diff
 
     def _add_files_to_tag_diff(self, files, tag_diff, config, top_tags):
@@ -861,7 +874,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
             tag_diff.objects += 1
 
-    def _compute_diff_html(self, tag_diff, text_color_css):
+    def _compute_diff_html(self, tag_diff, diff_colors):
         """Compute diff HTML for all tags in the background thread.
 
         Stores results in tag_diff.diff_html as a dict mapping tag names
@@ -869,42 +882,47 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         Args:
             tag_diff: The TagDiff object with tag data.
-            text_color_css: CSS color string for normal text.
+            diff_colors: DiffColors instance with resolved CSS color strings.
         """
-        diff_alpha = DIFF_HIGHLIGHT_ALPHA_DARK if interface_colors.dark_theme else DIFF_HIGHLIGHT_ALPHA_LIGHT
-        removed_bg = interface_colors.get_color_css_rgba('tagstatus_removed', alpha=diff_alpha)
-        added_bg = interface_colors.get_color_css_rgba('tagstatus_added', alpha=diff_alpha)
+        removed_bg = diff_colors.removed_bg
+        added_bg = diff_colors.added_bg
 
         for tag in tag_diff.tag_names:
             tag_status = tag_diff.tag_status(tag)
             old_diff_html = None
             new_diff_html = None
 
-            if tag_status == TagStatus.REMOVED:
-                old_status = tag_diff.old.status(tag)
-                if not old_status.is_grouped:
+            if tag == '~length':
+                # Always show diff for length when display values differ,
+                # regardless of tolerance-based status (it's read-only/informational).
+                # Skip when values are grouped (multiple files with different lengths).
+                # Use placeholder color for new value since this tag is never written.
+                if not tag_diff.old.status(tag).is_grouped and not tag_diff.new.status(tag).is_grouped:
+                    old_text = format_time(tag_diff.old.get(tag, 0))
+                    new_text = format_time(tag_diff.new.get(tag, 0))
+                    old_diff_html, _unused = compute_diff(old_text, new_text, removed_bg, added_bg, diff_colors.text)
+                    _unused, new_diff_html = compute_diff(
+                        old_text, new_text, removed_bg, added_bg, diff_colors.placeholder
+                    )
+            elif tag_status == TagStatus.REMOVED:
+                if not tag_diff.old.status(tag).is_grouped:
                     old_text = MULTI_VALUED_JOINER.join(tag_diff.old[tag])
-                    old_diff_html, new_diff_html = highlight_full(old_text, "", removed_bg, added_bg, text_color_css)
-                    new_diff_html = None
+                    old_diff_html, _unused = highlight_full(old_text, "", removed_bg, added_bg, diff_colors.text)
             elif tag_status == TagStatus.ADDED:
-                new_status = tag_diff.new.status(tag)
-                if not new_status.is_grouped:
+                if not tag_diff.new.status(tag).is_grouped:
                     new_text = MULTI_VALUED_JOINER.join(tag_diff.new[tag])
-                    old_diff_html, new_diff_html = highlight_full("", new_text, removed_bg, added_bg, text_color_css)
-                    old_diff_html = None
+                    _unused, new_diff_html = highlight_full("", new_text, removed_bg, added_bg, diff_colors.text)
             elif tag_status == TagStatus.CHANGED:
-                old_status = tag_diff.old.status(tag)
-                new_status = tag_diff.new.status(tag)
-                if not old_status.is_grouped and not new_status.is_grouped:
+                if not tag_diff.old.status(tag).is_grouped and not tag_diff.new.status(tag).is_grouped:
                     old_text = MULTI_VALUED_JOINER.join(tag_diff.old[tag])
                     new_text = MULTI_VALUED_JOINER.join(tag_diff.new[tag])
                     if tag in self.LOOKUP_TAGS:
                         old_diff_html, new_diff_html = highlight_full(
-                            old_text, new_text, removed_bg, added_bg, text_color_css
+                            old_text, new_text, removed_bg, added_bg, diff_colors.text
                         )
                     else:
                         old_diff_html, new_diff_html = compute_diff(
-                            old_text, new_text, removed_bg, added_bg, text_color_css
+                            old_text, new_text, removed_bg, added_bg, diff_colors.text
                         )
 
             if old_diff_html or new_diff_html:
@@ -965,7 +983,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_item = get_table_item(row, self.COLUMN_NEW)
             if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            new_color = placeholder_color if tag_status == TagStatus.UNCHANGED else color
+            new_color = (
+                placeholder_color if tag_status == TagStatus.UNCHANGED or self.tag_diff.is_readonly(tag) else color
+            )
             if tag_status == TagStatus.REMOVED:
                 # For removed tags, leave the new value column empty
                 new_item.setText("")
