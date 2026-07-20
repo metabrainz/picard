@@ -162,6 +162,67 @@ class MBAPITest(PicardTestCase):
         ratings = {("recording", 'a'): 'foo'}
         self.assertRaises(ValueError, self.api._xml_ratings, ratings)
 
+    def test_xml_isrcs_single(self):
+        recordings_isrcs = {'b9991644-7275-44db-bc43-fff6c6b4ce69': ['JPB600601201']}
+        xmldata = self.api._xml_isrcs(recordings_isrcs)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="b9991644-7275-44db-bc43-fff6c6b4ce69">'
+            '<isrc-list count="1"><isrc id="JPB600601201" /></isrc-list>'
+            '</recording>'
+            '</recording-list>'
+            '</metadata>',
+        )
+
+    def test_xml_isrcs_multiple_recordings(self):
+        recordings_isrcs = {
+            'aaaa': ['USRC17607839'],
+            'bbbb': ['GBAYE0000351', 'FRZ039100014'],
+        }
+        xmldata = self.api._xml_isrcs(recordings_isrcs)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="aaaa">'
+            '<isrc-list count="1"><isrc id="USRC17607839" /></isrc-list>'
+            '</recording>'
+            '<recording id="bbbb">'
+            '<isrc-list count="2"><isrc id="GBAYE0000351" /><isrc id="FRZ039100014" /></isrc-list>'
+            '</recording>'
+            '</recording-list>'
+            '</metadata>',
+        )
+
+    def test_xml_isrcs_empty(self):
+        xmldata = self.api._xml_isrcs({})
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list></recording-list>'
+            '</metadata>',
+        )
+
+    def test_xml_isrcs_skips_empty_list(self):
+        recordings_isrcs = {'aaaa': [], 'bbbb': ['USRC17607839']}
+        xmldata = self.api._xml_isrcs(recordings_isrcs)
+        self.assertEqual(
+            xmldata,
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
+            '<recording-list>'
+            '<recording id="bbbb">'
+            '<isrc-list count="1"><isrc id="USRC17607839" /></isrc-list>'
+            '</recording>'
+            '</recording-list>'
+            '</metadata>',
+        )
+
     def test_collection_request(self):
         releases = tuple("r" + str(i) for i in range(13))
         generator = self.api._collection_request("test", releases, batchsize=5)
