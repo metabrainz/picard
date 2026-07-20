@@ -80,6 +80,7 @@ from .tagdiff import (
 from picard.ui.colors import interface_colors
 from picard.ui.metadatabox.difftextdocument import (
     compute_diff_html,
+    compute_full_diff_html,
     create_diff_document,
 )
 from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
@@ -906,7 +907,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_color = placeholder_color if tag_status == TagStatus.UNCHANGED else color
             self._set_item_value(new_item, self.tag_diff.new, tag, new_color, strikeout=strikeout)
 
-            # Compute character-level diff for changed tags with concrete values
+            # Compute diff highlights for changed tags with concrete values.
+            # For opaque identifiers (MBIDs), use full-string highlight.
+            # For other tags, use hybrid word/character-level diff.
             old_diff_html = None
             new_diff_html = None
             if tag_status == TagStatus.CHANGED:
@@ -916,7 +919,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                     old_text = MULTI_VALUED_JOINER.join(self.tag_diff.old[tag])
                     new_text = MULTI_VALUED_JOINER.join(self.tag_diff.new[tag])
                     text_color = interface_colors.get_qcolor('tagstatus_changed')
-                    old_diff_html, new_diff_html = compute_diff_html(old_text, new_text, text_color)
+                    if tag in self.LOOKUP_TAGS:
+                        old_diff_html, new_diff_html = compute_full_diff_html(old_text, new_text, text_color)
+                    else:
+                        old_diff_html, new_diff_html = compute_diff_html(old_text, new_text, text_color)
             orig_item.setData(DIFF_HTML_ROLE, old_diff_html)
             new_item.setData(DIFF_HTML_ROLE, new_diff_html)
 

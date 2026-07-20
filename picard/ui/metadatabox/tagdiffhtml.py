@@ -212,3 +212,33 @@ def compute_diff(
     old_html = f'<span style="color: {text_color};">{"".join(old_parts)}</span>'
     new_html = f'<span style="color: {text_color};">{"".join(new_parts)}</span>'
     return old_html, new_html
+
+
+def highlight_full(
+    old_text: str,
+    new_text: str,
+    removed_bg: str,
+    added_bg: str,
+    text_color: str,
+) -> tuple[str | None, str | None]:
+    """Highlight the entire old and new strings as fully replaced.
+
+    Used for opaque values (MBIDs, etc.) or completely different strings
+    where character-level diff is meaningless.
+
+    Args:
+        old_text: The original text string.
+        new_text: The new text string.
+        removed_bg: CSS color for the removed highlight background.
+        added_bg: CSS color for the added highlight background.
+        text_color: CSS color for the base text.
+
+    Returns:
+        A tuple (old_html, new_html) with full-string highlights.
+        Returns (None, None) if inputs are identical.
+    """
+    if old_text == new_text:
+        return None, None
+    old_html = f'<span style="color: {text_color};">{_highlight(old_text, removed_bg)}</span>'
+    new_html = f'<span style="color: {text_color};">{_highlight(new_text, added_bg)}</span>'
+    return old_html, new_html

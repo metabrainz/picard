@@ -28,7 +28,10 @@ for rendering.
 from PyQt6 import QtGui
 
 from picard.ui.colors import interface_colors
-from picard.ui.metadatabox.tagdiffhtml import compute_diff
+from picard.ui.metadatabox.tagdiffhtml import (
+    compute_diff,
+    highlight_full,
+)
 
 
 def _get_diff_colors() -> tuple[str, str]:
@@ -62,6 +65,31 @@ def compute_diff_html(
         return None, None
     removed_bg, added_bg = _get_diff_colors()
     return compute_diff(old_text, new_text, removed_bg, added_bg, text_color.name())
+
+
+def compute_full_diff_html(
+    old_text: str,
+    new_text: str,
+    text_color: QtGui.QColor,
+) -> tuple[str | None, str | None]:
+    """Highlight entire old/new strings as fully replaced.
+
+    Used for opaque values (MBIDs, etc.) where character-level diff
+    is meaningless.
+
+    Args:
+        old_text: The original text string.
+        new_text: The new text string.
+        text_color: QColor for the base text.
+
+    Returns:
+        A tuple (old_html, new_html) with full-string highlights.
+        Returns (None, None) if inputs are identical.
+    """
+    if old_text == new_text:
+        return None, None
+    removed_bg, added_bg = _get_diff_colors()
+    return highlight_full(old_text, new_text, removed_bg, added_bg, text_color.name())
 
 
 def create_diff_document(html: str, font: QtGui.QFont) -> QtGui.QTextDocument:
