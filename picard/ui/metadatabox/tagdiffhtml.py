@@ -74,6 +74,19 @@ def _highlight(text: str, bg_color: str) -> str:
     return f'<span style="background-color: {bg_color};">{escape(text)}</span>'
 
 
+def _wrap_diff(content: str, text_color: str) -> str:
+    """Wrap diff content in an outer span with text color and preserved whitespace.
+
+    Args:
+        content: The inner HTML content (already escaped/highlighted).
+        text_color: CSS color for the text.
+
+    Returns:
+        An HTML span string with color and white-space: pre.
+    """
+    return f'<span style="color: {text_color}; white-space: pre;">{content}</span>'
+
+
 def _char_diff_within_token(
     old_token: str,
     new_token: str,
@@ -209,8 +222,8 @@ def compute_diff(
         elif op == 'insert':
             new_parts.extend(_highlight(tok, added_bg) for tok in new_tokens[j1:j2])
 
-    old_html = f'<span style="color: {text_color};">{"".join(old_parts)}</span>'
-    new_html = f'<span style="color: {text_color};">{"".join(new_parts)}</span>'
+    old_html = _wrap_diff("".join(old_parts), text_color)
+    new_html = _wrap_diff("".join(new_parts), text_color)
     return old_html, new_html
 
 
@@ -239,6 +252,6 @@ def highlight_full(
     """
     if old_text == new_text:
         return None, None
-    old_html = f'<span style="color: {text_color};">{_highlight(old_text, removed_bg)}</span>'
-    new_html = f'<span style="color: {text_color};">{_highlight(new_text, added_bg)}</span>'
+    old_html = _wrap_diff(_highlight(old_text, removed_bg), text_color)
+    new_html = _wrap_diff(_highlight(new_text, added_bg), text_color)
     return old_html, new_html
