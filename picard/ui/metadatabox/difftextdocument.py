@@ -20,76 +20,11 @@
 
 """Qt display layer for diff highlighting in the metadata box.
 
-This module bridges the pure diff logic (tagdiffhtml) with Qt,
-providing color resolution from the theme and QTextDocument creation
-for rendering.
+This module provides QTextDocument creation for rendering diff HTML
+produced by the tagdiffhtml module.
 """
 
 from PyQt6 import QtGui
-
-from picard.ui.colors import interface_colors
-from picard.ui.metadatabox.tagdiffhtml import (
-    compute_diff,
-    highlight_full,
-)
-
-
-def _get_diff_colors() -> tuple[str, str]:
-    """Return (removed_bg, added_bg) as CSS rgba strings with transparency."""
-    removed = interface_colors.get_qcolor('tagstatus_removed')
-    added = interface_colors.get_qcolor('tagstatus_added')
-    removed_bg = f'rgba({removed.red()}, {removed.green()}, {removed.blue()}, 60)'
-    added_bg = f'rgba({added.red()}, {added.green()}, {added.blue()}, 60)'
-    return removed_bg, added_bg
-
-
-def compute_diff_html(
-    old_text: str,
-    new_text: str,
-    text_color: QtGui.QColor,
-) -> tuple[str | None, str | None]:
-    """Compute diff HTML using the current theme colors.
-
-    Resolves Qt theme colors and delegates to the pure diff logic.
-
-    Args:
-        old_text: The original text string.
-        new_text: The new text string.
-        text_color: QColor for the base text.
-
-    Returns:
-        A tuple (old_html, new_html) with highlighted differences.
-        Returns (None, None) if inputs are identical.
-    """
-    if old_text == new_text:
-        return None, None
-    removed_bg, added_bg = _get_diff_colors()
-    return compute_diff(old_text, new_text, removed_bg, added_bg, text_color.name())
-
-
-def compute_full_diff_html(
-    old_text: str,
-    new_text: str,
-    text_color: QtGui.QColor,
-) -> tuple[str | None, str | None]:
-    """Highlight entire old/new strings as fully replaced.
-
-    Used for opaque values (MBIDs, etc.) where character-level diff
-    is meaningless.
-
-    Args:
-        old_text: The original text string.
-        new_text: The new text string.
-        text_color: QColor for the base text.
-
-    Returns:
-        A tuple (old_html, new_html) with full-string highlights.
-        Returns (None, None) if inputs are identical.
-    """
-    if old_text == new_text:
-        return None, None
-    removed_bg, added_bg = _get_diff_colors()
-    return highlight_full(old_text, new_text, removed_bg, added_bg, text_color.name())
 
 
 def create_diff_document(html: str, font: QtGui.QFont) -> QtGui.QTextDocument:
