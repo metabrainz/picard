@@ -22,6 +22,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.ui.metadatabox.tagdiffhtml import (
     compute_diff,
+    highlight_full,
     tokenize,
 )
 
@@ -154,3 +155,70 @@ class TestComputeDiff(PicardTestCase):
         self.assertNotIn("<style>", new_html)
         self.assertIn("&lt;", old_html)
         self.assertIn("&gt;", old_html)
+
+
+class TestHighlightFull(PicardTestCase):
+    def test_identical_strings_returns_none(self):
+        result = highlight_full("same", "same", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        self.assertEqual(result, (None, None))
+
+    def test_empty_strings_returns_none(self):
+        result = highlight_full("", "", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        self.assertEqual(result, (None, None))
+
+    def test_full_highlight_both(self):
+        old_html, new_html = highlight_full("abc-123-def", "xyz-789-ghi", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # Old value entirely highlighted with removed color
+        self.assertEqual(old_html, _wrap(_hl_removed("abc-123-def")))
+        # New value entirely highlighted with added color
+        self.assertEqual(new_html, _wrap(_hl_added("xyz-789-ghi")))
+
+    def test_old_empty_new_highlighted(self):
+        # Simulates an added tag (no old value)
+        old_html, new_html = highlight_full("", "new value", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # Old is an empty highlight span
+        self.assertEqual(old_html, _wrap(_hl_removed("")))
+        # New value fully highlighted
+        self.assertEqual(new_html, _wrap(_hl_added("new value")))
+
+    def test_new_empty_old_highlighted(self):
+        # Simulates a removed tag (no new value)
+        old_html, new_html = highlight_full("old value", "", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # Old value fully highlighted
+        self.assertEqual(old_html, _wrap(_hl_removed("old value")))
+        # New is an empty highlight span
+        self.assertEqual(new_html, _wrap(_hl_added("")))
+
+    def test_html_escaping(self):
+        old_html, new_html = highlight_full("<b>old</b>", "<i>new</i>", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        self.assertNotIn("<b>", old_html)
+        self.assertNotIn("<i>", new_html)
+        self.assertIn("&lt;b&gt;", old_html)
+        self.assertIn("&lt;i&gt;", new_html)
+
+
+class TestComputeDiffEdgeCases(PicardTestCase):
+    def test_old_empty_new_has_value(self):
+        old_html, new_html = compute_diff("", "added text", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # Everything in new should be highlighted as added
+        self.assertIn(_hl_added("added"), new_html)
+        self.assertIn(_hl_added("text"), new_html)
+
+    def test_old_has_value_new_empty(self):
+        old_html, new_html = compute_diff("removed text", "", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # Everything in old should be highlighted as removed
+        self.assertIn(_hl_removed("removed"), old_html)
+        self.assertIn(_hl_removed("text"), old_html)
+
+    def test_whitespace_only_change(self):
+        old_html, new_html = compute_diff("a  b", "a b", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        # The extra space in old should be highlighted as removed
+        self.assertIn(REMOVED_BG, old_html)
+        # The words should not be highlighted
+        self.assertNotIn(_hl_removed("a"), old_html)
+        self.assertNotIn(_hl_removed("b"), old_html)
+
+    def test_single_char_change(self):
+        old_html, new_html = compute_diff("a", "b", REMOVED_BG, ADDED_BG, TEXT_COLOR)
+        self.assertEqual(old_html, _wrap(_hl_removed("a")))
+        self.assertEqual(new_html, _wrap(_hl_added("b")))
