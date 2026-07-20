@@ -236,6 +236,44 @@ class MBAPIHelper(APIHelper):
             request_mimetype='application/xml; charset=utf-8',
         )
 
+    @staticmethod
+    def _xml_isrcs(recordings_isrcs: dict[str, list[str]]) -> str:
+        """Build XML body for ISRC submission.
+
+        Args:
+            recordings_isrcs: dict mapping recording MBID to list of ISRCs.
+        """
+        recordings = ''.join(
+            '<recording id=%s><isrc-list count="%d">%s</isrc-list></recording>'
+            % (
+                quoteattr(recording_id),
+                len(isrcs),
+                ''.join('<isrc id=%s />' % quoteattr(isrc) for isrc in isrcs),
+            )
+            for recording_id, isrcs in recordings_isrcs.items()
+            if isrcs
+        )
+        return wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+
+    def submit_isrcs(self, recordings_isrcs: dict[str, list[str]], handler: ReplyHandler) -> PendingRequest:
+        """Submit ISRCs for recordings.
+
+        Args:
+            recordings_isrcs: dict mapping recording MBID to list of ISRCs.
+            handler: response callback.
+        """
+        params = {'client': CLIENT_STRING}
+        data = self._xml_isrcs(recordings_isrcs)
+        return self.post(
+            "/recording",
+            data,
+            handler,
+            priority=True,
+            unencoded_queryargs=params,
+            parse_response_type='xml',
+            request_mimetype='application/xml; charset=utf-8',
+        )
+
     def get_collection(
         self, collection_id: str | None, handler: ReplyHandler, limit: int = 100, offset: int = 0
     ) -> PendingRequest:

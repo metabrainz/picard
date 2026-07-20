@@ -213,6 +213,35 @@ QCheckBox { color: black }</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="submission_box">
+     <property name="title">
+      <string>Submission</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="read_isrcs_from_disc">
+        <property name="toolTip">
+         <string>When enabled, ISRCs will be read from the CD during disc lookup. This may significantly slow down the disc read on some drives.</string>
+        </property>
+        <property name="text">
+         <string>Read ISRCs from CD</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="submit_isrcs">
+        <property name="toolTip">
+         <string>When enabled, ISRCs found in files that are not yet associated with the matched recording in MusicBrainz can be submitted.</string>
+        </property>
+        <property name="text">
+         <string>Submit ISRCs to MusicBrainz when tagging</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer>
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -237,6 +266,8 @@ QCheckBox { color: black }</string>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>cluster_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>
+  <tabstop>read_isrcs_from_disc</tabstop>
+  <tabstop>submit_isrcs</tabstop>
  </tabstops>
  <resources/>
  <connections/>
