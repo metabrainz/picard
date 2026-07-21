@@ -216,7 +216,7 @@ class TagDiff:
     NEW_VALUE = 'new'
     OLD_VALUE = 'old'
 
-    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers')
+    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers', 'diff_html')
 
     def __init__(self, max_length_diff=2):
         """
@@ -231,6 +231,7 @@ class TagDiff:
         self.old = TagCounter(self)
         self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
+        self.diff_html = {}
         self.tag_ne_handlers = defaultdict(lambda: lambda old, new: old != new)
         # handling the special case of '~length'
         max_length_delta_ms = max_length_diff * 1000

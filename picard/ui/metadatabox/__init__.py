@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from functools import partial
 import json
 
@@ -62,6 +63,7 @@ from picard.tags.preserved import UserPreservedTags
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
+    format_time,
     icontheme,
     restore_method,
     thread,
@@ -78,7 +80,26 @@ from .tagdiff import (
 )
 
 from picard.ui.colors import interface_colors
+from picard.ui.metadatabox.difftextdocument import create_diff_document
 from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
+from picard.ui.metadatabox.tagdiffhtml import (
+    compute_diff,
+    highlight_full,
+)
+
+
+# Custom data role for storing diff HTML on table items
+DIFF_HTML_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
+
+# Alpha values for diff highlight backgrounds (0-255)
+DIFF_HIGHLIGHT_ALPHA_LIGHT = 60
+DIFF_HIGHLIGHT_ALPHA_DARK = 90
+
+
+# Colors resolved from the main thread for use in background diff computation.
+# Qt widget palette can only be accessed from the main thread. These colors are
+# resolved before dispatching to the background thread and passed as CSS strings.
+DiffColors = namedtuple('DiffColors', ('text', 'placeholder', 'removed_bg', 'added_bg'))
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -89,10 +110,34 @@ class TableTagEditorDelegate(TagEditorDelegate):
     editing of tag values within metadata box QTableWidget.
     It ensures that the editor is sized appropriately for multiline content
     and that the row height is adjusted to fit the editor.
+
+    When diff HTML is stored on an item (via DIFF_HTML_ROLE), the delegate
+    renders the HTML with highlighted character differences instead of
+    plain text.
     """
 
     MIN_EDITOR_HEIGHT = 80  # The minimum height for the editor widget
     MAX_ROW_HEIGHT = 160  # The maximum height for a row
+
+    def paint(self, painter, option, index):
+        """Render HTML diff highlighting if available, otherwise use default painting."""
+        diff_html = index.data(DIFF_HTML_ROLE)
+        if diff_html:
+            painter.save()
+            # Draw background/selection using the base delegate
+            self.drawBackground(painter, option, index)
+            # Render the diff HTML document within the cell rect
+            doc = create_diff_document(diff_html, option.font)
+            doc.setTextWidth(option.rect.width())
+            painter.translate(option.rect.topLeft())
+            painter.setClipRect(option.rect.translated(-option.rect.topLeft()))
+            doc.drawContents(painter)
+            painter.restore()
+            # Draw focus rect if needed
+            if option.state & QtWidgets.QStyle.StateFlag.State_HasFocus:
+                self.drawFocus(painter, option, option.rect)
+        else:
+            super().paint(painter, option, index)
 
     def createEditor(self, parent, option, index):
         """
@@ -727,13 +772,23 @@ class MetadataBox(QtWidgets.QTableWidget):
             return
         if new_selection:
             self._update_selection()
+        # Resolve palette colors in the main thread (Qt widgets are not thread-safe).
+        diff_alpha = DIFF_HIGHLIGHT_ALPHA_DARK if interface_colors.dark_theme else DIFF_HIGHLIGHT_ALPHA_LIGHT
+        diff_colors = DiffColors(
+            text=self.palette().color(QtGui.QPalette.ColorRole.Text).name(QtGui.QColor.NameFormat.HexArgb),
+            placeholder=self.palette()
+            .color(QtGui.QPalette.ColorRole.PlaceholderText)
+            .name(QtGui.QColor.NameFormat.HexArgb),
+            removed_bg=interface_colors.get_color_css_rgba('tagstatus_removed', alpha=diff_alpha),
+            added_bg=interface_colors.get_color_css_rgba('tagstatus_added', alpha=diff_alpha),
+        )
         thread.run_task(
-            partial(self._update_tags, new_selection, drop_album_caches),
+            partial(self._update_tags, new_selection, drop_album_caches, diff_colors),
             self._update_items,
             thread_pool=self.tagger.priority_thread_pool,
         )
 
-    def _update_tags(self, new_selection=True, drop_album_caches=False):
+    def _update_tags(self, new_selection=True, drop_album_caches=False, diff_colors=None):
         """
         Build a TagDiff object representing the differences between original and new metadata
         for the current selection of files and tracks.
@@ -766,6 +821,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._add_tracks_to_tag_diff(tracks, tag_diff, config)
 
         tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
+        self._compute_diff_html(tag_diff, diff_colors)
         return tag_diff
 
     def _add_files_to_tag_diff(self, files, tag_diff, config, top_tags):
@@ -818,6 +874,60 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
             tag_diff.objects += 1
 
+    def _compute_diff_html(self, tag_diff, diff_colors):
+        """Compute diff HTML for all tags in the background thread.
+
+        Stores results in tag_diff.diff_html as a dict mapping tag names
+        to (old_html, new_html) tuples.
+
+        Args:
+            tag_diff: The TagDiff object with tag data.
+            diff_colors: DiffColors instance with resolved CSS color strings.
+        """
+        removed_bg = diff_colors.removed_bg
+        added_bg = diff_colors.added_bg
+
+        for tag in tag_diff.tag_names:
+            tag_status = tag_diff.tag_status(tag)
+            old_diff_html = None
+            new_diff_html = None
+
+            if tag == '~length':
+                # Always show diff for length when display values differ,
+                # regardless of tolerance-based status (it's read-only/informational).
+                # Skip when values are grouped (multiple files with different lengths).
+                # Use placeholder color for new value since this tag is never written.
+                if not tag_diff.old.status(tag).is_grouped and not tag_diff.new.status(tag).is_grouped:
+                    old_text = format_time(tag_diff.old.get(tag, 0))
+                    new_text = format_time(tag_diff.new.get(tag, 0))
+                    old_diff_html, _unused = compute_diff(old_text, new_text, removed_bg, added_bg, diff_colors.text)
+                    _unused, new_diff_html = compute_diff(
+                        old_text, new_text, removed_bg, added_bg, diff_colors.placeholder
+                    )
+            elif tag_status == TagStatus.REMOVED:
+                if not tag_diff.old.status(tag).is_grouped:
+                    old_text = MULTI_VALUED_JOINER.join(tag_diff.old[tag])
+                    old_diff_html, _unused = highlight_full(old_text, "", removed_bg, added_bg, diff_colors.text)
+            elif tag_status == TagStatus.ADDED:
+                if not tag_diff.new.status(tag).is_grouped:
+                    new_text = MULTI_VALUED_JOINER.join(tag_diff.new[tag])
+                    _unused, new_diff_html = highlight_full("", new_text, removed_bg, added_bg, diff_colors.text)
+            elif tag_status == TagStatus.CHANGED:
+                if not tag_diff.old.status(tag).is_grouped and not tag_diff.new.status(tag).is_grouped:
+                    old_text = MULTI_VALUED_JOINER.join(tag_diff.old[tag])
+                    new_text = MULTI_VALUED_JOINER.join(tag_diff.new[tag])
+                    if tag in self.LOOKUP_TAGS:
+                        old_diff_html, new_diff_html = highlight_full(
+                            old_text, new_text, removed_bg, added_bg, diff_colors.text
+                        )
+                    else:
+                        old_diff_html, new_diff_html = compute_diff(
+                            old_text, new_text, removed_bg, added_bg, diff_colors.text
+                        )
+
+            if old_diff_html or new_diff_html:
+                tag_diff.diff_html[tag] = (old_diff_html, new_diff_html)
+
     def _update_items(self, result=None, error=None):
         if self.editing:
             return
@@ -842,6 +952,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
             TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed')),
         }
+        placeholder_color = self.palette().color(QtGui.QPalette.ColorRole.PlaceholderText)
 
         def get_table_item(row, column):
             """
@@ -860,7 +971,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_item = get_table_item(row, self.COLUMN_TAG)
             self._set_item_tag(tag_item, tag)
 
-            color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
+            tag_status = self.tag_diff.tag_status(tag)
+            color = colors.get(tag_status, colors[TagStatus.UNCHANGED])
+
+            # Tag name column gets the status color
+            tag_item.setForeground(color)
 
             orig_item = get_table_item(row, self.COLUMN_ORIG)
             self._set_item_value(orig_item, self.tag_diff.old, tag, color)
@@ -868,8 +983,24 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_item = get_table_item(row, self.COLUMN_NEW)
             if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
-            self._set_item_value(new_item, self.tag_diff.new, tag, color, strikeout=strikeout)
+            new_color = (
+                placeholder_color if tag_status == TagStatus.UNCHANGED or self.tag_diff.is_readonly(tag) else color
+            )
+            if tag_status == TagStatus.REMOVED:
+                # For removed tags, leave the new value column empty
+                new_item.setText("")
+                new_item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
+                font = new_item.font()
+                font.setItalic(False)
+                font.setStrikeOut(False)
+                new_item.setFont(font)
+            else:
+                self._set_item_value(new_item, self.tag_diff.new, tag, new_color)
+
+            # Apply precomputed diff HTML (computed in background thread)
+            old_diff_html, new_diff_html = self.tag_diff.diff_html.get(tag, (None, None))
+            orig_item.setData(DIFF_HTML_ROLE, old_diff_html)
+            new_item.setData(DIFF_HTML_ROLE, new_diff_html)
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
