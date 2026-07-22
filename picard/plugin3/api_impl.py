@@ -87,6 +87,7 @@ from picard.extension_points.metadata import (
     register_album_metadata_processor,
     register_track_metadata_processor,
 )
+from picard.extension_points.metadata_tag_actions import register_metadata_tag_action
 from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.plugin_tools_menu import register_tools_menu_action
 from picard.extension_points.script_functions import register_script_function
@@ -181,6 +182,19 @@ class ProviderOptions(_ProviderOptions):
     """Base class for plugin cover art option pages"""
 
     api: 'PluginApi'
+
+
+class MetadataTagAction(HasDisplayTitle):
+    """Base class for metadata tag context menu actions."""
+
+    TITLE: str = ""
+    api: 'PluginApi'
+
+    def callback(self, tags: list[str], objects: set) -> None:
+        raise NotImplementedError
+
+    def is_visible(self, tags: list[str], objects: set) -> bool:
+        return True
 
 
 class PluginApi:
@@ -1242,21 +1256,25 @@ class PluginApi:
         """
         return register_script_function(function, name, eval_args, check_argcount, documentation, signature)
 
-    def register_script_variable(self, name: str, documentation: str | None = None) -> None:
+    def register_script_variable(self, name: str, documentation: str | None = None, title: str | None = None) -> None:
         """Register a variable name for script autocomplete.
 
         Args:
             name: The variable name without the surrounding ``%`` symbols.
             documentation: Optional help text shown for the variable.
+            title: Optional display title for the metadata box (e.g.,
+                "Pinned Tags"). If provided, the tag shows this title
+                instead of the raw name.
 
         Example:
             def enable(api):
                 api.register_script_variable(
                     "my_plugin_var",
                     documentation="A custom variable from my plugin",
+                    title="My Variable",
                 )
         """
-        return register_script_variable(name, documentation, self)
+        return register_script_variable(name, documentation, self, title=title)
 
     # Menu actions
     def register_album_action(self, action: type[BaseAction]) -> None:
@@ -1419,6 +1437,47 @@ class PluginApi:
         """
         action.api = self
         return register_tools_menu_action(action)
+
+    def register_metadata_tag_action(self, action: type[MetadataTagAction]) -> None:
+        """Register a context menu action for metadata tags.
+
+        The action appears in the context menu when right-clicking a tag in
+        the metadata view. Pass the class, not an instance. Picard makes
+        ``self.api`` available inside the class.
+
+        Args:
+            action: A subclass of :class:`MetadataTagAction` defining:
+
+                - ``TITLE``: str — The menu item label. Use ``t_()`` for
+                  plugin translations (see :class:`HasDisplayTitle`).
+                - ``callback(self, tags, objects)``: Called when the action is
+                  triggered. Receives the list of selected tag names and the
+                  set of selected objects (files, tracks, albums).
+                - ``is_visible(self, tags, objects)`` (optional): Return
+                  ``True`` to show the action, ``False`` to hide it.
+                  Defaults to ``True``.
+
+        Example:
+            from picard.plugin3.api import (
+                MetadataTagAction,
+                t_,
+            )
+
+            class PinTagAction(MetadataTagAction):
+                TITLE = t_("action.pin_tag", "Pin Tag")
+
+                def callback(self, tags, objects):
+                    for tag in tags:
+                        self.api.logger.info(f"Pinning tag: {tag}")
+
+                def is_visible(self, tags, objects):
+                    return all(not tag.startswith('~') for tag in tags)
+
+            def enable(api):
+                api.register_metadata_tag_action(PinTagAction)
+        """
+        action.api = self
+        return register_metadata_tag_action(action)
 
     # UI
     def register_options_page(self, page_class: type[OptionsPage]) -> None:

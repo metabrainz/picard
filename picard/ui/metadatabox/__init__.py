@@ -49,6 +49,7 @@ from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
 from picard.config import get_config
+from picard.extension_points.metadata_tag_actions import ext_point_metadata_tag_actions
 from picard.file import File
 from picard.i18n import (
     N_,
@@ -483,6 +484,37 @@ class MetadataBox(QtWidgets.QTableWidget):
             remove_from_preserved_tags_action.setEnabled(editable)
             menu.addAction(remove_from_preserved_tags_action)
 
+    def _add_plugin_metadata_tag_actions(self, menu, tags):
+        """Add plugin-registered metadata tag actions to the context menu."""
+        added_separator = False
+        for action_class in ext_point_metadata_tag_actions:
+            try:
+                action_instance = action_class()
+                if not action_instance.is_visible(tags, self.objects):
+                    continue
+                if not added_separator:
+                    menu.addSeparator()
+                    added_separator = True
+                title = action_instance.display_title()
+                menu_action = QtGui.QAction(title, self)
+                menu_action.triggered.connect(partial(self._run_plugin_metadata_tag_action, action_instance, tags))
+                menu.addAction(menu_action)
+            except Exception:
+                log.error("Error adding plugin metadata tag action %r:", action_class, exc_info=True)
+
+    def _run_plugin_metadata_tag_action(self, action_instance, tags):
+        """Execute a plugin metadata tag action callback."""
+        try:
+            action_instance.callback(tags, self.objects)
+        except Exception:
+            log.error(
+                "Error running plugin metadata tag action %r for tags %r:",
+                action_instance,
+                tags,
+                exc_info=True,
+            )
+        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
+
     def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
         """
         Collects actions for restoring or merging original tag values for a given tag.
@@ -600,6 +632,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self._add_tag_modification_actions(menu, removals, useorigs, mergeorigs)
                 # Add copy/paste actions
                 self._add_copy_paste_actions(menu)
+            # Add plugin metadata tag actions
+            self._add_plugin_metadata_tag_actions(menu, tags)
             # Add separator and "Add New Tag" if relevant
             if single_tag or removals or useorigs:
                 menu.addSeparator()

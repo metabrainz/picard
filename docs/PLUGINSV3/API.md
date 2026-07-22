@@ -77,6 +77,7 @@ The following classes are available through the `api` module:
 - `Cluster` - Cluster object
 - `Metadata` - Metadata container for tags
 - `BaseAction` - Base class for UI actions
+- `MetadataTagAction` - Base class for metadata tag context menu actions
 - `OptionsPage` - Base class for options pages
 - `CoverArtImage` - Cover art image object
 - `CoverArtProvider` - Base class for cover art providers
@@ -85,7 +86,14 @@ The following classes are available through the `api` module:
 
 **Example**:
 ```python
-from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider, Metadata
+from picard.plugin3.api import (
+    BaseAction,
+    CoverArtProvider,
+    File,
+    Metadata,
+    MetadataTagAction,
+    OptionsPage,
+)
 
 class MyProvider(CoverArtProvider):
     NAME = "My Provider"
@@ -718,6 +726,53 @@ def enable(api):
 
 **Note**: Pass the class, not an instance. Picard makes `self.api` available inside
 the class to access the `PluginApi` instance of the plugin.
+
+---
+
+### Metadata Tag Actions
+
+#### `register_metadata_tag_action(action)`
+
+Register a context menu action for metadata tags. The action appears when right-clicking
+tags in the metadata view and works with both single and multi-tag selections.
+
+```python
+from picard.plugin3.api import MetadataTagAction, t_
+
+class PinTagAction(MetadataTagAction):
+    TITLE = t_("action.pin_tag", "Pin Tag")
+
+    def callback(self, tags, objects):
+        for tag in tags:
+            self.api.logger.info(f"Pinning tag: {tag}")
+            for obj in objects:
+                pinned = obj.metadata.getall('pinned_tags')
+                if tag not in pinned:
+                    pinned.append(tag)
+                    obj.metadata['pinned_tags'] = pinned
+
+    def is_visible(self, tags, objects):
+        # Only show for non-internal tags
+        return all(not tag.startswith('~') for tag in tags)
+
+def enable(api):
+    api.register_metadata_tag_action(PinTagAction)
+```
+
+**Base class**: `MetadataTagAction` (inherits from `HasDisplayTitle`)
+
+**Required**:
+- `TITLE`: Menu item label. Use `t_()` for plugin translations.
+- `callback(self, tags, objects)`: Called when the action is triggered.
+  - `tags`: List of selected tag names (`list[str]`, always a list even for single selection)
+  - `objects`: Set of selected objects (files, tracks, albums)
+
+**Optional**:
+- `is_visible(self, tags, objects) -> bool`: Controls whether the action appears in the
+  context menu. Defaults to `True`. Receives the same `tags` and `objects` as `callback`.
+
+**Note**: Pass the class, not an instance. Picard makes `self.api` available inside
+the class.
 
 ---
 
