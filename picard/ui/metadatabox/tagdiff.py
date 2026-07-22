@@ -215,8 +215,9 @@ class TagDiff:
 
     NEW_VALUE = 'new'
     OLD_VALUE = 'old'
+    REMOVED_VALUE = 'removed'
 
-    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers')
+    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers', 'removed_tags')
 
     def __init__(self, max_length_diff=2):
         """
@@ -231,6 +232,7 @@ class TagDiff:
         self.old = TagCounter(self)
         self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
+        self.removed_tags = set()
         self.tag_ne_handlers = defaultdict(lambda: lambda old, new: old != new)
         # handling the special case of '~length'
         max_length_delta_ms = max_length_diff * 1000
@@ -286,15 +288,19 @@ class TagDiff:
 
         if (old and not new) or removed:
             self.status[tag] |= TagStatus.REMOVED
-        elif new and not old:
-            self.status[tag] |= TagStatus.ADDED
-            removable = True
-        elif old and new and self.__tag_ne(tag, old, new):
-            self.status[tag] |= TagStatus.CHANGED
-        elif not (old or new or tag in top_tags):
-            self.status[tag] |= TagStatus.EMPTY
+            if removed:
+                self.removed_tags.add(tag)
         else:
-            self.status[tag] |= TagStatus.UNCHANGED
+            self.removed_tags.discard(tag)
+            if new and not old:
+                self.status[tag] |= TagStatus.ADDED
+                removable = True
+            elif old and new and self.__tag_ne(tag, old, new):
+                self.status[tag] |= TagStatus.CHANGED
+            elif not (old or new or tag in top_tags):
+                self.status[tag] |= TagStatus.EMPTY
+            else:
+                self.status[tag] |= TagStatus.UNCHANGED
 
         if not removable:
             self.status[tag] |= TagStatus.NOTREMOVABLE
@@ -332,7 +338,7 @@ class TagDiff:
             changes_first (bool): Whether to display changed tags first.
             top_tags (set): Set of tags to always be displayed at the top.
         """
-        all_tags = set(list(self.old) + list(self.new))
+        all_tags = set(list(self.old) + list(self.new) + list(self.removed_tags))
         common_tags = [tag for tag in top_tags if tag in all_tags] if top_tags else []
         tag_names = common_tags + sorted(all_tags.difference(common_tags), key=lambda x: display_tag_name(x).lower())
 
@@ -355,6 +361,8 @@ class TagDiff:
                 result[tag][self.OLD_VALUE] = self.old[tag]
             if tag in self.new:
                 result[tag][self.NEW_VALUE] = self.new[tag]
+            if tag in self.removed_tags:
+                result[tag][self.REMOVED_VALUE] = True
 
         return json.dumps(result)
 
