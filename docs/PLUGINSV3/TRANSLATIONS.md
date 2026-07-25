@@ -83,6 +83,7 @@ A nested structure with tables is only used for plural forms to notate the diffe
 from picard.plugin3.api import PluginApi
 from picard.i18n import gettext as _  # Picard's translations
 
+
 def enable(api: PluginApi):
     # Use Picard's translations for standard UI
     menu_text = _("Plugins")  # Picard translates this
@@ -124,9 +125,11 @@ ERROR_MESSAGES = {
 # Define plural forms
 FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
+
 # Use in class definitions
 class MyAction(BaseAction):
     TITLE = t_("My Custom Action")
+
 
 def enable(api):
     # Translate at runtime
@@ -156,6 +159,7 @@ from picard.plugin3.api import t_
 
 # Define once
 PLURALS = t_('items.count', 'There is {n} item.', 'There are {n} items.')
+
 
 # Use multiple times without repetition
 def callback(self, objs):
@@ -418,6 +422,7 @@ Plugin translations work alongside Qt's translation system:
 ```python
 from PyQt6.QtWidgets import QDialog, QPushButton, QLabel
 
+
 class MyPluginDialog(QDialog):
     def __init__(self, api):
         super().__init__()
@@ -469,6 +474,7 @@ def retranslateUi(self, VariablesDialog):
 **Your plugin code:**
 ```python
 from .ui_variables_dialog import Ui_VariablesDialog
+
 
 class VariablesDialog(QDialog, Ui_VariablesDialog):
     def __init__(self, api, parent=None):
@@ -582,6 +588,7 @@ fr = "Soumettez votre musique sur ListenBrainz"
 ```python
 from picard.plugin3.api import PluginApi
 from picard.i18n import gettext as _
+
 
 def enable(api: PluginApi):
     # Use Picard's translations for standard UI

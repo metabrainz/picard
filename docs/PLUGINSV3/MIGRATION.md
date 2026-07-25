@@ -229,6 +229,7 @@ def enable(api):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class ExampleOptionsPage(OptionsPage):
     NAME = "example"
     TITLE = "Example"
@@ -267,13 +268,15 @@ If your v2 plugin used `album._requests` to track web requests, you need to migr
 ```python
 from picard.metadata import register_album_metadata_processor
 
+
 def fetch_data(album, metadata, release):
     album._requests += 1
     album.tagger.webservice.get(
         'example.com',
         '/api/data',
-        handler=lambda response, reply, error: handle_response(album, response, error)
+        handler=lambda response, reply, error: handle_response(album, response, error),
     )
+
 
 def handle_response(album, response, error):
     try:
@@ -284,6 +287,7 @@ def handle_response(album, response, error):
         album._requests -= 1
         album._finalize_loading(None)
 
+
 register_album_metadata_processor(fetch_data)
 ```
 
@@ -291,20 +295,23 @@ register_album_metadata_processor(fetch_data)
 ```python
 from functools import partial
 
+
 def fetch_data(api, album, metadata, release):
     task_id = f'data_{album.id}'
 
     def create_request():
         return api.web_service.get_url(
             url='https://example.com/api/data',
-            handler=partial(handle_response, api, album, task_id)
+            handler=partial(handle_response, api, album, task_id),
         )
 
     api.add_album_task(
-        album, task_id,
+        album,
+        task_id,
         'Fetching data',
-        request_factory=create_request
+        request_factory=create_request,
     )
+
 
 def handle_response(api, album, task_id, data, error):
     try:
@@ -313,6 +320,7 @@ def handle_response(api, album, task_id, data, error):
             pass
     finally:
         api.complete_album_task(album, task_id)
+
 
 def enable(api):
     api.register_album_metadata_processor(fetch_data)
@@ -422,6 +430,7 @@ from picard.metadata import register_track_metadata_processor
 from picard.ui.options import register_options_page, OptionsPage
 from PyQt5.QtWidgets import QCheckBox
 
+
 class ExampleOptionsPage(OptionsPage):
     NAME = "example"
     TITLE = "Example Plugin"
@@ -438,10 +447,12 @@ class ExampleOptionsPage(OptionsPage):
     def save(self):
         config.setting['example_enabled'] = self.checkbox.isChecked()
 
+
 def process_track(api, album, metadata, track, release):
     log.info("Processing track: %s", track)
     if config.setting['example_enabled']:
         metadata['example'] = 'processed'
+
 
 def register():
     log.info("Registering Example Plugin")
@@ -541,8 +552,10 @@ def process(api, track, metadata):
     if api.plugin_config.get('my_enabled', True):
         text = api.plugin_config.get('my_key', 'default')
 
+
 # In OptionsPage
 from picard.plugin3.api import OptionsPage
+
 
 class MyPage(OptionsPage):
     def load(self):
@@ -556,11 +569,13 @@ class MyPage(OptionsPage):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 # V2 - options attribute for metadata
 class MyPage(OptionsPage):
     options = [
         config.BoolOption("setting", "my_option", True),
     ]
+
 
 # V3 - no options attribute needed
 class MyPage(OptionsPage):

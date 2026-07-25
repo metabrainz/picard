@@ -321,27 +321,27 @@ async_manager.install_plugin(
     url='https://github.com/user/plugin',
     ref='main',
     progress_callback=lambda update: print(f"{update.percent}%: {update.message}"),
-    callback=lambda result: print(f"Installed: {result.value}")
+    callback=lambda result: print(f"Installed: {result.value}"),
 )
 
 # Update plugin
 async_manager.update_plugin(
     plugin=plugin,
     progress_callback=progress_handler,
-    callback=completion_handler
+    callback=completion_handler,
 )
 
 # Update all plugins
 async_manager.update_all_plugins(
     progress_callback=progress_handler,
-    callback=completion_handler
+    callback=completion_handler,
 )
 
 # Uninstall plugin
 async_manager.uninstall_plugin(
     plugin=plugin,
     purge=True,
-    callback=completion_handler
+    callback=completion_handler,
 )
 
 # Fast synchronous operations (no async needed)
@@ -354,12 +354,12 @@ async_manager.find_plugin(identifier)
 ```python
 @dataclass
 class ProgressUpdate:
-    operation: str          # 'install', 'update', 'update_all', 'uninstall'
-    message: str           # Human-readable status message
-    percent: int = 0       # Progress percentage (0-100)
+    operation: str  # 'install', 'update', 'update_all', 'uninstall'
+    message: str  # Human-readable status message
+    percent: int = 0  # Progress percentage (0-100)
     plugin_id: str = None  # Plugin being operated on
-    current: int = None    # Current item (for batch operations)
-    total: int = None      # Total items (for batch operations)
+    current: int = None  # Current item (for batch operations)
+    total: int = None  # Total items (for batch operations)
 ```
 
 **OperationResult** (`picard/plugin3/asyncops/callbacks.py`):
@@ -367,7 +367,7 @@ class ProgressUpdate:
 @dataclass
 class OperationResult:
     success: bool
-    value: Any = None      # Return value on success
+    value: Any = None  # Return value on success
     error: Exception = None  # Exception on failure
 ```
 
@@ -392,27 +392,32 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 async_manager = AsyncPluginManager(manager)
 
+
 def on_progress(update):
     # Update progress bar
     progress_bar.setValue(update.percent)
     status_label.setText(update.message)
 
+
 def on_complete(result):
     if result.success:
-        QMessageBox.information(parent, "Success",
-                               f"Plugin {result.value} installed successfully")
+        QMessageBox.information(parent, "Success", f"Plugin {result.value} installed successfully")
     else:
         if isinstance(result.error, PluginBlacklistedError):
-            QMessageBox.critical(parent, "Blocked",
-                                f"Plugin is blacklisted: {result.error.reason}")
+            QMessageBox.critical(parent, "Blocked", f"Plugin is blacklisted: {result.error.reason}")
         elif isinstance(result.error, PluginAlreadyInstalledError):
-            QMessageBox.information(parent, "Already Installed",
-                                   f"Plugin {result.error.plugin_name} is already installed")
+            QMessageBox.information(
+                parent, "Already Installed", f"Plugin {result.error.plugin_name} is already installed"
+            )
         elif isinstance(result.error, PluginManifestInvalidError):
-            QMessageBox.critical(parent, "Invalid Plugin",
-                                f"Invalid MANIFEST.toml:\n" + "\n".join(result.error.errors))
+            QMessageBox.critical(
+                parent,
+                "Invalid Plugin",
+                f"Invalid MANIFEST.toml:\n" + "\n".join(result.error.errors),
+            )
         else:
             QMessageBox.critical(parent, "Error", str(result.error))
+
 
 # Start async installation
 async_manager.install_plugin(url, ref=ref, progress_callback=on_progress, callback=on_complete)
@@ -424,8 +429,7 @@ async_manager.install_plugin(url, ref=ref, progress_callback=on_progress, callba
 is_blacklisted, reason = registry.is_blacklisted(url, uuid)
 if is_blacklisted:
     # GUI shows error dialog with reason
-    QMessageBox.critical(parent, "Plugin Blocked",
-                        f"This plugin is blacklisted:\n{reason}")
+    QMessageBox.critical(parent, "Plugin Blocked", f"This plugin is blacklisted:\n{reason}")
 ```
 
 **Trust Level Checks:**
@@ -435,21 +439,27 @@ trust_level = registry.get_trust_level(url)
 
 if trust_level == 'community':
     # GUI shows warning dialog
-    result = QMessageBox.warning(parent, "Community Plugin",
+    result = QMessageBox.warning(
+        parent,
+        "Community Plugin",
         "This is a community plugin.\n"
         "Community plugins are not reviewed by the Picard team.\n"
         "Only install plugins from sources you trust.",
-        QMessageBox.Ok | QMessageBox.Cancel)
+        QMessageBox.Ok | QMessageBox.Cancel,
+    )
     if result == QMessageBox.Cancel:
         return
 
 elif trust_level == 'unregistered':
     # GUI shows stronger warning
-    result = QMessageBox.warning(parent, "Unregistered Plugin",
+    result = QMessageBox.warning(
+        parent,
+        "Unregistered Plugin",
         "This plugin is not in the official registry.\n"
         "Installing unregistered plugins may pose security risks.\n"
         "Only install plugins from sources you trust.",
-        QMessageBox.Ok | QMessageBox.Cancel)
+        QMessageBox.Ok | QMessageBox.Cancel,
+    )
     if result == QMessageBox.Cancel:
         return
 ```

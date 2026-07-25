@@ -31,6 +31,7 @@ api = ["3.0"]
 # __init__.py
 from picard.plugin3.api import PluginApi
 
+
 def enable(api: PluginApi):
     """Called when plugin is enabled"""
 
@@ -45,6 +46,7 @@ def enable(api: PluginApi):
     def my_action(album):
         # Do something when user clicks action
         pass
+
 
 def disable():
     """Called when plugin is disabled (optional)"""
@@ -426,6 +428,7 @@ Every plugin must have an `__init__.py` file with an `enable()` function:
 ```python
 from picard.plugin3.api import PluginApi
 
+
 def enable(api: PluginApi):
     """
     Called when plugin is enabled.
@@ -436,6 +439,7 @@ def enable(api: PluginApi):
     """
     # Your plugin initialization code here
     pass
+
 
 def disable():
     """
@@ -581,6 +585,7 @@ def enable(api: PluginApi):
 # __init__.py
 from picard.plugin3.api import PluginApi
 
+
 def enable(api: PluginApi):
     @api.on_album_metadata_loaded
     def add_custom_tag(album, metadata):
@@ -593,6 +598,7 @@ def enable(api: PluginApi):
 ```python
 # __init__.py
 from picard.plugin3.api import PluginApi
+
 
 def enable(api: PluginApi):
     @api.register_cover_art_provider
@@ -609,11 +615,13 @@ def enable(api: PluginApi):
 # __init__.py
 from picard.plugin3.api import PluginApi
 
+
 def enable(api: PluginApi):
     @api.register_album_action("Export to CSV")
     def export_to_csv(album):
         # Export album data to CSV
         import csv
+
         with open('export.csv', 'w') as f:
             writer = csv.writer(f)
             for track in album.tracks:

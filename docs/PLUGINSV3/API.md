@@ -14,6 +14,7 @@ def enable(api):
     api.logger.info("Plugin loaded")
     api.register_track_metadata_processor(my_processor)
 
+
 def disable():
     """Optional cleanup when plugin is disabled."""
     # Custom cleanup code here
@@ -35,6 +36,7 @@ Get the `PluginApi` instance from anywhere in your plugin code without explicitl
 
 ```python
 from picard.plugin3.api import PluginApi
+
 
 class MyWidget(QWidget):
     def __init__(self):
@@ -87,8 +89,10 @@ The following classes are available through the `api` module:
 ```python
 from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider, Metadata
 
+
 class MyProvider(CoverArtProvider):
     NAME = "My Provider"
+
 
 class MyFormat(File):
     NAME = "Custom Format"
@@ -224,6 +228,7 @@ def enable(api):
 ```python
 from picard.plugin3.api import PluginApi, OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     def __init__(self):
         super().__init__()
@@ -256,7 +261,8 @@ To make an option profile-eligible, pass `title` and `in_profile=True` to `regis
 ```python
 def enable(api):
     api.plugin_config.register_option(
-        'greeting', 'Hello World',
+        'greeting',
+        'Hello World',
         title='Greeting message',
         in_profile=True,
     )
@@ -273,6 +279,7 @@ Declare widgets in the page's `OPTIONS` dict to enable visual highlighting when 
 
 ```python
 from picard.plugin3.api import OptionsPage, PageOptionConfigs
+
 
 class MyOptionsPage(OptionsPage):
     OPTIONS: PageOptionConfigs = {
@@ -303,6 +310,7 @@ Path to the plugin directory (read-only).
 ```python
 from pathlib import Path
 import json
+
 
 def enable(api):
     # Access plugin directory
@@ -356,7 +364,7 @@ def my_processor(api, album, metadata, release):
         '/api/endpoint',
         response_handler,
         priority=True,
-        important=False
+        important=False,
     )
 ```
 
@@ -372,7 +380,7 @@ def my_processor(api, album, metadata, release):
     api.mb_api.get_release_by_id(
         release_id,
         handler,
-        inc=['artists', 'recordings']
+        inc=['artists', 'recordings'],
     )
 ```
 
@@ -474,6 +482,7 @@ ERROR_MESSAGES = {
 # Define plural forms
 FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
+
 # Use in class definitions
 class MyAction(BaseAction):
     TITLE = "My Custom Action"
@@ -481,6 +490,7 @@ class MyAction(BaseAction):
     def __init__(self):
         super().__init__()
         self.setText(self.api.tr("action.name", "My Custom Action"))
+
 
 def enable(api):
     # Translate at runtime
@@ -526,6 +536,7 @@ def process_track(api, track, metadata, track_node, release_node=None):
     api.logger.info(f"Processing: {metadata['title']}")
     metadata['custom_tag'] = 'value'
 
+
 def enable(api):
     api.register_track_metadata_processor(process_track)
     # With priority
@@ -549,6 +560,7 @@ def process_album(api, album, metadata, release_node):
     """Process album metadata."""
     metadata['custom_album_tag'] = 'value'
 
+
 def enable(api):
     api.register_album_metadata_processor(process_album)
 ```
@@ -567,6 +579,7 @@ Called after a file is loaded.
 def on_file_loaded(api, file):
     api.logger.info(f"File loaded: {file.filename}")
 
+
 def enable(api):
     api.register_file_post_load_processor(on_file_loaded)
 ```
@@ -583,6 +596,7 @@ Called just before a file is saved.
 def on_file_saved(api, file):
     api.logger.info(f"File saved: {file.filename}")
 
+
 def enable(api):
     api.register_file_pre_save_processor(on_file_saved)
 ```
@@ -598,6 +612,7 @@ Called after a file is saved.
 ```python
 def on_file_saved(api, file):
     api.logger.info(f"File saved: {file.filename}")
+
 
 def enable(api):
     api.register_file_post_save_processor(on_file_saved)
@@ -640,12 +655,13 @@ def my_script_func(parser, arg1, arg2):
     """Custom script function."""
     return f"{arg1}-{arg2}"
 
+
 def enable(api):
     api.register_script_function(
         my_script_func,
         name="my_func",  # Optional: defaults to function name
         documentation="Combines two arguments with a dash",
-        signature="$my_func(arg1,arg2)"
+        signature="$my_func(arg1,arg2)",
     )
 ```
 
@@ -668,7 +684,7 @@ Register a variable name for script autocomplete.
 def enable(api):
     api.register_script_variable(
         "my_plugin_var",
-        documentation="A custom variable from my plugin"
+        documentation="A custom variable from my plugin",
     )
 ```
 
@@ -697,12 +713,14 @@ Register menu actions for different object types.
 ```python
 from picard.plugin3.api import BaseAction
 
+
 class MyAction(BaseAction):
     TITLE = "My Custom Action"
 
     def callback(self, objs):
         for obj in objs:
             self.api.logger.info(f"Action on: {obj}")
+
 
 def enable(api):
     # Context menus
@@ -730,6 +748,7 @@ Register a settings page in Picard's options dialog.
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     NAME = "my_plugin"
     TITLE = "My Plugin"
@@ -746,6 +765,7 @@ class MyOptionsPage(OptionsPage):
     def save(self):
         # Save settings to self.api.plugin_config or self.api.global_config
         pass
+
 
 def enable(api):
     api.register_options_page(MyOptionsPage)
@@ -771,12 +791,14 @@ Register a custom cover art provider.
 ```python
 from picard.plugin3.api import CoverArtProvider
 
+
 class MyProvider(CoverArtProvider):
     NAME = "My Provider"
 
     def queue_images(self):
         # Queue cover art images
         pass
+
 
 def enable(api):
     api.register_cover_art_provider(MyProvider)
@@ -794,6 +816,7 @@ def my_cover_filter(api, metadata, image):
     # Return True to keep, False to discard
     return image.width >= 500
 
+
 def enable(api):
     api.register_cover_art_filter(my_cover_filter)
 ```
@@ -810,6 +833,7 @@ Register a filter to process cover art metadata.
 def my_metadata_filter(api, metadata, image_metadata):
     """Filter cover art by metadata."""
     return image_metadata.get('type') == 'front'
+
 
 def enable(api):
     api.register_cover_art_metadata_filter(my_metadata_filter)
@@ -838,6 +862,7 @@ class MyProcessor:
         # Modify image
         return image
 
+
 def enable(api):
     api.register_cover_art_processor(MyProcessor)
 ```
@@ -853,6 +878,7 @@ Register support for a custom file format.
 ```python
 from picard.plugin3.api import File
 
+
 class MyFormat(File):
     EXTENSIONS = [".myformat"]
     NAME = "My Format"
@@ -864,6 +890,7 @@ class MyFormat(File):
     def _save(self, filename):
         # Save file
         pass
+
 
 def enable(api):
     api.register_format(MyFormat)
@@ -895,6 +922,7 @@ from picard.disc.utils import (
     NotSupportedTOCError,
 )
 
+
 def my_ripper_toc_from_file(path):
     """Parse MyRipper log files for disc ID lookup."""
     entries = []
@@ -907,6 +935,7 @@ def my_ripper_toc_from_file(path):
             if m:
                 entries.append(TocEntry(int(m[1]), int(m[2]), int(m[3])))
     return calculate_mb_toc_numbers(entries)
+
 
 def enable(api):
     api.register_disc_log_reader(my_ripper_toc_from_file)
@@ -947,6 +976,7 @@ Add a plugin task to an album. Plugin tasks default to non-blocking and won't pr
 ```python
 from functools import partial
 
+
 def fetch_album_data(api, album, metadata, release):
     artist_id = metadata.get('musicbrainz_artistid')
     if not artist_id:
@@ -957,14 +987,16 @@ def fetch_album_data(api, album, metadata, release):
     def create_request():
         return api.web_service.get_url(
             url=f'https://api.example.com/artist/{artist_id}',
-            handler=partial(handle_response, api, album, metadata, task_id)
+            handler=partial(handle_response, api, album, metadata, task_id),
         )
 
     api.add_album_task(
-        album, task_id,
+        album,
+        task_id,
         f'Fetching artist bio for {artist_id}',
-        request_factory=create_request
+        request_factory=create_request,
     )
+
 
 def handle_response(api, album, metadata, task_id, data, error):
     try:
@@ -972,6 +1004,7 @@ def handle_response(api, album, metadata, task_id, data, error):
             metadata['~artist_bio'] = data.get('biography', '')
     finally:
         api.complete_album_task(album, task_id)
+
 
 def enable(api):
     api.register_album_metadata_processor(fetch_album_data)
@@ -1001,9 +1034,10 @@ def fetch_custom_cover(api, album, metadata, release):
 
     request = api.web_service.download_url(
         url=f'https://covers.example.com/{album_id}.jpg',
-        handler=lambda data, http, error: handle_cover(api, album, task_id, data, error)
+        handler=lambda data, http, error: handle_cover(api, album, task_id, data, error),
     )
     api.set_album_task_request(album, task_id, request)
+
 
 def handle_cover(api, album, task_id, data, error):
     try:
@@ -1012,6 +1046,7 @@ def handle_cover(api, album, task_id, data, error):
             api.logger.info(f"Downloaded cover art: {len(data)} bytes")
     finally:
         api.complete_album_task(album, task_id)
+
 
 def enable(api):
     api.register_album_metadata_processor(fetch_custom_cover)
@@ -1033,6 +1068,7 @@ def my_processor(api, track, metadata, track_node, release=None):
     # api is automatically injected as first parameter
     api.logger.info("Processing")
 
+
 def enable(api):
     # Picard wraps this as: partial(my_processor, api)
     api.register_track_metadata_processor(my_processor)
@@ -1042,9 +1078,11 @@ def enable(api):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class MyPage(OptionsPage):
     def load(self):
         self.api.logger.info("Loading")
+
 
 def enable(api):
     api.register_options_page(MyPage)

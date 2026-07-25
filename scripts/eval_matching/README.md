@@ -231,7 +231,7 @@ define the expected outcome per config profile:
     ],
     "scenario": "non_latin_editions",
     "expectations": {
-        "*": "ambiguous",              # wildcard default
+        "*": "ambiguous",  # wildcard default
         "prefer_jp_digital": "correct",
         "prefer_us_cd": "wrong",
     },
