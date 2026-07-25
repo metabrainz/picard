@@ -26,6 +26,7 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.file import File
 from picard.isrcsubmit import ISRCSubmitManager
 
 from picard.ui.enums import MainAction
@@ -254,3 +255,63 @@ class CheckTrackSubmittableTest(PicardTestCase):
         )
         self.assertTrue(submittable)
         self.assertEqual('', reason)
+
+
+class ISRCUpdateTest(PicardTestCase):
+    """Tests for File.isrc_update() interaction with ISRCSubmitManager."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.isrcsubmit')
+        self.patch_tagger_instance('picard.item')
+        self.mock_api = MagicMock()
+        self.manager = ISRCSubmitManager(self.mock_api)
+        self.tagger.isrc_submit_manager = self.manager
+        self.tagger.window = MagicMock()
+        self.tagger.window.enable_action = MagicMock()
+
+    def _make_file_with_track(self, file_isrcs, mb_isrcs, recording_id='rec-1'):
+        """Create a File with a mock parent track."""
+        file = File('test.mp3')
+        file.orig_metadata['isrc'] = file_isrcs
+        track = MagicMock()
+        track.can_link_fingerprint = True
+        track.orig_metadata = MagicMock()
+        track.orig_metadata.__getitem__ = lambda self, key: recording_id if key == 'musicbrainz_recordingid' else ''
+        track.orig_metadata.getall = lambda key: mb_isrcs if key == 'isrc' else []
+        file.parent_item = track
+        return file
+
+    def test_single_new_isrc_submitted(self):
+        """File with a single new ISRC gets registered for submission."""
+        file = self._make_file_with_track(['CARE19900179'], [])
+        file.isrc_update()
+        self.assertFalse(self.manager.is_submitted(file))
+        self.assertEqual(1, self.manager.unsubmitted_count)
+
+    def test_multiple_isrcs_with_new_one_submitted(self):
+        """File with multiple ISRCs where one is new should still register.
+
+        Regression test: previously, files with more than one ISRC in
+        orig_metadata were silently skipped, preventing submission of new
+        ISRCs from files that already had ISRCs from a previous tagging.
+        """
+        # File was previously tagged with MB ISRCs, user added a new one
+        mb_isrcs = ['USRE10900199', 'USRE11100413']
+        file_isrcs = ['USRE10900199', 'USRE11100413', 'CARE19900180']
+        file = self._make_file_with_track(file_isrcs, mb_isrcs, 'rec-2')
+        file.isrc_update()
+        # The new ISRC should be registered for submission
+        self.assertFalse(self.manager.is_submitted(file))
+        self.assertEqual(1, self.manager.unsubmitted_count)
+        entry = self.manager._entries[file]
+        self.assertEqual({'CARE19900180'}, entry.new_isrcs)
+
+    def test_multiple_isrcs_all_in_mb_not_submitted(self):
+        """File with multiple ISRCs that are all already in MB is not submitted."""
+        mb_isrcs = ['USRE10900199', 'USRE11100413']
+        file_isrcs = ['USRE10900199', 'USRE11100413']
+        file = self._make_file_with_track(file_isrcs, mb_isrcs)
+        file.isrc_update()
+        self.assertTrue(self.manager.is_submitted(file))
+        self.assertEqual(0, self.manager.unsubmitted_count)
