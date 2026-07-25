@@ -908,6 +908,14 @@ class File(MetadataItem):
                 self,
                 len(file_isrcs),
             )
+        log.debug_if(
+            DebugOpt.ISRC,
+            "ISRC isrc_update: %r, recording=%s, file_isrcs=%r, mb_isrcs=%r",
+            self,
+            recording_id,
+            file_isrcs,
+            mb_isrcs,
+        )
         self.tagger.isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
 
     @classmethod

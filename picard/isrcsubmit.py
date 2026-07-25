@@ -24,6 +24,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.debug_opts import DebugOpt
 from picard.i18n import N_
 from picard.util.isrc import (
     NormalizedISRC,
@@ -91,8 +92,22 @@ class ISRCSubmitManager:
                 new_isrcs.add(normalized)
         if new_isrcs:
             self._entries[file] = ISRCSubmitEntry(recording_id, new_isrcs)
+            log.debug_if(
+                DebugOpt.ISRC,
+                "ISRC add: %r → recording %s, new: %s (MB has: %s)",
+                file,
+                recording_id,
+                sorted(new_isrcs),
+                sorted(mb_isrcs_set),
+            )
         elif file in self._entries:
             del self._entries[file]
+            log.debug_if(
+                DebugOpt.ISRC,
+                "ISRC add: %r → recording %s, no new ISRCs (all in MB), removed entry",
+                file,
+                recording_id,
+            )
         self._check_unsubmitted()
 
     def update(self, file, recording_id: str, mb_isrcs: list[str]) -> None:
@@ -109,8 +124,21 @@ class ISRCSubmitManager:
         new_isrcs = entry.new_isrcs - mb_isrcs_set
         if new_isrcs:
             self._entries[file] = ISRCSubmitEntry(recording_id, new_isrcs)
+            log.debug_if(
+                DebugOpt.ISRC,
+                "ISRC update: %r → recording %s, remaining new: %s",
+                file,
+                recording_id,
+                sorted(new_isrcs),
+            )
         else:
             del self._entries[file]
+            log.debug_if(
+                DebugOpt.ISRC,
+                "ISRC update: %r → recording %s, all ISRCs now in MB, removed entry",
+                file,
+                recording_id,
+            )
         self._check_unsubmitted()
 
     def remove(self, file) -> None:
@@ -167,6 +195,12 @@ class ISRCSubmitManager:
                 albums.add(album)
 
         duplicate_isrcs = self.find_duplicate_isrcs()
+        if duplicate_isrcs:
+            log.debug_if(
+                DebugOpt.ISRC,
+                "ISRC pending_details: duplicate ISRCs across recordings: %s",
+                sorted(duplicate_isrcs),
+            )
 
         by_release: dict[tuple[str, str], list[ISRCTrackDetail]] = {}
         for album in albums:
@@ -189,6 +223,15 @@ class ISRCSubmitManager:
                 submittable, reason = self.check_track_submittable(
                     track, new_isrcs, existing_isrcs, duplicate_isrcs, album_isrcs
                 )
+                if not submittable and new_isrcs:
+                    log.debug_if(
+                        DebugOpt.ISRC,
+                        "ISRC pending_details: track %s %r not submittable: %s (new: %s)",
+                        track_number,
+                        title,
+                        reason,
+                        sorted(new_isrcs),
+                    )
                 by_release[release_key].append(
                     ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), submittable, reason)
                 )
@@ -267,6 +310,11 @@ class ISRCSubmitManager:
             return
         total = sum(len(isrcs) for isrcs in pending.values())
         log.debug("ISRC submission: submitting %d ISRCs for %d recordings", total, len(pending))
+        log.debug_if(
+            DebugOpt.ISRC,
+            "ISRC submission payload: %r",
+            pending,
+        )
         self.tagger.window.set_statusbar_message(
             N_("Submitting ISRCs …"),
             echo=None,

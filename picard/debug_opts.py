@@ -169,3 +169,4 @@ class DebugOpt(DebugOptEnum):
     MATCHING = 8, N_('Matching'), N_('Log similarity scores and match decisions')
     PLUGIN_DEVELOPMENT = 9, N_('Plugin Development'), N_('Log plugin details typically only used during development')
     TIMINGS = 10, N_('Timings'), N_('Log timing information for operations affecting UI responsiveness')
+    ISRC = 11, N_('ISRC'), N_('Log ISRC processing, submission, and lookup details')
