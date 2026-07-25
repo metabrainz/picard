@@ -371,6 +371,7 @@ REGISTRY_URL = "https://raw.githubusercontent.com/metabrainz/picard-plugins-regi
 CACHE_FILE = "/tmp/plugins_registry.json"
 CACHE_TTL = 3600  # 1 hour
 
+
 def get_registry():
     """Get registry JSON with caching"""
     cache_path = Path(CACHE_FILE)
@@ -391,6 +392,7 @@ def get_registry():
         f.write(response.text)
 
     return response.text
+
 
 @app.route('/api/v3/plugins.toml')
 def plugins_json():

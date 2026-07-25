@@ -1088,7 +1088,7 @@ def check_for_updates(self, plugin):
             'available': True,
             'local': local_commit[:7],
             'remote': remote_commit[:7],
-            'ref': local_ref
+            'ref': local_ref,
         }
     return {'available': False}
 ```

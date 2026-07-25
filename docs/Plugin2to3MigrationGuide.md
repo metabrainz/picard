@@ -102,8 +102,10 @@ license = "GPL-2.0-or-later"
 ```python
 from picard.metadata import register_track_metadata_processor
 
+
 def process_track(album, metadata, track, release):
     metadata['custom'] = 'value'
+
 
 register_track_metadata_processor(process_track)
 ```
@@ -112,6 +114,7 @@ register_track_metadata_processor(process_track)
 ```python
 def process_track(track, metadata):
     metadata['custom'] = 'value'
+
 
 def enable(api):
     """Called when plugin is enabled."""
@@ -123,6 +126,7 @@ def enable(api):
 ```python
 from picard.script import register_script_function
 
+
 @register_script_function
 def my_function(parser, arg):
     return result
@@ -132,6 +136,7 @@ def my_function(parser, arg):
 ```python
 def my_function(parser, arg):
     return result
+
 
 def enable(api):
     api.register_script_function(my_function)
@@ -154,6 +159,7 @@ def my_processor(api, track, metadata):
     if api.global_config.setting['enabled']:
         metadata['custom'] = 'value'
 
+
 def enable(api):
     api.register_track_metadata_processor(my_processor)
 ```
@@ -161,6 +167,7 @@ def enable(api):
 **After - In Classes**:
 ```python
 from picard.plugin3.api import OptionsPage
+
 
 class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
@@ -184,6 +191,7 @@ my_text = TextOption("setting", "my_plugin_text", "default")
 my_bool = BoolOption("setting", "my_plugin_enabled", True)
 my_int = IntOption("setting", "my_plugin_count", 10)
 
+
 def process(album, metadata, track, release):
     if my_bool.value:
         text = my_text.value
@@ -203,6 +211,7 @@ def process(api, track, metadata):
 from picard import config
 from picard.ui.options import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "my_option", True),
@@ -217,6 +226,7 @@ class MyOptionsPage(OptionsPage):
 **V3 - No options attribute needed**:
 ```python
 from picard.plugin3.api import OptionsPage
+
 
 class MyOptionsPage(OptionsPage):
     # No 'options' attribute needed in V3
@@ -311,6 +321,7 @@ class MyOptionsPage(OptionsPage):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     def __init__(self, api, parent=None):
         self.api = api
@@ -323,12 +334,14 @@ class MyOptionsPage(OptionsPage):
 ```python
 from picard.ui.itemviews import BaseAction, register_file_action
 
+
 class MyAction(BaseAction):
     NAME = 'My Action'
 
     def callback(self, objs):
         # Do something
         pass
+
 
 # Instantiate and register
 action = MyAction()
@@ -338,6 +351,7 @@ register_file_action(action)
 **After** - V3 registers the class, not instance:
 ```python
 from picard.plugin3.api import BaseAction
+
 
 class MyAction(BaseAction):
     TITLE = 'My Action'
@@ -349,6 +363,7 @@ class MyAction(BaseAction):
     def callback(self, objs):
         # Use self.api to access Picard
         files = self.api.tagger.get_files_from_objects(objs)
+
 
 def enable(api):
     api.register_file_action(MyAction)  # Register class, not instance
@@ -406,9 +421,11 @@ from picard.tagger import tagger
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 # Processors get api as first parameter
 def my_processor(api, track, metadata):
     api.logger.info("Processing")
+
 
 # Classes get api in __init__
 class MyPage(OptionsPage):
@@ -506,6 +523,7 @@ def enable(api):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     """OptionsPage receives api in __init__."""
 
@@ -532,10 +550,12 @@ def enable(api):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 # In processors - use api parameter
 def my_processor(api, track, metadata):
     api.logger.info("Processing")
     api.global_config.setting['option']
+
 
 # In classes - use self.api
 class MyPage(OptionsPage):
@@ -554,13 +574,15 @@ class MyPage(OptionsPage):
 ```python
 from picard.metadata import register_album_metadata_processor
 
+
 def fetch_data(album, metadata, release):
     album._requests += 1
     album.tagger.webservice.get(
         'example.com',
         '/api/data',
-        handler=lambda response, reply, error: handle_response(album, response, error)
+        handler=lambda response, reply, error: handle_response(album, response, error),
     )
+
 
 def handle_response(album, response, error):
     try:
@@ -571,6 +593,7 @@ def handle_response(album, response, error):
         album._requests -= 1
         album._finalize_loading(None)
 
+
 register_album_metadata_processor(fetch_data)
 ```
 
@@ -578,20 +601,23 @@ register_album_metadata_processor(fetch_data)
 ```python
 from functools import partial
 
+
 def fetch_data(api, album, metadata, release):
     task_id = f'data_{album.id}'
 
     def create_request():
         return api.web_service.get_url(
             url='https://example.com/api/data',
-            handler=partial(handle_response, api, album, task_id)
+            handler=partial(handle_response, api, album, task_id),
         )
 
     api.add_album_task(
-        album, task_id,
+        album,
+        task_id,
         'Fetching data',
-        request_factory=create_request
+        request_factory=create_request,
     )
+
 
 def handle_response(api, album, task_id, data, error):
     try:
@@ -600,6 +626,7 @@ def handle_response(api, album, task_id, data, error):
             pass
     finally:
         api.complete_album_task(album, task_id)
+
 
 def enable(api):
     api.register_album_metadata_processor(fetch_data)
@@ -624,8 +651,10 @@ PLUGIN_NAME = "Title Cleaner"
 
 from picard.metadata import register_track_metadata_processor
 
+
 def clean_title(album, metadata, track, release):
     metadata['title'] = metadata['title'].strip()
+
 
 register_track_metadata_processor(clean_title)
 ```
@@ -634,6 +663,7 @@ register_track_metadata_processor(clean_title)
 ```python
 def clean_title(api, track, metadata):
     metadata['title'] = metadata['title'].strip()
+
 
 def enable(api):
     api.register_track_metadata_processor(clean_title)
@@ -646,6 +676,7 @@ def enable(api):
 from picard import config
 from picard.ui.options import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     def load(self):
         self.checkbox.setChecked(config.setting['my_option'])
@@ -655,6 +686,7 @@ class MyOptionsPage(OptionsPage):
 ```python
 from picard.plugin3.api import OptionsPage
 
+
 class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
@@ -662,6 +694,7 @@ class MyOptionsPage(OptionsPage):
 
     def load(self):
         self.checkbox.setChecked(self.api.global_config.setting['my_option'])
+
 
 def enable(api):
     api.register_options_page(MyOptionsPage)
@@ -673,6 +706,7 @@ def enable(api):
 ```python
 from picard.script import register_script_function
 
+
 @register_script_function
 def my_func(parser, arg):
     return result
@@ -682,6 +716,7 @@ def my_func(parser, arg):
 ```python
 def my_func(parser, arg):
     return result
+
 
 def enable(api):
     api.register_script_function(my_func)

@@ -145,7 +145,7 @@ Local non-git plugins use the same `plugins3_metadata` config dict as git-manage
     "url": "/absolute/path/to/plugin",
     "ref": "local",
     "commit": "",
-    "ref_type": "local"
+    "ref_type": "local",
 }
 ```
 

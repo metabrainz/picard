@@ -28,11 +28,14 @@
 def background_task():
     self.label.setText("Done")  # CRASH!
 
+
 # ✅ Use signals or run_task callback
 from picard.util.thread import run_task
 
+
 def callback(result):
     self.label.setText(result)  # Safe - runs in main thread
+
 
 run_task(heavy_operation, callback=callback)
 ```
@@ -68,6 +71,7 @@ metadata['artist'] = ['Artist 1', 'Artist 2']
 ```python
 # ✅ Always use config.setting
 from picard import config
+
 value = config.setting['option_name']
 
 # ❌ Don't access internal structures directly
@@ -89,7 +93,9 @@ result = slow_network_call()  # UI freezes!
 # ❌ Don't use inline imports (unless breaking circular dependencies)
 def my_function():
     from picard.some_module import something
+
     return something()
+
 
 # ❌ Don't put multiple imports on one line
 from picard.plugin3.validator import generate_uuid, validate_manifest_dict
@@ -131,10 +137,12 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 ```python
 from picard.plugin3.api import PluginApi
 
+
 def enable(api: PluginApi):
     """Called when plugin is enabled."""
     api.plugin_config.register_option("my_option", "default")
     api.register_track_metadata_processor(process_metadata)
+
 
 def process_metadata(api, album, metadata, track, release):
     metadata['custom'] = api.plugin_config['my_option']
@@ -257,6 +265,7 @@ TITLE = N_("Options")  # Translated at usage: _(TITLE)
 # Plugin translations (Plugin v3)
 from picard.plugin3.api import t_
 
+
 class ManifestTranslations:
     NAME = t_("manifest.name", "My Plugin")
     DESC = t_("manifest.description", "Plugin description")
@@ -282,6 +291,7 @@ python setup.py build_ui
 ### Qt Signals
 ```python
 from PyQt6.QtCore import pyqtSignal
+
 
 class MyWidget(QWidget):
     # Define signals
@@ -349,6 +359,7 @@ class MyWidget(QWidget):
 ```python
 from picard.script import script_function
 
+
 @script_function
 def func_myfunction(parser, arg1, arg2='default'):
     """$myfunction(arg1,arg2) - Description"""
@@ -365,8 +376,10 @@ def func_myfunction(parser, arg1, arg2='default'):
 ```python
 from picard.extension_points.metadata import register_track_metadata_processor
 
+
 def my_processor(album, metadata, track, release):
     metadata['custom'] = 'value'
+
 
 register_track_metadata_processor(my_processor)
 ```
@@ -392,6 +405,7 @@ pytest --cov=picard test/
 ```python
 from test.picardtestcase import PicardTestCase
 
+
 class TestMyFeature(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -415,6 +429,7 @@ picard --debug-opts=option1,option2
 ```python
 # In code
 from picard import log
+
 log.debug('Debug: %s', value)
 log.error('Error', exc_info=True)
 ```
