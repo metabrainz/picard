@@ -38,6 +38,7 @@ from picard import (
     tagger_instance,
 )
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
 from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
 from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
@@ -130,12 +131,21 @@ class Disc:
         report the same ISRC for adjacent tracks.
         """
         isrcs: dict[int, str] = {}
+        dbg = log.debug_if(DebugOpt.ISRC)
         for track in tracks:
             isrc = getattr(track, 'isrc', None)
             if isrc:
                 normalized = valid_isrc(isrc)
                 if normalized:
                     isrcs[track.number] = normalized
+                elif dbg:
+                    dbg(
+                        "Disc ISRC: track %d has invalid ISRC %r, skipping",
+                        track.number,
+                        isrc,
+                    )
+            elif dbg:
+                dbg("Disc ISRC: track %d has no ISRC", track.number)
         # Detect duplicates: same ISRC assigned to multiple tracks
         seen: dict[str, list[int]] = {}
         for track_num, isrc in isrcs.items():
