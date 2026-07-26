@@ -175,24 +175,7 @@ class ISRCSubmitManager:
         affected albums; tracks with no pending ISRCs have submittable=False
         with a reason explaining why.
         """
-        # Collect all albums that have pending entries
-        albums = set()
-        pending_map: dict[object, set[NormalizedISRC]] = {}
-        for obj, entry in self._entries.items():
-            if not entry.is_submitted:
-                # Map by track so we can look up by track later.
-                # obj may be a File (parent_item is the Track) or a Track directly.
-                track = getattr(obj, 'parent_item', None) or obj
-                existing = pending_map.get(track, set())
-                existing |= entry.new_isrcs
-                pending_map[track] = existing
-            # Find the album: File → parent_item.album, Track → album
-            album = getattr(obj, 'album', None)
-            if not album:
-                parent = getattr(obj, 'parent_item', None)
-                album = getattr(parent, 'album', None) if parent else None
-            if album:
-                albums.add(album)
+        albums, pending_map = self._collect_pending_albums()
 
         duplicate_isrcs = self.find_duplicate_isrcs()
         if duplicate_isrcs:
@@ -209,34 +192,68 @@ class ISRCSubmitManager:
             release_key = (album_name, albumartist)
             if release_key not in by_release:
                 by_release[release_key] = []
-            # Collect all ISRCs already known on this album (across all tracks)
-            album_isrcs: dict[NormalizedISRC, str] = {}  # ISRC -> track title
-            for track in album.tracks:
-                for isrc in normalized_isrcs(track.metadata.getall('isrc')):
-                    album_isrcs[isrc] = track.metadata.get('title', '')
-            for track in album.tracks:
-                track_number = track.metadata.get('tracknumber', '?')
-                title = track.metadata.get('title', '')
-                existing_isrcs = track.metadata.getall('isrc')
-                new_isrcs = pending_map.get(track, set())
-                existing = [isrc for isrc in existing_isrcs if valid_isrc(isrc) not in new_isrcs]
-                submittable, reason = self.check_track_submittable(
-                    track, new_isrcs, existing_isrcs, duplicate_isrcs, album_isrcs
-                )
-                if not submittable and new_isrcs:
-                    log.debug_if(
-                        DebugOpt.ISRC,
-                        "ISRC pending_details: track %s %r not submittable: %s (new: %s)",
-                        track_number,
-                        title,
-                        reason,
-                        sorted(new_isrcs),
-                    )
-                by_release[release_key].append(
-                    ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), submittable, reason)
-                )
-            by_release[release_key].sort(key=lambda x: int(x.track_number) if x.track_number.isdigit() else 999)
+            by_release[release_key] = self._build_album_track_details(
+                album,
+                pending_map,
+                duplicate_isrcs,
+            )
         return by_release
+
+    def _collect_pending_albums(self) -> tuple[set, dict[object, set[NormalizedISRC]]]:
+        """Collect albums with pending entries and map tracks to their new ISRCs."""
+        albums = set()
+        pending_map: dict[object, set[NormalizedISRC]] = {}
+        for obj, entry in self._entries.items():
+            if not entry.is_submitted:
+                # obj may be a File (parent_item is the Track) or a Track directly.
+                track = getattr(obj, 'parent_item', None) or obj
+                existing = pending_map.get(track, set())
+                existing |= entry.new_isrcs
+                pending_map[track] = existing
+            # Find the album: File → parent_item.album, Track → album
+            album = getattr(obj, 'album', None)
+            if not album:
+                parent = getattr(obj, 'parent_item', None)
+                album = getattr(parent, 'album', None) if parent else None
+            if album:
+                albums.add(album)
+        return albums, pending_map
+
+    def _build_album_track_details(
+        self,
+        album,
+        pending_map: dict[object, set[NormalizedISRC]],
+        duplicate_isrcs: set[NormalizedISRC],
+    ) -> list[ISRCTrackDetail]:
+        """Build ISRCTrackDetail list for all tracks on an album."""
+        # Collect all ISRCs already known on this album (across all tracks)
+        album_isrcs: dict[NormalizedISRC, str] = {}  # ISRC -> track title
+        for track in album.tracks:
+            for isrc in normalized_isrcs(track.metadata.getall('isrc')):
+                album_isrcs[isrc] = track.metadata.get('title', '')
+
+        details = []
+        for track in album.tracks:
+            track_number = track.metadata.get('tracknumber', '?')
+            title = track.metadata.get('title', '')
+            existing_isrcs = track.metadata.getall('isrc')
+            new_isrcs = pending_map.get(track, set())
+            existing = [isrc for isrc in existing_isrcs if valid_isrc(isrc) not in new_isrcs]
+            submittable, reason = self.check_track_submittable(
+                track, new_isrcs, existing_isrcs, duplicate_isrcs, album_isrcs
+            )
+            if not submittable and new_isrcs:
+                log.debug_if(
+                    DebugOpt.ISRC,
+                    "ISRC pending_details: track %s %r not submittable: %s (new: %s)",
+                    track_number,
+                    title,
+                    reason,
+                    sorted(new_isrcs),
+                )
+            details.append(ISRCTrackDetail(track_number, title, existing, sorted(new_isrcs), submittable, reason))
+        details.sort(key=lambda x: int(x.track_number) if x.track_number.isdigit() else 999)
+        return details
 
     def find_duplicate_isrcs(self) -> set[NormalizedISRC]:
         """Find ISRCs that are pending for multiple different recordings."""
