@@ -34,6 +34,17 @@ from picard.webservice.api_helpers import (
 )
 
 
+MB_XML_PREFIX = (
+    '<?xml version="1.0" encoding="UTF-8"?><metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#"><recording-list>'
+)
+MB_XML_SUFFIX = '</recording-list></metadata>'
+
+
+def mb_xml(inner=''):
+    """Build a complete MusicBrainz XML document with recording-list content."""
+    return MB_XML_PREFIX + inner + MB_XML_SUFFIX
+
+
 class MBAPITest(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -106,25 +117,14 @@ class MBAPITest(PicardTestCase):
     def test_xml_ratings_empty(self):
         ratings = dict()
         xmldata = self.api._xml_ratings(ratings)
-        self.assertEqual(
-            xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list></recording-list>'
-            '</metadata>',
-        )
+        self.assertEqual(xmldata, mb_xml())
 
     def test_xml_ratings_one(self):
         ratings = {("recording", 'a'): 1}
         xmldata = self.api._xml_ratings(ratings)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="a"><user-rating>20</user-rating></recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml('<recording id="a"><user-rating>20</user-rating></recording>'),
         )
 
     def test_xml_ratings_multiple(self):
@@ -136,13 +136,10 @@ class MBAPITest(PicardTestCase):
         xmldata = self.api._xml_ratings(ratings)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="a"><user-rating>20</user-rating></recording>'
-            '<recording id="b"><user-rating>40</user-rating></recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml(
+                '<recording id="a"><user-rating>20</user-rating></recording>'
+                '<recording id="b"><user-rating>40</user-rating></recording>'
+            ),
         )
 
     def test_xml_ratings_encode(self):
@@ -150,12 +147,7 @@ class MBAPITest(PicardTestCase):
         xmldata = self.api._xml_ratings(ratings)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="&lt;a&amp;&quot;\'&gt;"><user-rating>0</user-rating></recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml('<recording id="&lt;a&amp;&quot;\'&gt;"><user-rating>0</user-rating></recording>'),
         )
 
     def test_xml_ratings_raises_value_error(self):
@@ -167,14 +159,11 @@ class MBAPITest(PicardTestCase):
         xmldata = self.api._xml_isrcs(recordings_isrcs)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="b9991644-7275-44db-bc43-fff6c6b4ce69">'
-            '<isrc-list count="1"><isrc id="JPB600601201" /></isrc-list>'
-            '</recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml(
+                '<recording id="b9991644-7275-44db-bc43-fff6c6b4ce69">'
+                '<isrc-list count="1"><isrc id="JPB600601201" /></isrc-list>'
+                '</recording>'
+            ),
         )
 
     def test_xml_isrcs_multiple_recordings(self):
@@ -185,42 +174,26 @@ class MBAPITest(PicardTestCase):
         xmldata = self.api._xml_isrcs(recordings_isrcs)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="aaaa">'
-            '<isrc-list count="1"><isrc id="USRC17607839" /></isrc-list>'
-            '</recording>'
-            '<recording id="bbbb">'
-            '<isrc-list count="2"><isrc id="GBAYE0000351" /><isrc id="FRZ039100014" /></isrc-list>'
-            '</recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml(
+                '<recording id="aaaa">'
+                '<isrc-list count="1"><isrc id="USRC17607839" /></isrc-list>'
+                '</recording>'
+                '<recording id="bbbb">'
+                '<isrc-list count="2"><isrc id="GBAYE0000351" /><isrc id="FRZ039100014" /></isrc-list>'
+                '</recording>'
+            ),
         )
 
     def test_xml_isrcs_empty(self):
         xmldata = self.api._xml_isrcs({})
-        self.assertEqual(
-            xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list></recording-list>'
-            '</metadata>',
-        )
+        self.assertEqual(xmldata, mb_xml())
 
     def test_xml_isrcs_skips_empty_list(self):
         recordings_isrcs = {'aaaa': [], 'bbbb': ['USRC17607839']}
         xmldata = self.api._xml_isrcs(recordings_isrcs)
         self.assertEqual(
             xmldata,
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">'
-            '<recording-list>'
-            '<recording id="bbbb">'
-            '<isrc-list count="1"><isrc id="USRC17607839" /></isrc-list>'
-            '</recording>'
-            '</recording-list>'
-            '</metadata>',
+            mb_xml('<recording id="bbbb"><isrc-list count="1"><isrc id="USRC17607839" /></isrc-list></recording>'),
         )
 
     def test_collection_request(self):
