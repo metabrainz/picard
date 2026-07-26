@@ -17,13 +17,14 @@
 # Staffan Vilcans, 2012
 # Tom Sawyer, 2022-2023
 # "ApeKattQuest, MonkeyPython" <ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>, 2025.
+# blueday <jonatan.k.nyberg@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-07 14:11+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-07-26 07:51+0000\n"
+"Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "2/app/sv/>\n"
 "Language: sv\n"
@@ -31,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -55,7 +56,7 @@ msgstr "[hämtar albuminformation]"
 #: picard/album.py:792
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[kunde inte läsa in album %s]"
+msgstr "[kunde inte läsa in albumet %s]"
 
 #: picard/cluster.py:260
 #, python-format
@@ -65,7 +66,7 @@ msgstr "Kluster %(album)s identifierad!"
 #: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Inga utgåvsträffar för kluster %(album)s"
+msgstr "Inga matchande utgåvor för klustret %(album)s"
 
 #: picard/cluster.py:282
 #, python-format
@@ -170,7 +171,7 @@ msgstr "Ingen matchande spår för filen \"%(filename)s\""
 #: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "Letar upp metadata för file %(filename)s …"
+msgstr "Hämtar metadata för filen %(filename)s …"
 
 #: picard/log.py:67 picard/ui/options/renaming.py:256
 #: picard/ui/scripteditor.py:889 picard/ui/scripteditor.py:892
@@ -329,10 +330,8 @@ msgid "Use release relationships"
 msgstr "Använd utgåvesamband"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Använd utgåvesamband"
+msgstr "Använd relationer för spår och utgåvor"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -980,7 +979,7 @@ msgstr "Full storlek"
 
 #: picard/coverart/providers/caa.py:120
 msgid "Cover Art Archive"
-msgstr "Omslagsarkiv"
+msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
@@ -2011,10 +2010,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error loading collections: %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Fel vid inläsning av samlingar: %(error)s"
+msgstr "Fel vid export av filen ”%(filename)s”: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -2130,7 +2128,7 @@ msgstr "Format som stöds"
 
 #: picard/ui/aboutdialog.py:105
 msgid "Please donate"
-msgstr "Vänligen donera"
+msgstr "Donera gärna"
 
 #: picard/ui/aboutdialog.py:106
 msgid ""
@@ -2461,7 +2459,7 @@ msgstr "Albuminfo"
 
 #: picard/ui/infodialog.py:391
 msgid "Track Info"
-msgstr "Spårinfo"
+msgstr "Spårinformation"
 
 #: picard/ui/infodialog.py:399 picard/ui/infodialog.py:403
 #: picard/ui/infodialog.py:421 picard/ui/ui_infodialog.py:81
@@ -2472,8 +2470,8 @@ msgstr "&Information"
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
-msgstr[0] "%i fil i detta spår"
-msgstr[1] "%i filer i detta spår"
+msgstr[0] "%i fil i det här spåret"
+msgstr[1] "%i filer i det här spåret"
 
 #: picard/ui/infodialog.py:415
 msgid "Cluster Info"
@@ -2805,9 +2803,9 @@ msgid ""
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr ""
-"Picard lyssnar på den här porten för att integreras med din webbläsare. När "
-"du använder \"Sök\" eller \"Öppna i webbläsare\" från Picard, klickar du på "
-"knappen \"Taggare\" på webbplatsen och släpper utgåvan till Picard."
+"Picard lyssnar på den här porten för att integreras med webbläsaren. När du "
+"väljer ”Sök” eller ”Öppna i webbläsare” i Picard kan du klicka på knappen ”"
+"Tagger” på webbsidan för att läsa in utgåvan i Picard."
 
 #: picard/ui/mainwindow.py:427
 #, python-format
@@ -2991,7 +2989,7 @@ msgstr "Sök efter liknande album…"
 
 #: picard/ui/mainwindow.py:680
 msgid "View similar releases and optionally choose a different release"
-msgstr "Visa liknande utgivningar och välj en annan utgivning (valfritt)"
+msgstr "Visa liknande utgåvor och välj vid behov en annan utgåva"
 
 #: picard/ui/mainwindow.py:688
 msgid "Search for similar tracks…"
@@ -2999,7 +2997,7 @@ msgstr "Sök efter liknande spår…"
 
 #: picard/ui/mainwindow.py:689
 msgid "View similar tracks and optionally choose a different release"
-msgstr "Visa liknande spår och välj en annan utgivning (valfritt)"
+msgstr "Visa liknande spår och välj vid behov en annan utgåva"
 
 #: picard/ui/mainwindow.py:697
 msgid "Show &other album versions…"
@@ -3479,7 +3477,7 @@ msgstr "Spela"
 
 #: picard/ui/playertoolbar.py:198
 msgid "Play selected files"
-msgstr "Spela markerade filer"
+msgstr "Spela upp valda filer"
 
 #: picard/ui/playertoolbar.py:204
 msgid "Pause"
@@ -3973,7 +3971,7 @@ msgstr "Ignorera sökvägar som matchar följande reguljära uttryck:"
 
 #: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
-msgstr "Ignorera spår varaktighet skillnad under detta antal sekunder"
+msgstr "Ignorera skillnader i spårlängd under detta antal sekunder"
 
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
@@ -3990,7 +3988,7 @@ msgstr "Dataspår"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
-msgstr "Pregap-spår"
+msgstr "Förgapsspår"
 
 #: picard/ui/ui_options_advanced.py:148
 msgid "Silent tracks"
@@ -4301,9 +4299,8 @@ msgid "Various artists:"
 msgstr "Blandade artister:"
 
 #: picard/ui/ui_options_metadata.py:142
-#, fuzzy
 msgid "Standalone recordings:"
-msgstr "Ensam inspelning"
+msgstr "Fristående inspelningar:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -4345,7 +4342,7 @@ msgstr "Standard lyssnarport:"
 
 #: picard/ui/options/plugins.py:226 picard/ui/ui_options_plugins.py:131
 msgid "Plugins"
-msgstr "Tillägg"
+msgstr "Insticksmoduler"
 
 #: picard/ui/options/plugins.py:629 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
@@ -5523,7 +5520,7 @@ msgstr "Slutområde"
 
 #: picard/ui/searchdialog/track.py:67
 msgid "Track Search Results"
-msgstr "Spårsöknings resultat"
+msgstr "Spårsökresultat"
 
 #: picard/ui/searchdialog/track.py:72
 msgid "Release"
@@ -5531,7 +5528,7 @@ msgstr "Utgåva"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
-msgstr "Ensam inspelning"
+msgstr "Fristående inspelning"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
@@ -5663,7 +5660,8 @@ msgid ""
 "Unable to retrieve the latest version information from the website.\n"
 "({url})"
 msgstr ""
-"Kunde inte hämta senaste versionsinformation från denna webbplats.\n"
+"Det gick inte att hämta information om den senaste versionen från "
+"webbplatsen.\n"
 "({url})"
 
 #: picard/util/checkupdate.py:140
