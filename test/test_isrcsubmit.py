@@ -40,6 +40,25 @@ def mock_fail_submission(recordings_isrcs, handler):
     handler({}, MagicMock(), True)
 
 
+def make_mock_track(track_number='1', title='', isrcs=None):
+    """Create a mock track with metadata."""
+    track = MagicMock()
+    data = {'tracknumber': track_number, 'title': title}
+    track.metadata.get = lambda key, default='': data.get(key, default)
+    track.metadata.getall = lambda key: isrcs if key == 'isrc' and isrcs else []
+    track.files = []
+    return track
+
+
+def make_mock_album(name, artist, tracks):
+    """Create a mock album with tracks."""
+    album = MagicMock()
+    data = {'album': name, 'albumartist': artist}
+    album.metadata.get = lambda key, default='': data.get(key, default)
+    album.tracks = tracks
+    return album
+
+
 class ISRCSubmitTestCase(PicardTestCase):
     """Base test case for ISRCSubmitManager tests."""
 
@@ -94,7 +113,6 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
         file = object()
         self.manager.add(file, 'rec-1', ['USRC17607839'], [])
         self.assertEqual(1, self.manager.unsubmitted_count)
-        # Re-add with the ISRC now in MB
         self.manager.add(file, 'rec-1', ['USRC17607839'], ['USRC17607839'])
         self.assertTrue(self.manager.is_submitted(file))
         self.assertEqual(0, self.manager.unsubmitted_count)
@@ -108,16 +126,13 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
         self.assertTrue(self.manager.is_submitted(file))
 
     def test_remove_nonexistent(self):
-        file = object()
-        self.manager.remove(file)  # Should not raise
+        self.manager.remove(object())  # Should not raise
         self.assertEqual(0, self.manager.unsubmitted_count)
 
     def test_remove_album_clears_entries(self):
         album = MagicMock()
-        file1 = MagicMock()
-        file1.album = album
-        file2 = MagicMock()
-        file2.album = album
+        file1 = MagicMock(album=album)
+        file2 = MagicMock(album=album)
         self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
         self.manager.add(file2, 'rec-2', ['GBAYE0000351'], [])
         self.assertEqual(2, self.manager.unsubmitted_count)
@@ -127,10 +142,8 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
     def test_remove_album_only_affects_matching(self):
         album1 = MagicMock()
         album2 = MagicMock()
-        file1 = MagicMock()
-        file1.album = album1
-        file2 = MagicMock()
-        file2.album = album2
+        file1 = MagicMock(album=album1)
+        file2 = MagicMock(album=album2)
         self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
         self.manager.add(file2, 'rec-2', ['GBAYE0000351'], [])
         self.manager.remove_album(album1)
@@ -144,8 +157,6 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
     def test_update_recording(self):
         file = object()
         self.manager.add(file, 'rec-1', ['USRC17607839', 'GBAYE0000351'], [])
-        self.assertEqual(1, self.manager.unsubmitted_count)
-        # Re-match to rec-2 which already has one of the ISRCs
         self.manager.update(file, 'rec-2', ['GBAYE0000351'])
         entry = self.manager._entries[file]
         self.assertEqual('rec-2', entry.recording_id)
@@ -159,8 +170,7 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
         self.assertEqual(0, self.manager.unsubmitted_count)
 
     def test_update_nonexistent(self):
-        file = object()
-        self.manager.update(file, 'rec-1', [])  # Should not raise
+        self.manager.update(object(), 'rec-1', [])  # Should not raise
 
     def test_submit_success(self):
         file1 = object()
@@ -190,8 +200,7 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
         self.mock_api.submit_isrcs.assert_not_called()
 
     def test_check_unsubmitted_enables_action(self):
-        file = object()
-        self.manager.add(file, 'rec-1', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
         self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, True)
 
     def test_check_unsubmitted_disables_action(self):
@@ -201,12 +210,9 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
         self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, False)
 
     def test_multiple_files_same_recording(self):
-        file1 = object()
-        file2 = object()
-        self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
-        self.manager.add(file2, 'rec-1', ['GBAYE0000351'], [])
+        self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-1', ['GBAYE0000351'], [])
         pending = self.manager._pending_isrcs()
-        self.assertIn('rec-1', pending)
         self.assertIn('USRC17607839', pending['rec-1'])
         self.assertIn('GBAYE0000351', pending['rec-1'])
 
@@ -239,133 +245,96 @@ class FindDuplicateIsrcsTest(ISRCSubmitTestCase):
 
     def test_ignores_submitted(self):
         file1 = object()
-        file2 = object()
         self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
-        self.manager.add(file2, 'rec-2', ['USRC17607839'], [])
+        self.manager.add(object(), 'rec-2', ['USRC17607839'], [])
         self.manager._entries[file1].new_isrcs = set()
         self.assertEqual(set(), self.manager.find_duplicate_isrcs())
 
 
 class CheckTrackSubmittableTest(PicardTestCase):
+    _check = staticmethod(ISRCSubmitManager.check_track_submittable)
+
     def test_new_isrcs_no_duplicates(self):
-        submittable, reason = ISRCSubmitManager.check_track_submittable(None, {'USRC17607839'}, [], set())
+        submittable, reason = self._check(None, {'USRC17607839'}, [], set())
         self.assertTrue(submittable)
         self.assertEqual('', reason)
 
     def test_new_isrcs_with_duplicates(self):
-        submittable, reason = ISRCSubmitManager.check_track_submittable(None, {'USRC17607839'}, [], {'USRC17607839'})
+        submittable, reason = self._check(None, {'USRC17607839'}, [], {'USRC17607839'})
         self.assertFalse(submittable)
         self.assertIn('different recordings', reason)
 
     def test_existing_isrcs_no_new(self):
-        submittable, reason = ISRCSubmitManager.check_track_submittable(None, set(), ['USRC17607839'], set())
+        submittable, reason = self._check(None, set(), ['USRC17607839'], set())
         self.assertFalse(submittable)
         self.assertIn('already submitted', reason)
 
     def test_no_isrcs_at_all(self):
-        track = MagicMock()
-        track.files = []
-        submittable, reason = ISRCSubmitManager.check_track_submittable(track, set(), [], set())
+        track = MagicMock(files=[])
+        submittable, reason = self._check(track, set(), [], set())
         self.assertFalse(submittable)
         self.assertEqual('', reason)
 
     def test_file_has_multiple_isrcs(self):
         file_mock = MagicMock()
         file_mock.orig_metadata.getall.return_value = ['ISRC1', 'ISRC2']
-        track = MagicMock()
-        track.files = [file_mock]
-        submittable, reason = ISRCSubmitManager.check_track_submittable(track, set(), [], set())
+        track = MagicMock(files=[file_mock])
+        submittable, reason = self._check(track, set(), [], set())
         self.assertFalse(submittable)
         self.assertIn('multiple ISRCs', reason)
 
     def test_isrc_already_on_another_track(self):
-        album_isrcs = {'USRC17607839': 'Other Track Title'}
-        submittable, reason = ISRCSubmitManager.check_track_submittable(None, {'USRC17607839'}, [], set(), album_isrcs)
+        album_isrcs = {'USRC17607839': 'Other Track'}
+        submittable, reason = self._check(None, {'USRC17607839'}, [], set(), album_isrcs)
         self.assertFalse(submittable)
         self.assertIn('another track', reason)
 
     def test_isrc_on_same_track_is_ok(self):
         album_isrcs = {'USRC17607839': 'This Track'}
-        submittable, reason = ISRCSubmitManager.check_track_submittable(
-            None, {'GBAYE0000351'}, ['USRC17607839'], set(), album_isrcs
-        )
+        submittable, reason = self._check(None, {'GBAYE0000351'}, ['USRC17607839'], set(), album_isrcs)
         self.assertTrue(submittable)
         self.assertEqual('', reason)
 
 
 class PendingDetailsTest(ISRCSubmitTestCase):
-    def _make_track(self, track_number, title, isrcs=None):
-        track = MagicMock()
-        track.metadata = MagicMock()
-        track.metadata.get = lambda key, default='': {
-            'tracknumber': track_number,
-            'title': title,
-        }.get(key, default)
-        track.metadata.getall = lambda key: isrcs if key == 'isrc' and isrcs else []
-        track.files = []
-        return track
-
-    def _make_album(self, name, artist, tracks):
-        album = MagicMock()
-        album.metadata = MagicMock()
-        album.metadata.get = lambda key, default='': {
-            'album': name,
-            'albumartist': artist,
-        }.get(key, default)
-        album.tracks = tracks
-        return album
+    def _add_file_to_album(self, album, track, recording_id, isrcs):
+        """Add a mock file linked to a track/album with pending ISRCs."""
+        file = MagicMock(parent_item=track, album=album)
+        self.manager.add(file, recording_id, isrcs, [])
+        return file
 
     def test_basic(self):
-        track1 = self._make_track('1', 'Song One')
-        track2 = self._make_track('2', 'Song Two', ['USRC17607839'])
-        album = self._make_album('Test Album', 'Test Artist', [track1, track2])
-
-        file = MagicMock()
-        file.parent_item = track1
-        file.album = album
-        self.manager.add(file, 'rec-1', ['GBAYE0000351'], [])
+        track1 = make_mock_track('1', 'Song One')
+        track2 = make_mock_track('2', 'Song Two', ['USRC17607839'])
+        album = make_mock_album('Test Album', 'Test Artist', [track1, track2])
+        self._add_file_to_album(album, track1, 'rec-1', ['GBAYE0000351'])
 
         details = self.manager.pending_details()
-        self.assertIn(('Test Album', 'Test Artist'), details)
         tracks = details[('Test Album', 'Test Artist')]
         self.assertEqual(2, len(tracks))
-        # Track 1 has a new ISRC
         self.assertEqual('1', tracks[0].track_number)
         self.assertTrue(tracks[0].submittable)
         self.assertEqual(['GBAYE0000351'], tracks[0].new_isrcs)
-        # Track 2 has no pending ISRCs
         self.assertEqual('2', tracks[1].track_number)
         self.assertFalse(tracks[1].submittable)
 
     def test_sorted_by_track_number(self):
-        track3 = self._make_track('3', 'Third')
-        track1 = self._make_track('1', 'First')
-        track2 = self._make_track('2', 'Second')
-        album = self._make_album('Album', 'Artist', [track3, track1, track2])
-
-        file = MagicMock()
-        file.parent_item = track3
-        file.album = album
-        self.manager.add(file, 'rec-3', ['USRC17607839'], [])
+        track3 = make_mock_track('3', 'Third')
+        track1 = make_mock_track('1', 'First')
+        track2 = make_mock_track('2', 'Second')
+        album = make_mock_album('Album', 'Artist', [track3, track1, track2])
+        self._add_file_to_album(album, track3, 'rec-3', ['USRC17607839'])
 
         details = self.manager.pending_details()
         tracks = details[('Album', 'Artist')]
         self.assertEqual(['1', '2', '3'], [t.track_number for t in tracks])
 
     def test_duplicate_isrc_not_submittable(self):
-        track1 = self._make_track('1', 'Song One')
-        track2 = self._make_track('2', 'Song Two')
-        album = self._make_album('Album', 'Artist', [track1, track2])
-
-        file1 = MagicMock()
-        file1.parent_item = track1
-        file1.album = album
-        file2 = MagicMock()
-        file2.parent_item = track2
-        file2.album = album
-        # Same ISRC for different recordings
-        self.manager.add(file1, 'rec-1', ['USRC17607839'], [])
-        self.manager.add(file2, 'rec-2', ['USRC17607839'], [])
+        track1 = make_mock_track('1', 'Song One')
+        track2 = make_mock_track('2', 'Song Two')
+        album = make_mock_album('Album', 'Artist', [track1, track2])
+        self._add_file_to_album(album, track1, 'rec-1', ['USRC17607839'])
+        self._add_file_to_album(album, track2, 'rec-2', ['USRC17607839'])
 
         details = self.manager.pending_details()
         tracks = details[('Album', 'Artist')]

@@ -187,11 +187,10 @@ class ISRCSubmitManager:
 
         by_release: dict[tuple[str, str], list[ISRCTrackDetail]] = {}
         for album in albums:
-            album_name = album.metadata.get('album', '')
-            albumartist = album.metadata.get('albumartist', '')
-            release_key = (album_name, albumartist)
-            if release_key not in by_release:
-                by_release[release_key] = []
+            release_key = (
+                album.metadata.get('album', ''),
+                album.metadata.get('albumartist', ''),
+            )
             by_release[release_key] = self._build_album_track_details(
                 album,
                 pending_map,
