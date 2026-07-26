@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -42,7 +42,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.pages_stack = QtWidgets.QStackedWidget(parent=self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Ignored, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Ignored, QtWidgets.QSizePolicy.Policy.Ignored)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pages_stack.sizePolicy().hasHeightForWidth())
