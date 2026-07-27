@@ -97,6 +97,7 @@ class PreferenceListWidget(QtWidgets.QWidget):
         btn = QtWidgets.QToolButton(self)
         btn.setIcon(QtGui.QIcon(icon_path))
         btn.setToolTip(tooltip)
+        btn.setAccessibleDescription(tooltip)
         layout.addWidget(btn)
         return btn
 
