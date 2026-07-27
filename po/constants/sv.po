@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-07-26 08:03+0000\n"
+"PO-Revision-Date: 2026-07-27 10:13+0000\n"
 "Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "3/constants/sv/>\n"
@@ -35,7 +35,7 @@ msgstr "Stabila-, beta- och dev-utgåvor"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Behåll proportionerna"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -45,10 +45,14 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Skala källbilden så att den ryms inom målmåtten.</p><p>Ett av de slutliga "
+"bildmåtten kan bli mindre än målmåttet om källbilden och målbilden har olika "
+"proportioner.</p><p>Om en bild på 2000 × 1000 exempelvis skalas till "
+"målmåtten 1000 × 1000 blir den slutliga bildstorleken 1000 × 500.</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "Skala till bredd"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -56,10 +60,13 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Skala källbildens bredd till målbredden och behåll proportionerna.</p><p>"
+"Om en bild på 2000 × 1000 exempelvis skalas till målbredden 1000 blir den "
+"slutliga bildstorleken 1000 × 500.</p>"
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"
-msgstr ""
+msgstr "Skala till höjd"
 
 #: picard/const/cover_processing.py:75
 msgid ""
@@ -67,10 +74,13 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
+"<p>Skala källbildens höjd till målhöjden och behåll proportionerna.</p><p>Om "
+"en bild på 1000 × 2000 exempelvis skalas till målhöjden 1000 blir den "
+"slutliga bildstorleken 500 × 1000.</p>"
 
 #: picard/const/cover_processing.py:85
 msgid "Crop to fit"
-msgstr ""
+msgstr "Beskär så att bilden passar"
 
 #: picard/const/cover_processing.py:87
 msgid ""
@@ -82,10 +92,16 @@ msgid ""
 "excess height would be center cropped resulting in the final image size of "
 "1000x1000.</p>"
 msgstr ""
+"<p>Skala källbilden så att den fyller målmåtten helt i båda riktningarna.</p>"
+"<p>Om källbilden och målbilden har olika proportioner uppstår ett överskott "
+"i en riktning som beskärs centrerat.</p><p>Om en bild på 500 × 1000 "
+"exempelvis skalas till målmåtten 1000 × 1000 skalas den först upp till 1000 "
+"× 2000. Därefter beskärs den överskjutande höjden centrerat, så att den "
+"slutliga bildstorleken blir 1000 × 1000.</p>"
 
 #: picard/const/cover_processing.py:102
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Sträck ut så att bilden passar"
 
 #: picard/const/cover_processing.py:104
 msgid ""
@@ -94,6 +110,10 @@ msgid ""
 "1000x1000 would be stretched horizontally resulting in the final image size "
 "of 1000x1000.</p>"
 msgstr ""
+"<p>Sträck ut bilden så att den exakt motsvarar de angivna måtten, även om "
+"bilden måste förvrängas.</p><p>En bild på 500 × 1000 med målmåtten 1000 × "
+"1000 sträcks exempelvis ut horisontellt, så att den slutliga bildstorleken "
+"blir 1000 × 1000.</p>"
 
 #: picard/const/defaults.py:157
 msgid "My script"
@@ -101,16 +121,16 @@ msgstr "Mitt skript"
 
 #: picard/const/defaults.py:158
 msgid "My profile"
-msgstr ""
+msgstr "Min profil"
 
 #: picard/const/defaults.py:159
 msgid "(copy)"
-msgstr ""
+msgstr "(kopia)"
 
 #: picard/const/defaults.py:160
 #, python-brace-format
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:32 picard/const/locales.py:51
 #: picard/const/scripts.py:35
@@ -509,35 +529,35 @@ msgstr "azerbajdzjanska"
 
 #: picard/const/locales.py:89
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "Azerbajdzjanska (arabisk skrift)"
 
 #: picard/const/locales.py:90
 msgid "Azerbaijani (Arabic) (Iraq)"
-msgstr ""
+msgstr "Azerbajdzjanska (arabisk skrift) (Irak)"
 
 #: picard/const/locales.py:91
 msgid "Azerbaijani (Arabic) (Iran)"
-msgstr ""
+msgstr "Azerbajdzjanska (arabisk skrift) (Iran)"
 
 #: picard/const/locales.py:92
 msgid "Azerbaijani (Arabic) (Türkiye)"
-msgstr ""
+msgstr "Azerbajdzjanska (arabisk skrift) (Turkiet)"
 
 #: picard/const/locales.py:93
 msgid "Azerbaijani (Cyrillic)"
-msgstr ""
+msgstr "Azerbajdzjanska (kyrillisk skrift)"
 
 #: picard/const/locales.py:94
 msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-msgstr ""
+msgstr "Azerbajdzjanska (kyrillisk skrift) (Azerbajdzjan)"
 
 #: picard/const/locales.py:95
 msgid "Azerbaijani (Latin)"
-msgstr ""
+msgstr "Azerbajdzjanska (latinsk skrift)"
 
 #: picard/const/locales.py:96
 msgid "Azerbaijani (Latin) (Azerbaijan)"
-msgstr ""
+msgstr "Azerbajdzjanska (latinsk skrift) (Azerbajdzjan)"
 
 #: picard/const/locales.py:97
 msgid "Bashkir"
@@ -553,19 +573,19 @@ msgstr "baluchiska"
 
 #: picard/const/locales.py:100
 msgid "Baluchi (Arabic)"
-msgstr ""
+msgstr "Baluchiska (arabisk skrift)"
 
 #: picard/const/locales.py:101
 msgid "Baluchi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "Baluchiska (arabisk skrift) (Pakistan)"
 
 #: picard/const/locales.py:102
 msgid "Baluchi (Latin)"
-msgstr ""
+msgstr "Baluchiska (latinsk skrift)"
 
 #: picard/const/locales.py:103
 msgid "Baluchi (Latin) (Pakistan)"
-msgstr ""
+msgstr "Baluchiska (latinsk skrift) (Pakistan)"
 
 #: picard/const/locales.py:104
 msgid "Basaa"
@@ -585,7 +605,7 @@ msgstr "Belarusiska (Belarus)"
 
 #: picard/const/locales.py:108
 msgid "Belarusian (Taraskievica orthography)"
-msgstr ""
+msgstr "Belarusiska (tarasjkevitjisk ortografi)"
 
 #: picard/const/locales.py:109
 msgid "Bemba"
@@ -653,11 +673,11 @@ msgstr "Bhojpuri (Indien)"
 
 #: picard/const/locales.py:125
 msgid "Tai Dam"
-msgstr ""
+msgstr "Tai dam"
 
 #: picard/const/locales.py:126
 msgid "Tai Dam (Vietnam)"
-msgstr ""
+msgstr "Tai dam (Vietnam)"
 
 #: picard/const/locales.py:127
 msgid "Bambara"
@@ -669,11 +689,11 @@ msgstr "Bambara (Mali)"
 
 #: picard/const/locales.py:129
 msgid "Bambara (N’Ko)"
-msgstr ""
+msgstr "Bambara (n’ko-skrift)"
 
 #: picard/const/locales.py:130
 msgid "Bambara (N’Ko) (Mali)"
-msgstr ""
+msgstr "Bambara (n’ko-skrift) (Mali)"
 
 #: picard/const/locales.py:131
 msgid "Bangla"
@@ -721,19 +741,19 @@ msgstr "bosniska"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "Bosniska (kyrillisk skrift)"
 
 #: picard/const/locales.py:143
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Bosniska (kyrillisk skrift) (Bosnien och Hercegovina)"
 
 #: picard/const/locales.py:144
 msgid "Bosnian (Latin)"
-msgstr ""
+msgstr "Bosniska (latinsk skrift)"
 
 #: picard/const/locales.py:145
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Bosniska (latinsk skrift) (Bosnien och Hercegovina)"
 
 #: picard/const/locales.py:146
 msgid "Akoose"
@@ -761,7 +781,7 @@ msgstr "Katalanska (Spanien)"
 
 #: picard/const/locales.py:153
 msgid "Catalan (Spain Valencian)"
-msgstr ""
+msgstr "Katalanska (valencianska i Spanien)"
 
 #: picard/const/locales.py:154
 msgid "Catalan (France)"
@@ -841,11 +861,11 @@ msgstr "Cherokesiska (USA)"
 
 #: picard/const/locales.py:173
 msgid "Chickasaw"
-msgstr ""
+msgstr "Chickasaw"
 
 #: picard/const/locales.py:174
 msgid "Chickasaw (United States)"
-msgstr ""
+msgstr "Chickasaw (USA)"
 
 #: picard/const/locales.py:175
 msgid "Central Kurdish"
@@ -1025,7 +1045,7 @@ msgstr "Grekiska (Grekland)"
 
 #: picard/const/locales.py:223
 msgid "Greek (Polytonic)"
-msgstr ""
+msgstr "Grekiska (polytonisk skrift)"
 
 #: picard/const/locales.py:225
 msgid "English (world)"
@@ -1125,11 +1145,11 @@ msgstr "Engelska (Dominica)"
 
 #: picard/const/locales.py:251
 msgid "English (Deseret)"
-msgstr ""
+msgstr "Engelska (deseret-skrift)"
 
 #: picard/const/locales.py:252
 msgid "English (Deseret) (United States)"
-msgstr ""
+msgstr "Engelska (deseret-skrift) (USA)"
 
 #: picard/const/locales.py:253
 msgid "English (Eritrea)"
@@ -1181,7 +1201,7 @@ msgstr "Engelska (Guyana)"
 
 #: picard/const/locales.py:266
 msgid "English (Hong Kong)"
-msgstr ""
+msgstr "Engelska (Hongkong)"
 
 #: picard/const/locales.py:267
 msgid "English (Ireland)"
@@ -1249,7 +1269,7 @@ msgstr "Engelska (Marshallöarna)"
 
 #: picard/const/locales.py:283
 msgid "English (Macao)"
-msgstr ""
+msgstr "Engelska (Macao)"
 
 #: picard/const/locales.py:284
 msgid "English (Northern Mariana Islands)"
@@ -1381,11 +1401,11 @@ msgstr "Engelska (Eswatini)"
 
 #: picard/const/locales.py:316
 msgid "English (Shavian)"
-msgstr ""
+msgstr "Engelska (shavisk skrift)"
 
 #: picard/const/locales.py:317
 msgid "English (Shavian) (United Kingdom)"
-msgstr ""
+msgstr "Engelska (shavisk skrift) (Storbritannien)"
 
 #: picard/const/locales.py:318
 msgid "English (Turks & Caicos Islands)"
@@ -1613,107 +1633,107 @@ msgstr "Fulani"
 
 #: picard/const/locales.py:376
 msgid "Fula (Adlam)"
-msgstr ""
+msgstr "Fulani (adlam-skrift)"
 
 #: picard/const/locales.py:377
 msgid "Fula (Adlam) (Burkina Faso)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Burkina Faso)"
 
 #: picard/const/locales.py:378
 msgid "Fula (Adlam) (Cameroon)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Kamerun)"
 
 #: picard/const/locales.py:379
 msgid "Fula (Adlam) (Ghana)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Ghana)"
 
 #: picard/const/locales.py:380
 msgid "Fula (Adlam) (Gambia)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Gambia)"
 
 #: picard/const/locales.py:381
 msgid "Fula (Adlam) (Guinea)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Guinea)"
 
 #: picard/const/locales.py:382
 msgid "Fula (Adlam) (Guinea-Bissau)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Guinea-Bissau)"
 
 #: picard/const/locales.py:383
 msgid "Fula (Adlam) (Liberia)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Liberia)"
 
 #: picard/const/locales.py:384
 msgid "Fula (Adlam) (Mauritania)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Mauretanien)"
 
 #: picard/const/locales.py:385
 msgid "Fula (Adlam) (Niger)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Niger)"
 
 #: picard/const/locales.py:386
 msgid "Fula (Adlam) (Nigeria)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Nigeria)"
 
 #: picard/const/locales.py:387
 msgid "Fula (Adlam) (Sierra Leone)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Sierra Leone)"
 
 #: picard/const/locales.py:388
 msgid "Fula (Adlam) (Senegal)"
-msgstr ""
+msgstr "Fulani (adlam-skrift) (Senegal)"
 
 #: picard/const/locales.py:389
 msgid "Fula (Latin)"
-msgstr ""
+msgstr "Fulani (latinsk skrift)"
 
 #: picard/const/locales.py:390
 msgid "Fula (Latin) (Burkina Faso)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Burkina Faso)"
 
 #: picard/const/locales.py:391
 msgid "Fula (Latin) (Cameroon)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Kamerun)"
 
 #: picard/const/locales.py:392
 msgid "Fula (Latin) (Ghana)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Ghana)"
 
 #: picard/const/locales.py:393
 msgid "Fula (Latin) (Gambia)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Gambia)"
 
 #: picard/const/locales.py:394
 msgid "Fula (Latin) (Guinea)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Guinea)"
 
 #: picard/const/locales.py:395
 msgid "Fula (Latin) (Guinea-Bissau)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Guinea-Bissau)"
 
 #: picard/const/locales.py:396
 msgid "Fula (Latin) (Liberia)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Liberia)"
 
 #: picard/const/locales.py:397
 msgid "Fula (Latin) (Mauritania)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Mauretanien)"
 
 #: picard/const/locales.py:398
 msgid "Fula (Latin) (Niger)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Niger)"
 
 #: picard/const/locales.py:399
 msgid "Fula (Latin) (Nigeria)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Nigeria)"
 
 #: picard/const/locales.py:400
 msgid "Fula (Latin) (Sierra Leone)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Sierra Leone)"
 
 #: picard/const/locales.py:401
 msgid "Fula (Latin) (Senegal)"
-msgstr ""
+msgstr "Fulani (latinsk skrift) (Senegal)"
 
 #: picard/const/locales.py:403
 msgid "Finnish (Finland)"
@@ -2041,15 +2061,15 @@ msgstr "Hausa"
 
 #: picard/const/locales.py:487
 msgid "Hausa (Arabic)"
-msgstr ""
+msgstr "Hausa (arabisk skrift)"
 
 #: picard/const/locales.py:488
 msgid "Hausa (Arabic) (Nigeria)"
-msgstr ""
+msgstr "Hausa (arabisk skrift) (Nigeria)"
 
 #: picard/const/locales.py:489
 msgid "Hausa (Arabic) (Sudan)"
-msgstr ""
+msgstr "Hausa (arabisk skrift) (Sudan)"
 
 #: picard/const/locales.py:490
 msgid "Hausa (Ghana)"
@@ -2057,19 +2077,19 @@ msgstr "Hausa (Ghana)"
 
 #: picard/const/locales.py:491
 msgid "Hausa (Latin)"
-msgstr ""
+msgstr "Hausa (latinsk skrift)"
 
 #: picard/const/locales.py:492
 msgid "Hausa (Latin) (Ghana)"
-msgstr ""
+msgstr "Hausa (latinsk skrift) (Ghana)"
 
 #: picard/const/locales.py:493
 msgid "Hausa (Latin) (Niger)"
-msgstr ""
+msgstr "Hausa (latinsk skrift) (Niger)"
 
 #: picard/const/locales.py:494
 msgid "Hausa (Latin) (Nigeria)"
-msgstr ""
+msgstr "Hausa (latinsk skrift) (Nigeria)"
 
 #: picard/const/locales.py:495
 msgid "Hausa (Niger)"
@@ -2113,15 +2133,15 @@ msgstr "Hindi (latinsk) (Indien)"
 
 #: picard/const/locales.py:506
 msgid "Hmong Njua"
-msgstr ""
+msgstr "Hmong njua"
 
 #: picard/const/locales.py:507
 msgid "Hmong Njua (Nyiakeng Puachue Hmong)"
-msgstr ""
+msgstr "Hmong njua (nyiakeng puachue hmong-skrift)"
 
 #: picard/const/locales.py:508
 msgid "Hmong Njua (Nyiakeng Puachue Hmong) (United States)"
-msgstr ""
+msgstr "Hmong njua (nyiakeng puachue hmong-skrift) (USA)"
 
 #: picard/const/locales.py:509
 msgid "Croatian"
@@ -2157,7 +2177,7 @@ msgstr "Armeniska (Armenien)"
 
 #: picard/const/locales.py:518
 msgid "Armenian (Armenia) (Revised Orthography)"
-msgstr ""
+msgstr "Armeniska (Armenien) (reviderad ortografi)"
 
 #: picard/const/locales.py:519
 msgid "Interlingua"
@@ -2229,11 +2249,11 @@ msgstr "Inuktitut (Kanada)"
 
 #: picard/const/locales.py:538
 msgid "Inuktitut (Latin)"
-msgstr ""
+msgstr "Inuktitut (latinsk skrift)"
 
 #: picard/const/locales.py:539
 msgid "Inuktitut (Latin) (Canada)"
-msgstr ""
+msgstr "Inuktitut (latinsk skrift) (Kanada)"
 
 #: picard/const/locales.py:541
 msgid "Japanese (Japan)"
@@ -2373,11 +2393,11 @@ msgstr "kazakiska"
 
 #: picard/const/locales.py:575
 msgid "Kazakh (Cyrillic)"
-msgstr ""
+msgstr "Kazakiska (kyrillisk skrift)"
 
 #: picard/const/locales.py:576
 msgid "Kazakh (Cyrillic) (Kazakhstan)"
-msgstr ""
+msgstr "Kazakiska (kyrillisk skrift) (Kazakstan)"
 
 #: picard/const/locales.py:577
 msgid "Kazakh (Kazakhstan)"
@@ -2457,19 +2477,19 @@ msgstr "Kashmiriska"
 
 #: picard/const/locales.py:597
 msgid "Kashmiri (Arabic)"
-msgstr ""
+msgstr "Kashmiriska (arabisk skrift)"
 
 #: picard/const/locales.py:598
 msgid "Kashmiri (Arabic) (India)"
-msgstr ""
+msgstr "Kashmiriska (arabisk skrift) (Indien)"
 
 #: picard/const/locales.py:599
 msgid "Kashmiri (Devanagari)"
-msgstr ""
+msgstr "Kashmiriska (devanagari)"
 
 #: picard/const/locales.py:600
 msgid "Kashmiri (Devanagari) (India)"
-msgstr ""
+msgstr "Kashmiriska (devanagari) (Indien)"
 
 #: picard/const/locales.py:601
 msgid "Shambala"
@@ -2629,11 +2649,11 @@ msgstr "Luba-katanga (Kongo-Kinshasa)"
 
 #: picard/const/locales.py:641
 msgid "Luo"
-msgstr ""
+msgstr "Luo"
 
 #: picard/const/locales.py:642
 msgid "Luo (Kenya)"
-msgstr ""
+msgstr "Luo (Kenya)"
 
 #: picard/const/locales.py:643
 msgid "Luyia"
@@ -2749,11 +2769,11 @@ msgstr "mongoliska"
 
 #: picard/const/locales.py:671
 msgid "Mongolian (Cyrillic)"
-msgstr ""
+msgstr "Mongoliska (kyrillisk skrift)"
 
 #: picard/const/locales.py:672
 msgid "Mongolian (Cyrillic) (Mongolia)"
-msgstr ""
+msgstr "Mongoliska (kyrillisk skrift) (Mongoliet)"
 
 #: picard/const/locales.py:673
 msgid "Mongolian (Mongolia)"
@@ -2761,15 +2781,15 @@ msgstr "Mongoliska (Mongoliet)"
 
 #: picard/const/locales.py:674
 msgid "Mongolian (Mongolian)"
-msgstr ""
+msgstr "Mongoliska (mongolisk skrift)"
 
 #: picard/const/locales.py:675
 msgid "Mongolian (Mongolian) (China)"
-msgstr ""
+msgstr "Mongoliska (mongolisk skrift) (Kina)"
 
 #: picard/const/locales.py:676
 msgid "Mongolian (Mongolian) (Mongolia)"
-msgstr ""
+msgstr "Mongoliska (mongolisk skrift) (Mongoliet)"
 
 #: picard/const/locales.py:677
 msgid "Manipuri"
@@ -2777,19 +2797,19 @@ msgstr "Manipuri"
 
 #: picard/const/locales.py:678
 msgid "Manipuri (Bangla)"
-msgstr ""
+msgstr "Manipuri (bengalisk skrift)"
 
 #: picard/const/locales.py:679
 msgid "Manipuri (Bangla) (India)"
-msgstr ""
+msgstr "Manipuri (bengalisk skrift) (Indien)"
 
 #: picard/const/locales.py:680
 msgid "Manipuri (Meitei Mayek)"
-msgstr ""
+msgstr "Manipuri (meitei mayek-skrift)"
 
 #: picard/const/locales.py:681
 msgid "Manipuri (Meitei Mayek) (India)"
-msgstr ""
+msgstr "Manipuri (meitei mayek-skrift) (Indien)"
 
 #: picard/const/locales.py:682
 msgid "Mohawk"
@@ -2813,15 +2833,15 @@ msgstr "malajiska"
 
 #: picard/const/locales.py:687
 msgid "Malay (Arabic)"
-msgstr ""
+msgstr "Malajiska (arabisk skrift)"
 
 #: picard/const/locales.py:688
 msgid "Malay (Arabic) (Brunei)"
-msgstr ""
+msgstr "Malajiska (arabisk skrift) (Brunei)"
 
 #: picard/const/locales.py:689
 msgid "Malay (Arabic) (Malaysia)"
-msgstr ""
+msgstr "Malajiska (arabisk skrift) (Malaysia)"
 
 #: picard/const/locales.py:690
 msgid "Malay (Brunei)"
@@ -3097,19 +3117,19 @@ msgstr "Punjabi"
 
 #: picard/const/locales.py:762
 msgid "Punjabi (Arabic)"
-msgstr ""
+msgstr "Punjabi (arabisk skrift)"
 
 #: picard/const/locales.py:763
 msgid "Punjabi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "Punjabi (arabisk skrift) (Pakistan)"
 
 #: picard/const/locales.py:764
 msgid "Punjabi (Gurmukhi)"
-msgstr ""
+msgstr "Punjabi (gurmukhi)"
 
 #: picard/const/locales.py:765
 msgid "Punjabi (Gurmukhi) (India)"
-msgstr ""
+msgstr "Punjabi (gurmukhi) (Indien)"
 
 #: picard/const/locales.py:766
 msgid "Punjabi (India)"
@@ -3197,7 +3217,7 @@ msgstr "Portugisiska (Luxemburg)"
 
 #: picard/const/locales.py:790
 msgid "Portuguese (Macao)"
-msgstr ""
+msgstr "Portugisiska (Macao)"
 
 #: picard/const/locales.py:791
 msgid "Portuguese (Mozambique)"
@@ -3253,15 +3273,15 @@ msgstr "Ruáingga"
 
 #: picard/const/locales.py:804
 msgid "Rohingya (Hanifi)"
-msgstr ""
+msgstr "Rohingya (hanifi-skrift)"
 
 #: picard/const/locales.py:805
 msgid "Rohingya (Hanifi) (Bangladesh)"
-msgstr ""
+msgstr "Rohingya (hanifi-skrift) (Bangladesh)"
 
 #: picard/const/locales.py:806
 msgid "Rohingya (Hanifi) (Myanmar (Burma))"
-msgstr ""
+msgstr "Rohingya (hanifi-skrift) (Myanmar (Burma))"
 
 #: picard/const/locales.py:807
 msgid "Riffian"
@@ -3373,19 +3393,19 @@ msgstr "Santali"
 
 #: picard/const/locales.py:836
 msgid "Santali (Devanagari)"
-msgstr ""
+msgstr "Santali (devanagari)"
 
 #: picard/const/locales.py:837
 msgid "Santali (Devanagari) (India)"
-msgstr ""
+msgstr "Santali (devanagari) (Indien)"
 
 #: picard/const/locales.py:838
 msgid "Santali (Ol Chiki)"
-msgstr ""
+msgstr "Santali (ol chiki-skrift)"
 
 #: picard/const/locales.py:839
 msgid "Santali (Ol Chiki) (India)"
-msgstr ""
+msgstr "Santali (ol chiki-skrift) (Indien)"
 
 #: picard/const/locales.py:840
 msgid "Sangu"
@@ -3417,19 +3437,19 @@ msgstr "Sindhi"
 
 #: picard/const/locales.py:847
 msgid "Sindhi (Arabic)"
-msgstr ""
+msgstr "Sindhi (arabisk skrift)"
 
 #: picard/const/locales.py:848
 msgid "Sindhi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "Sindhi (arabisk skrift) (Pakistan)"
 
 #: picard/const/locales.py:849
 msgid "Sindhi (Devanagari)"
-msgstr ""
+msgstr "Sindhi (devanagari)"
 
 #: picard/const/locales.py:850
 msgid "Sindhi (Devanagari) (India)"
-msgstr ""
+msgstr "Sindhi (devanagari) (Indien)"
 
 #: picard/const/locales.py:851
 msgid "Southern Kurdish"
@@ -3489,19 +3509,19 @@ msgstr "Tachelhit"
 
 #: picard/const/locales.py:865
 msgid "Tachelhit (Latin)"
-msgstr ""
+msgstr "Tachelhit (latinsk skrift)"
 
 #: picard/const/locales.py:866
 msgid "Tachelhit (Latin) (Morocco)"
-msgstr ""
+msgstr "Tachelhit (latinsk skrift) (Marocko)"
 
 #: picard/const/locales.py:867
 msgid "Tachelhit (Tifinagh)"
-msgstr ""
+msgstr "Tachelhit (tifinagh)"
 
 #: picard/const/locales.py:868
 msgid "Tachelhit (Tifinagh) (Morocco)"
-msgstr ""
+msgstr "Tachelhit (tifinagh) (Marocko)"
 
 #: picard/const/locales.py:869
 msgid "Shan"
@@ -3625,43 +3645,43 @@ msgstr "serbiska"
 
 #: picard/const/locales.py:902
 msgid "Serbian (Cyrillic)"
-msgstr ""
+msgstr "Serbiska (kyrillisk skrift)"
 
 #: picard/const/locales.py:903
 msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Serbiska (kyrillisk skrift) (Bosnien och Hercegovina)"
 
 #: picard/const/locales.py:904
 msgid "Serbian (Cyrillic) (Montenegro)"
-msgstr ""
+msgstr "Serbiska (kyrillisk skrift) (Montenegro)"
 
 #: picard/const/locales.py:905
 msgid "Serbian (Cyrillic) (Serbia)"
-msgstr ""
+msgstr "Serbiska (kyrillisk skrift) (Serbien)"
 
 #: picard/const/locales.py:906
 msgid "Serbian (Cyrillic) (Kosovo)"
-msgstr ""
+msgstr "Serbiska (kyrillisk skrift) (Kosovo)"
 
 #: picard/const/locales.py:907
 msgid "Serbian (Latin)"
-msgstr ""
+msgstr "Serbiska (latinsk skrift)"
 
 #: picard/const/locales.py:908
 msgid "Serbian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "Serbiska (latinsk skrift) (Bosnien och Hercegovina)"
 
 #: picard/const/locales.py:909
 msgid "Serbian (Latin) (Montenegro)"
-msgstr ""
+msgstr "Serbiska (latinsk skrift) (Montenegro)"
 
 #: picard/const/locales.py:910
 msgid "Serbian (Latin) (Serbia)"
-msgstr ""
+msgstr "Serbiska (latinsk skrift) (Serbien)"
 
 #: picard/const/locales.py:911
 msgid "Serbian (Latin) (Kosovo)"
-msgstr ""
+msgstr "Serbiska (latinsk skrift) (Kosovo)"
 
 #: picard/const/locales.py:912
 msgid "Swati"
@@ -3701,11 +3721,11 @@ msgstr "sundanesiska"
 
 #: picard/const/locales.py:921
 msgid "Sundanese (Latin)"
-msgstr ""
+msgstr "Sundanesiska (latinsk skrift)"
 
 #: picard/const/locales.py:922
 msgid "Sundanese (Latin) (Indonesia)"
-msgstr ""
+msgstr "Sundanesiska (latinsk skrift) (Indonesien)"
 
 #: picard/const/locales.py:924
 msgid "Swedish (Åland Islands)"
@@ -3805,11 +3825,11 @@ msgstr "tadzjikiska"
 
 #: picard/const/locales.py:948
 msgid "Tajik (Cyrillic)"
-msgstr ""
+msgstr "Tadzjikiska (kyrillisk skrift)"
 
 #: picard/const/locales.py:949
 msgid "Tajik (Cyrillic) (Tajikistan)"
-msgstr ""
+msgstr "Tadzjikiska (kyrillisk skrift) (Tadzjikistan)"
 
 #: picard/const/locales.py:950
 msgid "Tajik (Tajikistan)"
@@ -3905,11 +3925,11 @@ msgstr "Taroko (Taiwan)"
 
 #: picard/const/locales.py:974
 msgid "Torwali"
-msgstr ""
+msgstr "Torwali"
 
 #: picard/const/locales.py:975
 msgid "Torwali (Pakistan)"
-msgstr ""
+msgstr "Torwali (Pakistan)"
 
 #: picard/const/locales.py:976
 msgid "Tsonga"
@@ -3977,27 +3997,27 @@ msgstr "uzbekiska"
 
 #: picard/const/locales.py:993
 msgid "Uzbek (Arabic)"
-msgstr ""
+msgstr "Uzbekiska (arabisk skrift)"
 
 #: picard/const/locales.py:994
 msgid "Uzbek (Arabic) (Afghanistan)"
-msgstr ""
+msgstr "Uzbekiska (arabisk skrift) (Afghanistan)"
 
 #: picard/const/locales.py:995
 msgid "Uzbek (Cyrillic)"
-msgstr ""
+msgstr "Uzbekiska (kyrillisk skrift)"
 
 #: picard/const/locales.py:996
 msgid "Uzbek (Cyrillic) (Uzbekistan)"
-msgstr ""
+msgstr "Uzbekiska (kyrillisk skrift) (Uzbekistan)"
 
 #: picard/const/locales.py:997
 msgid "Uzbek (Latin)"
-msgstr ""
+msgstr "Uzbekiska (latinsk skrift)"
 
 #: picard/const/locales.py:998
 msgid "Uzbek (Latin) (Uzbekistan)"
-msgstr ""
+msgstr "Uzbekiska (latinsk skrift) (Uzbekistan)"
 
 #: picard/const/locales.py:999
 msgid "Vai"
@@ -4005,19 +4025,19 @@ msgstr "vaj"
 
 #: picard/const/locales.py:1000
 msgid "Vai (Latin)"
-msgstr ""
+msgstr "Vaj (latinsk skrift)"
 
 #: picard/const/locales.py:1001
 msgid "Vai (Latin) (Liberia)"
-msgstr ""
+msgstr "Vaj (latinsk skrift) (Liberia)"
 
 #: picard/const/locales.py:1002
 msgid "Vai (Vai)"
-msgstr ""
+msgstr "Vaj (vai-skrift)"
 
 #: picard/const/locales.py:1003
 msgid "Vai (Vai) (Liberia)"
-msgstr ""
+msgstr "Vaj (vai-skrift) (Liberia)"
 
 #: picard/const/locales.py:1004
 msgid "Venda"
@@ -4165,19 +4185,19 @@ msgstr "Kantonesiska"
 
 #: picard/const/locales.py:1040
 msgid "Cantonese (Simplified)"
-msgstr ""
+msgstr "Kantonesiska (förenklad skrift)"
 
 #: picard/const/locales.py:1041
 msgid "Cantonese (Simplified) (China)"
-msgstr ""
+msgstr "Kantonesiska (förenklad skrift) (Kina)"
 
 #: picard/const/locales.py:1042
 msgid "Cantonese (Traditional)"
-msgstr ""
+msgstr "Kantonesiska (traditionell skrift)"
 
 #: picard/const/locales.py:1043
 msgid "Cantonese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "Kantonesiska (traditionell skrift) (Hongkong)"
 
 #: picard/const/locales.py:1044
 msgid "Standard Moroccan Tamazight"
@@ -4193,39 +4213,39 @@ msgstr "kinesiska"
 
 #: picard/const/locales.py:1047
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Kinesiska (förenklad skrift)"
 
 #: picard/const/locales.py:1048
 msgid "Chinese (Simplified) (China)"
-msgstr ""
+msgstr "Kinesiska (förenklad skrift) (Kina)"
 
 #: picard/const/locales.py:1049
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr ""
+msgstr "Kinesiska (förenklad skrift) (Hongkong)"
 
 #: picard/const/locales.py:1050
 msgid "Chinese (Simplified) (Macao)"
-msgstr ""
+msgstr "Kinesiska (förenklad skrift) (Macao)"
 
 #: picard/const/locales.py:1051
 msgid "Chinese (Simplified) (Singapore)"
-msgstr ""
+msgstr "Kinesiska (förenklad skrift) (Singapore)"
 
 #: picard/const/locales.py:1052
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Kinesiska (traditionell skrift)"
 
 #: picard/const/locales.py:1053
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "Kinesiska (traditionell skrift) (Hongkong)"
 
 #: picard/const/locales.py:1054
 msgid "Chinese (Traditional) (Macao)"
-msgstr ""
+msgstr "Kinesiska (traditionell skrift) (Macao)"
 
 #: picard/const/locales.py:1055
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr ""
+msgstr "Kinesiska (traditionell skrift) (Taiwan)"
 
 #: picard/const/locales.py:1056
 msgid "Zulu"
@@ -4253,7 +4273,7 @@ msgstr "katakana"
 
 #: picard/const/tags.py:34
 msgid "Absolute Track No."
-msgstr ""
+msgstr "Absolut spårnummer"
 
 #: picard/const/tags.py:36
 msgid ""
@@ -4261,6 +4281,8 @@ msgid ""
 "this value would be 11 for the second track on disc 2 where disc 1 has 9 "
 "tracks."
 msgstr ""
+"Spårets absoluta nummer utan hänsyn till skivnumret. Värdet blir exempelvis "
+"11 för det andra spåret på skiva 2 om skiva 1 har 9 spår."
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
@@ -4272,6 +4294,8 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
+"Spårets akustiska fingeravtryck. Fingeravtrycket baseras på "
+"ljudinformationen i filen och beräknas med programvaran Chromaprint."
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
@@ -4284,6 +4308,9 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
+"Det AcoustID som hör till spåret. AcoustID är identifieraren som tilldelas "
+"en ljudfil utifrån dess akustiska fingeravtryck. Flera fingeravtryck kan "
+"tilldelas samma AcoustID om de är tillräckligt lika."
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
@@ -4296,10 +4323,14 @@ msgid ""
 "depending on whether the \"Use standardized artist names\" metadata option "
 "is enabled."
 msgstr ""
+"De artister som huvudsakligen krediteras på utgåvan, avgränsade med de "
+"angivna sammanfogningsfraserna. Namnen kan vara standardiserade eller "
+"återges som krediterade beroende på om metadataalternativet ”Använd "
+"standardiserade artistnamn” är aktiverat."
 
 #: picard/const/tags.py:77
 msgid "Album Artists"
-msgstr ""
+msgstr "Albumartister"
 
 #: picard/const/tags.py:79
 msgid ""
@@ -4307,10 +4338,13 @@ msgid ""
 "\"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"De artister som huvudsakligen krediteras på utgåvan. Namnen kan vara "
+"standardiserade eller återges som krediterade beroende på om "
+"metadataalternativet ”Använd standardiserade artistnamn” är aktiverat."
 
 #: picard/const/tags.py:88
 msgid "Album Artists Countries"
-msgstr ""
+msgstr "Albumartisternas länder"
 
 #: picard/const/tags.py:90
 msgid ""
@@ -4319,6 +4353,10 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"Landskoderna för alla krediterade albumartister, i samma ordning som "
+"artisterna. Samma landskod visas flera gånger om flera artister kommer från "
+"samma land. Om webbtjänsten inte anger någon landskod används koden ”XX” för "
+"ett okänt land."
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
@@ -4329,14 +4367,16 @@ msgid ""
 "The release artists sort names, separated by the specified join phrases. "
 "(e.g.: \"Beatles, The\")"
 msgstr ""
+"Utgåveartisternas sorteringsnamn, avgränsade med de angivna "
+"sammanfogningsfraserna, exempelvis ”Beatles, The”."
 
 #: picard/const/tags.py:106
 msgid "Album Artists Sort Names"
-msgstr ""
+msgstr "Albumartisternas sorteringsnamn"
 
 #: picard/const/tags.py:107
 msgid "The sort names of the album's artists."
-msgstr ""
+msgstr "Albumartisternas sorteringsnamn."
 
 #: picard/const/tags.py:114
 msgid "Album"
@@ -4344,7 +4384,7 @@ msgstr "Album"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
-msgstr ""
+msgstr "Utgåvans titel."
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
@@ -4352,7 +4392,7 @@ msgstr "Album sorteringsordning"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
-msgstr ""
+msgstr "Utgåvetitelns sorteringsnamn."
 
 #: picard/const/tags.py:126
 msgid "Arranger"
@@ -4364,6 +4404,9 @@ msgid ""
 "instrument and orchestra arrangers, and could be associated with the "
 "release, recording or work."
 msgstr ""
+"Namnen på arrangörerna som hör till spåret. De kan omfatta instrument- och "
+"orkesterarrangörer och kan vara kopplade till utgåvan, inspelningen eller "
+"verket."
 
 #: picard/const/tags.py:135
 msgid "Artist"
@@ -4375,6 +4418,9 @@ msgid ""
 "be either \"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"Spårartisternas namn, avgränsade med de angivna sammanfogningsfraserna. "
+"Namnen kan vara standardiserade eller återges som krediterade beroende på om "
+"metadataalternativet ”Använd standardiserade artistnamn” är aktiverat."
 
 #: picard/const/tags.py:145
 msgid "Artists"
@@ -4386,10 +4432,13 @@ msgid ""
 "credited\" depending on whether the \"Use standardized artist names\" "
 "metadata option is enabled."
 msgstr ""
+"Spårartisternas namn. Namnen kan vara standardiserade eller återges som "
+"krediterade beroende på om metadataalternativet ”Använd standardiserade "
+"artistnamn” är aktiverat."
 
 #: picard/const/tags.py:154
 msgid "Artists Countries"
-msgstr ""
+msgstr "Artisternas länder"
 
 #: picard/const/tags.py:156
 msgid ""
@@ -4398,6 +4447,10 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"Landskoderna för alla krediterade spårartister, i samma ordning som "
+"artisterna. Samma landskod visas flera gånger om flera artister kommer från "
+"samma land. Om webbtjänsten inte anger någon landskod används koden ”XX” för "
+"ett okänt land."
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
@@ -4408,14 +4461,16 @@ msgid ""
 "The sort names of the track's artists, separated by the specified join "
 "phrases."
 msgstr ""
+"Spårartisternas sorteringsnamn, avgränsade med de angivna "
+"sammanfogningsfraserna."
 
 #: picard/const/tags.py:172
 msgid "Artists Sort Names"
-msgstr ""
+msgstr "Artisternas sorteringsnamn"
 
 #: picard/const/tags.py:173
 msgid "The sort names of the track's artists."
-msgstr ""
+msgstr "Spårartisternas sorteringsnamn."
 
 #: picard/const/tags.py:180
 msgid "ASIN"
@@ -4426,6 +4481,8 @@ msgid ""
 "The Amazon Standard Identification Number, which is the number identifying "
 "the item on Amazon."
 msgstr ""
+"Amazon Standard Identification Number, numret som identifierar objektet på "
+"Amazon."
 
 #: picard/const/tags.py:186
 msgid "Barcode"
@@ -4433,15 +4490,15 @@ msgstr "Streckkod"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
-msgstr ""
+msgstr "Streckkoden som tilldelats utgåvan."
 
 #: picard/const/tags.py:189
 msgid "Barcode in MusicBrainz documentation"
-msgstr ""
+msgstr "Streckkod i MusicBrainz-dokumentationen"
 
 #: picard/const/tags.py:191
 msgid "Barcode mapping in Picard documentation"
-msgstr ""
+msgstr "Streckkodsmappning i Picard-dokumentationen"
 
 #: picard/const/tags.py:199
 msgid "BPM"
@@ -4449,23 +4506,23 @@ msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
-msgstr ""
+msgstr "Spårets slag per minut."
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Bithastighet"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
-msgstr ""
+msgstr "Ungefärlig bithastighet i kbit/s."
 
 #: picard/const/tags.py:215
 msgid "Bits per sample"
-msgstr ""
+msgstr "Bitar per sampling"
 
 #: picard/const/tags.py:216
 msgid "Bits of data per sample."
-msgstr ""
+msgstr "Antal databitar per sampling."
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
@@ -4477,14 +4534,17 @@ msgid ""
 "be found on the spine or near the barcode. There may be more than one, "
 "especially when multiple labels are involved."
 msgstr ""
+"Katalognumren som skivbolagen har tilldelat utgåvan. De finns ofta på ryggen "
+"eller nära streckkoden. Det kan finnas flera katalognummer, särskilt när "
+"flera skivbolag är inblandade."
 
 #: picard/const/tags.py:235
 msgid "Channels"
-msgstr ""
+msgstr "Kanaler"
 
 #: picard/const/tags.py:236
 msgid "Number of audio channels in the file."
-msgstr ""
+msgstr "Antal ljudkanaler i filen."
 
 #: picard/const/tags.py:245
 msgid "Comment"
@@ -4495,6 +4555,8 @@ msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
 msgstr ""
+"Särskiljningskommentaren som hjälper till att skilja en utgåva från en "
+"annan, exempelvis ”Deluxeversion med två bonusspår”."
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
@@ -4502,7 +4564,7 @@ msgstr "Samling (iTunes)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
-msgstr ""
+msgstr "1 för album med olika artister, annars tomt."
 
 #: picard/const/tags.py:260
 msgid "Composer"
@@ -4510,15 +4572,15 @@ msgstr "Kompositör"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
-msgstr ""
+msgstr "Namnen på det tillhörande verkets kompositörer."
 
 #: picard/const/tags.py:267
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Kompositörernas sorteringsnamn"
 
 #: picard/const/tags.py:268
 msgid "The sort names of the composers for the associated work."
-msgstr ""
+msgstr "Sorteringsnamnen för det tillhörande verkets kompositörer."
 
 #: picard/const/tags.py:273
 msgid "Conductor"
@@ -4530,6 +4592,8 @@ msgid ""
 "conductor and chorus master, and could be associated with the release or "
 "recording."
 msgstr ""
+"Namnen på dirigenterna som hör till spåret. De kan omfatta dirigent och "
+"körledare och kan vara kopplade till utgåvan eller inspelningen."
 
 #: picard/const/tags.py:283
 msgid "Copyright"
@@ -4540,14 +4604,16 @@ msgid ""
 "The copyright message for the copyright holder of the original sound, "
 "beginning with a year and a space character."
 msgstr ""
+"Upphovsrättsmeddelandet för rättighetsinnehavaren till originalljudet, med "
+"ett årtal och ett blanksteg först."
 
 #: picard/const/tags.py:292
 msgid "Data Track"
-msgstr ""
+msgstr "Dataspår"
 
 #: picard/const/tags.py:293
 msgid "Set to 1 if the track is a \"data track\", otherwise empty."
-msgstr ""
+msgstr "Värdet är 1 om spåret är ett ”dataspår”, annars tomt."
 
 #: picard/const/tags.py:299
 msgid "Date"
@@ -4556,47 +4622,49 @@ msgstr "Datum"
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Datumet då utgåvan (albumet) gavs ut, i formatet `ÅÅÅÅ-MM-DD`."
 
 #: picard/const/tags.py:305
 msgid "Director"
-msgstr ""
+msgstr "Regissör"
 
 #: picard/const/tags.py:307
 msgid ""
 "The director of a track as provided by the \"*Video Director*\" or \"*Audio "
 "Director*\" relationship in MusicBrainz."
 msgstr ""
+"Spårets regissör enligt relationen ”*Video Director*” eller ”*Audio "
+"Director*” i MusicBrainz."
 
 #: picard/const/tags.py:315
 msgid "Directory name"
-msgstr ""
+msgstr "Mappnamn"
 
 #: picard/const/tags.py:316
 msgid ""
 "The name of the directory containing the file at the point of being loaded "
 "into Picard."
-msgstr ""
+msgstr "Namnet på mappen som innehöll filen när den lästes in i Picard."
 
 #: picard/const/tags.py:324
 msgid "FreeDB Disc ID"
-msgstr ""
+msgstr "FreeDB-skiv-ID"
 
 #: picard/const/tags.py:325
 msgid "The identification number of the disc in the FreeDB database."
-msgstr ""
+msgstr "Skivans identifieringsnummer i FreeDB-databasen."
 
 #: picard/const/tags.py:328
 msgid "FreeDB"
-msgstr ""
+msgstr "FreeDB"
 
 #: picard/const/tags.py:330
 msgid "FreeDB DiscID Calculation"
-msgstr ""
+msgstr "Beräkning av FreeDB DiscID"
 
 #: picard/const/tags.py:334
 msgid "FreeDB DiscID including Calculation Example (French)"
-msgstr ""
+msgstr "FreeDB DiscID inklusive beräkningsexempel (franska)"
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
@@ -4604,16 +4672,18 @@ msgstr "Skivnummer"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
-msgstr ""
+msgstr "Numret på den skiva i utgåvan som innehåller spåret."
 
 #: picard/const/tags.py:347
 msgid "Disc Has Pregap"
-msgstr ""
+msgstr "Skivan har förgap"
 
 #: picard/const/tags.py:348
 msgid ""
 "Set to 1 if the disc the track is on has a \"pregap track\", otherwise empty."
 msgstr ""
+"Värdet är 1 om skivan som innehåller spåret har ett ”förgapsspår”, annars "
+"tomt."
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
@@ -4621,7 +4691,7 @@ msgstr "Använd avancerad frågesyntax"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
-msgstr ""
+msgstr "Medietiteln som angetts för en viss skiva i utgåvan."
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
@@ -4629,7 +4699,7 @@ msgstr "DJ-mixer"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
-msgstr ""
+msgstr "Namnen på spårets DJ-mixare."
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
@@ -4637,7 +4707,7 @@ msgstr "Kodad av"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
-msgstr ""
+msgstr "Personen eller organisationen som kodade spåret."
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
@@ -4645,7 +4715,7 @@ msgstr "Kodarinställningar"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
-msgstr ""
+msgstr "Inställningarna som användes när spåret kodades."
 
 #: picard/const/tags.py:380
 msgid "Engineer"
@@ -4653,35 +4723,39 @@ msgstr "Ljudtekniker"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
-msgstr ""
+msgstr "Namnen på teknikerna som hör till spåret."
 
 #: picard/const/tags.py:387
 msgid "File Extension"
-msgstr ""
+msgstr "Filändelse"
 
 #: picard/const/tags.py:388
 msgid "The file's extension."
-msgstr ""
+msgstr "Filens ändelse."
 
 #: picard/const/tags.py:396
 msgid "File Created Timestamp"
-msgstr ""
+msgstr "Tidsstämpel för när filen skapades"
 
 #: picard/const/tags.py:397
 msgid ""
 "The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
 "the file system."
 msgstr ""
+"Tidsstämpeln för när filen skapades enligt filsystemet, i formatet `ÅÅÅÅ-MM-"
+"DD TT:MM:SS`."
 
 #: picard/const/tags.py:405
 msgid "File Modified Timestamp"
-msgstr ""
+msgstr "Tidsstämpel för när filen ändrades"
 
 #: picard/const/tags.py:407
 msgid ""
 "The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
 "reported by the file system."
 msgstr ""
+"Tidsstämpeln för när filen ändrades enligt filsystemet, i formatet `ÅÅÅÅ-MM-"
+"DD TT:MM:SS`."
 
 #: picard/const/tags.py:416
 msgid "File Name"
@@ -4689,41 +4763,41 @@ msgstr "Filnamn"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
-msgstr ""
+msgstr "Filens namn utan filändelse."
 
 #: picard/const/tags.py:426
 msgid "File Path"
-msgstr ""
+msgstr "Filsökväg"
 
 #: picard/const/tags.py:427
 msgid "Full path and name of the file."
-msgstr ""
+msgstr "Filens fullständiga sökväg och namn."
 
 #: picard/const/tags.py:435
 msgid "File Size"
-msgstr ""
+msgstr "Filstorlek"
 
 #: picard/const/tags.py:436
 msgid "Size of the file in bytes."
-msgstr ""
+msgstr "Filens storlek i byte."
 
 #: picard/const/tags.py:444
 msgid "File Format"
-msgstr ""
+msgstr "Filformat"
 
 #: picard/const/tags.py:445
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr ""
+msgstr "Filens medieformat, exempelvis MPEG-1 Audio."
 
 #: picard/const/tags.py:454
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Sömlös uppspelning"
 
 #: picard/const/tags.py:455
 msgid ""
 "Indicates whether or not there are gaps between the recordings on the "
 "release."
-msgstr ""
+msgstr "Anger om det finns mellanrum mellan inspelningarna på utgåvan."
 
 #: picard/const/tags.py:460
 msgid "Genre"
@@ -4731,7 +4805,7 @@ msgstr "Genre"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
-msgstr ""
+msgstr "Den angivna genreinformationen från MusicBrainz."
 
 #: picard/const/tags.py:469
 msgid "Grouping"
@@ -4739,7 +4813,7 @@ msgstr "Gruppering"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
-msgstr ""
+msgstr "Genregruppering för spåret"
 
 #: picard/const/tags.py:475
 msgid "ISRC"
@@ -4751,6 +4825,8 @@ msgid ""
 "standard code for uniquely identifying sound recordings and music video "
 "recordings."
 msgstr ""
+"International Standard Recording Code, en internationell standardkod som "
+"unikt identifierar ljudinspelningar och musikvideoinspelningar."
 
 #: picard/const/tags.py:485
 msgid "Key"
@@ -4758,7 +4834,7 @@ msgstr "Nyckel"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
-msgstr ""
+msgstr "Musikens tonart."
 
 #: picard/const/tags.py:491
 msgid "Record Label"
@@ -4766,7 +4842,7 @@ msgstr "Skivbolag"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
-msgstr ""
+msgstr "Namnen på skivbolagen som hör till utgåvan."
 
 #: picard/const/tags.py:498
 msgid "Language"
@@ -4774,7 +4850,7 @@ msgstr "Språk"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
-msgstr ""
+msgstr "Språket för verkets text enligt ISO 639-3, om ett relaterat verk finns."
 
 #: picard/const/tags.py:504
 msgid "Length"
@@ -4782,7 +4858,7 @@ msgstr "Längd"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
-msgstr ""
+msgstr "Spårets längd i formatet minuter:sekunder."
 
 #: picard/const/tags.py:511
 msgid "License"
@@ -4793,6 +4869,8 @@ msgid ""
 "The license associated with the track, either through the release or "
 "recording relationships."
 msgstr ""
+"Licensen som hör till spåret genom relationer till utgåvan eller "
+"inspelningen."
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
@@ -4800,15 +4878,15 @@ msgstr "Textförfattare"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
-msgstr ""
+msgstr "Namnen på det tillhörande verkets textförfattare."
 
 #: picard/const/tags.py:523
 msgid "Lyricist Sort"
-msgstr ""
+msgstr "Textförfattarnas sorteringsnamn"
 
 #: picard/const/tags.py:524
 msgid "The sort names of the lyricists for the associated work."
-msgstr ""
+msgstr "Sorteringsnamnen för det tillhörande verkets textförfattare."
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
@@ -4816,7 +4894,7 @@ msgstr "Låttext"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
-msgstr ""
+msgstr "Spårets låttext."
 
 #: picard/const/tags.py:537
 msgid "Media"
@@ -4824,7 +4902,7 @@ msgstr "Media"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
-msgstr ""
+msgstr "Mediet som utgåvan distribuerades på, exempelvis CD."
 
 #: picard/const/tags.py:543
 msgid "Mixer"
@@ -4832,7 +4910,7 @@ msgstr "Mixer"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
-msgstr ""
+msgstr "Namnen på teknikerna som anges med relationen ”*Mixed By*” för spåret."
 
 #: picard/const/tags.py:550
 msgid "Mood"
@@ -4840,71 +4918,74 @@ msgstr "Stämning"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
-msgstr ""
+msgstr "Stämningen som hör till spåret."
 
 #: picard/const/tags.py:556
 msgid "Movement"
-msgstr ""
+msgstr "Sats"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
-msgstr ""
+msgstr "Satsens namn, exempelvis ”Andante con moto”."
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
-msgstr ""
+msgstr "Satsnummer"
 
 #: picard/const/tags.py:564
 msgid ""
 "Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
 "supporting this tag will often display it in Roman numerals (e.g.: \"II\")."
 msgstr ""
+"Satsnumret med arabiska siffror, exempelvis ”2”. Spelare som uttryckligen "
+"stöder taggen visar det ofta med romerska siffror, exempelvis ”II”."
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
-msgstr ""
+msgstr "Antal satser"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
-msgstr ""
+msgstr "Det totala antalet satser i verket, exempelvis ”4”."
 
 #: picard/const/tags.py:577
 msgid "Multiple Artists"
-msgstr ""
+msgstr "Flera artister"
 
 #: picard/const/tags.py:578
 msgid ""
 "Set to 1 if not all of the tracks on the album have the same primary artist, "
 "otherwise empty."
 msgstr ""
+"Värdet är 1 om albumets spår inte alla har samma huvudartist, annars tomt."
 
 #: picard/const/tags.py:584
 msgid "Release Artist MBID"
-msgstr ""
+msgstr "Utgåveartisternas MBID"
 
 #: picard/const/tags.py:585
 msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
-msgstr ""
+msgstr "MusicBrainz-identifierarna (MBID) för utgåveartisterna."
 
 #: picard/const/tags.py:590
 msgid "Release MBID"
-msgstr ""
+msgstr "Utgåvans MBID"
 
 #: picard/const/tags.py:591
 msgid "The MusicBrainz Identifier (MBID) for the release."
-msgstr ""
+msgstr "MusicBrainz-identifieraren (MBID) för utgåvan."
 
 #: picard/const/tags.py:595
 msgid "Artist MBID"
-msgstr ""
+msgstr "Spårartisternas MBID"
 
 #: picard/const/tags.py:596
 msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
-msgstr ""
+msgstr "MusicBrainz-identifierarna (MBID) för spårartisterna."
 
 #: picard/const/tags.py:601
 msgid "MusicBrainz DiscID"
-msgstr ""
+msgstr "MusicBrainz-skiv-ID"
 
 #: picard/const/tags.py:603
 msgid ""
@@ -4913,40 +4994,50 @@ msgid ""
 "information read from the disc. This tag contains the Disc ID if the album "
 "information was retrieved using `Tools > Lookup CD` from the menu."
 msgstr ""
+"Skiv-ID är kodnumret som MusicBrainz använder för att länka en fysisk CD "
+"till en utgåvepost. Det baseras på innehållsförteckningen (TOC) som läses "
+"från skivan. Taggen innehåller skiv-ID:t om albuminformationen hämtades via "
+"`Verktyg > Slå upp CD` i menyn."
 
 #: picard/const/tags.py:609
 msgid "Disc ID Calculation"
-msgstr ""
+msgstr "Beräkning av skiv-ID"
 
 #: picard/const/tags.py:613
 msgid "Disc IDs"
-msgstr ""
+msgstr "Skiv-ID:n"
 
 #: picard/const/tags.py:615
 msgid ""
 "A list of all of the disc ids attached to the selected release. The list "
 "provided for each medium only includes the disc ids attached to that medium."
 msgstr ""
+"En lista över alla skiv-ID:n som hör till den valda utgåvan. Listan för "
+"varje medium innehåller endast de skiv-ID:n som hör till det mediet."
 
 #: picard/const/tags.py:619
 msgid ""
 "For example, the list provided for Disc 1 of a three CD set will not include "
 "the disc ids attached to discs 2 and 3 of the set."
 msgstr ""
+"Listan för skiva 1 i en utgåva med tre CD-skivor innehåller exempelvis inte "
+"skiv-ID:n för skiva 2 och 3."
 
 #: picard/const/tags.py:628
 msgid "Original Release MBID"
-msgstr ""
+msgstr "Den ursprungliga utgåvans MBID"
 
 #: picard/const/tags.py:630
 msgid ""
 "The MusicBrainz Identifier (MBID) for the original release. This is only "
 "available if the release has been merged with another release."
 msgstr ""
+"MusicBrainz-identifieraren (MBID) för den ursprungliga utgåvan. Den är "
+"endast tillgänglig om utgåvan har slagits samman med en annan utgåva."
 
 #: picard/const/tags.py:636
 msgid "Original Artist MBID"
-msgstr ""
+msgstr "Den ursprungliga inspelningens artist-MBID"
 
 #: picard/const/tags.py:638
 msgid ""
@@ -4954,49 +5045,55 @@ msgid ""
 "recording. This is only available if the recording has been merged with "
 "another recording."
 msgstr ""
+"MusicBrainz-identifierarna (MBID) för spårartisterna på den ursprungliga "
+"inspelningen. De är endast tillgängliga om inspelningen har slagits samman "
+"med en annan inspelning."
 
 #: picard/const/tags.py:645
 msgid "Recording MBID"
-msgstr ""
+msgstr "Inspelningens MBID"
 
 #: picard/const/tags.py:646
 msgid "The MusicBrainz Identifier (MBID) for the recording."
-msgstr ""
+msgstr "MusicBrainz-identifieraren (MBID) för inspelningen."
 
 #: picard/const/tags.py:650
 msgid "Release Group MBID"
-msgstr ""
+msgstr "Utgåvegruppens MBID"
 
 #: picard/const/tags.py:651
 msgid "The MusicBrainz Identifier (MBID) for the release group."
-msgstr ""
+msgstr "MusicBrainz-identifieraren (MBID) för utgåvegruppen."
 
 #: picard/const/tags.py:655
 msgid "Track MBID"
-msgstr ""
+msgstr "Spårets MBID"
 
 #: picard/const/tags.py:656
 msgid "The MusicBrainz Identifier (MBID) for the track."
-msgstr ""
+msgstr "MusicBrainz-identifieraren (MBID) för spåret."
 
 #: picard/const/tags.py:660
 msgid "Track Number Shown"
-msgstr ""
+msgstr "Visat spårnummer"
 
 #: picard/const/tags.py:661
 msgid ""
 "The track number written as on the MusicBrainz release, such as vinyl "
 "numbering (A1, A2, etc.)"
 msgstr ""
+"Spårnumret såsom det anges på MusicBrainz-utgåvan, exempelvis vinylnumrering "
+"(A1, A2 och så vidare)."
 
 #: picard/const/tags.py:667
 msgid "Work MBID"
-msgstr ""
+msgstr "Verkets MBID"
 
 #: picard/const/tags.py:668
 msgid ""
 "The MusicBrainz Identifier (MBID) for the Work if a related work exists."
 msgstr ""
+"MusicBrainz-identifieraren (MBID) för verket, om ett relaterat verk finns."
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
@@ -5004,7 +5101,7 @@ msgstr "MusicIP-fingeravtryck"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
-msgstr ""
+msgstr "Spårets MusicIP-fingeravtryck."
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
@@ -5012,7 +5109,7 @@ msgstr "MusicIP PUID"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
-msgstr ""
+msgstr "De MusicIP-PUID:n som hör till spåret."
 
 #: picard/const/tags.py:685
 msgid "Original Album"
@@ -5023,6 +5120,8 @@ msgid ""
 "The release title of the earliest release in the release group intended for "
 "the title of the original recording."
 msgstr ""
+"Utgåvetiteln för den tidigaste utgåvan i utgåvegruppen, avsedd som den "
+"ursprungliga inspelningens titel."
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
@@ -5033,6 +5132,8 @@ msgid ""
 "The track artist of the earliest release in the release group intended for "
 "the performers of the original recording."
 msgstr ""
+"Spårartisten för den tidigaste utgåvan i utgåvegruppen, avsedd som den "
+"ursprungliga inspelningens utövare."
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
@@ -5047,14 +5148,20 @@ msgid ""
 "**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
 "date can only be stored as a year."
 msgstr ""
+"Det ursprungliga utgivningsdatumet i formatet `ÅÅÅÅ-MM-DD`. Som standard "
+"används datumet för den tidigaste utgåvan i utgåvegruppen. Det kan "
+"exempelvis ange utgivningsdatumet för vinylversionen av det du har på CD.\n"
+"\n"
+"**Observera:** Om du lagrar taggar i MP3-filer som ID3v2.3 kan det "
+"ursprungliga datumet endast lagras som ett årtal."
 
 #: picard/const/tags.py:713
 msgid "Original Filename"
-msgstr ""
+msgstr "Ursprungligt filnamn"
 
 #: picard/const/tags.py:714
 msgid "The original name of the audio file."
-msgstr ""
+msgstr "Ljudfilens ursprungliga namn."
 
 #: picard/const/tags.py:719
 msgid "Original Year"
@@ -5066,22 +5173,29 @@ msgid ""
 "is set to the earliest release in the release group. This can provide, for "
 "example, the release year of the vinyl version of what you have on CD."
 msgstr ""
+"Året för det ursprungliga utgivningsdatumet i formatet `ÅÅÅÅ`. Som standard "
+"används året för den tidigaste utgåvan i utgåvegruppen. Det kan exempelvis "
+"ange utgivningsåret för vinylversionen av det du har på CD."
 
 #: picard/const/tags.py:728
 msgid "Performance Attributes"
-msgstr ""
+msgstr "Framförandeattribut"
 
 #: picard/const/tags.py:729
 msgid ""
 "List of performance attributes for the work (e.g.: \"*live*\", \"*cover*\", "
 "\"*medley*\")."
 msgstr ""
+"Lista över verkets framförandeattribut, exempelvis ”*live*”, ”*cover*” och "
+"”*medley*”."
 
 #: picard/const/tags.py:731
 msgid ""
 "Use `$inmulti()` to check for a specific type (e.g.: "
 "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 msgstr ""
+"Använd `$inmulti()` för att söka efter en viss typ, exempelvis `$if($inmulti"
+"(%_performance_attributes%,medley), (Medley),)`."
 
 #: picard/const/tags.py:740
 msgid "Performer"
@@ -5098,44 +5212,54 @@ msgid ""
 "- the concert master for the associated release or recording, where \"type\" "
 "is \"*concertmaster*\""
 msgstr ""
+"Namnen på utövarna för den angivna typen. Typerna omfattar:\n"
+"\n"
+"- sång eller instrument för den tillhörande utgåvan eller inspelningen, där ”"
+"type” exempelvis kan vara ”*vocal*”, ”*guest guitar*” eller ”*solo violin*”\n"
+"- orkestern för den tillhörande utgåvan eller inspelningen, där ”type” är "
+"”*orchestra*”\n"
+"- konsertmästaren för den tillhörande utgåvan eller inspelningen, där ”type” "
+"är ”*concertmaster*”"
 
 #: picard/const/tags.py:753
 msgid "Podcast"
-msgstr ""
+msgstr "Podd"
 
 #: picard/const/tags.py:754
 msgid "Indicates whether or not the recording is a podcast."
-msgstr ""
+msgstr "Anger om inspelningen är en podd."
 
 #: picard/const/tags.py:759
 msgid "Podcast URL"
-msgstr ""
+msgstr "Podd-URL"
 
 #: picard/const/tags.py:760
 msgid "The associated URL if the recording is a podcast."
-msgstr ""
+msgstr "Tillhörande URL om inspelningen är en podd."
 
 #: picard/const/tags.py:765
 msgid "Pregap Track"
-msgstr ""
+msgstr "Förgapsspår"
 
 #: picard/const/tags.py:766
 msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
-msgstr ""
+msgstr "Värdet är 1 om spåret är ett ”förgapsspår”, annars tomt."
 
 #: picard/const/tags.py:772
 msgid "Primary Release Type"
-msgstr ""
+msgstr "Primär utgåvetyp"
 
 #: picard/const/tags.py:773
 msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr ""
+"Utgåvegruppens primära typ, det vill säga *album*, *single*, *ep*, "
+"*broadcast* eller *other*."
 
 #: picard/const/tags.py:777 picard/const/tags.py:1002 picard/const/tags.py:1091
 msgid "Release group types"
-msgstr ""
+msgstr "Utgåvegruppstyper"
 
 #: picard/const/tags.py:781
 msgid "Producer"
@@ -5143,118 +5267,122 @@ msgstr "Producent"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
-msgstr ""
+msgstr "Namnen på producenterna för den tillhörande utgåvan eller inspelningen."
 
 #: picard/const/tags.py:788
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "R128-albumförstärkning"
 
 #: picard/const/tags.py:789
 msgid ""
 "Album gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"Albumförstärkning enligt analysstandarden ”R 128” från European Broadcasting "
+"Union."
 
 #: picard/const/tags.py:795
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "R128-spårförstärkning"
 
 #: picard/const/tags.py:796
 msgid ""
 "Track gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"Spårförstärkning enligt analysstandarden ”R 128” från European Broadcasting "
+"Union."
 
 #: picard/const/tags.py:802
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "latin"
+msgstr "Betyg"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
-msgstr ""
+msgstr "MusicBrainz-användarnas betyg för spåret från 0 till 5."
 
 #: picard/const/tags.py:808
 msgid "Recording First Released"
-msgstr ""
+msgstr "Inspelningens första utgivningsdatum"
 
 #: picard/const/tags.py:809
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Datumet för spårets tidigaste inspelning i formatet `ÅÅÅÅ-MM-DD`."
 
 #: picard/const/tags.py:815
 msgid "Recording Series"
-msgstr ""
+msgstr "Inspelningsserier"
 
 #: picard/const/tags.py:816
 msgid "The series titles associated with the recording."
-msgstr ""
+msgstr "Titlarna på serierna som hör till inspelningen."
 
 #: picard/const/tags.py:822
 msgid "Recording Series Comment"
-msgstr ""
+msgstr "Kommentarer till inspelningsserier"
 
 #: picard/const/tags.py:823
 msgid "The series disambiguation comments associated with the recording."
-msgstr ""
+msgstr "Särskiljningskommentarerna för serierna som hör till inspelningen."
 
 #: picard/const/tags.py:829
 msgid "Recording Series MBID"
-msgstr ""
+msgstr "Inspelningsseriernas MBID"
 
 #: picard/const/tags.py:830
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
 msgstr ""
+"MusicBrainz-identifierarna (MBID) för serierna som hör till inspelningen."
 
 #: picard/const/tags.py:836
 msgid "Recording Series Number"
-msgstr ""
+msgstr "Nummer i inspelningsserier"
 
 #: picard/const/tags.py:837
 msgid "The series numbers associated with the recording."
-msgstr ""
+msgstr "Serienumren som hör till inspelningen."
 
 #: picard/const/tags.py:843
 msgid "Recording Comment"
-msgstr ""
+msgstr "Inspelningskommentar"
 
 #: picard/const/tags.py:844
 msgid "The disambiguation comment for the recording associated with a track."
-msgstr ""
+msgstr "Särskiljningskommentaren för inspelningen som hör till ett spår."
 
 #: picard/const/tags.py:850
 msgid "Recording Title"
-msgstr ""
+msgstr "Inspelningstitel"
 
 #: picard/const/tags.py:851
 msgid ""
 "Recording title - normally the same as the track title, but can be different."
 msgstr ""
+"Inspelningstiteln, som normalt är samma som spårtiteln men kan skilja sig."
 
 #: picard/const/tags.py:857
 msgid "Release Annotation"
-msgstr ""
+msgstr "Utgåveanteckning"
 
 #: picard/const/tags.py:858
 msgid "The annotation comment for the release."
-msgstr ""
+msgstr "Anteckningen för utgåvan."
 
 #: picard/const/tags.py:864
 msgid "Release Comment"
-msgstr ""
+msgstr "Utgåvekommentar"
 
 #: picard/const/tags.py:865
 msgid "The disambiguation comment for the release."
-msgstr ""
+msgstr "Särskiljningskommentaren för utgåvan."
 
 #: picard/const/tags.py:871
 msgid "Release Countries"
-msgstr ""
+msgstr "Utgivningsländer"
 
 #: picard/const/tags.py:872
 msgid "The complete list of release countries for the release."
-msgstr ""
+msgstr "Den fullständiga listan över utgåvans utgivningsländer."
 
 #: picard/const/tags.py:879
 msgid "Release Country"
@@ -5266,10 +5394,12 @@ msgid ""
 "more than one release country was specified, this tag will contain the first "
 "one in the list."
 msgstr ""
+"Den två tecken långa koden för landet där utgåvan gavs ut. Om flera "
+"utgivningsländer har angetts innehåller taggen det första landet i listan."
 
 #: picard/const/tags.py:888
 msgid "Release Date"
-msgstr ""
+msgstr "Utgivningsdatum"
 
 #: picard/const/tags.py:891
 #, python-format
@@ -5278,20 +5408,25 @@ msgid ""
 "by default. In most cases it is recommended to use the `%date%` tag instead "
 "for compatibility with existing software."
 msgstr ""
+"Taggen är avsedd för särskild användning i skript och insticksmoduler men "
+"fylls inte i som standard. I de flesta fall rekommenderas taggen `%date%` "
+"för kompatibilitet med befintliga program."
 
 #: picard/const/tags.py:899
 msgid "Release Group"
-msgstr ""
+msgstr "Utgåvegrupp"
 
 #: picard/const/tags.py:901
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr ""
+"Utgåvegruppens titel. Den är vanligtvis samma som albumtiteln men kan skilja "
+"sig."
 
 #: picard/const/tags.py:908
 msgid "RG First Released"
-msgstr ""
+msgstr "Utgåvegruppens första utgivningsdatum"
 
 #: picard/const/tags.py:910
 msgid ""
@@ -5299,87 +5434,91 @@ msgid ""
 "DD`. This is intended to provide, for example, the release date of the vinyl "
 "version of what you have on CD."
 msgstr ""
+"Datumet för den tidigaste utgåvan i utgåvegruppen i formatet `ÅÅÅÅ-MM-DD`. "
+"Det är exempelvis avsett att ange utgivningsdatumet för vinylversionen av "
+"det du har på CD."
 
 #: picard/const/tags.py:919
 msgid "RG Series"
-msgstr ""
+msgstr "Utgåvegruppsserier"
 
 #: picard/const/tags.py:920
 msgid "The series titles associated with the release group."
-msgstr ""
+msgstr "Titlarna på serierna som hör till utgåvegruppen."
 
 #: picard/const/tags.py:926
 msgid "RG Series Comment"
-msgstr ""
+msgstr "Kommentarer till utgåvegruppsserier"
 
 #: picard/const/tags.py:927
 msgid "The series disambiguation comments associated with the release group."
-msgstr ""
+msgstr "Särskiljningskommentarerna för serierna som hör till utgåvegruppen."
 
 #: picard/const/tags.py:933
 msgid "RG Series MBID"
-msgstr ""
+msgstr "Utgåvegruppsseriernas MBID"
 
 #: picard/const/tags.py:934
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the release group."
 msgstr ""
+"MusicBrainz-identifierarna (MBID) för serierna som hör till utgåvegruppen."
 
 #: picard/const/tags.py:940
 msgid "RG Series Number"
-msgstr ""
+msgstr "Nummer i utgåvegruppsserier"
 
 #: picard/const/tags.py:941
 msgid "The series numbers associated with the release group."
-msgstr ""
+msgstr "Serienumren som hör till utgåvegruppen."
 
 #: picard/const/tags.py:947
 msgid "RG Comment"
-msgstr ""
+msgstr "Utgåvegruppskommentar"
 
 #: picard/const/tags.py:948
 msgid "The disambiguation comment for the release group."
-msgstr ""
+msgstr "Särskiljningskommentaren för utgåvegruppen."
 
 #: picard/const/tags.py:954
 msgid "Release Language"
-msgstr ""
+msgstr "Utgåvans språk"
 
 #: picard/const/tags.py:955
 msgid "The language of the release as per ISO 639-3."
-msgstr ""
+msgstr "Utgåvans språk enligt ISO 639-3."
 
 #: picard/const/tags.py:961
 msgid "Release Series"
-msgstr ""
+msgstr "Utgåveserier"
 
 #: picard/const/tags.py:962
 msgid "The series titles associated with the release."
-msgstr ""
+msgstr "Titlarna på serierna som hör till utgåvan."
 
 #: picard/const/tags.py:968
 msgid "Release Series Comment"
-msgstr ""
+msgstr "Kommentarer till utgåveserier"
 
 #: picard/const/tags.py:969
 msgid "The series disambiguation comments associated with the release."
-msgstr ""
+msgstr "Särskiljningskommentarerna för serierna som hör till utgåvan."
 
 #: picard/const/tags.py:975
 msgid "Release Series MBID"
-msgstr ""
+msgstr "Utgåveseriernas MBID"
 
 #: picard/const/tags.py:976
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
-msgstr ""
+msgstr "MusicBrainz-identifierarna (MBID) för serierna som hör till utgåvan."
 
 #: picard/const/tags.py:982
 msgid "Release Series Number"
-msgstr ""
+msgstr "Nummer i utgåveserier"
 
 #: picard/const/tags.py:983
 msgid "The series numbers associated with the release."
-msgstr ""
+msgstr "Serienumren som hör till utgåvan."
 
 #: picard/const/tags.py:989
 msgid "Release Status"
@@ -5391,6 +5530,8 @@ msgid ""
 "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
 "release*\"."
 msgstr ""
+"En indikator för utgåvans ”officiella” status. Möjliga värden är bland annat "
+"”*official*”, ”*promotional*”, ”*bootleg*” och ”*pseudo-release*”."
 
 #: picard/const/tags.py:998
 msgid "Release Type"
@@ -5398,7 +5539,7 @@ msgstr "Utgivningstyp"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
-msgstr ""
+msgstr "Utgåvetyperna som tilldelats utgåvegruppen."
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
@@ -5406,89 +5547,89 @@ msgstr "Remixer"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
-msgstr ""
+msgstr "Namnen på remixteknikerna som hör till spåret."
 
 #: picard/const/tags.py:1014
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain-albumförstärkning"
 
 #: picard/const/tags.py:1015
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
-msgstr ""
+msgstr "Albumförstärkningen som beräknats genom ReplayGain-analys av albumet."
 
 #: picard/const/tags.py:1021
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "ReplayGain-albumtopp"
 
 #: picard/const/tags.py:1022
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
-msgstr ""
+msgstr "Albumets toppvärde som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "ReplayGain-albumintervall"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
-msgstr ""
+msgstr "Albumets intervall som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain-referensljudstyrka"
 
 #: picard/const/tags.py:1036
 msgid ""
 "Album reference loudness setting resulting from ReplayGain analysis of the "
 "album."
-msgstr ""
+msgstr "Albumets referensljudstyrka som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1042
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "ReplayGain-spårförstärkning"
 
 #: picard/const/tags.py:1043
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
-msgstr ""
+msgstr "Spårförstärkningen som beräknats genom ReplayGain-analys av spåret."
 
 #: picard/const/tags.py:1049
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "ReplayGain-spårtopp"
 
 #: picard/const/tags.py:1050
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
-msgstr ""
+msgstr "Spårets toppvärde som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "ReplayGain-spårintervall"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
-msgstr ""
+msgstr "Spårets intervall som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1063
 msgid "Sample Rate"
-msgstr ""
+msgstr "Samplingsfrekvens"
 
 #: picard/const/tags.py:1064
 msgid "The sample rate of the audio file."
-msgstr ""
+msgstr "Ljudfilens samplingsfrekvens."
 
 #: picard/const/tags.py:1073
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "Mitt skript"
+msgstr "Skriftsystem"
 
 #: picard/const/tags.py:1075
 msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr ""
+"Skriftsystemet som används för utgåvans spårlista. Möjliga värden hämtas "
+"från standarden ISO 15924."
 
 #: picard/const/tags.py:1082
 msgid "Secondary Release Type"
-msgstr ""
+msgstr "Sekundär utgåvetyp"
 
 #: picard/const/tags.py:1084
 msgid ""
@@ -5496,24 +5637,27 @@ msgid ""
 "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
 "*spokenword*) for the release group."
 msgstr ""
+"Noll eller flera sekundära typer för utgåvegruppen, det vill säga "
+"*audiobook*, *compilation*, *dj-mix*, *interview*, *live*, *mixtape/street*, "
+"*remix*, *soundtrack* eller *spokenword*."
 
 #: picard/const/tags.py:1095
 msgid "Silence"
-msgstr ""
+msgstr "Tystnad"
 
 #: picard/const/tags.py:1096
 msgid "1 if the track title is \"[silence]\""
-msgstr ""
+msgstr "1 om spårtiteln är ”[silence]”."
 
 #: picard/const/tags.py:1102
 msgid "Show Name"
-msgstr ""
+msgstr "Programnamn"
 
 #: picard/const/tags.py:1103
 msgid ""
 "The name of the show if the recording is associated with a television "
 "program."
-msgstr ""
+msgstr "Programmets namn om inspelningen hör till ett tv-program."
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
@@ -5525,22 +5669,27 @@ msgid ""
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
 "movement name instead of the track title."
 msgstr ""
+"Visa verk och sats. Om taggen har värdet ”1” visar spelare som stöder "
+"taggen, exempelvis iTunes och MusicBee, verket, satsnumret och satsnamnet i "
+"stället för spårtiteln."
 
 #: picard/const/tags.py:1114
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
 msgstr ""
+"Spåret visas exempelvis som ”Symphony no. 5 in C minor, op. 67: II. Andante "
+"con moto” oavsett värdet i titeltaggen."
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Programmets sorteringsnamn"
 
 #: picard/const/tags.py:1122
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
-msgstr ""
+msgstr "Programmets sorteringsnamn om inspelningen hör till ett tv-program."
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
@@ -5548,15 +5697,15 @@ msgstr "Undertitel"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
-msgstr ""
+msgstr "Används för information som är direkt relaterad till innehållets titel."
 
 #: picard/const/tags.py:1133
 msgid "Synced Lyrics"
-msgstr ""
+msgstr "Synkroniserad låttext"
 
 #: picard/const/tags.py:1134
 msgid "Synchronized lyrics for the track."
-msgstr ""
+msgstr "Synkroniserad låttext för spåret."
 
 #: picard/const/tags.py:1139
 msgid "Title"
@@ -5564,7 +5713,7 @@ msgstr "Titel"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
-msgstr ""
+msgstr "Spårets titel."
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
@@ -5572,15 +5721,15 @@ msgstr "Titel sorteringsordning"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
-msgstr ""
+msgstr "Spårtitelns sorteringsnamn."
 
 #: picard/const/tags.py:1151
 msgid "Total Album Tracks"
-msgstr ""
+msgstr "Totalt antal albumspår"
 
 #: picard/const/tags.py:1152
 msgid "The total number of tracks across all discs of this release."
-msgstr ""
+msgstr "Det totala antalet spår på utgåvans samtliga skivor."
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
@@ -5588,7 +5737,7 @@ msgstr "Totalt antal skivor"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "Det totala antalet skivor i utgåvan."
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
@@ -5596,7 +5745,7 @@ msgstr "Totalt antal spår"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
-msgstr ""
+msgstr "Det totala antalet spår på den här skivan."
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
@@ -5604,15 +5753,15 @@ msgstr "Spårnummer"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
-msgstr ""
+msgstr "Spårets nummer på skivan."
 
 #: picard/const/tags.py:1173
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
-msgstr ""
+msgstr "Värdet är ”1” om spåret är en video."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
@@ -5620,7 +5769,7 @@ msgstr "Artist webbsida"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
-msgstr ""
+msgstr "Artistens officiella webbplats."
 
 #: picard/const/tags.py:1187
 msgid "Work"
@@ -5631,6 +5780,8 @@ msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr ""
+"Namnet på verket som hör till spåret, exempelvis ”Symphony no. 5 in C minor, "
+"op. 67”."
 
 #: picard/const/tags.py:1190
 msgid ""
@@ -5638,46 +5789,49 @@ msgid ""
 "the \"Save iTunes compatible grouping and work\" option in order for the "
 "work to be displayed correctly."
 msgstr ""
+"Observera: Om du använder iTunes tillsammans med MP3-filer bör du aktivera "
+"alternativet ”Spara iTunes-kompatibel gruppering och verk” så att verket "
+"visas korrekt."
 
 #: picard/const/tags.py:1198
 msgid "Work Series"
-msgstr ""
+msgstr "Verkserier"
 
 #: picard/const/tags.py:1199
 msgid "The series titles associated with the work."
-msgstr ""
+msgstr "Titlarna på serierna som hör till verket."
 
 #: picard/const/tags.py:1205
 msgid "Work Series Comment"
-msgstr ""
+msgstr "Kommentarer till verkserier"
 
 #: picard/const/tags.py:1206
 msgid "The series disambiguation comments associated with the work."
-msgstr ""
+msgstr "Särskiljningskommentarerna för serierna som hör till verket."
 
 #: picard/const/tags.py:1212
 msgid "Work Series MBID"
-msgstr ""
+msgstr "Verkseriernas MBID"
 
 #: picard/const/tags.py:1213
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
-msgstr ""
+msgstr "MusicBrainz-identifierarna (MBID) för serierna som hör till verket."
 
 #: picard/const/tags.py:1219
 msgid "Work Series Number"
-msgstr ""
+msgstr "Nummer i verkserier"
 
 #: picard/const/tags.py:1220
 msgid "The series numbers associated with the work."
-msgstr ""
+msgstr "Serienumren som hör till verket."
 
 #: picard/const/tags.py:1226
 msgid "Work Comment"
-msgstr ""
+msgstr "Verkskommentar"
 
 #: picard/const/tags.py:1227
 msgid "The disambiguation comment associated with the work."
-msgstr ""
+msgstr "Särskiljningskommentaren som hör till verket."
 
 #: picard/const/tags.py:1232
 msgid "Writer"
@@ -5688,17 +5842,21 @@ msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr ""
+"Namnen på författarna som hör till det relaterade verket. Uppgiften skrivs "
+"inte automatiskt till de flesta filformat."
 
 #: picard/const/tags.py:1237
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
+"Du kan slå samman detta med kompositörer med ett skript som `$copymerge"
+"(composer,writer)`."
 
 #: picard/const/tags.py:1243
 msgid "Writer Sort"
-msgstr ""
+msgstr "Författarnas sorteringsnamn"
 
 #: picard/const/tags.py:1244
 msgid "The sort names of the writers for the work."
-msgstr ""
+msgstr "Sorteringsnamnen för verkets författare."
