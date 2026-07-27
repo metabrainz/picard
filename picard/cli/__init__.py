@@ -166,10 +166,13 @@ def _register_subcommand(subparsers, cmd):
 
     Creates the subparser with name/help from SUBCOMMANDS, then delegates
     to the module's setup_parser() to populate arguments and verbs.
+    Sets a default run_command that prints help when no verb is given.
     """
     module = import_module(cmd.module_path)
     parser = subparsers.add_parser(cmd.name, help=cmd.help)
     module.setup_parser(parser)
+    # If no verb is given, print this subcommand's help
+    parser.set_defaults(run_command=lambda args, p=parser: p.print_help() or 0)
 
 
 def main():

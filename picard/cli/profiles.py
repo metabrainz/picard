@@ -121,9 +121,6 @@ def setup_parser(profiles_parser):
     )
     p_import.set_defaults(run_command=_run_profiles)
 
-    # Default handler when no verb is given
-    profiles_parser.set_defaults(run_command=_run_profiles)
-
 
 def cmd_list(output):
     """List all user profiles."""
@@ -241,20 +238,13 @@ def _run_profiles(args):
     )
     from picard.cli.output import CliOutput
 
-    # No verb specified - show help
-    verb = getattr(args, 'verb', None)
-    if not verb:
-        print("Usage: picard-cli profiles <command> [options]")
-        print()
-        print("Run 'picard-cli profiles --help' for available commands.")
-        return ExitCode.SUCCESS
-
     # Bootstrap app
     app = init_cli(args)  # noqa: F841
 
     # Create output
     output = CliOutput(color=False if is_color_disabled(args) else None)
 
+    verb = args.verb
     if verb == 'list':
         return cmd_list(output)
     elif verb == 'export':
