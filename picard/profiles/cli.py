@@ -83,13 +83,9 @@ def _print_resolve_error(query: str, result: ResolveResult, output):
             output.info(f"{p['title']} (id: {p['id']})")
 
 
-def register_subcommand(subparsers):
-    """Register the 'profiles' subcommand with all its verbs."""
-    profiles_parser = subparsers.add_parser(
-        'profiles',
-        help='manage Picard profiles',
-        description='Export, import, and list Picard profiles.',
-    )
+def setup_parser(profiles_parser):
+    """Configure the 'profiles' subcommand parser with all its verbs."""
+    profiles_parser.description = 'Export, import, and list Picard profiles.'
 
     # Profile sub-subcommands (verbs)
     verb_parsers = profiles_parser.add_subparsers(

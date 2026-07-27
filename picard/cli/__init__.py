@@ -156,10 +156,20 @@ def build_root_parser():
 
     # Register available subcommands (lazy import to avoid heavy deps at parse time)
     for cmd in SUBCOMMANDS:
-        module = import_module(cmd.module_path)
-        module.register_subcommand(subparsers)
+        _register_subcommand(subparsers, cmd)
 
     return parser
+
+
+def _register_subcommand(subparsers, cmd):
+    """Register a single subcommand from its metadata.
+
+    Creates the subparser with name/help from SUBCOMMANDS, then delegates
+    to the module's setup_parser() to populate arguments and verbs.
+    """
+    module = import_module(cmd.module_path)
+    parser = subparsers.add_parser(cmd.name, help=cmd.help)
+    module.setup_parser(parser)
 
 
 def main():

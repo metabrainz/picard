@@ -48,21 +48,17 @@ from picard.cli.argparse_grouped import (
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 
 
-def register_subcommand(subparsers):
-    """Register the 'plugins' subcommand with all its verbs."""
-    plugins_parser = subparsers.add_parser(
-        'plugins',
-        help='manage Picard plugins',
-        description='Install, update, enable, and manage Picard plugins.',
-        formatter_class=GroupedHelpFormatter,
-        epilog=(
-            "Trust Levels:\n"
-            "  🛡️ official: Reviewed by Picard team (highest trust)\n"
-            "  ✓ trusted: Known authors, not reviewed (high trust)\n"
-            "  ⚠️ community: Other authors, not reviewed (use caution)\n"
-            "  🔓 unregistered: Not in registry (local/unknown source - lowest trust)\n"
-            "\nFor more information, visit: https://picard.musicbrainz.org/docs/plugins/"
-        ),
+def setup_parser(plugins_parser):
+    """Configure the 'plugins' subcommand parser with all its verbs."""
+    plugins_parser.description = 'Install, update, enable, and manage Picard plugins.'
+    plugins_parser.formatter_class = GroupedHelpFormatter
+    plugins_parser.epilog = (
+        "Trust Levels:\n"
+        "  🛡️ official: Reviewed by Picard team (highest trust)\n"
+        "  ✓ trusted: Known authors, not reviewed (high trust)\n"
+        "  ⚠️ community: Other authors, not reviewed (use caution)\n"
+        "  🔓 unregistered: Not in registry (local/unknown source - lowest trust)\n"
+        "\nFor more information, visit: https://picard.musicbrainz.org/docs/plugins/"
     )
 
     # Common options for the plugins group
