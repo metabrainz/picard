@@ -21,11 +21,17 @@
 """picard-cli: Modern subcommand-based CLI for MusicBrainz Picard.
 
 Usage:
-    picard-cli plugins <command> [options]
+    picard-cli <command> [options]
     picard-cli --version
+
+Commands:
+    plugins     Manage Picard plugins
+    profiles    Manage Picard profiles
 """
 
 import argparse
+from collections import namedtuple
+from importlib import import_module
 import sys
 
 from picard import (
@@ -39,12 +45,60 @@ from picard.util import (
 )
 
 
+# Subcommand registry.
+# Adding an entry here automatically updates both picard-cli and picard --help.
+# Each module_path must contain a register_subcommand(subparsers) function.
+Subcommand = namedtuple('Subcommand', ('name', 'help', 'module_path', 'examples'))
+
+SUBCOMMANDS = (
+    Subcommand(
+        name='plugins',
+        help='manage Picard plugins',
+        module_path='picard.cli.plugins',
+        examples=(
+            'plugins list',
+            'plugins --help',
+        ),
+    ),
+    Subcommand(
+        name='profiles',
+        help='manage Picard profiles',
+        module_path='picard.profiles.cli',
+        examples=(
+            'profiles list',
+            'profiles export "My Profile" -o profile.toml',
+        ),
+    ),
+)
+
+
+def get_subcommands_help():
+    """Return a formatted string listing picard-cli subcommands for use in epilogs."""
+    lines = ["Additional commands available via picard-cli:"]
+    max_name_len = max(len(cmd.name) for cmd in SUBCOMMANDS)
+    for cmd in SUBCOMMANDS:
+        lines.append(f"  {cmd.name:<{max_name_len}}  {cmd.help}")
+    lines.append("")
+    lines.append("Use 'picard-cli <command> --help' for more information.")
+    return "\n".join(lines)
+
+
+def _build_examples_epilog():
+    """Build the examples epilog from SUBCOMMANDS entries."""
+    lines = ["examples:"]
+    for cmd in SUBCOMMANDS:
+        for example in cmd.examples:
+            lines.append(f"  picard-cli {example}")
+    return "\n".join(lines)
+
+
 def build_root_parser():
     """Build the root argument parser with global options and subcommands."""
     parser = argparse.ArgumentParser(
         prog='picard-cli',
         description='MusicBrainz Picard command-line interface',
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=_build_examples_epilog(),
     )
 
     # Global options (shared by all subcommands)
@@ -100,26 +154,22 @@ def build_root_parser():
         metavar='<command>',
     )
 
-    # Register available subcommands
-    _register_plugins_subcommand(subparsers)
-    _register_profiles_subcommand(subparsers)
+    # Register available subcommands (lazy import to avoid heavy deps at parse time)
+    for cmd in SUBCOMMANDS:
+        _register_subcommand(subparsers, cmd)
 
     return parser
 
 
-def _register_plugins_subcommand(subparsers):
-    """Register the 'plugins' subcommand group."""
-    # Lazy import to avoid loading heavy dependencies at parse time
-    from picard.cli.plugins import register_subcommand
+def _register_subcommand(subparsers, cmd):
+    """Register a single subcommand from its metadata.
 
-    register_subcommand(subparsers)
-
-
-def _register_profiles_subcommand(subparsers):
-    """Register the 'profiles' subcommand group."""
-    from picard.profiles.cli import register_subcommand
-
-    register_subcommand(subparsers)
+    Creates the subparser with name/help from SUBCOMMANDS, then delegates
+    to the module's setup_parser() to populate arguments and verbs.
+    """
+    module = import_module(cmd.module_path)
+    parser = subparsers.add_parser(cmd.name, help=cmd.help)
+    module.setup_parser(parser)
 
 
 def main():
