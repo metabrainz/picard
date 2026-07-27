@@ -54,7 +54,7 @@ class PluginUpdateChecker:
         except Exception as e:
             log.error("Failed to refresh all plugins: %s", e, exc_info=True)
 
-    def _on_plugin_update_checks_finished(self, *args, **kwargs):
+    def _on_plugin_update_checks_finished(self, result=None, error=None):
         log.debug("Finished checking for plugin updates.")
         self.plugin_manager.refresh_updates_available.emit()
         self.plugin_manager.plugin_update_checks_complete.emit(self.updates)
