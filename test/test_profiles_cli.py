@@ -27,16 +27,16 @@ from test.test_config import TestPicardConfigCommon
 
 from picard.cli.base import ExitCode
 from picard.cli.output import CliOutput
+from picard.cli.profiles import (
+    cmd_export,
+    cmd_import,
+    cmd_list,
+)
 from picard.config import (
     BoolOption,
     ListOption,
     Option,
     TextOption,
-)
-from picard.profiles.cli import (
-    cmd_export,
-    cmd_import,
-    cmd_list,
 )
 
 
@@ -66,7 +66,7 @@ class TestProfileCLI(TestPicardConfigCommon):
             'p2': {'rename_files': False},
         }
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_list_no_profiles(self, mock_get_config):
         mock_get_config.return_value = self.config
         self.config.profiles['user_profiles'] = []
@@ -77,7 +77,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('No profiles', stdout.getvalue())
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_list_with_profiles(self, mock_get_config):
         mock_get_config.return_value = self.config
         self._setup_profiles()
@@ -92,7 +92,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('Classical', out)
         self.assertIn('disabled', out)
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_export_to_stdout(self, mock_get_config):
         mock_get_config.return_value = self.config
         self._setup_profiles()
@@ -109,7 +109,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('My Rock Profile', out)
         self.assertIn('rename_files', out)
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_export_to_file(self, mock_get_config):
         mock_get_config.return_value = self.config
         self._setup_profiles()
@@ -126,7 +126,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('[profile]', content)
         self.assertIn('My Rock Profile', content)
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_export_profile_not_found(self, mock_get_config):
         mock_get_config.return_value = self.config
         self._setup_profiles()
@@ -138,7 +138,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.NOT_FOUND)
         self.assertIn('No profile found', stderr.getvalue())
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_import_from_file(self, mock_get_config):
         mock_get_config.return_value = self.config
         BoolOption('setting', 'rename_files', False, title="Rename", in_profile=True)
@@ -161,7 +161,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(profiles[0]['title'], 'Imported')
         self.assertFalse(profiles[0]['enabled'])
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_import_with_enable(self, mock_get_config):
         mock_get_config.return_value = self.config
 
@@ -177,7 +177,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         profiles = self.config.profiles['user_profiles']
         self.assertTrue(profiles[0]['enabled'])
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_import_file_not_found(self, mock_get_config):
         mock_get_config.return_value = self.config
 
@@ -188,7 +188,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Cannot read file', stderr.getvalue())
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_import_invalid_toml(self, mock_get_config):
         mock_get_config.return_value = self.config
 
@@ -203,7 +203,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Invalid TOML', stderr.getvalue())
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_export_backup_mode(self, mock_get_config):
         mock_get_config.return_value = self.config
         TextOption('setting', 'proxy_password', '', title="Password", in_profile=True, shareable=False)
@@ -222,7 +222,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('secret', mock_out.getvalue())
 
-    @patch('picard.profiles.cli.get_config')
+    @patch('picard.cli.profiles.get_config')
     def test_cmd_import_round_trip(self, mock_get_config):
         """Test that export → import produces a valid profile."""
         mock_get_config.return_value = self.config

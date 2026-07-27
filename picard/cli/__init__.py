@@ -63,7 +63,7 @@ SUBCOMMANDS = (
     Subcommand(
         name='profiles',
         help='manage Picard profiles',
-        module_path='picard.profiles.cli',
+        module_path='picard.cli.profiles',
         examples=(
             'profiles list',
             'profiles export "My Profile" -o profile.toml',
