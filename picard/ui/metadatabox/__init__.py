@@ -310,10 +310,18 @@ class MetadataBox(QtWidgets.QTableWidget):
         for item in items:
             tag, value = self._get_row_info(item.row())
             col = item.column()
+            removed = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
+            # Don't copy the displayed value for removed tags in the new column,
+            # as it does not represent the actual new state.
+            if col == self.COLUMN_NEW and removed:
+                new = None
+            else:
+                new = value[self.COLUMN_NEW] if col == self.COLUMN_NEW else None
             result.add(
                 tag=tag,
                 old=value[self.COLUMN_ORIG] if col == self.COLUMN_ORIG else None,
-                new=value[self.COLUMN_NEW] if col == self.COLUMN_NEW else None,
+                new=new,
+                removed=removed if col == self.COLUMN_NEW else False,
                 removable=self.tag_diff.status[tag] != TagStatus.NOTREMOVABLE,
                 readonly=self.tag_diff.status[tag] == TagStatus.READONLY,
             )
@@ -373,7 +381,9 @@ class MetadataBox(QtWidgets.QTableWidget):
                 else:
                     tag, value = self._get_row_info(item.row())
                     value = value[column]
-                    if tag == '~length':
+                    if column == self.COLUMN_NEW and self.tag_diff.tag_status(tag) == TagStatus.REMOVED:
+                        value = []
+                    elif tag == '~length':
                         value = self.tag_diff.handle_length(value, prettify_times=True)
                     if value is not None:
                         log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
@@ -390,6 +400,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         def _apply_tag_dict(data):
             for tag in data:
                 if self._tag_is_editable(tag):
+                    if data[tag].get(TagDiff.REMOVED_VALUE) is True:
+                        log.info("Removing tag '%s' from JSON clipboard paste", tag)
+                        yield from self._set_tag_values_delayed_updates(tag, [])
+                        continue
                     # Prefer 'new' values, but fall back to 'old' if not available
                     value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
                     if value:

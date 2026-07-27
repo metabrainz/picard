@@ -352,3 +352,78 @@ class MetadataBoxCopyPasteTest(PicardTestCase):
         data = json.loads(md.data(MetadataBox.MIMETYPE_PICARD_TAGS).data())
         self.assertEqual(data['artist']['new'], ['NA'])
         self.assertEqual(data['title']['new'], ['NT'])
+
+    def _add_tags_extended(self, *tags):
+        """Set up tag_diff with full control. tags: dict with keys: name, old, new, readonly, removed."""
+        td = TagDiff()
+        for entry in tags:
+            td.add(
+                entry['name'],
+                old=entry.get('old'),
+                new=entry.get('new'),
+                readonly=entry.get('readonly', False),
+                removed=entry.get('removed', False),
+            )
+        td.objects += 1
+        td.update_tag_names()
+        self.box.tag_diff = td
+
+    # ── copy removed tags ──
+
+    def test_copy_single_removed_tag_new_column(self):
+        """Copying the new column of a removed tag should copy empty string."""
+        self._add_tags_extended(
+            {'name': 'artist', 'old': ['Old Artist'], 'new': ['Old Artist'], 'removed': True},
+        )
+        self._select_tag('artist', MetadataBox.COLUMN_NEW)
+        self.box._copy_value()
+        self.tagger.clipboard().setText.assert_called_with('')
+
+    def test_copy_single_removed_tag_old_column(self):
+        """Copying the old column of a removed tag should copy the old value."""
+        self._add_tags_extended(
+            {'name': 'artist', 'old': ['Old Artist'], 'new': ['Old Artist'], 'removed': True},
+        )
+        self._select_tag('artist', MetadataBox.COLUMN_ORIG)
+        self.box._copy_value()
+        self.tagger.clipboard().setText.assert_called_with('Old Artist')
+
+    def test_copy_multiple_tags_with_removed(self):
+        """Multi-tag copy should include removed flag in JSON and exclude new value."""
+        self._add_tags_extended(
+            {'name': 'artist', 'old': ['OA'], 'new': ['OA'], 'removed': True},
+            {'name': 'title', 'old': ['OT'], 'new': ['NT']},
+        )
+        self.box.set_selected(
+            [
+                (self._row('artist'), MetadataBox.COLUMN_NEW),
+                (self._row('title'), MetadataBox.COLUMN_NEW),
+            ]
+        )
+        self.box._copy_value()
+        self.tagger.clipboard().setMimeData.assert_called_once()
+        md = self.tagger.clipboard().setMimeData.call_args[0][0]
+        data = json.loads(md.data(MetadataBox.MIMETYPE_PICARD_TAGS).data())
+        # Removed tag should have the removed flag and no new value
+        self.assertTrue(data['artist']['removed'])
+        self.assertNotIn('new', data['artist'])
+        # Normal tag should have its new value
+        self.assertEqual(data['title']['new'], ['NT'])
+
+    # ── paste removed tags ──
+
+    def test_paste_json_removed_tag(self):
+        """Pasting a tag marked as removed should delete it from metadata."""
+        self._add_tags(('artist', ['Old'], ['Cur']))
+        obj = self._make_obj()
+        obj.metadata['artist'] = ['Existing']
+        list(self.box._paste_from_json(self._json_mimedata({'artist': {'removed': True}})))
+        self.assertNotIn('artist', obj.metadata)
+
+    def test_paste_json_removed_with_old_value(self):
+        """Pasting a removed tag with old value should still delete it."""
+        self._add_tags(('artist', ['Old'], ['Cur']))
+        obj = self._make_obj()
+        obj.metadata['artist'] = ['Existing']
+        list(self.box._paste_from_json(self._json_mimedata({'artist': {'old': ['Old'], 'removed': True}})))
+        self.assertNotIn('artist', obj.metadata)

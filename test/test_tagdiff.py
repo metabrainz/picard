@@ -362,3 +362,46 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.update_tag_names()
         tags = self.tag_diff.to_tsv(prettify_times=False)
         self.assertEqual(tags, '~length\t10000\t20000\r\n')
+
+    def test_removed_tag_to_json(self):
+        self.tag_diff.add("artist", old=["Artist 1"], removed=True)
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"artist": {"old": ["Artist 1"], "removed": true}}')
+
+    def test_removed_tag_no_values_to_json(self):
+        self.tag_diff.add("artist", removed=True)
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"artist": {"removed": true}}')
+
+    def test_removed_tag_to_tsv(self):
+        self.tag_diff.add("artist", old=["Artist 1"], removed=True)
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\tArtist 1\t\r\n')
+
+    def test_removed_tag_no_values_to_tsv(self):
+        self.tag_diff.add("artist", removed=True)
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\t\t\r\n')
+
+    def test_removed_tag_included_in_tag_names(self):
+        self.tag_diff.add("artist", removed=True)
+        self.tag_diff.update_tag_names()
+        self.assertIn("artist", self.tag_diff.tag_names)
+
+    def test_removed_tags_tracked(self):
+        self.tag_diff.add("artist", old=["Artist 1"], removed=True)
+        self.assertIn("artist", self.tag_diff.removed_tags)
+
+    def test_non_removed_tag_not_in_removed_tags(self):
+        self.tag_diff.add("artist", old=["Artist 1"])
+        self.assertNotIn("artist", self.tag_diff.removed_tags)
+
+    def test_removed_tag_discarded_on_subsequent_non_removed_add(self):
+        self.tag_diff.add("artist", old=["Artist 1"], removed=True)
+        self.assertIn("artist", self.tag_diff.removed_tags)
+        self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 1"])
+        self.assertNotIn("artist", self.tag_diff.removed_tags)
