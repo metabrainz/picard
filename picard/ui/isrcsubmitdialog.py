@@ -32,6 +32,8 @@ from picard.ui import PicardDialog
 class ISRCSubmitDialog(PicardDialog):
     """Confirmation dialog showing ISRCs to be submitted to MusicBrainz."""
 
+    defaultsize = QtCore.QSize(700, 450)
+
     def __init__(self, details, parent=None):
         """
         Args:
@@ -40,7 +42,6 @@ class ISRCSubmitDialog(PicardDialog):
         """
         super().__init__(parent=parent)
         self.setWindowTitle(_("Submit ISRCs"))
-        self.resize(700, 450)
         self._details = details
         layout = QtWidgets.QVBoxLayout(self)
 
