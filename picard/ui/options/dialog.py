@@ -168,6 +168,7 @@ def _is_simple_value(value) -> bool:
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
+    defaultsize = QtCore.QSize(860, 720)
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
@@ -377,24 +378,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if screen is None:
             return
         available = screen.availableGeometry()
-        frame = self.frameGeometry()
-        if available.contains(frame):
-            return
-        # Clamp size to available area
-        size = frame.size().boundedTo(available.size())
-        self.resize(size)
-        # Move into bounds
-        frame = self.frameGeometry()
-        frame.moveCenter(frame.center())
-        if frame.left() < available.left():
-            frame.moveLeft(available.left())
-        if frame.top() < available.top():
-            frame.moveTop(available.top())
-        if frame.right() > available.right():
-            frame.moveRight(available.right())
-        if frame.bottom() > available.bottom():
-            frame.moveBottom(available.bottom())
-        self.move(frame.topLeft())
+        geom = self.geometry()
+        # Cap size to available screen area
+        new_size = geom.size().boundedTo(available.size())
+        if new_size != geom.size():
+            self.resize(new_size)
+        # Reposition if needed to keep within screen bounds
+        pos = self.pos()
+        x = max(available.left(), min(pos.x(), available.right() - self.width()))
+        y = max(available.top(), min(pos.y(), available.bottom() - self.height()))
+        if x != pos.x() or y != pos.y():
+            self.move(x, y)
 
     def _add_page_to_stack(self, page):
         """Add a page to the stacked widget."""
