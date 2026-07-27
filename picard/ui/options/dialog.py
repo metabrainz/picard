@@ -167,7 +167,39 @@ def _is_simple_value(value) -> bool:
     return isinstance(value, (str, int, float, bool))
 
 
+class _PageScrollArea(QtWidgets.QScrollArea):
+    """A scroll area for options pages that only scrolls when content truly
+    cannot fit in the available viewport.
+
+    Unlike QScrollArea with widgetResizable=True (which scrolls whenever the
+    widget's sizeHint exceeds the viewport), this uses the widget's
+    minimumSizeHint as the threshold.  The widget is resized to fill the
+    viewport when it fits, and keeps its minimum size when it doesn't,
+    allowing scrolling only when genuinely needed.
+    """
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._relayout_widget()
+
+    def _relayout_widget(self):
+        widget = self.widget()
+        if widget is None:
+            return
+        viewport_size = self.viewport().size()
+        min_hint = widget.minimumSizeHint()
+        # Width: always fill the viewport horizontally
+        w = viewport_size.width()
+        # Height: use viewport height unless the minimum required exceeds it
+        if min_hint.height() > viewport_size.height():
+            h = min_hint.height()
+        else:
+            h = viewport_size.height()
+        widget.resize(w, h)
+
+
 class OptionsDialog(PicardDialog, SingletonDialog):
+    defaultsize = QtCore.QSize(860, 720)
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
@@ -247,6 +279,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
 
+        # Each page is wrapped in a QScrollArea inside the stacked widget.
+        # This ensures pages that exceed available height are scrollable,
+        # while keeping the dialog resizable and buttons always accessible.
+        self._page_scroll_areas: dict[QtWidgets.QWidget, QtWidgets.QScrollArea] = {}
+
         # Profile warning
         profile_layout = self.ui.profile_warning.layout()
         profile_warning_icon = QtWidgets.QLabel()
@@ -305,7 +342,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 # create an empty page with the error message in place of the failing page
                 # this approach still allows subpages of the failing page to load
                 page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
-            self.ui.pages_stack.addWidget(page)
+            self._add_page_to_stack(page)
             self.pages.append(page)
 
         self.item_to_page = {}
@@ -361,6 +398,68 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Set initial selection after plugin refresh
         if self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._constrain_to_screen()
+
+    def _constrain_to_screen(self):
+        """Ensure the dialog fits within the available screen geometry."""
+        screen = self.screen()
+        if screen is None:
+            return
+        available = screen.availableGeometry()
+        geom = self.geometry()
+        # Cap size to available screen area
+        new_size = geom.size().boundedTo(available.size())
+        if new_size != geom.size():
+            self.resize(new_size)
+        # Reposition if needed to keep within screen bounds
+        pos = self.pos()
+        x = max(available.left(), min(pos.x(), available.right() - self.width()))
+        y = max(available.top(), min(pos.y(), available.bottom() - self.height()))
+        if x != pos.x() or y != pos.y():
+            self.move(x, y)
+
+    def _add_page_to_stack(self, page):
+        """Add a page to the stacked widget."""
+        self.ui.pages_stack.addWidget(page)
+
+    def _remove_page_from_stack(self, page):
+        """Remove a page (and its scroll area wrapper if any) from the stacked widget."""
+        scroll_area = self._page_scroll_areas.pop(page, None)
+        if scroll_area is not None:
+            self.ui.pages_stack.removeWidget(scroll_area)
+            scroll_area.deleteLater()
+        else:
+            self.ui.pages_stack.removeWidget(page)
+
+    def _show_page(self, page):
+        """Switch the stacked widget to show the given page.
+
+        On first show, the page is wrapped in a QScrollArea so that content
+        taller than the viewport can be scrolled.  The scrollbar only appears
+        when the page's minimum size hint exceeds the available viewport,
+        avoiding premature scrollbars when the content still fits.
+        """
+        scroll_area = self._page_scroll_areas.get(page)
+        if scroll_area is None:
+            scroll_area = _PageScrollArea()
+            scroll_area.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+            scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            self.ui.pages_stack.removeWidget(page)
+            scroll_area.setWidget(page)
+            self.ui.pages_stack.addWidget(scroll_area)
+            self._page_scroll_areas[page] = scroll_area
+        self.ui.pages_stack.setCurrentWidget(scroll_area)
+        scroll_area.verticalScrollBar().setValue(0)
+
+    def _current_page(self):
+        """Return the currently visible page widget."""
+        scroll_area = self.ui.pages_stack.currentWidget()
+        if isinstance(scroll_area, QtWidgets.QScrollArea):
+            return scroll_area.widget()
+        return scroll_area
 
     @property
     def initialized_pages(self):
@@ -607,7 +706,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             page = self.item_to_page[items[0]]
             self.set_profiles_button_and_highlight(page)
             self.ui.reset_button.setDisabled(not page.loaded)
-            self.ui.pages_stack.setCurrentWidget(page)
+            self._show_page(page)
             config = get_config()
             log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
@@ -665,7 +764,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Remove disabled plugin pages from UI stack and pages list
         for page in pages_to_remove:
             log.debug("refresh_plugin_pages: Removing page: %s", type(page).__name__)
-            self.ui.pages_stack.removeWidget(page)
+            self._remove_page_from_stack(page)
             self.pages.remove(page)
             page.deleteLater()  # Clean up the widget
 
@@ -681,7 +780,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     page = Page()
                     page.set_dialog(self)
                     page.initialized = True
-                    self.ui.pages_stack.addWidget(page)
+                    self._add_page_to_stack(page)
                     self.pages.append(page)
                     # Load the page if needed
                     try:
@@ -694,7 +793,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     log.exception("Failed creating options page %r", Page)
                     # Create an error page in place of the failing page
                     page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
-                    self.ui.pages_stack.addWidget(page)
+                    self._add_page_to_stack(page)
                     self.pages.append(page)
 
         # Clear and rebuild the pages tree
@@ -737,7 +836,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     @property
     def help_url(self):
-        current_page = self.ui.pages_stack.currentWidget()
+        current_page = self._current_page()
         url = current_page.HELP_URL
         # If URL is empty, use the first non empty parent help URL.
         while current_page.PARENT and not url:
@@ -828,7 +927,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.suspend_signals = False
 
     def restore_page_defaults(self):
-        current_page = self.ui.pages_stack.currentWidget()
+        current_page = self._current_page()
         if current_page.loaded:
             current_page.restore_defaults()
             self.highlight_enabled_profile_options(load_settings=False)
