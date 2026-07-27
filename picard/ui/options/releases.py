@@ -10,6 +10,7 @@
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018-2022, 2024-2025 Philipp Wolfer
 # Copyright (C) 2024 joncrall
+# Copyright (C) 2026 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,19 +27,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import (
-    Callable,
-    Mapping,
-)
-from functools import partial
-from operator import itemgetter
+from PyQt6 import QtWidgets
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
-
-from picard import tagger_instance
 from picard.config import get_config
 from picard.const import (
     RELEASE_FORMATS,
@@ -46,118 +36,20 @@ from picard.const import (
     RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.countries import RELEASE_COUNTRIES
-from picard.const.defaults import DEFAULT_RELEASE_SCORE
-from picard.const.sys import IS_WIN
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
     gettext_countries,
     pgettext_attributes,
-    sort_key,
 )
 
-from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
-from picard.ui.util import qlistwidget_items
-from picard.ui.widgets import ClickableSlider
-
-
-class TipSlider(ClickableSlider):
-    _offset = QtCore.QPoint(0, -30)
-    _step = 5
-    _pagestep = 25
-    _minimum = 0
-    _maximum = 100
-
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-
-        self.style = QtWidgets.QApplication.style()
-        self.opt = QtWidgets.QStyleOptionSlider()
-        self.setMinimum(self._minimum)
-        self.setMaximum(self._maximum)
-        self.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.setSingleStep(self._step)
-        self.setTickInterval(self._step)
-        self.setPageStep(self._pagestep)
-        self.tagger = tagger_instance()
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        if not IS_WIN:
-            self.valueChanged.connect(self.show_tip)
-
-    def hideEvent(self, event):
-        super().hideEvent(event)
-        if not IS_WIN:
-            try:
-                self.valueChanged.disconnect(self.show_tip)
-            except TypeError:
-                pass
-
-    def show_tip(self, value):
-        self.round_value(value)
-        self.initStyleOption(self.opt)
-        cc_slider = self.style.ComplexControl.CC_Slider
-        sc_slider_handle = self.style.SubControl.SC_ScrollBarSlider
-        rectHandle = self.style.subControlRect(cc_slider, self.opt, sc_slider_handle)
-
-        offset = self._offset * self.tagger.primaryScreen().devicePixelRatio()
-        pos_local = rectHandle.topLeft() + offset
-        pos_global = self.mapToGlobal(pos_local)
-        QtWidgets.QToolTip.showText(pos_global, str(self.value()), self)
-
-    def round_value(self, value):
-        step = max(1, int(self._step))
-        if step > 1:
-            super().setValue(int(value / step) * step)
-
-
-class ReleaseTypeScore:
-    def __init__(self, group, layout, label, cell):
-        row, column = cell  # it uses 2 cells (r,c and r,c+1)
-        self.group = group
-        self.layout = layout
-        self.label = QtWidgets.QLabel(self.group)
-        self.label.setText(label)
-        self.layout.addWidget(self.label, row, column, 1, 1)
-        self.slider = TipSlider(parent=self.group)
-        self.layout.addWidget(self.slider, row, column + 1, 1, 1)
-        self.reset()
-
-    def setValue(self, value):
-        self.slider.setValue(int(value * 100))
-
-    def value(self):
-        return float(self.slider.value()) / 100.0
-
-    def reset(self):
-        self.setValue(DEFAULT_RELEASE_SCORE)
-
-
-class RowColIter:
-    def __init__(self, max_cells, max_cols=6, step=2):
-        assert max_cols % step == 0
-        self.step = step
-        self.cols = max_cols
-        self.rows = int((max_cells - 1) / (self.cols / step)) + 1
-        self.current = (-1, 0)
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        row, col = self.current
-        row += 1
-        if row == self.rows:
-            col += self.step
-            row = 0
-        self.current = (row, col)
-        return self.current
+from picard.ui.widgets.preferencelistwidget import PreferenceListWidget
+from picard.ui.widgets.titledgroupbox import TitledGroupBox
 
 
 class ReleasesOptionsPage(OptionsPage):
@@ -169,194 +61,137 @@ class ReleasesOptionsPage(OptionsPage):
     HELP_URL = "/config/options_releases.html"
 
     OPTIONS: PageOptionConfigs = {
-        'release_type_scores': {'widgets': ['type_group']},
-        'preferred_release_countries': {'widgets': ['country_group']},
-        'preferred_release_formats': {'widgets': ['format_group']},
+        'preferred_release_types': {'widgets': ['preferred_release_types_group']},
+        'discouraged_release_types': {'widgets': ['discouraged_release_types_group']},
+        'preferred_release_countries': {'widgets': ['preferred_release_countries_group']},
+        'preferred_release_formats': {'widgets': ['preferred_release_formats_group']},
     }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.ui = Ui_ReleasesOptionsPage()
-        self.ui.setupUi(self)
+        self._setup_ui()
 
-        self._release_type_sliders = {}
+    def _setup_ui(self):
+        layout = QtWidgets.QVBoxLayout(self)
 
-        def add_slider(name, griditer, context):
-            label = pgettext_attributes(context, name)
-            self._release_type_sliders[name] = ReleaseTypeScore(
-                self.ui.type_group,
-                self.ui.gridLayout,
-                label,
-                next(griditer),
-            )
-
-        griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) + len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
+        # Release types available items (primary + secondary, translated)
+        self._preferred_release_type_items = {}
         for name in RELEASE_PRIMARY_GROUPS:
-            add_slider(name, griditer, context='release_group_primary_type')
-        for name in sorted(
-            RELEASE_SECONDARY_GROUPS, key=lambda v: pgettext_attributes('release_group_secondary_type', v)
-        ):
-            add_slider(name, griditer, context='release_group_secondary_type')
+            self._preferred_release_type_items[name] = pgettext_attributes('release_group_primary_type', name)
+        for name in RELEASE_SECONDARY_GROUPS:
+            self._preferred_release_type_items[name] = pgettext_attributes('release_group_secondary_type', name)
 
-        reset_types_btn = QtWidgets.QPushButton(self.ui.type_group)
-        reset_types_btn.setText(_("Reset all"))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(reset_types_btn.sizePolicy().hasHeightForWidth())
-        reset_types_btn.setSizePolicy(sizePolicy)
-        r, c = next(griditer)
-        self.ui.gridLayout.addWidget(reset_types_btn, r, c, 1, 2)
-        reset_types_btn.clicked.connect(self.reset_preferred_types)
+        # Preferred release types
+        self._preferred_release_types = self._create_preference_group(
+            title=N_("Preferred release types (higher priority first)"),
+            object_name='preferred_release_types_group',
+            tooltip=_(
+                "When multiple releases match a file, types listed here are scored higher.<br>"
+                "The top item gets the strongest preference.<br>"
+                "Unlisted types are treated neutrally."
+            ),
+            items=self._preferred_release_type_items,
+            parent_layout=layout,
+        )
 
-        self.setTabOrder(reset_types_btn, self.ui.country_list)
-        self.setTabOrder(self.ui.country_list, self.ui.preferred_country_list)
-        self.setTabOrder(self.ui.preferred_country_list, self.ui.add_countries)
-        self.setTabOrder(self.ui.add_countries, self.ui.remove_countries)
-        self.setTabOrder(self.ui.remove_countries, self.ui.format_list)
-        self.setTabOrder(self.ui.format_list, self.ui.preferred_format_list)
-        self.setTabOrder(self.ui.preferred_format_list, self.ui.add_formats)
-        self.setTabOrder(self.ui.add_formats, self.ui.remove_formats)
+        # Discouraged release types
+        self._discouraged_release_types = self._create_preference_group(
+            title=N_("Discouraged release types (avoided when matching)"),
+            object_name='discouraged_release_types_group',
+            tooltip=_(
+                "Releases with these types are penalized when matching.<br>"
+                "They will only be chosen if no other release matches.<br>"
+                "Useful for avoiding compilations, DJ-mixes, etc."
+            ),
+            items=self._preferred_release_type_items,
+            parent_layout=layout,
+            ordered=False,
+        )
 
-        self.ui.add_countries.clicked.connect(self.add_preferred_countries)
-        self.ui.remove_countries.clicked.connect(self.remove_preferred_countries)
-        self.ui.add_formats.clicked.connect(self.add_preferred_formats)
-        self.ui.remove_formats.clicked.connect(self.remove_preferred_formats)
-        self.ui.country_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.ui.preferred_country_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        # Cross-exclusion: items in one list can't appear in the other
+        self._preferred_release_types.changed.connect(self._sync_type_exclusions)
+        self._discouraged_release_types.changed.connect(self._sync_type_exclusions)
 
-    def restore_defaults(self):
-        # Clear lists
-        self.ui.preferred_country_list.clear()
-        self.ui.preferred_format_list.clear()
-        self.ui.country_list.clear()
-        self.ui.format_list.clear()
-        super().restore_defaults()
+        # Preferred release countries
+        preferred_release_country_items = {key: gettext_countries(name) for key, name in RELEASE_COUNTRIES.items()}
+        self._preferred_release_countries = self._create_preference_group(
+            title=N_("Preferred release countries (higher priority first)"),
+            object_name='preferred_release_countries_group',
+            tooltip=_(
+                "When multiple editions of a release exist, "
+                "prefer those from countries listed here.<br>"
+                "The top country gets the strongest preference."
+            ),
+            items=preferred_release_country_items,
+            parent_layout=layout,
+        )
+
+        # Preferred medium formats
+        preferred_release_format_items = {
+            key: pgettext_attributes('medium_format', name) for key, name in RELEASE_FORMATS.items()
+        }
+        self._preferred_release_formats = self._create_preference_group(
+            title=N_("Preferred medium formats (higher priority first)"),
+            object_name='preferred_release_formats_group',
+            tooltip=_(
+                "When multiple editions of a release exist, "
+                "prefer those in formats listed here (e.g. CD over Digital Media).<br>"
+                "The top format gets the strongest preference."
+            ),
+            items=preferred_release_format_items,
+            parent_layout=layout,
+        )
+
+    def _create_preference_group(
+        self,
+        title: str,
+        object_name: str,
+        tooltip: str,
+        items: dict[str, str],
+        parent_layout: QtWidgets.QVBoxLayout,
+        ordered: bool = True,
+    ) -> PreferenceListWidget:
+        """Create a titled group box with a PreferenceListWidget inside it.
+
+        Returns the PreferenceListWidget for further configuration.
+        """
+        group = TitledGroupBox(title, self)
+        group.setObjectName(object_name)
+        group.setToolTip(tooltip)
+        group_layout = QtWidgets.QVBoxLayout(group)
+        widget = PreferenceListWidget(group, ordered=ordered)
+        widget.set_available_items(items)
+        group_layout.addWidget(widget)
+        parent_layout.addWidget(group)
+        setattr(self, object_name, group)
+        return widget
+
+    def _sync_type_exclusions(self):
+        """Keep preferred and discouraged type lists mutually exclusive."""
+        self._preferred_release_types.set_excluded_keys(set(self._discouraged_release_types.selected_keys()))
+        self._discouraged_release_types.set_excluded_keys(set(self._preferred_release_types.selected_keys()))
 
     def load(self):
         config = get_config()
-        scores = dict(config.setting['release_type_scores'])
-        for release_type, release_type_slider in self._release_type_sliders.items():
-            release_type_slider.setValue(scores.get(release_type, DEFAULT_RELEASE_SCORE))
-
-        self._load_release_countries()
-        self._load_release_formats()
+        self._preferred_release_types.set_selected_keys(config.setting['preferred_release_types'])
+        self._discouraged_release_types.set_selected_keys(config.setting['discouraged_release_types'])
+        self._sync_type_exclusions()
+        self._preferred_release_countries.set_selected_keys(config.setting['preferred_release_countries'])
+        self._preferred_release_formats.set_selected_keys(config.setting['preferred_release_formats'])
 
     def save(self):
         config = get_config()
-        scores = []
-        for release_type, release_type_slider in self._release_type_sliders.items():
-            scores.append((release_type, release_type_slider.value()))
-        config.setting['release_type_scores'] = scores
+        config.setting['preferred_release_types'] = self._preferred_release_types.selected_keys()
+        config.setting['discouraged_release_types'] = self._discouraged_release_types.selected_keys()
+        config.setting['preferred_release_countries'] = self._preferred_release_countries.selected_keys()
+        config.setting['preferred_release_formats'] = self._preferred_release_formats.selected_keys()
 
-        self._save_list_items('preferred_release_countries', self.ui.preferred_country_list)
-        self._save_list_items('preferred_release_formats', self.ui.preferred_format_list)
-
-    def reset_preferred_types(self):
-        for release_type_slider in self._release_type_sliders.values():
-            release_type_slider.reset()
-
-    def add_preferred_countries(self):
-        self._move_selected_items(self.ui.country_list, self.ui.preferred_country_list)
-
-    def remove_preferred_countries(self):
-        self._move_selected_items(self.ui.preferred_country_list, self.ui.country_list)
-        self.ui.country_list.sortItems()
-
-    def add_preferred_formats(self):
-        self._move_selected_items(self.ui.format_list, self.ui.preferred_format_list)
-
-    def remove_preferred_formats(self):
-        self._move_selected_items(self.ui.preferred_format_list, self.ui.format_list)
-        self.ui.format_list.sortItems()
-
-    def _move_selected_items(self, list1, list2):
-        for item in list1.selectedItems():
-            clone = item.clone()
-            list2.addItem(clone)
-            list1.takeItem(list1.row(item))
-
-    def _load_release_countries(self) -> None:
-        """Load preferred release countries from config into the UI lists."""
-        config = get_config()
-        self._load_list_items(
-            config.setting['preferred_release_countries'],
-            gettext_countries,
-            RELEASE_COUNTRIES,
-            self._add_list_item(self.ui.country_list, self.ui.preferred_country_list),
-        )
-
-    def _load_release_formats(self) -> None:
-        """Load preferred release formats from config into the UI lists."""
-        config = get_config()
-        self._load_list_items(
-            config.setting['preferred_release_formats'],
-            partial(pgettext_attributes, 'medium_format'),
-            RELEASE_FORMATS,
-            self._add_list_item(self.ui.format_list, self.ui.preferred_format_list),
-        )
-
-    @staticmethod
-    def _add_list_item(
-        available_list: QtWidgets.QListWidget,
-        preferred_list: QtWidgets.QListWidget,
-    ) -> Callable[[str, str, bool], None]:
-        """Return a callback that creates a QListWidgetItem and adds it
-        to the appropriate list widget.
-        """
-
-        def add_item(name: str, data: str, is_preferred: bool) -> None:
-            """Create a QListWidgetItem and add it to the preferred or
-            available list widget.
-            """
-            item = QtWidgets.QListWidgetItem(name)
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
-            if is_preferred:
-                preferred_list.addItem(item)
-            else:
-                available_list.addItem(item)
-
-        return add_item
-
-    @staticmethod
-    def _load_list_items(
-        preferred: list[str],
-        translate_func: Callable[[str], str],
-        source: Mapping[str, str],
-        add_item: Callable[[str, str, bool], None],
-    ) -> None:
-        """Split source items into available and preferred, calling add_item
-        for each.
-
-        Available items are sorted alphabetically by translated name.
-        Preferred items preserve their saved order.
-
-        Args:
-            preferred: List of previously selected item keys.
-            translate_func: Callable to translate source names for display.
-            source: Dict mapping item keys to untranslated names.
-            add_item: Callback called as add_item(name, data, is_preferred).
-        """
-        source_list = [(key, translate_func(name)) for key, name in source.items()]
-        source_list.sort(key=lambda x: sort_key(x[1]))
-        preferred_order = {data: i for i, data in enumerate(preferred)}
-        target_list = []
-        for data, name in source_list:
-            if data in preferred_order:
-                target_list.append((preferred_order[data], name, data))
-            else:
-                add_item(name, data, False)
-
-        target_list.sort(key=itemgetter(0))
-        for _i, name, data in target_list:
-            add_item(name, data, True)
-
-    def _save_list_items(self, setting, list1):
-        data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]
-        config = get_config()
-        config.setting[setting] = data
+    def restore_defaults(self):
+        self._preferred_release_types.set_selected_keys([])
+        self._discouraged_release_types.set_selected_keys([])
+        self._preferred_release_countries.set_selected_keys([])
+        self._preferred_release_formats.set_selected_keys([])
+        self._sync_type_exclusions()
 
 
 register_options_page(ReleasesOptionsPage)

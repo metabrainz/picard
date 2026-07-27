@@ -1057,53 +1057,32 @@ CONFIG_PROFILES = {
     "neutral": {
         "preferred_release_countries": [],
         "preferred_release_formats": [],
-        "release_type_scores": [
-            ("Album", 1.0),
-            ("Single", 0.5),
-            ("EP", 0.7),
-            ("Other", 0.3),
-        ],
+        "preferred_release_types": ["Album", "EP"],
+        "discouraged_release_types": [],
     },
     "prefer_us_cd": {
         "preferred_release_countries": ["US"],
         "preferred_release_formats": ["CD"],
-        "release_type_scores": [
-            ("Album", 1.0),
-            ("Single", 0.5),
-            ("EP", 0.7),
-            ("Other", 0.3),
-        ],
+        "preferred_release_types": ["Album", "EP"],
+        "discouraged_release_types": [],
     },
     "prefer_eu_vinyl": {
         "preferred_release_countries": ["XE", "DE", "GB"],
         "preferred_release_formats": ["12\" Vinyl", "Vinyl"],
-        "release_type_scores": [
-            ("Album", 1.0),
-            ("Single", 0.5),
-            ("EP", 0.7),
-            ("Other", 0.3),
-        ],
+        "preferred_release_types": ["Album", "EP"],
+        "discouraged_release_types": [],
     },
     "prefer_jp_digital": {
         "preferred_release_countries": ["JP"],
         "preferred_release_formats": ["Digital Media"],
-        "release_type_scores": [
-            ("Album", 1.0),
-            ("Single", 0.5),
-            ("EP", 0.7),
-            ("Other", 0.3),
-        ],
+        "preferred_release_types": ["Album", "EP"],
+        "discouraged_release_types": [],
     },
     "compilations_low": {
         "preferred_release_countries": [],
         "preferred_release_formats": [],
-        "release_type_scores": [
-            ("Album", 1.0),
-            ("Single", 0.3),
-            ("EP", 0.5),
-            ("Compilation", 0.2),
-            ("Other", 0.1),
-        ],
+        "preferred_release_types": ["Album", "EP"],
+        "discouraged_release_types": ["Compilation"],
     },
 }
 

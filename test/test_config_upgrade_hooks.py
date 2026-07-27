@@ -782,3 +782,52 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         settings = {'rtd_updates_ask': True}
         hooks.remove_rtd_updates_ask(settings)
         self.assertNotIn('rtd_updates_ask', settings)
+
+    def test_convert_release_type_scores_to_lists(self):
+        ListOption('setting', 'release_type_scores', [])
+        ListOption('setting', 'preferred_release_types', [])
+        ListOption('setting', 'discouraged_release_types', [])
+
+        self.config.setting['release_type_scores'] = [
+            ('Album', 0.9),
+            ('Single', 0.5),
+            ('EP', 0.7),
+            ('Compilation', 0.0),
+            ('DJ-mix', 0.3),
+        ]
+        hooks.convert_release_type_scores_to_lists(self.config.setting)
+        # Album (0.9) > EP (0.7) - sorted by score desc
+        self.assertEqual(['Album', 'EP'], self.config.setting['preferred_release_types'])
+        # Score < 0.5 → discouraged
+        self.assertEqual(['Compilation', 'DJ-mix'], self.config.setting['discouraged_release_types'])
+
+    def test_convert_release_type_scores_to_lists_dict(self):
+        settings = {
+            'release_type_scores': [
+                ('Album', 1.0),
+                ('Other', 0.5),
+                ('Compilation', 0.0),
+            ]
+        }
+        hooks.convert_release_type_scores_to_lists(settings)
+        self.assertEqual(['Album'], settings['preferred_release_types'])
+        self.assertEqual(['Compilation'], settings['discouraged_release_types'])
+
+    def test_convert_release_type_scores_to_lists_missing(self):
+        settings = {'other_option': 'value'}
+        hooks.convert_release_type_scores_to_lists(settings)
+        self.assertNotIn('preferred_release_types', settings)
+        self.assertNotIn('discouraged_release_types', settings)
+
+    def test_convert_release_type_scores_to_lists_all_default(self):
+        settings = {
+            'release_type_scores': [
+                ('Album', 0.5),
+                ('Single', 0.5),
+                ('EP', 0.5),
+            ]
+        }
+        hooks.convert_release_type_scores_to_lists(settings)
+        # All at 0.5 (neutral) → no preferred, no discouraged
+        self.assertEqual([], settings['preferred_release_types'])
+        self.assertEqual([], settings['discouraged_release_types'])
