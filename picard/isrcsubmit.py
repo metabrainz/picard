@@ -90,25 +90,7 @@ class ISRCSubmitManager:
                 log.warning("Skipping invalid ISRC: %r", isrc)
             elif normalized not in mb_isrcs_set:
                 new_isrcs.add(normalized)
-        if new_isrcs:
-            self._entries[file] = ISRCSubmitEntry(recording_id, new_isrcs)
-            log.debug_if(
-                DebugOpt.ISRC,
-                "ISRC add: %r → recording %s, new: %s (MB has: %s)",
-                file,
-                recording_id,
-                sorted(new_isrcs),
-                sorted(mb_isrcs_set),
-            )
-        elif file in self._entries:
-            del self._entries[file]
-            log.debug_if(
-                DebugOpt.ISRC,
-                "ISRC add: %r → recording %s, no new ISRCs (all in MB), removed entry",
-                file,
-                recording_id,
-            )
-        self._check_unsubmitted()
+        self._update_entry(file, recording_id, new_isrcs)
 
     def update(self, file, recording_id: str, mb_isrcs: list[str]) -> None:
         """Update recording association for a file.
@@ -122,20 +104,28 @@ class ISRCSubmitManager:
         mb_isrcs_set = normalized_isrcs(mb_isrcs)
         # Recalculate new ISRCs against the new recording
         new_isrcs = entry.new_isrcs - mb_isrcs_set
+        self._update_entry(file, recording_id, new_isrcs)
+
+    def _update_entry(self, file, recording_id: str, new_isrcs: set[NormalizedISRC]) -> None:
+        """Update or remove the entry for a file based on new ISRCs.
+
+        If new_isrcs is non-empty, creates or replaces the entry.
+        Otherwise, removes any existing entry for the file.
+        """
         if new_isrcs:
             self._entries[file] = ISRCSubmitEntry(recording_id, new_isrcs)
             log.debug_if(
                 DebugOpt.ISRC,
-                "ISRC update: %r → recording %s, remaining new: %s",
+                "ISRC entry: %r → recording %s, new: %s",
                 file,
                 recording_id,
                 sorted(new_isrcs),
             )
-        else:
+        elif file in self._entries:
             del self._entries[file]
             log.debug_if(
                 DebugOpt.ISRC,
-                "ISRC update: %r → recording %s, all ISRCs now in MB, removed entry",
+                "ISRC entry: %r → recording %s, no new ISRCs, removed entry",
                 file,
                 recording_id,
             )
