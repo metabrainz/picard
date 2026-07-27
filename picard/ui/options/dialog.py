@@ -167,6 +167,37 @@ def _is_simple_value(value) -> bool:
     return isinstance(value, (str, int, float, bool))
 
 
+class _PageScrollArea(QtWidgets.QScrollArea):
+    """A scroll area for options pages that only scrolls when content truly
+    cannot fit in the available viewport.
+
+    Unlike QScrollArea with widgetResizable=True (which scrolls whenever the
+    widget's sizeHint exceeds the viewport), this uses the widget's
+    minimumSizeHint as the threshold.  The widget is resized to fill the
+    viewport when it fits, and keeps its minimum size when it doesn't,
+    allowing scrolling only when genuinely needed.
+    """
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._relayout_widget()
+
+    def _relayout_widget(self):
+        widget = self.widget()
+        if widget is None:
+            return
+        viewport_size = self.viewport().size()
+        min_hint = widget.minimumSizeHint()
+        # Width: always fill the viewport horizontally
+        w = viewport_size.width()
+        # Height: use viewport height unless the minimum required exceeds it
+        if min_hint.height() > viewport_size.height():
+            h = min_hint.height()
+        else:
+            h = viewport_size.height()
+        widget.resize(w, h)
+
+
 class OptionsDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(860, 720)
     suspend_signals = False
@@ -407,13 +438,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         """Switch the stacked widget to show the given page.
 
         On first show, the page is wrapped in a QScrollArea so that content
-        taller than the viewport can be scrolled.
+        taller than the viewport can be scrolled.  The scrollbar only appears
+        when the page's minimum size hint exceeds the available viewport,
+        avoiding premature scrollbars when the content still fits.
         """
         scroll_area = self._page_scroll_areas.get(page)
         if scroll_area is None:
-            scroll_area = QtWidgets.QScrollArea()
+            scroll_area = _PageScrollArea()
             scroll_area.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-            scroll_area.setWidgetResizable(True)
             scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
             self.ui.pages_stack.removeWidget(page)
             scroll_area.setWidget(page)
