@@ -39,6 +39,25 @@ from picard.util import (
 )
 
 
+# Subcommand metadata: (name, help_text)
+# Adding an entry here automatically updates both picard-cli and picard --help.
+SUBCOMMANDS = (
+    ('plugins', 'manage Picard plugins'),
+    ('profiles', 'manage Picard profiles'),
+)
+
+
+def get_subcommands_help():
+    """Return a formatted string listing picard-cli subcommands for use in epilogs."""
+    lines = ["Additional commands available via picard-cli:"]
+    max_name_len = max(len(name) for name, _ in SUBCOMMANDS)
+    for name, help_text in SUBCOMMANDS:
+        lines.append(f"  {name:<{max_name_len}}  {help_text}")
+    lines.append("")
+    lines.append("Use 'picard-cli <command> --help' for more information.")
+    return "\n".join(lines)
+
+
 def build_root_parser():
     """Build the root argument parser with global options and subcommands."""
     parser = argparse.ArgumentParser(

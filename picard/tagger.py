@@ -90,6 +90,7 @@ from picard.album import (
 from picard.audit import setup_audit
 from picard.browser.filelookup import FileLookup
 from picard.browser.server import BrowserIntegration
+from picard.cli import get_subcommands_help
 from picard.cluster import (
     Cluster,
     ClusterList,
@@ -1612,10 +1613,17 @@ def print_help_for_commands():
 
 
 def process_cmdline_args():
+    epilog = (
+        "If one of the filenames begins with a hyphen, use -- to separate the\n"
+        "options from the filenames.\n"
+        "If a new instance will not be spawned files/directories will be passed\n"
+        "to the existing instance\n"
+        "\n" + get_subcommands_help()
+    )
+
     parser = CmdlineArgsParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
-If a new instance will not be spawned files/directories will be passed to the existing instance""",
+        epilog=epilog,
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
