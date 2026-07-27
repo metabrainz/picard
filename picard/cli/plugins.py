@@ -207,9 +207,6 @@ def setup_parser(plugins_parser):
     p_compile_ui.add_argument('--force', '-f', action='store_true', help='Force compilation even if up-to-date')
     p_compile_ui.set_defaults(run_command=_run_plugins)
 
-    # Default handler when no verb is given
-    plugins_parser.set_defaults(run_command=_run_plugins)
-
 
 def _run_plugins(args):
     """Initialize and run the plugin CLI with subcommand args."""
@@ -231,14 +228,6 @@ def _run_plugins(args):
     except ImportError as err:
         cli.print_message_and_exit("failed importing git backend", str(err), status=1)
 
-    # No verb specified - show help
-    verb = getattr(args, 'verb', None)
-    if not verb:
-        print("Usage: picard-cli plugins <command> [options]")
-        print()
-        print("Run 'picard-cli plugins --help' for available commands.")
-        return 0
-
     # Bootstrap app, logging, and debug options
     app = init_cli(args, with_webservice=True)  # noqa: F841
 
@@ -250,10 +239,3 @@ def _run_plugins(args):
     output = PluginOutput(color=False if is_color_disabled(args) else None)
 
     return PluginCLI(manager, args, output=output).run()
-
-
-def _argparse():
-    """Lazy import of argparse."""
-    import argparse
-
-    return argparse

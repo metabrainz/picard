@@ -39,10 +39,7 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
 )
-from picard.util import (
-    cli,
-    versions,
-)
+from picard.util import versions
 
 
 # Subcommand registry.
@@ -63,7 +60,7 @@ SUBCOMMANDS = (
     Subcommand(
         name='profiles',
         help='manage Picard profiles',
-        module_path='picard.profiles.cli',
+        module_path='picard.cli.profiles',
         examples=(
             'profiles list',
             'profiles export "My Profile" -o profile.toml',
@@ -117,14 +114,14 @@ def build_root_parser():
     parser.add_argument(
         '-v',
         '--version',
-        action='store_true',
-        help="display version information and exit",
+        action='version',
+        version=f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}",
     )
     parser.add_argument(
         '-V',
         '--long-version',
-        action='store_true',
-        help="display long version information and exit",
+        action='version',
+        version=versions.as_string(),
     )
     parser.add_argument(
         '--debug-opts',
@@ -166,10 +163,13 @@ def _register_subcommand(subparsers, cmd):
 
     Creates the subparser with name/help from SUBCOMMANDS, then delegates
     to the module's setup_parser() to populate arguments and verbs.
+    Sets a default run_command that prints help when no verb is given.
     """
     module = import_module(cmd.module_path)
     parser = subparsers.add_parser(cmd.name, help=cmd.help)
     module.setup_parser(parser)
+    # If no verb is given, print this subcommand's help
+    parser.set_defaults(run_command=lambda args, p=parser: p.print_help() or 0)
 
 
 def main():
@@ -183,23 +183,13 @@ def main():
 
         DebugOpt.print_help_and_exit()
 
-    # Handle version flags early (before init)
-    if getattr(args, 'long_version', False):
-        cli.print_message_and_exit(versions.as_string())
-    if getattr(args, 'version', False):
-        cli.print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-
     # No subcommand given
     if not args.command:
         parser.print_help()
         sys.exit(0)
 
     # Dispatch to the subcommand handler
-    if hasattr(args, 'run_command'):
-        sys.exit(args.run_command(args))
-    else:
-        parser.print_help()
-        sys.exit(0)
+    sys.exit(args.run_command(args))
 
 
 if __name__ == "__main__":
