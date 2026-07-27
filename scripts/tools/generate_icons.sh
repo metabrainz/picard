@@ -1,7 +1,7 @@
 #!/bin/bash
 # Generate PNG icons from an SVG source file.
 #
-# Usage: scripts/generate_icons.sh resources/img-src/icon-name.svg
+# Usage: scripts/tools/generate_icons.sh resources/img-src/icon-name.svg
 #
 # Generates the following PNGs in resources/images/:
 #   16x16/icon-name.png      (16x16)
