@@ -35,7 +35,10 @@ from picard.config import (
     Option,
     TextOption,
 )
-from picard.const import MUSICBRAINZ_SERVERS
+from picard.const import (
+    BROWSER_INTEGRATION_MIN_PORT,
+    MUSICBRAINZ_SERVERS,
+)
 from picard.const.defaults import (
     DEFAULT_AUTOBACKUP_DIRECTORY,
     DEFAULT_CA_NEVER_REPLACE_TYPES,
@@ -516,7 +519,13 @@ ListOption(
 # Network
 BoolOption('setting', 'browser_integration', True, title=N_("Browser integration"), in_profile=True)
 BoolOption('setting', 'browser_integration_localhost_only', True, title=N_("Listen only on localhost"), in_profile=True)
-IntOption('setting', 'browser_integration_port', 8000, title=N_("Default listening port"), in_profile=True)
+IntOption(
+    'setting',
+    'browser_integration_port',
+    BROWSER_INTEGRATION_MIN_PORT,
+    title=N_("Default listening port"),
+    in_profile=True,
+)
 IntOption(
     'setting',
     'network_cache_size_bytes',

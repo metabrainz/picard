@@ -831,3 +831,18 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         # All at 0.5 (neutral) → no preferred, no discouraged
         self.assertEqual([], settings['preferred_release_types'])
         self.assertEqual([], settings['discouraged_release_types'])
+
+    def test_clamp_browser_integration_port_unchanged(self):
+        settings = {'browser_integration_port': 8000}
+        hooks.clamp_browser_integration_port(settings)
+        self.assertEqual(8000, settings['browser_integration_port'])
+
+    def test_clamp_browser_integration_port_low(self):
+        settings = {'browser_integration_port': 7999}
+        hooks.clamp_browser_integration_port(settings)
+        self.assertEqual(8000, settings['browser_integration_port'])
+
+    def test_clamp_browser_integration_port_high(self):
+        settings = {'browser_integration_port': 8021}
+        hooks.clamp_browser_integration_port(settings)
+        self.assertEqual(8020, settings['browser_integration_port'])

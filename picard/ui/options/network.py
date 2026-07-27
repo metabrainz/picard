@@ -23,7 +23,11 @@
 
 
 from picard.config import get_config
-from picard.const import CACHE_SIZE_DISPLAY_UNIT
+from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
+    BROWSER_INTEGRATION_MIN_PORT,
+    CACHE_SIZE_DISPLAY_UNIT,
+)
 from picard.const.defaults import DEFAULT_CACHE_SIZE_IN_BYTES
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -78,6 +82,8 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.network_cache_size.setToolTip(max_cache_tooltip)
         self.ui.label_cache_size.setToolTip(max_cache_tooltip)
         self.ui.label_cache_max_unit.setToolTip(max_cache_tooltip)
+        self.ui.browser_integration_port.setMinimum(BROWSER_INTEGRATION_MIN_PORT)
+        self.ui.browser_integration_port.setMaximum(BROWSER_INTEGRATION_MAX_PORT)
         self.update_cache_size()
 
     def load(self):
