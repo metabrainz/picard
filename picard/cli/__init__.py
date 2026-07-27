@@ -21,8 +21,12 @@
 """picard-cli: Modern subcommand-based CLI for MusicBrainz Picard.
 
 Usage:
-    picard-cli plugins <command> [options]
+    picard-cli <command> [options]
     picard-cli --version
+
+Commands:
+    plugins     Manage Picard plugins
+    profiles    Manage Picard profiles
 """
 
 import argparse
