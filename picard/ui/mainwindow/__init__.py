@@ -146,6 +146,7 @@ from picard.ui.infodialog import (
     TrackInfoDialog,
 )
 from picard.ui.infostatus import InfoStatus
+from picard.ui.isrcsubmitdialog import ISRCSubmitDialog
 from picard.ui.itemviews import (
     BaseTreeView,
     MainPanel,
@@ -715,6 +716,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.tagger.acoustidmanager.submit()
 
+    def _on_submit_isrc(self):
+        manager = self.tagger.isrc_submit_manager
+        details = manager.pending_details()
+        if not details:
+            return
+        dialog = ISRCSubmitDialog(details, parent=self)
+        if dialog.exec():
+            manager.submit(isrcs_to_submit=dialog.get_submitted_isrcs())
+
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
 
@@ -913,6 +923,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SAVE,
             MainAction.SUBMIT_ACOUSTID,
+            MainAction.SUBMIT_ISRC,
             MainAction.TRASH,
             '-',
             MainAction.LOAD_SESSION,
