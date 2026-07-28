@@ -20,8 +20,8 @@ jobs:
           disable-webp: 0
       fail-fast: false
     env:
-      DISCID_VERSION: 0.6.4
-      DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
+      DISCID_VERSION: 0.7.0
+      DISCID_SHA256SUM: 7026662f3a47f9663052cff1a5d16aff8772bbf9ace2f68cb0bdba4242b3b83d
       FPCALC_VERSION: 1.6.1
       FPCALC_SHA256SUM: 240aeb5a8c8205af458e3625cb7487b826b711a999e491ef00111f3cebd76f00
       PYTHON_VERSION: ${{ matrix.setup.python-version }}
