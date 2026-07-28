@@ -64,6 +64,16 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="0" >
+       <widget class="QCheckBox" name="read_isrcs_from_disc">
+        <property name="toolTip">
+         <string>When enabled, ISRCs will be read from the CD during disc lookup. This may significantly slow down the disc read on some drives.</string>
+        </property>
+        <property name="text">
+         <string>Read ISRCs from CD</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

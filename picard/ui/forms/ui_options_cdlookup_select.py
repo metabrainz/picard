@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_cdlookup_select.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -41,6 +41,9 @@ class Ui_CDLookupOptionsPage(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.hboxlayout.addItem(spacerItem)
         self.gridlayout.addLayout(self.hboxlayout, 1, 0, 1, 1)
+        self.read_isrcs_from_disc = QtWidgets.QCheckBox(parent=self.rename_files)
+        self.read_isrcs_from_disc.setObjectName("read_isrcs_from_disc")
+        self.gridlayout.addWidget(self.read_isrcs_from_disc, 2, 0, 1, 1)
         self.vboxlayout.addWidget(self.rename_files)
         spacerItem1 = QtWidgets.QSpacerItem(161, 81, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
@@ -52,3 +55,5 @@ class Ui_CDLookupOptionsPage(object):
     def retranslateUi(self, CDLookupOptionsPage):
         self.rename_files.setTitle(_("CD Lookup"))
         self.cd_lookup_.setText(_("Default CD-ROM drive to use for lookups:"))
+        self.read_isrcs_from_disc.setToolTip(_("When enabled, ISRCs will be read from the CD during disc lookup. This may significantly slow down the disc read on some drives."))
+        self.read_isrcs_from_disc.setText(_("Read ISRCs from CD"))
