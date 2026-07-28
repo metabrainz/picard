@@ -24,7 +24,10 @@
 from operator import attrgetter
 
 from picard.config import get_config
-from picard.file import FILE_COMPARISON_WEIGHTS, File
+from picard.file import (
+    FILE_COMPARISON_WEIGHTS,
+    File,
+)
 from picard.i18n import (
     N_,
     gettext as _,
