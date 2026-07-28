@@ -61,14 +61,17 @@ class ExtensionPoint:
         self.__dict = defaultdict(list)
         _extension_points.append(self)
 
-    def register(self, module: str, item: Any) -> None:
+    @staticmethod
+    def _derive_key(module: str) -> str | None:
+        """Derive the internal storage key from a full module path."""
         if module.startswith(PLUGIN_MODULE_PREFIX):
-            name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
+            return module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
+        return None
+
+    def register(self, module: str, item: Any) -> None:
+        name = self._derive_key(module)
+        if name is not None:
             log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
-        else:
-            name = None
-            # uncomment to debug internal extensions loaded at startup
-            # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
         self.__dict[name].append(item)
 
     def unregister(self, module: str, match: Callable[[Any], bool]) -> None:
@@ -78,10 +81,7 @@ class ExtensionPoint:
             module: Full module path (same value passed to :meth:`register`).
             match: A callable receiving an item; return True to remove it.
         """
-        if module.startswith(PLUGIN_MODULE_PREFIX):
-            name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
-        else:
-            name = None
+        name = self._derive_key(module)
         if name in self.__dict:
             self.__dict[name] = [item for item in self.__dict[name] if not match(item)]
 
