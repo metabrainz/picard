@@ -334,6 +334,49 @@ class ImageListTest(PicardTestCase):
         with self.assertRaises(KeyError):
             next(to_be_saved(settings))
 
+    def test_to_be_saved_to_files(self):
+        def to_be_saved(settings):
+            return self.imagelist.to_be_saved_to_files(settings=settings)
+
+        settings = {
+            "save_images_to_files": True,
+            "save_only_one_front_image": False,
+        }
+        # save all but no images in list
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # save all, only one non-front image in the list
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
+
+        # save all, 2 images, one of them is a front image (b)
+        self.imagelist.append(self.images['b'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a'], self.images['b']])
+
+        # save only one front, 2 images, one of them is a front image (b)
+        settings["save_only_one_front_image"] = True
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # save only one front, 3 images, two of them have front type (b & c)
+        self.imagelist.append(self.images['c'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # save only one front, but no front image exists — falls back to all
+        self.imagelist = ImageList()
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
+
+        # 3 images, but save disabled
+        self.imagelist.append(self.images['b'])
+        self.imagelist.append(self.images['c'])
+        settings["save_images_to_files"] = False
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # settings is missing a setting
+        del settings["save_images_to_files"]
+        with self.assertRaises(KeyError):
+            next(to_be_saved(settings))
+
     def test_strip_front_images(self):
         self.imagelist.append(self.images['a'])
         self.imagelist.append(self.images['b'])
