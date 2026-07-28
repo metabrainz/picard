@@ -36,6 +36,8 @@ from picard.extension_points.script_variables import (
     get_plugin_variable_documentation,
     get_plugin_variable_names,
     register_script_variable,
+    unregister_all_script_variables,
+    unregister_script_variable,
 )
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
@@ -215,39 +217,119 @@ class TestExtensionPoints(PicardTestCase):
 
 
 class TestExtensionPointsScriptVariable(PicardTestCase):
-    @patch(
-        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
-    )
+    def setUp(self):
+        super().setUp()
+        patcher_ep = patch(
+            'picard.extension_points.script_variables.ext_point_script_variables',
+            ExtensionPoint(label='test_variables'),
+        )
+        patcher_config = patch('picard.extension_points.get_config', return_value=None)
+        self.ext_point = patcher_ep.start()
+        patcher_config.start()
+        self.addCleanup(patcher_ep.stop)
+        self.addCleanup(patcher_config.stop)
+
+    def _make_api(self, module='picard.plugins.testplugin', name='Test Plugin'):
+        api = MagicMock()
+        api._plugin_module.__name__ = module
+        api.module_path = module
+        api.manifest.name_i18n.return_value = name
+        return api
+
     def test_register_script_variable(self):
         register_script_variable('my_var1', 'some docs')
         register_script_variable('my_var2', 'other docs')
         self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
         self.assertEqual('some docs\n\nPlugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
 
-    @patch(
-        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
-    )
     def test_register_script_variable_no_docs(self):
         register_script_variable('my_var1')
         self.assertEqual({'my_var1'}, get_plugin_variable_names())
         self.assertEqual('Plugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
 
-    @patch(
-        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
-    )
     def test_register_script_variable_with_api(self):
-        api = MagicMock()
-        api._plugin_module.__name__ = 'test_plugin'
-        api.manifest.name_i18n.return_value = 'Test Plugin'
+        api = self._make_api()
         register_script_variable('my_var1', 'Some docs', api)
         register_script_variable('my_var2', api=api)
         self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
         self.assertEqual('Some docs\n\nPlugin: Test Plugin', get_plugin_variable_documentation('my_var1'))
         self.assertEqual('Plugin: Test Plugin', get_plugin_variable_documentation('my_var2'))
 
-    @patch(
-        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
-    )
     def test_register_script_variable_invalid_name(self):
         with self.assertRaises(ValueError):
             register_script_variable('my-var1')
+
+    def test_register_script_variable_deduplication(self):
+        """Registering the same variable twice from the same plugin should update, not duplicate."""
+        api = self._make_api()
+        register_script_variable('my_var', 'First docs', api)
+        register_script_variable('my_var', 'Updated docs', api)
+        self.assertEqual({'my_var'}, get_plugin_variable_names())
+        self.assertEqual('Updated docs\n\nPlugin: Test Plugin', get_plugin_variable_documentation('my_var'))
+
+    def test_register_same_variable_different_plugins(self):
+        """Same variable name from different plugins should both be kept."""
+        api1 = self._make_api('picard.plugins.plugin1', 'Plugin One')
+        api2 = self._make_api('picard.plugins.plugin2', 'Plugin Two')
+        register_script_variable('shared_var', 'Docs from plugin1', api1)
+        register_script_variable('shared_var', 'Docs from plugin2', api2)
+        self.assertEqual({'shared_var'}, get_plugin_variable_names())
+        self.assertEqual('Docs from plugin1\n\nPlugin: Plugin One', get_plugin_variable_documentation('shared_var'))
+
+    def test_unregister_script_variable(self):
+        """Unregistering a single variable should remove only that variable."""
+        api = self._make_api()
+        register_script_variable('var1', 'Docs 1', api)
+        register_script_variable('var2', 'Docs 2', api)
+        self.assertEqual({'var1', 'var2'}, get_plugin_variable_names())
+        unregister_script_variable('var1', api)
+        self.assertEqual({'var2'}, get_plugin_variable_names())
+
+    def test_unregister_script_variable_nonexistent(self):
+        """Unregistering a variable that doesn't exist should not raise."""
+        api = self._make_api()
+        unregister_script_variable('nonexistent', api)
+
+    def test_unregister_all_script_variables(self):
+        """Unregistering all variables should remove all variables from a plugin."""
+        api = self._make_api()
+        register_script_variable('var1', 'Docs 1', api)
+        register_script_variable('var2', 'Docs 2', api)
+        register_script_variable('var3', 'Docs 3', api)
+        self.assertEqual({'var1', 'var2', 'var3'}, get_plugin_variable_names())
+        unregister_all_script_variables(api)
+        self.assertEqual(set(), get_plugin_variable_names())
+
+    def test_unregister_all_does_not_affect_other_plugins(self):
+        """Unregistering all variables from one plugin should not affect another."""
+        api1 = self._make_api('picard.plugins.plugin1', 'Plugin One')
+        api2 = self._make_api('picard.plugins.plugin2', 'Plugin Two')
+        register_script_variable('var_from_p1', 'Docs', api1)
+        register_script_variable('var_from_p2', 'Docs', api2)
+        unregister_all_script_variables(api1)
+        self.assertEqual({'var_from_p2'}, get_plugin_variable_names())
+
+    def test_unregister_does_not_affect_other_plugins(self):
+        """Unregistering a variable name should only remove it from the calling plugin."""
+        api1 = self._make_api('picard.plugins.plugin1', 'Plugin One')
+        api2 = self._make_api('picard.plugins.plugin2', 'Plugin Two')
+        register_script_variable('shared_var', 'Docs from p1', api1)
+        register_script_variable('shared_var', 'Docs from p2', api2)
+        unregister_script_variable('shared_var', api1)
+        self.assertEqual({'shared_var'}, get_plugin_variable_names())
+        self.assertEqual('Docs from p2\n\nPlugin: Plugin Two', get_plugin_variable_documentation('shared_var'))
+
+    def test_extension_point_unregister_with_match(self):
+        """ExtensionPoint.unregister should remove only items matching the callable."""
+        ep = ExtensionPoint(label='test_unregister')
+        ep.register('picard.plugins.testplugin', ('a', 'data_a'))
+        ep.register('picard.plugins.testplugin', ('b', 'data_b'))
+        ep.register('picard.plugins.testplugin', ('c', 'data_c'))
+
+        uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        set_plugin_uuid(uuid, 'testplugin')
+        mock_plugin = create_mock_plugin(uuid)
+        PluginManager(Mock()).enable_plugin(mock_plugin)
+
+        ep.unregister('picard.plugins.testplugin', lambda item: item[0] == 'b')
+        self.assertEqual([('a', 'data_a'), ('c', 'data_c')], list(ep))

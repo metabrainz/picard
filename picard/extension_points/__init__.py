@@ -34,7 +34,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import defaultdict
-from collections.abc import Iterator
+from collections.abc import (
+    Callable,
+    Iterator,
+)
 from typing import Any
 import uuid
 
@@ -67,6 +70,20 @@ class ExtensionPoint:
             # uncomment to debug internal extensions loaded at startup
             # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
         self.__dict[name].append(item)
+
+    def unregister(self, module: str, match: Callable[[Any], bool]) -> None:
+        """Remove items registered by *module* for which *match* returns True.
+
+        Args:
+            module: Full module path (same value passed to :meth:`register`).
+            match: A callable receiving an item; return True to remove it.
+        """
+        if module.startswith(PLUGIN_MODULE_PREFIX):
+            name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
+        else:
+            name = None
+        if name in self.__dict:
+            self.__dict[name] = [item for item in self.__dict[name] if not match(item)]
 
     def unregister_module(self, name: str | None) -> None:
         try:

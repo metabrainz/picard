@@ -90,7 +90,11 @@ from picard.extension_points.metadata import (
 from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.plugin_tools_menu import register_tools_menu_action
 from picard.extension_points.script_functions import register_script_function
-from picard.extension_points.script_variables import register_script_variable
+from picard.extension_points.script_variables import (
+    register_script_variable,
+    unregister_all_script_variables,
+    unregister_script_variable,
+)
 from picard.file import File
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
@@ -501,6 +505,16 @@ class PluginApi:
     def plugin_id(self) -> str:
         """Plugin identifier (module name)."""
         return self._manifest.module_name
+
+    @property
+    def module_path(self) -> str:
+        """Full module path used for extension point registration.
+
+        This is the value that :class:`ExtensionPoint` uses internally to
+        group items by plugin (e.g. ``picard.plugins.myplugin``).
+        """
+        assert self._plugin_module is not None
+        return self._plugin_module.__name__
 
     @property
     def global_config(self) -> Config:
@@ -1257,6 +1271,35 @@ class PluginApi:
                 )
         """
         return register_script_variable(name, documentation, self)
+
+    def unregister_script_variable(self, name: str) -> None:
+        """Unregister a single script variable previously registered by this plugin.
+
+        Args:
+            name: The variable name to unregister.
+
+        Example:
+            def enable(api):
+                api.register_script_variable("my_var", "My variable")
+                # Later, when the variable is no longer needed:
+                api.unregister_script_variable("my_var")
+        """
+        return unregister_script_variable(name, self)
+
+    def unregister_all_script_variables(self) -> None:
+        """Unregister all script variables registered by this plugin.
+
+        This is useful when a plugin needs to re-register variables that
+        depend on configuration. Call this before re-registering to avoid
+        stale entries.
+
+        Example:
+            def on_config_changed(api):
+                api.unregister_all_script_variables()
+                for var in get_current_variables():
+                    api.register_script_variable(var.name, var.docs)
+        """
+        return unregister_all_script_variables(self)
 
     # Menu actions
     def register_album_action(self, action: type[BaseAction]) -> None:
