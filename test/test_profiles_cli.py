@@ -21,6 +21,7 @@
 from io import StringIO
 import os
 from types import SimpleNamespace
+import unittest
 from unittest.mock import patch
 
 from test.test_config import TestPicardConfigCommon
@@ -38,6 +39,7 @@ from picard.config import (
     Option,
     TextOption,
 )
+from picard.profiles.exporter import export_available
 
 
 def _make_output():
@@ -92,6 +94,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('Classical', out)
         self.assertIn('disabled', out)
 
+    @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_export_to_stdout(self, mock_get_config):
         mock_get_config.return_value = self.config
@@ -109,6 +112,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('My Rock Profile', out)
         self.assertIn('rename_files', out)
 
+    @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_export_to_file(self, mock_get_config):
         mock_get_config.return_value = self.config
@@ -126,6 +130,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertIn('[profile]', content)
         self.assertIn('My Rock Profile', content)
 
+    @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_export_profile_not_found(self, mock_get_config):
         mock_get_config.return_value = self.config
@@ -203,6 +208,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Invalid TOML', stderr.getvalue())
 
+    @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_export_backup_mode(self, mock_get_config):
         mock_get_config.return_value = self.config
@@ -222,6 +228,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('secret', mock_out.getvalue())
 
+    @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_import_round_trip(self, mock_get_config):
         """Test that export → import produces a valid profile."""

@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+import unittest
 
 
 if sys.version_info < (3, 11):
@@ -37,9 +38,13 @@ from picard.config import (
     TextOption,
 )
 from picard.const.cover_processing import ImageFormat
-from picard.profiles.exporter import export_profile
+from picard.profiles.exporter import (
+    export_available,
+    export_profile,
+)
 
 
+@unittest.skipUnless(export_available, "profile export requires tomlkit")
 class TestProfileExport(TestPicardConfigCommon):
     def setUp(self):
         super().setUp()

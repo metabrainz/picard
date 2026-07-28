@@ -34,7 +34,10 @@ import os
 
 from picard.cli.base import ExitCode
 from picard.config import get_config
-from picard.profiles.exporter import export_profile
+from picard.profiles.exporter import (
+    export_available,
+    export_profile,
+)
 from picard.profiles.importer import (
     ProfileImportError,
     import_profile,
@@ -153,6 +156,10 @@ def cmd_list(output):
 
 def cmd_export(args, output):
     """Export a profile to a TOML file."""
+    if not export_available:
+        output.error("Export unavailable, tomlkit is not installed")
+        return ExitCode.ERROR
+
     config = get_config()
 
     resolve = _resolve_profile_query(config, args.profile)

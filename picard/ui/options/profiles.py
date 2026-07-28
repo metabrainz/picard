@@ -59,7 +59,10 @@ from picard.profile import (
     profile_groups_values,
     setting_profile_key,
 )
-from picard.profiles.exporter import export_profile
+from picard.profiles.exporter import (
+    export_available,
+    export_profile,
+)
 from picard.profiles.importer import (
     ProfileImportError,
     import_profile,
@@ -162,6 +165,9 @@ class ProfilesOptionsPage(OptionsPage):
         self.export_profile_button = QtWidgets.QPushButton(_("Export"))
         self.export_profile_button.setToolTip(_("Export the profile to a file"))
         self.export_profile_button.clicked.connect(self.export_profile)
+        if not export_available:
+            self.export_profile_button.setEnabled(False)
+            self.export_profile_button.setToolTip(_("Export unavailable, tomlkit is not installed"))
         self.ui.profile_list_buttonbox.addButton(
             self.export_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
@@ -875,7 +881,7 @@ class ProfilesOptionsPage(OptionsPage):
         state = self.current_profile_id is not None
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
-        self.export_profile_button.setEnabled(state)
+        self.export_profile_button.setEnabled(state and export_available)
 
 
 register_options_page(ProfilesOptionsPage)

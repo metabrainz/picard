@@ -15,7 +15,6 @@ For development or building from source, follow the instructions below.
 * [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [pygit2 1.18.2 or newer](https://www.pygit2.org/) - For plugin system
-* [tomlkit 0.12.4 or newer](https://github.com/python-poetry/tomlkit) - For profile exports
 * gettext (`msgfmt`):
   * **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add to PATH
   * **Linux:** `sudo apt install gettext` (Ubuntu/Debian) or equivalent
@@ -40,6 +39,7 @@ For development or building from source, follow the instructions below.
 * [Markdown 3.2 or newer](https://python-markdown.github.io/install/) - For enhanced internal documentation (scripting, plugins, etc.)
 * [PyJWT 2.0 or newer](https://pyjwt.readthedocs.io/) - For "add cluster as release" functionality
 * [charset-normalizer 3.3 or newer](https://pypi.org/project/charset-normalizer/) - For character encoding detection in CD ripping log files
+* [tomlkit 0.12.4 or newer](https://github.com/python-poetry/tomlkit) - For profile exports
 * [chromaprint](https://acoustid.org/chromaprint) - For audio fingerprinting (AcoustID), allows identifying files by their actual audio content
 * PyQt6 multimedia support - For embedded audio player (Linux: `python3-pyqt6.qtmultimedia libqt6multimedia6`)
 
