@@ -49,7 +49,10 @@ from picard import (
 )
 from picard.browser import addrelease
 from picard.config import get_config
-from picard.const import BROWSER_INTEGRATION_LOCALIP
+from picard.const import (
+    BROWSER_INTEGRATION_LOCALIP,
+    BROWSER_INTEGRATION_MAX_PORT,
+)
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
@@ -105,7 +108,7 @@ class BrowserIntegration(QtCore.QObject):
 
         LISTEN_ALL = '0.0.0.0'
         MIN_PORT = config.setting["browser_integration_port"]
-        MAX_PORT = 65535
+        MAX_PORT = BROWSER_INTEGRATION_MAX_PORT
 
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
@@ -113,7 +116,7 @@ class BrowserIntegration(QtCore.QObject):
             host_address = LISTEN_ALL
 
         try:
-            for port in range(MIN_PORT, MAX_PORT):
+            for port in range(MIN_PORT, MAX_PORT + 1):
                 try:
                     self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
                 except OSError:

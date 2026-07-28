@@ -57,6 +57,10 @@ from picard.config_upgrade import (
     upgrade_settings,
     write_option,
 )
+from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
+    BROWSER_INTEGRATION_MIN_PORT,
+)
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_REPLACEMENT,
@@ -817,3 +821,11 @@ def convert_release_type_scores_to_lists(settings):
     preferred.sort(key=lambda x: x[1], reverse=True)
     write_option(settings, 'preferred_release_types', [t for t, _s in preferred])
     write_option(settings, 'discouraged_release_types', discouraged)
+
+
+@upgrade_settings('3.0.0b9')
+def clamp_browser_integration_port(settings):
+    def _clamp_port(value):
+        return max(BROWSER_INTEGRATION_MIN_PORT, min(BROWSER_INTEGRATION_MAX_PORT, int(value)))
+
+    upgrade_option_value(settings, 'browser_integration_port', _clamp_port)

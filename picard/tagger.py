@@ -649,7 +649,7 @@ class Tagger(QtWidgets.QApplication):
 
     def mb_login(self, callback, parent=None):
         oauth_manager = self.webservice.oauth_manager
-        scopes = 'profile tag rating collection submit_isrc submit_barcode'
+        scopes = 'profile musicbrainz:tag musicbrainz:rating musicbrainz:collection musicbrainz:submit_isrc musicbrainz:submit_barcode'
         authorization_url = oauth_manager.get_authorization_url(
             scopes, partial(self.on_mb_authorization_finished, callback)
         )
