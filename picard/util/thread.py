@@ -34,7 +34,12 @@ import sys
 import threading
 import time
 import traceback
-from typing import Any
+from typing import (
+    Any,
+    ParamSpec,
+    Protocol,
+    TypeVar,
+)
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -49,8 +54,16 @@ from picard import (
 )
 
 
+P = ParamSpec('P')
+R = TypeVar('R')
+
+
+class Callback(Protocol[R]):
+    def __call__(self, result: R | None = None, error: BaseException | None = None) -> None: ...
+
+
 class ProxyToMainEvent(QEvent):
-    def __init__(self, func: Callable, *args: Any, **kwargs: Any):
+    def __init__(self, func: Callable[P, Any], *args: P.args, **kwargs: P.kwargs):
         super().__init__(QEvent.Type.User)
         self.func = func
         self.args = args
@@ -84,7 +97,11 @@ class TaskCounter:
 
 class Runnable(QRunnable):
     def __init__(
-        self, func: Callable, next_func: Callable, task_counter: TaskCounter | None = None, traceback: bool = True
+        self,
+        func: Callable[[], R],
+        next_func: Callback[R],
+        task_counter: TaskCounter | None = None,
+        traceback: bool = True,
     ):
         super().__init__()
         self.func = func
@@ -107,8 +124,8 @@ class Runnable(QRunnable):
 
 
 def run_task(
-    func: Callable,
-    next_func: Callable | None = None,
+    func: Callable[[], R],
+    next_func: Callback[R] | None = None,
     priority: int = 0,
     thread_pool: QThreadPool | None = None,
     task_counter: TaskCounter | None = None,
@@ -141,11 +158,11 @@ def run_task(
     thread_pool.start(Runnable(func, next_func, task_counter, traceback), priority)
 
 
-def to_main(func: Callable, *args: Any, **kwargs: Any) -> None:
+def to_main(func: Callable[P, Any], *args: P.args, **kwargs: P.kwargs) -> None:
     QCoreApplication.postEvent(QCoreApplication.instance(), ProxyToMainEvent(func, *args, **kwargs))
 
 
-def to_main_with_blocking(func: Callable, *args: Any, **kwargs: Any) -> None:
+def to_main_with_blocking(func: Callable[P, Any], *args: P.args, **kwargs: P.kwargs) -> None:
     """Executes a command as a user-defined event, and waits until the event has
     closed before returning.  Note that any new threads started while processing
     the event will not be considered when releasing the blocking of the function.

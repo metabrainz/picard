@@ -196,7 +196,7 @@ class CoverArtImageProcessing:
         if coverartimage.can_be_processed:
             run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
 
-            def next_func(result, error=None):
+            def next_func(result=None, error=None):
                 callback(coverartimage, error)
 
             thread.run_task(run_processors, next_func=next_func, task_counter=self.task_counter)
