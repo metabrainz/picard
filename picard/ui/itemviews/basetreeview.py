@@ -270,6 +270,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
             plugin_actions = list(ext_point_clusterlist_actions)
         elif isinstance(obj, File):
+            lookup_by_menu = QtWidgets.QMenu(_("Lookup by…"), menu)
+            lookup_by_menu.setIcon(icontheme.lookup('system-search'))
+            lookup_by_menu.addAction(self.window.action_map[MainAction.LOOKUP_ISRC])
             add_actions(
                 MainAction.VIEW_INFO if can_view_info else None,
                 MainAction.PLAY if can_play else None,
@@ -282,6 +285,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.AUTOTAG,
                 MainAction.ANALYZE,
                 MainAction.TRACK_SEARCH,
+                lookup_by_menu,
                 MainAction.GENERATE_FINGERPRINTS,
             )
             plugin_actions = list(ext_point_file_actions)

@@ -86,6 +86,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.plugin_tools_menu import (
     ext_point_plugin_tools_items,
     signaler,
@@ -127,7 +128,9 @@ from picard.util.cdrom import (
     discid,
     get_cdrom_drives,
 )
+from picard.util.isrc import valid_isrc
 from picard.util.readthedocs import ReadTheDocs
+from picard.webservice.api_helpers import escape_lucene_query
 
 from picard.ui import (
     PicardDialog,
@@ -724,6 +727,35 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog = ISRCSubmitDialog(details, parent=self)
         if dialog.exec():
             manager.submit(isrcs_to_submit=dialog.get_submitted_isrcs())
+
+    def _on_lookup_isrc(self):
+        objects = self.selected_objects
+        if not objects:
+            return
+        # Find the first valid ISRC from selected files
+        source_file = None
+        isrc = None
+        for obj in objects:
+            if hasattr(obj, 'metadata'):
+                for value in obj.metadata.getall('isrc'):
+                    isrc = valid_isrc(value)
+                    if isrc:
+                        source_file = obj
+                        break
+            if isrc:
+                break
+        else:
+            log.debug_if(DebugOpt.ISRC, "ISRC lookup: no ISRC found in selected files")
+            return
+
+        log.debug_if(
+            DebugOpt.ISRC,
+            "ISRC lookup: searching for ISRC %s",
+            isrc,
+        )
+        dialog = TrackSearchDialog(self, force_advanced_search=True, matched_file=source_file)
+        dialog.search(f'isrc:{escape_lucene_query(isrc)}')
+        dialog.exec()
 
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
@@ -1846,6 +1878,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.SIMILAR_ITEMS_SEARCH, is_file or is_cluster)
         self.enable_action(MainAction.TRACK_SEARCH, is_file)
         self.enable_action(MainAction.ALBUM_SEARCH, is_cluster)
+        self.enable_action(MainAction.LOOKUP_ISRC, have_files)
         self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
 
     def enable_action(self, action_id, enabled):

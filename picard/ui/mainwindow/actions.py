@@ -250,6 +250,15 @@ def _create_browser_lookup_action(parent):
     return action
 
 
+@add_action(MainAction.LOOKUP_ISRC)
+def _create_lookup_isrc_action(parent):
+    action = QtGui.QAction(_("Lookup by &ISRC"), parent)
+    action.setStatusTip(_("Lookup selected item by ISRC"))
+    action.setEnabled(False)
+    action.triggered.connect(parent._on_lookup_isrc)
+    return action
+
+
 @add_action(MainAction.SUBMIT_CLUSTER)
 def _create_submit_cluster_action(parent):
     if addrelease.is_available():
