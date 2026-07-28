@@ -35,8 +35,9 @@ import urllib.parse
 from picard import log
 from picard.config import get_config
 from picard.const import (
-    MUSICBRAINZ_OAUTH_CLIENT_ID,
-    MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+    METABRAINZ_OAUTH_CLIENT_ID,
+    METABRAINZ_OAUTH_CLIENT_SECRET,
+    METABRAINZ_OAUTH_HOST,
 )
 from picard.util import (
     build_qurl,
@@ -83,14 +84,6 @@ class OAuthManager(object):
     def persist(self):
         config = get_config()
         return config.persist
-
-    @property
-    def host(self):
-        return self.setting['server_host']
-
-    @property
-    def port(self):
-        return self.setting['server_port']
 
     @property
     def refresh_token(self):
@@ -166,14 +159,14 @@ class OAuthManager(object):
     def _revoke_token(self, token, callback):
         params = {
             'token': token,
-            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
-            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            'client_id': METABRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': METABRAINZ_OAUTH_CLIENT_SECRET,
         }
         self.webservice.post_url(
             url=self.url(path="/oauth2/revoke"),
             data=self._query_data(params),
             handler=partial(self._on_revoke_token_finished, callback),
-            mblogin=True,
+            mblogin=False,
             priority=True,
             important=True,
             request_mimetype='application/x-www-form-urlencoded',
@@ -217,8 +210,10 @@ class OAuthManager(object):
 
     def url(self, path=None, params=None):
         return build_qurl(
-            self.host, self.port, path=path,
-            queryargs=params
+            METABRAINZ_OAUTH_HOST,
+            443,
+            path=path,
+            queryargs=params,
         )
 
     def _create_code_challenge(self):
@@ -248,10 +243,10 @@ class OAuthManager(object):
         except KeyError:
             raise OAuthInvalidStateError
 
-    def get_authorization_url(self, scopes, callback: callable):
+    def get_authorization_url(self, scopes, callback):
         params = {
             'response_type': 'code',
-            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'client_id': METABRAINZ_OAUTH_CLIENT_ID,
             'redirect_uri': self.redirect_uri,
             'code_challenge_method': 'S256',
             'code_challenge': self._create_code_challenge(),
@@ -281,14 +276,14 @@ class OAuthManager(object):
         params = {
             'grant_type': 'refresh_token',
             'refresh_token': self.refresh_token,
-            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
-            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            'client_id': METABRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': METABRAINZ_OAUTH_CLIENT_SECRET,
         }
         self.webservice.post_url(
             url=self.url(path="/oauth2/token"),
             data=self._query_data(params),
             handler=partial(self.on_refresh_access_token_finished, callback),
-            mblogin=True,
+            mblogin=False,
             priority=True,
             important=True,
             request_mimetype='application/x-www-form-urlencoded',
@@ -316,8 +311,8 @@ class OAuthManager(object):
         params = {
             'grant_type': 'authorization_code',
             'code': authorization_code,
-            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
-            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+            'client_id': METABRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': METABRAINZ_OAUTH_CLIENT_SECRET,
             'redirect_uri': self.redirect_uri,
             'code_verifier': self.__code_verifier,
         }
@@ -325,7 +320,7 @@ class OAuthManager(object):
             url=self.url(path="/oauth2/token"),
             data=self._query_data(params),
             handler=partial(self.on_exchange_authorization_code_finished, scopes, callback),
-            mblogin=True,
+            mblogin=False,
             priority=True,
             important=True,
             request_mimetype='application/x-www-form-urlencoded',
@@ -366,7 +361,7 @@ class OAuthManager(object):
                 log.error("OAuth: username fetching failed: %s", data)
                 error_msg = self._extract_error_description(http, data)
             else:
-                self.username = data['sub']
+                self.username = data.get('username', data['sub'])
                 log.debug("OAuth: got username %s", self.username)
                 successful = True
         except Exception as e:

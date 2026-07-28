@@ -60,8 +60,10 @@ from picard.config_upgrade import (
     upgrade_to_v2_6_0_dev_1,
     upgrade_to_v2_8_0_dev_2,
     upgrade_to_v2_12_3_dev_1,
+    upgrade_to_v2_14_0_dev_2,
 )
 from picard.const import (
+    BROWSER_INTEGRATION_MIN_PORT,
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
 )
@@ -379,3 +381,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             self.config.setting['replace_dir_separator'] = os.altsep
             upgrade_to_v2_12_3_dev_1(self.config)
             self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+    def test_upgrade_to_v2_14_0_dev_2_unchanged(self):
+        IntOption('setting', 'browser_integration_port', BROWSER_INTEGRATION_MIN_PORT)
+        self.config.setting['browser_integration_port'] = 8000
+        upgrade_to_v2_14_0_dev_2(self.config)
+        self.assertEqual(8000, self.config.setting['browser_integration_port'])
+
+    def test_upgrade_to_v2_14_0_dev_2_low(self):
+        IntOption('setting', 'browser_integration_port', BROWSER_INTEGRATION_MIN_PORT)
+        self.config.setting['browser_integration_port'] = 7999
+        upgrade_to_v2_14_0_dev_2(self.config)
+        self.assertEqual(8000, self.config.setting['browser_integration_port'])
+
+    def test_upgrade_to_v2_14_0_dev_2_high(self):
+        IntOption('setting', 'browser_integration_port', BROWSER_INTEGRATION_MIN_PORT)
+        self.config.setting['browser_integration_port'] = 8021
+        upgrade_to_v2_14_0_dev_2(self.config)
+        self.assertEqual(8020, self.config.setting['browser_integration_port'])
