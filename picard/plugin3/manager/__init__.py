@@ -43,6 +43,22 @@ from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.plugin3.manager.clean import PluginCleanupManager
+from picard.plugin3.manager.errors import (  # noqa: F401
+    PluginAlreadyInstalledError,
+    PluginBlacklistedError,
+    PluginCommitPinnedError,
+    PluginDirtyError,
+    PluginManagerError,
+    PluginManifestError,
+    PluginManifestInvalidError,
+    PluginManifestNotFoundError,
+    PluginManifestReadError,
+    PluginNoSourceError,
+    PluginNoUUIDError,
+    PluginRefNotFoundError,
+    PluginRefSwitchError,
+    PluginUUIDConflictError,
+)
 from picard.plugin3.manager.find import PluginFinder
 from picard.plugin3.manager.install import PluginInstaller
 from picard.plugin3.manager.lifecycle import PluginLifecycleManager
@@ -63,30 +79,6 @@ from picard.plugin3.plugin_metadata import (
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
-
-
-try:
-    from markdown import markdown as render_markdown  # type: ignore[unresolved-import]
-except ImportError:
-    render_markdown = None
-
-
-from picard.plugin3.manager.errors import (  # noqa: F401
-    PluginAlreadyInstalledError,
-    PluginBlacklistedError,
-    PluginCommitPinnedError,
-    PluginDirtyError,
-    PluginManagerError,
-    PluginManifestError,
-    PluginManifestInvalidError,
-    PluginManifestNotFoundError,
-    PluginManifestReadError,
-    PluginNoSourceError,
-    PluginNoUUIDError,
-    PluginRefNotFoundError,
-    PluginRefSwitchError,
-    PluginUUIDConflictError,
-)
 
 
 class PluginManager(QObject):
@@ -810,19 +802,6 @@ class PluginManager(QObject):
         if not plugin.manifest:
             return None
         return plugin.manifest._data.get('homepage')
-
-    def long_description_as_html(self, plugin):
-        """Get plugin long description converted from markdown to HTML."""
-        if not plugin.manifest:
-            return None
-
-        try:
-            description = plugin.manifest.long_description_i18n()
-            if description and render_markdown is not None:
-                return render_markdown(description, output_format='html')
-            return description
-        except (AttributeError, Exception):
-            return None
 
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
