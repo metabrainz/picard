@@ -471,7 +471,7 @@ class WebService(QtCore.QObject):
             reply.abort()
 
     def _start_request(self, request):
-        if request.mblogin and request.path != "/oauth2/token":
+        if request.mblogin:
             self.oauth_manager.get_access_token(partial(self._send_request, request))
         else:
             self._send_request(request)
