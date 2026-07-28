@@ -114,5 +114,6 @@ class MainAction(str, Enum):
     SAVE_SESSION_AS = 'save_session_action'
     SAVE_SESSION = 'quick_save_session_action'
     LOAD_SESSION = 'load_session_action'
+    LOOKUP_ISRC = 'lookup_isrc_action'
     NEW_SESSION = 'close_session_action'
     CLEAR_RECENT_SESSIONS = 'clear_recent_sessions_action'

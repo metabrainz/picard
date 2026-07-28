@@ -237,6 +237,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     MainAction.PLAY_FILE_EXTERNAL,
                     MainAction.OPEN_FOLDER,
                     MainAction.TRACK_SEARCH,
+                    self.window.create_lookup_by_menu(menu),
                 )
                 # Extend with file actions, avoiding duplicates
                 file_actions = list(ext_point_file_actions)
@@ -282,6 +283,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.AUTOTAG,
                 MainAction.ANALYZE,
                 MainAction.TRACK_SEARCH,
+                self.window.create_lookup_by_menu(menu),
                 MainAction.GENERATE_FINGERPRINTS,
             )
             plugin_actions = list(ext_point_file_actions)
