@@ -105,6 +105,24 @@ class ImageList(MutableSequence['CoverArtImage']):
                 else:
                     yield image
 
+    def to_be_saved_to_files(self, settings: SettingConfigSection | None = None) -> Iterator['CoverArtImage']:
+        """Generator returning images to be saved as external files according to
+        passed settings or config.setting.
+
+        When save_only_one_front_image is enabled, yields only the first front
+        image. Falls back to yielding all images if no front image is found.
+        """
+        if settings is None:
+            config = get_config()
+            settings = config.setting
+        if settings['save_images_to_files']:
+            if settings['save_only_one_front_image']:
+                front = self.get_front_image()
+                if front:
+                    yield front
+                    return
+            yield from self
+
     def strip_front_images(self) -> None:
         self._images = [image for image in self._images if not image.is_front_image()]
         self._dirty = True

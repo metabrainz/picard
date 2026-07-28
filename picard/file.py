@@ -770,15 +770,7 @@ class File(MetadataItem):
         if not metadata.images:
             return
         counters = Counter()
-        images = []
-        config = get_config()
-        if config.setting['save_only_one_front_image']:
-            front = metadata.images.get_front_image()
-            if front:
-                images.append(front)
-        if not images:
-            images = metadata.images
-        for image in images:
+        for image in metadata.images.to_be_saved_to_files():
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename, config):

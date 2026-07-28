@@ -133,15 +133,26 @@ class CoverArt:
             self._queue_generator = None
             self.image_processing.wait_for_processing()
 
+    def _all_images_satisfied(self, config=None) -> bool:
+        """Check if all configured image needs have been met.
+
+        Returns True if no more images need to be downloaded, considering
+        both embedding and external file settings symmetrically.
+        """
+        if not self.front_image_found:
+            return False
+        if config is None:
+            config = get_config()
+        need_more_for_tags = config.setting['save_images_to_tags'] and not config.setting['embed_only_one_front_image']
+        need_more_for_files = config.setting['save_images_to_files'] and not config.setting['save_only_one_front_image']
+        return not need_more_for_tags and not need_more_for_files
+
     def _start_queue(self) -> Generator[None, None, None]:
         """Creates a generator that processes all cover art providers.
         The generator will yield if async providers are loading data, otherwise
         it iterates over queued images and processes them.
         """
         config = get_config()
-        save_images_to_tags = config.setting['save_images_to_tags']
-        save_images_to_files = config.setting['save_images_to_files']
-        embed_only_one_front_image = config.setting['embed_only_one_front_image']
 
         while True:
             if self.album.id not in self.album.tagger.albums:
@@ -149,13 +160,7 @@ class CoverArt:
                 log.debug(f'Cover art processing aborted, {self.album} got removed')
                 return
 
-            if (
-                self.front_image_found
-                and save_images_to_tags
-                and not save_images_to_files
-                and embed_only_one_front_image
-            ):
-                # no need to continue
+            if self._all_images_satisfied(config):
                 return
 
             while self._queue_empty():
