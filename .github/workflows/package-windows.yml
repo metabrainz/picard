@@ -43,8 +43,8 @@ jobs:
       env:
         DISCID_VERSION: 0.6.4
         DISCID_SHA256SUM: 330199495d71f71251e91eb0b4e3103b6c663fea09ffc9fd3e5108d48e0452c8
-        FPCALC_VERSION: 1.5.1
-        FPCALC_SHA256SUM: 36b478e16aa69f757f376645db0d436073a42c0097b6bb2677109e7835b59bbc
+        FPCALC_VERSION: 1.6.1
+        FPCALC_SHA256SUM: 735d6182b38e9f364b84ce6f4ccd682c75e2851de89735711d6b762d12b92a4e
     - name: Install gettext
       run: |
         & .\scripts\package\win-setup-gettext.ps1 `
