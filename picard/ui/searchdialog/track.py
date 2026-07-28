@@ -24,7 +24,7 @@
 from operator import attrgetter
 
 from picard.config import get_config
-from picard.file import FILE_COMPARISON_WEIGHTS
+from picard.file import FILE_COMPARISON_WEIGHTS, File
 from picard.i18n import (
     N_,
     gettext as _,
@@ -59,7 +59,7 @@ from picard.ui.searchdialog import (
 class TrackSearchDialog(SearchDialog):
     dialog_header_state = 'tracksearchdialog_header_state'
 
-    def __init__(self, parent, force_advanced_search=None):
+    def __init__(self, parent, force_advanced_search: bool | None = None, matched_file: File | None = None):
         self.columns = Columns(
             (
                 Column(N_("Name"), 'title', width=150),
@@ -88,27 +88,27 @@ class TrackSearchDialog(SearchDialog):
             search_type='track',
             force_advanced_search=force_advanced_search,
         )
-        self.file_ = None
+        self._file = matched_file
 
-    def search(self, text):
+    def search(self, query: str):
         """Perform search using query provided by the user."""
-        self.retry_params = Retry(self.search, text)
-        self.search_box_text(text)
+        self.retry_params = Retry(self.search, query)
+        self.search_box_text(query)
         self.show_progress()
         config = get_config()
         self.tagger.mb_api.find_tracks(
             self.handle_reply,
-            query=text,
+            query=query,
             search=True,
             advanced_search=self.use_advanced_search,
             limit=config.setting['query_limit'],
         )
 
-    def show_similar_tracks(self, file_):
+    def show_similar_tracks(self, matched_file: File):
         """Perform search using existing metadata information
         from the file as query."""
-        self.file_ = file_
-        metadata = file_.orig_metadata
+        self._file = matched_file
+        metadata = matched_file.orig_metadata
         query = {
             'track': metadata['title'],
             'artist': metadata['artist'],
@@ -141,8 +141,8 @@ class TrackSearchDialog(SearchDialog):
             self.no_results_found()
             return
 
-        if self.file_:
-            metadata = self.file_.orig_metadata
+        if self._file:
+            metadata = self._file.orig_metadata
             candidates = (compare_to_track(metadata, track, FILE_COMPARISON_WEIGHTS) for track in tracks)
             tracks = (result.track for result in sort_by_similarity(candidates))
 
@@ -192,7 +192,7 @@ class TrackSearchDialog(SearchDialog):
         recording_id = track['musicbrainz_recordingid']
         album_id = track['musicbrainz_albumid']
         releasegroup_id = track['musicbrainz_releasegroupid']
-        file = self.file_
+        file = self._file
 
         self.tagger.get_release_group_by_id(releasegroup_id).loaded_albums.add(album_id)
         if file:
@@ -213,7 +213,7 @@ class TrackSearchDialog(SearchDialog):
 
     def _load_selection_nat(self, track, node):
         recording_id = track['musicbrainz_recordingid']
-        file = self.file_
+        file = self._file
 
         if file:
             # Search is performed for a file.
