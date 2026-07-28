@@ -186,7 +186,7 @@ def create_common_columns() -> tuple[Column, ...]:
     filetype = make_field_column(N_("File Type"), '~format', width=120, column_group=ColumnGroup.FILE)
 
     # File paths
-    file_directory = make_field_column(N_("File Directory"), '~dirname', column_group=ColumnGroup.FILE)
+    file_directory = make_field_column(N_("Directory"), '~dirname', column_group=ColumnGroup.FILE)
     file_name = make_field_column(N_("File Name"), '~filename', column_group=ColumnGroup.FILE)
     file_extension = make_field_column(N_("File Extension"), '~extension', column_group=ColumnGroup.FILE)
 

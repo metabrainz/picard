@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 3.0.0b9\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5737,7 +5737,7 @@ msgid "File Type"
 msgstr ""
 
 #: picard/ui/itemviews/columns.py:189
-msgid "File Directory"
+msgid "Directory"
 msgstr ""
 
 #: picard/ui/itemviews/columns.py:191
