@@ -22,7 +22,7 @@ New-Item -Name .\build -ItemType Directory -ErrorAction Ignore
 
 $ArchiveFile = ".\build\libdiscid.zip"
 Write-Output "Downloading libdiscid $DiscidVersion to $ArchiveFile..."
-DownloadFile -Url "http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DiscidVersion-win.zip" `
+DownloadFile -Url "https://data.metabrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DiscidVersion-win.zip" `
   -FileName $ArchiveFile
 VerifyHash -FileName $ArchiveFile -Sha256Sum $DiscidSha256Sum
 Expand-Archive -Path $ArchiveFile -DestinationPath .\build\libdiscid -Force
