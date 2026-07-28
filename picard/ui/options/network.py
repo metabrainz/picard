@@ -28,6 +28,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
+from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
+    BROWSER_INTEGRATION_MIN_PORT,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -53,7 +57,7 @@ class NetworkOptionsPage(OptionsPage):
         TextOption('setting', 'proxy_username', ''),
         TextOption('setting', 'proxy_password', ''),
         BoolOption('setting', 'browser_integration', True),
-        IntOption('setting', 'browser_integration_port', 8000),
+        IntOption('setting', 'browser_integration_port', BROWSER_INTEGRATION_MIN_PORT),
         BoolOption('setting', 'browser_integration_localhost_only', True),
         IntOption('setting', 'network_transfer_timeout_seconds', 30),
     ]
@@ -62,6 +66,8 @@ class NetworkOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
+        self.ui.browser_integration_port.setMinimum(BROWSER_INTEGRATION_MIN_PORT)
+        self.ui.browser_integration_port.setMaximum(BROWSER_INTEGRATION_MAX_PORT)
 
     def load(self):
         config = get_config()

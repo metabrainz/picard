@@ -40,6 +40,8 @@ from picard.config import (
     TextOption,
 )
 from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
+    BROWSER_INTEGRATION_MIN_PORT,
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
 )
@@ -489,6 +491,13 @@ def upgrade_to_v2_12_3_dev_1(config):
     config.setting['replace_dir_separator'] = replace_dir_separator
 
 
+def upgrade_to_v2_14_0_dev_2(config):
+    """Limit "browser_integration_port" to range 8000-8020"""
+    port = config.setting['browser_integration_port']
+    port = max(BROWSER_INTEGRATION_MIN_PORT, min(BROWSER_INTEGRATION_MAX_PORT, port))
+    config.setting['browser_integration_port'] = port
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -536,4 +545,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
     cfg.register_upgrade_hook(upgrade_to_v2_10_1_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_12_3_dev_1)
+    cfg.register_upgrade_hook(upgrade_to_v2_14_0_dev_2)
     cfg.run_upgrade_hooks(log.debug)
