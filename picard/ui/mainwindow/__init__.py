@@ -757,6 +757,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.search(f'isrc:{escape_lucene_query(isrc)}')
         dialog.exec()
 
+    def create_lookup_by_menu(self, parent):
+        """Create a 'Lookup by…' submenu for use in context menus."""
+        lookup_menu = QtWidgets.QMenu(_("Lookup by…"), parent)
+        lookup_menu.setIcon(icontheme.lookup('system-search'))
+        lookup_menu.addAction(self.action_map[MainAction.LOOKUP_ISRC])
+        return lookup_menu
+
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
 
