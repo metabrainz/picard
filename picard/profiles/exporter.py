@@ -36,7 +36,14 @@ from picard.profile import is_plugin_profile_key
 from picard.profiles import PROFILE_FORMAT_VERSION
 from picard.script import get_file_naming_script_presets
 
-import tomlkit
+
+tomlkit = None
+try:
+    import tomlkit
+
+    export_available = True
+except ImportError:
+    export_available = False
 
 
 # Options that are represented as scripts in the TOML format
@@ -71,6 +78,7 @@ def export_profile(
     Returns:
         A TOML-formatted string representing the exported profile.
     """
+    assert tomlkit, "tomlkit unavailable"
     all_settings = config.profiles['user_profile_settings']
     profile_settings = all_settings.get(profile_id, {})
 
@@ -137,6 +145,7 @@ def export_profile(
 
 def _export_value(value):
     """Convert an option value to a TOML-compatible type."""
+    assert tomlkit, "tomlkit unavailable"
     if isinstance(value, Enum):
         return value.value
     if isinstance(value, dict):
@@ -150,6 +159,7 @@ def _export_value(value):
 
 def _export_scripts(doc, config, profile_settings, mode):
     """Export naming and tagger scripts into the TOML document."""
+    assert tomlkit, "tomlkit unavailable"
     scripts_added = False
 
     # File naming script
@@ -222,6 +232,7 @@ def _resolve_naming_script(config, script_id: str) -> tuple[dict | None, bool]:
     return False
 
 
-def _multiline_string(text: str) -> tomlkit.items.String:
+def _multiline_string(text: str) -> 'tomlkit.items.String':
     """Create a TOML multiline literal string for script content."""
+    assert tomlkit, "tomlkit unavailable"
     return tomlkit.string(text, multiline=True, literal=True)

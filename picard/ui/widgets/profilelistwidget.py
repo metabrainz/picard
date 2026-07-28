@@ -35,6 +35,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.profiles.exporter import export_available
 from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
@@ -59,6 +60,7 @@ class ProfileListWidget(QtWidgets.QListWidget):
             menu.addSeparator()
             export_action = QtGui.QAction(_("Export profile…"), self)
             export_action.triggered.connect(partial(self.export_requested.emit, item))
+            export_action.setEnabled(export_available)
             menu.addAction(export_action)
             copy_action = QtGui.QAction(_("Copy to clipboard"), self)
             copy_action.triggered.connect(partial(self.copy_to_clipboard_requested.emit, item))
