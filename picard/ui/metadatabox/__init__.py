@@ -572,7 +572,9 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tags,
                 exc_info=True,
             )
-        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
+        with self.tagger.window.ignore_selection_changes:
+            self._update_objects(self.objects)
+        self.update(drop_album_caches=True)
 
     def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
         """
