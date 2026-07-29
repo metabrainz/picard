@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-07-28 23:49+0000\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "constants/de/>\n"
@@ -4341,7 +4341,7 @@ msgstr ""
 
 #: picard/const/tags.py:77
 msgid "Album Artists"
-msgstr ""
+msgstr "Albuminterpreten"
 
 #: picard/const/tags.py:79
 msgid ""
@@ -4374,11 +4374,11 @@ msgstr ""
 
 #: picard/const/tags.py:106
 msgid "Album Artists Sort Names"
-msgstr ""
+msgstr "Sortiernamen der Albuminterpreten"
 
 #: picard/const/tags.py:107
 msgid "The sort names of the album's artists."
-msgstr ""
+msgstr "Die Sortiernamen der Albuminterpreten."
 
 #: picard/const/tags.py:114
 msgid "Album"
@@ -4386,7 +4386,7 @@ msgstr "Album"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
-msgstr ""
+msgstr "Der Titel der Veröffentlichung."
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
@@ -4394,7 +4394,7 @@ msgstr "Sortiername des Albums"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
-msgstr ""
+msgstr "Der Sortiername des Veröffentlichungstitels."
 
 #: picard/const/tags.py:126
 msgid "Arranger"
@@ -4431,7 +4431,7 @@ msgstr ""
 
 #: picard/const/tags.py:154
 msgid "Artists Countries"
-msgstr ""
+msgstr "Künstlerländer"
 
 #: picard/const/tags.py:156
 msgid ""
@@ -4811,10 +4811,8 @@ msgid "The names of the labels associated with the release."
 msgstr ""
 
 #: picard/const/tags.py:498
-#, fuzzy
-#| msgid "Langi"
 msgid "Language"
-msgstr "Langi"
+msgstr "Sprache"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -5519,10 +5517,8 @@ msgid "The sample rate of the audio file."
 msgstr ""
 
 #: picard/const/tags.py:1073
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "Eigenes Skript"
+msgstr "Schrift"
 
 #: picard/const/tags.py:1075
 msgid ""
@@ -5542,10 +5538,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:1095
-#, fuzzy
-#| msgid "Silesian"
 msgid "Silence"
-msgstr "Schlesisch"
+msgstr "Stille"
 
 #: picard/const/tags.py:1096
 msgid "1 if the track title is \"[silence]\""

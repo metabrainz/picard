@@ -35,8 +35,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-07-28 23:49+0000\n"
-"Last-Translator: Gsam3 <ggg.deluxe2@gmail.com>\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -238,10 +238,8 @@ msgid "Log similarity scores and match decisions"
 msgstr ""
 
 #: picard/debug_opts.py:170
-#, fuzzy
-#| msgid "Plugin Name"
 msgid "Plugin Development"
-msgstr "Plugin-Name"
+msgstr "Plugin-Entwicklung"
 
 #: picard/debug_opts.py:170
 msgid "Log plugin details typically only used during development"
@@ -286,10 +284,9 @@ msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Keine passenden Titel für Datei „%(filename)s“"
 
 #: picard/file.py:1146
-#, fuzzy, python-format
-#| msgid "No matching tracks for file \"%(filename)s\""
+#, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr "Keine passenden Titel für Datei „%(filename)s“"
+msgstr "Der beste Treffer für Datei „%(filename)s“ ist nicht eindeutig"
 
 #: picard/file.py:1148
 #, python-format
@@ -303,39 +300,32 @@ msgstr "Metadaten für Datei %(filename)s werden abgefragt …"
 
 #: picard/isrcsubmit.py:272
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "Gleicher ISRC für verschiedene Aufnahmen gefunden"
 
 #: picard/isrcsubmit.py:278
 msgid "ISRC already assigned to another track on this release"
 msgstr ""
+"ISRC wurde bereits einem anderen Titel auf dieser Veröffentlichung zugewiesen"
 
 #: picard/isrcsubmit.py:281
-#, fuzzy
-#| msgid "Fingerprint has already been submitted"
 msgid "ISRC already submitted"
-msgstr "Der Fingerabdruck wurde bereits übermittelt"
+msgstr "ISRC wurde bereits übermittelt"
 
 #: picard/isrcsubmit.py:286
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "Datei hat mehrere ISRCs (unsichere Quelle)"
 
 #: picard/isrcsubmit.py:325
-#, fuzzy
-#| msgid "Submitting AcoustIDs …"
 msgid "Submitting ISRCs …"
-msgstr "AcoustIDs werden übermittelt …"
+msgstr "ISRCs werden übermittelt …"
 
 #: picard/isrcsubmit.py:336
-#, fuzzy
-#| msgid "AcoustID submission not configured"
 msgid "ISRC submission failed"
-msgstr "AcoustID-Übermittlung nicht konfiguriert"
+msgstr "ISRC-Übermittlung fehlgeschlagen"
 
 #: picard/isrcsubmit.py:351
-#, fuzzy
-#| msgid "AcoustID submission finished successfully"
 msgid "ISRC submission finished successfully"
-msgstr "AcoustID-Übermittlung erfolgreich abgeschlossen"
+msgstr "ISRC-Übermittlung erfolgreich abgeschlossen"
 
 #: picard/item.py:345
 #, python-format
@@ -391,22 +381,16 @@ msgid "Download only approved images"
 msgstr "Nur bestätigte Bilder herunterladen"
 
 #: picard/options.py:107
-#, fuzzy
-#| msgid "Show cover art file size"
 msgid "Cover art image size"
-msgstr "Cover-Art-Dateigröße anzeigen"
+msgstr "Cover-Art-Dateigröße"
 
 #: picard/options.py:109
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types"
-msgstr "Cover-Art-Typen"
+msgstr "Cover-Art-Bildformate"
 
 #: picard/options.py:115
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types to omit"
-msgstr "Cover-Art-Typen"
+msgstr "Auszuschließende Cover-Art-Bildformate"
 
 #: picard/options.py:118
 #, fuzzy
@@ -651,7 +635,7 @@ msgstr "An konfigurierten Server übermitteln"
 #: picard/options.py:348 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr ""
+msgstr "ISRCs von CD auslesen"
 
 #: picard/options.py:349 picard/ui/forms/ui_options_general.py:138
 #, fuzzy
@@ -1600,7 +1584,7 @@ msgstr ""
 #: picard/profiles/importer.py:125
 #, python-format
 msgid "No existing profile with id '%s' to replace"
-msgstr ""
+msgstr "Kein bestehendes Profile mit der ID „%s“ zum Ersetzen"
 
 #: picard/profiles/importer.py:155
 #, python-format
@@ -1613,8 +1597,8 @@ msgstr ""
 #, python-format
 msgid "%d setting was not recognized and was skipped: %s"
 msgid_plural "%d settings were not recognized and were skipped: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Einstellung wurde nicht erkannt und wurde übersprungen: %s"
+msgstr[1] "%d Einstellungen wurden nicht erkannt und wurden übersprungen: %s"
 
 #: picard/profiles/importer.py:210
 #, python-format
@@ -3567,7 +3551,7 @@ msgstr "Katalognummern"
 #: picard/ui/cdlookup.py:152
 #, python-format
 msgid "View ISRCs (%(count)d)"
-msgstr ""
+msgstr "ISRCs anzeigen (%(count)d)"
 
 #: picard/ui/cdlookup.py:224
 #, fuzzy
@@ -3906,7 +3890,7 @@ msgstr "Protokoll in Datei speichern"
 
 #: picard/ui/logview.py:480
 msgid "Text files (*.txt);;All files (*)"
-msgstr ""
+msgstr "Textdateien (*.txt);;Alle Dateien (*)"
 
 #: picard/ui/logview.py:488
 msgid "File already exists, do you really want to save to this file?"
@@ -4267,11 +4251,11 @@ msgstr ""
 
 #: picard/ui/tutorial.py:151
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "Einführung in Picard"
 
 #: picard/ui/tutorial.py:174
 msgid "Learn more…"
-msgstr ""
+msgstr "Mehr erfahren …"
 
 #: picard/ui/tutorial.py:182
 #, fuzzy
@@ -4281,7 +4265,7 @@ msgstr "Diese Warnung nicht erneut anzeigen"
 
 #: picard/ui/tutorial.py:186
 msgid "Got it"
-msgstr ""
+msgstr "Verstanden"
 
 #: picard/ui/util.py:58
 #, python-format
@@ -4430,7 +4414,7 @@ msgstr "Repository: {url}"
 #: picard/ui/dialogs/installconfirm.py:104
 #, python-brace-format
 msgid "Path: {path}"
-msgstr ""
+msgstr "Pfad: {path}"
 
 #: picard/ui/dialogs/installconfirm.py:119
 msgid "Git Reference (Optional)"
@@ -4573,7 +4557,7 @@ msgstr "Der ausgewählte Pfad ist kein Verzeichnis."
 
 #: picard/ui/dialogs/installplugin.py:287
 msgid "The directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "Das Verzeichnis enthält keine Datei MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:300
 msgid ""
@@ -4770,7 +4754,7 @@ msgstr "ID:"
 
 #: picard/ui/dialogs/plugininfo.py:101
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -4792,11 +4776,11 @@ msgstr "API-Version:"
 
 #: picard/ui/dialogs/plugininfo.py:106
 msgid "Trust Level:"
-msgstr ""
+msgstr "Vertrauensstufe:"
 
 #: picard/ui/dialogs/plugininfo.py:107
 msgid "Categories:"
-msgstr ""
+msgstr "Kategorien:"
 
 #: picard/ui/dialogs/plugininfo.py:108
 #: picard/ui/widgets/plugindetailswidget.py:97
@@ -4825,7 +4809,7 @@ msgstr "Lizenz-URL:"
 
 #: picard/ui/dialogs/plugininfo.py:113
 msgid "Homepage:"
-msgstr ""
+msgstr "Homepage:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 msgid "Report Bugs To:"
@@ -4834,7 +4818,7 @@ msgstr "Fehler melden auf:"
 #: picard/ui/dialogs/plugininfo.py:115
 #: picard/ui/widgets/plugindetailswidget.py:186
 msgid "Path:"
-msgstr ""
+msgstr "Pfad:"
 
 #: picard/ui/dialogs/plugininfo.py:116
 msgid "Versioning:"
@@ -4851,7 +4835,7 @@ msgstr "Offiziell"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
-msgstr ""
+msgstr "Vertrauenswürdig"
 
 #: picard/ui/dialogs/plugininfo.py:248
 msgid "Community"
@@ -4859,7 +4843,7 @@ msgstr "Gemeinschaft"
 
 #: picard/ui/dialogs/plugininfo.py:249
 msgid "Unregistered"
-msgstr ""
+msgstr "Nicht registriert"
 
 #: picard/ui/forms/ui_aboutdialog.py:89
 msgid "About Picard"
@@ -4973,7 +4957,7 @@ msgstr "Cove&r-Bild"
 
 #: picard/ui/forms/ui_infodialog.py:106
 msgid "&Chaos"
-msgstr ""
+msgstr "&Chaos"
 
 #: picard/ui/forms/ui_infostatus.py:119
 #: picard/ui/forms/ui_options_cover_processing.py:296
@@ -5066,7 +5050,7 @@ msgstr "Tags, die beim Vergleich ignoriert werden sollen:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:110
 msgid "Sessions Management"
-msgstr ""
+msgstr "Sitzungsverwaltung"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:111
 msgid ""
@@ -5212,7 +5196,7 @@ msgstr "Minimale Breite:"
 #: picard/ui/forms/ui_options_cover_processing.py:311
 #: picard/ui/forms/ui_options_cover_processing.py:313
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: picard/ui/forms/ui_options_cover_processing.py:300
 msgid "Minimum height:"
@@ -5247,7 +5231,7 @@ msgstr "Größe von als Datei gespeicherte Bilder anpassen"
 
 #: picard/ui/forms/ui_options_cover_processing.py:315
 msgid "Convert images to the given format"
-msgstr ""
+msgstr "Bilder in das angegebene Format konvertieren"
 
 #: picard/ui/forms/ui_options_cover_processing.py:316
 msgid "Convert images saved to tags"
@@ -5264,7 +5248,7 @@ msgstr "In Dateien gespeicherte Bilder konvertieren"
 
 #: picard/ui/forms/ui_options_cover_processing.py:320
 msgid "JPEG / WebP image quality:"
-msgstr ""
+msgstr "Bildqualität für JPEG / WebP:"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:105
 msgid "Audio Fingerprinting"
@@ -5467,13 +5451,15 @@ msgstr ""
 #: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:48
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Schnelleinstellungs-Menü"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
 msgstr ""
+"Bitte die Einstellungen auswählen, die im Schnelleinstellungs-Menü "
+"erscheinen sollen."
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 msgid "Available Option Settings"
@@ -5654,7 +5640,7 @@ msgstr "Cache-Belegung:"
 
 #: picard/ui/forms/ui_options_network.py:183
 msgid " MB"
-msgstr ""
+msgstr " MB"
 
 #: picard/ui/forms/ui_options_network.py:184
 #, fuzzy
@@ -6520,7 +6506,7 @@ msgstr "Medien"
 
 #: picard/ui/itemviews/columns.py:175
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"
@@ -6531,10 +6517,8 @@ msgid "File Type"
 msgstr "Dateityp"
 
 #: picard/ui/itemviews/columns.py:189
-#, fuzzy
-#| msgid "Directory:"
 msgid "Directory"
-msgstr "Verzeichnis:"
+msgstr "Verzeichnis"
 
 #: picard/ui/itemviews/columns.py:191
 msgid "File Extension"
@@ -6576,12 +6560,12 @@ msgstr ""
 #: picard/ui/itemviews/match_quality_column.py:279
 #, python-format
 msgid "Missing tracks: %(count)d"
-msgstr ""
+msgstr "Fehlende Titel: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:280
 #, python-format
 msgid "Duplicate files: %(count)d"
-msgstr ""
+msgstr "Dateiduplikate: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:281
 #, python-format
@@ -6604,7 +6588,7 @@ msgstr "Neu"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:121
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikat"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:122
 msgid "Delete"
@@ -6802,7 +6786,7 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:104
 msgid "Valid"
-msgstr ""
+msgstr "Gültig"
 
 #: picard/ui/itemviews/custom_columns/validation.py:107
 #, python-format
@@ -6820,7 +6804,7 @@ msgstr[1] "%d Warnungen"
 
 #: picard/ui/itemviews/custom_columns/validation.py:142
 msgid "Title is required and cannot be empty"
-msgstr ""
+msgstr "Der Titel ist erforderlich und darf nicht leer sein"
 
 #: picard/ui/itemviews/custom_columns/validation.py:148
 msgid "Key is required and cannot be empty"
@@ -6879,7 +6863,7 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:319
 msgid "Width must be positive"
-msgstr ""
+msgstr "Breite muss positiv sein"
 
 #: picard/ui/itemviews/custom_columns/validation.py:326
 msgid "Very wide columns may impact UI layout"
@@ -6929,7 +6913,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:508 picard/ui/mainwindow/actions.py:596
 msgid "&Save Session"
-msgstr ""
+msgstr "&Sitzung speichern"
 
 #: picard/ui/mainwindow/__init__.py:509
 msgid "Do&n't Save"
@@ -6938,7 +6922,7 @@ msgstr "&Nicht speichern"
 #: picard/ui/mainwindow/__init__.py:538 picard/ui/mainwindow/__init__.py:1518
 #, python-format
 msgid "Session saved to \"%(path)s\""
-msgstr ""
+msgstr "Sitzung in „%(path)s“ gespeichert"
 
 #: picard/ui/mainwindow/__init__.py:541 picard/ui/mainwindow/__init__.py:1515
 msgid "Failed to save session"
