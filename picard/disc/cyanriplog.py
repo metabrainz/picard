@@ -34,8 +34,8 @@ from picard.disc.utils import (
 
 
 RE_TRACK_HEADER = re.compile(r"^Track (?P<num>\d+) ripped")
-RE_START_LSN = re.compile(r"^\s+Start LSN:\s+(?P<lsn>\d+)\s*$")
-RE_END_LSN = re.compile(r"^\s+End LSN:\s+(?P<lsn>\d+)\s*$")
+RE_START_LSN = re.compile(r"^\s*Start LSN:\s+(?P<lsn>\d+)\s*$")
+RE_END_LSN = re.compile(r"^\s*End LSN:\s+(?P<lsn>\d+)\s*")
 RE_CYANRIP_HEADER = re.compile(r"^cyanrip\s+\d+\.\d+")
 
 

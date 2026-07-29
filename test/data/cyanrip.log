@@ -90,7 +90,7 @@ Track 2 ripped and encoded successfully!
     Frames: 96835
     Pregap LSN: none
     Start LSN: 136920
-    End LSN: 233754
+    End LSN: 233754 (with offset: 233755)
 
     EAC CRC32: 023E6E8C
     Accurip: not found
