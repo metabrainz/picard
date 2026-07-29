@@ -840,6 +840,7 @@ tags in the metadata view and works with both single and multi-tag selections.
 ```python
 from picard.plugin3.api import MetadataTagAction, t_
 
+
 class PinTagAction(MetadataTagAction):
     TITLE = t_("action.pin_tag", "Pin Tag")
 
@@ -855,6 +856,7 @@ class PinTagAction(MetadataTagAction):
     def is_visible(self, tags, objects):
         # Only show for non-internal tags
         return all(not tag.startswith('~') for tag in tags)
+
 
 def enable(api):
     api.register_metadata_tag_action(PinTagAction)
