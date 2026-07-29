@@ -16,13 +16,15 @@
 # Timo Martikainen <>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012,2014
 # zer0bitz <zer0bitz@protonmail.com>, 2023.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2025-12-11 21:11+0000\n"
-"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
 "3/app/fi/>\n"
 "Language: fi\n"
@@ -30,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -806,8 +808,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Lähetä arvostelut MusicBrainziin"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1677,8 +1681,9 @@ msgid "Metadata"
 msgstr "Metatiedot"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Muu"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4729,8 +4734,9 @@ msgid "Errored entity"
 msgstr "Väärin mennyt kohde"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
+#, fuzzy
 msgid "Entities"
-msgstr ""
+msgstr "Kohteet"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -5705,8 +5711,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "Web-osoite"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -5976,8 +5983,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -6043,8 +6051,9 @@ msgid "License URL:"
 msgstr "Lisenssi:"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Kotisivu:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -7847,8 +7856,9 @@ msgid "Media"
 msgstr "Media"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC-koodi"
 
 #: picard/ui/itemviews/columns.py:179
 #, fuzzy
@@ -9348,12 +9358,15 @@ msgid "Logout error"
 msgstr "Virhe CD-haussa"
 
 #: picard/ui/options/general.py:157
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Palvelinvirhe mitätöitäessä pääsyä MusicBrainz‐palvelimelle: %s\n"
+"\n"
+"Poistetaanko paikallisesti tallennetut valtuutukset kuitenkin?"
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -10780,8 +10793,9 @@ msgid "Renaming options are disabled"
 msgstr "Uudelleennimeämisen asetukset ovat pois käytöstä"
 
 #: picard/ui/scripteditor/examples.py:160
+#, fuzzy
 msgid "Examples:"
-msgstr ""
+msgstr "Esimerkit:"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -10969,8 +10983,9 @@ msgid "Uninstall Failed"
 msgstr "Poista liitännäinen"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "Ei saatavilla"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, fuzzy, python-brace-format

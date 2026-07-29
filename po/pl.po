@@ -19,13 +19,15 @@
 # Echelon666, 2024.
 # Peter69, 2025.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2025-11-15 09:20+0000\n"
-"Last-Translator: Echelon\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -35,7 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -823,8 +825,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Wyślij notę do MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -5731,8 +5735,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"

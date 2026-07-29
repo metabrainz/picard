@@ -11,13 +11,15 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Yannis Anthymidis, 2013
 # Theo Asimakopoulos <theoasima@gmail.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-06-15 11:12+0000\n"
-"Last-Translator: Theo Asimakopoulos <theoasima@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Greek <https://translations.metabrainz.org/projects/picard/3/"
 "app/el/>\n"
 "Language: el\n"
@@ -25,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -744,8 +746,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Υποβολή βαθμολογιών στο MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1577,8 +1581,9 @@ msgid "Metadata"
 msgstr "Μεταδεδομένα"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Άλλο"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4034,8 +4039,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4286,8 +4292,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -4347,8 +4354,9 @@ msgid "License URL:"
 msgstr "Άδεια χρήσης"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Αρχική σελίδα:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -4373,8 +4381,9 @@ msgid "Description:"
 msgstr "Περιγραφή:"
 
 #: picard/ui/dialogs/plugininfo.py:246
+#, fuzzy
 msgid "Official"
-msgstr ""
+msgstr "Επίσημο"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
@@ -6035,8 +6044,9 @@ msgid "Media"
 msgstr "Μέσα"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"

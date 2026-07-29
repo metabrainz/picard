@@ -10,13 +10,15 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
 # Sam, 2018
 # glawie <glawie@gmail.com>, 2023.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2023-12-31 20:28+0000\n"
-"Last-Translator: glawie <glawie@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: English (United Kingdom) <https://translations.metabrainz.org/"
 "projects/picard/3/app/en_GB/>\n"
 "Language: en_GB\n"
@@ -24,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -712,7 +714,7 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
+msgid "Submit only tagged files to ListenBrainz"
 msgstr ""
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
@@ -3714,8 +3716,9 @@ msgid "Select a target file"
 msgstr ""
 
 #: picard/ui/util.py:99
+#, fuzzy
 msgid "Select a file"
-msgstr ""
+msgstr "Select a file"
 
 #: picard/ui/util.py:112
 msgid "Select one or more files"

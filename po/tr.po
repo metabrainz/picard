@@ -14,13 +14,15 @@
 # portik <yetmisbeskere75@hotmail.com>, 2012
 # brtc <brtc@users.noreply.translations.metabrainz.org>, 2024.
 # dirt3009 <iam@emirgecir.com.tr>, 2025.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2025-01-03 23:42+0000\n"
-"Last-Translator: dirt3009 <iam@emirgecir.com.tr>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
 "3/app/tr/>\n"
 "Language: tr\n"
@@ -28,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -758,8 +760,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Derecelendirmeleri MusicBrainz'e gönderin"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1583,8 +1587,9 @@ msgid "Metadata"
 msgstr "Metadata"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -2921,8 +2926,9 @@ msgid "See Also"
 msgstr ""
 
 #: picard/tags/tagvar.py:73
+#, fuzzy
 msgid "No description available."
-msgstr ""
+msgstr "Açıklama mevcut değil."
 
 #: picard/tags/tagvar.py:76
 msgid "multi-value variable"
@@ -4035,8 +4041,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4373,8 +4380,9 @@ msgid "Description:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:246
+#, fuzzy
 msgid "Official"
-msgstr ""
+msgstr "Resmi"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
@@ -4569,8 +4577,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced.py:155
+#, fuzzy
 msgid "Video tracks"
-msgstr ""
+msgstr "Video parçalar"
 
 #: picard/ui/forms/ui_options_advanced.py:156
 msgid "Data tracks"
@@ -4581,8 +4590,9 @@ msgid "Pregap tracks"
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced.py:158
+#, fuzzy
 msgid "Silent tracks"
-msgstr ""
+msgstr "Sessiz parçalar"
 
 #: picard/ui/forms/ui_options_advanced.py:159
 msgid "Tags to ignore for comparison:"
@@ -5398,8 +5408,9 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/forms/ui_options_script.py:136
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "Kullanım Kılavuzu"
 
 #: picard/ui/forms/ui_options_startup.py:125
 msgid "Update Checking"
@@ -6051,8 +6062,9 @@ msgid "Media"
 msgstr "Medya"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"
@@ -8770,12 +8782,14 @@ msgid "Load into Picard"
 msgstr ""
 
 #: picard/ui/searchdialog/artist.py:50
+#, fuzzy
 msgid "Gender"
-msgstr ""
+msgstr "Cinsiyet"
 
 #: picard/ui/searchdialog/artist.py:51
+#, fuzzy
 msgid "Area"
-msgstr ""
+msgstr "Bölge"
 
 #: picard/ui/searchdialog/artist.py:52
 msgid "Begin"
@@ -8836,8 +8850,9 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:205
 #: picard/ui/widgets/plugindetailswidget.py:385
 #: picard/ui/widgets/pluginlistwidget.py:627
+#, fuzzy
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: picard/ui/widgets/plugindetailswidget.py:122
 #: picard/ui/widgets/pluginlistwidget.py:632

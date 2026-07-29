@@ -36,13 +36,15 @@
 # Laurent Monin <i18n@norz.org>, 2013
 # Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024, 2026.
 # rez00 <sylvain.mengue@gmail.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-07-11 15:12+0000\n"
-"Last-Translator: rez00 <sylvain.mengue@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -849,8 +851,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Envoyer des évaluations à MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1736,8 +1740,9 @@ msgid "Metadata"
 msgstr "Métadonnées"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4778,8 +4783,9 @@ msgid "Errored entity"
 msgstr "Entité avec erreur"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
+#, fuzzy
 msgid "Entities"
-msgstr ""
+msgstr "Entités"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -5766,8 +5772,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -6039,8 +6046,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID :"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -6106,8 +6114,9 @@ msgid "License URL:"
 msgstr "Licence :"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Page d’accueil :"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -7921,8 +7930,9 @@ msgid "Media"
 msgstr "Support"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 #, fuzzy
@@ -9285,8 +9295,9 @@ msgid "Advanced"
 msgstr "Avancé"
 
 #: picard/ui/options/cover_processing.py:53
+#, fuzzy
 msgid "Processing"
-msgstr ""
+msgstr "Traitement"
 
 #: picard/ui/options/dialog.py:134
 msgid "This page failed to initialize"
@@ -10540,8 +10551,9 @@ msgid "Select Sessions Folder"
 msgstr "Tout sélectionner"
 
 #: picard/ui/options/startup.py:55
+#, fuzzy
 msgid "Startup"
-msgstr ""
+msgstr "Commencez"
 
 #: picard/ui/options/tags_compatibility_aac.py:39
 msgid "AAC"
@@ -10900,8 +10912,9 @@ msgid "Renaming options are disabled"
 msgstr "Les options de renommage sont désactivées"
 
 #: picard/ui/scripteditor/examples.py:160
+#, fuzzy
 msgid "Examples:"
-msgstr ""
+msgstr "Exemples :"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -11094,8 +11107,9 @@ msgid "Uninstall Failed"
 msgstr "Désinstaller le greffon"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "n/a"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, fuzzy, python-brace-format

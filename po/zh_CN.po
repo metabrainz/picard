@@ -47,13 +47,15 @@
 # KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 # imgradeone <imgradeone@outlook.com>, 2026.
 # Nebulain <2689960483@qq.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-05-30 22:12+0000\n"
-"Last-Translator: Nebulain <2689960483@qq.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -61,7 +63,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -831,8 +833,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "将评分提交到 MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -5537,8 +5541,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -5810,8 +5815,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID："
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -5877,8 +5883,9 @@ msgid "License URL:"
 msgstr "许可协议："
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "主页："
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -7600,8 +7607,9 @@ msgid "Media"
 msgstr "媒体"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "国际标准音乐作品编码ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"
@@ -10631,8 +10639,9 @@ msgid "Uninstall Failed"
 msgstr "卸载插件"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, fuzzy, python-brace-format

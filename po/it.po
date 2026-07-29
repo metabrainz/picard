@@ -9,14 +9,15 @@
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2012-2015,2017-2023.
 # "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025, 2026.
 # GABG <musicbrainz@gabg.email>, 2025.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-05-01 11:11+0000\n"
-"Last-Translator: \"salo.rock\" "
-"<salo.rock@users.noreply.translations.metabrainz.org>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/app/it/>\n"
 "Language: it\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -810,8 +811,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Invia valutazioni a MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -5658,8 +5661,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -5931,8 +5935,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -5998,8 +6003,9 @@ msgid "License URL:"
 msgstr "Licenza:"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Homepage:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -7752,8 +7758,9 @@ msgid "Media"
 msgstr "Supporti"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"
@@ -10639,8 +10646,9 @@ msgid "Renaming options are disabled"
 msgstr "Opzioni di rinominazione disabilitate"
 
 #: picard/ui/scripteditor/examples.py:160
+#, fuzzy
 msgid "Examples:"
-msgstr ""
+msgstr "Esempi:"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -10834,8 +10842,9 @@ msgid "Uninstall Failed"
 msgstr "Disinstalla plugin"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "N/D"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, fuzzy, python-brace-format

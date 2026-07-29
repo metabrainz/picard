@@ -6,13 +6,15 @@
 # Lukáš Lalinský <lalinsky@gmail.com>, 2012-2013
 # Pavol Babinčák <scroolik@gmail.com>, 2012
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2024.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Slovak <https://translations.metabrainz.org/projects/picard/3/"
 "app/sk/>\n"
 "Language: sk\n"
@@ -21,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
 ">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -753,8 +755,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Odoslať hodnotenia do MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1575,8 +1579,9 @@ msgid "Metadata"
 msgstr "Metadata"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Iný"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4036,8 +4041,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4369,8 +4375,9 @@ msgid "Description:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:246
+#, fuzzy
 msgid "Official"
-msgstr ""
+msgstr "Oficiálne"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
@@ -4873,12 +4880,14 @@ msgid "Port:"
 msgstr "port:"
 
 #: picard/ui/forms/ui_options_general.py:136
+#, fuzzy
 msgid "Log in"
-msgstr ""
+msgstr "Prihlásiť sa"
 
 #: picard/ui/forms/ui_options_general.py:137
+#, fuzzy
 msgid "Log out"
-msgstr ""
+msgstr "Odhlásiť sa"
 
 #: picard/ui/forms/ui_options_general.py:139 picard/ui/options/general.py:52
 msgid "General"
@@ -8796,8 +8805,9 @@ msgid "Load into Picard"
 msgstr ""
 
 #: picard/ui/searchdialog/artist.py:50
+#, fuzzy
 msgid "Gender"
-msgstr ""
+msgstr "Pohlavie"
 
 #: picard/ui/searchdialog/artist.py:51
 msgid "Area"

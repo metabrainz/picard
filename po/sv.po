@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
 "PO-Revision-Date: 2026-07-27 10:13+0000\n"
 "Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -717,7 +717,9 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr "Skicka lyssningar till ListenBrainz"
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
+#, fuzzy
+#| msgid "Submit only tagged files ListenBrainz"
+msgid "Submit only tagged files to ListenBrainz"
 msgstr "Skicka endast taggade filer till ListenBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64

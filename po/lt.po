@@ -9,13 +9,15 @@
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
 # Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-05-01 11:11+0000\n"
-"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
 "Language: lt\n"
@@ -25,7 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:208
@@ -741,8 +743,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Siųsti vertinimus į „MusicBrainz“"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1602,8 +1606,9 @@ msgid "Metadata"
 msgstr "Metaduomenys"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "kiti"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -5142,8 +5147,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -5411,8 +5417,9 @@ msgid "ID:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -5498,8 +5505,9 @@ msgstr "Versija"
 
 #: picard/ui/dialogs/plugininfo.py:123
 #: picard/ui/forms/ui_scripteditor_details.py:107
+#, fuzzy
 msgid "Description:"
-msgstr ""
+msgstr "Aprašymas:"
 
 #: picard/ui/dialogs/plugininfo.py:246
 #, fuzzy
@@ -6321,8 +6329,9 @@ msgstr ""
 #: picard/ui/forms/ui_options_metadata.py:211
 #: picard/ui/itemviews/custom_columns/shared.py:304
 #: picard/ui/options/interface.py:91 picard/ui/widgets/refselector.py:56
+#, fuzzy
 msgid "Default"
-msgstr ""
+msgstr "Numatytas"
 
 #: picard/ui/forms/ui_options_network.py:172
 msgid "Web Proxy"
@@ -7246,8 +7255,9 @@ msgid "Media"
 msgstr "Medija"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 msgid "Size"
@@ -8806,16 +8816,18 @@ msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 
 #: picard/ui/options/interface.py:95
+#, fuzzy
 msgid "Dark"
-msgstr ""
+msgstr "Tamsus"
 
 #: picard/ui/options/interface.py:96
 msgid "A dark display theme"
 msgstr ""
 
 #: picard/ui/options/interface.py:99
+#, fuzzy
 msgid "Light"
-msgstr ""
+msgstr "Šviesi"
 
 #: picard/ui/options/interface.py:100
 msgid "A light display theme"
@@ -8935,8 +8947,9 @@ msgid "Lookup CD log file…"
 msgstr "Peržiūrėti CD…"
 
 #: picard/ui/options/interface_toolbar.py:142 picard/ui/player/toolbar.py:69
+#, fuzzy
 msgid "Play"
-msgstr ""
+msgstr "pjesė"
 
 #: picard/ui/options/interface_toolbar.py:146
 msgid "Open in Player"
@@ -9411,8 +9424,9 @@ msgid "Invalid format selected"
 msgstr "Netinkamas pavadinimas"
 
 #: picard/ui/options/profiles.py:370
+#, fuzzy
 msgid "None"
-msgstr ""
+msgstr "nėra"
 
 #: picard/ui/options/profiles.py:386
 #, python-format

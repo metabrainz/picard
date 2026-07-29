@@ -30,13 +30,15 @@
 # Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>, 2024.
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2026.
 # Wonordel <megorka2014@gmail.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2026-05-01 11:11+0000\n"
-"Last-Translator: Wonordel <megorka2014@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "3/app/ru/>\n"
 "Language: ru\n"
@@ -46,7 +48,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -775,8 +777,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Отправить рейтинги в MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1291,8 +1295,9 @@ msgid "Cat No"
 msgstr "Номер в каталоге"
 
 #: picard/releasegroup.py:66
+#, fuzzy
 msgid "Packaging"
-msgstr ""
+msgstr "Упаковка"
 
 #: picard/releasegroup.py:67 picard/ui/cdlookup.py:72
 #: picard/ui/itemviews/columns.py:172 picard/ui/searchdialog/album.py:169
@@ -1627,8 +1632,9 @@ msgid "Metadata"
 msgstr "Метаданные"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Другое"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -3208,8 +3214,9 @@ msgid "Errored entity"
 msgstr ""
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
+#, fuzzy
 msgid "Entities"
-msgstr ""
+msgstr "Сущности"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -4160,8 +4167,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4418,8 +4426,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -4483,8 +4492,9 @@ msgid "License URL:"
 msgstr "Лицензия"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Домашняя страница:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -4509,8 +4519,9 @@ msgid "Description:"
 msgstr "Описание:"
 
 #: picard/ui/dialogs/plugininfo.py:246
+#, fuzzy
 msgid "Official"
-msgstr ""
+msgstr "Официальный"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
@@ -6240,8 +6251,9 @@ msgid "Media"
 msgstr "Медиа"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 #, fuzzy
@@ -7792,16 +7804,18 @@ msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 
 #: picard/ui/options/interface.py:95
+#, fuzzy
 msgid "Dark"
-msgstr ""
+msgstr "Темная"
 
 #: picard/ui/options/interface.py:96
 msgid "A dark display theme"
 msgstr ""
 
 #: picard/ui/options/interface.py:99
+#, fuzzy
 msgid "Light"
-msgstr ""
+msgstr "Светлая"
 
 #: picard/ui/options/interface.py:100
 msgid "A light display theme"
@@ -9192,8 +9206,9 @@ msgid "Uninstall Failed"
 msgstr "Удалить плагин"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "Н/Д"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, python-brace-format

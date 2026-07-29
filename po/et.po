@@ -9,13 +9,15 @@
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2009-2013,2020
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017-2018,2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2024-04-07 12:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
 "3/app/et/>\n"
 "Language: et\n"
@@ -23,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -336,8 +338,9 @@ msgid "Error"
 msgstr "Viga"
 
 #: picard/log.py:94
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "Hoiatus"
 
 #: picard/log.py:95 picard/ui/dialogs/installplugin.py:466
 #: picard/ui/infodialog/__init__.py:47 picard/ui/infodialog/dialog.py:131
@@ -780,8 +783,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Hinded edastatakse MusicBrainzi"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1634,8 +1639,9 @@ msgid "Metadata"
 msgstr "Metaandmed"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "muu"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4364,8 +4370,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4619,8 +4626,9 @@ msgid "ID:"
 msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:101
+#, fuzzy
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 msgid "Registry ID:"
@@ -4684,8 +4692,9 @@ msgid "License URL:"
 msgstr "Litsents:"
 
 #: picard/ui/dialogs/plugininfo.py:113
+#, fuzzy
 msgid "Homepage:"
-msgstr ""
+msgstr "Koduleht:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #, fuzzy
@@ -6434,8 +6443,9 @@ msgid "Media"
 msgstr "Andmekandja"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 #, fuzzy
@@ -9165,8 +9175,9 @@ msgid "Renaming options are disabled"
 msgstr ""
 
 #: picard/ui/scripteditor/examples.py:160
+#, fuzzy
 msgid "Examples:"
-msgstr ""
+msgstr "Näited:"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -9346,8 +9357,9 @@ msgid "Uninstall Failed"
 msgstr "Eemalda plugin"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "pole"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, fuzzy, python-brace-format

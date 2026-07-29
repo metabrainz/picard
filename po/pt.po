@@ -9,13 +9,15 @@
 # Rui Mesquita <rpedro78@gmail.com>, 2006
 # Rui <xymarior@yandex.com>, 2019
 # joaodtx <joao.buckb@gmail.com>, 2025.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:48+0200\n"
-"PO-Revision-Date: 2025-03-18 02:44+0000\n"
-"Last-Translator: joaodtx <joao.buckb@gmail.com>\n"
+"POT-Creation-Date: 2026-07-29 14:13+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
 "picard/3/app/pt/>\n"
 "Language: pt\n"
@@ -24,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -779,8 +781,10 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr ""
 
 #: picard/options.py:410
-msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+#, fuzzy
+#| msgid "Submit ratings to MusicBrainz"
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Submeter avaliações par MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1283,8 +1287,9 @@ msgid "Cat No"
 msgstr "Cat. Nº"
 
 #: picard/releasegroup.py:66
+#, fuzzy
 msgid "Packaging"
-msgstr ""
+msgstr "Embalagem"
 
 #: picard/releasegroup.py:67 picard/ui/cdlookup.py:72
 #: picard/ui/itemviews/columns.py:172 picard/ui/searchdialog/album.py:169
@@ -1292,8 +1297,9 @@ msgid "Barcode"
 msgstr "Código de barras"
 
 #: picard/releasegroup.py:68 picard/ui/cdlookup.py:74
+#, fuzzy
 msgid "Disambiguation"
-msgstr ""
+msgstr "Desambiguação"
 
 #: picard/releasegroup.py:99
 msgid "[no barcode]"
@@ -1616,8 +1622,9 @@ msgid "Metadata"
 msgstr "Metadados"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "Outro"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -2959,8 +2966,9 @@ msgid "See Also"
 msgstr ""
 
 #: picard/tags/tagvar.py:73
+#, fuzzy
 msgid "No description available."
-msgstr ""
+msgstr "Nenhuma descrição disponível."
 
 #: picard/tags/tagvar.py:76
 msgid "multi-value variable"
@@ -5014,8 +5022,9 @@ msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface.py:126
+#, fuzzy
 msgid "Appearance"
-msgstr ""
+msgstr "Aparência"
 
 #: picard/ui/forms/ui_options_interface.py:129
 msgid "User interface language:"
@@ -6163,8 +6172,9 @@ msgid "Media"
 msgstr "Média"
 
 #: picard/ui/itemviews/columns.py:175
+#, fuzzy
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
 #, fuzzy
@@ -7683,16 +7693,18 @@ msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 
 #: picard/ui/options/interface.py:95
+#, fuzzy
 msgid "Dark"
-msgstr ""
+msgstr "Escuro"
 
 #: picard/ui/options/interface.py:96
 msgid "A dark display theme"
 msgstr ""
 
 #: picard/ui/options/interface.py:99
+#, fuzzy
 msgid "Light"
-msgstr ""
+msgstr "Claro"
 
 #: picard/ui/options/interface.py:100
 msgid "A light display theme"
@@ -8969,8 +8981,9 @@ msgid "Show in browser"
 msgstr "Mostrar no navegador"
 
 #: picard/ui/searchdialog/track.py:79
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Publicação"
 
 #: picard/ui/searchdialog/track.py:89
 msgid "Track Search Results"
