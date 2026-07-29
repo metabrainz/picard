@@ -19,10 +19,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import TYPE_CHECKING
+
 from picard.i18n import _
 from picard.plugin import ExtensionPoint
 from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
 from picard.tags import script_variable_tag_names
+
+
+if TYPE_CHECKING:
+    from picard.plugin3.api_impl import PluginApi
 
 
 ext_point_script_variables = ExtensionPoint(label='script_variables')
@@ -49,8 +55,11 @@ def _is_valid_plugin_variable_name(name: str | None) -> bool:
     return bool(VARIABLE_NAME_FULLMATCH_RE.match(name))
 
 
-def register_script_variable(name: str, documentation: str | None = None, api=None) -> None:
+def register_script_variable(name: str, documentation: str | None = None, api: 'PluginApi | None' = None) -> None:
     """Register a variable that plugins can provide for script completion.
+
+    If the same variable name has already been registered by the same plugin,
+    the existing entry is replaced (no duplicate is created).
 
     Parameters
     ----------
@@ -58,6 +67,8 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
         The variable name (without % symbols)
     documentation : str, optional
         Optional documentation for the variable
+    api : PluginApi, optional
+        The plugin API instance
 
     Examples
     --------
@@ -71,8 +82,8 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     if api and duplicate:
         api.logger.warning("Tag '%s' also found in %s.", name, duplicate)
 
-    if api and api._plugin_module:
-        module_name = api._plugin_module.__name__
+    if api:
+        module_name = api.module_path
     else:
         module_name = 'unknown'
 
@@ -83,7 +94,33 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     if plugin_name:
         plugin_documentation += _("Plugin: %s") % plugin_name
 
+    # Remove any existing entry with the same name from this plugin to avoid duplicates
+    ext_point_script_variables.unregister(module_name, lambda item: item[0] == name)
     ext_point_script_variables.register(module_name, (name, plugin_documentation, plugin_name))
+
+
+def unregister_script_variable(name: str, api: 'PluginApi') -> None:
+    """Unregister a single script variable previously registered by this plugin.
+
+    Parameters
+    ----------
+    name : str
+        The variable name to unregister
+    api : PluginApi
+        The plugin API instance (identifies which plugin's registration to remove)
+    """
+    ext_point_script_variables.unregister(api.module_path, lambda item: item[0] == name)
+
+
+def unregister_all_script_variables(api: 'PluginApi') -> None:
+    """Unregister all script variables registered by this plugin.
+
+    Parameters
+    ----------
+    api : PluginApi
+        The plugin API instance (identifies which plugin's registrations to remove)
+    """
+    ext_point_script_variables.unregister(api.module_path, lambda item: True)
 
 
 def get_plugin_variable_names() -> set[str]:

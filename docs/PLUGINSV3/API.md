@@ -680,6 +680,10 @@ def enable(api):
 
 Register a variable name for script autocomplete.
 
+If the same variable name has already been registered by this plugin, the
+existing entry is replaced (no duplicate is created). This allows plugins to
+safely re-register variables without needing to unregister first.
+
 ```python
 def enable(api):
     api.register_script_variable(
@@ -691,6 +695,47 @@ def enable(api):
 **Parameters**:
 - `name`: Variable name (without % symbols)
 - `documentation`: Optional help text for the variable
+
+---
+
+#### `unregister_script_variable(name)`
+
+Unregister a single script variable previously registered by this plugin.
+
+```python
+def enable(api):
+    api.register_script_variable("my_var", "My variable")
+    # Later, when the variable is no longer needed:
+    api.unregister_script_variable("my_var")
+```
+
+**Parameters**:
+- `name`: The variable name to unregister
+
+**Note**: Only removes the variable registered by this plugin. If another plugin
+has registered the same variable name, that registration is unaffected.
+
+---
+
+#### `unregister_all_script_variables()`
+
+Unregister all script variables registered by this plugin.
+
+This is useful when a plugin needs to re-register variables that depend on
+configuration. Call this before re-registering to avoid stale entries from a
+previous configuration.
+
+```python
+def on_config_changed(api):
+    # Remove all previously registered variables
+    api.unregister_all_script_variables()
+    # Re-register based on current config
+    for var_name, description in get_configured_variables():
+        api.register_script_variable(var_name, description)
+```
+
+**Note**: Only removes variables registered by this plugin. Other plugins'
+registrations are unaffected.
 
 ---
 
