@@ -98,6 +98,7 @@ from picard.extension_points.script_variables import (
     unregister_script_variable,
 )
 from picard.file import File
+from picard.item import MetadataItem
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
     PluginTranslator,
@@ -195,10 +196,10 @@ class MetadataTagAction(HasDisplayTitle):
     TITLE: str = ""
     api: 'PluginApi'
 
-    def callback(self, tags: list[str], objects: set) -> None:
+    def callback(self, tags: list[str], objects: set[MetadataItem]) -> None:
         raise NotImplementedError
 
-    def is_visible(self, tags: list[str], objects: set) -> bool:
+    def is_visible(self, tags: list[str], objects: set[MetadataItem]) -> bool:
         return True
 
 
