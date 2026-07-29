@@ -294,6 +294,48 @@ class ConfigSection(QtCore.QObject):
                 return memovar.value
         return default
 
+    def register_option(
+        self,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+    ) -> 'Option':
+        """Register an option in this config section.
+
+        The option type is determined by the type of the default value.
+
+        Args:
+            name: Option name.
+            default: Default value. Must not be None. Type determines the Option subclass.
+            title: Human-readable title (used by ProfileConfigSection for profiles UI).
+            in_profile: If True, the option can be overridden by user profiles
+                (only effective in ProfileConfigSection).
+
+        Returns:
+            The registered Option instance.
+
+        Raises:
+            TypeError: If default is None.
+        """
+        if default is None:
+            raise TypeError('Option default value must not be None')
+
+        if isinstance(default, str):
+            option_type = TextOption
+        elif isinstance(default, bool):
+            option_type = BoolOption  # type: ignore[assignment]
+        elif isinstance(default, int):
+            option_type = IntOption  # type: ignore[assignment]
+        elif isinstance(default, float):
+            option_type = FloatOption  # type: ignore[assignment]
+        elif isinstance(default, (list, tuple)):
+            option_type = ListOption  # type: ignore[assignment]
+        else:
+            option_type = Option  # type: ignore[assignment]
+
+        return option_type(self.section_name, name, default, title=title, in_profile=in_profile)
+
 
 class ProfileConfigSection(ConfigSection):
     """Configuration section with profile override support.
@@ -413,7 +455,7 @@ class ProfileConfigSection(ConfigSection):
     ) -> Option:
         """Register an option in this config section.
 
-        The option type is determined by the type of the default value.
+        Extends the base class method with profile support.
 
         Args:
             name: Option name.
@@ -428,25 +470,7 @@ class ProfileConfigSection(ConfigSection):
         Raises:
             TypeError: If default is None.
         """
-        if default is None:
-            raise TypeError('Option default value must not be None')
-
-        if isinstance(default, str):
-            option_type = TextOption
-        elif isinstance(default, bool):
-            option_type = BoolOption  # type: ignore[assignment]
-        elif isinstance(default, int):
-            option_type = IntOption  # type: ignore[assignment]
-        elif isinstance(default, float):
-            option_type = FloatOption  # type: ignore[assignment]
-        elif isinstance(default, list) or isinstance(default, tuple):
-            option_type = ListOption  # type: ignore[assignment]
-        elif isinstance(default, Enum):
-            option_type = Option  # type: ignore[assignment]
-        else:
-            option_type = Option  # type: ignore[assignment]
-
-        opt = option_type(self.section_name, name, default, title=title, in_profile=in_profile)
+        opt = super().register_option(name, default, title=title, in_profile=in_profile)
         if in_profile:
             group_name = self.section_name
             group_title = self.display_name or self.section_name
