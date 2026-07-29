@@ -624,9 +624,9 @@ def clear_qt5_state(config):
 
     # We need to make sure to load all keys in the config file, not just
     # those for which an initialized Option exists.
-    for key in config.allKeys():
-        if key.startswith('persist/') and key[8:] not in keep_persist:
-            config.remove(key)
+    for key in config.persist.keys():
+        if key not in keep_persist:
+            config.persist.remove(key)
 
 
 @upgrade_config('3.0.0dev2')
