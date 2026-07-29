@@ -846,3 +846,48 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         settings = {'browser_integration_port': 8021}
         hooks.clamp_browser_integration_port(settings)
         self.assertEqual(8020, settings['browser_integration_port'])
+
+    def test_move_state_keys_from_persist(self):
+        from picard.config import (
+            IntOption,
+            TextOption,
+        )
+
+        # Register options in their old location (persist) so raw_value works
+        TextOption('persist', 'oauth_username', '')
+        IntOption('persist', 'oauth_access_token_expires', 0)
+        TextOption('persist', 'last_session_path', '')
+
+        # Also register in new location (state) for __setitem__ to work
+        TextOption('state', 'oauth_username', '')
+        IntOption('state', 'oauth_access_token_expires', 0)
+        TextOption('state', 'last_session_path', '')
+
+        # Populate persist with values
+        self.config.persist['oauth_username'] = 'testuser'
+        self.config.persist['oauth_access_token_expires'] = 12345
+        self.config.persist['last_session_path'] = '/tmp/session.picard'
+
+        hooks.move_state_keys_from_persist(self.config)
+
+        # Keys should now be in state
+        self.assertEqual('testuser', self.config.state['oauth_username'])
+        self.assertEqual(12345, self.config.state['oauth_access_token_expires'])
+        self.assertEqual('/tmp/session.picard', self.config.state['last_session_path'])
+
+        # Keys should be removed from persist
+        self.assertNotIn('oauth_username', self.config.persist)
+        self.assertNotIn('oauth_access_token_expires', self.config.persist)
+        self.assertNotIn('last_session_path', self.config.persist)
+
+    def test_move_state_keys_from_persist_missing_keys(self):
+        """Hook should be a no-op for keys that don't exist in persist."""
+        from picard.config import TextOption
+
+        TextOption('state', 'oauth_username', '')
+
+        # Don't set any persist keys
+        hooks.move_state_keys_from_persist(self.config)
+
+        # State should have the default (nothing was migrated)
+        self.assertEqual('', self.config.state['oauth_username'])

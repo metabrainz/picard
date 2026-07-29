@@ -749,7 +749,7 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         # Load last session if configured
         if config.setting['session_load_last_on_startup']:
-            last_path = config.persist['last_session_path']
+            last_path = config.state['last_session_path']
             if last_path:
                 try:
                     load_session_from_path(self, last_path)
@@ -778,12 +778,12 @@ class Tagger(QtWidgets.QApplication):
             self._session_autosave_timer.setInterval(max(1, interval_min) * 60 * 1000)
 
             def _autosave():
-                path = config.persist['session_autosave_path'] or None
+                path = config.state['session_autosave_path'] or None
                 if not path:
-                    path = config.persist['last_session_path'] or None
+                    path = config.state['last_session_path'] or None
                 if not path:
                     path = str(Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION))
-                    config.persist['session_autosave_path'] = path
+                    config.state['session_autosave_path'] = path
 
                 with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
                     # Best effort autosave; do not crash programme
@@ -1103,7 +1103,7 @@ class Tagger(QtWidgets.QApplication):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         config = get_config()
-        lookup.collection_lookup(config.persist['oauth_username'])
+        lookup.collection_lookup(config.state['oauth_username'])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""

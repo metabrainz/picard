@@ -60,7 +60,7 @@ class InstallConfirmDialog(PicardDialog):
 
         # General security warning (with "don't show again")
         config = get_config()
-        if config.persist['show_plugin_install_warning']:
+        if config.state['show_plugin_install_warning']:
             warning_content = QtWidgets.QHBoxLayout()
 
             icon_label = QtWidgets.QLabel()
@@ -196,6 +196,6 @@ class InstallConfirmDialog(PicardDialog):
         """Handle install button click."""
         if self._dont_show_checkbox and self._dont_show_checkbox.isChecked():
             config = get_config()
-            config.persist['show_plugin_install_warning'] = False
+            config.state['show_plugin_install_warning'] = False
         self.selected_ref = self.ref_selector.get_selected_ref()
         self.accept()

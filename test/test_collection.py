@@ -122,7 +122,7 @@ class CollectionTest(PicardTestCase):
         )
 
     def test_add_release_to_user_collections(self):
-        self.set_config_values(persist={'oauth_username': 'theuser'})
+        self.set_config_values(state={'oauth_username': 'theuser'})
         release_node = {
             'id': '54292079-790c-4e99-bf8d-12efa29fa3e9',
             'collections': [

@@ -203,7 +203,7 @@ def add_release_to_user_collections(release_node: dict[str, Any]) -> None:
     if 'collections' in release_node:
         release_id = release_node['id']
         config = get_config()
-        username = config.persist['oauth_username'].lower()
+        username = config.state['oauth_username'].lower()
         for node in release_node['collections']:
             if node['editor'].lower() == username:
                 collection = get_user_collection(node['id'])

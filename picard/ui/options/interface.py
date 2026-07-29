@@ -241,9 +241,9 @@ class InterfaceOptionsPage(OptionsPage):
         )
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
-            config.persist['tutorial_steps_shown'] = []
-            config.persist['tutorial_disabled'] = False
-            config.persist['setup_wizard_completed'] = False
+            config.state['tutorial_steps_shown'] = []
+            config.state['tutorial_disabled'] = False
+            config.state['setup_wizard_completed'] = False
 
 
 register_options_page(InterfaceOptionsPage)

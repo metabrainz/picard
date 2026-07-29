@@ -156,13 +156,13 @@ BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
 ListOption('persist', 'filters_FileTreeView', DEFAULT_FILTER_COLUMNS)
 ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
-TextOption('persist', 'last_session_path', '')
-ListOption('persist', 'recent_sessions', [])
-TextOption('persist', 'session_autosave_path', '')
-ListOption('persist', 'tutorial_steps_shown', [])
-BoolOption('persist', 'tutorial_disabled', False)
-BoolOption('persist', 'setup_wizard_completed', False)
-BoolOption('persist', 'show_plugin_install_warning', True)
+TextOption('state', 'last_session_path', '')
+ListOption('state', 'recent_sessions', [])
+TextOption('state', 'session_autosave_path', '')
+ListOption('state', 'tutorial_steps_shown', [])
+BoolOption('state', 'tutorial_disabled', False)
+BoolOption('state', 'setup_wizard_completed', False)
+BoolOption('state', 'show_plugin_install_warning', True)
 
 # picard/ui/metadatabox.py
 #
@@ -334,11 +334,11 @@ BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save Acoust
 
 # picard/ui/options/general.py
 # General
-TextOption('persist', 'oauth_access_token', '')
-IntOption('persist', 'oauth_access_token_expires', 0)
-TextOption('persist', 'oauth_refresh_token', '')
-TextOption('persist', 'oauth_refresh_token_scopes', '')
-TextOption('persist', 'oauth_username', '')
+TextOption('state', 'oauth_access_token', '')
+IntOption('state', 'oauth_access_token_expires', 0)
+TextOption('state', 'oauth_refresh_token', '')
+TextOption('state', 'oauth_refresh_token_scopes', '')
+TextOption('state', 'oauth_username', '')
 BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files"), in_profile=True)
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"), in_profile=True)
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"), in_profile=True)

@@ -528,13 +528,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             True if saved successfully, False otherwise.
         """
         config = get_config()
-        path = config.persist['last_session_path'] or ''
+        path = config.state['last_session_path'] or ''
         if path:
             try:
                 save_session_to_path(self.tagger, path)
 
                 # Ensure the known path remains persisted explicitly
-                config.persist['last_session_path'] = path
+                config.state['last_session_path'] = path
                 self.set_statusbar_message(N_('Session saved to "%(path)s"'), {'path': path})
                 self._add_to_recent_sessions(path)
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
@@ -786,7 +786,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _get_recent_sessions(self):
         """Return the list of recent session paths from persistent config."""
         config = get_config()
-        value = config.persist['recent_sessions']
+        value = config.state['recent_sessions']
         if isinstance(value, list):
             return [str(p) for p in value]
         return []
@@ -794,7 +794,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_recent_sessions(self, paths):
         """Persist the given list of recent session paths and refresh the menu."""
         config = get_config()
-        config.persist['recent_sessions'] = list(paths)
+        config.state['recent_sessions'] = list(paths)
         if hasattr(self, 'recent_sessions_menu') and isinstance(self.recent_sessions_menu, QtWidgets.QMenu):
             self._populate_recent_sessions_menu()
 
@@ -1489,7 +1489,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
 
         # Use known path's parent directory if available, otherwise fall back to sessions folder
-        known_path = config.persist['last_session_path'] or ''
+        known_path = config.state['last_session_path'] or ''
         if known_path:
             start_dir = Path(known_path).parent
         else:
@@ -1510,7 +1510,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if path:
             try:
                 save_session_to_path(self.tagger, path)
-                config.persist['last_session_path'] = path
+                config.state['last_session_path'] = path
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
                 return False
@@ -1527,7 +1527,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         config = get_config()
 
-        last_session_path = config.persist['last_session_path'] or ''
+        last_session_path = config.state['last_session_path'] or ''
         if last_session_path:
             start_dir = Path(str(last_session_path)).parent
         else:
@@ -1557,7 +1557,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 )
                 return
             else:
-                config.persist['last_session_path'] = path
+                config.state['last_session_path'] = path
                 self.set_statusbar_message(N_('Session loaded from "%(path)s"'), {'path': path})
                 # Track in recent sessions
                 self._add_to_recent_sessions(path)
@@ -1584,7 +1584,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
         else:
             config = get_config()
-            config.persist['last_session_path'] = path
+            config.state['last_session_path'] = path
             self.set_statusbar_message(N_('Session loaded from "%(path)s"'), {'path': path})
             self._add_to_recent_sessions(path)
 
@@ -1596,7 +1596,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.clear_session()
         # Reset last_session_path so subsequent saves prompt for a new path
         config = get_config()
-        config.persist['last_session_path'] = ''
+        config.state['last_session_path'] = ''
 
     def remove_selected_objects(self):
         """Tell the tagger to remove the selected objects."""

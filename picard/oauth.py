@@ -85,65 +85,65 @@ class OAuthManager:
         return config.setting
 
     @property
-    def persist(self):
+    def state(self):
         config = get_config()
-        return config.persist
+        return config.state
 
     @property
     def refresh_token(self):
-        return self.persist['oauth_refresh_token']
+        return self.state['oauth_refresh_token']
 
     @refresh_token.setter
     def refresh_token(self, value):
-        self.persist['oauth_refresh_token'] = value
+        self.state['oauth_refresh_token'] = value
 
     @refresh_token.deleter
     def refresh_token(self):
-        self.persist.remove('oauth_refresh_token')
+        self.state.remove('oauth_refresh_token')
 
     @property
     def refresh_token_scopes(self):
-        return self.persist['oauth_refresh_token_scopes']
+        return self.state['oauth_refresh_token_scopes']
 
     @refresh_token_scopes.setter
     def refresh_token_scopes(self, value):
-        self.persist['oauth_refresh_token_scopes'] = value
+        self.state['oauth_refresh_token_scopes'] = value
 
     @refresh_token_scopes.deleter
     def refresh_token_scopes(self):
-        self.persist.remove('oauth_refresh_token_scopes')
+        self.state.remove('oauth_refresh_token_scopes')
 
     @property
     def access_token(self):
-        return self.persist['oauth_access_token']
+        return self.state['oauth_access_token']
 
     @access_token.setter
     def access_token(self, value):
-        self.persist['oauth_access_token'] = value
+        self.state['oauth_access_token'] = value
 
     @access_token.deleter
     def access_token(self):
-        self.persist.remove('oauth_access_token')
+        self.state.remove('oauth_access_token')
 
     @property
     def access_token_expires(self):
-        return self.persist['oauth_access_token_expires']
+        return self.state['oauth_access_token_expires']
 
     @access_token_expires.setter
     def access_token_expires(self, value):
-        self.persist['oauth_access_token_expires'] = value
+        self.state['oauth_access_token_expires'] = value
 
     @access_token_expires.deleter
     def access_token_expires(self):
-        self.persist.remove('oauth_access_token_expires')
+        self.state.remove('oauth_access_token_expires')
 
     @property
     def username(self):
-        return self.persist['oauth_username']
+        return self.state['oauth_username']
 
     @username.setter
     def username(self, value):
-        self.persist['oauth_username'] = value
+        self.state['oauth_username'] = value
 
     def is_authorized(self):
         return bool(self.refresh_token and self.refresh_token_scopes)

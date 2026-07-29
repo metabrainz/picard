@@ -118,7 +118,7 @@ class GeneralOptionsPage(OptionsPage):
             return
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
-            self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist['oauth_username'])
+            self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.state['oauth_username'])
             self.ui.logged_in.show()
             self.ui.login_error.hide()
             self.ui.login.hide()

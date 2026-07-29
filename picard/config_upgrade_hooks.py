@@ -829,3 +829,27 @@ def clamp_browser_integration_port(settings):
         return max(BROWSER_INTEGRATION_MIN_PORT, min(BROWSER_INTEGRATION_MAX_PORT, int(value)))
 
     upgrade_option_value(settings, 'browser_integration_port', _clamp_port)
+
+
+@upgrade_config('3.0.0b10')
+def move_state_keys_from_persist(config):
+    """Move valuable non-volatile keys from persist to the new state section."""
+    keys_to_move = (
+        'oauth_access_token',
+        'oauth_access_token_expires',
+        'oauth_refresh_token',
+        'oauth_refresh_token_scopes',
+        'oauth_username',
+        'tutorial_steps_shown',
+        'tutorial_disabled',
+        'setup_wizard_completed',
+        'show_plugin_install_warning',
+        'last_session_path',
+        'recent_sessions',
+        'session_autosave_path',
+        'cli_plugins_init',
+    )
+    for key in keys_to_move:
+        if key in config.persist:
+            config.state[key] = config.persist.raw_value(key)
+            config.persist.remove(key)

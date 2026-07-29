@@ -221,20 +221,20 @@ class TutorialManager:
 
     def should_show(self, step_id: str) -> bool:
         config = get_config()
-        if config.persist['tutorial_disabled']:
+        if config.state['tutorial_disabled']:
             return False
-        return step_id not in config.persist['tutorial_steps_shown']
+        return step_id not in config.state['tutorial_steps_shown']
 
     def mark_shown(self, step_id: str) -> None:
         config = get_config()
-        shown = config.persist['tutorial_steps_shown']
+        shown = config.state['tutorial_steps_shown']
         if step_id not in shown:
             shown.append(step_id)
-            config.persist['tutorial_steps_shown'] = shown
+            config.state['tutorial_steps_shown'] = shown
 
     def disable(self) -> None:
         config = get_config()
-        config.persist['tutorial_disabled'] = True
+        config.state['tutorial_disabled'] = True
 
     def show(self, step_id: str) -> bool:
         """Show a tutorial tip by step ID. Returns True if shown."""

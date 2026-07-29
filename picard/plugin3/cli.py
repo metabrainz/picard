@@ -147,7 +147,7 @@ def compile_ui(ui_file: Path, py_file: Path) -> None:
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 MAX_VERSIONS = 20
 
-Option('persist', 'cli_plugins_init', {})
+Option('state', 'cli_plugins_init', {})
 
 
 class PluginCLI(BaseCLI):
@@ -1871,7 +1871,7 @@ class PluginCLI(BaseCLI):
 
         # Author (optional) - prefer persisted value, then git config
         config = get_config()
-        saved = config.persist['cli_plugins_init']
+        saved = config.state['cli_plugins_init']
         git_name, git_email = get_git_config_author()
         default_name = saved.get('author_name', '') or git_name
         default_email_val = saved.get('author_email', '') or git_email
@@ -1928,7 +1928,7 @@ class PluginCLI(BaseCLI):
         self._out.nl()
 
         # Save defaults for next run
-        config.persist['cli_plugins_init'] = {
+        config.state['cli_plugins_init'] = {
             'author_name': author,
             'author_email': author_email,
             'license': license_id,

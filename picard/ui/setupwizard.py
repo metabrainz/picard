@@ -390,15 +390,15 @@ class SetupWizard(QtWidgets.QWizard):
         config = get_config()
         for page in self._pages:
             page.save_settings(config)
-        config.persist['setup_wizard_completed'] = True
+        config.state['setup_wizard_completed'] = True
         super().accept()
 
     def reject(self) -> None:
         config = get_config()
-        config.persist['setup_wizard_completed'] = True
+        config.state['setup_wizard_completed'] = True
         super().reject()
 
     @staticmethod
     def should_show() -> bool:
         config = get_config()
-        return not config.persist['setup_wizard_completed']
+        return not config.state['setup_wizard_completed']
