@@ -323,6 +323,41 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_state_and_persist(self):
+        """Test that plugin_state and plugin_persist are namespaced ConfigSections."""
+        manifest = load_plugin_manifest('example')
+        test_uuid = manifest.uuid
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api = PluginApi(manifest, self.tagger)
+            api._api_state._config_store = settings
+            api._api_persist._config_store = settings
+
+            # Verify section names are correctly namespaced
+            self.assertEqual(api.plugin_state.section_name, f'plugin_state.{test_uuid}')
+            self.assertEqual(api.plugin_persist.section_name, f'plugin_persist.{test_uuid}')
+
+            # Write to plugin_state
+            from picard.config import TextOption
+
+            TextOption(f'plugin_state.{test_uuid}', 'last_dir', '')
+            api.plugin_state['last_dir'] = '/home/user'
+            settings.sync()
+            self.assertEqual(settings.value(f'plugin_state.{test_uuid}/last_dir'), '/home/user')
+
+            # Write to plugin_persist
+            TextOption(f'plugin_persist.{test_uuid}', 'window_geom', '')
+            api.plugin_persist['window_geom'] = 'some_bytes'
+            settings.sync()
+            self.assertEqual(settings.value(f'plugin_persist.{test_uuid}/window_geom'), 'some_bytes')
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_plugin_config_operations(self):
         """Test all plugin_config operations."""
         manifest = load_plugin_manifest('example')
