@@ -29,13 +29,14 @@
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012-2013,2015,2017
 # chaban <chaban@users.noreply.translations.metabrainz.org>, 2024.
 # bababasti <babasti@pm.me>, 2026.
+# Gsam3 <ggg.deluxe2@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-29 01:25+0200\n"
 "PO-Revision-Date: 2026-07-28 23:49+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: Gsam3 <ggg.deluxe2@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -62,7 +63,7 @@ msgstr "Album %(id)s wird geladen …"
 
 #: picard/album.py:1108
 msgid "[loading album information]"
-msgstr "[Albuminformationen wird geladen]"
+msgstr "[Albuminformationen werden geladen]"
 
 #: picard/album.py:1110
 #, python-format
