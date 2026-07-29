@@ -2,15 +2,15 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023, 2026.
 # marudosurdo <marudosurdo@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-12-07 12:11+0000\n"
-"Last-Translator: marudosurdo <marudosurdo@gmail.com>\n"
+"PO-Revision-Date: 2026-07-28 23:26+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ja/>\n"
 "Language: ja\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -2697,7 +2697,7 @@ msgstr ""
 
 #: picard/const/locales.py:656
 msgid "Morisyen"
-msgstr ""
+msgstr "モーリシャス語"
 
 #: picard/const/locales.py:657
 msgid "Morisyen (Mauritius)"
