@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2026-03-22 16:11+0000\n"
 "Last-Translator: cristian_emanuel <cristianemanuelsao100@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translations.metabrainz.org/"
@@ -6529,7 +6529,7 @@ msgstr "Tipo de Lançamento"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Destination directory:"
-msgid "File Directory"
+msgid "Directory"
 msgstr "Diretório de destino"
 
 #: picard/ui/itemviews/columns.py:191
@@ -10021,6 +10021,11 @@ msgstr ""
 "Erro ao abrir o navegador web:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Destination directory:"
+#~ msgid "File Directory"
+#~ msgstr "Diretório de destino"
 
 #~ msgid "Reset all"
 #~ msgstr "Limpar tudo"

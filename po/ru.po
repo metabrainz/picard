@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2026-05-01 11:11+0000\n"
 "Last-Translator: Wonordel <megorka2014@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -6258,7 +6258,7 @@ msgstr "Тип альбома"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Destination directory:"
-msgid "File Directory"
+msgid "Directory"
 msgstr "Папка назначения:"
 
 #: picard/ui/itemviews/columns.py:191
@@ -9752,6 +9752,11 @@ msgstr ""
 "Ошибка во время запуска браузера:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Destination directory:"
+#~ msgid "File Directory"
+#~ msgstr "Папка назначения:"
 
 #~ msgid "Reset all"
 #~ msgstr "Сбросить всё"

@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2026-05-18 17:12+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
@@ -6544,8 +6544,10 @@ msgid "File Type"
 msgstr "Bestandstype"
 
 #: picard/ui/itemviews/columns.py:189
-msgid "File Directory"
-msgstr "Bestandsmap"
+#, fuzzy
+#| msgid "Directory:"
+msgid "Directory"
+msgstr "Map:"
 
 #: picard/ui/itemviews/columns.py:191
 msgid "File Extension"
@@ -10071,6 +10073,9 @@ msgstr ""
 "Fout tijdens het starten van een webbrowser:\n"
 "\n"
 "%s"
+
+#~ msgid "File Directory"
+#~ msgstr "Bestandsmap"
 
 #~ msgid "Reset all"
 #~ msgstr "Alles terugzetten"

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/3/"
@@ -7644,7 +7644,7 @@ msgstr "סוג ההוצאה"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Destination directory:"
-msgid "File Directory"
+msgid "Directory"
 msgstr "מחיצת יעד:"
 
 #: picard/ui/itemviews/columns.py:191
@@ -11286,6 +11286,11 @@ msgstr ""
 "שגיאה בעת טעינת דפדפן:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Destination directory:"
+#~ msgid "File Directory"
+#~ msgstr "מחיצת יעד:"
 
 #~ msgid "Reset all"
 #~ msgstr "שיצוב הכל"

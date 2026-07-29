@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2026-03-19 17:31+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -6536,8 +6536,10 @@ msgid "File Type"
 msgstr "Тип файлу"
 
 #: picard/ui/itemviews/columns.py:189
-msgid "File Directory"
-msgstr "Каталог файлів"
+#, fuzzy
+#| msgid "Directory:"
+msgid "Directory"
+msgstr "Каталог:"
 
 #: picard/ui/itemviews/columns.py:191
 msgid "File Extension"
@@ -10070,6 +10072,9 @@ msgstr ""
 "Помилка під час запуску веб-браузера:\n"
 "\n"
 "%s"
+
+#~ msgid "File Directory"
+#~ msgstr "Каталог файлів"
 
 #~ msgid "Reset all"
 #~ msgstr "Скинути все"

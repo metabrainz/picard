@@ -51,7 +51,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2026-05-30 22:12+0000\n"
 "Last-Translator: Nebulain <2689960483@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -7616,7 +7616,7 @@ msgstr "专辑类型"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Director"
-msgid "File Directory"
+msgid "Directory"
 msgstr "导演/总监"
 
 #: picard/ui/itemviews/columns.py:191
@@ -11212,6 +11212,11 @@ msgstr ""
 "启动 web 浏览器时出错:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Director"
+#~ msgid "File Directory"
+#~ msgstr "导演/总监"
 
 #~ msgid "Reset all"
 #~ msgstr "全部重置"

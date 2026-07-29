@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
 "Last-Translator: Echelon\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -7844,7 +7844,7 @@ msgstr "Typ pliku"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Destination directory:"
-msgid "File Directory"
+msgid "Directory"
 msgstr "Katalog docelowy:"
 
 #: picard/ui/itemviews/columns.py:191
@@ -11515,6 +11515,11 @@ msgstr ""
 "Błąd podczas uruchamiania przeglądarki:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Destination directory:"
+#~ msgid "File Directory"
+#~ msgstr "Katalog docelowy:"
 
 #~ msgid "Reset all"
 #~ msgstr "Resetuj wszystko"

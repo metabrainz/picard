@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2023-08-23 08:24+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Spanish (Latin America) <https://translations.metabrainz.org/"
@@ -5761,7 +5761,7 @@ msgstr ""
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Version"
-msgid "File Directory"
+msgid "Directory"
 msgstr "Versión"
 
 #: picard/ui/itemviews/columns.py:191

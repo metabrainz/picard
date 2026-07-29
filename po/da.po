@@ -11,21 +11,23 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2013-2014,2017
 # Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2012
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
-"PO-Revision-Date: 2023-10-31 20:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
+"PO-Revision-Date: 2026-07-29 08:33+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
+"Language-Team: Danish <https://translations.metabrainz.org/projects/picard/3/"
 "app/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:208
@@ -1587,8 +1589,9 @@ msgid "Metadata"
 msgstr "Metadata"
 
 #: picard/plugin3/categories.py:36
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "andet"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
@@ -4042,8 +4045,9 @@ msgid "Ref/Tag:"
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:159
+#, fuzzy
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
@@ -4380,8 +4384,9 @@ msgid "Description:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:246
+#, fuzzy
 msgid "Official"
-msgstr ""
+msgstr "Officiel"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Trusted"
@@ -6085,7 +6090,7 @@ msgstr "Udgivelsestype"
 
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
-msgid "File Directory"
+msgid "Directory"
 msgstr "Marker &alt"
 
 #: picard/ui/itemviews/columns.py:191
@@ -8874,8 +8879,9 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:205
 #: picard/ui/widgets/plugindetailswidget.py:385
 #: picard/ui/widgets/pluginlistwidget.py:627
+#, fuzzy
 msgid "Update"
-msgstr ""
+msgstr "Opdatér"
 
 #: picard/ui/widgets/plugindetailswidget.py:122
 #: picard/ui/widgets/pluginlistwidget.py:632

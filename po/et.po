@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-07-29 01:25+0200\n"
+"POT-Creation-Date: 2026-07-29 01:48+0200\n"
 "PO-Revision-Date: 2024-04-07 12:28+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -6452,7 +6452,7 @@ msgstr "Väljalaske tüüp"
 #: picard/ui/itemviews/columns.py:189
 #, fuzzy
 #| msgid "Destination directory:"
-msgid "File Directory"
+msgid "Directory"
 msgstr "Sihtkataloog:"
 
 #: picard/ui/itemviews/columns.py:191
@@ -9918,6 +9918,11 @@ msgstr ""
 "Viga veebilehitseja käivitamisel:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Destination directory:"
+#~ msgid "File Directory"
+#~ msgstr "Sihtkataloog:"
 
 #~ msgid "Reset all"
 #~ msgstr "Lähtesta kõik"
