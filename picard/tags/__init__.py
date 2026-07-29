@@ -127,4 +127,12 @@ def script_variable_tag_names():
 
 
 def display_tag_name(name):
-    return ALL_TAGS.display_name(name)
+    display = ALL_TAGS.display_name(name)
+    # If ALL_TAGS didn't have a shortdesc (returns raw name), check plugin variables
+    if display == name:
+        from picard.extension_points.script_variables import get_plugin_variable_title
+
+        title = get_plugin_variable_title(name)
+        if title:
+            return title
+    return display
