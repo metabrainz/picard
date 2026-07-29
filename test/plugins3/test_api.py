@@ -323,6 +323,33 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_persist(self):
+        """Test that plugin_persist provides namespaced volatile storage."""
+        manifest = load_plugin_manifest('example')
+        test_uuid = manifest.uuid
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api = PluginApi(manifest, self.tagger)
+            api._api_persist._ConfigSection__qt_config = settings
+
+            # Verify section name is correctly namespaced
+            self.assertEqual(api.plugin_persist.section_name, f'plugin_persist.{test_uuid}')
+
+            # Register and write
+            api.plugin_persist.register_option('window_geom', '')
+            api.plugin_persist['window_geom'] = 'geom_data'
+            settings.sync()
+
+            # Verify stored under correct key in QSettings
+            self.assertEqual(settings.value(f'plugin_persist.{test_uuid}/window_geom'), 'geom_data')
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_plugin_config_operations(self):
         """Test all plugin_config operations."""
         manifest = load_plugin_manifest('example')

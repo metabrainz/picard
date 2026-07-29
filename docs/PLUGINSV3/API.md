@@ -303,6 +303,44 @@ The widget will be highlighted in the options dialog when the option is tracked 
 
 ---
 
+### `plugin_persist: ConfigSection`
+
+Volatile per-machine storage private to the plugin.
+
+Use this for data that is specific to the current machine and can be safely
+discarded without data loss. Unlike `plugin_config` (which stores user settings
+and participates in profiles), `plugin_persist` is for transient state that
+should not be synced between machines.
+
+**Examples:** window positions, dialog geometry, last-used directory paths,
+dismissed warnings, UI state.
+
+```python
+def enable(api):
+    # Register options with defaults
+    api.plugin_persist.register_option('last_directory', '')
+    api.plugin_persist.register_option('dialog_dismissed', False)
+
+    # Write values
+    api.plugin_persist['last_directory'] = '/home/user/music'
+    api.plugin_persist['dialog_dismissed'] = True
+
+    # Read values
+    last_dir = api.plugin_persist['last_directory']
+    dismissed = api.plugin_persist['dialog_dismissed']
+
+    # Check and remove
+    if 'last_directory' in api.plugin_persist:
+        api.plugin_persist.remove('last_directory')
+```
+
+**Key differences from `plugin_config`:**
+- No profile support — values are never overridden by user profiles
+- Data may be cleared during major version upgrades
+- Stored under `plugin_persist.{uuid}` (separate from plugin settings)
+
+---
+
 ### `plugin_dir: Path`
 
 Path to the plugin directory (read-only).

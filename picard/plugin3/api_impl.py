@@ -44,6 +44,7 @@ from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import (
     Config,
+    ConfigSection,
     ProfileConfigSection,
     get_config,
 )
@@ -202,6 +203,7 @@ class PluginApi:
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ProfileConfigSection(get_config(), full_name)
         self._api_config.display_name = manifest.name()
+        self._api_persist = ConfigSection(get_config(), f'plugin_persist.{self._manifest.uuid}')
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path | None = None
@@ -540,6 +542,19 @@ class PluginApi:
     def plugin_config(self) -> ProfileConfigSection:
         """Configuration private to the plugin"""
         return self._api_config
+
+    @property
+    def plugin_persist(self) -> ConfigSection:
+        """Volatile per-machine storage private to the plugin.
+
+        Use this for data that is specific to the current machine and can
+        be safely discarded without data loss. Examples: window positions,
+        dialog geometry, last-used directory paths, UI state.
+
+        Data stored here does not participate in user profiles and may be
+        cleared during major version upgrades.
+        """
+        return self._api_persist
 
     @property
     def plugin_dir(self) -> Path | None:
