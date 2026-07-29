@@ -34,7 +34,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-29 01:25+0200\n"
-"PO-Revision-Date: 2026-07-28 23:26+0000\n"
+"PO-Revision-Date: 2026-07-28 23:49+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -3822,10 +3822,8 @@ msgid "New ISRC"
 msgstr "ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:97
-#, fuzzy
-#| msgid "&Submit disc ID"
 msgid "&Submit"
-msgstr "&Disc-ID übermitteln"
+msgstr "&Übermitteln"
 
 #: picard/ui/logview.py:165
 #, fuzzy
@@ -4172,11 +4170,11 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:321
-#, fuzzy
-#| msgid "Check for program updates during startup"
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
-msgstr "Beim Start nach Programm-Updates suchen"
+msgstr ""
+"Online nach Plugin-Updates suchen und eine Benachrichtigung in der "
+"Statuszeile anzeigen."
 
 #: picard/ui/setupwizard.py:329
 msgid ""
@@ -4442,10 +4440,9 @@ msgid "Yes, Install!"
 msgstr "Ja, installieren!"
 
 #: picard/ui/dialogs/installconfirm.py:154
-#, fuzzy, python-brace-format
-#| msgid "ERROR: This plugin is blacklisted: {reason}"
+#, python-brace-format
 msgid "This plugin is blacklisted: {reason}"
-msgstr "FEHLER: Dieses Plugin ist gesperrt: {reason}"
+msgstr "Dieses Plugin ist gesperrt: {reason}"
 
 #: picard/ui/dialogs/installconfirm.py:165
 #, fuzzy
@@ -4830,10 +4827,8 @@ msgid "Homepage:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:114
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report Bugs To:"
-msgstr "Einen Fehler &melden …"
+msgstr "Fehler melden auf:"
 
 #: picard/ui/dialogs/plugininfo.py:115
 #: picard/ui/widgets/plugindetailswidget.py:186
@@ -5541,10 +5536,8 @@ msgid "Remove selected options"
 msgstr "Ausgewählte Einstellungen entfernen"
 
 #: picard/ui/forms/ui_options_matching.py:78
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum similarity:"
-msgstr "Minimale Bildbreite"
+msgstr "Minimale Ähnlichkeit:"
 
 #: picard/ui/forms/ui_options_matching.py:80
 msgid "Minimum margin between best and second-best match:"
@@ -5555,10 +5548,8 @@ msgid "Minimal similarity for matching files to tracks:"
 msgstr "Minimale Ähnlichkeit, um Dateien mit Titeln abzugleichen:"
 
 #: picard/ui/forms/ui_options_metadata.py:190
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names:"
-msgstr "Standardisierte Künstlernamen verwenden"
+msgstr "Standardisierte Künstlernamen:"
 
 #: picard/ui/forms/ui_options_metadata.py:193
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -5657,10 +5648,8 @@ msgid "Request timeout in seconds:"
 msgstr "Anfrage-Timeout in Sekunden:"
 
 #: picard/ui/forms/ui_options_network.py:181
-#, fuzzy
-#| msgid "Cache size (MB):"
 msgid "Cache usage:"
-msgstr "Cache-Größe (MB):"
+msgstr "Cache-Belegung:"
 
 #: picard/ui/forms/ui_options_network.py:183
 msgid " MB"
@@ -6100,10 +6089,8 @@ msgstr ""
 "Vorne verwendet."
 
 #: picard/ui/forms/ui_scripteditor.py:214
-#, fuzzy
-#| msgid "Edit file naming script…"
 msgid "Edit file naming script:"
-msgstr "Dateibenennungsskript bearbeiten …"
+msgstr "Dateibenennungsskript bearbeiten:"
 
 #: picard/ui/forms/ui_scripteditor.py:215
 msgid "Select the file naming script to load into the editor"
@@ -6549,10 +6536,8 @@ msgid "File Directory"
 msgstr "Verzeichnis:"
 
 #: picard/ui/itemviews/columns.py:191
-#, fuzzy
-#| msgid "The file was empty"
 msgid "File Extension"
-msgstr "Die Datei war leer"
+msgstr "Dateierweiterung"
 
 #: picard/ui/itemviews/columns.py:194
 msgid "File Creation Time"
@@ -7004,10 +6989,8 @@ msgid "Open AcoustID options"
 msgstr "AcoustID-Einstellungen öffnen"
 
 #: picard/ui/mainwindow/__init__.py:762
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup by…"
-msgstr "CD abfragen …"
+msgstr "Abfragen über …"
 
 #: picard/ui/mainwindow/__init__.py:771 picard/ui/mainwindow/actions.py:407
 msgid "Lookup &CD…"
@@ -7198,10 +7181,8 @@ msgid "No profiles configured"
 msgstr "Profil nach unten verschieben"
 
 #: picard/ui/mainwindow/__init__.py:2296
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configure profiles…"
-msgstr "Konfigurationsdateien"
+msgstr "Profile konfigurieren …"
 
 #: picard/ui/mainwindow/__init__.py:2363
 #, fuzzy
@@ -7210,10 +7191,8 @@ msgid "No quick settings configured"
 msgstr "&Schnelleinstellungen"
 
 #: picard/ui/mainwindow/__init__.py:2368
-#, fuzzy
-#| msgid "&Quick settings"
 msgid "Configure quick settings…"
-msgstr "&Schnelleinstellungen"
+msgstr "Schnelleinstellungen konfigurieren …"
 
 #: picard/ui/mainwindow/actions.py:83
 msgid "&Options…"
@@ -7350,10 +7329,8 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow/actions.py:255
-#, fuzzy
-#| msgid "Lookup &CD…"
 msgid "Lookup by &ISRC"
-msgstr "&CD abfragen …"
+msgstr "&ISRC abfragen"
 
 #: picard/ui/mainwindow/actions.py:256
 #, fuzzy
@@ -8701,10 +8678,8 @@ msgid "Export Profile"
 msgstr "Einstellungs-Profile"
 
 #: picard/ui/options/profiles.py:580
-#, fuzzy
-#| msgid "Export"
 msgid "Export mode:"
-msgstr "Exportieren"
+msgstr "Exportmodus:"
 
 #: picard/ui/options/profiles.py:595 picard/ui/options/profiles.py:671
 #: picard/ui/options/profiles.py:792
@@ -8720,10 +8695,9 @@ msgid "Export Error"
 msgstr "Skriptfehler"
 
 #: picard/ui/options/profiles.py:611
-#, fuzzy, python-format
-#| msgid "Failed to save Log View to file"
+#, python-format
 msgid "Failed to write file: %s"
-msgstr "Fehler beim Speichern des Protokolls als Datei"
+msgstr "Fehler beim Speichern der Datei: %s"
 
 #: picard/ui/options/profiles.py:614
 #, fuzzy
@@ -8745,21 +8719,12 @@ msgid "Import from Clipboard"
 msgstr "Importiert von %s"
 
 #: picard/ui/options/profiles.py:623
-#, fuzzy
-#| msgid "The file was empty"
 msgid "The clipboard is empty."
-msgstr "Die Datei war leer"
+msgstr "Die Zwischenablage ist leer."
 
 #: picard/ui/options/profiles.py:636
-#, fuzzy
-#| msgid ""
-#| "The selected directory does not contain a MANIFEST.toml file. A valid "
-#| "plugin requires both a git repository and a MANIFEST.toml file."
 msgid "The clipboard does not contain a valid Picard profile."
-msgstr ""
-"Das ausgewählte Verzeichnis enthält keine Datei MANIFEST.toml. Ein valides "
-"Plugin-Verzeichnis erfordert sowohl ein Git-Repository als auch die Datei "
-"MANIFEST.toml."
+msgstr "Die Zwischenablage enthält kein gültiges Picard-Profil."
 
 #: picard/ui/options/profiles.py:644 picard/ui/options/profiles.py:729
 msgid "Enable this profile after import?"
@@ -8779,10 +8744,9 @@ msgid "Import Error"
 msgstr "Skriptfehler"
 
 #: picard/ui/options/profiles.py:680 picard/ui/options/profiles.py:801
-#, fuzzy, python-format
-#| msgid "Failed to load session"
+#, python-format
 msgid "Failed to read file: %s"
-msgstr "Fehler beim Laden der Sitzung"
+msgstr "Fehler beim Laden der Datei: %s"
 
 #: picard/ui/options/profiles.py:696
 #, fuzzy
@@ -8791,10 +8755,9 @@ msgid "Profile Exists"
 msgstr "Profile"
 
 #: picard/ui/options/profiles.py:698
-#, fuzzy, python-format
-#| msgid "Overwrite the file if it already exists"
+#, python-format
 msgid "A profile '%s' with the same ID already exists."
-msgstr "Eventuell vorhandene Dateien überschreiben"
+msgstr "Ein Profil „%s“ mit gleicher ID existiert bereits."
 
 #: picard/ui/options/profiles.py:701
 #, python-format
@@ -8809,10 +8772,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/profiles.py:713
-#, fuzzy, python-format
-#| msgid "Replacement"
+#, python-format
 msgid "Replace '%s'"
-msgstr "Ersetzung"
+msgstr "„%s“ ersetzen"
 
 #: picard/ui/options/profiles.py:716
 #, fuzzy
@@ -9199,16 +9161,12 @@ msgid "New Script"
 msgstr "Neues Skript"
 
 #: picard/ui/scripteditor/__init__.py:391
-#, fuzzy
-#| msgid "Reset all scripts to the saved values"
 msgid "Reset all scripts to their last saved versions?"
-msgstr "Setzt alle Skripte auf die gespeicherten Werte zurück"
+msgstr "Alle Skripte auf die zuletzt gespeicherte Version zurücksetzen?"
 
 #: picard/ui/scripteditor/__init__.py:398
-#, fuzzy
-#| msgid "Save the current session to the last used file"
 msgid "Reset the current script to its last saved version?"
-msgstr "Die aktuelle Sitzung in der zuletzt benutzten Datei speichern"
+msgstr "Das aktuelle Skript auf die zuletzt gespeicherte Version zurücksetzen?"
 
 #: picard/ui/scripteditor/__init__.py:453
 #, python-brace-format
@@ -9248,10 +9206,8 @@ msgid "The script title must not be empty."
 msgstr "Der Skript-Titel darf nicht leer sein."
 
 #: picard/ui/scripteditor/__init__.py:688
-#, fuzzy
-#| msgid "Rename script"
 msgid "Activate script?"
-msgstr "Skript umbenennen"
+msgstr "Skript aktivieren?"
 
 #: picard/ui/scripteditor/__init__.py:689
 #, python-format
@@ -9365,19 +9321,15 @@ msgid "Retry"
 msgstr "Nochmal versuchen"
 
 #: picard/ui/searchdialog/__init__.py:252
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "<strong>Following error occurred while fetching results:<br><br></"
-#| "strong>Network request error for %(url)s:<br>%(error)s (QT code %"
-#| "(qtcode)d, HTTP code %(statuscode)r)<br>"
+#, python-brace-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
 "strong>Network request error for {url}:<br>{error} (QT code {qtcode}, HTTP "
 "code {statuscode})<br>"
 msgstr ""
 "<strong>Folgender Fehler ist beim Laden der Ergebnisse aufgetreten:<br><br></"
-"strong>Netzwerkanfrage-Fehler für %(url)s:<br>%(error)s (QT-Code %(qtcode)d, "
-"HTTP-Code %(statuscode)r)<br>"
+"strong>Netzwerkanfrage-Fehler für {url}:<br>{error} (QT-Code {qtcode}, HTTP-"
+"Code {statuscode})<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9512,10 +9464,9 @@ msgid "N/A"
 msgstr "nicht verfügbar"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
-#, fuzzy, python-brace-format
-#| msgid "Updates to check:"
+#, python-brace-format
 msgid "Update to {version}"
-msgstr "Überprüfen auf:"
+msgstr "Update auf {version}"
 
 #: picard/ui/widgets/plugindetailswidget.py:314
 msgid "Update Plugin"
@@ -9542,10 +9493,8 @@ msgid "Updating…"
 msgstr "Aktualisiere …"
 
 #: picard/ui/widgets/pluginformat.py:32
-#, fuzzy
-#| msgid "{base} (current)"
 msgid "current"
-msgstr "{base} (aktuell)"
+msgstr "aktuell"
 
 #: picard/ui/widgets/pluginformat.py:33
 #, python-brace-format
@@ -9615,20 +9564,16 @@ msgid "Switch Ref"
 msgstr "Git-Ref wechseln"
 
 #: picard/ui/widgets/pluginlistwidget.py:654
-#, fuzzy
-#| msgid "Directory:"
 msgid "View Directory"
-msgstr "Verzeichnis:"
+msgstr "Verzeichnis anzeigen"
 
 #: picard/ui/widgets/pluginlistwidget.py:656
 msgid "View Repository"
 msgstr "Repository anzeigen"
 
 #: picard/ui/widgets/pluginlistwidget.py:662
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report a Bug"
-msgstr "Einen Fehler &melden …"
+msgstr "Einen Fehler melden"
 
 #: picard/ui/widgets/pluginlistwidget.py:668
 msgid "Execution Order"
@@ -9815,20 +9760,16 @@ msgid "Remove profile"
 msgstr "Profil entfernen"
 
 #: picard/ui/widgets/profilelistwidget.py:61
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Export profile…"
-msgstr "Konfigurationsdateien"
+msgstr "Profil exportieren …"
 
 #: picard/ui/widgets/profilelistwidget.py:65
 msgid "Copy to clipboard"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:69
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and replace…"
-msgstr "Skriptdatei &importieren"
+msgstr "Importieren und ersetzen …"
 
 #: picard/ui/widgets/profilelistwidget.py:72
 #, fuzzy
@@ -9853,10 +9794,9 @@ msgid "Custom"
 msgstr "Benutzerdefiniert"
 
 #: picard/ui/widgets/refselector.py:120
-#, fuzzy, python-brace-format
-#| msgid "Use default ref: {ref} ({description})"
+#, python-brace-format
 msgid "Recommended: <b>{ref}</b> ({description})"
-msgstr "Standard-Git-Red verwenden: {ref} ({description})"
+msgstr "Empfohlen: <b>{ref}</b> ({description})"
 
 #: picard/ui/widgets/refselector.py:123
 msgid "Use the default ref (usually main/master branch)"
