@@ -176,6 +176,30 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
         self.assertEqual(expected, self.config.setting.as_dict())
 
+    def test_keys_returns_all_stored_keys(self):
+        TextOption("setting", "text_option", "abc")
+        IntOption("setting", "int_option", 42)
+
+        # Write values so they exist in the backing store
+        self.config.setting["text_option"] = "hello"
+        self.config.setting["int_option"] = 7
+
+        keys = self.config.setting.keys()
+        self.assertIn("text_option", keys)
+        self.assertIn("int_option", keys)
+
+    def test_keys_includes_unregistered_keys(self):
+        # Write a raw key with no Option registration
+        self.config.setValue("setting/orphan_key", "value")
+
+        keys = self.config.setting.keys()
+        self.assertIn("orphan_key", keys)
+
+    def test_keys_empty_section(self):
+        # A section with no stored keys should return empty list
+        keys = self.config.persist.keys()
+        self.assertEqual(keys, [])
+
     def test_register_option(self):
         class TestEnum(Enum):
             A = "a"

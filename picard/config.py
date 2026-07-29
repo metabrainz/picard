@@ -252,6 +252,19 @@ class ConfigSection(QtCore.QObject):
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
 
+    def keys(self) -> list[str]:
+        """Return all key names stored in this section's backing store.
+
+        Unlike :meth:`as_dict` (which only returns keys with a registered
+        Option), this returns every key present in the underlying storage,
+        including keys that have no corresponding Option registration.
+        """
+        self.__qt_config.beginGroup(self.__name)
+        try:
+            return list(self.__qt_config.childKeys())
+        finally:
+            self.__qt_config.endGroup()
+
     def remove(self, name: str):
         key = self.key(name)
         config = self.__qt_config
