@@ -290,7 +290,7 @@ class TestPluginApi(PicardTestCase):
 
             # Create API with the test config
             api = PluginApi(manifest, self.tagger)
-            api._api_config._ConfigSection__qt_config = settings
+            api._api_config._config_store = settings
 
             # Set some config values
             api.plugin_config['test_string'] = 'hello'
@@ -315,7 +315,7 @@ class TestPluginApi(PicardTestCase):
 
             # Verify raw_value can read them back
             api2 = PluginApi(manifest, self.tagger)
-            api2._api_config._ConfigSection__qt_config = settings2
+            api2._api_config._config_store = settings2
             self.assertEqual(api2.plugin_config.raw_value('test_string'), 'hello')
             self.assertEqual(api2.plugin_config.raw_value('test_int'), 42)
             self.assertEqual(api2.plugin_config.raw_value('test_bool'), True)
@@ -333,7 +333,7 @@ class TestPluginApi(PicardTestCase):
         try:
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
             api = PluginApi(manifest, self.tagger)
-            api._api_config._ConfigSection__qt_config = settings
+            api._api_config._config_store = settings
 
             # Test registering options
             api.plugin_config.register_option('string', 'default')
@@ -381,7 +381,7 @@ class TestPluginApi(PicardTestCase):
             settings.sync()
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
             api2 = PluginApi(manifest, self.tagger)
-            api2._api_config._ConfigSection__qt_config = settings2
+            api2._api_config._config_store = settings2
 
             self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
             self.assertEqual(api2.plugin_config['dict'], {'key': 'value'})
@@ -399,7 +399,7 @@ class TestPluginApi(PicardTestCase):
         try:
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
             api = PluginApi(manifest, self.tagger)
-            api._api_config._ConfigSection__qt_config = settings
+            api._api_config._config_store = settings
 
             # Register options
             api.plugin_config.register_option('bool_true', False)
@@ -423,7 +423,7 @@ class TestPluginApi(PicardTestCase):
             # Load in new QSettings instance (same process)
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
             api2 = PluginApi(manifest, self.tagger)
-            api2._api_config._ConfigSection__qt_config = settings2
+            api2._api_config._config_store = settings2
 
             # Types are preserved due to QSettings in-memory cache
             self.assertIs(api2.plugin_config['bool_true'], True)
@@ -457,7 +457,7 @@ class TestPluginApi(PicardTestCase):
 
             # Create API
             api = PluginApi(manifest, self.tagger)
-            api._api_config._ConfigSection__qt_config = settings
+            api._api_config._config_store = settings
 
             # Register options for the plugin
             TextOption(f'plugin.{test_uuid}', 'text_setting', 'default_text')
@@ -478,7 +478,7 @@ class TestPluginApi(PicardTestCase):
             settings.sync()
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
             api2 = PluginApi(manifest, self.tagger)
-            api2._api_config._ConfigSection__qt_config = settings2
+            api2._api_config._config_store = settings2
 
             # Values should persist and be properly typed
             self.assertEqual(api2.plugin_config['text_setting'], 'hello')

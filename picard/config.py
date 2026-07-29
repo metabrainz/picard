@@ -214,9 +214,9 @@ class ConfigSection(QtCore.QObject):
     # Signal emitted when the value of a setting has changed.
     setting_changed = QtCore.pyqtSignal(str, object, object)
 
-    def __init__(self, config: 'Config', name: str):
+    def __init__(self, config: QtCore.QSettings, name: str):
         super().__init__()
-        self.__qt_config = config
+        self._config_store = config
         self.__name = name
         self.__prefix = self.__name + '/'
         self._memoization: dict[str, Memovar] = defaultdict(Memovar)
@@ -241,13 +241,13 @@ class ConfigSection(QtCore.QObject):
         key = self.key(name)
         if isinstance(value, Enum):
             value = value.value
-        self.__qt_config.setValue(key, value)
+        self._config_store.setValue(key, value)
         self._memoization[key].dirty = True
         if value != old_value:
             self.setting_changed.emit(name, old_value, value)
 
     def __contains__(self, name):
-        return self.__qt_config.contains(self.key(name))
+        return self._config_store.contains(self.key(name))
 
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
@@ -259,15 +259,15 @@ class ConfigSection(QtCore.QObject):
         Option), this returns every key present in the underlying storage,
         including keys that have no corresponding Option registration.
         """
-        self.__qt_config.beginGroup(self.__name)
+        self._config_store.beginGroup(self.__name)
         try:
-            return list(self.__qt_config.childKeys())
+            return list(self._config_store.childKeys())
         finally:
-            self.__qt_config.endGroup()
+            self._config_store.endGroup()
 
     def remove(self, name: str):
         key = self.key(name)
-        config = self.__qt_config
+        config = self._config_store
         if config.contains(key):
             config.remove(key)
         try:
@@ -279,9 +279,9 @@ class ConfigSection(QtCore.QObject):
         """Return an option value without any type conversion."""
         key = self.key(name)
         if qtype is not None:
-            value = self.__qt_config.value(key, type=qtype)
+            value = self._config_store.value(key, type=qtype)
         else:
-            value = self.__qt_config.value(key)
+            value = self._config_store.value(key)
         return value
 
     def value(self, option: Option, default: ConfigValueType | None = None) -> Any:
