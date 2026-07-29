@@ -92,14 +92,16 @@ def _install_defaulting_config(monkeypatch):
 
     setting = _make_defaulting_section("setting")
     persist = _make_defaulting_section("persist")
+    state = _make_defaulting_section("state")
     profiles = _make_defaulting_section("profiles")
 
-    fake_config = SimpleNamespace(setting=setting, persist=persist, profiles=profiles)
+    fake_config = SimpleNamespace(setting=setting, persist=persist, state=state, profiles=profiles)
 
     # Expose module-level aliases commonly used in code/tests
     monkeypatch.setattr(cfg_mod, "config", fake_config, raising=False)
     monkeypatch.setattr(cfg_mod, "setting", setting, raising=False)
     monkeypatch.setattr(cfg_mod, "persist", persist, raising=False)
+    monkeypatch.setattr(cfg_mod, "state", state, raising=False)
     monkeypatch.setattr(cfg_mod, "profiles", profiles, raising=False)
 
     # Provide get_config() that returns our fake config unless overridden by other fixtures
@@ -113,6 +115,7 @@ def _install_defaulting_config(monkeypatch):
             cfg_mod.config = fake_config
             cfg_mod.setting = setting
             cfg_mod.persist = persist
+            cfg_mod.state = state
             cfg_mod.profiles = profiles
 
         monkeypatch.setattr(ptc.PicardTestCase, "init_config", staticmethod(_init_config_override), raising=False)

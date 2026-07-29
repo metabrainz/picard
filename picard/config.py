@@ -550,6 +550,7 @@ class Config(QtCore.QSettings):
         self.profiles: ConfigSection = ConfigSection(self, 'profiles')
         self.setting: SettingConfigSection = SettingConfigSection(self, 'setting')
         self.persist: ConfigSection = ConfigSection(self, 'persist')
+        self.state: ConfigSection = ConfigSection(self, 'state')
 
         if 'version' not in self.application or not self.application['version']:
             TextOption('application', 'version', '0.0.0dev0')
@@ -694,19 +695,21 @@ class OptionError(Exception):
 config = None
 setting = None
 persist = None
+state = None
 profiles = None
 
 
 def setup_config(app=None, filename=None):
     if app is None:
         app = tagger_instance()
-    global config, setting, persist, profiles
+    global config, setting, persist, state, profiles
     if filename is None:
         config = Config.from_app(app)
     else:
         config = Config.from_file(app, filename)
     setting = config.setting
     persist = config.persist
+    state = config.state
     profiles = config.profiles
 
 

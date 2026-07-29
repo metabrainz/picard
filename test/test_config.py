@@ -97,6 +97,16 @@ class TestPicardConfig(TestPicardConfigCommon):
         raw = QSettings(self.configpath, QSettings.Format.IniFormat)
         self.assertEqual(raw.value("setting/sync_test"), "written")
 
+    def test_state_section_exists(self):
+        self.assertIsNotNone(self.config.state)
+        self.assertEqual(self.config.state.section_name, 'state')
+
+    def test_state_section_read_write(self):
+        TextOption("state", "test_key", "default")
+        self.assertEqual(self.config.state["test_key"], "default")
+        self.config.state["test_key"] = "new_value"
+        self.assertEqual(self.config.state["test_key"], "new_value")
+
 
 class TestPicardConfigOption(TestPicardConfigCommon):
     def test_basic_option(self):

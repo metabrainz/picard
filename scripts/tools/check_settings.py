@@ -27,7 +27,7 @@ import sys
 ROOT_DIR = 'picard'
 IGNORE_DIR = '__pycache__'
 
-OPTION_TYPES_TO_CHECK = {'setting', 'persist'}
+OPTION_TYPES_TO_CHECK = {'setting', 'persist', 'state'}
 
 # Identify options created
 RE_CREATE_OPTION = re.compile(
