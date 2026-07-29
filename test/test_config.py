@@ -86,6 +86,17 @@ class TestPicardConfig(TestPicardConfigCommon):
         self.config.setting.remove("text_option")
         self.assertEqual(self.config.setting["text_option"], "abc")
 
+    def test_sync_persists_to_disk(self):
+        from PyQt6.QtCore import QSettings
+
+        TextOption("setting", "sync_test", "default")
+        self.config.setting["sync_test"] = "written"
+        self.config.sync()
+
+        # Re-read the file from disk with raw QSettings to confirm persistence
+        raw = QSettings(self.configpath, QSettings.Format.IniFormat)
+        self.assertEqual(raw.value("setting/sync_test"), "written")
+
 
 class TestPicardConfigOption(TestPicardConfigCommon):
     def test_basic_option(self):

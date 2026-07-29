@@ -677,6 +677,14 @@ class Config(QtCore.QSettings):
             return False
         return self._save_backup(backup_path)
 
+    def sync(self):
+        """Write all pending configuration changes to disk.
+
+        Override of QSettings.sync() to provide a single extension point
+        for syncing additional backing stores in the future.
+        """
+        super().sync()
+
 
 class OptionError(Exception):
     def __init__(self, message, section, name):
