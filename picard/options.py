@@ -407,7 +407,7 @@ BoolOption(
     'setting',
     'listenbrainz_submit_only_tagged',
     True,
-    title=N_('Submit only tagged files ListenBrainz'),
+    title=N_('Submit only tagged files to ListenBrainz'),
     in_profile=True,
 )
 TextOption('setting', 'listenbrainz_token', '', title=N_('ListenBrainz user token'), in_profile=True, shareable=False)
