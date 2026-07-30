@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import fnmatch
 import os
 import re
 from typing import ClassVar
@@ -254,10 +255,10 @@ class CoverArtProviderLocal(CoverArtProvider):
                 )
 
     def find_local_images_by_script(self, current_dir, expected_filename):
+        pattern = expected_filename.lower()
         for root, _dirs, files in os.walk(current_dir):
             for filename in files:
-                name_without_ext, ext = os.path.splitext(filename)
-                if name_without_ext == expected_filename:
+                if fnmatch.fnmatch(filename.lower(), pattern):
                     filepath = os.path.join(current_dir, root, filename)
                     if os.path.exists(filepath):
                         yield LocalFileCoverArtImage(
