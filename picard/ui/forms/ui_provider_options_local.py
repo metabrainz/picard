@@ -79,5 +79,5 @@ class Ui_LocalOptions(object):
         self.regex_note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))
         self.local_cover_script_label.setText(_("Local cover art files match the following script:"))
         self.script_preview_label.setText(_("Example:"))
-        self.script_note.setText(_("The script will be evaluated for each file\'s metadata. Use variables like %albumartist%, %album%, etc."))
+        self.script_note.setText(_("The script will be evaluated for each file\'s metadata. Use variables like %albumartist%, %album%, etc. Glob patterns (* and ?) are supported and match the full filename including extension. Matching is case-insensitive."))
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
