@@ -207,7 +207,6 @@ class CoverArtProviderLocal(CoverArtProvider):
     def _queue_images_regex(self, regex):
         match_re = re.compile(regex, re.IGNORECASE)
         dirs_done = set()
-
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
             if current_dir in dirs_done:
@@ -217,17 +216,12 @@ class CoverArtProviderLocal(CoverArtProvider):
                 self.queue_put(image)
 
     def _queue_images_script(self, script):
-        dirs_done = set()
-
+        filepaths_done = set()
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
-            if current_dir in dirs_done:
-                continue
-            dirs_done.add(current_dir)
-
             expected_filename = script_to_filename(script, file.metadata)
             if expected_filename:
-                for image in self.find_local_images_by_script(current_dir, expected_filename):
+                for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
                     self.queue_put(image)
 
     def get_types(self, string):
@@ -254,12 +248,15 @@ class CoverArtProviderLocal(CoverArtProvider):
                     support_multi_types=True,
                 )
 
-    def find_local_images_by_script(self, current_dir, expected_filename):
+    def find_local_images_by_script(self, current_dir, expected_filename, filepaths_done):
         pattern = expected_filename.lower()
         for root, _dirs, files in os.walk(current_dir):
             for filename in files:
                 if fnmatch.fnmatch(filename.lower(), pattern):
                     filepath = os.path.join(current_dir, root, filename)
+                    if filepath in filepaths_done:
+                        continue
+                    filepaths_done.add(filepath)
                     if os.path.exists(filepath):
                         yield LocalFileCoverArtImage(
                             filepath,
