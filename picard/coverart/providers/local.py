@@ -38,7 +38,6 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.metadata import Metadata
-from picard.util.scripttofilename import script_to_filename
 
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 from picard.ui.options import PageOptionConfigs
@@ -119,7 +118,7 @@ class ProviderOptionsLocal(ProviderOptions):
             return
 
         try:
-            result = script_to_filename(script, self._get_example_metadata())
+            result = CoverArtProviderLocal._eval_script(script, self._get_example_metadata())
             if result:
                 self.ui.script_preview_value.setText(result)
                 self.ui.script_preview_value.setStyleSheet("font-weight: bold;")
@@ -220,10 +219,27 @@ class CoverArtProviderLocal(CoverArtProvider):
         filepaths_done = set()
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
-            expected_filename = script_to_filename(script, file.metadata)
+            expected_filename = self._eval_script(script, file.metadata)
             if expected_filename:
                 for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
                     self.queue_put(image)
+
+    @staticmethod
+    def _eval_script(script, metadata):
+        """Evaluate a script for use as a filename matching pattern.
+
+        Unlike script_to_filename(), this does not strip glob wildcard
+        characters (*, ?, {, |, }) from the result. Only path separators
+        in metadata values are replaced to ensure safe matching.
+        """
+        from picard.script import ScriptParser
+
+        new_metadata = Metadata()
+        for name in metadata:
+            new_metadata[name] = [str(v).replace(os.sep, '_') for v in metadata.getall(name)]
+        script = script.replace('\t', '').replace('\n', '')
+        result = ScriptParser().eval(script, new_metadata)
+        return result.replace('\x00', '')
 
     @staticmethod
     def _glob_to_re(pattern):
