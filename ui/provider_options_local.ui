@@ -128,7 +128,7 @@
       </font>
      </property>
      <property name="text">
-      <string>The script will be evaluated for each file's metadata. Use variables like %albumartist%, %album%, etc. Glob patterns (* and ?) are supported and match the full filename including extension. Matching is case-insensitive.</string>
+      <string>The script will be evaluated for each file's metadata. Use variables like %albumartist%, %album%, etc. Wildcards (* and ?), as well as alternation ({jpg|png}), are supported. Matching is against the full filename including extension, and is case-insensitive.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

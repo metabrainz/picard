@@ -22,7 +22,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import fnmatch
 import os
 import re
 from typing import ClassVar
@@ -226,6 +225,40 @@ class CoverArtProviderLocal(CoverArtProvider):
                 for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
                     self.queue_put(image)
 
+    @staticmethod
+    def _glob_to_re(pattern):
+        """Convert a simple glob pattern to a compiled regex.
+
+        Supported wildcards:
+          * — matches any number of characters
+          ? — matches exactly one character
+          {a|b|...} — matches any of the alternatives
+
+        All other characters (including [ and ]) are treated as literals.
+        This avoids misinterpreting brackets in filenames (e.g. "[2007]")
+        as fnmatch character classes.
+        """
+        result = []
+        i = 0
+        while i < len(pattern):
+            char = pattern[i]
+            if char == '*':
+                result.append('.*')
+            elif char == '?':
+                result.append('.')
+            elif char == '{':
+                end = pattern.find('}', i)
+                if end != -1:
+                    alternatives = pattern[i + 1 : end].split('|')
+                    result.append('(?:' + '|'.join(re.escape(a) for a in alternatives) + ')')
+                    i = end
+                else:
+                    result.append(re.escape(char))
+            else:
+                result.append(re.escape(char))
+            i += 1
+        return re.compile(''.join(result) + r'\Z', re.IGNORECASE)
+
     def get_types(self, string):
         found = {x.lower() for x in self._types_split_re.split(string) if x}
         return list(found.intersection(self._known_types))
@@ -251,10 +284,10 @@ class CoverArtProviderLocal(CoverArtProvider):
                 )
 
     def find_local_images_by_script(self, current_dir, expected_filename, filepaths_done):
-        pattern = expected_filename.lower()
+        match_re = self._glob_to_re(expected_filename)
         for root, _dirs, files in os.walk(current_dir):
             for filename in files:
-                if fnmatch.fnmatch(filename.lower(), pattern):
+                if match_re.match(filename):
                     filepath = os.path.join(root, filename)
                     if filepath in filepaths_done:
                         continue

@@ -163,7 +163,7 @@ class QueueImagesScriptTest(PicardTestCase):
         mock_stf.return_value = ''
         file = MagicMock()
         file.filename = '/music/song.mp3'
-        file.metadata = {}
+        file.metadata = Metadata()
         self.provider.album.iterfiles.return_value = [file]
         self.provider._queue_images_script('%album%')
         self.provider.queue_put.assert_not_called()
@@ -173,7 +173,7 @@ class QueueImagesScriptTest(PicardTestCase):
         mock_stf.return_value = 'cover.*'
         file = MagicMock()
         file.filename = '/music/song.mp3'
-        file.metadata = {'album': 'Test'}
+        file.metadata = Metadata({'album': 'Test'})
         self.provider.album.iterfiles.return_value = [file]
         self.provider.find_local_images_by_script = MagicMock(return_value=[])
         self.provider._queue_images_script('%album%')
@@ -227,10 +227,8 @@ class ScriptToGlobMatchTest(LocalCoverArtTestBase):
         results = self._find_with_script('cover.*', metadata)
         self.assertEqual(['cover.jpg', 'cover.png'], self._filenames(results))
 
-    def test_script_with_conditional_matches_image_extensions(self):
-        """Script uses $if to build a glob that matches .jpg/.png but not .txt.
-        Tests both the true branch (album matches) and fallback branch (album doesn't match).
-        """
+    def test_script_with_conditional(self):
+        """Script uses $if and {jpg|png} brace expansion to match only image extensions."""
         self._create_files(
             [
                 'Abbey Road.jpg',
@@ -240,14 +238,56 @@ class ScriptToGlobMatchTest(LocalCoverArtTestBase):
                 'cover.png',
             ]
         )
-        script = '$if($eq(%album%,Abbey Road),%album%.[jp][pn][g]*,cover.[jp][pn][g]*)'
+        script = '$if($eq(%album%,Abbey Road),%album%.{jpg|png},cover.{jpg|png})'
 
         # True branch: album is "Abbey Road", matches Abbey Road.jpg and .png but not .txt
         metadata = Metadata({'album': 'Abbey Road'})
         results = self._find_with_script(script, metadata)
         self.assertEqual(['Abbey Road.jpg', 'Abbey Road.png'], self._filenames(results))
 
-        # Fallback branch: album doesn't match, falls back to cover.*
+        # Fallback branch: album doesn't match, falls back to cover.jpg/.png
         metadata = Metadata({'album': 'Let It Be'})
         results = self._find_with_script(script, metadata)
         self.assertEqual(['cover.jpg', 'cover.png'], self._filenames(results))
+
+    def test_script_matching_save_pattern_with_date(self):
+        """Mirrors the use case from PICARD-1044: load cover art saved with a
+        scripting pattern like 'Artist - Album [Date].ext' in a Cover subdirectory.
+        """
+        cover_dir = os.path.join(self.tmpdir, 'Cover')
+        os.makedirs(cover_dir)
+        open(os.path.join(cover_dir, 'Alicia Keys - As I Am [2007].jpg'), 'w').close()
+        open(os.path.join(cover_dir, 'Alicia Keys - As I Am [2007].png'), 'w').close()
+        open(os.path.join(self.tmpdir, 'unrelated.jpg'), 'w').close()
+
+        metadata = Metadata(
+            {
+                'albumartist': 'Alicia Keys',
+                'album': 'As I Am',
+                'date': '2007',
+            }
+        )
+        script = '%albumartist% - %album% [%date%].*'
+        results = self._find_with_script(script, metadata)
+        self.assertEqual(
+            ['Alicia Keys - As I Am [2007].jpg', 'Alicia Keys - As I Am [2007].png'],
+            self._filenames(results),
+        )
+
+    def test_script_matching_save_pattern_without_date(self):
+        """Same as above but for tracks without a date — the $if omits the date part."""
+        cover_dir = os.path.join(self.tmpdir, 'Cover')
+        os.makedirs(cover_dir)
+        open(os.path.join(cover_dir, 'Artist - Title.jpg'), 'w').close()
+        open(os.path.join(cover_dir, 'Other Artist - Other.jpg'), 'w').close()
+
+        metadata = Metadata(
+            {
+                'albumartist': 'Artist',
+                'album': 'Title',
+            }
+        )
+        script = '%albumartist% - %album%$if(%date%, [%date%],).*'
+        results = self._find_with_script(script, metadata)
+        # Without date, pattern is "Artist - Title.*" — matches only the right file
+        self.assertEqual(['Artist - Title.jpg'], self._filenames(results))

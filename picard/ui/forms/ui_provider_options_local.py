@@ -88,5 +88,5 @@ class Ui_LocalOptions(object):
         self.label_test_coverart_filter.setText(_("Test file name matching:"))
         self.local_cover_script_label.setText(_("Local cover art files match the following script:"))
         self.script_preview_label.setText(_("Example:"))
-        self.script_note.setText(_("The script will be evaluated for each file\'s metadata. Use variables like %albumartist%, %album%, etc. Glob patterns (* and ?) are supported and match the full filename including extension. Matching is case-insensitive."))
+        self.script_note.setText(_("The script will be evaluated for each file\'s metadata. Use variables like %albumartist%, %album%, etc. Wildcards (* and ?), as well as alternation ({jpg|png}), are supported. Matching is against the full filename including extension, and is case-insensitive."))
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
