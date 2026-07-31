@@ -258,9 +258,10 @@ class CoverArtProviderLocal(CoverArtProvider):
                         continue
                     filepaths_done.add(filepath)
                     if os.path.exists(filepath):
+                        types = self.get_types(filename) or self._default_types
                         yield LocalFileCoverArtImage(
                             filepath,
-                            types=self._default_types,
+                            types=types,
                             support_types=True,
                             support_multi_types=True,
                         )
