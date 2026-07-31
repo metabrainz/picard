@@ -12,21 +12,23 @@
 # riotism, 2017-2018,2020
 # 如月飛羽 <flyingfeather1501@gmail.com>, 2023
 # Iceman1415 <iceman1415@protonmail.com>, 2023.
+# silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2023-12-22 09:28+0000\n"
-"Last-Translator: Iceman1415 <iceman1415@protonmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
-"projects/picard/2/app/zh_Hant/>\n"
+"PO-Revision-Date: 2026-07-31 19:12+0000\n"
+"Last-Translator: silentbird "
+"<silentbird@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translations.metabrainz.org/projects/picard/2/app/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -138,7 +140,7 @@ msgstr "主要檔案命名腳本"
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
-msgstr ""
+msgstr "檔案因為受損或使用不支持的格式而無法讀取。"
 
 #: picard/file.py:853
 #, python-format
@@ -168,7 +170,7 @@ msgstr "錯誤"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -177,13 +179,11 @@ msgstr "資訊"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "除錯"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "非預期的認證錯誤"
+msgstr "撤銷權杖時出現不明錯誤"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -267,7 +267,7 @@ msgstr ""
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "檢查更新隔天數"
 
 #: picard/profile.py:56
 msgid "Updates to check"
@@ -359,12 +359,11 @@ msgstr "將使用者定義標籤視為曲風"
 #: picard/profile.py:89
 #, fuzzy
 msgid "Minimal genre usage"
-msgstr "最低曲風利用:"
+msgstr "最低曲風利用"
 
 #: picard/profile.py:90
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "曲風總數上限:"
+msgstr "曲風總數上限"
 
 #: picard/profile.py:91
 #, fuzzy
@@ -428,9 +427,8 @@ msgid "ID3v2 version to write"
 msgstr ""
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
-#, fuzzy
 msgid "ID3v2 text encoding"
-msgstr "ID3v2 文字編碼"
+msgstr "ID3v2文字編碼"
 
 #: picard/profile.py:119
 msgid "ID3v2.3 join character"
@@ -442,11 +440,11 @@ msgstr "儲存相容於iTunes的分組與作品標籤"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
-msgstr ""
+msgstr "寫入ID3v1標籤"
 
 #: picard/profile.py:124
 msgid "Save APEv2 tags to AAC"
-msgstr ""
+msgstr "儲存APEv2標籤至AAC"
 
 #: picard/profile.py:125 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
@@ -454,7 +452,7 @@ msgstr "從 AAC 檔案移除 APEv2 標籤"
 
 #: picard/profile.py:128
 msgid "Save APEv2 tags to AC3"
-msgstr ""
+msgstr "儲存APEv2標籤至AC3"
 
 #: picard/profile.py:129 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
@@ -475,7 +473,7 @@ msgstr "RIFF INFO 文字編碼"
 
 #: picard/profile.py:139 picard/ui/options/cover.py:52
 msgid "Cover Art"
-msgstr "封面圖片"
+msgstr "封面圖"
 
 #: picard/profile.py:141 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
@@ -506,9 +504,8 @@ msgid "Always use the primary image type as the file name for non-front images"
 msgstr "總是將主要圖片類型作為非正面圖片的檔案名稱"
 
 #: picard/profile.py:148
-#, fuzzy
 msgid "Cover art providers"
-msgstr "封面圖片提供者"
+msgstr "封面圖片來源"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -569,7 +566,7 @@ msgstr ""
 
 #: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
-msgstr "腳本"
+msgstr "指令碼"
 
 #: picard/profile.py:177
 msgid "Enable tagger scripts"
@@ -592,14 +589,12 @@ msgid "Show icons in menus"
 msgstr "在選單顯示圖示"
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "使用者介面語言:"
+msgstr "使用者介面語言"
 
 #: picard/profile.py:189
-#, fuzzy
 msgid "User interface color theme"
-msgstr "使用者介面配色方案:"
+msgstr "使用者介面配色方案"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -610,9 +605,8 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "使用內建搜尋來代替瀏覽器查詢"
 
 #: picard/profile.py:192
-#, fuzzy
 msgid "Use advanced search syntax"
-msgstr "使用進階查詢語法"
+msgstr "使用進階搜尋語法"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -640,19 +634,19 @@ msgstr "要開始瀏覽的目錄"
 
 #: picard/profile.py:201
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "淺色主題使用的顏色"
 
 #: picard/profile.py:202
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "深色主題使用的顏色"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "在頂部顯示的標籤"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "工具列布局"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
@@ -701,7 +695,7 @@ msgstr "比較時忽略以下標籤:"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "使用網路代理伺服器"
 
 #: picard/profile.py:239
 msgid "type of proxy server"
@@ -709,19 +703,19 @@ msgstr ""
 
 #: picard/profile.py:240
 msgid "Proxy server address"
-msgstr ""
+msgstr "代理伺服器地址"
 
 #: picard/profile.py:241
 msgid "Proxy server port"
-msgstr ""
+msgstr "代理伺服器接埠"
 
 #: picard/profile.py:242
 msgid "Proxy username"
-msgstr ""
+msgstr "代理使用者名稱"
 
 #: picard/profile.py:243
 msgid "Proxy password"
-msgstr ""
+msgstr "代理密碼"
 
 #: picard/profile.py:244
 msgid "Request timeout in seconds"
@@ -733,9 +727,8 @@ msgid "Browser integration"
 msgstr "瀏覽器整合"
 
 #: picard/profile.py:248
-#, fuzzy
 msgid "Default listening port"
-msgstr "預設的聆聽連接埠:"
+msgstr "預設的聆聽連接埠"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
@@ -2611,7 +2604,7 @@ msgstr "原始發售日"
 
 #: picard/ui/itemviews.py:176 picard/util/tags.py:107
 msgid "Release Date"
-msgstr ""
+msgstr "發行日期"
 
 #: picard/ui/itemviews.py:279
 msgid "Bad match"
@@ -4374,7 +4367,7 @@ msgstr "預設的聆聽連接埠:"
 
 #: picard/ui/options/plugins.py:226 picard/ui/ui_options_plugins.py:131
 msgid "Plugins"
-msgstr "插件"
+msgstr "外掛程式"
 
 #: picard/ui/options/plugins.py:629 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
@@ -5817,7 +5810,7 @@ msgstr "版權"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr ""
+msgstr "導演"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
@@ -6029,7 +6022,7 @@ msgstr "音軌回放增益範圍"
 
 #: picard/util/tags.py:118
 msgid "Script"
-msgstr "文字系統"
+msgstr "指令碼"
 
 #: picard/util/tags.py:119
 msgid "Show Name"

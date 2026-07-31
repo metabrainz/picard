@@ -1,27 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020
 # Transifex Bot <>, 2023
+# silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2026.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Chinese (Taiwan) (https://app.transifex.com/musicbrainz/"
-"teams/13846/zh_TW/)\n"
+"PO-Revision-Date: 2026-07-31 19:12+0000\n"
+"Last-Translator: silentbird "
+"<silentbird@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translations.metabrainz.org/projects/picard/2/appstream/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -48,9 +49,9 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard 依照您指定的方式來重新命名音樂檔案，並整理進資料夾，藉此幫助您整理您的"
-"音樂收藏。Picard 有多種插件可使用，您甚至可以撰寫自己的插件。Picard 支援多種"
-"音樂格式，也可以為您查找整張 CD。"
+"Picard讓您依照個人喜好，重新命名音訊檔案和分類檔案至不同資料夾，藉此幫助您整"
+"理音樂收藏。Picard支援多種外掛程式，您甚至可以編寫自己的外掛。Picard支援多種"
+"音訊檔案格式，還可以為您查找整張CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -110,7 +111,7 @@ msgstr ""
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr ""
+msgstr "專輯封面：Picard可以為您的專輯搜尋和下載正確的封面。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -127,8 +128,8 @@ msgstr "MetaBrainz 基金會"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "用新一代的MusicBrainz標籤器整理您的音樂"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "新視窗"
