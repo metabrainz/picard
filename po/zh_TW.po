@@ -13,14 +13,15 @@
 # 如月飛羽 <flyingfeather1501@gmail.com>, 2023
 # Iceman1415 <iceman1415@protonmail.com>, 2023.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-07-29 14:13+0200\n"
-"PO-Revision-Date: 2026-07-29 08:33+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-07-31 18:12+0000\n"
+"Last-Translator: silentbird "
+"<silentbird@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/app/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -150,11 +151,11 @@ msgstr "主要檔案命名腳本"
 
 #: picard/debug_opts.py:162
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "外掛程式路徑"
 
 #: picard/debug_opts.py:162
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "外掛程式日誌路徑"
 
 #: picard/debug_opts.py:163
 msgid "Web Service Post Data"
@@ -166,7 +167,7 @@ msgstr ""
 
 #: picard/debug_opts.py:164
 msgid "Web Service Replies"
-msgstr ""
+msgstr "網路服務回呼"
 
 #: picard/debug_opts.py:164
 msgid "Log content of web service replies"
@@ -174,27 +175,23 @@ msgstr ""
 
 #: picard/debug_opts.py:165
 msgid "Git Backend"
-msgstr ""
+msgstr "Git後端"
 
 #: picard/debug_opts.py:165
 msgid "Log git backend method calls"
 msgstr ""
 
 #: picard/debug_opts.py:166
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Translations"
-msgstr "[正在載入專輯資訊]"
+msgstr "外掛程式翻譯"
 
 #: picard/debug_opts.py:166
 msgid "Log plugin translation lookups and fallbacks"
 msgstr ""
 
 #: picard/debug_opts.py:167
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Updates"
-msgstr "插件"
+msgstr "外掛程式更新"
 
 #: picard/debug_opts.py:167
 msgid "Log detailed plugin version checking and update detection"
@@ -203,7 +200,7 @@ msgstr ""
 #: picard/debug_opts.py:168 picard/plugin3/categories.py:33
 #: picard/ui/options/cover.py:57 picard/ui/setupwizard.py:261
 msgid "Cover Art"
-msgstr "封面圖片"
+msgstr "封面圖"
 
 #: picard/debug_opts.py:168
 msgid "Log cover art filter, resize and convert operations"
@@ -219,10 +216,8 @@ msgid "Log similarity scores and match decisions"
 msgstr ""
 
 #: picard/debug_opts.py:170
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Development"
-msgstr "插件"
+msgstr "外掛程式開發"
 
 #: picard/debug_opts.py:170
 msgid "Log plugin details typically only used during development"
@@ -247,21 +242,20 @@ msgstr ""
 
 #: picard/file.py:329
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "無法儲存檔案：檔案不復存在。"
 
 #: picard/file.py:333
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "無法儲存檔案：沒有權限。"
 
 #: picard/file.py:338
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
-msgstr ""
+msgstr "檔案因為受損或使用不支持的格式而無法讀取。"
 
 #: picard/file.py:1143 picard/file.py:1160
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks for file \"%(filename)s\""
 msgstr "檔案「%(filename)s」沒有任何符合的音軌"
 
@@ -272,10 +266,9 @@ msgid "Best match for file \"%(filename)s\" is ambiguous"
 msgstr "檔案「%(filename)s」沒有任何符合的音軌"
 
 #: picard/file.py:1148
-#, fuzzy, python-format
-#| msgid "File '%(filename)s' identified!"
+#, python-format
 msgid "File \"%(filename)s\" identified!"
-msgstr "檔案「%(filename)s」已辨識！"
+msgstr "已辨識檔案「%(filename)s」！"
 
 #: picard/file.py:1228
 #, python-format
@@ -284,35 +277,31 @@ msgstr "正在查找檔案「%(filename)s」的後設資料…"
 
 #: picard/isrcsubmit.py:272
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "為不同錄音找到相同的ISRC"
 
 #: picard/isrcsubmit.py:278
 msgid "ISRC already assigned to another track on this release"
-msgstr ""
+msgstr "ISRC已經與此發行品的另一音軌搭配"
 
 #: picard/isrcsubmit.py:281
-#, fuzzy
-#| msgid "Fingerprint has already been submitted"
 msgid "ISRC already submitted"
-msgstr "特徵碼已經被提交"
+msgstr "ISRC已經提交"
 
 #: picard/isrcsubmit.py:286
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "檔案含多個ISRC（來源不明）"
 
 #: picard/isrcsubmit.py:325
-#, fuzzy
-#| msgid "Submitting AcoustIDs …"
 msgid "Submitting ISRCs …"
-msgstr "正在提交 AcoustIDs…"
+msgstr "正在提交ISRC……"
 
 #: picard/isrcsubmit.py:336
 msgid "ISRC submission failed"
-msgstr ""
+msgstr "無法提交ISRC"
 
 #: picard/isrcsubmit.py:351
 msgid "ISRC submission finished successfully"
-msgstr ""
+msgstr "成功提交ISRC"
 
 #: picard/item.py:345
 #, python-format
@@ -335,7 +324,6 @@ msgid "Error"
 msgstr "錯誤"
 
 #: picard/log.py:94
-#, fuzzy
 msgid "Warning"
 msgstr "警告"
 
@@ -347,13 +335,11 @@ msgstr "資訊"
 
 #: picard/log.py:96
 msgid "Debug"
-msgstr ""
+msgstr "除錯"
 
 #: picard/oauth.py:193
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "非預期的認證錯誤"
+msgstr "撤銷權杖時出現不明錯誤"
 
 #: picard/oauth.py:357 picard/oauth.py:384
 msgid "Unexpected authentication error"
@@ -369,28 +355,20 @@ msgid "Download only approved images"
 msgstr "只下載受認可的圖片"
 
 #: picard/options.py:107
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Cover art image size"
-msgstr "顯示隱藏檔案(&H)"
+msgstr "封面圖片大小"
 
 #: picard/options.py:109
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types"
 msgstr "封面圖片類型"
 
 #: picard/options.py:115
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types to omit"
-msgstr "封面圖片類型"
+msgstr "不下載封面圖類型"
 
 #: picard/options.py:118
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Restrict cover art image types"
-msgstr "僅下載符合以選類型的封面圖片"
+msgstr "僅下載封面圖類型"
 
 #: picard/options.py:123
 #, fuzzy
@@ -430,10 +408,8 @@ msgid "Ignore file paths (regular expression)"
 msgstr "忽略符合正規表示式的檔案名稱"
 
 #: picard/options.py:191
-#, fuzzy
-#| msgid "Ignore track duration difference under x seconds"
 msgid "Allowed track difference (seconds)"
-msgstr "忽略 x 秒以下的音軌長度差異"
+msgstr "允許音軌長短差異"
 
 #: picard/options.py:198
 #, fuzzy
@@ -448,15 +424,12 @@ msgid "Include sub-folders when adding files"
 msgstr "從資料夾新增檔案時，包含子資料夾"
 
 #: picard/options.py:205
-#, fuzzy
-#| msgid "CD Lookup"
 msgid "CD lookup device"
-msgstr "CD 查找"
+msgstr "CD查找裝置"
 
 #: picard/options.py:209
-#, fuzzy
 msgid "Cover art providers"
-msgstr "封面圖片提供者"
+msgstr "封面圖片來源"
 
 #: picard/options.py:211
 msgid "File name for images"
@@ -520,22 +493,16 @@ msgid "Show cover art details in view"
 msgstr "儲存封面圖片於別的檔案"
 
 #: picard/options.py:243
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art type"
-msgstr "封面圖片類型"
+msgstr "顯示封面圖片類型"
 
 #: picard/options.py:244
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show cover art file size"
-msgstr "顯示隱藏檔案(&H)"
+msgstr "顯示封面圖片檔案大小"
 
 #: picard/options.py:245
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Show cover art dimensions"
-msgstr "顯示說明文件(&S)"
+msgstr "顯示封面圖片大小"
 
 #: picard/options.py:246
 #, fuzzy
@@ -672,7 +639,7 @@ msgstr ""
 #: picard/options.py:348 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr ""
+msgstr "從CD讀取ISRC"
 
 #: picard/options.py:349 picard/ui/forms/ui_options_general.py:138
 #, fuzzy
@@ -698,14 +665,13 @@ msgid "Join multiple genres with"
 msgstr "串接曲風用的分隔符號:"
 
 #: picard/options.py:363
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "曲風總數上限:"
+msgstr "曲風總數上限"
 
 #: picard/options.py:364
 #, fuzzy
 msgid "Minimal genre usage"
-msgstr "最低曲風利用:"
+msgstr "最低曲風利用"
 
 #: picard/options.py:365 picard/ui/forms/ui_options_genres.py:131
 msgid "Use only my genres"
@@ -716,16 +682,12 @@ msgid "Use genres from MusicBrainz"
 msgstr "使用來自 MusicBrainz 的曲風"
 
 #: picard/options.py:371
-#, fuzzy
-#| msgid "Allow selection of multiple directories"
 msgid "Allow selecting multiple directories"
 msgstr "允許選擇多個資料夾"
 
 #: picard/options.py:373
-#, fuzzy
-#| msgid "Use builtin search rather than looking in browser"
 msgid "Use builtin search (not browser)"
-msgstr "使用內建搜尋來代替瀏覽器查詢"
+msgstr "使用內建搜尋器（非瀏覽器）"
 
 #: picard/options.py:378
 #, fuzzy
@@ -734,10 +696,8 @@ msgid "Adjust horizontal position in file browser"
 msgstr "自動調整檔案瀏覽器的水平位置"
 
 #: picard/options.py:381
-#, fuzzy
-#| msgid "Move files when saving"
 msgid "Confirm when saving"
-msgstr "儲存時移動檔案"
+msgstr "儲存時確認"
 
 #: picard/options.py:383
 #, fuzzy
@@ -751,7 +711,7 @@ msgstr "在選單顯示圖示"
 
 #: picard/options.py:385
 msgid "Show warning when Picard starts"
-msgstr ""
+msgstr "Picard啟動時顯示警告"
 
 #: picard/options.py:386
 msgid "Begin browsing in a specific directory"
@@ -766,23 +726,20 @@ msgid "Show text labels under icons"
 msgstr "在圖示下顯示文字標籤"
 
 #: picard/options.py:396
-#, fuzzy
 msgid "User interface language"
-msgstr "使用者介面語言:"
+msgstr "使用者介面語言"
 
 #: picard/options.py:397
-#, fuzzy
 msgid "User interface color theme"
-msgstr "使用者介面配色方案:"
+msgstr "使用者介面配色方案"
 
 #: picard/options.py:398
-#, fuzzy
 msgid "Use advanced search syntax"
-msgstr "使用進階查詢語法"
+msgstr "使用進階搜尋語法"
 
 #: picard/options.py:402
 msgid "Enable \"now playing\" notifications"
-msgstr ""
+msgstr "啟用「現在播放」通知"
 
 #: picard/options.py:404
 msgid "Enable ListenBrainz listen submissions"
@@ -796,15 +753,15 @@ msgstr "提交評分到 MusicBrainz"
 
 #: picard/options.py:413 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr ""
+msgstr "ListenBrainz使用者權杖"
 
 #: picard/options.py:421
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "淺色主題使用的顏色"
 
 #: picard/options.py:427
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "深色主題使用的顏色"
 
 #: picard/options.py:432
 #, fuzzy
@@ -814,17 +771,15 @@ msgstr "編碼設定"
 
 #: picard/options.py:451
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "工具列布局"
 
 #: picard/options.py:457
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "在頂部顯示的標籤"
 
 #: picard/options.py:465
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration backup directory"
-msgstr "需要設定"
+msgstr "設定備份資料夾"
 
 #: picard/options.py:472
 msgid "Minimum similarity"
@@ -844,10 +799,8 @@ msgid "Translation locales"
 msgstr ""
 
 #: picard/options.py:481
-#, fuzzy
-#| msgid "Convert Unicode punctuation characters to ASCII"
 msgid "Convert Unicode punctuation to ASCII"
-msgstr "將 Unicode 標點符號轉換為 ASCII"
+msgstr "將Unicode標點符號轉換為ASCII"
 
 #: picard/options.py:482
 msgid "Guess track number and title"
@@ -894,16 +847,12 @@ msgid "Translate artist names"
 msgstr "翻譯創作者名稱"
 
 #: picard/options.py:498
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate album titles"
-msgstr "翻譯創作者名稱"
+msgstr "翻譯專輯標題"
 
 #: picard/options.py:499
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate track titles"
-msgstr "翻譯創作者名稱"
+msgstr "翻譯音軌標題"
 
 #: picard/options.py:501 picard/ui/forms/ui_options_metadata.py:206
 msgid "Use artist sort name for translation"
@@ -931,9 +880,8 @@ msgid "Listen only on localhost"
 msgstr "只在本機端的連接埠聆聽"
 
 #: picard/options.py:527
-#, fuzzy
 msgid "Default listening port"
-msgstr "預設的聆聽連接埠:"
+msgstr "預設的聆聽連接埠"
 
 #: picard/options.py:534
 msgid "Network cache size (bytes)"
@@ -945,27 +893,27 @@ msgstr ""
 
 #: picard/options.py:538
 msgid "Proxy password"
-msgstr ""
+msgstr "代理密碼"
 
 #: picard/options.py:539
 msgid "Proxy server address"
-msgstr ""
+msgstr "代理伺服器地址"
 
 #: picard/options.py:540
 msgid "Proxy server port"
-msgstr ""
+msgstr "代理伺服器接埠"
 
 #: picard/options.py:541
 msgid "Type of proxy server"
-msgstr ""
+msgstr "代理伺服器類型"
 
 #: picard/options.py:542
 msgid "Proxy username"
-msgstr ""
+msgstr "代理使用者名稱"
 
 #: picard/options.py:543
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "使用網路代理伺服器"
 
 #: picard/options.py:547
 msgid "Plugins execution order"
@@ -1070,26 +1018,20 @@ msgid "Tagger scripts"
 msgstr "標籤腳本"
 
 #: picard/options.py:626 picard/ui/setupwizard.py:328
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Check for documentation updates"
-msgstr "顯示說明文件(&S)"
+msgstr "檢查說明文件更新"
 
 #: picard/options.py:627 picard/ui/setupwizard.py:320
-#, fuzzy
-#| msgid "&Check for Update…"
 msgid "Check for plugin updates"
-msgstr "檢查更新(&C)⋯"
+msgstr "檢查外掛程式更新"
 
 #: picard/options.py:628 picard/ui/setupwizard.py:312
-#, fuzzy
-#| msgid "&Check for Update…"
 msgid "Check for program updates"
-msgstr "檢查更新(&C)⋯"
+msgstr "檢查程式更新"
 
 #: picard/options.py:629
 msgid "Days between update checks"
-msgstr ""
+msgstr "檢查更新隔天數"
 
 #: picard/options.py:630
 #, fuzzy
@@ -1099,7 +1041,7 @@ msgstr "要檢查的更新"
 
 #: picard/options.py:631
 msgid "Log verbosity level"
-msgstr ""
+msgstr "日誌詳細程度"
 
 #: picard/options.py:636 picard/ui/forms/ui_options_tags.py:94
 msgid "Clear existing tags"
@@ -1120,48 +1062,36 @@ msgid "Preserved tags list"
 msgstr ""
 
 #: picard/options.py:640
-#, fuzzy
-#| msgid "Keep embedded images when clearing tags"
 msgid "Keep embedded images"
-msgstr "清除標籤時保留內嵌圖片"
+msgstr "保留內嵌圖片"
 
 #: picard/options.py:641
-#, fuzzy
-#| msgid "Preserve timestamps of tagged files"
 msgid "Preserve timestamps"
-msgstr "寫入標籤時保留檔案的修改時間戳記"
+msgstr "保留修改時間戳記"
 
 #: picard/options.py:642
-#, fuzzy
-#| msgid "Remove APEv2 tags from MP3 files"
 msgid "Remove APEv2 tags from MP3"
-msgstr "從 MP3 檔案移除 APEv2 標籤"
+msgstr "從MP3檔案移除APEv2標籤"
 
 #: picard/options.py:643
-#, fuzzy
-#| msgid "Remove ID3 tags from FLAC files"
 msgid "Remove ID3 tags from FLAC"
-msgstr "從 FLAC 檔案移除 ID3 標籤"
+msgstr "從FLAC檔案移除ID3標籤"
 
 #: picard/options.py:647
 msgid "Save APEv2 tags to AAC"
-msgstr ""
+msgstr "儲存APEv2標籤至AAC"
 
 #: picard/options.py:648
-#, fuzzy
-#| msgid "Remove APEv2 tags from AAC files"
 msgid "Remove APEv2 tags from AAC"
-msgstr "從 AAC 檔案移除 APEv2 標籤"
+msgstr "從AAC移除APEv2標籤"
 
 #: picard/options.py:652
 msgid "Save APEv2 tags to AC3"
-msgstr ""
+msgstr "儲存APEv2標籤至AC3"
 
 #: picard/options.py:653
-#, fuzzy
-#| msgid "Remove APEv2 tags from AC3 files"
 msgid "Remove APEv2 tags from AC3"
-msgstr "從 AC3 檔案移除 APEv2 標籤"
+msgstr "從AC3移除APEv2標籤"
 
 #: picard/options.py:657
 msgid "ID3v2.3 join character"
@@ -1169,9 +1099,8 @@ msgstr ""
 
 #: picard/options.py:658
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
-#, fuzzy
 msgid "ID3v2 text encoding"
-msgstr "ID3v2 文字編碼"
+msgstr "ID3v2文字編碼"
 
 #: picard/options.py:660
 #, fuzzy
@@ -1181,7 +1110,7 @@ msgstr "儲存相容於iTunes的分組與作品標籤"
 
 #: picard/options.py:662
 msgid "Write ID3v1 tags"
-msgstr ""
+msgstr "寫入ID3v1標籤"
 
 #: picard/options.py:663
 msgid "ID3v2 version to write"
@@ -1252,16 +1181,12 @@ msgid "Plugins to exclude from updates"
 msgstr ""
 
 #: picard/plugin.py:118
-#, fuzzy
-#| msgid "New version available"
 msgid "No plugin description available."
-msgstr "可安裝新版本"
+msgstr "外掛程式沒有簡介"
 
 #: picard/extension_points/script_variables.py:79 picard/plugin.py:120
-#, fuzzy
-#| msgid "Unknown language"
 msgid "Unknown Plugin"
-msgstr "不明語言"
+msgstr "不明外掛程式"
 
 #: picard/plugin.py:123 picard/ui/cdlookup.py:66
 #: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1176
@@ -1287,7 +1212,7 @@ msgstr "可安裝新版本"
 
 #: picard/profile.py:92 picard/ui/options/plugins.py:50
 msgid "Plugins"
-msgstr "插件"
+msgstr "外掛程式"
 
 #: picard/releasegroup.py:57 picard/ui/searchdialog/album.py:164
 msgid "Tracks"
@@ -1403,15 +1328,14 @@ msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "正在移除專輯「%(id)s」: %(artist)s - %(album)s"
 
 #: picard/tagger.py:1279
-#, fuzzy, python-format
-#| msgid "Error importing \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
-msgstr "匯入 \"%(filename)s\" 時發生錯誤。%(error)s。"
+msgstr "無法移動「%(filename)s」至垃圾桶"
 
 #: picard/tagger.py:1284
 #, python-format
 msgid "Moved %(count)i files to trash"
-msgstr ""
+msgstr "已將%(count)i個檔案移至垃圾桶"
 
 #: picard/tagger.py:1290
 msgid "CD Lookup Error"
@@ -1442,7 +1366,7 @@ msgstr "dBpoweramp 紀錄檔"
 
 #: picard/tagger.py:1320
 msgid "SCSI TOC file"
-msgstr ""
+msgstr "SCSI TOC檔案"
 
 #: picard/script/serializer.py:385 picard/tagger.py:1321
 #: picard/ui/coverartbox/__init__.py:386 picard/ui/mainwindow/__init__.py:1287
@@ -1457,13 +1381,11 @@ msgstr ""
 
 #: picard/tagger.py:1367 picard/tagger.py:1382
 msgid "Disc information could not be found"
-msgstr ""
+msgstr "找不到碟片資訊"
 
 #: picard/tagger.py:1369 picard/tagger.py:1384 picard/tagger.py:1392
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Lookup Error"
-msgstr "CD 查找錯誤"
+msgstr "查找錯誤"
 
 #: picard/tagger.py:1390
 msgid "Selected files contain tags with conflicting disc information"
@@ -1476,7 +1398,7 @@ msgstr ""
 
 #: picard/tagger.py:1416
 msgid "Looking up disc from tags…"
-msgstr ""
+msgstr "從標籤查找碟片……"
 
 #: picard/track.py:143
 #, python-format
@@ -1493,14 +1415,12 @@ msgid "[could not load recording %s]"
 msgstr "[無法載入錄音%s]"
 
 #: picard/acoustid/__init__.py:112
-#, fuzzy, python-format
-#| msgid "AcoustID lookup network error for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup network error for \"%(filename)s\"!"
-msgstr "在AcoustID查找「%(filename)s」發生網路錯誤！"
+msgstr "在AcoustID查找「%(filename)s」時發生網路錯誤！"
 
 #: picard/acoustid/__init__.py:134
-#, fuzzy, python-format
-#| msgid "AcoustID lookup failed for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup failed for \"%(filename)s\"!"
 msgstr "在AcoustID查找「%(filename)s」時發生錯誤！"
 
@@ -1577,11 +1497,9 @@ msgid ""
 msgstr "正在從「%(host)s」下載「%(type)s」格式的「%(albumid)s」封面圖片…"
 
 #: picard/coverart/__init__.py:318
-#, fuzzy, python-format
-#| msgid ""
-#| "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
+#, python-format
 msgid "Cover art of type \"%(type)s\" downloaded for %(albumid)s from %(host)s"
-msgstr "已從「%(host)s」下載「%(type)s」格式的「%(albumid)s」封面圖片"
+msgstr "從「%(host)s」已下載「%(albumid)s」%(type)s類的封面圖"
 
 #: picard/coverart/providers/caa.py:78
 msgid "250 px"
@@ -1623,7 +1541,7 @@ msgstr "允許的封面圖片網址"
 #, fuzzy, python-format
 #| msgid "Plugin %r"
 msgid "Plugin: %s"
-msgstr "插件 %r"
+msgstr "外掛程式：%r"
 
 #: picard/formats/apev2.py:100
 msgid "APEv2 (Monkey's Audio, WavPack)"
@@ -1631,15 +1549,13 @@ msgstr ""
 
 #: picard/formats/id3.py:139
 msgid "ID3 (MP3, AIFF)"
-msgstr ""
+msgstr "ID3（MP3、AIFF）"
 
 #: picard/formats/vorbis.py:129
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
 msgstr ""
 
 #: picard/plugin3/categories.py:34
-#, fuzzy
-#| msgid "Format"
 msgid "Formats"
 msgstr "格式"
 
@@ -1649,17 +1565,16 @@ msgid "Metadata"
 msgstr "後設資料"
 
 #: picard/plugin3/categories.py:36
-#, fuzzy
 msgid "Other"
 msgstr "其他"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:104
 msgid "Scripting"
-msgstr "腳本"
+msgstr "指令碼"
 
 #: picard/plugin3/categories.py:38
 msgid "UI"
-msgstr ""
+msgstr "介面"
 
 #: picard/plugin3/plugin_metadata.py:128
 #, fuzzy
@@ -4726,10 +4641,8 @@ msgid "Trusted"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:248
-#, fuzzy
-#| msgid "Comment"
 msgid "Community"
-msgstr "註解"
+msgstr "社群"
 
 #: picard/ui/dialogs/plugininfo.py:249
 msgid "Unregistered"
@@ -6457,10 +6370,8 @@ msgid "ISWC"
 msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:179
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "大小:"
+msgstr "大小"
 
 #: picard/ui/itemviews/columns.py:186
 #, fuzzy
@@ -6500,7 +6411,7 @@ msgstr "原始發售日"
 
 #: picard/ui/itemviews/columns.py:212
 msgid "Release Date"
-msgstr ""
+msgstr "發行日期"
 
 #: picard/ui/itemviews/columns.py:213 picard/ui/searchdialog/album.py:173
 msgid "Cover"

@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-07-31 18:12+0000\n"
+"Last-Translator: silentbird "
+"<silentbird@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/constants/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 2026.7.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -34,7 +36,7 @@ msgstr "穩定版、測試版與開發版"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "維持長寬比"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -44,10 +46,13 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>按照設定的長寬縮放原圖。</p><p>如果原圖和設定的長寬比非一致，原圖其中一邊"
+"會比所設的長寬要短。</p><p>例如，將一張2000×1000的圖片縮小至1000×1000的時候，"
+"圖片最後大小將會是1000×500。</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "按寬度縮放"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -58,7 +63,7 @@ msgstr ""
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"
-msgstr ""
+msgstr "按高度縮放"
 
 #: picard/const/cover_processing.py:75
 msgid ""
@@ -300,7 +305,7 @@ msgstr "阿布哈茲語"
 
 #: picard/const/locales.py:36
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "阿布哈茲語（喬治亞）"
 
 #: picard/const/locales.py:37
 msgid "Afrikaans"
@@ -360,7 +365,7 @@ msgstr "敘利亞"
 
 #: picard/const/locales.py:52
 msgid "Arabic (world)"
-msgstr ""
+msgstr "阿拉伯語（世界）"
 
 #: picard/const/locales.py:53
 msgid "Arabic (United Arab Emirates)"
@@ -372,7 +377,7 @@ msgstr "阿拉伯語 (巴林)"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Djibouti)"
-msgstr ""
+msgstr "阿拉伯語（吉布地）"
 
 #: picard/const/locales.py:56
 msgid "Arabic (Algeria)"
@@ -384,15 +389,15 @@ msgstr "阿拉伯語 (埃及)"
 
 #: picard/const/locales.py:58
 msgid "Arabic (Western Sahara)"
-msgstr ""
+msgstr "阿拉伯語（西撒哈拉）"
 
 #: picard/const/locales.py:59
 msgid "Arabic (Eritrea)"
-msgstr ""
+msgstr "阿拉伯語（厄利垂亞）"
 
 #: picard/const/locales.py:60
 msgid "Arabic (Israel)"
-msgstr ""
+msgstr "阿拉伯語（以色列）"
 
 #: picard/const/locales.py:61
 msgid "Arabic (Iraq)"
@@ -404,7 +409,7 @@ msgstr "阿拉伯語 (約旦)"
 
 #: picard/const/locales.py:63
 msgid "Arabic (Comoros)"
-msgstr ""
+msgstr "阿拉伯語（葛摩）"
 
 #: picard/const/locales.py:64
 msgid "Arabic (Kuwait)"
@@ -424,7 +429,7 @@ msgstr "阿拉伯語 (摩洛哥)"
 
 #: picard/const/locales.py:68
 msgid "Arabic (Mauritania)"
-msgstr ""
+msgstr "阿拉伯語（茅利塔尼亞）"
 
 #: picard/const/locales.py:69
 msgid "Arabic (Oman)"
@@ -432,7 +437,7 @@ msgstr "阿拉伯語 (阿曼)"
 
 #: picard/const/locales.py:70
 msgid "Arabic (Palestinian Territories)"
-msgstr ""
+msgstr "阿拉伯語（巴勒斯坦地區）"
 
 #: picard/const/locales.py:71
 msgid "Arabic (Qatar)"
@@ -448,11 +453,11 @@ msgstr "阿拉伯語 (蘇丹)"
 
 #: picard/const/locales.py:74
 msgid "Arabic (Somalia)"
-msgstr ""
+msgstr "阿拉伯語（索馬利亞）"
 
 #: picard/const/locales.py:75
 msgid "Arabic (South Sudan)"
-msgstr ""
+msgstr "阿拉伯語（南蘇丹）"
 
 #: picard/const/locales.py:76
 msgid "Arabic (Syria)"
@@ -460,7 +465,7 @@ msgstr "阿拉伯語 (敘利亞)"
 
 #: picard/const/locales.py:77
 msgid "Arabic (Chad)"
-msgstr ""
+msgstr "阿拉伯語（查德）"
 
 #: picard/const/locales.py:78
 msgid "Arabic (Tunisia)"
@@ -508,19 +513,19 @@ msgstr "亞塞拜然語"
 
 #: picard/const/locales.py:89
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "亞塞拜然語（阿拉伯字母）"
 
 #: picard/const/locales.py:90
 msgid "Azerbaijani (Arabic) (Iraq)"
-msgstr ""
+msgstr "亞塞拜然語（阿拉伯字母）（伊拉克）"
 
 #: picard/const/locales.py:91
 msgid "Azerbaijani (Arabic) (Iran)"
-msgstr ""
+msgstr "亞塞拜然語（阿拉伯字母）（伊朗）"
 
 #: picard/const/locales.py:92
 msgid "Azerbaijani (Arabic) (Türkiye)"
-msgstr ""
+msgstr "亞塞拜然語（阿拉伯字母）（土耳其）"
 
 #: picard/const/locales.py:93
 msgid "Azerbaijani (Cyrillic)"
@@ -544,7 +549,7 @@ msgstr "巴什喀爾語"
 
 #: picard/const/locales.py:98
 msgid "Bashkir (Russia)"
-msgstr ""
+msgstr "巴什噶爾語（俄羅斯）"
 
 #: picard/const/locales.py:99
 msgid "Baluchi"
@@ -664,27 +669,27 @@ msgstr "班巴拉語"
 
 #: picard/const/locales.py:128
 msgid "Bambara (Mali)"
-msgstr ""
+msgstr "班巴拉語（馬利）"
 
 #: picard/const/locales.py:129
 msgid "Bambara (N’Ko)"
-msgstr ""
+msgstr "班巴拉語（N’Ko字母）"
 
 #: picard/const/locales.py:130
 msgid "Bambara (N’Ko) (Mali)"
-msgstr ""
+msgstr "班巴拉語（N’Ko字母）（馬利）"
 
 #: picard/const/locales.py:131
 msgid "Bangla"
-msgstr ""
+msgstr "孟加拉語"
 
 #: picard/const/locales.py:132
 msgid "Bangla (Bangladesh)"
-msgstr ""
+msgstr "孟加拉語（孟加拉）"
 
 #: picard/const/locales.py:133
 msgid "Bangla (India)"
-msgstr ""
+msgstr "孟加拉語（印度）"
 
 #: picard/const/locales.py:134
 msgid "Tibetan"
@@ -704,7 +709,7 @@ msgstr "布里敦語"
 
 #: picard/const/locales.py:138
 msgid "Breton (France)"
-msgstr ""
+msgstr "布里多尼語（法國）"
 
 #: picard/const/locales.py:139
 msgid "Bodo"
@@ -720,19 +725,19 @@ msgstr "波士尼亞語"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "波斯尼亞語（西里爾字母）"
 
 #: picard/const/locales.py:143
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "波斯尼亞語（西里爾字母）（波士尼亞與赫塞哥維納）"
 
 #: picard/const/locales.py:144
 msgid "Bosnian (Latin)"
-msgstr ""
+msgstr "波士尼亞語（拉丁字母）"
 
 #: picard/const/locales.py:145
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "波士尼亞語（拉丁字母）（波士尼亞與赫塞哥維納 ）"
 
 #: picard/const/locales.py:146
 msgid "Akoose"
@@ -752,7 +757,7 @@ msgstr "比林語 (厄利垂亞)"
 
 #: picard/const/locales.py:151
 msgid "Catalan (Andorra)"
-msgstr ""
+msgstr "加泰隆語（安道爾侯國）"
 
 #: picard/const/locales.py:152
 msgid "Catalan (Spain)"
@@ -764,11 +769,11 @@ msgstr ""
 
 #: picard/const/locales.py:154
 msgid "Catalan (France)"
-msgstr ""
+msgstr "加泰隆語（法國）"
 
 #: picard/const/locales.py:155
 msgid "Catalan (Italy)"
-msgstr ""
+msgstr "加泰隆語（義大利）"
 
 #: picard/const/locales.py:156
 msgid "Caddo"
@@ -804,7 +809,7 @@ msgstr "車臣語"
 
 #: picard/const/locales.py:164
 msgid "Chechen (Russia)"
-msgstr ""
+msgstr "車臣語（俄羅斯）"
 
 #: picard/const/locales.py:165
 msgid "Cebuano"
@@ -848,15 +853,15 @@ msgstr ""
 
 #: picard/const/locales.py:175
 msgid "Central Kurdish"
-msgstr ""
+msgstr "中庫德語"
 
 #: picard/const/locales.py:176
 msgid "Central Kurdish (Iraq)"
-msgstr ""
+msgstr "中庫德語（伊拉克）"
 
 #: picard/const/locales.py:177
 msgid "Central Kurdish (Iran)"
-msgstr ""
+msgstr "中庫德語（伊朗）"
 
 #: picard/const/locales.py:178
 msgid "Corsican"
@@ -864,11 +869,11 @@ msgstr "科西嘉語"
 
 #: picard/const/locales.py:179
 msgid "Corsican (France)"
-msgstr ""
+msgstr "科西嘉島語（法國）"
 
 #: picard/const/locales.py:181
 msgid "Czech (Czechia)"
-msgstr ""
+msgstr "捷克語（捷克）"
 
 #: picard/const/locales.py:182
 msgid "Church Slavic"
@@ -876,7 +881,7 @@ msgstr "古教會斯拉夫語"
 
 #: picard/const/locales.py:183
 msgid "Church Slavic (Russia)"
-msgstr ""
+msgstr "古教會斯拉夫語（俄羅斯）"
 
 #: picard/const/locales.py:184
 msgid "Chuvash"
@@ -884,7 +889,7 @@ msgstr "楚瓦什語"
 
 #: picard/const/locales.py:185
 msgid "Chuvash (Russia)"
-msgstr ""
+msgstr "楚瓦什語（俄羅斯）"
 
 #: picard/const/locales.py:186
 msgid "Welsh"
@@ -900,7 +905,7 @@ msgstr "丹麥語 (丹麥)"
 
 #: picard/const/locales.py:190
 msgid "Danish (Greenland)"
-msgstr ""
+msgstr "丹麥語（格陵蘭）"
 
 #: picard/const/locales.py:191
 msgid "Taita"
@@ -928,7 +933,7 @@ msgstr "德語 (德國)"
 
 #: picard/const/locales.py:198
 msgid "German (Italy)"
-msgstr ""
+msgstr "德語（義大利）"
 
 #: picard/const/locales.py:199
 msgid "German (Liechtenstein)"
@@ -1028,23 +1033,23 @@ msgstr ""
 
 #: picard/const/locales.py:225
 msgid "English (world)"
-msgstr ""
+msgstr "英文（世界）"
 
 #: picard/const/locales.py:226
 msgid "English (Europe)"
-msgstr ""
+msgstr "英文（歐洲）"
 
 #: picard/const/locales.py:227
 msgid "English (United Arab Emirates)"
-msgstr ""
+msgstr "英文（阿聯）"
 
 #: picard/const/locales.py:228
 msgid "English (Antigua & Barbuda)"
-msgstr ""
+msgstr "英文（安地卡及巴布達 ）"
 
 #: picard/const/locales.py:229
 msgid "English (Anguilla)"
-msgstr ""
+msgstr "英文（安吉拉）"
 
 #: picard/const/locales.py:230
 msgid "English (American Samoa)"
@@ -1052,11 +1057,11 @@ msgstr "英語 (美屬薩摩亞)"
 
 #: picard/const/locales.py:231
 msgid "English (Austria)"
-msgstr ""
+msgstr "英文（奧地利）"
 
 #: picard/const/locales.py:233
 msgid "English (Barbados)"
-msgstr ""
+msgstr "英文（巴貝多）"
 
 #: picard/const/locales.py:234
 msgid "English (Belgium)"
@@ -1064,15 +1069,15 @@ msgstr "英語 (比利時)"
 
 #: picard/const/locales.py:235
 msgid "English (Burundi)"
-msgstr ""
+msgstr "英文（蒲隆地）"
 
 #: picard/const/locales.py:236
 msgid "English (Bermuda)"
-msgstr ""
+msgstr "英文（百慕達）"
 
 #: picard/const/locales.py:237
 msgid "English (Bahamas)"
-msgstr ""
+msgstr "英文（巴哈馬）"
 
 #: picard/const/locales.py:238
 msgid "English (Botswana)"
@@ -1084,43 +1089,43 @@ msgstr "英語 (貝里斯)"
 
 #: picard/const/locales.py:241
 msgid "English (Cocos (Keeling) Islands)"
-msgstr ""
+msgstr "英文（科科斯群島）"
 
 #: picard/const/locales.py:242
 msgid "English (Switzerland)"
-msgstr ""
+msgstr "英文（瑞士）"
 
 #: picard/const/locales.py:243
 msgid "English (Cook Islands)"
-msgstr ""
+msgstr "英文（庫克群島）"
 
 #: picard/const/locales.py:244
 msgid "English (Cameroon)"
-msgstr ""
+msgstr "英文（喀麥隆）"
 
 #: picard/const/locales.py:245
 msgid "English (Christmas Island)"
-msgstr ""
+msgstr "英文（聖誕島）"
 
 #: picard/const/locales.py:246
 msgid "English (Cyprus)"
-msgstr ""
+msgstr "英文（賽普勒斯）"
 
 #: picard/const/locales.py:247
 msgid "English (Germany)"
-msgstr ""
+msgstr "英文（德國）"
 
 #: picard/const/locales.py:248
 msgid "English (Diego Garcia)"
-msgstr ""
+msgstr "英文（迪亞哥加西亞島）"
 
 #: picard/const/locales.py:249
 msgid "English (Denmark)"
-msgstr ""
+msgstr "英文（丹麥）"
 
 #: picard/const/locales.py:250
 msgid "English (Dominica)"
-msgstr ""
+msgstr "英文（多米尼克）"
 
 #: picard/const/locales.py:251
 msgid "English (Deseret)"
@@ -1132,43 +1137,43 @@ msgstr "英語 (蜜蜂州) (美國)"
 
 #: picard/const/locales.py:253
 msgid "English (Eritrea)"
-msgstr ""
+msgstr "英文（厄利垂亞）"
 
 #: picard/const/locales.py:254
 msgid "English (Finland)"
-msgstr ""
+msgstr "英文（芬蘭）"
 
 #: picard/const/locales.py:255
 msgid "English (Fiji)"
-msgstr ""
+msgstr "英文（斐濟）"
 
 #: picard/const/locales.py:256
 msgid "English (Falkland Islands)"
-msgstr ""
+msgstr "英文（福克蘭群島）"
 
 #: picard/const/locales.py:257
 msgid "English (Micronesia)"
-msgstr ""
+msgstr "英文（密克羅尼西亞）"
 
 #: picard/const/locales.py:259
 msgid "English (Grenada)"
-msgstr ""
+msgstr "英文（格瑞那達）"
 
 #: picard/const/locales.py:260
 msgid "English (Guernsey)"
-msgstr ""
+msgstr "英文（耿西）"
 
 #: picard/const/locales.py:261
 msgid "English (Ghana)"
-msgstr ""
+msgstr "英文（迦納）"
 
 #: picard/const/locales.py:262
 msgid "English (Gibraltar)"
-msgstr ""
+msgstr "英文（直布羅陀）"
 
 #: picard/const/locales.py:263
 msgid "English (Gambia)"
-msgstr ""
+msgstr "英文（甘比亞）"
 
 #: picard/const/locales.py:264
 msgid "English (Guam)"
@@ -1176,7 +1181,7 @@ msgstr "英語 (關島)"
 
 #: picard/const/locales.py:265
 msgid "English (Guyana)"
-msgstr ""
+msgstr "英文（蓋亞那）"
 
 #: picard/const/locales.py:266
 msgid "English (Hong Kong)"
@@ -1188,11 +1193,11 @@ msgstr "英語 (愛爾蘭)"
 
 #: picard/const/locales.py:268
 msgid "English (Israel)"
-msgstr ""
+msgstr "英文（以色列）"
 
 #: picard/const/locales.py:269
 msgid "English (Isle of Man)"
-msgstr ""
+msgstr "英文（曼島）"
 
 #: picard/const/locales.py:270
 msgid "English (India)"
@@ -1212,35 +1217,35 @@ msgstr "英語 (牙買加)"
 
 #: picard/const/locales.py:274
 msgid "English (Kenya)"
-msgstr ""
+msgstr "英文（肯亞）"
 
 #: picard/const/locales.py:275
 msgid "English (Kiribati)"
-msgstr ""
+msgstr "英文（吉里巴斯）"
 
 #: picard/const/locales.py:276
 msgid "English (St. Kitts & Nevis)"
-msgstr ""
+msgstr "英文（聖克里斯多福及尼維斯）"
 
 #: picard/const/locales.py:277
 msgid "English (Cayman Islands)"
-msgstr ""
+msgstr "英文（開曼群島）"
 
 #: picard/const/locales.py:278
 msgid "English (St. Lucia)"
-msgstr ""
+msgstr "英文（聖露西亞）"
 
 #: picard/const/locales.py:279
 msgid "English (Liberia)"
-msgstr ""
+msgstr "英文（賴比瑞亞）"
 
 #: picard/const/locales.py:280
 msgid "English (Lesotho)"
-msgstr ""
+msgstr "英文（賴索托）"
 
 #: picard/const/locales.py:281
 msgid "English (Madagascar)"
-msgstr ""
+msgstr "英文（馬達加斯加）"
 
 #: picard/const/locales.py:282
 msgid "English (Marshall Islands)"
@@ -1248,7 +1253,7 @@ msgstr "英語 (馬紹爾群島)"
 
 #: picard/const/locales.py:283
 msgid "English (Macao)"
-msgstr ""
+msgstr "英文（澳門）"
 
 #: picard/const/locales.py:284
 msgid "English (Northern Mariana Islands)"
@@ -1256,7 +1261,7 @@ msgstr "英語 (北馬里亞納群島)"
 
 #: picard/const/locales.py:285
 msgid "English (Montserrat)"
-msgstr ""
+msgstr "英文（蒙哲臘）"
 
 #: picard/const/locales.py:286
 msgid "English (Malta)"
@@ -1264,19 +1269,19 @@ msgstr "英語 (馬爾他)"
 
 #: picard/const/locales.py:287
 msgid "English (Mauritius)"
-msgstr ""
+msgstr "英文（模里西斯）"
 
 #: picard/const/locales.py:288
 msgid "English (Maldives)"
-msgstr ""
+msgstr "英文（馬爾地夫）"
 
 #: picard/const/locales.py:289
 msgid "English (Malawi)"
-msgstr ""
+msgstr "英文（馬拉威）"
 
 #: picard/const/locales.py:290
 msgid "English (Malaysia)"
-msgstr ""
+msgstr "英文（馬來西亞）"
 
 #: picard/const/locales.py:291
 msgid "English (Namibia)"
@@ -1288,19 +1293,19 @@ msgstr ""
 
 #: picard/const/locales.py:293
 msgid "English (Nigeria)"
-msgstr ""
+msgstr "英文（奈及利亞）"
 
 #: picard/const/locales.py:294
 msgid "English (Netherlands)"
-msgstr ""
+msgstr "英文（荷蘭）"
 
 #: picard/const/locales.py:295
 msgid "English (Nauru)"
-msgstr ""
+msgstr "英文（諾魯）"
 
 #: picard/const/locales.py:296
 msgid "English (Niue)"
-msgstr ""
+msgstr "英文（紐埃）"
 
 #: picard/const/locales.py:297
 msgid "English (New Zealand)"
@@ -1308,7 +1313,7 @@ msgstr "英語 (紐西蘭)"
 
 #: picard/const/locales.py:298
 msgid "English (Papua New Guinea)"
-msgstr ""
+msgstr "英文（巴布亞紐幾內亞）"
 
 #: picard/const/locales.py:299
 msgid "English (Philippines)"
@@ -1324,31 +1329,31 @@ msgstr ""
 
 #: picard/const/locales.py:302
 msgid "English (Puerto Rico)"
-msgstr ""
+msgstr "英文（波多黎各）"
 
 #: picard/const/locales.py:303
 msgid "English (Palau)"
-msgstr ""
+msgstr "英文（帛琉）"
 
 #: picard/const/locales.py:304
 msgid "English (Rwanda)"
-msgstr ""
+msgstr "英文（盧安達）"
 
 #: picard/const/locales.py:305
 msgid "English (Solomon Islands)"
-msgstr ""
+msgstr "英文（索羅門群島）"
 
 #: picard/const/locales.py:306
 msgid "English (Seychelles)"
-msgstr ""
+msgstr "英文（塞席爾）"
 
 #: picard/const/locales.py:307
 msgid "English (Sudan)"
-msgstr ""
+msgstr "英文（蘇丹）"
 
 #: picard/const/locales.py:308
 msgid "English (Sweden)"
-msgstr ""
+msgstr "英文（瑞典）"
 
 #: picard/const/locales.py:309
 msgid "English (Singapore)"
@@ -1356,27 +1361,27 @@ msgstr "英語 (新加坡)"
 
 #: picard/const/locales.py:310
 msgid "English (St. Helena)"
-msgstr ""
+msgstr "英文（聖海蓮娜）"
 
 #: picard/const/locales.py:311
 msgid "English (Slovenia)"
-msgstr ""
+msgstr "英文（斯洛維尼亞）"
 
 #: picard/const/locales.py:312
 msgid "English (Sierra Leone)"
-msgstr ""
+msgstr "英文（獅子山）"
 
 #: picard/const/locales.py:313
 msgid "English (South Sudan)"
-msgstr ""
+msgstr "英文（南蘇丹）"
 
 #: picard/const/locales.py:314
 msgid "English (Sint Maarten)"
-msgstr ""
+msgstr "英文（聖馬丁）"
 
 #: picard/const/locales.py:315
 msgid "English (Eswatini)"
-msgstr ""
+msgstr "英文（史瓦帝尼）"
 
 #: picard/const/locales.py:316
 msgid "English (Shavian)"
@@ -1388,7 +1393,7 @@ msgstr ""
 
 #: picard/const/locales.py:318
 msgid "English (Turks & Caicos Islands)"
-msgstr ""
+msgstr "英文（土克凱可群島）"
 
 #: picard/const/locales.py:319
 msgid "English (Tokelau)"
@@ -1396,27 +1401,27 @@ msgstr ""
 
 #: picard/const/locales.py:320
 msgid "English (Tonga)"
-msgstr ""
+msgstr "英文（東加）"
 
 #: picard/const/locales.py:321
 msgid "English (Trinidad & Tobago)"
-msgstr ""
+msgstr "英文（千里達及托巴哥）"
 
 #: picard/const/locales.py:322
 msgid "English (Tuvalu)"
-msgstr ""
+msgstr "英文（吐瓦魯）"
 
 #: picard/const/locales.py:323
 msgid "English (Tanzania)"
-msgstr ""
+msgstr "英文（坦尚尼亞）"
 
 #: picard/const/locales.py:324
 msgid "English (Uganda)"
-msgstr ""
+msgstr "英文（烏干達）"
 
 #: picard/const/locales.py:325
 msgid "English (U.S. Outlying Islands)"
-msgstr ""
+msgstr "英文（美國外島）"
 
 #: picard/const/locales.py:326
 msgid "English (United States)"
@@ -1424,11 +1429,11 @@ msgstr "英語 (美國)"
 
 #: picard/const/locales.py:327
 msgid "English (St. Vincent & Grenadines)"
-msgstr ""
+msgstr "英文（聖文森及格瑞那丁）"
 
 #: picard/const/locales.py:328
 msgid "English (British Virgin Islands)"
-msgstr ""
+msgstr "英文（英屬維京群島）"
 
 #: picard/const/locales.py:329
 msgid "English (U.S. Virgin Islands)"
@@ -1436,11 +1441,11 @@ msgstr "英語 (美屬維京群島)"
 
 #: picard/const/locales.py:330
 msgid "English (Vanuatu)"
-msgstr ""
+msgstr "英文（萬那杜）"
 
 #: picard/const/locales.py:331
 msgid "English (Samoa)"
-msgstr ""
+msgstr "英文（薩摩亞）"
 
 #: picard/const/locales.py:332
 msgid "English (South Africa)"
@@ -1448,7 +1453,7 @@ msgstr "英語 (南非)"
 
 #: picard/const/locales.py:333
 msgid "English (Zambia)"
-msgstr ""
+msgstr "英文（尚比亞）"
 
 #: picard/const/locales.py:334
 msgid "English (Zimbabwe)"
@@ -1460,11 +1465,11 @@ msgstr "世界語"
 
 #: picard/const/locales.py:336
 msgid "Esperanto (world)"
-msgstr ""
+msgstr "世界語（世界）"
 
 #: picard/const/locales.py:338
 msgid "Spanish (Latin America)"
-msgstr ""
+msgstr "西班牙語（拉丁美洲）"
 
 #: picard/const/locales.py:339
 msgid "Spanish (Argentina)"
@@ -1476,11 +1481,11 @@ msgstr "西班牙語 (玻利維亞)"
 
 #: picard/const/locales.py:341
 msgid "Spanish (Brazil)"
-msgstr ""
+msgstr "西班牙語（巴西）"
 
 #: picard/const/locales.py:342
 msgid "Spanish (Belize)"
-msgstr ""
+msgstr "西班牙語（貝里斯）"
 
 #: picard/const/locales.py:343
 msgid "Spanish (Chile)"
@@ -1496,7 +1501,7 @@ msgstr "西班牙語 (哥斯大黎加)"
 
 #: picard/const/locales.py:346
 msgid "Spanish (Cuba)"
-msgstr ""
+msgstr "西班牙語（古巴）"
 
 #: picard/const/locales.py:347
 msgid "Spanish (Dominican Republic)"
@@ -1516,7 +1521,7 @@ msgstr "西班牙語 (西班牙)"
 
 #: picard/const/locales.py:351
 msgid "Spanish (Equatorial Guinea)"
-msgstr ""
+msgstr "西班牙語（赤道幾內亞）"
 
 #: picard/const/locales.py:352
 msgid "Spanish (Guatemala)"
@@ -1548,7 +1553,7 @@ msgstr "西班牙語 (秘魯)"
 
 #: picard/const/locales.py:359
 msgid "Spanish (Philippines)"
-msgstr ""
+msgstr "西班牙語（菲律賓）"
 
 #: picard/const/locales.py:360
 msgid "Spanish (Puerto Rico)"
@@ -1608,7 +1613,7 @@ msgstr "波斯語 (伊朗)"
 
 #: picard/const/locales.py:375
 msgid "Fula"
-msgstr ""
+msgstr "弗拉尼語"
 
 #: picard/const/locales.py:376
 msgid "Fula (Adlam)"
@@ -1664,55 +1669,55 @@ msgstr ""
 
 #: picard/const/locales.py:389
 msgid "Fula (Latin)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）"
 
 #: picard/const/locales.py:390
 msgid "Fula (Latin) (Burkina Faso)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（布吉納法索）"
 
 #: picard/const/locales.py:391
 msgid "Fula (Latin) (Cameroon)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（喀麥隆）"
 
 #: picard/const/locales.py:392
 msgid "Fula (Latin) (Ghana)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（迦納）"
 
 #: picard/const/locales.py:393
 msgid "Fula (Latin) (Gambia)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（甘比亞）"
 
 #: picard/const/locales.py:394
 msgid "Fula (Latin) (Guinea)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（幾內亞）"
 
 #: picard/const/locales.py:395
 msgid "Fula (Latin) (Guinea-Bissau)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（幾內亞比索）"
 
 #: picard/const/locales.py:396
 msgid "Fula (Latin) (Liberia)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（賴比瑞亞）"
 
 #: picard/const/locales.py:397
 msgid "Fula (Latin) (Mauritania)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（茅利塔尼亞）"
 
 #: picard/const/locales.py:398
 msgid "Fula (Latin) (Niger)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（尼日）"
 
 #: picard/const/locales.py:399
 msgid "Fula (Latin) (Nigeria)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（奈及利亞）"
 
 #: picard/const/locales.py:400
 msgid "Fula (Latin) (Sierra Leone)"
-msgstr ""
+msgstr "（獅子山）"
 
 #: picard/const/locales.py:401
 msgid "Fula (Latin) (Senegal)"
-msgstr ""
+msgstr "弗拉尼語（拉丁字母）（塞內加爾）"
 
 #: picard/const/locales.py:403
 msgid "Finnish (Finland)"
@@ -1732,7 +1737,7 @@ msgstr "法羅語"
 
 #: picard/const/locales.py:407
 msgid "Faroese (Denmark)"
-msgstr ""
+msgstr "法羅群島語（丹麥）"
 
 #: picard/const/locales.py:408
 msgid "Faroese (Faroe Islands)"
@@ -1744,31 +1749,31 @@ msgstr "法語 (比利時)"
 
 #: picard/const/locales.py:411
 msgid "French (Burkina Faso)"
-msgstr ""
+msgstr "法語（布吉納法索）"
 
 #: picard/const/locales.py:412
 msgid "French (Burundi)"
-msgstr ""
+msgstr "法語（蒲隆地）"
 
 #: picard/const/locales.py:413
 msgid "French (Benin)"
-msgstr ""
+msgstr "法語（貝南）"
 
 #: picard/const/locales.py:414
 msgid "French (St. Barthélemy)"
-msgstr ""
+msgstr "法語（聖巴瑟米）"
 
 #: picard/const/locales.py:416
 msgid "French (Congo - Kinshasa)"
-msgstr ""
+msgstr "法語（民主剛果）"
 
 #: picard/const/locales.py:417
 msgid "French (Central African Republic)"
-msgstr ""
+msgstr "法語（中非）"
 
 #: picard/const/locales.py:418
 msgid "French (Congo - Brazzaville)"
-msgstr ""
+msgstr "法語（剛過）"
 
 #: picard/const/locales.py:419
 msgid "French (Switzerland)"
@@ -1776,19 +1781,19 @@ msgstr "法語 (瑞士)"
 
 #: picard/const/locales.py:420
 msgid "French (Côte d’Ivoire)"
-msgstr ""
+msgstr "法語（象牙海岸）"
 
 #: picard/const/locales.py:421
 msgid "French (Cameroon)"
-msgstr ""
+msgstr "法語（喀麥隆）"
 
 #: picard/const/locales.py:422
 msgid "French (Djibouti)"
-msgstr ""
+msgstr "法語（吉布地）"
 
 #: picard/const/locales.py:423
 msgid "French (Algeria)"
-msgstr ""
+msgstr "法語（阿爾及利亞）"
 
 #: picard/const/locales.py:424
 msgid "French (France)"
@@ -1796,31 +1801,31 @@ msgstr "法語 (法國)"
 
 #: picard/const/locales.py:425
 msgid "French (Gabon)"
-msgstr ""
+msgstr "法語（加彭）"
 
 #: picard/const/locales.py:426
 msgid "French (French Guiana)"
-msgstr ""
+msgstr "法語（法屬圭亞那）"
 
 #: picard/const/locales.py:427
 msgid "French (Guinea)"
-msgstr ""
+msgstr "法語（幾內亞）"
 
 #: picard/const/locales.py:428
 msgid "French (Guadeloupe)"
-msgstr ""
+msgstr "法語（瓜地洛普）"
 
 #: picard/const/locales.py:429
 msgid "French (Equatorial Guinea)"
-msgstr ""
+msgstr "法語（赤道幾內亞）"
 
 #: picard/const/locales.py:430
 msgid "French (Haiti)"
-msgstr ""
+msgstr "法語（海地）"
 
 #: picard/const/locales.py:431
 msgid "French (Comoros)"
-msgstr ""
+msgstr "法語（葛摩）"
 
 #: picard/const/locales.py:432
 msgid "French (Luxembourg)"
@@ -1828,7 +1833,7 @@ msgstr "法語 (盧森堡)"
 
 #: picard/const/locales.py:433
 msgid "French (Morocco)"
-msgstr ""
+msgstr "法語（摩洛哥）"
 
 #: picard/const/locales.py:434
 msgid "French (Monaco)"
@@ -1836,55 +1841,55 @@ msgstr "法語 (摩納哥)"
 
 #: picard/const/locales.py:435
 msgid "French (St. Martin)"
-msgstr ""
+msgstr "法語（聖馬丁）"
 
 #: picard/const/locales.py:436
 msgid "French (Madagascar)"
-msgstr ""
+msgstr "法語（馬達加斯加）"
 
 #: picard/const/locales.py:437
 msgid "French (Mali)"
-msgstr ""
+msgstr "法語（馬利）"
 
 #: picard/const/locales.py:438
 msgid "French (Martinique)"
-msgstr ""
+msgstr "法語（馬丁尼克）"
 
 #: picard/const/locales.py:439
 msgid "French (Mauritania)"
-msgstr ""
+msgstr "法語（茅利塔尼亞）"
 
 #: picard/const/locales.py:440
 msgid "French (Mauritius)"
-msgstr ""
+msgstr "法語（模里西斯）"
 
 #: picard/const/locales.py:441
 msgid "French (New Caledonia)"
-msgstr ""
+msgstr "法語（新喀里多尼亞）"
 
 #: picard/const/locales.py:442
 msgid "French (Niger)"
-msgstr ""
+msgstr "法語（尼日）"
 
 #: picard/const/locales.py:443
 msgid "French (French Polynesia)"
-msgstr ""
+msgstr "法語（法屬玻里尼西亞）"
 
 #: picard/const/locales.py:444
 msgid "French (St. Pierre & Miquelon)"
-msgstr ""
+msgstr "法語（聖皮埃與密克隆群島）"
 
 #: picard/const/locales.py:445
 msgid "French (Réunion)"
-msgstr ""
+msgstr "法語（留尼旺島）"
 
 #: picard/const/locales.py:446
 msgid "French (Rwanda)"
-msgstr ""
+msgstr "法語（盧安達）"
 
 #: picard/const/locales.py:447
 msgid "French (Seychelles)"
-msgstr ""
+msgstr "法語（塞席爾）"
 
 #: picard/const/locales.py:448
 msgid "French (Senegal)"
@@ -1892,39 +1897,39 @@ msgstr "法語 (塞內加爾)"
 
 #: picard/const/locales.py:449
 msgid "French (Syria)"
-msgstr ""
+msgstr "法語（敘利亞）"
 
 #: picard/const/locales.py:450
 msgid "French (Chad)"
-msgstr ""
+msgstr "法語（查德）"
 
 #: picard/const/locales.py:451
 msgid "French (Togo)"
-msgstr ""
+msgstr "法語（多哥）"
 
 #: picard/const/locales.py:452
 msgid "French (Tunisia)"
-msgstr ""
+msgstr "法語（突尼西亞）"
 
 #: picard/const/locales.py:453
 msgid "French (Vanuatu)"
-msgstr ""
+msgstr "法語（萬那杜）"
 
 #: picard/const/locales.py:454
 msgid "French (Wallis & Futuna)"
-msgstr ""
+msgstr "法語（瓦利斯群島和富圖那群島）"
 
 #: picard/const/locales.py:455
 msgid "French (Mayotte)"
-msgstr ""
+msgstr "法語（馬約特島）"
 
 #: picard/const/locales.py:456
 msgid "Northern Frisian"
-msgstr ""
+msgstr "北弗利西亞語"
 
 #: picard/const/locales.py:457
 msgid "Northern Frisian (Germany)"
-msgstr ""
+msgstr "北弗利西亞語（德國）"
 
 #: picard/const/locales.py:458
 msgid "Friulian"
@@ -1936,11 +1941,11 @@ msgstr "佛里烏利語 (義大利)"
 
 #: picard/const/locales.py:460
 msgid "Western Frisian"
-msgstr ""
+msgstr "西弗利西亞語"
 
 #: picard/const/locales.py:461
 msgid "Western Frisian (Netherlands)"
-msgstr ""
+msgstr "西弗利西亞語（荷蘭）"
 
 #: picard/const/locales.py:462
 msgid "Irish"
@@ -1948,7 +1953,7 @@ msgstr "愛爾蘭語"
 
 #: picard/const/locales.py:463
 msgid "Irish (United Kingdom)"
-msgstr ""
+msgstr "愛爾蘭語（英國）"
 
 #: picard/const/locales.py:464
 msgid "Irish (Ireland)"
@@ -1968,7 +1973,7 @@ msgstr "蓋爾語"
 
 #: picard/const/locales.py:468
 msgid "Scottish Gaelic (United Kingdom)"
-msgstr ""
+msgstr "蘇格蘭蓋爾語（英國）"
 
 #: picard/const/locales.py:469
 msgid "Geez"
@@ -1992,7 +1997,7 @@ msgstr "瓜拉尼語"
 
 #: picard/const/locales.py:475
 msgid "Guarani (Paraguay)"
-msgstr ""
+msgstr "巴拉圭語（巴拉圭）"
 
 #: picard/const/locales.py:476
 msgid "Swiss German"
@@ -2004,11 +2009,11 @@ msgstr "瑞士德語 (瑞士)"
 
 #: picard/const/locales.py:478
 msgid "Swiss German (France)"
-msgstr ""
+msgstr "瑞士德語（法國）"
 
 #: picard/const/locales.py:479
 msgid "Swiss German (Liechtenstein)"
-msgstr ""
+msgstr "瑞士德語（列支敦斯登）"
 
 #: picard/const/locales.py:480
 msgid "Gujarati"
@@ -2032,7 +2037,7 @@ msgstr "馬恩語"
 
 #: picard/const/locales.py:485
 msgid "Manx (Isle of Man)"
-msgstr ""
+msgstr "曼島語（曼島）"
 
 #: picard/const/locales.py:486
 msgid "Hausa"
@@ -2104,11 +2109,11 @@ msgstr "印地語 (印度)"
 
 #: picard/const/locales.py:504
 msgid "Hindi (Latin)"
-msgstr ""
+msgstr "印度語（拉丁字母）"
 
 #: picard/const/locales.py:505
 msgid "Hindi (Latin) (India)"
-msgstr ""
+msgstr "印度語（拉丁字母）（印度）"
 
 #: picard/const/locales.py:506
 msgid "Hmong Njua"
@@ -2128,7 +2133,7 @@ msgstr "克羅埃西亞語"
 
 #: picard/const/locales.py:510
 msgid "Croatian (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "克羅埃西亞語（波士尼亞與赫塞哥維納）"
 
 #: picard/const/locales.py:511
 msgid "Croatian (Croatia)"
@@ -2164,7 +2169,7 @@ msgstr "拉丁國際語"
 
 #: picard/const/locales.py:520
 msgid "Interlingua (world)"
-msgstr ""
+msgstr "國際語（世界）"
 
 #: picard/const/locales.py:521
 msgid "Indonesian"
@@ -2196,7 +2201,7 @@ msgstr "伊多語"
 
 #: picard/const/locales.py:528
 msgid "Ido (world)"
-msgstr ""
+msgstr "伊多語（世界）"
 
 #: picard/const/locales.py:530
 msgid "Icelandic (Iceland)"
@@ -2212,11 +2217,11 @@ msgstr "義大利語 (義大利)"
 
 #: picard/const/locales.py:534
 msgid "Italian (San Marino)"
-msgstr ""
+msgstr "義大利語（聖馬利諾）"
 
 #: picard/const/locales.py:535
 msgid "Italian (Vatican City)"
-msgstr ""
+msgstr "義大利語（梵蒂岡）"
 
 #: picard/const/locales.py:536
 msgid "Inuktitut"
@@ -2224,15 +2229,15 @@ msgstr "伊努特語"
 
 #: picard/const/locales.py:537
 msgid "Inuktitut (Canada)"
-msgstr ""
+msgstr "伊努特語（加拿大）"
 
 #: picard/const/locales.py:538
 msgid "Inuktitut (Latin)"
-msgstr ""
+msgstr "伊努特語（拉丁字母）"
 
 #: picard/const/locales.py:539
 msgid "Inuktitut (Latin) (Canada)"
-msgstr ""
+msgstr "伊努特語（拉丁字母）（加拿大）"
 
 #: picard/const/locales.py:541
 msgid "Japanese (Japan)"
@@ -2268,7 +2273,7 @@ msgstr "爪哇語"
 
 #: picard/const/locales.py:549
 msgid "Javanese (Indonesia)"
-msgstr ""
+msgstr "爪哇語（印尼）"
 
 #: picard/const/locales.py:550
 msgid "Georgian"
@@ -2424,7 +2429,7 @@ msgstr "坎那達語 (印度)"
 
 #: picard/const/locales.py:589
 msgid "Korean (North Korea)"
-msgstr ""
+msgstr "韓語（北韓）"
 
 #: picard/const/locales.py:590
 msgid "Korean (South Korea)"
@@ -2456,11 +2461,11 @@ msgstr "喀什米爾語"
 
 #: picard/const/locales.py:597
 msgid "Kashmiri (Arabic)"
-msgstr ""
+msgstr "喀什米爾語（阿拉伯字母）"
 
 #: picard/const/locales.py:598
 msgid "Kashmiri (Arabic) (India)"
-msgstr ""
+msgstr "喀什米爾語（阿拉伯字母）（印度）"
 
 #: picard/const/locales.py:599
 msgid "Kashmiri (Devanagari)"
@@ -2500,7 +2505,7 @@ msgstr "庫德語"
 
 #: picard/const/locales.py:608
 msgid "Kurdish (Türkiye)"
-msgstr ""
+msgstr "庫德語（土耳其）"
 
 #: picard/const/locales.py:609
 msgid "Cornish"
@@ -2512,11 +2517,11 @@ msgstr "康瓦爾語 (英國)"
 
 #: picard/const/locales.py:611
 msgid "Kyrgyz"
-msgstr ""
+msgstr "吉爾吉斯語"
 
 #: picard/const/locales.py:612
 msgid "Kyrgyz (Kyrgyzstan)"
-msgstr ""
+msgstr "吉爾吉斯語（吉爾吉斯）"
 
 #: picard/const/locales.py:613 picard/const/scripts.py:34
 msgid "Latin"
@@ -2524,7 +2529,7 @@ msgstr "拉丁語"
 
 #: picard/const/locales.py:614
 msgid "Latin (Vatican City)"
-msgstr ""
+msgstr "拉丁語（梵蒂岡）"
 
 #: picard/const/locales.py:615
 msgid "Langi"
@@ -2540,7 +2545,7 @@ msgstr "盧森堡語"
 
 #: picard/const/locales.py:618
 msgid "Luxembourgish (Luxembourg)"
-msgstr ""
+msgstr "盧森堡語（盧森堡）"
 
 #: picard/const/locales.py:619
 msgid "Ganda"
@@ -2548,7 +2553,7 @@ msgstr "干達語"
 
 #: picard/const/locales.py:620
 msgid "Ganda (Uganda)"
-msgstr ""
+msgstr "盧干達語（烏干達）"
 
 #: picard/const/locales.py:621
 msgid "Ligurian"
@@ -2580,7 +2585,7 @@ msgstr "林加拉語"
 
 #: picard/const/locales.py:628
 msgid "Lingala (Angola)"
-msgstr ""
+msgstr "林格拉語（安哥拉）"
 
 #: picard/const/locales.py:629
 msgid "Lingala (Congo - Kinshasa)"
@@ -2588,7 +2593,7 @@ msgstr "林加拉語 (剛果 - 金夏沙)"
 
 #: picard/const/locales.py:630
 msgid "Lingala (Central African Republic)"
-msgstr ""
+msgstr "林格拉語（中非）"
 
 #: picard/const/locales.py:631
 msgid "Lingala (Congo - Brazzaville)"
@@ -2720,11 +2725,11 @@ msgstr ""
 
 #: picard/const/locales.py:664
 msgid "Māori"
-msgstr ""
+msgstr "毛利語"
 
 #: picard/const/locales.py:665
 msgid "Māori (New Zealand)"
-msgstr ""
+msgstr "毛利語（紐西蘭）"
 
 #: picard/const/locales.py:666
 msgid "Macedonian"
@@ -2732,7 +2737,7 @@ msgstr "馬其頓語"
 
 #: picard/const/locales.py:667
 msgid "Macedonian (North Macedonia)"
-msgstr ""
+msgstr "馬其頓語（北馬其頓）"
 
 #: picard/const/locales.py:668
 msgid "Malayalam"
@@ -2768,7 +2773,7 @@ msgstr "蒙古語 (蒙古字母) (中國)"
 
 #: picard/const/locales.py:676
 msgid "Mongolian (Mongolian) (Mongolia)"
-msgstr ""
+msgstr "蒙古語（蒙古字母）（蒙古）"
 
 #: picard/const/locales.py:677
 msgid "Manipuri"
@@ -2812,15 +2817,15 @@ msgstr "馬來語"
 
 #: picard/const/locales.py:687
 msgid "Malay (Arabic)"
-msgstr ""
+msgstr "馬來語（阿拉伯字母）"
 
 #: picard/const/locales.py:688
 msgid "Malay (Arabic) (Brunei)"
-msgstr ""
+msgstr "馬來語（阿拉伯字母）（汶萊 ）"
 
 #: picard/const/locales.py:689
 msgid "Malay (Arabic) (Malaysia)"
-msgstr ""
+msgstr "馬來語（阿拉伯字母）（馬來西亞）"
 
 #: picard/const/locales.py:690
 msgid "Malay (Brunei)"
@@ -2828,11 +2833,11 @@ msgstr "馬來語 (汶萊)"
 
 #: picard/const/locales.py:691
 msgid "Malay (Indonesia)"
-msgstr ""
+msgstr "馬來語（印尼）"
 
 #: picard/const/locales.py:693
 msgid "Malay (Singapore)"
-msgstr ""
+msgstr "馬來語（新加坡）"
 
 #: picard/const/locales.py:694
 msgid "Maltese"
@@ -2864,7 +2869,7 @@ msgstr "緬甸語"
 
 #: picard/const/locales.py:701
 msgid "Burmese (Myanmar (Burma))"
-msgstr ""
+msgstr "緬甸語（緬甸）"
 
 #: picard/const/locales.py:702
 msgid "Erzya"
@@ -2895,8 +2900,9 @@ msgid "Norwegian Bokmål (Norway)"
 msgstr "巴克摩挪威語 (挪威)"
 
 #: picard/const/locales.py:710
+#, fuzzy
 msgid "Norwegian Bokmål (Svalbard & Jan Mayen)"
-msgstr ""
+msgstr "波克莫爾語（Svalbard & Jan Mayen）"
 
 #: picard/const/locales.py:711
 msgid "North Ndebele"
@@ -2932,7 +2938,7 @@ msgstr "尼泊爾語 (尼泊爾)"
 
 #: picard/const/locales.py:720
 msgid "Dutch (Aruba)"
-msgstr ""
+msgstr "荷蘭語（阿魯巴）"
 
 #: picard/const/locales.py:721
 msgid "Dutch (Belgium)"
@@ -2940,11 +2946,11 @@ msgstr "荷蘭語 (比利時)"
 
 #: picard/const/locales.py:722
 msgid "Dutch (Caribbean Netherlands)"
-msgstr ""
+msgstr "荷蘭語（荷屬加勒比海地區）"
 
 #: picard/const/locales.py:723
 msgid "Dutch (Curaçao)"
-msgstr ""
+msgstr "荷蘭語（古拉索）"
 
 #: picard/const/locales.py:724
 msgid "Dutch (Netherlands)"
@@ -2952,11 +2958,11 @@ msgstr "荷蘭語 (荷蘭)"
 
 #: picard/const/locales.py:725
 msgid "Dutch (Suriname)"
-msgstr ""
+msgstr "荷蘭語（蘇利南）"
 
 #: picard/const/locales.py:726
 msgid "Dutch (Sint Maarten)"
-msgstr ""
+msgstr "荷蘭語（聖馬丁）"
 
 #: picard/const/locales.py:727
 msgid "Kwasio"
@@ -3168,39 +3174,39 @@ msgstr "普什圖語 (阿富汗)"
 
 #: picard/const/locales.py:781
 msgid "Pashto (Pakistan)"
-msgstr ""
+msgstr "普什圖語（巴基斯坦）"
 
 #: picard/const/locales.py:783
 msgid "Portuguese (Angola)"
-msgstr ""
+msgstr "葡萄牙語（安哥拉）"
 
 #: picard/const/locales.py:785
 msgid "Portuguese (Switzerland)"
-msgstr ""
+msgstr "葡萄牙語（瑞士）"
 
 #: picard/const/locales.py:786
 msgid "Portuguese (Cape Verde)"
-msgstr ""
+msgstr "葡萄牙語（維德角）"
 
 #: picard/const/locales.py:787
 msgid "Portuguese (Equatorial Guinea)"
-msgstr ""
+msgstr "葡萄牙語（赤道幾內亞）"
 
 #: picard/const/locales.py:788
 msgid "Portuguese (Guinea-Bissau)"
-msgstr ""
+msgstr "葡萄牙語（幾內亞比索）"
 
 #: picard/const/locales.py:789
 msgid "Portuguese (Luxembourg)"
-msgstr ""
+msgstr "葡萄牙語（盧森堡）"
 
 #: picard/const/locales.py:790
 msgid "Portuguese (Macao)"
-msgstr ""
+msgstr "葡萄牙語（澳門）"
 
 #: picard/const/locales.py:791
 msgid "Portuguese (Mozambique)"
-msgstr ""
+msgstr "葡萄牙語（莫三比克）"
 
 #: picard/const/locales.py:792
 msgid "Portuguese (Portugal)"
@@ -3208,11 +3214,11 @@ msgstr "葡萄牙語 (葡萄牙)"
 
 #: picard/const/locales.py:793
 msgid "Portuguese (São Tomé & Príncipe)"
-msgstr ""
+msgstr "葡萄牙語（聖多美普林西比）"
 
 #: picard/const/locales.py:794
 msgid "Portuguese (Timor-Leste)"
-msgstr ""
+msgstr "葡萄牙語（東帝汶）"
 
 #: picard/const/locales.py:795
 msgid "Quechua"
@@ -3220,15 +3226,15 @@ msgstr "印加語"
 
 #: picard/const/locales.py:796
 msgid "Quechua (Bolivia)"
-msgstr ""
+msgstr "奇楚瓦語（玻利維亞）"
 
 #: picard/const/locales.py:797
 msgid "Quechua (Ecuador)"
-msgstr ""
+msgstr "奇楚瓦語（厄瓜多）"
 
 #: picard/const/locales.py:798
 msgid "Quechua (Peru)"
-msgstr ""
+msgstr "奇楚瓦語（秘魯）"
 
 #: picard/const/locales.py:799
 msgid "Kʼicheʼ"
@@ -3284,7 +3290,7 @@ msgstr "克倫地語"
 
 #: picard/const/locales.py:812
 msgid "Rundi (Burundi)"
-msgstr ""
+msgstr "克倫地語（蒲隆地）"
 
 #: picard/const/locales.py:814
 msgid "Romanian (Moldova)"
@@ -3304,19 +3310,19 @@ msgstr ""
 
 #: picard/const/locales.py:819
 msgid "Russian (Belarus)"
-msgstr ""
+msgstr "俄語（白俄羅斯）"
 
 #: picard/const/locales.py:820
 msgid "Russian (Kyrgyzstan)"
-msgstr ""
+msgstr "俄語（吉爾吉斯）"
 
 #: picard/const/locales.py:821
 msgid "Russian (Kazakhstan)"
-msgstr ""
+msgstr "俄語（哈薩克）"
 
 #: picard/const/locales.py:822
 msgid "Russian (Moldova)"
-msgstr ""
+msgstr "俄語（摩爾多瓦）"
 
 #: picard/const/locales.py:823
 msgid "Russian (Russia)"
@@ -3400,7 +3406,7 @@ msgstr "薩丁尼亞語"
 
 #: picard/const/locales.py:843
 msgid "Sardinian (Italy)"
-msgstr ""
+msgstr "薩丁尼語（義大利）"
 
 #: picard/const/locales.py:844
 msgid "Sicilian"
@@ -4028,11 +4034,11 @@ msgstr "溫達語 (南非)"
 
 #: picard/const/locales.py:1006
 msgid "Venetian"
-msgstr ""
+msgstr "維也納語"
 
 #: picard/const/locales.py:1007
 msgid "Venetian (Italy)"
-msgstr ""
+msgstr "維也納語（義大利）"
 
 #: picard/const/locales.py:1008
 msgid "Vietnamese"
@@ -4128,7 +4134,7 @@ msgstr "意第緒語"
 
 #: picard/const/locales.py:1031
 msgid "Yiddish (world)"
-msgstr ""
+msgstr "意第緒語（世界）"
 
 #: picard/const/locales.py:1032
 msgid "Yoruba"
@@ -4136,7 +4142,7 @@ msgstr "約魯巴語"
 
 #: picard/const/locales.py:1033
 msgid "Yoruba (Benin)"
-msgstr ""
+msgstr "約魯巴語（貝南）"
 
 #: picard/const/locales.py:1034
 msgid "Yoruba (Nigeria)"
@@ -4160,23 +4166,23 @@ msgstr ""
 
 #: picard/const/locales.py:1039
 msgid "Cantonese"
-msgstr ""
+msgstr "粵語"
 
 #: picard/const/locales.py:1040
 msgid "Cantonese (Simplified)"
-msgstr ""
+msgstr "簡體粵語"
 
 #: picard/const/locales.py:1041
 msgid "Cantonese (Simplified) (China)"
-msgstr ""
+msgstr "簡體粵語（中國大陸）"
 
 #: picard/const/locales.py:1042
 msgid "Cantonese (Traditional)"
-msgstr ""
+msgstr "正體粵語"
 
 #: picard/const/locales.py:1043
 msgid "Cantonese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "正體粵語（香港）"
 
 #: picard/const/locales.py:1044
 msgid "Standard Moroccan Tamazight"
@@ -4192,39 +4198,39 @@ msgstr "漢語"
 
 #: picard/const/locales.py:1047
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "簡體中文"
 
 #: picard/const/locales.py:1048
 msgid "Chinese (Simplified) (China)"
-msgstr ""
+msgstr "簡體中文（中國大陸）"
 
 #: picard/const/locales.py:1049
 msgid "Chinese (Simplified) (Hong Kong)"
-msgstr ""
+msgstr "簡體中文（香港）"
 
 #: picard/const/locales.py:1050
 msgid "Chinese (Simplified) (Macao)"
-msgstr ""
+msgstr "簡體中文（澳門）"
 
 #: picard/const/locales.py:1051
 msgid "Chinese (Simplified) (Singapore)"
-msgstr ""
+msgstr "簡體中文（新加坡）"
 
 #: picard/const/locales.py:1052
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "正體中文"
 
 #: picard/const/locales.py:1053
 msgid "Chinese (Traditional) (Hong Kong)"
-msgstr ""
+msgstr "正體中文（香港）"
 
 #: picard/const/locales.py:1054
 msgid "Chinese (Traditional) (Macao)"
-msgstr ""
+msgstr "正體中文（澳門）"
 
 #: picard/const/locales.py:1055
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr ""
+msgstr "正體中文（台灣）"
 
 #: picard/const/locales.py:1056
 msgid "Zulu"
@@ -4559,7 +4565,7 @@ msgstr ""
 
 #: picard/const/tags.py:305
 msgid "Director"
-msgstr ""
+msgstr "導演"
 
 #: picard/const/tags.py:307
 msgid ""
@@ -4692,7 +4698,7 @@ msgstr ""
 
 #: picard/const/tags.py:426
 msgid "File Path"
-msgstr ""
+msgstr "檔案路徑"
 
 #: picard/const/tags.py:427
 msgid "Full path and name of the file."
@@ -4700,7 +4706,7 @@ msgstr ""
 
 #: picard/const/tags.py:435
 msgid "File Size"
-msgstr ""
+msgstr "檔案大小"
 
 #: picard/const/tags.py:436
 msgid "Size of the file in bytes."
@@ -4708,7 +4714,7 @@ msgstr ""
 
 #: picard/const/tags.py:444
 msgid "File Format"
-msgstr ""
+msgstr "檔案格式"
 
 #: picard/const/tags.py:445
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
@@ -4757,7 +4763,7 @@ msgstr "調"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
-msgstr ""
+msgstr "作品的音調。"
 
 #: picard/const/tags.py:491
 msgid "Record Label"
@@ -4887,7 +4893,7 @@ msgstr ""
 
 #: picard/const/tags.py:590
 msgid "Release MBID"
-msgstr ""
+msgstr "發行品MBID"
 
 #: picard/const/tags.py:591
 msgid "The MusicBrainz Identifier (MBID) for the release."
@@ -4956,7 +4962,7 @@ msgstr ""
 
 #: picard/const/tags.py:645
 msgid "Recording MBID"
-msgstr ""
+msgstr "錄音MBID"
 
 #: picard/const/tags.py:646
 msgid "The MusicBrainz Identifier (MBID) for the recording."
@@ -4964,7 +4970,7 @@ msgstr ""
 
 #: picard/const/tags.py:650
 msgid "Release Group MBID"
-msgstr ""
+msgstr "發行組MBID"
 
 #: picard/const/tags.py:651
 msgid "The MusicBrainz Identifier (MBID) for the release group."
@@ -4990,7 +4996,7 @@ msgstr ""
 
 #: picard/const/tags.py:667
 msgid "Work MBID"
-msgstr ""
+msgstr "作品MBID"
 
 #: picard/const/tags.py:668
 msgid ""
@@ -5134,7 +5140,7 @@ msgstr ""
 
 #: picard/const/tags.py:777 picard/const/tags.py:1002 picard/const/tags.py:1091
 msgid "Release group types"
-msgstr ""
+msgstr "發行組分類"
 
 #: picard/const/tags.py:781
 msgid "Producer"
@@ -5163,10 +5169,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:802
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "拉丁語"
+msgstr "評分"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
@@ -5183,7 +5187,7 @@ msgstr ""
 
 #: picard/const/tags.py:815
 msgid "Recording Series"
-msgstr ""
+msgstr "錄音系列"
 
 #: picard/const/tags.py:816
 msgid "The series titles associated with the recording."
@@ -5199,7 +5203,7 @@ msgstr ""
 
 #: picard/const/tags.py:829
 msgid "Recording Series MBID"
-msgstr ""
+msgstr "錄音系列MBID"
 
 #: picard/const/tags.py:830
 msgid ""
@@ -5208,7 +5212,7 @@ msgstr ""
 
 #: picard/const/tags.py:836
 msgid "Recording Series Number"
-msgstr ""
+msgstr "錄音系列序號"
 
 #: picard/const/tags.py:837
 msgid "The series numbers associated with the recording."
@@ -5224,7 +5228,7 @@ msgstr ""
 
 #: picard/const/tags.py:850
 msgid "Recording Title"
-msgstr ""
+msgstr "錄音標題"
 
 #: picard/const/tags.py:851
 msgid ""
@@ -5249,7 +5253,7 @@ msgstr ""
 
 #: picard/const/tags.py:871
 msgid "Release Countries"
-msgstr ""
+msgstr "發行國家"
 
 #: picard/const/tags.py:872
 msgid "The complete list of release countries for the release."
@@ -5268,7 +5272,7 @@ msgstr ""
 
 #: picard/const/tags.py:888
 msgid "Release Date"
-msgstr ""
+msgstr "發行日期"
 
 #: picard/const/tags.py:891
 #, python-format
@@ -5280,7 +5284,7 @@ msgstr ""
 
 #: picard/const/tags.py:899
 msgid "Release Group"
-msgstr ""
+msgstr "發行組"
 
 #: picard/const/tags.py:901
 msgid ""
@@ -5301,7 +5305,7 @@ msgstr ""
 
 #: picard/const/tags.py:919
 msgid "RG Series"
-msgstr ""
+msgstr "發行組系列"
 
 #: picard/const/tags.py:920
 msgid "The series titles associated with the release group."
@@ -5317,7 +5321,7 @@ msgstr ""
 
 #: picard/const/tags.py:933
 msgid "RG Series MBID"
-msgstr ""
+msgstr "發行組系列MBID"
 
 #: picard/const/tags.py:934
 msgid ""
@@ -5326,7 +5330,7 @@ msgstr ""
 
 #: picard/const/tags.py:940
 msgid "RG Series Number"
-msgstr ""
+msgstr "發行組系列序號"
 
 #: picard/const/tags.py:941
 msgid "The series numbers associated with the release group."
@@ -5342,15 +5346,15 @@ msgstr ""
 
 #: picard/const/tags.py:954
 msgid "Release Language"
-msgstr ""
+msgstr "發行品語言"
 
 #: picard/const/tags.py:955
 msgid "The language of the release as per ISO 639-3."
-msgstr ""
+msgstr "根據ISO 639-3標準的發行品語言。"
 
 #: picard/const/tags.py:961
 msgid "Release Series"
-msgstr ""
+msgstr "發行品系列"
 
 #: picard/const/tags.py:962
 msgid "The series titles associated with the release."
@@ -5474,10 +5478,8 @@ msgid "The sample rate of the audio file."
 msgstr ""
 
 #: picard/const/tags.py:1073
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "我的腳本"
+msgstr "指令碼"
 
 #: picard/const/tags.py:1075
 msgid ""
@@ -5587,7 +5589,7 @@ msgstr "總光碟數"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "發行品的光碟總數。"
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
@@ -5607,7 +5609,7 @@ msgstr ""
 
 #: picard/const/tags.py:1173
 msgid "Video"
-msgstr ""
+msgstr "影片"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
@@ -5640,7 +5642,7 @@ msgstr ""
 
 #: picard/const/tags.py:1198
 msgid "Work Series"
-msgstr ""
+msgstr "作品系列"
 
 #: picard/const/tags.py:1199
 msgid "The series titles associated with the work."
@@ -5656,7 +5658,7 @@ msgstr ""
 
 #: picard/const/tags.py:1212
 msgid "Work Series MBID"
-msgstr ""
+msgstr "作品系列MBID"
 
 #: picard/const/tags.py:1213
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
@@ -5664,7 +5666,7 @@ msgstr ""
 
 #: picard/const/tags.py:1219
 msgid "Work Series Number"
-msgstr ""
+msgstr "作品系列序號"
 
 #: picard/const/tags.py:1220
 msgid "The series numbers associated with the work."
