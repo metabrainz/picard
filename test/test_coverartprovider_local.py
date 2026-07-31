@@ -29,7 +29,6 @@ from test.picardtestcase import PicardTestCase
 
 from picard.coverart.providers.local import CoverArtProviderLocal
 from picard.metadata import Metadata
-from picard.util.scripttofilename import script_to_filename
 
 
 class LocalCoverArtTestBase(PicardTestCase):
@@ -158,9 +157,9 @@ class QueueImagesScriptTest(PicardTestCase):
         self.provider.album = MagicMock()
         self.provider.queue_put = MagicMock()
 
-    @patch('picard.coverart.providers.local.script_to_filename')
-    def test_empty_script_result_skipped(self, mock_stf):
-        mock_stf.return_value = ''
+    @patch.object(CoverArtProviderLocal, '_eval_script')
+    def test_empty_script_result_skipped(self, mock_eval):
+        mock_eval.return_value = ''
         file = MagicMock()
         file.filename = '/music/song.mp3'
         file.metadata = Metadata()
@@ -168,9 +167,9 @@ class QueueImagesScriptTest(PicardTestCase):
         self.provider._queue_images_script('%album%')
         self.provider.queue_put.assert_not_called()
 
-    @patch('picard.coverart.providers.local.script_to_filename')
-    def test_calls_find_local_images_by_script(self, mock_stf):
-        mock_stf.return_value = 'cover.*'
+    @patch.object(CoverArtProviderLocal, '_eval_script')
+    def test_calls_find_local_images_by_script(self, mock_eval):
+        mock_eval.return_value = 'cover.*'
         file = MagicMock()
         file.filename = '/music/song.mp3'
         file.metadata = Metadata({'album': 'Test'})
@@ -180,26 +179,15 @@ class QueueImagesScriptTest(PicardTestCase):
         self.provider.find_local_images_by_script.assert_called_once()
 
 
-_SCRIPT_SETTINGS = {
-    'ascii_filenames': False,
-    'enabled_plugins': [],
-    'windows_compatibility': False,
-    'win_compat_replacements': {},
-    'replace_spaces_with_underscores': False,
-    'replace_dir_separator': '_',
-}
-
-
 class ScriptToGlobMatchTest(LocalCoverArtTestBase):
     """Integration test: script evaluation → glob matching against real files."""
 
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-        self.set_config_values(_SCRIPT_SETTINGS)
 
     def _find_with_script(self, script, metadata):
-        pattern = script_to_filename(script, metadata)
+        pattern = CoverArtProviderLocal._eval_script(script, metadata)
         filepaths_done = set()
         return list(self.provider.find_local_images_by_script(self.tmpdir, pattern, filepaths_done))
 
