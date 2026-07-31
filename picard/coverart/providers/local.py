@@ -54,6 +54,8 @@ class ProviderOptionsLocal(ProviderOptions):
 
     OPTIONS: PageOptionConfigs = {
         'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
+        'local_cover_script': {'widgets': ['local_cover_script_edit']},
+        'local_cover_use_script': {'widgets': ['local_cover_use_script']},
     }
 
     _options_ui = Ui_LocalOptions
