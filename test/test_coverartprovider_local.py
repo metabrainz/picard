@@ -93,6 +93,18 @@ class FindLocalImagesByScriptTest(LocalCoverArtTestBase):
         self._find('cover.jpg', filepaths_done)
         self.assertEqual(1, len(filepaths_done))
 
+    def test_type_extraction_from_filename(self):
+        self._create_files(['front.jpg', 'back.png'])
+        results = self._find('*.*')
+        by_name = {os.path.basename(r.url.toLocalFile()): r.types for r in results}
+        self.assertIn('front', by_name['front.jpg'])
+        self.assertIn('back', by_name['back.png'])
+
+    def test_no_type_in_filename_uses_default(self):
+        self._create_files(['cover.jpg'])
+        results = self._find('cover.*')
+        self.assertEqual(['front'], results[0].types)
+
 
 class FindLocalImagesRegexTest(LocalCoverArtTestBase):
     def _find(self, regex):
