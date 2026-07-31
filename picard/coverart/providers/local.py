@@ -234,7 +234,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                 m = match_re.search(filename)
                 if not m:
                     continue
-                filepath = os.path.join(current_dir, root, filename)
+                filepath = os.path.join(root, filename)
                 if not os.path.exists(filepath):
                     continue
                 try:
@@ -253,7 +253,7 @@ class CoverArtProviderLocal(CoverArtProvider):
         for root, _dirs, files in os.walk(current_dir):
             for filename in files:
                 if fnmatch.fnmatch(filename.lower(), pattern):
-                    filepath = os.path.join(current_dir, root, filename)
+                    filepath = os.path.join(root, filename)
                     if filepath in filepaths_done:
                         continue
                     filepaths_done.add(filepath)
