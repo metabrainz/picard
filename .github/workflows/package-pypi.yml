@@ -23,7 +23,7 @@ jobs:
         python-version: '3.14'
         cache: 'pip'
     - name: Install uv
-      uses: astral-sh/setup-uv@v8.2.0
+      uses: astral-sh/setup-uv@v9.0.0
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
       run: |
@@ -96,7 +96,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
     - name: Install uv
-      uses: astral-sh/setup-uv@v8.2.0
+      uses: astral-sh/setup-uv@v9.0.0
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
