@@ -30,7 +30,7 @@ jobs:
         fetch-depth: 1000
         fetch-tags: true
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       with:
         python-version: '3.14'
     - name: Install uv
