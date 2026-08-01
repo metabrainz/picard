@@ -18,7 +18,7 @@ jobs:
       with:
         fetch-depth: 1000
         fetch-tags: true
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.14'
         cache: 'pip'
@@ -90,7 +90,7 @@ jobs:
         fetch-depth: 1000
         fetch-tags: true
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       id: setup
       with:
         python-version: ${{ matrix.python-version }}
