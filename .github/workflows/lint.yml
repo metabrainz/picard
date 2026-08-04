@@ -11,6 +11,7 @@ on:
     - 'po/appstream/*.po'
   pull_request:
     paths: *path-list
+  workflow_dispatch:
 
 jobs:
   ruff:

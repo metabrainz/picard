@@ -13,6 +13,7 @@ on:
     - 'win.version-info.txt.in'
   pull_request:
     paths: *path-list
+  workflow_dispatch:
 permissions: {}
 
 concurrency:
