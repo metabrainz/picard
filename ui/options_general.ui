@@ -209,6 +209,13 @@ QCheckBox { color: black }</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="remove_complete_albums_after_save">
+        <property name="text">
+         <string>Remove complete albums after saving</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

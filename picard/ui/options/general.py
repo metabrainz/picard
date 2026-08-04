@@ -63,6 +63,7 @@ class GeneralOptionsPage(OptionsPage):
         'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},
         'enable_user_collections': {'widgets': ['enable_user_collections']},
+        'remove_complete_albums_after_save': {'widgets': ['remove_complete_albums_after_save']},
     }
 
     def __init__(self, parent=None):
@@ -89,6 +90,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
         self.ui.enable_user_collections.setChecked(config.setting['enable_user_collections'])
+        self.ui.remove_complete_albums_after_save.setChecked(config.setting['remove_complete_albums_after_save'])
 
     def save(self):
         config = get_config()
@@ -98,6 +100,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
+        config.setting['remove_complete_albums_after_save'] = self.ui.remove_complete_albums_after_save.isChecked()
         self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
 
     def _update_user_collections(self, config, new_enable_user_collections):

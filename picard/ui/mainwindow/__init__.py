@@ -1391,6 +1391,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_donation_page(self):
         webbrowser2.open('donate')
 
+    def _remove_completed_album(self, obj: Album):
+        if obj.is_complete() and obj.get_num_unsaved_files() == 0:
+            obj.album_updated.disconnect()
+            self.panel.remove([obj])
+
     def save(self):
         """Tell the tagger to save the selected objects."""
         self.tutorial.show('save')
@@ -1402,8 +1407,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.setting['file_save_warning'] = not disable_warning
         else:
             proceed_with_save = True
-        if proceed_with_save:
-            self.tagger.save(self.selected_objects)
+        if not proceed_with_save:
+            return
+
+        if config.setting['remove_complete_albums_after_save']:
+            for obj in self.selected_objects:
+                if isinstance(obj, Album):
+                    obj.album_updated.connect(self._remove_completed_album)
+
+        self.tagger.save(self.selected_objects)
 
     def trash_files(self):
         files = list(iter_files_from_objects(self.selected_objects))
