@@ -1412,6 +1412,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         except AttributeError:
             return
 
+        # Check for existing tagger to allow proper execution of test_preferencelistwidget.py
+        if not self.tagger:
+            return
+
+        if album.id not in self.tagger.albums:
+            return
+
         if album.is_complete() and album.get_num_unsaved_files() == 0:
             self.panel.remove([album])
 
