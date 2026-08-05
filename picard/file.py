@@ -625,12 +625,6 @@ class File(MetadataItem):
         # Force update to ensure file status icon changes immediately after save
         self.update()
 
-        # Try emitting an album updated signal if file is a track connected to an album
-        try:
-            self.parent_item.album.emit_album_updated_signal()
-        except Exception:
-            pass
-
         if self.state != File.State.REMOVED:
             del self.tagger.files[old_filename]
             self.tagger.files[new_filename] = self

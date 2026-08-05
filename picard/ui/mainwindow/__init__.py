@@ -249,6 +249,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
+        # Imported here to allow proper execution of test_preferencelistwidget.py
+        from picard.extension_points.event_hooks import register_file_post_save_processor
+
+        register_file_post_save_processor(self.file_post_save)
+
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
         self._suspend_while_loading_funcs.append(funcs)
@@ -1391,10 +1396,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_donation_page(self):
         webbrowser2.open('donate')
 
-    def _remove_completed_album(self, obj: Album):
-        if obj.is_complete() and obj.get_num_unsaved_files() == 0:
-            obj.album_updated.disconnect()
-            self.panel.remove([obj])
+    def file_post_save(self, obj: File):
+        """Remove the album containing the file if conditions are met.
+
+        Args:
+            obj (File): File that was saved.
+        """
+        config = get_config()
+        if not config.setting['remove_complete_albums_after_save']:
+            return
+
+        # Try getting the related album
+        try:
+            album = obj.parent_item.album
+        except AttributeError:
+            return
+
+        if album.is_complete() and album.get_num_unsaved_files() == 0:
+            self.panel.remove([album])
 
     def save(self):
         """Tell the tagger to save the selected objects."""
@@ -1407,15 +1426,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.setting['file_save_warning'] = not disable_warning
         else:
             proceed_with_save = True
-        if not proceed_with_save:
-            return
-
-        if config.setting['remove_complete_albums_after_save']:
-            for obj in self.selected_objects:
-                if isinstance(obj, Album):
-                    obj.album_updated.connect(self._remove_completed_album)
-
-        self.tagger.save(self.selected_objects)
+        if proceed_with_save:
+            self.tagger.save(self.selected_objects)
 
     def trash_files(self):
         files = list(iter_files_from_objects(self.selected_objects))

@@ -54,10 +54,7 @@ from enum import IntEnum
 import time
 import traceback
 
-from PyQt6 import (
-    QtCore,
-    QtNetwork,
-)
+from PyQt6 import QtNetwork
 
 from picard import log
 from picard.album_requests import (
@@ -193,8 +190,6 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-    album_updated = QtCore.pyqtSignal(MetadataItem)
-
     def __init__(self, album_id, discid=None, disc_isrcs=None):
         super().__init__(album_id)
         self.tracks: list[Track] = []
@@ -972,9 +967,6 @@ class Album(MetadataItem):
         if reason:
             self.error_append(reason)
         self._finalize_loading(error=True)
-
-    def emit_album_updated_signal(self):
-        self.album_updated.emit(self)
 
     def update(self, update_tracks=True, update_selection=True):
         if self.ui_item:
