@@ -252,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # Imported here to allow proper execution of test_preferencelistwidget.py
         from picard.extension_points.event_hooks import register_file_post_save_processor
 
-        register_file_post_save_processor(self.file_post_save)
+        register_file_post_save_processor(self._remove_album_if_complete)
 
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
@@ -1396,7 +1396,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_donation_page(self):
         webbrowser2.open('donate')
 
-    def file_post_save(self, obj: File):
+    def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.
 
         Args:
