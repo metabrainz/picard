@@ -34,7 +34,6 @@ and parametrize to reduce code duplication while ensuring comprehensive coverage
 """
 
 from dataclasses import asdict
-import os
 from unittest.mock import (
     Mock,
     call,
@@ -159,26 +158,8 @@ def mock_spec_service() -> Mock:
     return Mock(spec=ColumnSpecService)
 
 
-@pytest.fixture(scope="session", autouse=True)
-def qtapp():
-    """QApplication instance for widget tests."""
-    # Set Qt platform to offscreen for headless testing
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-
-    # Ensure we have a clean Qt application instance
-    app = QtWidgets.QApplication.instance()
-    if app is None:
-        app = QtWidgets.QApplication([])
-
-    # Ensure the application is properly initialized
-    if hasattr(app, 'processEvents'):
-        app.processEvents()
-
-    return app
-
-
 @pytest.fixture
-def mock_form_widgets(qtapp) -> dict[str, QtWidgets.QWidget]:
+def mock_form_widgets(qapp) -> dict[str, QtWidgets.QWidget]:
     """Mock form input widgets for ColumnFormHandler testing."""
     view_selector = Mock(spec=QtWidgets.QWidget)
     view_selector.get_selected = Mock(return_value=["file", "album"])

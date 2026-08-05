@@ -116,6 +116,28 @@ pytest -n auto
 uv run pytest -n auto
 ```
 
+### Writing Tests
+
+Tests live in the `test/` directory and use pytest. A shared `test/conftest.py`
+provides session-wide fixtures and config defaults.
+
+**Qt widget tests:** A session-scoped `qapp` fixture in `conftest.py` provides a
+`QApplication` instance that lives for the entire test run. Tests that create Qt
+widgets must request it as a dependency:
+
+```python
+@pytest.fixture()
+def my_widget(qapp):
+    from picard.ui.widgets.mywidget import MyWidget
+
+    return MyWidget()
+```
+
+Do **not** create your own `QApplication` or `QCoreApplication` in tests — doing so
+causes crashes when `pytest-randomly` reorders tests. Always reuse the shared `qapp`
+fixture. If a unittest-based test needs a Qt event loop, call
+`QCoreApplication.instance()` and only create a new one if it returns `None`.
+
 ## Development Workflow
 
 ### Dependency Management

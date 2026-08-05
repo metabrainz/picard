@@ -18,11 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Tests for PreferenceListWidget.
-
-Note: Widget instantiation tests are skipped on headless CI (no display).
-Run locally with a display or QT_QPA_PLATFORM=offscreen for full coverage.
-"""
+"""Tests for PreferenceListWidget."""
 
 import os
 import sys
@@ -43,10 +39,6 @@ def _has_display():
     return bool(os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY'))
 
 
-if not _has_display():
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-
-
 SAMPLE_ITEMS = {
     'US': 'United States',
     'GB': 'United Kingdom',
@@ -62,21 +54,11 @@ needs_display = pytest.mark.skipif(
 
 
 @pytest.fixture()
-def widget():
-    from PyQt6 import QtWidgets
-
+def widget(qapp):
     from picard.ui.widgets.preferencelistwidget import PreferenceListWidget
 
-    # Keep reference to prevent garbage collection
-    if not hasattr(widget, '_app'):
-        app = QtWidgets.QApplication.instance()
-        if app is None:
-            app = QtWidgets.QApplication([])
-        widget._app = app
     w = PreferenceListWidget()
     w.set_available_items(SAMPLE_ITEMS)
-    # prevent GC during test
-    widget._current = w
     return w
 
 
@@ -229,19 +211,11 @@ class TestExcludedKeys:
 
 
 @pytest.fixture()
-def unordered_widget():
-    from PyQt6 import QtWidgets
-
+def unordered_widget(qapp):
     from picard.ui.widgets.preferencelistwidget import PreferenceListWidget
 
-    if not hasattr(unordered_widget, '_app'):
-        app = QtWidgets.QApplication.instance()
-        if app is None:
-            app = QtWidgets.QApplication([])
-        unordered_widget._app = app
     w = PreferenceListWidget(ordered=False)
     w.set_available_items(SAMPLE_ITEMS)
-    unordered_widget._current = w
     return w
 
 

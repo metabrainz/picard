@@ -58,7 +58,9 @@ class ThreadTest(PicardTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.app = QCoreApplication([])
+        cls.app = QCoreApplication.instance()
+        if cls.app is None:
+            cls.app = QCoreApplication([])
         cls.threadpool = QThreadPool()
         cls.event_interceptor = MainEventInterceptor()
 
