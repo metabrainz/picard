@@ -414,6 +414,22 @@ class TestMyFeature(PicardTestCase):
         self.assertEqual(expected, actual)
 ```
 
+### Qt Widget Tests
+A session-scoped `qapp` fixture in `test/conftest.py` provides a shared
+`QApplication` for the entire test run. Always use it for widget tests:
+
+```python
+@pytest.fixture()
+def my_widget(qapp):
+    from picard.ui.widgets.mywidget import MyWidget
+
+    return MyWidget()
+```
+
+**Never** create a local `QApplication` or `QCoreApplication` in tests — it causes
+crashes with random test ordering. For unittest-based tests that need an event loop,
+use `QCoreApplication.instance()` and only create one if it returns `None`.
+
 ---
 
 ## Debugging

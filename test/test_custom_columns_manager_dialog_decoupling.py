@@ -33,7 +33,6 @@ Classes Under Test:
 
 from collections.abc import Iterable
 from dataclasses import replace
-import os
 from unittest.mock import (
     Mock,
     call,
@@ -62,37 +61,6 @@ from picard.ui.itemviews.custom_columns.validation import (
     ValidationContext,
     ValidationReport,
 )
-
-
-@pytest.fixture(autouse=True)
-def qt_app():
-    """QApplication instance for widget tests - safe for parallel execution."""
-    import sys
-
-    # Set platform to offscreen for headless testing
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-
-    try:
-        # For parallel execution, handle QApplication carefully
-        app = QtWidgets.QApplication.instance()
-        if app is None:
-            # Create new application with minimal arguments
-            app = QtWidgets.QApplication(sys.argv[:1])  # Only pass program name
-            app.setQuitOnLastWindowClosed(False)
-
-        # Process any pending events to ensure clean state
-        if hasattr(app, 'processEvents'):
-            app.processEvents()
-
-        yield app
-
-        # Minimal cleanup - don't quit app as it might be shared
-        if hasattr(app, 'processEvents'):
-            app.processEvents()
-
-    except Exception as e:
-        # If Qt setup fails, yield None and tests should handle gracefully
-        pytest.skip(f"Qt application setup failed: {e}")
 
 
 @pytest.fixture
@@ -334,7 +302,7 @@ class TestColumnSpecService:
         base_spec: CustomColumnSpec,
         initial_specs: list[tuple[str, str]],
         expected_final_count: int,
-        qt_app: QtWidgets.QApplication,
+        qapp: QtWidgets.QApplication,
     ) -> None:
         """Test deduplication preserves order and removes duplicates."""
         specs = [replace(base_spec, key=key, title=title) for key, title in initial_specs]
@@ -429,12 +397,12 @@ class TestSpecListModel:
     """Test SpecListModel Qt model - ensures proper Qt model interface implementation."""
 
     @pytest.fixture
-    def model(self, spec_collection: list[CustomColumnSpec], qt_app: QtWidgets.QApplication) -> SpecListModel:
+    def model(self, spec_collection: list[CustomColumnSpec], qapp: QtWidgets.QApplication) -> SpecListModel:
         """Model instance with test data."""
         return SpecListModel(spec_collection)
 
     def test_initialization_stores_specs(
-        self, spec_collection: list[CustomColumnSpec], qt_app: QtWidgets.QApplication
+        self, spec_collection: list[CustomColumnSpec], qapp: QtWidgets.QApplication
     ) -> None:
         """Test model initialization properly stores specs."""
         model = SpecListModel(spec_collection)
@@ -454,7 +422,7 @@ class TestSpecListModel:
         spec_collection: list[CustomColumnSpec],
         spec_count: int,
         expected_row_count: int,
-        qt_app: QtWidgets.QApplication,
+        qapp: QtWidgets.QApplication,
     ) -> None:
         """Test rowCount returns correct spec count."""
         specs = spec_collection[:spec_count] if spec_count <= len(spec_collection) else spec_collection
@@ -511,7 +479,7 @@ class TestSpecListModel:
             assert result == spec_collection[row]
 
     def test_set_specs_resets_model(
-        self, model: SpecListModel, base_spec: CustomColumnSpec, qt_app: QtWidgets.QApplication
+        self, model: SpecListModel, base_spec: CustomColumnSpec, qapp: QtWidgets.QApplication
     ) -> None:
         """Test set_specs triggers model reset."""
         new_specs = [base_spec]
@@ -701,7 +669,7 @@ class TestComponentIntegration:
     """Test integration between components - ensures proper collaboration."""
 
     def test_controller_service_integration(
-        self, spec_collection: list[CustomColumnSpec], qt_app: QtWidgets.QApplication
+        self, spec_collection: list[CustomColumnSpec], qapp: QtWidgets.QApplication
     ) -> None:
         """Test controller integrates properly with real services."""
         service = ColumnSpecService()
@@ -744,7 +712,7 @@ class TestComponentIntegration:
         controller.first_invalid_spec = original_method
 
     def test_model_service_integration(
-        self, spec_collection: list[CustomColumnSpec], qt_app: QtWidgets.QApplication
+        self, spec_collection: list[CustomColumnSpec], qapp: QtWidgets.QApplication
     ) -> None:
         """Test model integrates properly with service operations."""
         model = SpecListModel(spec_collection)
@@ -762,7 +730,7 @@ class TestComponentIntegration:
         assert final_count == initial_count - 1
 
     @patch('picard.ui.itemviews.custom_columns.user_dialog_service.QtWidgets.QMessageBox.question')
-    def test_dialog_service_integration(self, mock_question: Mock, qt_app: QtWidgets.QApplication) -> None:
+    def test_dialog_service_integration(self, mock_question: Mock, qapp: QtWidgets.QApplication) -> None:
         """Test dialog service integration patterns."""
         parent = Mock(spec=QtWidgets.QWidget)
         service = UserDialogService(parent)
@@ -795,7 +763,7 @@ class TestEdgeCasesAndErrorHandling:
             controller = ColumnController(None, None)  # type: ignore[arg-type]
             controller.validate_specs([])
 
-    def test_model_with_empty_specs(self, qt_app: QtWidgets.QApplication) -> None:
+    def test_model_with_empty_specs(self, qapp: QtWidgets.QApplication) -> None:
         """Test model handles empty specification list."""
         model = SpecListModel([])
 
@@ -828,7 +796,7 @@ class TestEdgeCasesAndErrorHandling:
         ],
     )
     def test_model_invalid_row_operations(
-        self, spec_collection: list[CustomColumnSpec], qt_app: QtWidgets.QApplication, invalid_row: int, operation: str
+        self, spec_collection: list[CustomColumnSpec], qapp: QtWidgets.QApplication, invalid_row: int, operation: str
     ) -> None:
         """Test model handles invalid row operations appropriately."""
         model = SpecListModel(spec_collection)
@@ -886,7 +854,7 @@ class TestPerformanceAndMemory:
 
     @pytest.mark.parametrize("spec_count", [10, 100, 500])
     def test_model_performance_with_large_datasets(
-        self, base_spec: CustomColumnSpec, spec_count: int, qt_app: QtWidgets.QApplication
+        self, base_spec: CustomColumnSpec, spec_count: int, qapp: QtWidgets.QApplication
     ) -> None:
         """Test model performance with large numbers of specifications."""
         # Generate large spec collection
@@ -904,9 +872,7 @@ class TestPerformanceAndMemory:
         row = model.find_row_by_key(middle_key)
         assert row == spec_count // 2
 
-    def test_service_deduplication_efficiency(
-        self, base_spec: CustomColumnSpec, qt_app: QtWidgets.QApplication
-    ) -> None:
+    def test_service_deduplication_efficiency(self, base_spec: CustomColumnSpec, qapp: QtWidgets.QApplication) -> None:
         """Test service deduplication is efficient with many duplicates."""
         # Create specs with many duplicates
         specs_with_duplicates = []
