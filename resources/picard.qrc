@@ -222,30 +222,30 @@
     <file>images/file@2x.png</file>
     <file>images/image-missing.png</file>
     <file>images/loader.gif</file>
-    <file>images/match-50.png</file>
-    <file>images/match-50@2x.png</file>
-    <file>images/match-60.png</file>
-    <file>images/match-60@2x.png</file>
-    <file>images/match-70.png</file>
-    <file>images/match-70@2x.png</file>
-    <file>images/match-80.png</file>
-    <file>images/match-80@2x.png</file>
-    <file>images/match-90.png</file>
-    <file>images/match-90@2x.png</file>
-    <file>images/match-100.png</file>
-    <file>images/match-100@2x.png</file>
-    <file>images/match-pending-50.png</file>
-    <file>images/match-pending-50@2x.png</file>
-    <file>images/match-pending-60.png</file>
-    <file>images/match-pending-60@2x.png</file>
-    <file>images/match-pending-70.png</file>
-    <file>images/match-pending-70@2x.png</file>
-    <file>images/match-pending-80.png</file>
-    <file>images/match-pending-80@2x.png</file>
-    <file>images/match-pending-90.png</file>
-    <file>images/match-pending-90@2x.png</file>
-    <file>images/match-pending-100.png</file>
-    <file>images/match-pending-100@2x.png</file>
+    <file>images/match-0.png</file>
+    <file>images/match-0@2x.png</file>
+    <file>images/match-1.png</file>
+    <file>images/match-1@2x.png</file>
+    <file>images/match-2.png</file>
+    <file>images/match-2@2x.png</file>
+    <file>images/match-3.png</file>
+    <file>images/match-3@2x.png</file>
+    <file>images/match-4.png</file>
+    <file>images/match-4@2x.png</file>
+    <file>images/match-5.png</file>
+    <file>images/match-5@2x.png</file>
+    <file>images/match-pending-0.png</file>
+    <file>images/match-pending-0@2x.png</file>
+    <file>images/match-pending-1.png</file>
+    <file>images/match-pending-1@2x.png</file>
+    <file>images/match-pending-2.png</file>
+    <file>images/match-pending-2@2x.png</file>
+    <file>images/match-pending-3.png</file>
+    <file>images/match-pending-3@2x.png</file>
+    <file>images/match-pending-4.png</file>
+    <file>images/match-pending-4@2x.png</file>
+    <file>images/match-pending-5.png</file>
+    <file>images/match-pending-5@2x.png</file>
     <file>images/mayhem.jpg</file>
     <file>images/plugin-dark.png</file>
     <file>images/plugin.png</file>
