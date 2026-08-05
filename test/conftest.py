@@ -37,9 +37,29 @@ What this conftest currently does:
 """
 
 from contextlib import suppress
+import os
 from types import SimpleNamespace
 
 import pytest
+
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def qapp():
+    """Session-scoped QApplication instance shared by all tests that need Qt.
+
+    This ensures a single QApplication lives for the entire test session,
+    preventing crashes when test ordering (pytest-randomly) places tests
+    that create a QCoreApplication before tests that create widgets.
+    """
+    from PyQt6.QtWidgets import QApplication
+
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication([])
+    return app
 
 
 def _make_defaulting_section(section_name, initial=None):
