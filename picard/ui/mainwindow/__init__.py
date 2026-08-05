@@ -249,11 +249,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
-        # Imported here to allow proper execution of test_preferencelistwidget.py
-        from picard.extension_points.event_hooks import register_file_post_save_processor
-
-        register_file_post_save_processor(self._remove_album_if_complete)
-
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
         self._suspend_while_loading_funcs.append(funcs)
@@ -1395,32 +1390,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def open_donation_page(self):
         webbrowser2.open('donate')
-
-    def _remove_album_if_complete(self, obj: File):
-        """Remove the album containing the file if conditions are met.
-
-        Args:
-            obj (File): File that was saved.
-        """
-        config = get_config()
-        if not config.setting['remove_complete_albums_after_save']:
-            return
-
-        # Try getting the related album
-        try:
-            album = obj.parent_item.album
-        except AttributeError:
-            return
-
-        # Check for existing tagger to allow proper execution of test_preferencelistwidget.py
-        if not self.tagger:
-            return
-
-        if album.id not in self.tagger.albums:
-            return
-
-        if album.is_complete() and album.get_num_unsaved_files() == 0:
-            self.panel.remove([album])
 
     def save(self):
         """Tell the tagger to save the selected objects."""

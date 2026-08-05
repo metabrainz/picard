@@ -123,6 +123,7 @@ from picard.disc import (
     Disc,
 )
 from picard.extension_points.disc_log_readers import ext_point_disc_log_readers
+from picard.extension_points.event_hooks import register_file_post_save_processor
 from picard.file import File
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
@@ -268,6 +269,8 @@ class Tagger(QtWidgets.QApplication):
         self._init_tagger_entities()
 
         self._init_ui(config)
+
+        register_file_post_save_processor(self._remove_album_if_complete)
 
     def _bootstrap(self):
         """Bootstraping"""
@@ -1189,6 +1192,28 @@ class Tagger(QtWidgets.QApplication):
                 del self.files[file.filename]
                 file.remove(from_parent)
         self.tagger_stats_changed.emit()
+
+    def _remove_album_if_complete(self, obj: File):
+        """Remove the album containing the file if conditions are met.
+
+        Args:
+            obj (File): File that was saved.
+        """
+        config = get_config()
+        if not config.setting['remove_complete_albums_after_save']:
+            return
+
+        # Try getting the related album
+        try:
+            album = obj.parent_item.album
+        except AttributeError:
+            return
+
+        if album.id not in self.albums:
+            return
+
+        if album.is_complete() and album.get_num_unsaved_files() == 0:
+            self.window.panel.remove([album])
 
     def remove_album(self, album):
         """Remove the specified album."""
