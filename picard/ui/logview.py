@@ -309,7 +309,7 @@ class VerbosityMenu(QtWidgets.QMenu):
 class DebugOptsMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-
+        self.setToolTipsVisible(True)
         self.action_map = {}
         for debug_opt in DebugOpt:
             action = QtGui.QAction(_(debug_opt.title), self, checkable=True, checked=debug_opt.enabled)
