@@ -83,6 +83,12 @@ from picard.ui.itemviews.columns import (
     FILEVIEW_COLUMNS,
 )
 from picard.ui.itemviews.custom_columns import DelegateColumn
+from picard.ui.match_icons import (
+    load_match_icons,
+    match_icons,
+    match_pending_icons,
+    similarity_to_level,
+)
 
 
 def get_match_color(similarity, basecolor):
@@ -197,14 +203,6 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
         FileItem.icon_fingerprint = icontheme.lookup('fingerprint', icontheme.ICON_SIZE_MENU)
         FileItem.icon_fingerprint_gray = icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
-        FileItem.match_icons = [
-            QtGui.QIcon(":/images/match-50.png"),
-            QtGui.QIcon(":/images/match-60.png"),
-            QtGui.QIcon(":/images/match-70.png"),
-            QtGui.QIcon(":/images/match-80.png"),
-            QtGui.QIcon(":/images/match-90.png"),
-            QtGui.QIcon(":/images/match-100.png"),
-        ]
         FileItem.match_icons_info = [
             N_("Bad match"),
             N_("Poor match"),
@@ -213,14 +211,7 @@ class MainPanel(QtWidgets.QSplitter):
             N_("Great match"),
             N_("Excellent match"),
         ]
-        FileItem.match_pending_icons = [
-            QtGui.QIcon(":/images/match-pending-50.png"),
-            QtGui.QIcon(":/images/match-pending-60.png"),
-            QtGui.QIcon(":/images/match-pending-70.png"),
-            QtGui.QIcon(":/images/match-pending-80.png"),
-            QtGui.QIcon(":/images/match-pending-90.png"),
-            QtGui.QIcon(":/images/match-pending-100.png"),
-        ]
+        load_match_icons()
 
     def _update_selection(self, selected_view):
         for view in self._views:
@@ -696,23 +687,19 @@ class FileItem(TreeItem):
                 icon = FileItem.icon_saved
                 tooltip = _("Track saved")
             elif file.state == File.State.PENDING:
-                index = FileItem._match_icon_index(file.similarity)
-                icon = FileItem.match_pending_icons[index]
+                level = similarity_to_level(file.similarity)
+                icon = match_pending_icons[level]
                 tooltip = _("Pending")
             else:
-                index = FileItem._match_icon_index(file.similarity)
-                icon = FileItem.match_icons[index]
-                tooltip = _(FileItem.match_icons_info[index])
+                level = similarity_to_level(file.similarity)
+                icon = match_icons[level]
+                tooltip = _(FileItem.match_icons_info[level])
         elif file.state == File.State.PENDING:
             icon = FileItem.icon_file_pending
             tooltip = _("Pending")
         else:
             icon = FileItem.icon_file
         return (icon, tooltip)
-
-    @staticmethod
-    def _match_icon_index(similarity):
-        return int(similarity * 5 + 0.5)
 
     @staticmethod
     def decide_fingerprint_icon_info(file):

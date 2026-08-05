@@ -35,23 +35,14 @@ from picard.ui.itemviews.custom_columns.protocols import (
     ColumnValueProvider,
     DelegateProvider,
 )
+from picard.ui.match_icons import (
+    match_icons,
+    similarity_to_level,
+)
 
 
 # Structured container for delegate item data
 MatchItemData = namedtuple("MatchItemData", ["obj", "column", "stats"])
-
-
-# Mapping of minimum percentage threshold to icon index.
-# Checked in descending order so the highest matching threshold wins.
-THRESHOLD_TO_ICON_INDEX = {
-    1.0: 5,  # 100%
-    0.9: 4,  # 90%
-    0.8: 3,  # 80%
-    0.7: 2,  # 70%
-    0.6: 1,  # 60%
-    0.5: 0,  # 50%
-    0.0: 0,  # <50%
-}
 
 
 class MatchQualityProvider(ColumnValueProvider, DelegateProvider):
@@ -222,29 +213,11 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
         total = stats.get('total', 0)
         if total == 0:
-            # Avoid circular import: ui.itemviews.__init__ → columns → match_quality_column
-            from picard.ui.itemviews import FileItem
-
-            if hasattr(FileItem, 'match_pending_icons') and len(FileItem.match_pending_icons) > 5:
-                return FileItem.match_pending_icons[5]
-            return None
+            return match_icons[0]
 
         matched = stats.get('matched', 0)
         percentage = matched / total if total else 0.0
-
-        # Determine which icon index to use based on percentage using thresholds
-        icon_index = 0
-        for threshold in sorted(THRESHOLD_TO_ICON_INDEX.keys(), reverse=True):
-            if percentage >= threshold:
-                icon_index = THRESHOLD_TO_ICON_INDEX[threshold]
-                break
-
-        # Avoid circular import: ui.itemviews.__init__ → columns → match_quality_column
-        from picard.ui.itemviews import FileItem
-
-        if hasattr(FileItem, 'match_icons') and icon_index < len(FileItem.match_icons):
-            return FileItem.match_icons[icon_index]
-        return None
+        return match_icons[similarity_to_level(percentage)]
 
     def _format_tooltip_text(self, stats: dict[str, int]) -> str:
         """Format stats into a detailed tooltip string.
