@@ -27,9 +27,6 @@ Usage:
     picard-cli completions <shell>
 """
 
-import sys
-
-
 try:
     import shtab
 except ImportError:
@@ -70,18 +67,17 @@ def setup_parser(completions_parser):
 
 def _run_completions(args):
     """Generate and print shell completion script."""
+    from picard.cli._bootstrap import is_color_disabled
+    from picard.cli.output import CliOutput
+
+    output = CliOutput(color=False if is_color_disabled(args) else None)
+
     if shtab is None:
-        print(
-            "Error: shtab is required for completion generation.\nInstall it with: pip install \"picard[cli]\"",
-            file=sys.stderr,
-        )
+        output.error("shtab is required for completion generation.\n  Install it with: pip install \"picard[cli]\"")
         return ExitCode.ERROR
 
     if args.shell not in shtab.SUPPORTED_SHELLS:
-        print(
-            f"Error: unsupported shell '{args.shell}'.\nSupported shells: {', '.join(shtab.SUPPORTED_SHELLS)}",
-            file=sys.stderr,
-        )
+        output.error(f"Unsupported shell '{args.shell}'.\n  Supported shells: {', '.join(shtab.SUPPORTED_SHELLS)}")
         return ExitCode.ERROR
 
     # Inline import: picard.cli imports this module during setup,
@@ -89,5 +85,5 @@ def _run_completions(args):
     from picard.cli import build_root_parser
 
     parser = build_root_parser()
-    print(shtab.complete(parser, args.shell))
+    output.print(shtab.complete(parser, args.shell))
     return ExitCode.SUCCESS
