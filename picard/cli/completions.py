@@ -29,28 +29,21 @@ Usage:
 
 try:
     import shtab
+
+    SUPPORTED_SHELLS = tuple(shtab.SUPPORTED_SHELLS)
 except ImportError:
     shtab = None  # type: ignore[assignment]
+    SUPPORTED_SHELLS = ()
 
 from picard.cli.base import ExitCode
 
 
-def _get_supported_shells():
-    """Get list of supported shells from shtab, or None if not available."""
-    if shtab is None:
-        return None
-    return shtab.SUPPORTED_SHELLS
-
-
 def setup_parser(completions_parser):
     """Configure the 'completions' subcommand parser."""
-    shells = _get_supported_shells()
-    if shells:
-        shell_list = ', '.join(shells)
-        choices = shells
+    if SUPPORTED_SHELLS:
+        shell_list = ', '.join(SUPPORTED_SHELLS)
     else:
         shell_list = '(shtab not installed)'
-        choices = None
 
     completions_parser.description = (
         f'Generate shell completion scripts for picard-cli. Supported shells: {shell_list}.'
@@ -58,7 +51,7 @@ def setup_parser(completions_parser):
 
     completions_parser.add_argument(
         'shell',
-        choices=choices,
+        choices=SUPPORTED_SHELLS or None,
         metavar='SHELL',
         help=f'target shell ({shell_list})',
     )
@@ -76,8 +69,8 @@ def _run_completions(args):
         output.error("shtab is required for completion generation.\n  Install it with: pip install \"picard[cli]\"")
         return ExitCode.ERROR
 
-    if args.shell not in shtab.SUPPORTED_SHELLS:
-        output.error(f"Unsupported shell '{args.shell}'.\n  Supported shells: {', '.join(shtab.SUPPORTED_SHELLS)}")
+    if args.shell not in SUPPORTED_SHELLS:
+        output.error(f"Unsupported shell '{args.shell}'.\n  Supported shells: {', '.join(SUPPORTED_SHELLS)}")
         return ExitCode.ERROR
 
     # Inline import: picard.cli imports this module during setup,
