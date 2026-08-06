@@ -29,18 +29,20 @@ Usage:
 
 import sys
 
+
+try:
+    import shtab
+except ImportError:
+    shtab = None  # type: ignore[assignment]
+
 from picard.cli.base import ExitCode
 
 
 def _get_supported_shells():
     """Get list of supported shells from shtab, or None if not available."""
-    try:
-        # Inline import: shtab is an optional dependency
-        import shtab
-
-        return shtab.SUPPORTED_SHELLS
-    except ImportError:
+    if shtab is None:
         return None
+    return shtab.SUPPORTED_SHELLS
 
 
 def setup_parser(completions_parser):
@@ -68,10 +70,7 @@ def setup_parser(completions_parser):
 
 def _run_completions(args):
     """Generate and print shell completion script."""
-    try:
-        # Inline import: shtab is an optional dependency
-        import shtab
-    except ImportError:
+    if shtab is None:
         print(
             "Error: shtab is required for completion generation.\nInstall it with: pip install \"picard[cli]\"",
             file=sys.stderr,
