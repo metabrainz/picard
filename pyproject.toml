@@ -64,6 +64,9 @@ plugins = [
     "opencc>=1.1.9",
     "zstandard>=0.25.0",
 ]
+cli = [
+    "shtab>=1.7.0",
+]
 
 [dependency-groups]
 build = [

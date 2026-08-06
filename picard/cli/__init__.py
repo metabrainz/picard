@@ -49,6 +49,15 @@ Subcommand = namedtuple('Subcommand', ('name', 'help', 'module_path', 'examples'
 
 SUBCOMMANDS = (
     Subcommand(
+        name='completions',
+        help='generate shell completion scripts',
+        module_path='picard.cli.completions',
+        examples=(
+            'completions bash',
+            'completions zsh',
+        ),
+    ),
+    Subcommand(
         name='plugins',
         help='manage Picard plugins',
         module_path='picard.cli.plugins',
@@ -168,8 +177,10 @@ def _register_subcommand(subparsers, cmd):
     module = import_module(cmd.module_path)
     parser = subparsers.add_parser(cmd.name, help=cmd.help)
     module.setup_parser(parser)
-    # If no verb is given, print this subcommand's help
-    parser.set_defaults(run_command=lambda args, p=parser: p.print_help() or 0)
+    # If no verb is given, print this subcommand's help.
+    # Only set the fallback if setup_parser() didn't already set run_command.
+    if not parser.get_default('run_command'):
+        parser.set_defaults(run_command=lambda args, p=parser: p.print_help() or 0)
 
 
 def main():

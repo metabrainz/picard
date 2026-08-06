@@ -447,6 +447,46 @@ class picard_build_desktop_file(Command):
         )
 
 
+class picard_build_completions(Command):
+    description = 'Generate shell completion scripts for picard-cli'
+    user_options = [
+        ('output-dir=', 'o', 'output directory for completion scripts (default: build/completions)'),
+    ]
+
+    def initialize_options(self):
+        self.output_dir = None
+
+    def finalize_options(self):
+        if self.output_dir is None:
+            self.output_dir = os.path.join('build', 'completions')
+
+    def run(self):
+        try:
+            import shtab
+        except ImportError:
+            sys.exit('ERROR: shtab is required. Install it with: pip install "picard[cli]"')
+
+        from picard.cli import build_root_parser
+
+        parser = build_root_parser()
+        os.makedirs(self.output_dir, exist_ok=True)
+
+        # Filename conventions per shell
+        filenames = {
+            'bash': 'picard-cli',
+            'zsh': '_picard-cli',
+            'fish': 'picard-cli.fish',
+            'tcsh': 'picard-cli.csh',
+        }
+
+        for shell in shtab.SUPPORTED_SHELLS:
+            filename = filenames.get(shell, f'picard-cli.{shell}')
+            output_path = os.path.join(self.output_dir, filename)
+            log.info('generating %s completion: %s', shell, output_path)
+            with open(output_path, 'w') as f:
+                f.write(shtab.complete(parser, shell))
+
+
 class picard_regen_appdata_pot_file(Command):
     description = 'Regenerate translations from appdata metadata and XDG desktop file templates'
     user_options = []
@@ -678,6 +718,7 @@ args = {
     'data_files': [],
     'cmdclass': {
         'build': picard_build,
+        'build_completions': picard_build_completions,
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
         'editable_wheel': picard_editable_wheel,
