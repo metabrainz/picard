@@ -53,6 +53,7 @@ from collections.abc import (
 from enum import IntEnum
 import time
 import traceback
+from typing import Any
 
 from PyQt6 import QtNetwork
 
@@ -204,7 +205,7 @@ class Album(MetadataItem):
         self._recordings_map = {}
         if discid:
             self._discids.add(discid)
-        self._after_load_callbacks = []
+        self._after_load_callbacks: list[tuple[Callable[[], Any], bool]] = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = AlbumStatus.NONE
@@ -949,7 +950,7 @@ class Album(MetadataItem):
             request_factory=create_request,
         )
 
-    def run_when_loaded(self, func, run_on_error=False):
+    def run_when_loaded(self, func: Callable[[], Any], run_on_error: bool = False):
         if self.loaded:
             func()
         else:
