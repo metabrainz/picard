@@ -750,16 +750,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
-                    # Add lookup action for supported tags
-                    if tag in self.LOOKUP_TAGS:
-                        if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
-                            if column == self.COLUMN_ORIG:
-                                values = self.tag_diff.old[tag]
-                            else:
-                                values = self.tag_diff.new[tag]
-                            lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
-                            lookup_action.triggered.connect(partial(self._open_link, values, tag))
-                            menu.addAction(lookup_action)
+                    self._add_lookup_action(menu, tag, column, single_tag, item)
                     # Collect removable tags
                     if self._tag_is_removable(tag):
                         removals.append(tag)
@@ -780,6 +771,22 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.addAction(self.changes_first_action)
         menu.exec(event.globalPos())
         event.accept()
+
+    def _add_lookup_action(self, menu, tag, column, single_tag, item):
+        """Add a 'Lookup in Browser' action if the tag supports it and context allows."""
+        if tag not in self.LOOKUP_TAGS:
+            return
+        if not (single_tag and item.text()):
+            return
+        if column == self.COLUMN_ORIG:
+            values = self.tag_diff.old[tag]
+        elif column == self.COLUMN_NEW:
+            values = self.tag_diff.new[tag]
+        else:
+            return
+        lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
+        lookup_action.triggered.connect(partial(self._open_link, values, tag))
+        menu.addAction(lookup_action)
 
     def _apply_update_funcs(self, funcs):
         with self.tagger.window.ignore_selection_changes:
