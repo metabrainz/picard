@@ -480,46 +480,51 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         items = self.selectedItems()
         if len(items) > 1:
-            selected_data = self.get_selected_tags(items)
-            # Build the mimedata to use for the clipboard
-            mimedata = QtCore.QMimeData()
-            converted_data_cache = {}
-            for mimetype, encode_func in self.mimedata_helper.encode_funcs():
-                try:
-                    if encode_func not in converted_data_cache:
-                        converted_data_cache[encode_func] = encode_func(selected_data)
-                    mimedata.setData(mimetype, converted_data_cache[encode_func])
-                except Exception as e:
-                    log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
-            # Ensure we actually have something to copy to the clipboard
-            if mimedata.formats():
-                if log.is_debug():
-                    log.debug("Copying to clipboard as %r", mimedata.formats())
-                    tsv_data = selected_data.to_tsv()
-                    lines = tsv_data.rstrip('\n').split('\n')
-                    for line in lines:
-                        log.debug("  %s", line.replace('\t', '|'))
-                self.tagger.clipboard().setMimeData(mimedata)
+            self._copy_multiple_items(items)
         else:
-            # Just copy the current item as a string
-            item = self.currentItem()
-            if item:
-                column = item.column()
-                if column == self.COLUMN_TAG:
-                    # Copy tag name from first column
-                    tag = self.tag_diff.tag_names[item.row()]
-                    log.debug("Copying tag name '%s' to clipboard", tag)
-                    self.tagger.clipboard().setText(tag)
-                else:
-                    tag, value = self._get_row_info(item.row())
-                    value = value[column]
-                    if column == self.COLUMN_NEW and self.tag_diff.tag_status(tag) == TagStatus.REMOVED:
-                        value = []
-                    elif tag == '~length':
-                        value = self.tag_diff.handle_length(value, prettify_times=True)
-                    if value is not None:
-                        log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
-                        self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+            self._copy_single_item()
+
+    def _copy_multiple_items(self, items):
+        """Copy multiple selected items to clipboard as structured MIME data."""
+        selected_data = self.get_selected_tags(items)
+        mimedata = QtCore.QMimeData()
+        converted_data_cache = {}
+        for mimetype, encode_func in self.mimedata_helper.encode_funcs():
+            try:
+                if encode_func not in converted_data_cache:
+                    converted_data_cache[encode_func] = encode_func(selected_data)
+                mimedata.setData(mimetype, converted_data_cache[encode_func])
+            except Exception as e:
+                log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
+        if mimedata.formats():
+            if log.is_debug():
+                log.debug("Copying to clipboard as %r", mimedata.formats())
+                tsv_data = selected_data.to_tsv()
+                lines = tsv_data.rstrip('\n').split('\n')
+                for line in lines:
+                    log.debug("  %s", line.replace('\t', '|'))
+            self.tagger.clipboard().setMimeData(mimedata)
+
+    def _copy_single_item(self):
+        """Copy a single selected item to clipboard as plain text."""
+        item = self.currentItem()
+        if not item:
+            return
+        column = item.column()
+        if column == self.COLUMN_TAG:
+            tag = self.tag_diff.tag_names[item.row()]
+            log.debug("Copying tag name '%s' to clipboard", tag)
+            self.tagger.clipboard().setText(tag)
+            return
+        tag, value = self._get_row_info(item.row())
+        value = value[column]
+        if column == self.COLUMN_NEW and self.tag_diff.tag_status(tag) == TagStatus.REMOVED:
+            value = []
+        elif tag == '~length':
+            value = self.tag_diff.handle_length(value, prettify_times=True)
+        if value is not None:
+            log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
+            self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_from_json(self, mimedata):
         def _decode_json(mimedata):

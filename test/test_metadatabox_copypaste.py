@@ -98,6 +98,8 @@ class FakeMetadataBox:
     _paste_value = MetadataBox._paste_value
     _can_copy = MetadataBox._can_copy
     _copy_value = MetadataBox._copy_value
+    _copy_multiple_items = MetadataBox._copy_multiple_items
+    _copy_single_item = MetadataBox._copy_single_item
     _tag_is_editable = MetadataBox._tag_is_editable
     _tag_is_removable = MetadataBox._tag_is_removable
     _set_tag_values_delayed_updates = MetadataBox._set_tag_values_delayed_updates
