@@ -307,6 +307,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         plugin_manager = self.tagger.get_plugin_manager()
         if plugin_manager:
             plugin_manager.plugin_state_changed.connect(self._on_plugin_changed)
+
+        # Table widget configuration
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -323,6 +325,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect, 1)
         self.setItemDelegate(TableTagEditorDelegate(self))
         self.setWordWrap(False)
+
+        # Selection state
         self.files = set()
         self.tracks = set()
         self.objects = set()
@@ -330,6 +334,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
+
+        # Actions and shortcuts
         self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
         self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
@@ -347,11 +353,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.remove_tag_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags
         )
+
+        # Other state
         self.preserved_tags = UserPreservedTags()
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
 
+        # Clipboard MIME type handlers
         self.mimedata_helper = MimeDataHelper()
         self.mimedata_helper.register(
             self.MIMETYPE_PICARD_TAGS,
