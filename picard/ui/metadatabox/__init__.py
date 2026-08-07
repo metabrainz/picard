@@ -187,6 +187,37 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
+def apply_tag_values(objects, tag, values):
+    """Apply tag values to objects' metadata without triggering UI updates.
+
+    Sets the tag to the given values on each object's metadata, or deletes the
+    tag if values is empty.  Yields each affected object exactly once.
+
+    This is a pure data-mutation helper: it does not call obj.update() or
+    interact with the UI.  The caller is responsible for triggering updates
+    on the returned objects.
+
+    Args:
+        objects: Iterable of objects with a ``metadata`` attribute.
+        tag: The tag name to set or delete.
+        values: List of values to assign.  An empty list (or ``[""]``)
+            means "delete the tag".
+
+    Yields:
+        Each object whose metadata was modified.
+    """
+    if values == [""]:
+        values = []
+    if not values:
+        for obj in objects:
+            del obj.metadata[tag]
+            yield obj
+    else:
+        for obj in objects:
+            obj.metadata[tag] = values
+            yield obj
+
+
 class MetadataBox(QtWidgets.QTableWidget):
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
@@ -746,16 +777,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         if objects is None:
             objects = self.objects
         with self.tagger.window.ignore_selection_changes:
-            if values == [""]:
-                values = []
-            if not values and self._tag_is_removable(tag):
-                for obj in objects:
-                    del obj.metadata[tag]
-                    yield obj
-            elif values:
-                for obj in objects:
-                    obj.metadata[tag] = values
-                    yield obj
+            if values == [""] or not values:
+                if not self._tag_is_removable(tag):
+                    return
+            yield from apply_tag_values(objects, tag, values)
 
     def _update_objects(self, objects):
         for obj in set(objects):
