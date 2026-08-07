@@ -94,6 +94,7 @@ class DiscTest(PicardTestCase):
                 'server_host': 'musicbrainz.org',
                 'server_port': 443,
                 'use_server_for_submission': False,
+                'read_isrcs_from_disc': False,
             }
         )
         mock_discid.read = Mock(return_value=MockDisc())
@@ -200,13 +201,15 @@ class DiscIsrcTest(PicardTestCase):
                 'server_host': 'musicbrainz.org',
                 'server_port': 443,
                 'use_server_for_submission': False,
+                'read_isrcs_from_disc': True,
             }
         )
         mock_discid.FEATURES = ['mcn', 'isrc']
         mock_discid.read = Mock(return_value=MockDiscWithIsrcs())
         device = '/dev/cdrom1'
         disc = picard.disc.Disc()
-        disc.read(device)
+        with patch.object(picard.disc, 'has_isrc_support', return_value=True):
+            disc.read(device)
         mock_discid.read.assert_called_with(device, features=['mcn', 'isrc'])
         self.assertEqual({1: 'USRC17607839', 2: 'GBAYE0000351', 4: 'FRZ039100014'}, disc.isrcs)
 
@@ -217,13 +220,15 @@ class DiscIsrcTest(PicardTestCase):
                 'server_host': 'musicbrainz.org',
                 'server_port': 443,
                 'use_server_for_submission': False,
+                'read_isrcs_from_disc': True,
             }
         )
         mock_discid.FEATURES = ['mcn']
         mock_discid.read = Mock(return_value=MockDiscNoIsrcAttr())
         device = '/dev/cdrom1'
         disc = picard.disc.Disc()
-        disc.read(device)
+        with patch.object(picard.disc, 'has_isrc_support', return_value=False):
+            disc.read(device)
         mock_discid.read.assert_called_with(device, features=['mcn'])
         self.assertEqual({}, disc.isrcs)
 
@@ -234,13 +239,15 @@ class DiscIsrcTest(PicardTestCase):
                 'server_host': 'musicbrainz.org',
                 'server_port': 443,
                 'use_server_for_submission': False,
+                'read_isrcs_from_disc': True,
             }
         )
         mock_discid.FEATURES = ['mcn', 'isrc']
         mock_discid.read = Mock(return_value=MockDiscWithInvalidIsrcs())
         device = '/dev/cdrom1'
         disc = picard.disc.Disc()
-        disc.read(device)
+        with patch.object(picard.disc, 'has_isrc_support', return_value=True):
+            disc.read(device)
         # Only valid ISRCs should be stored
         self.assertEqual({1: 'USRC17607839', 4: 'GBAYE0000351'}, disc.isrcs)
 

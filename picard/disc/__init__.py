@@ -45,6 +45,7 @@ from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
 from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.util.cdrom import has_isrc_support
 from picard.util.isrc import (
     format_isrc,
     valid_isrc,
@@ -83,7 +84,7 @@ class Disc:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
         features = ['mcn']
-        if 'isrc' in discid.FEATURES:
+        if has_isrc_support():
             config = get_config()
             if config.setting['read_isrcs_from_disc']:
                 features.append('isrc')

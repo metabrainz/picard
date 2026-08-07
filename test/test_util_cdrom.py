@@ -23,6 +23,7 @@
 from collections.abc import Iterable
 import io
 import unittest
+from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
@@ -78,6 +79,19 @@ Can read MRW:
 Can write MRW:
 Can write RAM:
 """
+
+
+class HasIrscSupportTest(PicardTestCase):
+    @patch.object(cdrom, 'discid')
+    def test_has_isrc_support(self, mock_discid):
+        mock_discid.FEATURES = ['isrc']
+        self.assertTrue(cdrom.has_isrc_support())
+        mock_discid.FEATURES = []
+        self.assertFalse(cdrom.has_isrc_support())
+
+    @patch.object(cdrom, 'discid', None)
+    def test_has_isrc_support_no_discid(self):
+        self.assertFalse(cdrom.has_isrc_support())
 
 
 class LinuxParseCdromInfoTest(PicardTestCase):

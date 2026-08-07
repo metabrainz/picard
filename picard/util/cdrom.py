@@ -52,7 +52,12 @@ except ImportError:
 
 
 DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functionality disabled"
+DISCID_NO_ISRC_MESSAGE = "CDROM: discid library has no ISRC support - ISRC extraction from CD disabled"
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
+
+
+def has_isrc_support():
+    return discid is not None and 'isrc' in discid.FEATURES
 
 
 def get_default_cdrom_drives() -> list[str]:
