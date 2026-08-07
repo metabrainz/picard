@@ -24,6 +24,7 @@ from picard.metadata import Metadata
 from picard.ui.metadatabox import (
     apply_tag_values,
     interpret_paste_data,
+    merge_values,
 )
 
 
@@ -188,3 +189,40 @@ class TestInterpretPasteData(PicardTestCase):
     def test_empty_data(self):
         result = list(interpret_paste_data({}, self.JOINER))
         self.assertEqual(result, [])
+
+
+class TestMergeValues(PicardTestCase):
+    def test_no_overlap(self):
+        result = merge_values(['A', 'B'], ['C', 'D'])
+        self.assertEqual(result, ['A', 'B', 'C', 'D'])
+
+    def test_full_overlap(self):
+        result = merge_values(['A', 'B'], ['A', 'B'])
+        self.assertEqual(result, ['A', 'B'])
+
+    def test_partial_overlap(self):
+        result = merge_values(['A', 'B'], ['B', 'C'])
+        self.assertEqual(result, ['A', 'B', 'C'])
+
+    def test_empty_orig(self):
+        result = merge_values([], ['A', 'B'])
+        self.assertEqual(result, ['A', 'B'])
+
+    def test_empty_current(self):
+        result = merge_values(['A', 'B'], [])
+        self.assertEqual(result, ['A', 'B'])
+
+    def test_both_empty(self):
+        result = merge_values([], [])
+        self.assertEqual(result, [])
+
+    def test_preserves_orig_order(self):
+        result = merge_values(['C', 'A'], ['B'])
+        self.assertEqual(result, ['C', 'A', 'B'])
+
+    def test_does_not_mutate_input(self):
+        orig = ['A', 'B']
+        current = ['C']
+        merge_values(orig, current)
+        self.assertEqual(orig, ['A', 'B'])
+        self.assertEqual(current, ['C'])

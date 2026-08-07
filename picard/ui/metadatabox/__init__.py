@@ -252,6 +252,27 @@ def interpret_paste_data(data, multi_valued_joiner):
             yield tag, value.split(multi_valued_joiner)
 
 
+def merge_values(orig_values, current_values):
+    """Merge original and current tag values, preserving order and uniqueness.
+
+    Returns a new list starting with all original values, followed by any
+    current values not already present.  This is the logic used by
+    "Merge Original Values" in the metadata box context menu.
+
+    Args:
+        orig_values: The original (saved) values for a tag.
+        current_values: The current (edited) values for the same tag.
+
+    Returns:
+        A merged list of values with no duplicates, preserving insertion order.
+    """
+    merged = list(orig_values)
+    for value in current_values:
+        if value not in merged:
+            merged.append(value)
+    return merged
+
+
 class MetadataBox(QtWidgets.QTableWidget):
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
@@ -771,10 +792,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._set_tag_values_extra(tag, orig_values, obj, extra_objects)
 
     def _merge_orig_tags(self, obj, tag, extra_objects=None):
-        values = list(obj.orig_metadata.getall(tag))
-        for new_value in obj.metadata.getall(tag):
-            if new_value not in values:
-                values.append(new_value)
+        values = merge_values(obj.orig_metadata.getall(tag), obj.metadata.getall(tag))
         self._set_tag_values_extra(tag, values, obj, extra_objects)
 
     def _edit_tag(self, tag):
