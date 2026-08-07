@@ -43,9 +43,11 @@ from picard.const.sys import (
 
 discid: ModuleType | None = None
 try:
+    # use python-libdiscid (https://python-libdiscid.readthedocs.io/)
     from libdiscid.compat import discid  # type: ignore[unresolved-import,no-redef,import-not-found]
 except ImportError:
     try:
+        # use python-discid (httpds://python-discid.readthedocs.org/)
         import discid  # type: ignore[unresolved-import,no-redef,import-not-found]
     except (ImportError, OSError):
         pass
