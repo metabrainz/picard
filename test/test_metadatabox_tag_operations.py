@@ -21,7 +21,10 @@ from test.picardtestcase import PicardTestCase
 
 from picard.metadata import Metadata
 
-from picard.ui.metadatabox import apply_tag_values
+from picard.ui.metadatabox import (
+    apply_tag_values,
+    interpret_paste_data,
+)
 
 
 class FakeObject:
@@ -119,3 +122,69 @@ class TestApplyTagValues(PicardTestCase):
         self.assertEqual(len(affected), 2)
         self.assertIn(obj1, affected)
         self.assertIn(obj2, affected)
+
+
+class TestInterpretPasteData(PicardTestCase):
+    JOINER = '; '
+
+    def test_new_value_single(self):
+        data = {'artist': {'new': ['New Artist']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['New Artist'])])
+
+    def test_new_value_multiple(self):
+        data = {'artist': {'new': ['Artist 1', 'Artist 2']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['Artist 1', 'Artist 2'])])
+
+    def test_falls_back_to_old_value(self):
+        data = {'artist': {'old': ['Old Artist']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['Old Artist'])])
+
+    def test_prefers_new_over_old(self):
+        data = {'artist': {'new': ['New'], 'old': ['Old']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['New'])])
+
+    def test_removed_tag(self):
+        data = {'artist': {'removed': True, 'old': ['Old']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', [])])
+
+    def test_removed_false_uses_values(self):
+        """removed=False should not trigger deletion."""
+        data = {'artist': {'removed': False, 'new': ['A']}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['A'])])
+
+    def test_string_value_split_on_joiner(self):
+        """A string value (not list) is split on the joiner."""
+        data = {'artist': {'new': 'Artist 1; Artist 2'}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['Artist 1', 'Artist 2'])])
+
+    def test_empty_value_skipped(self):
+        """Tags with no 'new' or 'old' value are skipped entirely."""
+        data = {'artist': {}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [])
+
+    def test_empty_list_value_skipped(self):
+        """Tags with empty list value are skipped (falsy)."""
+        data = {'artist': {'new': []}}
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [])
+
+    def test_multiple_tags(self):
+        data = {
+            'artist': {'new': ['A']},
+            'title': {'new': ['T']},
+            'genre': {'removed': True},
+        }
+        result = list(interpret_paste_data(data, self.JOINER))
+        self.assertEqual(result, [('artist', ['A']), ('title', ['T']), ('genre', [])])
+
+    def test_empty_data(self):
+        result = list(interpret_paste_data({}, self.JOINER))
+        self.assertEqual(result, [])

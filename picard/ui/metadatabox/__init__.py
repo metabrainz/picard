@@ -218,6 +218,40 @@ def apply_tag_values(objects, tag, values):
             yield obj
 
 
+def interpret_paste_data(data, multi_valued_joiner):
+    """Interpret pasted tag data into (tag, values) pairs.
+
+    Parses a dict structure (as produced by TagDiff.as_dict / clipboard JSON)
+    and yields ``(tag, values)`` tuples suitable for passing to
+    :func:`apply_tag_values`.
+
+    The input ``data`` maps tag names to dicts that may contain:
+      - ``TagDiff.REMOVED_VALUE``: if True, the tag should be deleted (values=[])
+      - ``TagDiff.NEW_VALUE``: preferred list of values
+      - ``TagDiff.OLD_VALUE``: fallback list of values if 'new' is absent
+
+    Multi-valued strings are split on ``multi_valued_joiner``.
+
+    Args:
+        data: Dict mapping tag names to value dicts.
+        multi_valued_joiner: The separator string for splitting multi-valued
+            tags (typically ``'; '``).
+
+    Yields:
+        Tuples of ``(tag, values)`` where values is a list of strings,
+        or an empty list to indicate deletion.
+    """
+    for tag, tag_data in data.items():
+        if tag_data.get(TagDiff.REMOVED_VALUE) is True:
+            yield tag, []
+            continue
+        value = tag_data.get(TagDiff.NEW_VALUE) or tag_data.get(TagDiff.OLD_VALUE)
+        if value:
+            if isinstance(value, list):
+                value = multi_valued_joiner.join(value)
+            yield tag, value.split(multi_valued_joiner)
+
+
 class MetadataBox(QtWidgets.QTableWidget):
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
@@ -475,24 +509,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 log.error("Failed to decode JSON data from clipboard: %r", e)
 
         def _apply_tag_dict(data):
-            for tag in data:
-                if self._tag_is_editable(tag):
-                    if data[tag].get(TagDiff.REMOVED_VALUE) is True:
-                        log.info("Removing tag '%s' from JSON clipboard paste", tag)
-                        yield from self._set_tag_values_delayed_updates(tag, [])
-                        continue
-                    # Prefer 'new' values, but fall back to 'old' if not available
-                    value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
-                    if value:
-                        if isinstance(value, list):
-                            # There are multiple values for the tag
-                            value = MULTI_VALUED_JOINER.join(value)
-                        # each value may also represent multiple values
-                        log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
-                        value = value.split(MULTI_VALUED_JOINER)
-                        yield from self._set_tag_values_delayed_updates(tag, value)
-                    else:
-                        log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
+            for tag, values in interpret_paste_data(data, MULTI_VALUED_JOINER):
+                if not self._tag_is_editable(tag):
+                    continue
+                if values:
+                    log.info("Pasting '%s' from JSON clipboard to tag '%s'", MULTI_VALUED_JOINER.join(values), tag)
+                else:
+                    log.info("Removing tag '%s' from JSON clipboard paste", tag)
+                yield from self._set_tag_values_delayed_updates(tag, values)
 
         data = _decode_json(mimedata)
         return _apply_tag_dict(data) if data else []
