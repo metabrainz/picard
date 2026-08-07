@@ -927,7 +927,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _init_cd_lookup_menu(self):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
-            self.enable_action(self.cd_lookup_action, False)
+            self.cd_lookup_action.setEnabled(False)
             self.cd_lookup_menu.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
