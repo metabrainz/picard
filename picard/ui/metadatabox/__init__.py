@@ -527,25 +527,20 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_from_json(self, mimedata):
-        def _decode_json(mimedata):
-            try:
-                text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
-                return json.loads(text)
-            except json.JSONDecodeError as e:
-                log.error("Failed to decode JSON data from clipboard: %r", e)
-
-        def _apply_tag_dict(data):
-            for tag, values in interpret_paste_data(data, MULTI_VALUED_JOINER):
-                if not self._tag_is_editable(tag):
-                    continue
-                if values:
-                    log.info("Pasting '%s' from JSON clipboard to tag '%s'", MULTI_VALUED_JOINER.join(values), tag)
-                else:
-                    log.info("Removing tag '%s' from JSON clipboard paste", tag)
-                yield from self._set_tag_values_delayed_updates(tag, values)
-
-        data = _decode_json(mimedata)
-        return _apply_tag_dict(data) if data else []
+        try:
+            text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
+            data = json.loads(text)
+        except json.JSONDecodeError as e:
+            log.error("Failed to decode JSON data from clipboard: %r", e)
+            return []
+        for tag, values in interpret_paste_data(data, MULTI_VALUED_JOINER):
+            if not self._tag_is_editable(tag):
+                continue
+            if values:
+                log.info("Pasting '%s' from JSON clipboard to tag '%s'", MULTI_VALUED_JOINER.join(values), tag)
+            else:
+                log.info("Removing tag '%s' from JSON clipboard paste", tag)
+            yield from self._set_tag_values_delayed_updates(tag, values)
 
     def _paste_from_text(self, mimedata):
         item = self.currentItem()
