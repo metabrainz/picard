@@ -74,6 +74,7 @@ from picard.const.defaults import (
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
 )
 from picard.i18n import N_
+from picard.util.cdrom import has_isrc_support
 
 from picard.ui.colors import InterfaceColors
 
@@ -345,7 +346,7 @@ BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when lo
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"), in_profile=True)
 IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True)
 BoolOption('setting', 'use_server_for_submission', False, title=N_("Submit to configured server"), in_profile=True)
-BoolOption('setting', 'read_isrcs_from_disc', True, title=N_("Read ISRCs from CD"), in_profile=True)
+BoolOption('setting', 'read_isrcs_from_disc', has_isrc_support(), title=N_("Read ISRCs from CD"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
 BoolOption(
     'setting',

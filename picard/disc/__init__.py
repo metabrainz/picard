@@ -31,7 +31,6 @@
 
 from functools import partial
 import traceback
-from types import ModuleType
 
 from picard import (
     log,
@@ -45,6 +44,10 @@ from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
 from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.util.cdrom import (
+    discid,
+    has_isrc_support,
+)
 from picard.util.isrc import (
     format_isrc,
     valid_isrc,
@@ -52,18 +55,6 @@ from picard.util.isrc import (
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
-
-
-discid: ModuleType | None = None
-try:
-    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
-    from libdiscid.compat import discid  # type: ignore[unresolved-import,no-redef]
-except ImportError:
-    try:
-        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
-        import discid  # type: ignore[unresolved-import,no-redef]
-    except (ImportError, OSError):
-        pass
 
 
 class Disc:
@@ -83,7 +74,7 @@ class Disc:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
         features = ['mcn']
-        if 'isrc' in discid.FEATURES:
+        if has_isrc_support():
             config = get_config()
             if config.setting['read_isrcs_from_disc']:
                 features.append('isrc')

@@ -26,10 +26,14 @@
 
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    _,
+)
 from picard.util.cdrom import (
     AUTO_DETECT_DRIVES,
     get_cdrom_drives,
+    has_isrc_support,
 )
 
 from picard.ui.options import (
@@ -64,6 +68,9 @@ class CDLookupOptionsPage(OptionsPage):
         if AUTO_DETECT_DRIVES:
             self._device_list = get_cdrom_drives()
             self.ui.cd_lookup_device.addItems(self._device_list)
+        if not has_isrc_support():
+            self.ui.read_isrcs_from_disc.setDisabled(True)
+            self.ui.read_isrcs_from_disc.setToolTip(_('ISRC extraction is not supported on this platform.'))
 
     def load(self):
         config = get_config()

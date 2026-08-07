@@ -125,8 +125,11 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.cdrom import (
+    DISCID_NO_ISRC_MESSAGE,
+    DISCID_NOT_LOADED_MESSAGE,
     discid,
     get_cdrom_drives,
+    has_isrc_support,
 )
 from picard.util.isrc import valid_isrc
 from picard.util.readthedocs import ReadTheDocs
@@ -856,11 +859,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _init_cd_lookup_menu(self):
         if discid is None:
-            log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
+            log.warning(DISCID_NOT_LOADED_MESSAGE)
             self.enable_action(MainAction.CD_LOOKUP, False)
             self.enable_action(MainAction.DISCID_FROM_LOGFILE, False)
             self.update_cd_lookup_menu(None)
         else:
+            if not has_isrc_support():
+                log.warning(DISCID_NO_ISRC_MESSAGE)
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
 
     def _update_cd_lookup_actions(self, result=None, error=None):
