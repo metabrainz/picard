@@ -623,7 +623,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         Adds actions for removing, restoring, and merging tags to the context menu.
         """
         remove_tag_action = QtGui.QAction(_("Remove"), self)
-        remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
+        remove_tag_action.triggered.connect(partial(self._remove_tags, removals))
         remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
         remove_tag_action.setEnabled(bool(removals))
         menu.addAction(remove_tag_action)
@@ -686,7 +686,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             menu.addAction(lookup_action)
                     # Collect removable tags
                     if self._tag_is_removable(tag):
-                        removals.append(partial(self._remove_tag, tag))
+                        removals.append(tag)
                     # Collect actions for restoring/merging original tag values
                     self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
                 # Add actions for removing, restoring, merging tags
@@ -764,13 +764,16 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _set_tag_values(self, tag, values, objects=None):
         self._update_objects(self._set_tag_values_delayed_updates(tag, values, objects=objects))
 
-    def _remove_tag(self, tag):
-        self._set_tag_values(tag, [])
+    def _remove_tags(self, tags):
+        objects_to_update = set()
+        with self.tagger.window.ignore_selection_changes:
+            for tag in tags:
+                objects_to_update.update(self._set_tag_values_delayed_updates(tag, []))
+        self._update_objects(objects_to_update)
+        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
     def remove_selected_tags(self):
-        for tag in self._selected_tags(filter_func=self._tag_is_removable):
-            self._remove_tag(tag)
-        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
+        self._remove_tags(self._selected_tags(filter_func=self._tag_is_removable))
 
     def _tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
