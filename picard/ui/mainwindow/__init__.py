@@ -2039,16 +2039,31 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.StandardButton.Yes,
         )
         if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.set_statusbar_message(
+                N_("Waiting for MusicBrainz authentication…"),
+                echo=log.info,
+            )
             self.tagger.mb_login(self._on_mb_login_finished)
         else:
+            self.set_statusbar_message(
+                N_("MusicBrainz authentication declined"),
+                echo=log.info,
+            )
             self.tagger.webservice.discard_authorized_requests()
 
     def _on_mb_login_finished(self, successful, error_msg):
         if successful:
-            log.debug("MusicBrainz authentication finished successfully")
+            self.set_statusbar_message(
+                N_("Successfully authenticated with MusicBrainz"),
+                echo=log.info,
+            )
             self.tagger.webservice.retry_authorized_requests()
         else:
-            log.info("MusicBrainz authentication failed: %s", error_msg)
+            self.set_statusbar_message(
+                N_("MusicBrainz authentication failed: %(error)s"),
+                {'error': error_msg},
+                echo=log.warning,
+            )
             self.tagger.webservice.discard_authorized_requests()
             QtWidgets.QMessageBox.critical(
                 self,
