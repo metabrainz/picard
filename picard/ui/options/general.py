@@ -30,6 +30,7 @@
 
 from PyQt6 import QtWidgets
 
+from picard import log
 from picard.collection import load_user_collections
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
@@ -78,6 +79,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
+        self.tagger.webservice.authorization_state_changed.connect(self.update_login_logout)
         self.update_login_logout()
 
     def load(self):
@@ -119,6 +121,14 @@ class GeneralOptionsPage(OptionsPage):
     def update_login_logout(self, error_msg=None):
         if self.deleted:
             return
+        oauth_manager = self.tagger.webservice.oauth_manager
+        log.debug(
+            "update_login_logout: is_logged_in=%s, is_authorized=%s, username=%r, error_msg=%r",
+            oauth_manager.is_logged_in(),
+            oauth_manager.is_authorized(),
+            oauth_manager.username,
+            error_msg,
+        )
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist['oauth_username'])

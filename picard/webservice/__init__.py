@@ -390,6 +390,7 @@ class WebService(QtCore.QObject):
     PARSERS: dict[str, Parser] = dict()
 
     authorization_required = QtCore.pyqtSignal()
+    authorization_state_changed = QtCore.pyqtSignal()
     pending_requests_changed = QtCore.pyqtSignal()
 
     def __init__(self, parent: QObject | None = None):
