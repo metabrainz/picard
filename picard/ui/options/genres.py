@@ -22,12 +22,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import (
-    QTextBlockFormat,
-    QTextCursor,
-)
-
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -41,6 +35,7 @@ from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
+from picard.ui.playground import Playground
 
 
 TOOLTIP_GENRES_FILTER = N_("""<html><head/><body>
@@ -111,15 +106,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
-        # FIXME: colors aren't great from accessibility POV
-        self.fmt_keep = QTextBlockFormat()
-        self.fmt_keep.setBackground(Qt.GlobalColor.green)
-
-        self.fmt_skip = QTextBlockFormat()
-        self.fmt_skip.setBackground(Qt.GlobalColor.red)
-
-        self.fmt_clear = QTextBlockFormat()
-        self.fmt_clear.clearBackground()
+        self.playground = Playground(self.ui.test_genres_filter)
 
     def load(self):
         config = get_config()
@@ -144,35 +131,16 @@ class GenresOptionsPage(OptionsPage):
         config.setting['folksonomy_tags'] = self.ui.folksonomy_tags.isChecked()
 
     def update_test_genres_filter(self):
-        test_text = self.ui.test_genres_filter.toPlainText()
-
         filters = self.ui.genres_filter.toPlainText()
         tagfilter = TagGenreFilter(filters)
 
         # FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText("\n".join(tagfilter.format_errors()))
 
-        def set_line_fmt(lineno, textformat):
-            obj = self.ui.test_genres_filter
-            if lineno < 0:
-                # use current cursor position
-                cursor = obj.textCursor()
-            else:
-                cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
-            obj.blockSignals(True)
-            cursor.setBlockFormat(textformat)
-            obj.blockSignals(False)
+        def check_line(line: str) -> bool:
+            return not tagfilter.skip(line)
 
-        set_line_fmt(-1, self.fmt_clear)
-        for lineno, line in enumerate(test_text.splitlines()):
-            line = line.strip()
-            fmt = self.fmt_clear
-            if line:
-                if tagfilter.skip(line):
-                    fmt = self.fmt_skip
-                else:
-                    fmt = self.fmt_keep
-            set_line_fmt(lineno, fmt)
+        self.playground.update(check_line)
 
 
 register_options_page(GenresOptionsPage)
