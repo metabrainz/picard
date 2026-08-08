@@ -25,7 +25,6 @@
 import os
 import re
 
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
@@ -43,6 +42,7 @@ from picard.i18n import (
     gettext as _,
 )
 
+from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 from picard.ui.options import PageOptionConfigs
 
@@ -83,13 +83,20 @@ class ProviderOptionsLocal(ProviderOptions):
 
         # FIXME: colors aren't great from accessibility POV
         self.fmt_match = QTextBlockFormat()
-        self.fmt_match.setBackground(Qt.GlobalColor.green)
+        self.fmt_match.setBackground(self._highlight_color('tagstatus_added'))
 
         self.fmt_skip = QTextBlockFormat()
-        self.fmt_skip.setBackground(Qt.GlobalColor.red)
+        self.fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
 
         self.fmt_clear = QTextBlockFormat()
         self.fmt_clear.clearBackground()
+
+    @staticmethod
+    def _highlight_color(color_key):
+        alpha = 90 if interface_colors.dark_theme else 60
+        color = interface_colors.get_qcolor(color_key)
+        color.setAlpha(alpha)
+        return color
 
     def load(self):
         config = get_config()
