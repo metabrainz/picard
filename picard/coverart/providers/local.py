@@ -25,6 +25,12 @@
 import os
 import re
 
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import (
+    QTextBlockFormat,
+    QTextCursor,
+)
+
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
 from picard.coverart.providers.provider import (
@@ -56,6 +62,19 @@ class ProviderOptionsLocal(ProviderOptions):
         super().__init__(parent)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
 
+        self.ui.local_cover_regex_edit.textChanged.connect(self.update_test_coverart_filter)
+        self.ui.test_coverart_filter.textChanged.connect(self.update_test_coverart_filter)
+
+        # FIXME: colors aren't great from accessibility POV
+        self.fmt_match = QTextBlockFormat()
+        self.fmt_match.setBackground(Qt.GlobalColor.green)
+
+        self.fmt_skip = QTextBlockFormat()
+        self.fmt_skip.setBackground(Qt.GlobalColor.red)
+
+        self.fmt_clear = QTextBlockFormat()
+        self.fmt_clear.clearBackground()
+
     def load(self):
         config = get_config()
         self.ui.local_cover_regex_edit.setText(config.setting['local_cover_regex'])
@@ -63,6 +82,40 @@ class ProviderOptionsLocal(ProviderOptions):
     def save(self):
         config = get_config()
         config.setting['local_cover_regex'] = self.ui.local_cover_regex_edit.text()
+
+    def update_test_coverart_filter(self):
+        test_text = self.ui.test_coverart_filter.toPlainText()
+
+        try:
+            coverart_filter = re.compile(self.ui.local_cover_regex_edit.text(), re.IGNORECASE)
+        except re.error:
+            coverart_filter = None
+
+        def set_line_fmt(lineno, textformat):
+            obj = self.ui.test_coverart_filter
+            if lineno < 0:
+                # use current cursor position
+                cursor = obj.textCursor()
+            else:
+                cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+            obj.blockSignals(True)
+            cursor.setBlockFormat(textformat)
+            obj.blockSignals(False)
+
+        set_line_fmt(-1, self.fmt_clear)
+
+        if not coverart_filter:
+            return
+
+        for lineno, line in enumerate(test_text.splitlines()):
+            line = line.strip()
+            fmt = self.fmt_clear
+            if line:
+                if coverart_filter.match(line):
+                    fmt = self.fmt_match
+                else:
+                    fmt = self.fmt_skip
+            set_line_fmt(lineno, fmt)
 
 
 class CoverArtProviderLocal(CoverArtProvider):
