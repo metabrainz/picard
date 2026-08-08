@@ -27,6 +27,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import datetime
+
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -165,10 +167,11 @@ class AboutDialog(PicardDialog, SingletonDialog):
                 'Laurent Monin',
                 'Sambhav Kothari',
                 'Philipp Wolfer',
+                'Bob Swift',
             ]
         )
         copyright_text = _("Copyright © %(copyright_years)s %(authors_credits)s and others") % {
-            'copyright_years': '2004-2026',
+            'copyright_years': f'2004-{datetime.date.today().year}',
             'authors_credits': authors_credits,
         }
         self.ui.copyright_label.setText(copyright_text)
