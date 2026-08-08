@@ -101,8 +101,9 @@ class ProviderOptionsLocal(ProviderOptions):
     def update_test_coverart_filter(self):
         test_text = self.ui.test_coverart_filter.toPlainText()
 
+        regex_text = self.ui.local_cover_regex_edit.text()
         try:
-            coverart_filter = re.compile(self.ui.local_cover_regex_edit.text(), re.IGNORECASE)
+            coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
         except re.error:
             coverart_filter = None
 
