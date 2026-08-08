@@ -248,9 +248,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.setupUi()
 
-        webservice_manager = self.tagger.webservice.manager
+        webservice = self.tagger.webservice
+        webservice_manager = webservice.manager
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
+        webservice.authorization_required.connect(self._show_authorization_dialog)
 
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
@@ -2020,26 +2022,34 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _show_password_dialog(self, reply, authenticator):
         config = get_config()
         if reply.url().host() == config.setting['server_host']:
-            ret = QtWidgets.QMessageBox.question(
-                self,
-                _("Authentication Required"),
-                _(
-                    "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
-                ),
-                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-                QtWidgets.QMessageBox.StandardButton.Yes,
-            )
-            if ret == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.tagger.mb_login(self._on_mb_login_finished)
+            # MB server authentication is handled by _show_authorization_dialog
+            # which is triggered by the webservice's authorization_required signal.
+            return
+        dialog = PasswordDialog(authenticator, reply, parent=self)
+        dialog.exec()
+
+    def _show_authorization_dialog(self):
+        ret = QtWidgets.QMessageBox.question(
+            self,
+            _("Authentication Required"),
+            _(
+                "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
+            ),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.Yes,
+        )
+        if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.tagger.mb_login(self._on_mb_login_finished)
         else:
-            dialog = PasswordDialog(authenticator, reply, parent=self)
-            dialog.exec()
+            self.tagger.webservice.discard_authorized_requests()
 
     def _on_mb_login_finished(self, successful, error_msg):
         if successful:
             log.debug("MusicBrainz authentication finished successfully")
+            self.tagger.webservice.retry_authorized_requests()
         else:
             log.info("MusicBrainz authentication failed: %s", error_msg)
+            self.tagger.webservice.discard_authorized_requests()
             QtWidgets.QMessageBox.critical(
                 self,
                 _("Authentication failed"),

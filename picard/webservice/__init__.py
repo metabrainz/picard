@@ -363,6 +363,7 @@ class RequestPriorityQueue:
 class WebService(QtCore.QObject):
     PARSERS: dict[str, Parser] = dict()
 
+    authorization_required = QtCore.pyqtSignal()
     pending_requests_changed = QtCore.pyqtSignal()
 
     def __init__(self, parent: QObject | None = None):
@@ -420,6 +421,8 @@ class WebService(QtCore.QObject):
         self._queue = RequestPriorityQueue()
         self.num_pending_web_requests = 0
         self._notify_on_cancel = False
+        self._awaiting_authorization: list[WSRequest] = []
+        self._authorization_pending = False
 
     def _init_timers(self):
         self._timer_run_next_task = QtCore.QTimer(self)
@@ -599,7 +602,16 @@ class WebService(QtCore.QObject):
                 proto,
                 response_code,
             )
-            if not request.max_retries_reached() and (
+            if request.mblogin and response_code == 401:
+                # Queue the request for retry after authorization and
+                # signal that user authorization is needed, but only once.
+                log.debug("Authorization required for %s", display_reply_url)
+                self._awaiting_authorization.append(request)
+                if not self._authorization_pending:
+                    self._authorization_pending = True
+                    self.authorization_required.emit()
+
+            elif not request.max_retries_reached() and (
                 response_code == 503
                 or response_code == 429
                 # Sometimes QT returns a http status code of 200 even when there
@@ -776,6 +788,34 @@ class WebService(QtCore.QObject):
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)
 
+    def retry_authorized_requests(self):
+        """Retry all requests that were waiting for authorization.
+
+        Call this after the user has successfully logged in.
+        """
+        self._authorization_pending = False
+        requests = self._awaiting_authorization
+        self._awaiting_authorization = []
+        for request in requests:
+            log.debug("Retrying authorized request for %s", request.url().toString())
+            self.add_request(request)
+
+    def discard_authorized_requests(self):
+        """Discard all requests that were waiting for authorization.
+
+        Call this when the user declines to log in or login fails.
+        Handlers are called with the authentication error so that callers
+        (e.g. albums) can transition to a proper error state.
+        """
+        self._authorization_pending = False
+        requests = self._awaiting_authorization
+        self._awaiting_authorization = []
+        error = QNetworkReply.NetworkError.AuthenticationRequiredError
+        for request in requests:
+            handler = request.handler
+            if handler is not None:
+                handler(b'', _AuthorizationErrorReply(request), error)
+
     @classmethod
     def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):
         cls.PARSERS[response_type] = Parser(mimetype=mimetype, parser=parser)
@@ -793,6 +833,28 @@ class WebService(QtCore.QObject):
             return cls.PARSERS[response_type].parser
         else:
             raise UnknownResponseParserError(response_type)
+
+
+class _AuthorizationErrorReply:
+    """Minimal reply-like object passed to handlers when authorization is declined.
+
+    Provides the subset of the QNetworkReply interface that handlers commonly use
+    when handling errors (errorString, url, attribute).
+    """
+
+    def __init__(self, request: WSRequest):
+        self._request = request
+
+    def errorString(self) -> str:
+        return 'Authorization required'
+
+    def url(self):
+        return self._request.url()
+
+    def attribute(self, attr):
+        if attr == QNetworkRequest.Attribute.HttpStatusCodeAttribute:
+            return 401
+        return None
 
 
 WebService.add_parser('xml', 'application/xml', parse_xml)
