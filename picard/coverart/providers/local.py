@@ -38,10 +38,24 @@ from picard.coverart.providers.provider import (
     ProviderOptions,
 )
 from picard.coverart.utils import CAA_TYPES
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 from picard.ui.options import PageOptionConfigs
+
+
+TOOLTIP_TEST_COVERART_FILTER = N_("""<html><head/><body>
+<p>Enter file names to test the regex against, one per line.<br/>
+This playground will not be preserved on exit.
+</p>
+<p>
+Red background means the file name does not match.<br/>
+Green background means the file name matches.
+</p>
+</body></html>""")
 
 
 class ProviderOptionsLocal(ProviderOptions):
@@ -63,6 +77,7 @@ class ProviderOptionsLocal(ProviderOptions):
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
 
         self.ui.local_cover_regex_edit.textChanged.connect(self.update_test_coverart_filter)
+        self.ui.test_coverart_filter.setToolTip(_(TOOLTIP_TEST_COVERART_FILTER))
         self.ui.test_coverart_filter.textChanged.connect(self.update_test_coverart_filter)
 
         # FIXME: colors aren't great from accessibility POV
