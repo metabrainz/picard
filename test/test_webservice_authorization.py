@@ -169,34 +169,58 @@ class WebServiceAuthorizationTest(PicardTestCase):
         self.assertEqual(self.ws._awaiting_authorization, [])
         self.assertFalse(self.ws._authorization_pending)
 
-    def test_discard_authorized_requests(self):
-        """Declining auth should discard queued requests and call handlers with error."""
-        handlers = []
+    def test_discard_authorized_requests_retries_get_without_auth(self):
+        """Declining auth should retry GET requests without user-specific inc params."""
         requests = []
         for i in range(3):
-            handler = MagicMock()
-            handlers.append(handler)
             request = self._make_mblogin_request(
-                url=f'http://musicbrainz.org/ws/2/release/{i}',
-                handler=handler,
+                url=f'http://musicbrainz.org/ws/2/release/{i}?inc=artists+user-ratings+labels+user-collections',
             )
             requests.append(request)
 
         self.ws._awaiting_authorization = list(requests)
         self.ws._authorization_pending = True
 
-        self.ws.discard_authorized_requests()
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws.discard_authorized_requests()
 
         self.assertEqual(self.ws._awaiting_authorization, [])
         self.assertFalse(self.ws._authorization_pending)
-        # Each handler should have been called with the auth error
-        for handler in handlers:
-            handler.assert_called_once()
-            args = handler.call_args[0]
-            self.assertEqual(args[0], b'')
-            self.assertEqual(args[2], QNetworkReply.NetworkError.AuthenticationRequiredError)
-            # The reply-like object should provide errorString()
-            self.assertEqual(args[1].errorString(), 'Authorization required')
+        # GET requests should be retried without auth
+        self.assertEqual(mock_add_request.call_count, 3)
+        for request in requests:
+            # mblogin should be disabled
+            self.assertFalse(request.mblogin)
+            # user-* params should be stripped from the URL
+            url_str = request.url().toString()
+            self.assertNotIn('user-ratings', url_str)
+            self.assertNotIn('user-collections', url_str)
+            # public params should remain
+            self.assertIn('artists', url_str)
+            self.assertIn('labels', url_str)
+
+    def test_discard_authorized_requests_fails_non_get(self):
+        """Declining auth should call handlers with error for non-GET requests."""
+        handler = MagicMock()
+        request = WSRequest(
+            method='POST',
+            url='http://musicbrainz.org/ws/2/rating',
+            handler=handler,
+            mblogin=True,
+            data='<metadata/>',
+            request_mimetype='application/xml',
+        )
+
+        self.ws._awaiting_authorization = [request]
+        self.ws._authorization_pending = True
+
+        self.ws.discard_authorized_requests()
+
+        handler.assert_called_once()
+        args = handler.call_args[0]
+        self.assertEqual(args[0], b'')
+        self.assertEqual(args[2], QNetworkReply.NetworkError.AuthenticationRequiredError)
+        self.assertEqual(args[1].errorString(), 'Authorization required')
 
     def test_authorization_pending_reset_allows_new_signal(self):
         """After discard/retry, a new 401 should emit the signal again."""

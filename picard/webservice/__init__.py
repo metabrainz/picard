@@ -98,6 +98,17 @@ CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_S
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
+# MusicBrainz Web Service inc params that require authentication.
+# Requests with these params will get a 401 if not logged in.
+_AUTH_REQUIRED_INC_PARAMS = frozenset(
+    (
+        'user-collections',
+        'user-genres',
+        'user-ratings',
+        'user-tags',
+    )
+)
+
 
 @dataclass
 class Parser:
@@ -829,20 +840,41 @@ class WebService(QtCore.QObject):
             self.add_request(request)
 
     def discard_authorized_requests(self):
-        """Discard all requests that were waiting for authorization.
+        """Discard authorization requirement and retry requests without user data.
 
         Call this when the user declines to log in or login fails.
-        Handlers are called with the authentication error so that callers
-        (e.g. albums) can transition to a proper error state.
+        GET requests are retried without user-specific inc params (user-ratings,
+        user-collections, etc.) so that public data still loads.
+        Non-GET requests (submissions) are dropped and their handlers called
+        with the authentication error.
         """
         self._authorization_pending = False
         requests = self._awaiting_authorization
         self._awaiting_authorization = []
         error = QNetworkReply.NetworkError.AuthenticationRequiredError
         for request in requests:
-            handler = request.handler
-            if handler is not None:
-                handler(b'', _AuthorizationErrorReply(request), error)
+            if request.method == 'GET':
+                self._retry_without_auth(request)
+            else:
+                handler = request.handler
+                if handler is not None:
+                    handler(b'', _AuthorizationErrorReply(request), error)
+
+    def _retry_without_auth(self, request: WSRequest):
+        """Retry a request without authentication and user-specific inc params."""
+        url = QUrl(request.url())
+        query = QtCore.QUrlQuery(url)
+        if query.hasQueryItem('inc'):
+            inc_value = query.queryItemValue('inc', QUrl.ComponentFormattingOption.FullyDecoded)
+            filtered_inc = '+'.join(p for p in inc_value.split('+') if p not in _AUTH_REQUIRED_INC_PARAMS)
+            query.removeQueryItem('inc')
+            if filtered_inc:
+                query.addQueryItem('inc', filtered_inc)
+            url.setQuery(query)
+        request.setUrl(url)
+        request.mblogin = False
+        log.debug("Retrying without authentication: %s", url.toString())
+        self.add_request(request)
 
     @classmethod
     def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):
