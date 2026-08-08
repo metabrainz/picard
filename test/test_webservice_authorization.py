@@ -251,3 +251,55 @@ class WebServiceAuthorizationTest(PicardTestCase):
 
         self.assertEqual(self.ws._awaiting_authorization, [])
         self.assertFalse(self.ws._authorization_pending)
+
+    def test_401_stale_request_retried_immediately_if_now_authorized(self):
+        """A 401 on a request that had no token should be retried immediately
+        if the user has since logged in (race condition fix)."""
+        # Simulate: user is now authorized
+        self.ws.oauth_manager = MagicMock()
+        self.ws.oauth_manager.is_authorized.return_value = True
+
+        # Request that went out WITHOUT a token (has_auth is False)
+        request = self._make_mblogin_request()
+        self.assertFalse(request.has_auth)
+
+        reply = self._make_reply(
+            error=QNetworkReply.NetworkError.AuthenticationRequiredError,
+            status_code=401,
+        )
+        self.ws._active_requests[reply] = request
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_reply(reply, request)
+
+        # Should be retried immediately, NOT queued
+        mock_add_request.assert_called_once_with(request)
+        self.assertEqual(len(self.ws._awaiting_authorization), 0)
+        self.assertFalse(self.ws._authorization_pending)
+
+    def test_401_with_auth_token_queued_even_if_authorized(self):
+        """A 401 on a request that DID have a token should be queued
+        (the token itself was rejected, re-auth needed)."""
+        # Simulate: user is still "authorized" (has refresh token)
+        self.ws.oauth_manager = MagicMock()
+        self.ws.oauth_manager.is_authorized.return_value = True
+
+        # Request that went out WITH a token (has_auth is True)
+        request = self._make_mblogin_request()
+        request.access_token = 'expired-token'
+        self.assertTrue(request.has_auth)
+
+        reply = self._make_reply(
+            error=QNetworkReply.NetworkError.AuthenticationRequiredError,
+            status_code=401,
+        )
+        self.ws._active_requests[reply] = request
+
+        signal_spy = MagicMock()
+        self.ws.authorization_required.connect(signal_spy)
+
+        self.ws._handle_reply(reply, request)
+
+        # Should be queued, not retried
+        self.assertIn(request, self.ws._awaiting_authorization)
+        signal_spy.assert_called_once()

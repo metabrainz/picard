@@ -603,13 +603,20 @@ class WebService(QtCore.QObject):
                 response_code,
             )
             if request.mblogin and response_code == 401:
-                # Queue the request for retry after authorization and
-                # signal that user authorization is needed, but only once.
-                log.debug("Authorization required for %s", display_reply_url)
-                self._awaiting_authorization.append(request)
-                if not self._authorization_pending:
-                    self._authorization_pending = True
-                    self.authorization_required.emit()
+                if not request.has_auth and self.oauth_manager.is_authorized():
+                    # User has since logged in (e.g. this is a stale request
+                    # that was in-flight before authorization completed).
+                    # Retry immediately with the new token.
+                    log.debug("Retrying %s with updated authorization", display_reply_url)
+                    self.add_request(request)
+                else:
+                    # Queue the request for retry after authorization and
+                    # signal that user authorization is needed, but only once.
+                    log.debug("Authorization required for %s", display_reply_url)
+                    self._awaiting_authorization.append(request)
+                    if not self._authorization_pending:
+                        self._authorization_pending = True
+                        self.authorization_required.emit()
 
             elif not request.max_retries_reached() and (
                 response_code == 503
