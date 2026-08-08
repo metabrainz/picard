@@ -40,7 +40,9 @@ import platform
 import sys
 from typing import (
     Any,
+    Protocol,
     TypeAlias,
+    runtime_checkable,
 )
 import weakref
 
@@ -103,7 +105,19 @@ class Parser:
     parser: Callable[[QNetworkReply], Any]
 
 
-ReplyHandler: TypeAlias = Callable[[Any, QNetworkReply, QNetworkReply.NetworkError | Exception | None], None]
+@runtime_checkable
+class ReplyLike(Protocol):
+    """Protocol defining the interface handlers expect from a reply object.
+
+    Both QNetworkReply and _AuthorizationErrorReply satisfy this protocol.
+    """
+
+    def errorString(self) -> str: ...
+    def url(self) -> QUrl: ...
+    def attribute(self, code: QNetworkRequest.Attribute) -> Any: ...
+
+
+ReplyHandler: TypeAlias = Callable[[Any, ReplyLike, QNetworkReply.NetworkError | Exception | None], None]
 
 
 class UnknownResponseParserError(Exception):
@@ -854,6 +868,7 @@ class _AuthorizationErrorReply:
 
     Provides the subset of the QNetworkReply interface that handlers commonly use
     when handling errors (errorString, url, attribute).
+    Satisfies the ReplyLike protocol.
     """
 
     def __init__(self, request: WSRequest):
@@ -862,11 +877,11 @@ class _AuthorizationErrorReply:
     def errorString(self) -> str:
         return 'Authorization required'
 
-    def url(self):
+    def url(self) -> QUrl:
         return self._request.url()
 
-    def attribute(self, attr):
-        if attr == QNetworkRequest.Attribute.HttpStatusCodeAttribute:
+    def attribute(self, code: QNetworkRequest.Attribute) -> Any:
+        if code == QNetworkRequest.Attribute.HttpStatusCodeAttribute:
             return 401
         return None
 
