@@ -25,6 +25,11 @@
 import os
 import re
 
+from PyQt6.QtGui import (
+    QTextBlockFormat,
+    QTextCursor,
+)
+
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
 from picard.coverart.providers.provider import (
@@ -32,10 +37,25 @@ from picard.coverart.providers.provider import (
     ProviderOptions,
 )
 from picard.coverart.utils import CAA_TYPES
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
+from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 from picard.ui.options import PageOptionConfigs
+
+
+TOOLTIP_TEST_COVERART_FILTER = N_("""<html><head/><body>
+<p>Enter file names to test the regex against, one per line.<br/>
+This playground will not be preserved on exit.
+</p>
+<p>
+Red background means the file name does not match.<br/>
+Green background means the file name matches.
+</p>
+</body></html>""")
 
 
 class ProviderOptionsLocal(ProviderOptions):
@@ -56,6 +76,28 @@ class ProviderOptionsLocal(ProviderOptions):
         super().__init__(parent)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
 
+        self.ui.local_cover_regex_edit.textChanged.connect(self.update_test_coverart_filter)
+        self.ui.test_coverart_filter.setToolTip(_(TOOLTIP_TEST_COVERART_FILTER))
+        self.ui.test_coverart_filter.setPlaceholderText(_("Enter file names to test, one per line"))
+        self.ui.test_coverart_filter.textChanged.connect(self.update_test_coverart_filter)
+
+        # FIXME: colors aren't great from accessibility POV
+        self.fmt_match = QTextBlockFormat()
+        self.fmt_match.setBackground(self._highlight_color('tagstatus_added'))
+
+        self.fmt_skip = QTextBlockFormat()
+        self.fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
+
+        self.fmt_clear = QTextBlockFormat()
+        self.fmt_clear.clearBackground()
+
+    @staticmethod
+    def _highlight_color(color_key):
+        alpha = 90 if interface_colors.dark_theme else 60
+        color = interface_colors.get_qcolor(color_key)
+        color.setAlpha(alpha)
+        return color
+
     def load(self):
         config = get_config()
         self.ui.local_cover_regex_edit.setText(config.setting['local_cover_regex'])
@@ -63,6 +105,41 @@ class ProviderOptionsLocal(ProviderOptions):
     def save(self):
         config = get_config()
         config.setting['local_cover_regex'] = self.ui.local_cover_regex_edit.text()
+
+    def update_test_coverart_filter(self):
+        test_text = self.ui.test_coverart_filter.toPlainText()
+
+        regex_text = self.ui.local_cover_regex_edit.text()
+        try:
+            coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
+        except re.error:
+            coverart_filter = None
+
+        def set_line_fmt(lineno, textformat):
+            obj = self.ui.test_coverart_filter
+            if lineno < 0:
+                # use current cursor position
+                cursor = obj.textCursor()
+            else:
+                cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+            obj.blockSignals(True)
+            cursor.setBlockFormat(textformat)
+            obj.blockSignals(False)
+
+        set_line_fmt(-1, self.fmt_clear)
+
+        if not coverart_filter:
+            return
+
+        for lineno, line in enumerate(test_text.splitlines()):
+            line = line.strip()
+            fmt = self.fmt_clear
+            if line:
+                if coverart_filter.search(line):
+                    fmt = self.fmt_match
+                else:
+                    fmt = self.fmt_skip
+            set_line_fmt(lineno, fmt)
 
 
 class CoverArtProviderLocal(CoverArtProvider):

@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/provider_options_local.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -17,7 +17,7 @@ from picard.i18n import gettext as _
 class Ui_LocalOptions(object):
     def setupUi(self, LocalOptions):
         LocalOptions.setObjectName("LocalOptions")
-        LocalOptions.resize(472, 215)
+        LocalOptions.resize(472, 277)
         self.verticalLayout = QtWidgets.QVBoxLayout(LocalOptions)
         self.verticalLayout.setObjectName("verticalLayout")
         self.local_cover_regex_label = QtWidgets.QLabel(parent=LocalOptions)
@@ -40,8 +40,20 @@ class Ui_LocalOptions(object):
         self.note.setWordWrap(True)
         self.note.setObjectName("note")
         self.verticalLayout.addWidget(self.note)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed
+        )
         self.verticalLayout.addItem(spacerItem)
+        self.label_test_coverart_filter = QtWidgets.QLabel(parent=LocalOptions)
+        self.label_test_coverart_filter.setObjectName("label_test_coverart_filter")
+        self.verticalLayout.addWidget(self.label_test_coverart_filter)
+        self.test_coverart_filter = QtWidgets.QPlainTextEdit(parent=LocalOptions)
+        self.test_coverart_filter.setObjectName("test_coverart_filter")
+        self.verticalLayout.addWidget(self.test_coverart_filter)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
+        self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(LocalOptions)
         QtCore.QMetaObject.connectSlotsByName(LocalOptions)
@@ -49,4 +61,9 @@ class Ui_LocalOptions(object):
     def retranslateUi(self, LocalOptions):
         LocalOptions.setWindowTitle(_("Form"))
         self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
-        self.note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))
+        self.note.setText(
+            _(
+                "First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."
+            )
+        )
+        self.label_test_coverart_filter.setText(_("Test file name matching:"))
