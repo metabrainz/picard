@@ -32,6 +32,7 @@ from PyQt6.QtNetwork import (
 from test.picardtestcase import PicardTestCase
 
 from picard.webservice import (
+    MAX_PENDING_AUTHORIZATION_REQUESTS,
     WebService,
     WSRequest,
 )
@@ -303,3 +304,32 @@ class WebServiceAuthorizationTest(PicardTestCase):
         # Should be queued, not retried
         self.assertIn(request, self.ws._awaiting_authorization)
         signal_spy.assert_called_once()
+
+    def test_authorization_queue_capped(self):
+        """Queue should not grow beyond MAX_PENDING_AUTHORIZATION_REQUESTS."""
+        # Fill the queue to the limit
+        for i in range(MAX_PENDING_AUTHORIZATION_REQUESTS):
+            request = self._make_mblogin_request(url=f'http://musicbrainz.org/ws/2/release/{i}')
+            self.ws._awaiting_authorization.append(request)
+
+        self.assertEqual(len(self.ws._awaiting_authorization), MAX_PENDING_AUTHORIZATION_REQUESTS)
+        first_request = self.ws._awaiting_authorization[0]
+
+        # Add one more via _handle_reply — should drop the oldest
+        new_request = self._make_mblogin_request(url='http://musicbrainz.org/ws/2/release/new')
+        reply = self._make_reply(
+            error=QNetworkReply.NetworkError.AuthenticationRequiredError,
+            status_code=401,
+            url='http://musicbrainz.org/ws/2/release/new',
+        )
+        self.ws._active_requests[reply] = new_request
+        self.ws._authorization_pending = True  # already pending
+
+        self.ws._handle_reply(reply, new_request)
+
+        # Size should still be at the limit
+        self.assertEqual(len(self.ws._awaiting_authorization), MAX_PENDING_AUTHORIZATION_REQUESTS)
+        # Oldest request should have been dropped
+        self.assertNotIn(first_request, self.ws._awaiting_authorization)
+        # New request should be at the end
+        self.assertIs(self.ws._awaiting_authorization[-1], new_request)

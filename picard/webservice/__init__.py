@@ -82,6 +82,7 @@ from picard.webservice.utils import port_from_qurl
 COUNT_REQUESTS_DELAY_MS = 250
 
 TEMP_ERRORS_RETRIES = 5
+MAX_PENDING_AUTHORIZATION_REQUESTS = 100
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
     PICARD_ORG_NAME,
     PICARD_APP_NAME,
@@ -613,6 +614,12 @@ class WebService(QtCore.QObject):
                     # Queue the request for retry after authorization and
                     # signal that user authorization is needed, but only once.
                     log.debug("Authorization required for %s", display_reply_url)
+                    if len(self._awaiting_authorization) >= MAX_PENDING_AUTHORIZATION_REQUESTS:
+                        # Drop the oldest request to prevent unbounded growth
+                        dropped = self._awaiting_authorization.pop(0)
+                        log.debug("Authorization queue full, dropping %s", dropped.url().toString())
+                        if dropped.handler is not None:
+                            dropped.handler(b'', _AuthorizationErrorReply(dropped), error)
                     self._awaiting_authorization.append(request)
                     if not self._authorization_pending:
                         self._authorization_pending = True
