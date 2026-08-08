@@ -40,7 +40,9 @@ import platform
 import sys
 from typing import (
     Any,
+    Protocol,
     TypeAlias,
+    runtime_checkable,
 )
 import weakref
 
@@ -82,6 +84,7 @@ from picard.webservice.utils import port_from_qurl
 COUNT_REQUESTS_DELAY_MS = 250
 
 TEMP_ERRORS_RETRIES = 5
+MAX_PENDING_AUTHORIZATION_REQUESTS = 100
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
     PICARD_ORG_NAME,
     PICARD_APP_NAME,
@@ -95,6 +98,17 @@ CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_S
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
+# MusicBrainz Web Service inc params that require authentication.
+# Requests with these params will get a 401 if not logged in.
+_AUTH_REQUIRED_INC_PARAMS = frozenset(
+    (
+        'user-collections',
+        'user-genres',
+        'user-ratings',
+        'user-tags',
+    )
+)
+
 
 @dataclass
 class Parser:
@@ -102,7 +116,19 @@ class Parser:
     parser: Callable[[QNetworkReply], Any]
 
 
-ReplyHandler: TypeAlias = Callable[[Any, QNetworkReply, QNetworkReply.NetworkError | Exception | None], None]
+@runtime_checkable
+class ReplyLike(Protocol):
+    """Protocol defining the interface handlers expect from a reply object.
+
+    Both QNetworkReply and _AuthorizationErrorReply satisfy this protocol.
+    """
+
+    def errorString(self) -> str: ...
+    def url(self) -> QUrl: ...
+    def attribute(self, code: QNetworkRequest.Attribute) -> Any: ...
+
+
+ReplyHandler: TypeAlias = Callable[[Any, ReplyLike, QNetworkReply.NetworkError | Exception | None], None]
 
 
 class UnknownResponseParserError(Exception):
@@ -363,6 +389,8 @@ class RequestPriorityQueue:
 class WebService(QtCore.QObject):
     PARSERS: dict[str, Parser] = dict()
 
+    authorization_required = QtCore.pyqtSignal()
+    authorization_state_changed = QtCore.pyqtSignal()
     pending_requests_changed = QtCore.pyqtSignal()
 
     def __init__(self, parent: QObject | None = None):
@@ -420,6 +448,8 @@ class WebService(QtCore.QObject):
         self._queue = RequestPriorityQueue()
         self.num_pending_web_requests = 0
         self._notify_on_cancel = False
+        self._awaiting_authorization: list[WSRequest] = []
+        self._authorization_pending = False
 
     def _init_timers(self):
         self._timer_run_next_task = QtCore.QTimer(self)
@@ -599,7 +629,29 @@ class WebService(QtCore.QObject):
                 proto,
                 response_code,
             )
-            if not request.max_retries_reached() and (
+            if request.mblogin and response_code == 401:
+                if not request.has_auth and self.oauth_manager.is_authorized():
+                    # User has since logged in (e.g. this is a stale request
+                    # that was in-flight before authorization completed).
+                    # Retry immediately with the new token.
+                    log.debug("Retrying %s with updated authorization", display_reply_url)
+                    self.add_request(request)
+                else:
+                    # Queue the request for retry after authorization and
+                    # signal that user authorization is needed, but only once.
+                    log.debug("Authorization required for %s", display_reply_url)
+                    if len(self._awaiting_authorization) >= MAX_PENDING_AUTHORIZATION_REQUESTS:
+                        # Drop the oldest request to prevent unbounded growth
+                        dropped = self._awaiting_authorization.pop(0)
+                        log.debug("Authorization queue full, dropping %s", dropped.url().toString())
+                        if dropped.handler is not None:
+                            dropped.handler(b'', _AuthorizationErrorReply(dropped), error)
+                    self._awaiting_authorization.append(request)
+                    if not self._authorization_pending:
+                        self._authorization_pending = True
+                        self.authorization_required.emit()
+
+            elif not request.max_retries_reached() and (
                 response_code == 503
                 or response_code == 429
                 # Sometimes QT returns a http status code of 200 even when there
@@ -776,6 +828,70 @@ class WebService(QtCore.QObject):
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)
 
+    def retry_authorized_requests(self):
+        """Retry all requests that were waiting for authorization.
+
+        Call this after the user has successfully logged in.
+        """
+        self._authorization_pending = False
+        requests = self._awaiting_authorization
+        self._awaiting_authorization = []
+        for request in requests:
+            log.debug("Retrying authorized request for %s", request.url().toString())
+            self.add_request(request)
+
+    def discard_authorized_requests(self):
+        """Discard authorization requirement and retry requests without user data.
+
+        Call this when the user declines to log in or login fails.
+        GET requests are retried without user-specific inc params (user-ratings,
+        user-collections, etc.) so that public data still loads.
+        Non-GET requests (submissions) are dropped and their handlers called
+        with the authentication error.
+        """
+        self._authorization_pending = False
+        requests = self._awaiting_authorization
+        self._awaiting_authorization = []
+        error = QNetworkReply.NetworkError.AuthenticationRequiredError
+        for request in requests:
+            if request.method == 'GET':
+                self._retry_without_auth(request)
+            else:
+                handler = request.handler
+                if handler is not None:
+                    handler(b'', _AuthorizationErrorReply(request), error)
+
+    def _retry_without_auth(self, request: WSRequest):
+        """Retry a request without authentication and user-specific inc params.
+
+        Only retries if user-specific params were actually removed from the URL.
+        If nothing changed, the request is dropped and the handler is called with
+        the authentication error.
+        """
+        url = QUrl(request.url())
+        query = QtCore.QUrlQuery(url)
+        modified = False
+        if query.hasQueryItem('inc'):
+            inc_value = query.queryItemValue('inc', QUrl.ComponentFormattingOption.FullyDecoded)
+            inc_params = set(inc_value.split('+'))
+            filtered_params = inc_params - _AUTH_REQUIRED_INC_PARAMS
+            if filtered_params != inc_params:
+                modified = True
+                query.removeQueryItem('inc')
+                if filtered_params:
+                    query.addQueryItem('inc', '+'.join(sorted(filtered_params)))
+                url.setQuery(query)
+        if modified:
+            request.setUrl(url)
+            request.mblogin = False
+            log.debug("Retrying without authentication: %s", url.toString())
+            self.add_request(request)
+        else:
+            log.debug("Cannot retry without authentication: %s", url.toString())
+            handler = request.handler
+            if handler is not None:
+                handler(b'', _AuthorizationErrorReply(request), QNetworkReply.NetworkError.AuthenticationRequiredError)
+
     @classmethod
     def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):
         cls.PARSERS[response_type] = Parser(mimetype=mimetype, parser=parser)
@@ -793,6 +909,29 @@ class WebService(QtCore.QObject):
             return cls.PARSERS[response_type].parser
         else:
             raise UnknownResponseParserError(response_type)
+
+
+class _AuthorizationErrorReply:
+    """Minimal reply-like object passed to handlers when authorization is declined.
+
+    Provides the subset of the QNetworkReply interface that handlers commonly use
+    when handling errors (errorString, url, attribute).
+    Satisfies the ReplyLike protocol.
+    """
+
+    def __init__(self, request: WSRequest):
+        self._request = request
+
+    def errorString(self) -> str:
+        return 'Authorization required'
+
+    def url(self) -> QUrl:
+        return self._request.url()
+
+    def attribute(self, code: QNetworkRequest.Attribute) -> Any:
+        if code == QNetworkRequest.Attribute.HttpStatusCodeAttribute:
+            return 401
+        return None
 
 
 WebService.add_parser('xml', 'application/xml', parse_xml)

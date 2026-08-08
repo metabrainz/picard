@@ -248,9 +248,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.setupUi()
 
-        webservice_manager = self.tagger.webservice.manager
+        webservice = self.tagger.webservice
+        webservice_manager = webservice.manager
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
+        webservice.authorization_required.connect(self._show_authorization_dialog)
 
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
@@ -2020,26 +2022,64 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _show_password_dialog(self, reply, authenticator):
         config = get_config()
         if reply.url().host() == config.setting['server_host']:
-            ret = QtWidgets.QMessageBox.question(
-                self,
-                _("Authentication Required"),
-                _(
-                    "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
-                ),
-                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-                QtWidgets.QMessageBox.StandardButton.Yes,
+            # MB server authentication is handled by _show_authorization_dialog
+            # which is triggered by the webservice's authorization_required signal.
+            return
+        dialog = PasswordDialog(authenticator, reply, parent=self)
+        dialog.exec()
+
+    def _show_authorization_dialog(self):
+        config = get_config()
+        features = []
+        if config.setting['enable_ratings']:
+            features.append(_("personal ratings"))
+        if config.setting['enable_user_collections']:
+            features.append(_("collections"))
+        if config.setting['use_genres'] and config.setting['only_my_genres']:
+            features.append(_("personal genres/tags"))
+        if features:
+            feature_list = "".join(f"<li>{f}</li>" for f in features)
+            reason = "<p>%s</p><ul>%s</ul>" % (
+                _("Your current settings require logging in to MusicBrainz to access:"),
+                feature_list,
             )
-            if ret == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.tagger.mb_login(self._on_mb_login_finished)
         else:
-            dialog = PasswordDialog(authenticator, reply, parent=self)
-            dialog.exec()
+            reason = "<p>%s</p>" % (_("A feature you are using requires logging in to MusicBrainz."),)
+        message = "%s<p>%s</p>" % (reason, _("Would you like to log in now?"))
+        ret = QtWidgets.QMessageBox.question(
+            self,
+            _("Authentication Required"),
+            message,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.Yes,
+        )
+        if ret == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.set_statusbar_message(
+                N_("Waiting for MusicBrainz authentication…"),
+                echo=log.info,
+            )
+            self.tagger.mb_login(self._on_mb_login_finished)
+        else:
+            self.set_statusbar_message(
+                N_("MusicBrainz authentication declined"),
+                echo=log.info,
+            )
+            self.tagger.webservice.discard_authorized_requests()
 
     def _on_mb_login_finished(self, successful, error_msg):
         if successful:
-            log.debug("MusicBrainz authentication finished successfully")
+            self.set_statusbar_message(
+                N_("Successfully authenticated with MusicBrainz"),
+                echo=log.info,
+            )
+            self.tagger.webservice.retry_authorized_requests()
         else:
-            log.info("MusicBrainz authentication failed: %s", error_msg)
+            self.set_statusbar_message(
+                N_("MusicBrainz authentication failed: %(error)s"),
+                {'error': error_msg},
+                echo=log.warning,
+            )
+            self.tagger.webservice.discard_authorized_requests()
             QtWidgets.QMessageBox.critical(
                 self,
                 _("Authentication failed"),

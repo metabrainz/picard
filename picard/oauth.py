@@ -197,6 +197,7 @@ class OAuthManager:
     def forget_refresh_token(self):
         del self.refresh_token
         del self.refresh_token_scopes
+        self.webservice.authorization_state_changed.emit()
 
     def forget_access_token(self):
         del self.access_token
@@ -379,6 +380,7 @@ class OAuthManager:
                 self.username = data.get('username', data['sub'])
                 log.debug("OAuth: got username %s", self.username)
                 successful = True
+                self.webservice.authorization_state_changed.emit()
         except Exception as e:
             log.error("OAuth: Unexpected error handling username fetch response: %r", e)
             error_msg = _("Unexpected authentication error")

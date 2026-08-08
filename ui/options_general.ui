@@ -175,7 +175,7 @@ QCheckBox { color: black }</string>
       <item>
        <widget class="QCheckBox" name="enable_user_collections">
         <property name="text">
-         <string>Enable managing user collections</string>
+         <string>Enable managing user collections (requires login)</string>
         </property>
        </widget>
       </item>
