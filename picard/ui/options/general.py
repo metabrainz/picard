@@ -126,20 +126,17 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
-            self.ui.enable_user_collections.setDisabled(False)
         elif error_msg:
             self.ui.logged_in.hide()
             self.ui.login_error.setText(_("Login failed: %s") % error_msg)
             self.ui.login_error.show()
             self.ui.login.show()
             self.ui.logout.hide()
-            self.ui.enable_user_collections.setDisabled(True)
         else:
             self.ui.logged_in.hide()
             self.ui.login_error.hide()
             self.ui.login.show()
             self.ui.logout.hide()
-            self.ui.enable_user_collections.setDisabled(True)
 
     def login(self):
         self.tagger.mb_login(self.on_login_finished, self)
