@@ -2029,12 +2029,27 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.exec()
 
     def _show_authorization_dialog(self):
+        config = get_config()
+        features = []
+        if config.setting['enable_ratings']:
+            features.append(_("personal ratings"))
+        if config.setting['enable_user_collections']:
+            features.append(_("collections"))
+        if config.setting['use_genres'] and config.setting['only_my_genres']:
+            features.append(_("personal genres/tags"))
+        if features:
+            feature_list = "".join(f"<li>{f}</li>" for f in features)
+            reason = "<p>%s</p><ul>%s</ul>" % (
+                _("Your current settings require logging in to MusicBrainz to access:"),
+                feature_list,
+            )
+        else:
+            reason = "<p>%s</p>" % (_("A feature you are using requires logging in to MusicBrainz."),)
+        message = "%s<p>%s</p>" % (reason, _("Would you like to log in now?"))
         ret = QtWidgets.QMessageBox.question(
             self,
             _("Authentication Required"),
-            _(
-                "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
-            ),
+            message,
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             QtWidgets.QMessageBox.StandardButton.Yes,
         )
