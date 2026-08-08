@@ -78,6 +78,7 @@ class ProviderOptionsLocal(ProviderOptions):
 
         self.ui.local_cover_regex_edit.textChanged.connect(self.update_test_coverart_filter)
         self.ui.test_coverart_filter.setToolTip(_(TOOLTIP_TEST_COVERART_FILTER))
+        self.ui.test_coverart_filter.setPlaceholderText(_("Enter file names to test, one per line"))
         self.ui.test_coverart_filter.textChanged.connect(self.update_test_coverart_filter)
 
         # FIXME: colors aren't great from accessibility POV
