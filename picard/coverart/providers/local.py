@@ -111,7 +111,7 @@ class ProviderOptionsLocal(ProviderOptions):
             line = line.strip()
             fmt = self.fmt_clear
             if line:
-                if coverart_filter.match(line):
+                if coverart_filter.search(line):
                     fmt = self.fmt_match
                 else:
                     fmt = self.fmt_skip
