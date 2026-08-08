@@ -861,20 +861,35 @@ class WebService(QtCore.QObject):
                     handler(b'', _AuthorizationErrorReply(request), error)
 
     def _retry_without_auth(self, request: WSRequest):
-        """Retry a request without authentication and user-specific inc params."""
+        """Retry a request without authentication and user-specific inc params.
+
+        Only retries if user-specific params were actually removed from the URL.
+        If nothing changed, the request is dropped and the handler is called with
+        the authentication error.
+        """
         url = QUrl(request.url())
         query = QtCore.QUrlQuery(url)
+        modified = False
         if query.hasQueryItem('inc'):
             inc_value = query.queryItemValue('inc', QUrl.ComponentFormattingOption.FullyDecoded)
-            filtered_inc = '+'.join(p for p in inc_value.split('+') if p not in _AUTH_REQUIRED_INC_PARAMS)
-            query.removeQueryItem('inc')
-            if filtered_inc:
-                query.addQueryItem('inc', filtered_inc)
-            url.setQuery(query)
-        request.setUrl(url)
-        request.mblogin = False
-        log.debug("Retrying without authentication: %s", url.toString())
-        self.add_request(request)
+            inc_params = set(inc_value.split('+'))
+            filtered_params = inc_params - _AUTH_REQUIRED_INC_PARAMS
+            if filtered_params != inc_params:
+                modified = True
+                query.removeQueryItem('inc')
+                if filtered_params:
+                    query.addQueryItem('inc', '+'.join(sorted(filtered_params)))
+                url.setQuery(query)
+        if modified:
+            request.setUrl(url)
+            request.mblogin = False
+            log.debug("Retrying without authentication: %s", url.toString())
+            self.add_request(request)
+        else:
+            log.debug("Cannot retry without authentication: %s", url.toString())
+            handler = request.handler
+            if handler is not None:
+                handler(b'', _AuthorizationErrorReply(request), QNetworkReply.NetworkError.AuthenticationRequiredError)
 
     @classmethod
     def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):

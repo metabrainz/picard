@@ -357,3 +357,23 @@ class WebServiceAuthorizationTest(PicardTestCase):
         self.assertNotIn(first_request, self.ws._awaiting_authorization)
         # New request should be at the end
         self.assertIs(self.ws._awaiting_authorization[-1], new_request)
+
+    def test_discard_get_no_strippable_params_fails(self):
+        """A GET request where no user-specific inc params can be stripped should fail."""
+        handler = MagicMock()
+        request = self._make_mblogin_request(
+            url='http://musicbrainz.org/ws/2/collection?editor=someone',
+            handler=handler,
+        )
+
+        self.ws._awaiting_authorization = [request]
+        self.ws._authorization_pending = True
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws.discard_authorized_requests()
+
+        # No inc params at all — nothing to strip, should call handler with error
+        mock_add_request.assert_not_called()
+        handler.assert_called_once()
+        args = handler.call_args[0]
+        self.assertEqual(args[2], QNetworkReply.NetworkError.AuthenticationRequiredError)
