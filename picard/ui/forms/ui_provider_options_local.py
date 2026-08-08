@@ -40,7 +40,9 @@ class Ui_LocalOptions(object):
         self.note.setWordWrap(True)
         self.note.setObjectName("note")
         self.verticalLayout.addWidget(self.note)
-        spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed
+        )
         self.verticalLayout.addItem(spacerItem)
         self.label_test_coverart_filter = QtWidgets.QLabel(parent=LocalOptions)
         self.label_test_coverart_filter.setObjectName("label_test_coverart_filter")
@@ -48,7 +50,9 @@ class Ui_LocalOptions(object):
         self.test_coverart_filter = QtWidgets.QPlainTextEdit(parent=LocalOptions)
         self.test_coverart_filter.setObjectName("test_coverart_filter")
         self.verticalLayout.addWidget(self.test_coverart_filter)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(LocalOptions)
@@ -57,5 +61,9 @@ class Ui_LocalOptions(object):
     def retranslateUi(self, LocalOptions):
         LocalOptions.setWindowTitle(_("Form"))
         self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
-        self.note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))
-        self.label_test_coverart_filter.setText(_("Playground for cover art file matching (cleared on exit):"))
+        self.note.setText(
+            _(
+                "First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."
+            )
+        )
+        self.label_test_coverart_filter.setText(_("Test file name matching:"))
