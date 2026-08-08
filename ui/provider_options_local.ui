@@ -69,7 +69,7 @@
    <item>
     <widget class="QLabel" name="label_test_coverart_filter">
      <property name="text">
-      <string>Playground for cover art file matching (cleared on exit):</string>
+      <string>Test file name matching:</string>
      </property>
     </widget>
    </item>
