@@ -474,39 +474,29 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def load_all_pages(self):
         for PageCls in self._page_classes:
-            if PageCls.NAME not in self.pagename_to_item:
-                continue  # Skip inactive/disabled pages
-            page = self._instantiate_page(PageCls)
-            if not page.initialized:
-                continue
+            if PageCls.NAME in self.pagename_to_item:
+                self._load_page(PageCls.NAME)
+
+    def _load_page(self, pagename):
+        """Ensure a page is instantiated and loaded. Returns the page or None."""
+        try:
+            page = self.get_page(pagename)
+        except KeyError:
+            return None
+        if not page.loaded and page.initialized:
             try:
                 page.load()
                 page.loaded = True
             except Exception:
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
-
-    def _load_page(self, pagename):
-        """Load a single page by name if not already loaded."""
-        try:
-            page = self.get_page(pagename)
-        except KeyError:
-            return
-        if page.loaded or not page.initialized:
-            return
-        try:
-            page.load()
-            page.loaded = True
-        except Exception:
-            log.exception("Failed loading options page %r", page)
-            self.disable_page(page.NAME)
+        return page
 
     def show_attached_profiles_dialog(self):
         items = self.ui.pages_tree.selectedItems()
         if not items:
             return
-        PageCls = self.item_to_page[items[0]]
-        page = self._instantiate_page(PageCls)
+        page = self.get_page(self.item_to_page[items[0]].NAME)
         option_group = profile_groups_group_from_page(page)
         if option_group:
             self.display_attached_profiles(option_group)
@@ -679,10 +669,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def get_page(self, pagename):
         """Get a page instance by name, instantiating lazily if needed."""
-        page = self._page_instances.get(pagename)
-        if page is not None:
-            return page
-        # Instantiate the page on first access
+        if pagename in self._page_instances:
+            return self._page_instances[pagename]
         PageCls = self.item_to_page[self.pagename_to_item[pagename]]
         return self._instantiate_page(PageCls)
 
@@ -750,15 +738,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = self.ui.pages_tree.selectedItems()
         if items:
             PageCls = self.item_to_page[items[0]]
-            page = self._instantiate_page(PageCls)
-            # Lazy-load page on first visit
-            if not page.loaded and page.initialized:
-                try:
-                    page.load()
-                    page.loaded = True
-                except Exception:
-                    log.exception("Failed loading options page %r", page)
-                    self.disable_page(page.NAME)
+            page = self._load_page(PageCls.NAME)
             self.set_profiles_button_and_highlight(page)
             self.ui.reset_button.setDisabled(not page.loaded)
             self._show_page(page)
