@@ -177,13 +177,18 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.ui.copyright_label.setText(copyright_text)
 
         # Translator credits
-        # TR: Replace this with your name to have it appear in the "About" dialog.
+        # TR: This is a magic string: translators replace it with their names.
+        # If untranslated, it returns 'translator-credits' and we hide the label.
         translator_credits = _('translator-credits')
         if translator_credits != 'translator-credits':
             translator_credits = translator_credits.strip().replace("\n", ", ")
-            # TR: Replace LANG with the language you are translating to.
-            translator_text = _("Translated to LANG by %s") % translator_credits
+            language = QtCore.QLocale().nativeLanguageName().capitalize()
+            translator_text = _("Translated to %(language)s by %(translators)s") % {
+                'language': language,
+                'translators': translator_credits,
+            }
             self.ui.translator_credits_label.setText(translator_text)
+            self.ui.translator_credits_label.setVisible(True)
             self.ui.translator_credits_label.setVisible(True)
         else:
             self.ui.translator_credits_label.setVisible(False)
