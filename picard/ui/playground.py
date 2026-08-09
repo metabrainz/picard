@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
+
 from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
@@ -68,11 +70,11 @@ class Playground:
         cursor.setBlockFormat(textformat)
         obj.blockSignals(False)
 
-    def update(self, match_function: callable = None) -> None:
+    def update(self, match_function: Callable[[str], bool] | None = None) -> None:
         """Update the playground widget to color-code each line depending on whether it passes the match function.
 
         Args:
-            match_function (callable): A function that takes a string and returns True if the string matches, otherwise False. Default is None.
+            match_function: A function that takes a string and returns True if the string matches, otherwise False. Default is None.
         """
         self._set_line_fmt(-1, self.fmt_clear)
 
