@@ -21,6 +21,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
+
+from PyQt6.QtCore import QSignalBlocker
 from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
@@ -41,15 +44,6 @@ class Playground:
         """
         self.playground_widget = playground_widget
 
-        self.fmt_match = QTextBlockFormat()
-        self.fmt_match.setBackground(self._highlight_color('tagstatus_added'))
-
-        self.fmt_skip = QTextBlockFormat()
-        self.fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
-
-        self.fmt_clear = QTextBlockFormat()
-        self.fmt_clear.clearBackground()
-
     @staticmethod
     def _highlight_color(color_key):
         alpha = 90 if interface_colors.dark_theme else 60
@@ -57,34 +51,45 @@ class Playground:
         color.setAlpha(alpha)
         return color
 
-    def _set_line_fmt(self, lineno, textformat):
-        obj = self.playground_widget
-        if lineno < 0:
-            # use current cursor position
-            cursor = obj.textCursor()
-        else:
-            cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
-        obj.blockSignals(True)
-        cursor.setBlockFormat(textformat)
-        obj.blockSignals(False)
+    def _get_fmt_match(self) -> QTextBlockFormat:
+        """Return the block format for matching lines."""
+        fmt = QTextBlockFormat()
+        fmt.setBackground(self._highlight_color('tagstatus_added'))
+        return fmt
 
-    def update(self, match_function: callable = None) -> None:
+    def _get_fmt_skip(self) -> QTextBlockFormat:
+        """Return the block format for non-matching lines."""
+        fmt = QTextBlockFormat()
+        fmt.setBackground(self._highlight_color('tagstatus_removed'))
+        return fmt
+
+    def _get_fmt_clear(self) -> QTextBlockFormat:
+        """Return the block format for cleared (neutral) lines."""
+        fmt = QTextBlockFormat()
+        fmt.clearBackground()
+        return fmt
+
+    def _set_line_fmt(self, lineno, textformat):
+        cursor = QTextCursor(self.playground_widget.document().findBlockByNumber(lineno))
+        cursor.setBlockFormat(textformat)
+
+    def update(self, match_function: Callable[[str], bool] | None = None) -> None:
         """Update the playground widget to color-code each line depending on whether it passes the match function.
 
         Args:
-            match_function (callable): A function that takes a string and returns True if the string matches, otherwise False. Default is None.
+            match_function: A function that takes a string and returns True if the string matches, otherwise False. Default is None.
         """
-        self._set_line_fmt(-1, self.fmt_clear)
+        fmt_match = self._get_fmt_match()
+        fmt_skip = self._get_fmt_skip()
+        fmt_clear = self._get_fmt_clear()
 
-        if match_function is None:
-            return
-
-        for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
-            line = line.strip()
-            fmt = self.fmt_clear
-            if line:
-                if match_function(line):
-                    fmt = self.fmt_match
+        with QSignalBlocker(self.playground_widget):
+            for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
+                line = line.strip()
+                if not line or match_function is None:
+                    fmt = fmt_clear
+                elif match_function(line):
+                    fmt = fmt_match
                 else:
-                    fmt = self.fmt_skip
-            self._set_line_fmt(lineno, fmt)
+                    fmt = fmt_skip
+                self._set_line_fmt(lineno, fmt)

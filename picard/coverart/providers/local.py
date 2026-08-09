@@ -76,7 +76,6 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.test_coverart_filter.setPlaceholderText(_("Enter file names to test, one per line"))
         self.ui.test_coverart_filter.textChanged.connect(self._update_test_coverart_filter)
 
-        self.coverart_filter = None
         self.playground = Playground(self.ui.test_coverart_filter)
 
     def load(self):
@@ -88,18 +87,16 @@ class ProviderOptionsLocal(ProviderOptions):
         config.setting['local_cover_regex'] = self.ui.local_cover_regex_edit.text()
 
     def _update_test_coverart_filter(self):
-        def check_line(line: str) -> bool:
-            return bool(self.coverart_filter.search(line))
-
         regex_text = self.ui.local_cover_regex_edit.text()
         try:
-            self.coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
-            match_function = check_line if self.coverart_filter else None
+            coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
         except re.error:
-            self.coverart_filter = None
-            match_function = None
+            coverart_filter = None
 
-        self.playground.update(match_function)
+        def check_line(line: str) -> bool:
+            return bool(coverart_filter.search(line))
+
+        self.playground.update(check_line if coverart_filter else None)
 
 
 class CoverArtProviderLocal(CoverArtProvider):
