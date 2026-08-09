@@ -7,7 +7,7 @@
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011, 2013 Wieland Hoffmann
 # Copyright (C) 2013 Michael Wiencek
-# Copyright (C) 2013-2015, 2018, 2020-2024 Laurent Monin
+# Copyright (C) 2013-2015, 2018, 2020-2026 Laurent Monin
 # Copyright (C) 2014 Ismael Olea
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2021 Bob Swift
@@ -27,18 +27,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtCore
+import datetime
+
+from PyQt6 import (
+    QtCore,
+    QtGui,
+)
 
 from picard import tagger_instance
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
-from picard.util import versions
+from picard.util import (
+    get_url,
+    webbrowser2,
+)
+from picard.util.versions import (
+    as_dict,
+    version_name,
+)
 
 from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
 from picard.ui.forms.ui_aboutdialog import Ui_AboutDialog
+from picard.ui.theme import theme
 
 
 class AboutDialog(PicardDialog, SingletonDialog):
@@ -49,45 +62,140 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
+        self._apply_styling()
         self._update_content()
 
+    def _apply_styling(self):
+        """Apply accent color and visual styling to the dialog."""
+        accent_color = theme.accent_color
+        if accent_color:
+            accent_css = accent_color.name()
+            # Style section headings with accent color
+            heading_style = f"color: {accent_css};"
+            self.ui.formats_heading.setStyleSheet(heading_style)
+            self.ui.donate_heading.setStyleSheet(heading_style)
+            self.ui.credits_heading.setStyleSheet(heading_style)
+            self.ui.website_heading.setStyleSheet(heading_style)
+
+            # Style the donate button with accent color
+            text_color = 'white' if accent_color.lightness() < 160 else 'black'
+            hover_color = accent_color.lighter(120).name()
+            self.ui.donate_button.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: {accent_css};
+                    color: {text_color};
+                    border: none;
+                    border-radius: 4px;
+                    padding: 8px 24px;
+                    font-weight: bold;
+                }}
+                QPushButton:hover {{
+                    background-color: {hover_color};
+                }}
+                QPushButton:pressed {{
+                    background-color: {accent_css};
+                }}
+            """)
+
+        # Bold version label
+        font = self.ui.version_label.font()
+        font.setBold(True)
+        self.ui.version_label.setFont(font)
+
+        # Inset separators with margin
+        separator_style = "margin-left: 40px; margin-right: 40px;"
+        self.ui.separator_1.setStyleSheet(separator_style)
+        self.ui.separator_2.setStyleSheet(separator_style)
+        self.ui.separator_3.setStyleSheet(separator_style)
+        self.ui.separator_4.setStyleSheet(separator_style)
+
+        # Muted color for version details and formats
+        palette = self.palette()
+        muted_color = palette.color(QtGui.QPalette.ColorRole.Text)
+        muted_color.setAlpha(160)
+        muted_css = f"color: {muted_color.name(QtGui.QColor.NameFormat.HexArgb)};"
+        self.ui.versions_detail_label.setStyleSheet(muted_css)
+        self.ui.formats_label.setStyleSheet(muted_css)
+
     def _update_content(self):
-        args = versions.as_dict(i18n=True)
+        versions_dict = as_dict(i18n=True)
 
-        args['third_parties_versions'] = ', '.join(
-            [
-                ("%s %s" % (versions.version_name(name), value))
-                .replace(' ', '&nbsp;')
-                .replace('-', '&#8209;')  # non-breaking hyphen
-                for name, value in versions.as_dict(i18n=True).items()
-                if name != 'version'
-            ]
+        # Version label
+        version_text = _("Version %s") % versions_dict['version']
+        self.ui.version_label.setText(version_text)
+
+        # Third-party versions detail
+        third_parties = ', '.join(
+            f"{version_name(name)} {value}" for name, value in versions_dict.items() if name != 'version'
         )
+        self.ui.versions_detail_label.setText(third_parties)
 
+        # Supported formats
+        self.ui.formats_heading.setText(_("Supported formats"))
         tagger = tagger_instance()
-        args['formats'] = ", ".join(map(lambda x: x[1:], tagger.format_registry.supported_extensions()))
-        args['copyright_years'] = '2004-2024'
-        args['authors_credits'] = ", ".join(
+        formats = ", ".join(ext[1:] for ext in tagger.format_registry.supported_extensions())
+        self.ui.formats_label.setText(formats)
+
+        # Donate section
+        self.ui.donate_heading.setText(_("Please donate"))
+        self.ui.donate_text_label.setText(
+            _(
+                "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
+                "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
+                "consider donating to the MetaBrainz Foundation to keep the service running."
+            )
+        )
+        self.ui.donate_button.setText(_("Donate now!"))
+        self.ui.donate_button.clicked.connect(self._open_donate_url)
+
+        # Credits section
+        self.ui.credits_heading.setText(_("Credits"))
+
+        # Project credit with links
+        project_credit = _(
+            'A <a href="https://metabrainz.org">MetaBrainz Foundation</a> project,'
+            ' powered by the <a href="https://musicbrainz.org">MusicBrainz</a> database.'
+        )
+        self.ui.project_credit_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        self.ui.project_credit_label.setText(project_credit)
+        self.ui.project_credit_label.linkHovered.connect(self.ui.project_credit_label.setToolTip)
+
+        authors_credits = ", ".join(
             [
                 'Robert Kaye',
                 'Lukáš Lalinský',
                 'Laurent Monin',
                 'Sambhav Kothari',
                 'Philipp Wolfer',
+                'Bob Swift',
             ]
         )
+        copyright_text = _("Copyright © %(copyright_years)s %(authors_credits)s and others") % {
+            'copyright_years': f'2004-{datetime.date.today().year}',
+            'authors_credits': authors_credits,
+        }
+        self.ui.copyright_label.setText(copyright_text)
 
-        # TR: Replace this with your name to have it appear in the "About" dialog.
-        args['translator_credits'] = _('translator-credits')
-        if args['translator_credits'] != 'translator-credits':
-            # TR: Replace LANG with language you are translating to.
-            args['translator_credits'] = _("<br/>Translated to LANG by %s") % args['translator_credits'].replace(
-                "\n", "<br/>"
-            )
+        # Translator credits
+        # TR: This is a magic string: translators replace it with their names.
+        # If untranslated, it returns 'translator-credits' and we hide the label.
+        translator_credits = _('translator-credits')
+        if translator_credits != 'translator-credits':
+            translator_credits = translator_credits.strip().replace("\n", ", ")
+            language = QtCore.QLocale().nativeLanguageName().capitalize()
+            translator_text = _("Translated to %(language)s by %(translators)s") % {
+                'language': language,
+                'translators': translator_credits,
+            }
+            self.ui.translator_credits_label.setText(translator_text)
+            self.ui.translator_credits_label.setVisible(True)
+            self.ui.translator_credits_label.setVisible(True)
         else:
-            args['translator_credits'] = ""
-        args['icons_credits'] = _(
-            'Icons made by Sambhav Kothari <sambhavs.email@gmail.com> '
+            self.ui.translator_credits_label.setVisible(False)
+
+        # Icons credits (contains HTML links)
+        icons_credits = _(
+            'Icons made by Sambhav Kothari '
             'and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>, '
             '<a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>, '
             '<a href="http://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a>, '
@@ -95,35 +203,22 @@ class AboutDialog(PicardDialog, SingletonDialog):
             '<a href="https://www.flaticon.com/authors/smashicons">Smashicons</a> '
             'from <a href="https://www.flaticon.com">www.flaticon.com</a>'
         )
+        self.ui.icons_credits_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        self.ui.icons_credits_label.setText(icons_credits)
+        self.ui.icons_credits_label.linkHovered.connect(self.ui.icons_credits_label.setToolTip)
 
-        def strong(s):
-            return '<strong>' + s + '</strong>'
-
-        def small(s):
-            return '<small>' + s + '</small>'
-
-        def url(url, s=None):
-            if s is None:
-                s = url
-            return '<a href="%s">%s</a>' % (url, s)
-
-        text_paragraphs = [
-            strong(_("Version %(version)s")),
-            small('%(third_parties_versions)s'),
-            strong(_("Supported formats")),
-            '%(formats)s',
-            strong(_("Please donate")),
-            _(
-                "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
-                "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
-                "consider donating to the MetaBrainz Foundation to keep the service running."
-            ),
-            url(PICARD_URLS['donate'], _("Donate now!")),
-            strong(_("Credits")),
-            small(_("Copyright © %(copyright_years)s %(authors_credits)s and others") + "%(translator_credits)s"),
-            small('%(icons_credits)s'),
-            strong(_("Official website")),
-            url(PICARD_URLS['home']),
+        # Links section
+        self.ui.website_heading.setText(_("Links"))
+        links = [
+            (PICARD_URLS['home'], _("Official website")),
+            (get_url('documentation_server'), _("Documentation")),
+            (PICARD_URLS['forum'], _("Community forum")),
+            (PICARD_URLS['license'], _("License")),
         ]
-        self.ui.label.setOpenExternalLinks(True)
-        self.ui.label.setText("".join('<p align="center">' + p + "</p>" for p in text_paragraphs) % args)
+        links_html = " · ".join(f'<a href="{url}">{label}</a>' for url, label in links)
+        self.ui.website_link_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        self.ui.website_link_label.setText(links_html)
+        self.ui.website_link_label.linkHovered.connect(self.ui.website_link_label.setToolTip)
+
+    def _open_donate_url(self):
+        webbrowser2.open('donate')
