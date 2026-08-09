@@ -50,6 +50,24 @@ class Playground:
         color.setAlpha(alpha)
         return color
 
+    def _get_fmt_match(self) -> QTextBlockFormat:
+        """Return the block format for matching lines."""
+        fmt = QTextBlockFormat()
+        fmt.setBackground(self._highlight_color('tagstatus_added'))
+        return fmt
+
+    def _get_fmt_skip(self) -> QTextBlockFormat:
+        """Return the block format for non-matching lines."""
+        fmt = QTextBlockFormat()
+        fmt.setBackground(self._highlight_color('tagstatus_removed'))
+        return fmt
+
+    def _get_fmt_clear(self) -> QTextBlockFormat:
+        """Return the block format for cleared (neutral) lines."""
+        fmt = QTextBlockFormat()
+        fmt.clearBackground()
+        return fmt
+
     def _set_line_fmt(self, lineno, textformat):
         obj = self.playground_widget
         if lineno < 0:
@@ -67,14 +85,9 @@ class Playground:
         Args:
             match_function: A function that takes a string and returns True if the string matches, otherwise False. Default is None.
         """
-        fmt_match = QTextBlockFormat()
-        fmt_match.setBackground(self._highlight_color('tagstatus_added'))
-
-        fmt_skip = QTextBlockFormat()
-        fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
-
-        fmt_clear = QTextBlockFormat()
-        fmt_clear.clearBackground()
+        fmt_match = self._get_fmt_match()
+        fmt_skip = self._get_fmt_skip()
+        fmt_clear = self._get_fmt_clear()
 
         self._set_line_fmt(-1, fmt_clear)
 
