@@ -205,12 +205,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
-        pages = (p for p in self.pages if p.PARENT == parent_pagename)
+        page_classes = (cls for cls in self._page_classes if cls.PARENT == parent_pagename)
         items = []
-        for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+        for PageCls in sorted(page_classes, key=lambda p: (p.SORT_ORDER, p.NAME)):
             # Check if this is a plugin option page and if the plugin is enabled
-            page_active = page.ACTIVE
-            api = getattr(type(page), 'api', None)
+            page_active = PageCls.ACTIVE
+            api = getattr(PageCls, 'api', None)
             if api is not None:  # This is a plugin option page
                 try:
                     plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
@@ -230,29 +230,26 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 continue
 
             item = HashableTreeWidgetItem(parent_item)
-            if not page.initialized:
-                title = _("%s (error)") % page.display_title()
-            else:
-                title = page.display_title()
+            title = PageCls.display_title()
             item.setText(0, title)
             if page_active:
-                self.item_to_page[item] = page
-                self.pagename_to_item[page.NAME] = item
-                profile_groups_order(page.NAME)
+                self.item_to_page[item] = PageCls
+                self.pagename_to_item[PageCls.NAME] = item
+                profile_groups_order(PageCls.NAME)
 
                 # If this is a plugin page and it matches the saved page, select it
                 if (
                     api is not None
                     and not self.default_item
-                    and page.NAME == get_config().persist['options_last_active_page']
+                    and PageCls.NAME == get_config().persist['options_last_active_page']
                 ):
-                    log.debug("add_pages: Found saved plugin page '%s', setting as default_item", page.NAME)
+                    log.debug("add_pages: Found saved plugin page '%s', setting as default_item", PageCls.NAME)
                     self.default_item = item
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-            self.add_pages(page.NAME, default_pagename, item)
-            if page.NAME == default_pagename:
-                log.debug("add_pages: Found matching page '%s', setting as default_item", page.NAME)
+            self.add_pages(PageCls.NAME, default_pagename, item)
+            if PageCls.NAME == default_pagename:
+                log.debug("add_pages: Found matching page '%s', setting as default_item", PageCls.NAME)
                 self.default_item = item
             items.append(item)
         if not self.default_item and not parent_pagename:
@@ -335,20 +332,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         config = get_config()
 
-        self.pages = []
-        with DebugOpt.TIMINGS.timing("OptionsDialog: page instantiation"):
-            for Page in ext_point_options_pages:
-                try:
-                    page = Page()
-                    page.set_dialog(self)
-                    page.initialized = True
-                except Exception as e:
-                    log.exception("Failed initializing options page %r", Page)
-                    # create an empty page with the error message in place of the failing page
-                    # this approach still allows subpages of the failing page to load
-                    page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
-                self._add_page_to_stack(page)
-                self.pages.append(page)
+        # Store page classes for tree building; instances are created lazily.
+        with DebugOpt.TIMINGS.timing("OptionsDialog: page registration"):
+            self._page_classes = list(ext_point_options_pages)
+        self._page_instances: dict[str, OptionsPage] = {}
 
         self.item_to_page = {}
         self.pagename_to_item = {}
@@ -479,14 +466,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     @property
     def initialized_pages(self):
-        yield from (page for page in self.pages if page.initialized)
+        yield from (page for page in self._page_instances.values() if page.initialized)
 
     @property
     def loaded_pages(self):
-        yield from (page for page in self.pages if page.loaded)
+        yield from (page for page in self._page_instances.values() if page.loaded)
 
     def load_all_pages(self):
-        for page in self.initialized_pages:
+        for PageCls in self._page_classes:
+            if PageCls.NAME not in self.pagename_to_item:
+                continue  # Skip inactive/disabled pages
+            page = self._instantiate_page(PageCls)
+            if not page.initialized:
+                continue
             try:
                 page.load()
                 page.loaded = True
@@ -513,7 +505,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = self.ui.pages_tree.selectedItems()
         if not items:
             return
-        page = self.item_to_page[items[0]]
+        PageCls = self.item_to_page[items[0]]
+        page = self._instantiate_page(PageCls)
         option_group = profile_groups_group_from_page(page)
         if option_group:
             self.display_attached_profiles(option_group)
@@ -685,7 +678,29 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             break
 
     def get_page(self, pagename):
-        return self.item_to_page[self.pagename_to_item[pagename]]
+        """Get a page instance by name, instantiating lazily if needed."""
+        page = self._page_instances.get(pagename)
+        if page is not None:
+            return page
+        # Instantiate the page on first access
+        PageCls = self.item_to_page[self.pagename_to_item[pagename]]
+        return self._instantiate_page(PageCls)
+
+    def _instantiate_page(self, PageCls):
+        """Create a page instance from its class and register it."""
+        name = PageCls.NAME
+        if name in self._page_instances:
+            return self._page_instances[name]
+        try:
+            page = PageCls()
+            page.set_dialog(self)
+            page.initialized = True
+        except Exception as e:
+            log.exception("Failed initializing options page %r", PageCls)
+            page = ErrorOptionsPage(from_cls=PageCls, errmsg=str(e), dialog=self)
+        self._page_instances[name] = page
+        self._add_page_to_stack(page)
+        return page
 
     def set_profiles_button_and_highlight(self, page):
         option_group = profile_groups_group_from_page(page)
@@ -734,7 +749,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
-            page = self.item_to_page[items[0]]
+            PageCls = self.item_to_page[items[0]]
+            page = self._instantiate_page(PageCls)
             # Lazy-load page on first visit
             if not page.loaded and page.initialized:
                 try:
@@ -790,50 +806,28 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             log.debug("refresh_plugin_pages: UUID to module mapping: %s", _plugin_uuid_to_module)
 
         # Remove pages from disabled plugins
-        pages_to_remove = []
-        for page in self.pages:
-            page_class = type(page)
-            # Check if this is a plugin page that's no longer active
-            # For error pages, check the original class
-            original_class = getattr(page, '_original_class', page_class)
+        classes_to_remove = []
+        for PageCls in self._page_classes:
+            original_class = PageCls
             if hasattr(original_class, 'api') and original_class not in active_page_classes:
-                pages_to_remove.append(page)
-                log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
+                classes_to_remove.append(PageCls)
+                log.debug("refresh_plugin_pages: Marking page for removal: %s", PageCls.__name__)
 
-        # Remove disabled plugin pages from UI stack and pages list
-        for page in pages_to_remove:
-            log.debug("refresh_plugin_pages: Removing page: %s", type(page).__name__)
-            self._remove_page_from_stack(page)
-            self.pages.remove(page)
-            page.deleteLater()  # Clean up the widget
+        # Remove disabled plugin pages from class list and destroy instances
+        for PageCls in classes_to_remove:
+            self._page_classes.remove(PageCls)
+            page = self._page_instances.pop(PageCls.NAME, None)
+            if page is not None:
+                log.debug("refresh_plugin_pages: Removing page instance: %s", type(page).__name__)
+                self._remove_page_from_stack(page)
+                page.deleteLater()
 
-        # Add new plugin pages
-        existing_page_classes = {type(page) for page in self.pages}
-        # Also track original classes for error pages to prevent duplicates
-        existing_original_classes = {getattr(page, '_original_class', type(page)) for page in self.pages}
-
+        # Add new plugin pages (just register the class; instantiation is lazy)
+        existing_classes = set(self._page_classes)
         for Page in active_page_classes:
-            if Page not in existing_page_classes and Page not in existing_original_classes:
-                log.debug("refresh_plugin_pages: Adding new page: %s", Page.__name__)
-                try:
-                    page = Page()
-                    page.set_dialog(self)
-                    page.initialized = True
-                    self._add_page_to_stack(page)
-                    self.pages.append(page)
-                    # Load the page if needed
-                    try:
-                        page.load()
-                        page.loaded = True
-                        log.debug("refresh_plugin_pages: Successfully loaded page: %s", Page.__name__)
-                    except Exception:
-                        log.exception("Failed loading options page %r", page)
-                except Exception as e:
-                    log.exception("Failed creating options page %r", Page)
-                    # Create an error page in place of the failing page
-                    page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
-                    self._add_page_to_stack(page)
-                    self.pages.append(page)
+            if Page not in existing_classes:
+                log.debug("refresh_plugin_pages: Adding new page class: %s", Page.__name__)
+                self._page_classes.append(Page)
 
         # Clear and rebuild the pages tree
         self.ui.pages_tree.clear()
