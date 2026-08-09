@@ -295,9 +295,13 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if self._http_code(http) == 400:
-                    response = load_json(data)
-                    if response['error'] == 'invalid_grant':
-                        self.forget_refresh_token()
+                    # Per RFC 6749 Section 5.2, the token endpoint returns
+                    # HTTP 400 for all grant error conditions (invalid_grant,
+                    # invalid_request, etc.). None of these are retryable
+                    # with the same refresh token, so forget it to stop the
+                    # retry loop and let the user re-authenticate.
+                    log.warning("OAuth: refresh token is no longer valid, logging out")
+                    self.forget_refresh_token()
             else:
                 access_token = data['access_token']
                 self.set_access_token(access_token, data['expires_in'])
