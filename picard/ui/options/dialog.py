@@ -395,11 +395,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.plugin_manager.plugin_installed.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_state_changed.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_uninstalled.connect(self.refresh_plugin_pages)
-
-            # Initial refresh to pick up any plugin option pages that were registered
-            # since the last time the options dialog was opened
-            with DebugOpt.TIMINGS.timing("OptionsDialog: refresh_plugin_pages"):
-                self.refresh_plugin_pages()
         except AttributeError:
             # Plugin manager not available - this should not happen in normal operation
             pass
