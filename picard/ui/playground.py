@@ -23,6 +23,7 @@
 
 from collections.abc import Callable
 
+from PyQt6.QtCore import QSignalBlocker
 from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
@@ -69,11 +70,8 @@ class Playground:
         return fmt
 
     def _set_line_fmt(self, lineno, textformat):
-        obj = self.playground_widget
-        cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
-        obj.blockSignals(True)
+        cursor = QTextCursor(self.playground_widget.document().findBlockByNumber(lineno))
         cursor.setBlockFormat(textformat)
-        obj.blockSignals(False)
 
     def update(self, match_function: Callable[[str], bool] | None = None) -> None:
         """Update the playground widget to color-code each line depending on whether it passes the match function.
@@ -85,12 +83,13 @@ class Playground:
         fmt_skip = self._get_fmt_skip()
         fmt_clear = self._get_fmt_clear()
 
-        for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
-            line = line.strip()
-            if not line or match_function is None:
-                fmt = fmt_clear
-            elif match_function(line):
-                fmt = fmt_match
-            else:
-                fmt = fmt_skip
-            self._set_line_fmt(lineno, fmt)
+        with QSignalBlocker(self.playground_widget):
+            for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
+                line = line.strip()
+                if not line or match_function is None:
+                    fmt = fmt_clear
+                elif match_function(line):
+                    fmt = fmt_match
+                else:
+                    fmt = fmt_skip
+                self._set_line_fmt(lineno, fmt)
