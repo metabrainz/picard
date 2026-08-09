@@ -180,11 +180,9 @@ class AboutDialog(PicardDialog, SingletonDialog):
         # TR: Replace this with your name to have it appear in the "About" dialog.
         translator_credits = _('translator-credits')
         if translator_credits != 'translator-credits':
-            translator_credits = translator_credits.replace("\n", ", ").strip()
+            translator_credits = translator_credits.strip().replace("\n", ", ")
             # TR: Replace LANG with the language you are translating to.
             translator_text = _("Translated to LANG by %s") % translator_credits
-            # Strip <br/> from old translations that included HTML markup
-            translator_text = translator_text.replace("<br/>", "").strip()
             self.ui.translator_credits_label.setText(translator_text)
             self.ui.translator_credits_label.setVisible(True)
         else:
