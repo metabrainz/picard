@@ -83,8 +83,14 @@ class Playground:
         fmt_skip = self._get_fmt_skip()
         fmt_clear = self._get_fmt_clear()
 
+        text = self.playground_widget.toPlainText()
+        lines = text.splitlines()
+        # Add an empty string to the list of lines to process if the playground text ends with a new line. This is to
+        # ensure that the blank line at the end of the playground widget doesn't inherit the color from the previous line.
+        if text and text[-1] in "\n\r":
+            lines.append('')
         with QSignalBlocker(self.playground_widget):
-            for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
+            for lineno, line in enumerate(lines):
                 line = line.strip()
                 if not line or match_function is None:
                     fmt = fmt_clear
