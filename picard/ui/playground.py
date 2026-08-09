@@ -43,15 +43,6 @@ class Playground:
         """
         self.playground_widget = playground_widget
 
-        self.fmt_match = QTextBlockFormat()
-        self.fmt_match.setBackground(self._highlight_color('tagstatus_added'))
-
-        self.fmt_skip = QTextBlockFormat()
-        self.fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
-
-        self.fmt_clear = QTextBlockFormat()
-        self.fmt_clear.clearBackground()
-
     @staticmethod
     def _highlight_color(color_key):
         alpha = 90 if interface_colors.dark_theme else 60
@@ -76,14 +67,23 @@ class Playground:
         Args:
             match_function: A function that takes a string and returns True if the string matches, otherwise False. Default is None.
         """
-        self._set_line_fmt(-1, self.fmt_clear)
+        fmt_match = QTextBlockFormat()
+        fmt_match.setBackground(self._highlight_color('tagstatus_added'))
+
+        fmt_skip = QTextBlockFormat()
+        fmt_skip.setBackground(self._highlight_color('tagstatus_removed'))
+
+        fmt_clear = QTextBlockFormat()
+        fmt_clear.clearBackground()
+
+        self._set_line_fmt(-1, fmt_clear)
 
         for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
             line = line.strip()
             if not line or match_function is None:
-                fmt = self.fmt_clear
+                fmt = fmt_clear
             elif match_function(line):
-                fmt = self.fmt_match
+                fmt = fmt_match
             else:
-                fmt = self.fmt_skip
+                fmt = fmt_skip
             self._set_line_fmt(lineno, fmt)
