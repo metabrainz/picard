@@ -6,7 +6,7 @@
 # Artur Gorbahev <arttttur@gmail.com>, 2018
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
 # Iurii Skipa <yuriskipa@gmail.com>, 2016
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2026.
 # Антон Присяжный <aukrodotua@gmail.com>, 2018
 # Nerten <alex@nerten.info>, 2023.
 # oleh_hishak <ohishak@gmail.com>, 2025, 2026.
@@ -17,19 +17,19 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-09 11:38+0200\n"
-"PO-Revision-Date: 2026-03-19 17:31+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2026-08-09 10:08+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.16.2\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -3496,22 +3496,11 @@ msgid "translator-credits"
 msgstr "перекладач-кредити"
 
 #: picard/ui/aboutdialog.py:185
-#, fuzzy, python-format
-#| msgid "<br/>Translated to LANG by %s"
+#, python-format
 msgid "Translated to LANG by %(translators)s"
-msgstr "<br/>Переклад українською мовою: %s"
+msgstr "Переклад українською мовою: %(translators)s"
 
 #: picard/ui/aboutdialog.py:196
-#, fuzzy
-#| msgid ""
-#| "Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
-#| "href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, "
-#| "<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</"
-#| "a>, <a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita "
-#| "Golubev</a>, <a href=\"http://www.flaticon.com/authors/maxim-"
-#| "basinski\">Maxim Basinski</a>, <a href=\"https://www.flaticon.com/authors/"
-#| "smashicons\">Smashicons</a> from <a href=\"https://"
-#| "www.flaticon.com\">www.flaticon.com</a>"
 msgid ""
 "Icons made by Sambhav Kothari and <a href=\"http://www.flaticon.com/authors/"
 "madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/authors/"
@@ -3521,13 +3510,13 @@ msgid ""
 "www.flaticon.com/authors/smashicons\">Smashicons</a> from <a href=\"https://"
 "www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"Іконки створені Sambhav Kothari <sambhavs.email@gmail.com> and <a "
-"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
-"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
-"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
-"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
-"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
-"a>завдяки <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Іконки створені Sambhav Kothari and <a href=\"http://www.flaticon.com/"
+"authors/madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/"
+"authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"http://www.flaticon.com/"
+"authors/nikita-golubev\">Nikita Golubev</a>, <a href=\"http://"
+"www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, <a "
+"href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>завдяки "
+"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:211
 msgid "Official website"

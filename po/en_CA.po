@@ -9,22 +9,22 @@
 # Ivan Dobsky, 2019-2022
 # Luke Hollins <luke@farcry.ca>, 2015
 # navap <pavan@chander.ca>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2020, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2020, 2023, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-09 11:38+0200\n"
-"PO-Revision-Date: 2023-08-24 13:50+0000\n"
+"PO-Revision-Date: 2026-08-09 10:07+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: English (Canada) <https://translations.metabrainz.org/"
-"projects/picard/app/en_CA/>\n"
+"projects/picard/3/app/en_CA/>\n"
 "Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -2931,10 +2931,9 @@ msgstr ""
 "  Nick Ellery https://launchpad.net/~nick.ellery"
 
 #: picard/ui/aboutdialog.py:185
-#, fuzzy, python-format
-#| msgid "<br/>Translated to LANG by %s"
+#, python-format
 msgid "Translated to LANG by %(translators)s"
-msgstr "<br/>Translated to Canadian English by %s"
+msgstr "Translated to Canadian English by %(translators)s"
 
 #: picard/ui/aboutdialog.py:196
 msgid ""

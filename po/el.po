@@ -8,7 +8,7 @@
 # dimits, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Panos Bouklis <panos@echidna-band.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2026.
 # Yannis Anthymidis, 2013
 # Theo Asimakopoulos <theoasima@gmail.com>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
@@ -17,9 +17,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-09 11:38+0200\n"
-"PO-Revision-Date: 2026-07-29 08:33+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-08-09 10:07+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Greek <https://translations.metabrainz.org/projects/picard/3/"
 "app/el/>\n"
 "Language: el\n"
@@ -27,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -3037,10 +3036,9 @@ msgstr ""
 "  daydreamer https://launchpad.net/~petros-adamopoulos"
 
 #: picard/ui/aboutdialog.py:185
-#, fuzzy, python-format
-#| msgid "<br/>Translated to LANG by %s"
+#, python-format
 msgid "Translated to LANG by %(translators)s"
-msgstr "<br/>Μεταφράστηκε στα Ελληνικά από %s"
+msgstr "Μεταφράστηκε στα Ελληνικά από %(translators)s"
 
 #: picard/ui/aboutdialog.py:196
 msgid ""

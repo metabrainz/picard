@@ -9,16 +9,15 @@
 # Ondřej Vodáček <ondrej.vodacek+transifex@gmail.com>, 2012-2013
 # pabouk <pabouk@gmail.com>, 2015
 # pabouk <pabouk@gmail.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-09 11:38+0200\n"
-"PO-Revision-Date: 2026-07-29 08:33+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-08-09 10:07+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Czech <https://translations.metabrainz.org/projects/picard/3/"
 "app/cs/>\n"
 "Language: cs\n"
@@ -27,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -3068,10 +3067,9 @@ msgstr ""
 "  Václav Brožík"
 
 #: picard/ui/aboutdialog.py:185
-#, fuzzy, python-format
-#| msgid "<br/>Translated to LANG by %s"
+#, python-format
 msgid "Translated to LANG by %(translators)s"
-msgstr "<br/>Přeložen do do Češtiny od %s"
+msgstr "Přeložen do do Češtiny od %(translators)s"
 
 #: picard/ui/aboutdialog.py:196
 msgid ""
