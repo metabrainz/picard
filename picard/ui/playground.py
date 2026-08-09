@@ -70,11 +70,7 @@ class Playground:
 
     def _set_line_fmt(self, lineno, textformat):
         obj = self.playground_widget
-        if lineno < 0:
-            # use current cursor position
-            cursor = obj.textCursor()
-        else:
-            cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+        cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
         obj.blockSignals(True)
         cursor.setBlockFormat(textformat)
         obj.blockSignals(False)
@@ -88,8 +84,6 @@ class Playground:
         fmt_match = self._get_fmt_match()
         fmt_skip = self._get_fmt_skip()
         fmt_clear = self._get_fmt_clear()
-
-        self._set_line_fmt(-1, fmt_clear)
 
         for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
             line = line.strip()
