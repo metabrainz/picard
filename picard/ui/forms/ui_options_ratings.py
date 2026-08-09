@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_ratings.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -43,14 +43,20 @@ class Ui_RatingsOptionsPage(object):
         self.submit_ratings.setObjectName("submit_ratings")
         self.vboxlayout1.addWidget(self.submit_ratings)
         self.vboxlayout.addWidget(self.enable_ratings)
-        spacerItem = QtWidgets.QSpacerItem(181, 31, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            181, 31, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.vboxlayout.addItem(spacerItem)
 
         self.retranslateUi(RatingsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(RatingsOptionsPage)
 
     def retranslateUi(self, RatingsOptionsPage):
-        self.enable_ratings.setTitle(_("Enable track ratings"))
-        self.label.setText(_("Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please specify the e-mail you want to use to save your ratings."))
+        self.enable_ratings.setTitle(_("Enable track ratings (requires login)"))
+        self.label.setText(
+            _(
+                "Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please specify the e-mail you want to use to save your ratings."
+            )
+        )
         self.ignore_tags_2.setText(_("E-mail:"))
         self.submit_ratings.setText(_("Submit ratings to MusicBrainz"))

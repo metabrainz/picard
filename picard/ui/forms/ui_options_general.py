@@ -18,7 +18,9 @@ class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
         GeneralOptionsPage.resize(403, 526)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(GeneralOptionsPage.sizePolicy().hasHeightForWidth())
@@ -39,7 +41,9 @@ class Ui_GeneralOptionsPage(object):
         self.server_port.setProperty("value", 80)
         self.server_port.setObjectName("server_port")
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(1, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        spacerItem = QtWidgets.QSpacerItem(
+            1, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed
+        )
         self.gridlayout.addItem(spacerItem, 2, 0, 1, 1)
         self.server_host = QtWidgets.QComboBox(parent=self.musicbrainz_server_box)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -51,8 +55,9 @@ class Ui_GeneralOptionsPage(object):
         self.server_host.setObjectName("server_host")
         self.gridlayout.addWidget(self.server_host, 1, 0, 1, 1)
         self.server_host_primary_warning = QtWidgets.QFrame(parent=self.musicbrainz_server_box)
-        self.server_host_primary_warning.setStyleSheet("QFrame { background-color: #ffc107; color: black }\n"
-"QCheckBox { color: black }")
+        self.server_host_primary_warning.setStyleSheet(
+            "QFrame { background-color: #ffc107; color: black }\nQCheckBox { color: black }"
+        )
         self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.server_host_primary_warning.setObjectName("server_host_primary_warning")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.server_host_primary_warning)
@@ -91,7 +96,9 @@ class Ui_GeneralOptionsPage(object):
         self.logout = QtWidgets.QPushButton(parent=self.musicbrainz_account_box)
         self.logout.setObjectName("logout")
         self.horizontalLayout.addWidget(self.logout)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.enable_user_collections = QtWidgets.QCheckBox(parent=self.musicbrainz_account_box)
@@ -115,7 +122,9 @@ class Ui_GeneralOptionsPage(object):
         self.remove_complete_albums_after_save.setObjectName("remove_complete_albums_after_save")
         self.verticalLayout.addWidget(self.remove_complete_albums_after_save)
         self.vboxlayout.addWidget(self.general_box)
-        spacerItem2 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            181, 21, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.vboxlayout.addItem(spacerItem2)
 
         self.retranslateUi(GeneralOptionsPage)
@@ -132,13 +141,17 @@ class Ui_GeneralOptionsPage(object):
     def retranslateUi(self, GeneralOptionsPage):
         self.musicbrainz_server_box.setTitle(_("MusicBrainz Server"))
         self.label.setText(_("Server address:"))
-        self.label_4.setText(_("You have configured an unofficial MusicBrainz server. By default submissions of releases, recordings and disc IDs will go to the primary database on musicbrainz.org."))
+        self.label_4.setText(
+            _(
+                "You have configured an unofficial MusicBrainz server. By default submissions of releases, recordings and disc IDs will go to the primary database on musicbrainz.org."
+            )
+        )
         self.use_server_for_submission.setText(_("Submit data to the configured server"))
         self.label_7.setText(_("Port:"))
         self.musicbrainz_account_box.setTitle(_("MusicBrainz Account"))
         self.login.setText(_("Log in"))
         self.logout.setText(_("Log out"))
-        self.enable_user_collections.setText(_("Enable managing user collections"))
+        self.enable_user_collections.setText(_("Enable managing user collections (requires login)"))
         self.general_box.setTitle(_("General"))
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.cluster_new_files.setText(_("Automatically cluster all new files"))

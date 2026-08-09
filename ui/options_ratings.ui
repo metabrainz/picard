@@ -14,7 +14,7 @@
    <item>
     <widget class="QGroupBox" name="enable_ratings">
      <property name="title">
-      <string>Enable track ratings</string>
+      <string>Enable track ratings (requires login)</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
