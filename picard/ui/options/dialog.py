@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import time
 from typing import TYPE_CHECKING
 
 from PyQt6 import (
@@ -49,6 +50,7 @@ from picard.config import (
     OptionError,
     get_config,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
@@ -258,6 +260,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
+        if DebugOpt.TIMINGS.enabled:
+            _init_t0 = time.perf_counter_ns()
         if modal_options():
             # On macOS: use WindowModal (blocks MainWindow, allows child windows
             # like Script Editor to be shown above). Add Window flag to prevent
@@ -332,18 +336,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config = get_config()
 
         self.pages = []
-        for Page in ext_point_options_pages:
-            try:
-                page = Page()
-                page.set_dialog(self)
-                page.initialized = True
-            except Exception as e:
-                log.exception("Failed initializing options page %r", Page)
-                # create an empty page with the error message in place of the failing page
-                # this approach still allows subpages of the failing page to load
-                page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
-            self._add_page_to_stack(page)
-            self.pages.append(page)
+        with DebugOpt.TIMINGS.timing("OptionsDialog: page instantiation"):
+            for Page in ext_point_options_pages:
+                try:
+                    page = Page()
+                    page.set_dialog(self)
+                    page.initialized = True
+                except Exception as e:
+                    log.exception("Failed initializing options page %r", Page)
+                    # create an empty page with the error message in place of the failing page
+                    # this approach still allows subpages of the failing page to load
+                    page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
+                self._add_page_to_stack(page)
+                self.pages.append(page)
 
         self.item_to_page = {}
         self.pagename_to_item = {}
@@ -352,7 +357,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             default_page = config.persist['options_last_active_page']
         self._default_page = default_page
         log.debug("OptionsDialog init: Trying to restore page '%s'", default_page)
-        self.add_pages(None, default_page, self.ui.pages_tree)
+        with DebugOpt.TIMINGS.timing("OptionsDialog: add_pages"):
+            self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
@@ -365,7 +371,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
 
-        self.load_all_pages()
+        with DebugOpt.TIMINGS.timing("OptionsDialog: load_all_pages"):
+            self.load_all_pages()
 
         maintenance_page = self.get_page('maintenance')
         if maintenance_page.loaded:
@@ -374,7 +381,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_page = self.get_page('profiles')
         if profile_page.loaded:
             profile_page.signal_refresh.connect(self.update_from_profile_changes)
-            self.highlight_enabled_profile_options()
+            with DebugOpt.TIMINGS.timing("OptionsDialog: highlight_enabled_profile_options"):
+                self.highlight_enabled_profile_options()
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
@@ -390,7 +398,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
             # Initial refresh to pick up any plugin option pages that were registered
             # since the last time the options dialog was opened
-            self.refresh_plugin_pages()
+            with DebugOpt.TIMINGS.timing("OptionsDialog: refresh_plugin_pages"):
+                self.refresh_plugin_pages()
         except AttributeError:
             # Plugin manager not available - this should not happen in normal operation
             pass
@@ -398,6 +407,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Set initial selection after plugin refresh
         if self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+        if DebugOpt.TIMINGS.enabled:
+            log.debug("OptionsDialog: total __init__ in %.1f ms", (time.perf_counter_ns() - _init_t0) / 1_000_000)
 
     def showEvent(self, event):
         super().showEvent(event)
