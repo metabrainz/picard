@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-09 11:19+0200\n"
+"POT-Creation-Date: 2026-08-09 11:38+0200\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/3/"
@@ -4072,7 +4072,7 @@ msgstr ""
 msgid "Option Settings"
 msgstr "Tetapan Pengekod"
 
-#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:211
+#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:209
 msgid "Links"
 msgstr ""
 
@@ -4179,12 +4179,12 @@ msgstr "Hak cipta © %(copyright_years)s %(authors_credits)s dan lain-lain"
 msgid "translator-credits"
 msgstr "Muhammad Adli Ibrahim"
 
-#: picard/ui/aboutdialog.py:186
-#, python-format
-msgid "Translated to %(language)s by %(translators)s"
-msgstr ""
+#: picard/ui/aboutdialog.py:185
+#, fuzzy, python-format
+msgid "Translated to LANG by %(translators)s"
+msgstr "<br/>Diterjemahkan kepada LANG oleh %s"
 
-#: picard/ui/aboutdialog.py:198
+#: picard/ui/aboutdialog.py:196
 #, fuzzy
 #| msgid ""
 #| "Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
@@ -4212,21 +4212,21 @@ msgstr ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
 "daripada <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
-#: picard/ui/aboutdialog.py:213
+#: picard/ui/aboutdialog.py:211
 msgid "Official website"
 msgstr "Tapak sesawang rasmi"
 
-#: picard/ui/aboutdialog.py:214 picard/ui/forms/ui_options_script.py:136
+#: picard/ui/aboutdialog.py:212 picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:215
+#: picard/ui/aboutdialog.py:213
 #, fuzzy
 #| msgid "Comment"
 msgid "Community forum"
 msgstr "Ulasan"
 
-#: picard/ui/aboutdialog.py:216
+#: picard/ui/aboutdialog.py:214
 msgid "License"
 msgstr "Lesen"
 
@@ -10931,10 +10931,6 @@ msgstr ""
 "Ralat ketika melancarkan penyemak imbas:\n"
 "\n"
 "%s"
-
-#, fuzzy, python-format
-#~ msgid "<br/>Translated to LANG by %s"
-#~ msgstr "<br/>Diterjemahkan kepada LANG oleh %s"
 
 #, python-format
 #~ msgid "Version %(version)s"

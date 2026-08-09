@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-09 11:19+0200\n"
+"POT-Creation-Date: 2026-08-09 11:38+0200\n"
 "PO-Revision-Date: 2023-08-23 09:08+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Marathi <https://translations.metabrainz.org/projects/picard/"
@@ -2820,7 +2820,7 @@ msgstr ""
 msgid "Option Settings"
 msgstr "पर्याय"
 
-#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:211
+#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:209
 msgid "Links"
 msgstr ""
 
@@ -2916,12 +2916,12 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:186
+#: picard/ui/aboutdialog.py:185
 #, python-format
-msgid "Translated to %(language)s by %(translators)s"
+msgid "Translated to LANG by %(translators)s"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:198
+#: picard/ui/aboutdialog.py:196
 msgid ""
 "Icons made by Sambhav Kothari and <a href=\"http://www.flaticon.com/authors/"
 "madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/authors/"
@@ -2932,21 +2932,21 @@ msgid ""
 "www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:213
+#: picard/ui/aboutdialog.py:211
 msgid "Official website"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:214 picard/ui/forms/ui_options_script.py:136
+#: picard/ui/aboutdialog.py:212 picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:215
+#: picard/ui/aboutdialog.py:213
 #, fuzzy
 #| msgid "Comment"
 msgid "Community forum"
 msgstr "टिप्पणी"
 
-#: picard/ui/aboutdialog.py:216
+#: picard/ui/aboutdialog.py:214
 #, fuzzy
 #| msgid "License"
 msgid "License"

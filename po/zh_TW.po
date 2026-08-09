@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-09 11:19+0200\n"
+"POT-Creation-Date: 2026-08-09 11:38+0200\n"
 "PO-Revision-Date: 2026-07-31 18:12+0000\n"
 "Last-Translator: silentbird "
 "<silentbird@users.noreply.translations.metabrainz.org>\n"
@@ -3134,7 +3134,7 @@ msgstr ""
 msgid "Option Settings"
 msgstr "編碼設定"
 
-#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:211
+#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:209
 msgid "Links"
 msgstr ""
 
@@ -3239,12 +3239,13 @@ msgstr "版權所有 © %(copyright_years)s %(authors_credits)s與其他"
 msgid "translator-credits"
 msgstr "Shen-Ta Hsieh"
 
-#: picard/ui/aboutdialog.py:186
-#, python-format
-msgid "Translated to %(language)s by %(translators)s"
-msgstr ""
+#: picard/ui/aboutdialog.py:185
+#, fuzzy, python-format
+#| msgid "<br/>Translated to LANG by %s"
+msgid "Translated to LANG by %(translators)s"
+msgstr "<br/>由 %s 翻譯為傳統中文"
 
-#: picard/ui/aboutdialog.py:198
+#: picard/ui/aboutdialog.py:196
 #, fuzzy
 #| msgid ""
 #| "Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
@@ -3272,21 +3273,21 @@ msgstr ""
 "<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>來自<a "
 "href=\"https://www.flaticon.com\">www.flaticon.com</a>等人製作"
 
-#: picard/ui/aboutdialog.py:213
+#: picard/ui/aboutdialog.py:211
 msgid "Official website"
 msgstr "官方網站"
 
-#: picard/ui/aboutdialog.py:214 picard/ui/forms/ui_options_script.py:136
+#: picard/ui/aboutdialog.py:212 picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
 msgstr "說明文件"
 
-#: picard/ui/aboutdialog.py:215
+#: picard/ui/aboutdialog.py:213
 #, fuzzy
 #| msgid "Community"
 msgid "Community forum"
 msgstr "社群"
 
-#: picard/ui/aboutdialog.py:216
+#: picard/ui/aboutdialog.py:214
 msgid "License"
 msgstr "授權"
 
@@ -10054,10 +10055,6 @@ msgstr ""
 "啟動網頁瀏覽時發生錯誤:\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "<br/>Translated to LANG by %s"
-#~ msgstr "<br/>由 %s 翻譯為傳統中文"
 
 #, python-format
 #~ msgid "Version %(version)s"

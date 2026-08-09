@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-09 11:19+0200\n"
+"POT-Creation-Date: 2026-08-09 11:38+0200\n"
 "PO-Revision-Date: 2026-03-19 17:31+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -3395,7 +3395,7 @@ msgstr "Нотатки"
 msgid "Option Settings"
 msgstr "Налаштування опцій"
 
-#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:211
+#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:209
 msgid "Links"
 msgstr "Посилання"
 
@@ -3495,12 +3495,13 @@ msgstr "Авторське право © %(copyright_years)s %(authors_credits)s
 msgid "translator-credits"
 msgstr "перекладач-кредити"
 
-#: picard/ui/aboutdialog.py:186
-#, python-format
-msgid "Translated to %(language)s by %(translators)s"
-msgstr ""
+#: picard/ui/aboutdialog.py:185
+#, fuzzy, python-format
+#| msgid "<br/>Translated to LANG by %s"
+msgid "Translated to LANG by %(translators)s"
+msgstr "<br/>Переклад українською мовою: %s"
 
-#: picard/ui/aboutdialog.py:198
+#: picard/ui/aboutdialog.py:196
 #, fuzzy
 #| msgid ""
 #| "Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
@@ -3528,21 +3529,21 @@ msgstr ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
 "a>завдяки <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
-#: picard/ui/aboutdialog.py:213
+#: picard/ui/aboutdialog.py:211
 msgid "Official website"
 msgstr "Офіційний веб-сайт"
 
-#: picard/ui/aboutdialog.py:214 picard/ui/forms/ui_options_script.py:136
+#: picard/ui/aboutdialog.py:212 picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
 msgstr "Документація"
 
-#: picard/ui/aboutdialog.py:215
+#: picard/ui/aboutdialog.py:213
 #, fuzzy
 #| msgid "Community"
 msgid "Community forum"
 msgstr "Спільнота"
 
-#: picard/ui/aboutdialog.py:216
+#: picard/ui/aboutdialog.py:214
 msgid "License"
 msgstr "Ліцензія"
 
@@ -10151,10 +10152,6 @@ msgstr ""
 "Помилка під час запуску веб-браузера:\n"
 "\n"
 "%s"
-
-#, python-format
-#~ msgid "<br/>Translated to LANG by %s"
-#~ msgstr "<br/>Переклад українською мовою: %s"
 
 #, python-format
 #~ msgid "Version %(version)s"
