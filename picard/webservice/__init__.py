@@ -398,6 +398,7 @@ class WebService(QtCore.QObject):
         self.manager = QtNetwork.QNetworkAccessManager()
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)
+        self.oauth_manager.authorization_state_changed.connect(self.authorization_state_changed)
         config = get_config()
         self._init_cache()
         self.set_cache_size()

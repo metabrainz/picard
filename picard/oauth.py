@@ -34,6 +34,11 @@ import secrets
 import time
 import urllib.parse
 
+from PyQt6.QtCore import (
+    QObject,
+    pyqtSignal,
+)
+
 from picard import log
 from picard.config import get_config
 from picard.const import (
@@ -55,8 +60,11 @@ class OAuthInvalidStateError(Exception):
     pass
 
 
-class OAuthManager:
+class OAuthManager(QObject):
+    authorization_state_changed = pyqtSignal()
+
     def __init__(self, webservice):
+        super().__init__(parent=webservice)
         self.webservice = webservice
         # Associates state tokens with callbacks
         self.__states = {}
@@ -197,7 +205,7 @@ class OAuthManager:
     def forget_refresh_token(self):
         del self.refresh_token
         del self.refresh_token_scopes
-        self.webservice.authorization_state_changed.emit()
+        self.authorization_state_changed.emit()
 
     def forget_access_token(self):
         del self.access_token
@@ -380,7 +388,7 @@ class OAuthManager:
                 self.username = data.get('username', data['sub'])
                 log.debug("OAuth: got username %s", self.username)
                 successful = True
-                self.webservice.authorization_state_changed.emit()
+                self.authorization_state_changed.emit()
         except Exception as e:
             log.error("OAuth: Unexpected error handling username fetch response: %r", e)
             error_msg = _("Unexpected authentication error")
