@@ -333,8 +333,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config = get_config()
 
         # Store page classes for tree building; instances are created lazily.
-        with DebugOpt.TIMINGS.timing("OptionsDialog: page registration"):
-            self._page_classes = list(ext_point_options_pages)
+        self._page_classes = list(ext_point_options_pages)
         self._page_instances: dict[str, OptionsPage] = {}
 
         self.item_to_page = {}
@@ -361,15 +360,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Load only pages needed for init signals and the visible page.
         # Other pages are loaded lazily on first visit in switch_page().
         with DebugOpt.TIMINGS.timing("OptionsDialog: load initial pages"):
-            self._load_page('maintenance')
-            self._load_page('profiles')
+            maintenance_page = self._load_page('maintenance')
+            profile_page = self._load_page('profiles')
 
-        maintenance_page = self.get_page('maintenance')
-        if maintenance_page.loaded:
+        if maintenance_page and maintenance_page.loaded:
             maintenance_page.signal_reload.connect(self.load_all_pages)
 
-        profile_page = self.get_page('profiles')
-        if profile_page.loaded:
+        if profile_page and profile_page.loaded:
             profile_page.signal_refresh.connect(self.update_from_profile_changes)
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
