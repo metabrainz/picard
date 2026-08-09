@@ -371,8 +371,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.restoreWindowState()
         self.finished.connect(self.saveWindowState)
 
-        with DebugOpt.TIMINGS.timing("OptionsDialog: load_all_pages"):
-            self.load_all_pages()
+        # Load only pages needed for init signals and the visible page.
+        # Other pages are loaded lazily on first visit in switch_page().
+        with DebugOpt.TIMINGS.timing("OptionsDialog: load initial pages"):
+            self._load_page('maintenance')
+            self._load_page('profiles')
 
         maintenance_page = self.get_page('maintenance')
         if maintenance_page.loaded:
@@ -490,6 +493,21 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             except Exception:
                 log.exception("Failed loading options page %r", page)
                 self.disable_page(page.NAME)
+
+    def _load_page(self, pagename):
+        """Load a single page by name if not already loaded."""
+        try:
+            page = self.get_page(pagename)
+        except KeyError:
+            return
+        if page.loaded or not page.initialized:
+            return
+        try:
+            page.load()
+            page.loaded = True
+        except Exception:
+            log.exception("Failed loading options page %r", page)
+            self.disable_page(page.NAME)
 
     def show_attached_profiles_dialog(self):
         items = self.ui.pages_tree.selectedItems()
@@ -717,6 +735,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = self.ui.pages_tree.selectedItems()
         if items:
             page = self.item_to_page[items[0]]
+            # Lazy-load page on first visit
+            if not page.loaded and page.initialized:
+                try:
+                    page.load()
+                    page.loaded = True
+                except Exception:
+                    log.exception("Failed loading options page %r", page)
+                    self.disable_page(page.NAME)
             self.set_profiles_button_and_highlight(page)
             self.ui.reset_button.setDisabled(not page.loaded)
             self._show_page(page)
