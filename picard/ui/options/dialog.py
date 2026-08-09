@@ -931,6 +931,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def restore_all_defaults(self):
         self.suspend_signals = True
+        self.load_all_pages()
         for page in self.loaded_pages:
             try:
                 page.restore_defaults()
