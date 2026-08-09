@@ -182,9 +182,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
         translator_credits = _('translator-credits')
         if translator_credits != 'translator-credits':
             translator_credits = translator_credits.strip().replace("\n", ", ")
-            language = QtCore.QLocale().nativeLanguageName().capitalize()
-            translator_text = _("Translated to %(language)s by %(translators)s") % {
-                'language': language,
+            translator_text = _("Translated to LANG by %(translators)s") % {
                 'translators': translator_credits,
             }
             self.ui.translator_credits_label.setText(translator_text)
