@@ -381,8 +381,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_page = self.get_page('profiles')
         if profile_page.loaded:
             profile_page.signal_refresh.connect(self.update_from_profile_changes)
-            with DebugOpt.TIMINGS.timing("OptionsDialog: highlight_enabled_profile_options"):
-                self.highlight_enabled_profile_options()
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
@@ -409,6 +407,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def showEvent(self, event):
         super().showEvent(event)
         self._constrain_to_screen()
+        # Defer profile highlighting so the dialog paints first.
+        # Highlights are cosmetic (background colors on widgets) and
+        # applying them after the first paint avoids blocking display.
+        QtCore.QTimer.singleShot(0, self._deferred_highlight_profile_options)
+
+    def _deferred_highlight_profile_options(self):
+        with DebugOpt.TIMINGS.timing("OptionsDialog: highlight_enabled_profile_options"):
+            self.highlight_enabled_profile_options()
 
     def _constrain_to_screen(self):
         """Ensure the dialog fits within the available screen geometry."""
