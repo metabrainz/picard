@@ -187,6 +187,92 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
+def apply_tag_values(objects, tag, values):
+    """Apply tag values to objects' metadata without triggering UI updates.
+
+    Sets the tag to the given values on each object's metadata, or deletes the
+    tag if values is empty.  Yields each affected object exactly once.
+
+    This is a pure data-mutation helper: it does not call obj.update() or
+    interact with the UI.  The caller is responsible for triggering updates
+    on the returned objects.
+
+    Args:
+        objects: Iterable of objects with a ``metadata`` attribute.
+        tag: The tag name to set or delete.
+        values: List of values to assign.  An empty list (or ``[""]``)
+            means "delete the tag".
+
+    Yields:
+        Each object whose metadata was modified.
+    """
+    if values == [""]:
+        values = []
+    if not values:
+        for obj in objects:
+            del obj.metadata[tag]
+            yield obj
+    else:
+        for obj in objects:
+            obj.metadata[tag] = values
+            yield obj
+
+
+def interpret_paste_data(data, multi_valued_joiner):
+    """Interpret pasted tag data into (tag, values) pairs.
+
+    Parses a dict structure (as produced by TagDiff.as_dict / clipboard JSON)
+    and yields ``(tag, values)`` tuples suitable for passing to
+    :func:`apply_tag_values`.
+
+    The input ``data`` maps tag names to dicts that may contain:
+      - ``TagDiff.REMOVED_VALUE``: if True, the tag should be deleted (values=[])
+      - ``TagDiff.NEW_VALUE``: preferred list of values
+      - ``TagDiff.OLD_VALUE``: fallback list of values if 'new' is absent
+
+    Multi-valued strings are split on ``multi_valued_joiner``.
+
+    Args:
+        data: Dict mapping tag names to value dicts.
+        multi_valued_joiner: The separator string for splitting multi-valued
+            tags (typically ``'; '``).
+
+    Yields:
+        Tuples of ``(tag, values)`` where values is a list of strings,
+        or an empty list to indicate deletion.
+    """
+    for tag, tag_data in data.items():
+        if tag_data.get(TagDiff.REMOVED_VALUE) is True:
+            yield tag, []
+            continue
+        value = tag_data.get(TagDiff.NEW_VALUE) or tag_data.get(TagDiff.OLD_VALUE)
+        if value:
+            if isinstance(value, list):
+                value = multi_valued_joiner.join(value)
+            yield tag, value.split(multi_valued_joiner)
+
+
+def merge_values(orig_values, current_values):
+    """Merge original and current tag values, preserving order and uniqueness.
+
+    Returns a new list starting with all original values, followed by any
+    current values not already present.  This is the logic used by
+    "Merge Original Values" in the metadata box context menu.
+
+    Args:
+        orig_values: The original (saved) values for a tag.
+        current_values: The current (edited) values for the same tag.
+
+    Returns:
+        A merged list of values with no duplicates, preserving insertion order.
+    """
+    merged = list(orig_values)
+    for value in current_values:
+        if value not in merged:
+            merged.append(value)
+    return merged
+
+
 class MetadataBox(QtWidgets.QTableWidget):
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
@@ -221,6 +307,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         plugin_manager = self.tagger.get_plugin_manager()
         if plugin_manager:
             plugin_manager.plugin_state_changed.connect(self._on_plugin_changed)
+
+        # Table widget configuration
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -237,6 +325,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect, 1)
         self.setItemDelegate(TableTagEditorDelegate(self))
         self.setWordWrap(False)
+
+        # Selection state
         self.files = set()
         self.tracks = set()
         self.objects = set()
@@ -244,6 +334,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
+
+        # Actions and shortcuts
         self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
         self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
@@ -261,11 +353,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.remove_tag_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags
         )
+
+        # Other state
         self.preserved_tags = UserPreservedTags()
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
 
+        # Clipboard MIME type handlers
         self.mimedata_helper = MimeDataHelper()
         self.mimedata_helper.register(
             self.MIMETYPE_PICARD_TAGS,
@@ -394,77 +489,67 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         items = self.selectedItems()
         if len(items) > 1:
-            selected_data = self.get_selected_tags(items)
-            # Build the mimedata to use for the clipboard
-            mimedata = QtCore.QMimeData()
-            converted_data_cache = {}
-            for mimetype, encode_func in self.mimedata_helper.encode_funcs():
-                try:
-                    if encode_func not in converted_data_cache:
-                        converted_data_cache[encode_func] = encode_func(selected_data)
-                    mimedata.setData(mimetype, converted_data_cache[encode_func])
-                except Exception as e:
-                    log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
-            # Ensure we actually have something to copy to the clipboard
-            if mimedata.formats():
-                if log.is_debug():
-                    log.debug("Copying to clipboard as %r", mimedata.formats())
-                    tsv_data = selected_data.to_tsv()
-                    lines = tsv_data.rstrip('\n').split('\n')
-                    for line in lines:
-                        log.debug("  %s", line.replace('\t', '|'))
-                self.tagger.clipboard().setMimeData(mimedata)
+            self._copy_multiple_items(items)
         else:
-            # Just copy the current item as a string
-            item = self.currentItem()
-            if item:
-                column = item.column()
-                if column == self.COLUMN_TAG:
-                    # Copy tag name from first column
-                    tag = self.tag_diff.tag_names[item.row()]
-                    log.debug("Copying tag name '%s' to clipboard", tag)
-                    self.tagger.clipboard().setText(tag)
-                else:
-                    tag, value = self._get_row_info(item.row())
-                    value = value[column]
-                    if column == self.COLUMN_NEW and self.tag_diff.tag_status(tag) == TagStatus.REMOVED:
-                        value = []
-                    elif tag == '~length':
-                        value = self.tag_diff.handle_length(value, prettify_times=True)
-                    if value is not None:
-                        log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
-                        self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+            self._copy_single_item()
+
+    def _copy_multiple_items(self, items):
+        """Copy multiple selected items to clipboard as structured MIME data."""
+        selected_data = self.get_selected_tags(items)
+        mimedata = QtCore.QMimeData()
+        converted_data_cache = {}
+        for mimetype, encode_func in self.mimedata_helper.encode_funcs():
+            try:
+                if encode_func not in converted_data_cache:
+                    converted_data_cache[encode_func] = encode_func(selected_data)
+                mimedata.setData(mimetype, converted_data_cache[encode_func])
+            except Exception as e:
+                log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
+        if mimedata.formats():
+            if log.is_debug():
+                log.debug("Copying to clipboard as %r", mimedata.formats())
+                tsv_data = selected_data.to_tsv()
+                lines = tsv_data.rstrip('\n').split('\n')
+                for line in lines:
+                    log.debug("  %s", line.replace('\t', '|'))
+            self.tagger.clipboard().setMimeData(mimedata)
+
+    def _copy_single_item(self):
+        """Copy a single selected item to clipboard as plain text."""
+        item = self.currentItem()
+        if not item:
+            return
+        column = item.column()
+        if column == self.COLUMN_TAG:
+            tag = self.tag_diff.tag_names[item.row()]
+            log.debug("Copying tag name '%s' to clipboard", tag)
+            self.tagger.clipboard().setText(tag)
+            return
+        tag, value = self._get_row_info(item.row())
+        value = value[column]
+        if column == self.COLUMN_NEW and self.tag_diff.tag_status(tag) == TagStatus.REMOVED:
+            value = []
+        elif tag == '~length':
+            value = self.tag_diff.handle_length(value, prettify_times=True)
+        if value is not None:
+            log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
+            self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_from_json(self, mimedata):
-        def _decode_json(mimedata):
-            try:
-                text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
-                return json.loads(text)
-            except json.JSONDecodeError as e:
-                log.error("Failed to decode JSON data from clipboard: %r", e)
-
-        def _apply_tag_dict(data):
-            for tag in data:
-                if self._tag_is_editable(tag):
-                    if data[tag].get(TagDiff.REMOVED_VALUE) is True:
-                        log.info("Removing tag '%s' from JSON clipboard paste", tag)
-                        yield from self._set_tag_values_delayed_updates(tag, [])
-                        continue
-                    # Prefer 'new' values, but fall back to 'old' if not available
-                    value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
-                    if value:
-                        if isinstance(value, list):
-                            # There are multiple values for the tag
-                            value = MULTI_VALUED_JOINER.join(value)
-                        # each value may also represent multiple values
-                        log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
-                        value = value.split(MULTI_VALUED_JOINER)
-                        yield from self._set_tag_values_delayed_updates(tag, value)
-                    else:
-                        log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
-
-        data = _decode_json(mimedata)
-        return _apply_tag_dict(data) if data else []
+        try:
+            text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
+            data = json.loads(text)
+        except json.JSONDecodeError as e:
+            log.error("Failed to decode JSON data from clipboard: %r", e)
+            return []
+        for tag, values in interpret_paste_data(data, MULTI_VALUED_JOINER):
+            if not self._tag_is_editable(tag):
+                continue
+            if values:
+                log.info("Pasting '%s' from JSON clipboard to tag '%s'", MULTI_VALUED_JOINER.join(values), tag)
+            else:
+                log.info("Removing tag '%s' from JSON clipboard paste", tag)
+            yield from self._set_tag_values_delayed_updates(tag, values)
 
     def _paste_from_text(self, mimedata):
         item = self.currentItem()
@@ -674,16 +759,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
-                    # Add lookup action for supported tags
-                    if tag in self.LOOKUP_TAGS:
-                        if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
-                            if column == self.COLUMN_ORIG:
-                                values = self.tag_diff.old[tag]
-                            else:
-                                values = self.tag_diff.new[tag]
-                            lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
-                            lookup_action.triggered.connect(partial(self._open_link, values, tag))
-                            menu.addAction(lookup_action)
+                    self._add_lookup_action(menu, tag, column, single_tag, item)
                     # Collect removable tags
                     if self._tag_is_removable(tag):
                         removals.append(tag)
@@ -705,6 +781,22 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.exec(event.globalPos())
         event.accept()
 
+    def _add_lookup_action(self, menu, tag, column, single_tag, item):
+        """Add a 'Lookup in Browser' action if the tag supports it and context allows."""
+        if tag not in self.LOOKUP_TAGS:
+            return
+        if not (single_tag and item.text()):
+            return
+        if column == self.COLUMN_ORIG:
+            values = self.tag_diff.old[tag]
+        elif column == self.COLUMN_NEW:
+            values = self.tag_diff.new[tag]
+        else:
+            return
+        lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
+        lookup_action.triggered.connect(partial(self._open_link, values, tag))
+        menu.addAction(lookup_action)
+
     def _apply_update_funcs(self, funcs):
         with self.tagger.window.ignore_selection_changes:
             for f in funcs:
@@ -716,10 +808,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._set_tag_values_extra(tag, orig_values, obj, extra_objects)
 
     def _merge_orig_tags(self, obj, tag, extra_objects=None):
-        values = list(obj.orig_metadata.getall(tag))
-        for new_value in obj.metadata.getall(tag):
-            if new_value not in values:
-                values.append(new_value)
+        values = merge_values(obj.orig_metadata.getall(tag), obj.metadata.getall(tag))
         self._set_tag_values_extra(tag, values, obj, extra_objects)
 
     def _edit_tag(self, tag):
@@ -746,16 +835,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         if objects is None:
             objects = self.objects
         with self.tagger.window.ignore_selection_changes:
-            if values == [""]:
-                values = []
-            if not values and self._tag_is_removable(tag):
-                for obj in objects:
-                    del obj.metadata[tag]
-                    yield obj
-            elif values:
-                for obj in objects:
-                    obj.metadata[tag] = values
-                    yield obj
+            if values == [""] or not values:
+                if not self._tag_is_removable(tag):
+                    return
+            yield from apply_tag_values(objects, tag, values)
 
     def _update_objects(self, objects):
         for obj in set(objects):
