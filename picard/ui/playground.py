@@ -78,15 +78,12 @@ class Playground:
         """
         self._set_line_fmt(-1, self.fmt_clear)
 
-        if match_function is None:
-            return
-
         for lineno, line in enumerate(self.playground_widget.toPlainText().splitlines()):
             line = line.strip()
-            fmt = self.fmt_clear
-            if line:
-                if match_function(line):
-                    fmt = self.fmt_match
-                else:
-                    fmt = self.fmt_skip
+            if not line or match_function is None:
+                fmt = self.fmt_clear
+            elif match_function(line):
+                fmt = self.fmt_match
+            else:
+                fmt = self.fmt_skip
             self._set_line_fmt(lineno, fmt)
