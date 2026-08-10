@@ -607,6 +607,13 @@ class PluginApi:
         This is a convenience method for accessing the API instance from
         anywhere in plugin code without explicitly passing it around.
 
+        Note:
+            Getting the PluginApi instance with this method is a somewhat expensive
+            operation. If possible calling this method should be avoided or kept on
+            higher level code. In most cases, the API instance is already explicitly
+            available, e.g. via the `api` argument to plugin entry points or as a
+            class attribute when sub-classing one of the API base classes.
+
         Returns:
             PluginApi: The API instance for the calling plugin
 
