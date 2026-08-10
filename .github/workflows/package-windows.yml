@@ -26,7 +26,7 @@ jobs:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
     - name: Set up Python 3.8
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       with:
         python-version: 3.8
         cache: 'pip'
@@ -94,7 +94,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
     - name: Sign picard.exe
-      uses: azure/artifact-signing-action@v1.2.0
+      uses: azure/artifact-signing-action@v2.0.0
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
@@ -120,7 +120,7 @@ jobs:
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
     - name: Sign final executable
-      uses: azure/artifact-signing-action@v1.2.0
+      uses: azure/artifact-signing-action@v2.0.0
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
