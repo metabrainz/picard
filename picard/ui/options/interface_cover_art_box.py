@@ -36,7 +36,7 @@ class InterfaceCoverArtBoxOptionsPage(OptionsPage):
     NAME = 'interface_cover_art_box'
     TITLE = N_("Cover Art Box")
     PARENT = 'interface'
-    SORT_ORDER = 40
+    SORT_ORDER = 50
     ACTIVE = True
     HELP_URL = "/config/options_interface_cover_art_box.html"
 

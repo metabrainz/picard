@@ -100,7 +100,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
     NAME = 'interface_colors'
     TITLE = N_("Colors")
     PARENT = 'interface'
-    SORT_ORDER = 30
+    SORT_ORDER = 20
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 

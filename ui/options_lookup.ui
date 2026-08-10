@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LookupOptionsPage</class>
+ <widget class="QWidget" name="LookupOptionsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>403</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="vboxlayout">
+   <item>
+    <widget class="QGroupBox" name="lookup_box">
+     <property name="title">
+      <string>File Loading</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="analyze_new_files">
+        <property name="text">
+         <string>Automatically scan all new files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cluster_new_files">
+        <property name="text">
+         <string>Automatically cluster all new files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="ignore_file_mbids">
+        <property name="text">
+         <string>Ignore MBIDs when loading new files</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="query_box">
+     <property name="title">
+      <string>Query</string>
+     </property>
+     <layout class="QVBoxLayout" name="query_vlayout">
+      <item>
+       <layout class="QHBoxLayout" name="query_layout">
+        <item>
+         <widget class="QLabel" name="label_query_limit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Maximum number of entities to return per MusicBrainz query</string>
+          </property>
+          <property name="buddy">
+           <cstring>query_limit</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="query_limit">
+          <property name="currentText">
+           <string notr="true">50</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string notr="true">25</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">50</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">75</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">100</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="builtin_search">
+        <property name="text">
+         <string>Use builtin search rather than looking in browser</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="use_adv_search_syntax">
+        <property name="text">
+         <string>Use advanced query syntax</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>analyze_new_files</tabstop>
+  <tabstop>cluster_new_files</tabstop>
+  <tabstop>ignore_file_mbids</tabstop>
+  <tabstop>query_limit</tabstop>
+  <tabstop>builtin_search</tabstop>
+  <tabstop>use_adv_search_syntax</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

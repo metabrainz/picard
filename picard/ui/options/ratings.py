@@ -36,7 +36,7 @@ class RatingsOptionsPage(OptionsPage):
     NAME = 'ratings'
     TITLE = N_("Ratings")
     PARENT = 'metadata'
-    SORT_ORDER = 20
+    SORT_ORDER = 25
     ACTIVE = True
     HELP_URL = "/config/options_ratings.html"
 

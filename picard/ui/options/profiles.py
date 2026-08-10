@@ -93,7 +93,7 @@ class ProfilesOptionsPage(OptionsPage):
     NAME = 'profiles'
     TITLE = N_("Option Profiles")
     PARENT = None
-    SORT_ORDER = 10
+    SORT_ORDER = 95
     ACTIVE = True
     HELP_URL = "/config/options_profiles.html"
 

@@ -32,8 +32,8 @@ from picard.ui.player import OS_SUPPORTS_NOW_PLAYING
 class PlayerOptionsPage(OptionsPage):
     NAME = 'player'
     TITLE = N_("Audio Player")
-    PARENT = None
-    SORT_ORDER = 85
+    PARENT = 'general'
+    SORT_ORDER = 25
     ACTIVE = True
     HELP_URL = "/config/options_player.html"
 

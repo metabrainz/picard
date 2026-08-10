@@ -39,56 +39,6 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_query_limit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Maximum number of entities to return per MusicBrainz query</string>
-          </property>
-          <property name="buddy">
-           <cstring>query_limit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="query_limit">
-          <property name="currentText">
-           <string notr="true">50</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <item>
-           <property name="text">
-            <string notr="true">25</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string notr="true">50</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string notr="true">75</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string notr="true">100</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="regex_error">
         <property name="text">
@@ -98,63 +48,6 @@
       </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="ignore_regex"/>
-      </item>
-      <item row="6" column="0" rowspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetDefaultConstraint</enum>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_track_duration_diff">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Ignore track duration difference under this number of seconds</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-          <property name="buddy">
-           <cstring>ignore_track_duration_difference_under</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="ignore_track_duration_difference_under">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::UpDownArrows</enum>
-          </property>
-          <property name="accelerated">
-           <bool>true</bool>
-          </property>
-          <property name="suffix">
-           <string/>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>7200</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item row="5" column="0">
        <widget class="QCheckBox" name="recursively_add_files">
@@ -174,82 +67,24 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_completeness">
-     <property name="title">
-      <string>Ignore the following tracks when determining whether a release is complete</string>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="completeness_ignore_videos">
-        <property name="text">
-         <string>Video tracks</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="completeness_ignore_data">
-        <property name="text">
-         <string>Data tracks</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="completeness_ignore_pregap">
-        <property name="text">
-         <string>Pregap tracks</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QCheckBox" name="completeness_ignore_silence">
-        <property name="text">
-         <string>Silent tracks</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_ignore_tags">
-     <property name="title">
-      <string>Tags to ignore for comparison:</string>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="TagListEditor" name="compare_ignore_tags" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>TagListEditor</class>
-   <extends>QWidget</extends>
-   <header>picard.ui.widgets.taglisteditor</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>ignore_regex</tabstop>
   <tabstop>ignore_hidden_files</tabstop>
   <tabstop>recursively_add_files</tabstop>
-  <tabstop>ignore_track_duration_difference_under</tabstop>
-  <tabstop>query_limit</tabstop>
-  <tabstop>completeness_ignore_videos</tabstop>
-  <tabstop>completeness_ignore_data</tabstop>
  </tabstops>
  <resources/>
  <connections/>

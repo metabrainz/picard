@@ -47,8 +47,8 @@ from picard.ui.util import set_widget_fixed_width_for_text
 class NetworkOptionsPage(OptionsPage):
     NAME = 'network'
     TITLE = N_("Network")
-    PARENT = 'advanced'
-    SORT_ORDER = 10
+    PARENT = 'general'
+    SORT_ORDER = 20
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
