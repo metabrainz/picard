@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-09 11:38+0200\n"
-"PO-Revision-Date: 2026-08-09 10:07+0000\n"
+"PO-Revision-Date: 2026-08-10 11:12+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Bulgarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/bg/>\n"
@@ -2943,9 +2943,8 @@ msgstr ""
 #: picard/ui/aboutdialog.py:182
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Alex Stanev https://launchpad.net/~realender\n"
-"  svilborg https://launchpad.net/~svilborg"
+"Alex Stanev https://launchpad.net/~realender\n"
+"svilborg https://launchpad.net/~svilborg"
 
 #: picard/ui/aboutdialog.py:185
 #, python-format
