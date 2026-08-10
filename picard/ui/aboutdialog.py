@@ -33,6 +33,7 @@ from PyQt6 import (
 )
 
 from picard import tagger_instance
+from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
 from picard.util import (
@@ -78,7 +79,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             # Style the donate button with accent color
             text_color = 'white' if accent_color.lightness() < 160 else 'black'
             hover_color = accent_color.lighter(120).name()
-            self.ui.donate_button.setStyleSheet(f"""
+            button_style = f"""
                 QPushButton {{
                     background-color: {accent_css};
                     color: {text_color};
@@ -93,7 +94,9 @@ class AboutDialog(PicardDialog, SingletonDialog):
                 QPushButton:pressed {{
                     background-color: {accent_css};
                 }}
-            """)
+            """
+            self.ui.donate_button.setStyleSheet(button_style)
+            self.ui.translate_button.setStyleSheet(button_style)
 
         # Bold version label
         font = self.ui.version_label.font()
@@ -157,19 +160,13 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.ui.copyright_label.setText(copyright_text)
 
         # Translator credits
-        # TR: This is a magic string: translators replace it with their names.
-        # If untranslated, it returns 'translator-credits' and we hide the label.
-        translator_credits = _('translator-credits')
-        if translator_credits != 'translator-credits':
-            translator_credits = translator_credits.strip().replace("\n", ", ")
-            translator_text = _("Translated to LANG by %(translators)s") % {
-                'translators': translator_credits,
-            }
-            self.ui.translator_credits_label.setText(translator_text)
-            self.ui.translator_credits_label.setVisible(True)
-            self.ui.translator_credits_label.setVisible(True)
+        config = get_config()
+        ui_language = config.setting['ui_language']
+        if ui_language != 'en':
+            self.ui.translator_credits.setVisible(True)
+            self.ui.translate_button.clicked.connect(self._open_translate_url)
         else:
-            self.ui.translator_credits_label.setVisible(False)
+            self.ui.translator_credits.setVisible(False)
 
         # Icons credits (contains HTML links)
         icons_credits = _(
@@ -200,3 +197,6 @@ class AboutDialog(PicardDialog, SingletonDialog):
 
     def _open_donate_url(self):
         webbrowser2.open('donate')
+
+    def _open_translate_url(self):
+        webbrowser2.open('translate')

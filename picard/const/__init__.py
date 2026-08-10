@@ -79,6 +79,7 @@ PICARD_URLS = {
     'plugins': "https://picard.musicbrainz.org/plugins/",
     'forum': "https://community.metabrainz.org/c/picard",
     'donate': "https://metabrainz.org/donate",
+    'translate': "https://wiki.musicbrainz.org/MusicBrainz_Picard/Internationalization",
     'chromaprint': "https://acoustid.org/chromaprint#download",
     'acoustid_apikey': "https://acoustid.org/api-key",
     'acoustid_track': "https://acoustid.org/track/",
