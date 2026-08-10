@@ -38,21 +38,29 @@
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
      </property>
      <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-150</y>
+        <width>666</width>
+        <height>705</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" name="content_layout">
        <property name="spacing">
         <number>16</number>
@@ -69,7 +77,6 @@
        <property name="bottomMargin">
         <number>24</number>
        </property>
-       <!-- Header: logo + app name + version -->
        <item>
         <layout class="QVBoxLayout" name="header_layout">
          <property name="spacing">
@@ -83,7 +90,7 @@
            <item>
             <spacer name="header_spacer_left">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -132,7 +139,6 @@
              <property name="font">
               <font>
                <pointsize>22</pointsize>
-               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -140,14 +146,14 @@
               <string>MusicBrainz Picard</string>
              </property>
              <property name="textFormat">
-              <enum>Qt::PlainText</enum>
+              <enum>Qt::TextFormat::PlainText</enum>
              </property>
             </widget>
            </item>
            <item>
             <spacer name="header_spacer_right">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -161,47 +167,45 @@
          </item>
          <item>
           <widget class="QLabel" name="version_label">
-           <property name="alignment">
-            <set>Qt::AlignHCenter</set>
-           </property>
            <property name="textFormat">
-            <enum>Qt::PlainText</enum>
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="textInteractionFlags">
-            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="versions_detail_label">
+           <property name="textFormat">
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
            </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
            <property name="textInteractionFlags">
-            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <!-- Separator -->
        <item>
         <widget class="QFrame" name="separator_1">
          <property name="frameShape">
-          <enum>QFrame::HLine</enum>
+          <enum>QFrame::Shape::HLine</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+          <enum>QFrame::Shadow::Plain</enum>
          </property>
         </widget>
        </item>
-       <!-- Supported formats -->
        <item>
         <layout class="QVBoxLayout" name="formats_layout">
          <property name="spacing">
@@ -209,50 +213,50 @@
          </property>
          <item>
           <widget class="QLabel" name="formats_heading">
-           <property name="alignment">
-            <set>Qt::AlignHCenter</set>
-           </property>
            <property name="font">
             <font>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
+           <property name="text">
+            <string>Supported formats</string>
+           </property>
            <property name="textFormat">
-            <enum>Qt::PlainText</enum>
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="formats_label">
+           <property name="textFormat">
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
            </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
            <property name="textInteractionFlags">
-            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <!-- Separator -->
        <item>
         <widget class="QFrame" name="separator_2">
          <property name="frameShape">
-          <enum>QFrame::HLine</enum>
+          <enum>QFrame::Shape::HLine</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+          <enum>QFrame::Shadow::Plain</enum>
          </property>
         </widget>
        </item>
-       <!-- Donate section -->
        <item>
         <layout class="QVBoxLayout" name="donate_layout">
          <property name="spacing">
@@ -260,30 +264,35 @@
          </property>
          <item>
           <widget class="QLabel" name="donate_heading">
-           <property name="alignment">
-            <set>Qt::AlignHCenter</set>
-           </property>
            <property name="font">
             <font>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
+           <property name="text">
+            <string>Please donate</string>
+           </property>
            <property name="textFormat">
-            <enum>Qt::PlainText</enum>
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="donate_text_label">
+           <property name="text">
+            <string>Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
            </property>
           </widget>
          </item>
@@ -292,7 +301,7 @@
            <item>
             <spacer name="donate_spacer_left">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -307,12 +316,15 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
+             <property name="text">
+              <string>Donate now!</string>
+             </property>
             </widget>
            </item>
            <item>
             <spacer name="donate_spacer_right">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -326,18 +338,16 @@
          </item>
         </layout>
        </item>
-       <!-- Separator -->
        <item>
         <widget class="QFrame" name="separator_3">
          <property name="frameShape">
-          <enum>QFrame::HLine</enum>
+          <enum>QFrame::Shape::HLine</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+          <enum>QFrame::Shadow::Plain</enum>
          </property>
         </widget>
        </item>
-       <!-- Credits section -->
        <item>
         <layout class="QVBoxLayout" name="credits_layout">
          <property name="spacing">
@@ -345,24 +355,32 @@
          </property>
          <item>
           <widget class="QLabel" name="credits_heading">
-           <property name="alignment">
-            <set>Qt::AlignHCenter</set>
-           </property>
            <property name="font">
             <font>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
+           <property name="text">
+            <string>Credits</string>
+           </property>
            <property name="textFormat">
-            <enum>Qt::PlainText</enum>
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="project_credit_label">
+           <property name="text">
+            <string>A &lt;a href=&quot;https://metabrainz.org&quot;&gt;MetaBrainz Foundation&lt;/a&gt; project, powered by the &lt;a href=&quot;https://musicbrainz.org&quot;&gt;MusicBrainz&lt;/a&gt; database.</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::TextFormat::RichText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -371,43 +389,43 @@
             <bool>true</bool>
            </property>
            <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="copyright_label">
+           <property name="textFormat">
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="translator_credits_label">
+           <property name="textFormat">
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
            </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
            <property name="textInteractionFlags">
-            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="icons_credits_label">
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -416,24 +434,25 @@
             <bool>true</bool>
            </property>
            <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout"/>
+         </item>
         </layout>
        </item>
-       <!-- Separator -->
        <item>
         <widget class="QFrame" name="separator_4">
          <property name="frameShape">
-          <enum>QFrame::HLine</enum>
+          <enum>QFrame::Shape::HLine</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+          <enum>QFrame::Shadow::Plain</enum>
          </property>
         </widget>
        </item>
-       <!-- Official website -->
        <item>
         <layout class="QVBoxLayout" name="website_layout">
          <property name="spacing">
@@ -441,40 +460,41 @@
          </property>
          <item>
           <widget class="QLabel" name="website_heading">
-           <property name="alignment">
-            <set>Qt::AlignHCenter</set>
-           </property>
            <property name="font">
             <font>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
+           <property name="text">
+            <string>Links</string>
+           </property>
            <property name="textFormat">
-            <enum>Qt::PlainText</enum>
+            <enum>Qt::TextFormat::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="website_link_label">
            <property name="alignment">
-            <set>Qt::AlignHCenter</set>
+            <set>Qt::AlignmentFlag::AlignHCenter</set>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
            </property>
            <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <!-- Bottom spacer -->
        <item>
         <spacer name="bottom_spacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>

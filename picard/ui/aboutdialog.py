@@ -131,33 +131,15 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.ui.versions_detail_label.setText(third_parties)
 
         # Supported formats
-        self.ui.formats_heading.setText(_("Supported formats"))
         tagger = tagger_instance()
         formats = ", ".join(ext[1:] for ext in tagger.format_registry.supported_extensions())
         self.ui.formats_label.setText(formats)
 
         # Donate section
-        self.ui.donate_heading.setText(_("Please donate"))
-        self.ui.donate_text_label.setText(
-            _(
-                "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
-                "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
-                "consider donating to the MetaBrainz Foundation to keep the service running."
-            )
-        )
-        self.ui.donate_button.setText(_("Donate now!"))
         self.ui.donate_button.clicked.connect(self._open_donate_url)
 
         # Credits section
-        self.ui.credits_heading.setText(_("Credits"))
-
         # Project credit with links
-        project_credit = _(
-            'A <a href="https://metabrainz.org">MetaBrainz Foundation</a> project,'
-            ' powered by the <a href="https://musicbrainz.org">MusicBrainz</a> database.'
-        )
-        self.ui.project_credit_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
-        self.ui.project_credit_label.setText(project_credit)
         self.ui.project_credit_label.linkHovered.connect(self.ui.project_credit_label.setToolTip)
 
         authors_credits = ", ".join(
