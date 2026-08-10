@@ -64,8 +64,8 @@ class ApiKeyValidator(QtGui.QValidator):
 class FingerprintingOptionsPage(OptionsPage):
     NAME = 'fingerprinting'
     TITLE = N_("Fingerprinting")
-    PARENT = None
-    SORT_ORDER = 45
+    PARENT = 'lookup'
+    SORT_ORDER = 15
     ACTIVE = True
     HELP_URL = "/config/options_fingerprinting.html"
 

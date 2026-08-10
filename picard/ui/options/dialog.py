@@ -94,6 +94,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     interface_quick_menu,
     interface_toolbar,
     interface_top_tags,
+    lookup,
     maintenance,
     matching,
     metadata,

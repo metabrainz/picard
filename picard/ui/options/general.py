@@ -59,9 +59,6 @@ class GeneralOptionsPage(OptionsPage):
     OPTIONS: PageOptionConfigs = {
         'server_host': {'widgets': ['server_host']},
         'server_port': {'widgets': ['server_port']},
-        'analyze_new_files': {'widgets': ['analyze_new_files']},
-        'cluster_new_files': {'widgets': ['cluster_new_files']},
-        'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},
         'enable_user_collections': {'widgets': ['enable_user_collections']},
         'remove_complete_albums_after_save': {'widgets': ['remove_complete_albums_after_save']},
@@ -75,8 +72,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
         self.ui.logout.clicked.connect(self.logout)
-        self.ui.analyze_new_files.toggled.connect(self._update_cluster_new_files)
-        self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
         self.tagger.webservice.authorization_state_changed.connect(self.update_login_logout)
@@ -88,9 +83,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_port.setValue(config.setting['server_port'])
         self.ui.use_server_for_submission.setChecked(config.setting['use_server_for_submission'])
         self.update_server_host()
-        self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
-        self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
-        self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
         self.ui.enable_user_collections.setChecked(config.setting['enable_user_collections'])
         self.ui.remove_complete_albums_after_save.setChecked(config.setting['remove_complete_albums_after_save'])
 
@@ -99,9 +91,6 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['server_host'] = self.ui.server_host.currentText().strip()
         config.setting['server_port'] = self.ui.server_port.value()
         config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
-        config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
-        config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
-        config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
         config.setting['remove_complete_albums_after_save'] = self.ui.remove_complete_albums_after_save.isChecked()
         self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
 
@@ -187,14 +176,6 @@ class GeneralOptionsPage(OptionsPage):
     def restore_defaults(self):
         super().restore_defaults()
         self.logout()
-
-    def _update_analyze_new_files(self, cluster_new_files):
-        if cluster_new_files:
-            self.ui.analyze_new_files.setChecked(False)
-
-    def _update_cluster_new_files(self, analyze_new_files):
-        if analyze_new_files:
-            self.ui.cluster_new_files.setChecked(False)
 
 
 register_options_page(GeneralOptionsPage)

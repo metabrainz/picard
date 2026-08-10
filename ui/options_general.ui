@@ -183,40 +183,10 @@ QCheckBox { color: black }</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="general_box">
-     <property name="title">
-      <string>General</string>
+    <widget class="QCheckBox" name="remove_complete_albums_after_save">
+     <property name="text">
+      <string>Remove complete albums after saving</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QCheckBox" name="analyze_new_files">
-        <property name="text">
-         <string>Automatically scan all new files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cluster_new_files">
-        <property name="text">
-         <string>Automatically cluster all new files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="ignore_file_mbids">
-        <property name="text">
-         <string>Ignore MBIDs when loading new files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="remove_complete_albums_after_save">
-        <property name="text">
-         <string>Remove complete albums after saving</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>
@@ -241,9 +211,7 @@ QCheckBox { color: black }</string>
   <tabstop>login</tabstop>
   <tabstop>logout</tabstop>
   <tabstop>enable_user_collections</tabstop>
-  <tabstop>analyze_new_files</tabstop>
-  <tabstop>cluster_new_files</tabstop>
-  <tabstop>ignore_file_mbids</tabstop>
+  <tabstop>remove_complete_albums_after_save</tabstop>
  </tabstops>
  <resources/>
  <connections/>

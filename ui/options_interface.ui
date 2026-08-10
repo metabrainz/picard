@@ -108,20 +108,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="builtin_search">
-        <property name="text">
-         <string>Use builtin search rather than looking in browser</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="use_adv_search_syntax">
-        <property name="text">
-         <string>Use advanced query syntax</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="new_user_dialog">
         <property name="text">
          <string>Show the new user dialog when starting Picard</string>
@@ -228,8 +214,6 @@
   <tabstop>ui_language</tabstop>
   <tabstop>ui_theme</tabstop>
   <tabstop>allow_multi_dirs_selection</tabstop>
-  <tabstop>builtin_search</tabstop>
-  <tabstop>use_adv_search_syntax</tabstop>
   <tabstop>new_user_dialog</tabstop>
   <tabstop>quit_confirmation</tabstop>
   <tabstop>file_save_warning</tabstop>

@@ -76,8 +76,6 @@ class InterfaceOptionsPage(OptionsPage):
         'ui_language': {},
         'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
-        'builtin_search': {'widgets': ['builtin_search']},
-        'use_adv_search_syntax': {'widgets': ['use_adv_search_syntax']},
         'show_new_user_dialog': {'widgets': ['new_user_dialog']},
         'quit_confirmation': {'widgets': ['quit_confirmation']},
         'file_save_warning': {'widgets': ['file_save_warning']},
@@ -158,8 +156,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
         self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
         self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-        self.ui.builtin_search.setChecked(config.setting['builtin_search'])
-        self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
         self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
@@ -180,8 +176,6 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
-        config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
-        config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
         config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()

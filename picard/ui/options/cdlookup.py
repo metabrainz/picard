@@ -51,8 +51,8 @@ else:
 class CDLookupOptionsPage(OptionsPage):
     NAME = 'cdlookup'
     TITLE = N_("CD Lookup")
-    PARENT = None
-    SORT_ORDER = 50
+    PARENT = 'lookup'
+    SORT_ORDER = 10
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
