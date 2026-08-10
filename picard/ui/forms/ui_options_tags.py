@@ -54,7 +54,9 @@ class Ui_TagsOptionsPage(object):
         self.preserved_tags_layout = QtWidgets.QVBoxLayout(self.preserved_tags_groupbox)
         self.preserved_tags_layout.setObjectName("preserved_tags_layout")
         self.preserved_tags = TagListEditor(parent=self.preserved_tags_groupbox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.preserved_tags.sizePolicy().hasHeightForWidth())
@@ -78,7 +80,7 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout.addWidget(self.do_not_sanitize_container)
 
         self.retranslateUi(TagsOptionsPage)
-        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled) # type: ignore
+        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
         TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
         TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)
@@ -96,6 +98,10 @@ class Ui_TagsOptionsPage(object):
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.fix_missing_seekpoints_flac.setText(_("Fix missing seekpoints for FLAC files"))
-        self.preserved_tags_groupbox.setTitle(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
+        self.preserved_tags_groupbox.setTitle(
+            _("Preserve these tags from being cleared or overwritten with MusicBrainz data:")
+        )
         self.do_not_sanitize_label.setText(_("Do not sanitize dates for these tag formats:"))
+
+
 from picard.ui.widgets.taglisteditor import TagListEditor
