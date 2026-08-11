@@ -618,7 +618,7 @@ def get_available_filename(new_path: str, old_path: str | None = None) -> str:
     return new_path
 
 
-def replace_extension(filename: str, new_ext: str) -> str:
+def replace_extension(filename: Path | str, new_ext: str) -> str:
     """Replaces the extension in filename with new_ext.
 
     If the file has no extension the extension is added.

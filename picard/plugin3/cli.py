@@ -92,6 +92,7 @@ from picard.plugin3.registry import (
     RegistryParseError,
 )
 from picard.plugin3.validator import MAX_NAME_LENGTH
+from picard.util.filenaming import replace_extension
 
 
 def get_display_locale(args):
@@ -1818,7 +1819,7 @@ class PluginCLI(BaseCLI):
         """Compile the UI for a plugin."""
 
         ui_file = Path(ui_file)
-        py_file = ui_file.parent.joinpath(os.path.splitext(ui_file)[0] + '.py')
+        py_file = Path(replace_extension(ui_file, '.py'))
 
         if not ui_file.exists():
             self._out.error(f"File {self._out.bold(ui_file.name)} does not exist.")
