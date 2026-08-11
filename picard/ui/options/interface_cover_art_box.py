@@ -40,7 +40,7 @@ class InterfaceCoverArtBoxOptionsPage(OptionsPage):
     PARENT = 'interface'
     SORT_ORDER = 50
     ACTIVE = True
-    HELP_URL = "/config/options_interface_cover_art_box.html"
+    HELP_URL = "/config/options_interface_coverart_box.html"
 
     OPTIONS: ClassVar[PageOptionConfigs] = {
         'show_cover_art_details': {'widgets': ['cb_show_cover_art_details']},
