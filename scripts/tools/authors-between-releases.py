@@ -98,7 +98,7 @@ def get_github_users_from_merges(rev_range):
     """Map author names to GitHub usernames from PR merge commits."""
     pr_parents = {}
     for line in git('log', '--merges', '--format=%P %s', rev_range).splitlines():
-        match = re.match(r'\w+ (\w+) Merge pull request #\d+ from ([^/]+)/', line)
+        match = re.match(r'[0-9a-f]+ ([0-9a-f]+) Merge pull request #\d+ from ([^/]+)/', line)
         if match:
             pr_parents[match.group(1)] = match.group(2)
 
