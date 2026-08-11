@@ -66,6 +66,13 @@ GITHUB_URL = 'https://github.com'
 QUIET = False
 
 
+# Pre-compiled regex patterns used in loops
+RE_MERGE_PR = re.compile(r'^[0-9a-f]+ ([0-9a-f]+) Merge pull request #\d+ from ([^/]+)/')
+RE_GITHUB_NOREPLY = re.compile(r'^(?:\d+\+)?(.+)@users\.noreply\.github\.com$')
+RE_WEBLATE_NOREPLY = re.compile(r'^(.+)@users\.noreply\.translations\.metabrainz\.org$')
+RE_WEBLATE_LANG = re.compile(r'Translated using Weblate \((.+)\)')
+
+
 def debug(msg):
     """Print a debug message to stderr unless quiet mode is enabled."""
     if not QUIET:
@@ -102,7 +109,7 @@ def get_github_users_from_merges(rev_range):
     """Map author names to GitHub usernames from PR merge commits."""
     pr_parents = {}
     for line in git('log', '--merges', '--format=%P %s', rev_range).splitlines():
-        match = re.match(r'[0-9a-f]+ ([0-9a-f]+) Merge pull request #\d+ from ([^/]+)/', line)
+        match = RE_MERGE_PR.search(line)
         if match:
             pr_parents[match.group(1)] = match.group(2)
 
@@ -151,7 +158,7 @@ def get_github_users_from_emails(rev_range):
     """Map author names to GitHub usernames from noreply emails."""
     github_users = {}
     for name, email in iter_git_log(rev_range, ('%aN', '%aE')):
-        match = re.match(r'(?:\d+\+)?(.+)@users\.noreply\.github\.com$', email)
+        match = RE_GITHUB_NOREPLY.search(email)
         if match and name not in EXCLUDE:
             github_users.setdefault(name, match.group(1))
     if github_users:
@@ -171,7 +178,7 @@ def get_weblate_users_from_emails(rev_range):
     """Map author names to Weblate usernames from noreply emails in git log."""
     weblate_users = {}
     for name, email in iter_git_log(rev_range, ('%aN', '%aE'), *TRANSLATION_PATHS):
-        match = re.match(r'(.+)@users\.noreply\.translations\.metabrainz\.org$', email)
+        match = RE_WEBLATE_NOREPLY.search(email)
         if match and name not in EXCLUDE:
             weblate_users.setdefault(name, match.group(1))
     if weblate_users:
@@ -261,7 +268,7 @@ def get_translator_langs(rev_range):
     for author, subject in iter_git_log(rev_range, ('%aN', '%s'), *TRANSLATION_PATHS):
         if author in EXCLUDE:
             continue
-        match = re.search(r'Translated using Weblate \((.+)\)', subject)
+        match = RE_WEBLATE_LANG.search(subject)
         if match:
             translator_langs.setdefault(author, set()).add(match.group(1))
     debug(f"Found {len(translator_langs)} translators from commit messages")
