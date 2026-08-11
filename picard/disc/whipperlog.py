@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from pathlib import Path
+
 import yaml
 
 from picard.disc.utils import (
@@ -29,7 +31,7 @@ from picard.disc.utils import (
 )
 
 
-def toc_from_file(path: str) -> TocNumbers:
+def toc_from_file(path: Path) -> TocNumbers:
     """Reads whipper log files, generates musicbrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong

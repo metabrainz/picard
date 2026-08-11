@@ -1203,7 +1203,7 @@ class PluginApi:
         return self._tagger.format_registry.register(format)
 
     # Disc log readers
-    def register_disc_log_reader(self, function: Callable[['PluginApi', str], 'TocNumbers']) -> None:
+    def register_disc_log_reader(self, function: Callable[['PluginApi', Path], 'TocNumbers']) -> None:
         """Register a custom disc log reader.
 
         A disc log reader parses CD ripping log files and extracts table of

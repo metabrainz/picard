@@ -25,6 +25,7 @@ from collections.abc import (
     Iterable,
     Iterator,
 )
+from pathlib import Path
 import re
 
 from picard.disc.utils import (
@@ -56,7 +57,7 @@ def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
             yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector']) - 1)
 
 
-def toc_from_file(path: str) -> TocNumbers:
+def toc_from_file(path: Path) -> TocNumbers:
     """Reads dBpoweramp log files, generates MusicBrainz disc TOC listing for use as discid."""
     encoding = detect_file_encoding(path)
     with open(path, 'r', encoding=encoding) as f:

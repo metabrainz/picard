@@ -102,7 +102,7 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_load_manifest(self):
         """Test Plugin.read_manifest() method."""
-        plugins_dir = Path(get_test_data_path('testplugins3'))
+        plugins_dir = get_test_data_path('testplugins3')
         plugin = Plugin(plugins_dir, 'example')
 
         plugin.read_manifest()

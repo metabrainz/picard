@@ -23,6 +23,7 @@ from collections.abc import (
     Iterable,
     Iterator,
 )
+from pathlib import Path
 import re
 
 from picard.disc.utils import (
@@ -65,7 +66,7 @@ def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
                 start_lsn = None
 
 
-def toc_from_file(path: str) -> TocNumbers:
+def toc_from_file(path: Path) -> TocNumbers:
     """Reads cyanrip log files, generates MusicBrainz disc TOC listing for use as discid."""
     with open(path, encoding='utf-8') as f:
         first_line = f.readline()

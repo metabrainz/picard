@@ -131,14 +131,9 @@ def load_test_registry():
     except ModuleNotFoundError:
         import tomli as tomllib
 
-    registry_path = Path(get_test_data_path('testplugins3', 'registry.toml'))
+    registry_path = get_test_data_path('testplugins3', 'registry.toml')
     with open(registry_path, 'rb') as f:
         return tomllib.load(f)
-
-
-def get_test_registry_path():
-    """Get path to test registry file."""
-    return Path(get_test_data_path('testplugins3', 'registry.toml'))
 
 
 def create_test_registry():

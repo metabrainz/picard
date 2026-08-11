@@ -25,6 +25,7 @@
 import json
 import logging
 import os
+from pathlib import Path
 import shutil
 import stat
 import struct
@@ -159,8 +160,8 @@ class PicardTestCase(unittest.TestCase):
         self.tagger.format_registry = self.format_registry
 
 
-def get_test_data_path(*paths):
-    return os.path.join('test', 'data', *paths)
+def get_test_data_path(*paths) -> Path:
+    return Path('test', 'data', *paths)
 
 
 def create_fake_png(extra: bytes = b''):
