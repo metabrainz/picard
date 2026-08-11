@@ -244,8 +244,23 @@ def html_link(url, text):
     return f'<a href="{url}">{text}</a>'
 
 
+def quote_name(name):
+    """Enclose name in quotes if it contains a comma.
+
+    Handles both plain text and HTML link formatted names.
+    """
+    if ',' not in name:
+        return name
+    # If name is an HTML link, quote the link text inside the tag
+    match = re.match(r'^(<a\b[^>]*>)(.*)(</a>)$', name)
+    if match:
+        return f'{match.group(1)}"{match.group(2)}"{match.group(3)}'
+    return f'"{name}"'
+
+
 def join_names(names):
     """Join names with commas and 'and' before the last one."""
+    names = [quote_name(n) for n in names]
     if len(names) <= 1:
         return ''.join(names)
     return ', '.join(names[:-1]) + ' and ' + names[-1]
