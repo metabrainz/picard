@@ -330,6 +330,22 @@ def _get_rate_limit_wait(headers):
 MAX_RATE_LIMIT_RETRIES = 2
 
 
+def _get_github_token():
+    """Get GitHub token from environment or gh CLI."""
+    token = os.environ.get('GITHUB_TOKEN')
+    if token:
+        return token
+    gh = shutil.which('gh')
+    if gh:
+        try:
+            token = subprocess.check_output([gh, 'auth', 'token'], text=True, stderr=subprocess.DEVNULL).strip()
+            if token:
+                return token
+        except (subprocess.CalledProcessError, OSError):
+            pass
+    return None
+
+
 def get_github_display_names(github_users):
     """Fetch real names from GitHub API for all known GitHub users."""
     if not github_users:
@@ -337,11 +353,11 @@ def get_github_display_names(github_users):
     debug(f"Fetching display names for {len(github_users)} GitHub users")
     display_names = {}
     headers = {'Accept': 'application/json'}
-    token = os.environ.get('GITHUB_TOKEN')
+    token = _get_github_token()
     if token:
         headers['Authorization'] = f'token {token}'
     else:
-        debug("Warning: GITHUB_TOKEN not set, GitHub API rate limits may apply")
+        debug("Warning: No GitHub token found, API rate limits may apply")
     retries_left = MAX_RATE_LIMIT_RETRIES
     users_iter = iter(github_users.items())
     git_name, gh_user = None, None
