@@ -41,9 +41,7 @@ class Ui_GenresOptionsPage(object):
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setObjectName("hboxlayout")
         self.label_5 = QtWidgets.QLabel(parent=self.use_genres)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -51,11 +49,7 @@ class Ui_GenresOptionsPage(object):
         self.label_5.setObjectName("label_5")
         self.hboxlayout.addWidget(self.label_5)
         self.min_genre_usage = QtWidgets.QSpinBox(parent=self.use_genres)
-        self.min_genre_usage.setAlignment(
-            QtCore.Qt.AlignmentFlag.AlignRight
-            | QtCore.Qt.AlignmentFlag.AlignTrailing
-            | QtCore.Qt.AlignmentFlag.AlignVCenter
-        )
+        self.min_genre_usage.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.min_genre_usage.setMaximum(100)
         self.min_genre_usage.setObjectName("min_genre_usage")
         self.hboxlayout.addWidget(self.min_genre_usage)
@@ -65,9 +59,7 @@ class Ui_GenresOptionsPage(object):
         self.hboxlayout1.setSpacing(6)
         self.hboxlayout1.setObjectName("hboxlayout1")
         self.label_6 = QtWidgets.QLabel(parent=self.use_genres)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
@@ -75,11 +67,7 @@ class Ui_GenresOptionsPage(object):
         self.label_6.setObjectName("label_6")
         self.hboxlayout1.addWidget(self.label_6)
         self.max_genres = QtWidgets.QSpinBox(parent=self.use_genres)
-        self.max_genres.setAlignment(
-            QtCore.Qt.AlignmentFlag.AlignRight
-            | QtCore.Qt.AlignmentFlag.AlignTrailing
-            | QtCore.Qt.AlignmentFlag.AlignVCenter
-        )
+        self.max_genres.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.max_genres.setMaximum(100)
         self.max_genres.setObjectName("max_genres")
         self.hboxlayout1.addWidget(self.max_genres)
@@ -89,9 +77,7 @@ class Ui_GenresOptionsPage(object):
         self.hboxlayout2.setSpacing(6)
         self.hboxlayout2.setObjectName("hboxlayout2")
         self.ignore_genres_4 = QtWidgets.QLabel(parent=self.use_genres)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(4)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ignore_genres_4.sizePolicy().hasHeightForWidth())
@@ -118,26 +104,13 @@ class Ui_GenresOptionsPage(object):
         self.genres_filter = QtWidgets.QPlainTextEdit(parent=self.use_genres)
         self.genres_filter.setObjectName("genres_filter")
         self.verticalLayout.addWidget(self.genres_filter)
-        self.label_test_genres_filter = QtWidgets.QLabel(parent=self.use_genres)
-        self.label_test_genres_filter.setObjectName("label_test_genres_filter")
-        self.verticalLayout.addWidget(self.label_test_genres_filter)
-        self.test_genres_filter = QtWidgets.QPlainTextEdit(parent=self.use_genres)
-        self.test_genres_filter.setObjectName("test_genres_filter")
-        self.verticalLayout.addWidget(self.test_genres_filter)
-        self.label_test_genres_filter_error = QtWidgets.QLabel(parent=self.use_genres)
-        self.label_test_genres_filter_error.setText("")
-        self.label_test_genres_filter_error.setObjectName("label_test_genres_filter_error")
-        self.verticalLayout.addWidget(self.label_test_genres_filter_error)
         self.verticalLayout_2.addWidget(self.use_genres)
-        spacerItem = QtWidgets.QSpacerItem(
-            181, 31, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
-        )
+        spacerItem = QtWidgets.QSpacerItem(181, 31, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
         self.label_5.setBuddy(self.min_genre_usage)
         self.label_6.setBuddy(self.max_genres)
         self.ignore_genres_4.setBuddy(self.join_genres)
         self.label_genres_filter.setBuddy(self.genres_filter)
-        self.label_test_genres_filter.setBuddy(self.test_genres_filter)
 
         self.retranslateUi(GenresOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(GenresOptionsPage)
@@ -145,7 +118,7 @@ class Ui_GenresOptionsPage(object):
     def retranslateUi(self, GenresOptionsPage):
         self.use_genres.setTitle(_("Use genres from MusicBrainz"))
         self.only_my_genres.setText(_("Use only my genres (requires login)"))
-        self.artists_genres.setText(_("Fall back to album's artists genres"))
+        self.artists_genres.setText(_("Fall back to album\'s artists genres"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
         self.label_5.setText(_("Minimal genre usage:"))
         self.min_genre_usage.setSuffix(_(" %"))
@@ -154,4 +127,3 @@ class Ui_GenresOptionsPage(object):
         self.join_genres.setItemText(1, _(" / "))
         self.join_genres.setItemText(2, _(", "))
         self.label_genres_filter.setText(_("Genres or folksonomy tags to include or exclude, one per line:"))
-        self.label_test_genres_filter.setText(_("Playground for genres or folksonomy tags filters (cleared on exit):"))

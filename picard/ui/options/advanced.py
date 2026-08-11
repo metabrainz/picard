@@ -40,17 +40,6 @@ from picard.ui.options import (
 from picard.ui.playground import Playground
 
 
-TOOLTIP_TEST_FILE_PATH_MATCHING = N_("""<html><head/><body>
-<p>Enter file paths to test the regex against, one per line.<br/>
-This playground will not be preserved on exit.
-</p>
-<p>
-Red background means the file path does not match.<br/>
-Green background means the file path matches.
-</p>
-</body></html>""")
-
-
 class AdvancedOptionsPage(OptionsPage):
     NAME = 'advanced'
     TITLE = N_("Advanced")
@@ -69,14 +58,17 @@ class AdvancedOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
-        self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
+
+        self.playground = Playground(_("Test file path matching:"), parent=self)
+        self.playground.set_description(
+            description=_("Enter file paths to test, one per line."),
+            match_meaning=_("the file path matches"),
+            skip_meaning=_("the file path does not match"),
+        )
+        self.ui.groupBox.layout().addWidget(self.playground)
 
         self.ui.ignore_regex.textChanged.connect(self._update_test_file_path_playground)
-        self.ui.test_file_path_matching.setToolTip(_(TOOLTIP_TEST_FILE_PATH_MATCHING))
-        self.ui.test_file_path_matching.setPlaceholderText(_("Enter file paths to test, one per line"))
-        self.ui.test_file_path_matching.textChanged.connect(self._update_test_file_path_playground)
-
-        self.playground = Playground(self.ui.test_file_path_matching)
+        self.playground.textChanged.connect(self._update_test_file_path_playground)
 
     def load(self):
         config = get_config()
@@ -93,14 +85,20 @@ class AdvancedOptionsPage(OptionsPage):
     def _update_test_file_path_playground(self):
         regex_text = self.ui.ignore_regex.text()
         try:
-            self.file_path_filter = re.compile(regex_text) if regex_text else None
-        except re.error:
-            self.file_path_filter = None
+            file_path_filter = re.compile(regex_text) if regex_text else None
+            self.playground.clear_error()
+        except re.error as e:
+            file_path_filter = None
+            self.playground.set_error(_("Invalid regular expression: %s") % e)
 
-        def check_line(line: str) -> bool:
-            return bool(self.file_path_filter.search(line))
+        if file_path_filter:
 
-        self.playground.update(check_line if self.file_path_filter else None)
+            def check_line(line: str) -> bool:
+                return bool(file_path_filter.search(line))
+
+            self.playground.update(check_line)
+        else:
+            self.playground.update(None)
 
 
 register_options_page(AdvancedOptionsPage)
