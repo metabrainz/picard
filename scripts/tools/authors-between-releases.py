@@ -31,6 +31,7 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.error
 from urllib.parse import (
     quote,
     urlencode,
@@ -284,9 +285,12 @@ def get_github_display_names(github_users):
                 name = data.get('name')
                 if name:
                     display_names[git_name] = name
+        except urllib.error.HTTPError as e:
+            debug(f"GitHub API error for {gh_user}: {e}")
+            if e.code in (403, 429):
+                break  # rate limited, skip remaining
         except Exception as e:
             debug(f"GitHub API error for {gh_user}: {e}")
-            break  # likely rate limited, skip remaining
     if display_names:
         debug(f"Resolved {len(display_names)} display names from GitHub")
     return display_names
