@@ -1122,7 +1122,7 @@ from picard.disc.utils import (
 )
 
 
-def my_ripper_toc_from_file(path):
+def my_ripper_toc_from_file(api, path):
     """Parse MyRipper log files for disc ID lookup."""
     entries = []
     with open(path, encoding='utf-8') as f:
