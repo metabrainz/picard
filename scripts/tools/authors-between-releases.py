@@ -195,7 +195,7 @@ def get_weblate_api_key() -> str | None:
     api_key = os.environ.get('WEBLATE_API_KEY')
     if not api_key and WeblateConfig:
         config_path = os.path.join(os.path.dirname(__file__), '..', '..', '.weblate.ini')
-        if os.path.exists:
+        if os.path.exists(config_path):
             config = WeblateConfig()
             config.load(config_path)
             url, key = config.get_url_key()
