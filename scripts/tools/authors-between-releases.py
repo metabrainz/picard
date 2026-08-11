@@ -37,7 +37,7 @@ import subprocess
 import sys
 import urllib.error
 from urllib.parse import (
-    quote,
+    quote as url_quote,
     urlencode,
 )
 from urllib.request import (
@@ -311,7 +311,7 @@ def get_github_display_names(github_users):
         debug("Warning: GITHUB_TOKEN not set, GitHub API rate limits may apply")
     for git_name, gh_user in github_users.items():
         try:
-            url = f'https://api.github.com/users/{quote(gh_user)}'
+            url = f'https://api.github.com/users/{url_quote(gh_user)}'
             req = Request(url, headers=headers)
             with urlopen(req, timeout=5) as resp:
                 data = json.loads(resp.read())
@@ -340,7 +340,7 @@ def format_code_authors(code_authors, github_users, display_names, translator_la
         gh_user = github_users.get(name)
         display = display_names.get(name, name)
         if gh_user:
-            entry = html_link(f'{GITHUB_URL}/{quote(gh_user)}', quote_name(display))
+            entry = html_link(f'{GITHUB_URL}/{url_quote(gh_user)}', quote_name(display))
         else:
             entry = quote_name(display)
         # Only show translation languages if the person is a confirmed
@@ -358,7 +358,7 @@ def format_translators(translators, translator_langs, weblate_users):
     for name in sorted(translators, key=str.casefold):
         wb_user = weblate_users.get(name)
         if wb_user:
-            linked_name = html_link(f'{WEBLATE_URL}/{quote(wb_user)}/', quote_name(name))
+            linked_name = html_link(f'{WEBLATE_URL}/{url_quote(wb_user)}/', quote_name(name))
         else:
             linked_name = quote_name(name)
         langs = ', '.join(sorted(translator_langs[name]))
