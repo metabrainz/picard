@@ -27,6 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import ClassVar
+
 from PyQt6 import QtCore
 
 from picard import log
@@ -58,7 +60,7 @@ class StartupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_startup.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'check_rtd_updates': {'widgets': ['check_rtd_updates']},
         'check_for_plugin_updates': {'widgets': ['check_plugin_updates']},
         'check_for_updates': {'widgets': ['check_for_updates']},

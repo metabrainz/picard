@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -70,7 +71,7 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'toolbar_show_labels': {'widgets': ['toolbar_show_labels']},
         'show_menu_icons': {'widgets': ['show_menu_icons']},
         'ui_language': {},

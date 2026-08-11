@@ -27,6 +27,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -89,7 +91,7 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_metadata.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'translate_artist_names': {'widgets': ['translate_artist_names']},
         'translate_album_titles': {'widgets': ['translate_album_titles']},
         'translate_track_titles': {'widgets': ['translate_track_titles']},

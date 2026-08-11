@@ -22,6 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.const import (
     BROWSER_INTEGRATION_MAX_PORT,
@@ -52,7 +54,7 @@ class NetworkOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'use_proxy': {'widgets': ['web_proxy']},
         'proxy_type': {'widgets': ['proxy_type_socks', 'proxy_type_http']},
         'proxy_server_host': {'widgets': ['server_host']},

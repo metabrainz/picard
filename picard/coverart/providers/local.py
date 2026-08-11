@@ -24,6 +24,7 @@
 
 import os
 import re
+from typing import ClassVar
 
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
@@ -61,7 +62,7 @@ class ProviderOptionsLocal(ProviderOptions):
     NAME = "provider_local"
     HELP_URL = '/config/options_local_files.html'
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
     }
 

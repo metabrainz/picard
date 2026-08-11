@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import ClassVar
+
 from PyQt6 import QtWidgets
 
 from picard.config import get_config
@@ -44,7 +46,7 @@ class SessionsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_sessions.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'session_safe_restore': {'widgets': ['safe_restore_checkbox']},
         'session_load_last_on_startup': {'widgets': ['load_last_checkbox']},
         'session_autosave_interval_min': {'widgets': ['autosave_spin']},

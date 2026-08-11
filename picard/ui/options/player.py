@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
@@ -37,7 +39,7 @@ class PlayerOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_player.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'player_now_playing': {'widgets': ['player_now_playing']},
         'listenbrainz_enabled': {'widgets': ['listenbrainz_enabled']},
         'listenbrainz_submit_only_tagged': {'widgets': ['listenbrainz_submit_only_tagged']},

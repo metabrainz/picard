@@ -24,6 +24,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -56,7 +58,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'cd_lookup_device': {'widgets': ['cd_lookup_device']},
         'read_isrcs_from_disc': {'widgets': ['read_isrcs_from_disc']},
     }

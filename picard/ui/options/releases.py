@@ -27,6 +27,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from PyQt6 import QtWidgets
 
 from picard.config import get_config
@@ -60,7 +62,7 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_releases.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'preferred_release_types': {'widgets': ['preferred_release_types_group']},
         'discouraged_release_types': {'widgets': ['discouraged_release_types_group']},
         'preferred_release_countries': {'widgets': ['preferred_release_countries_group']},

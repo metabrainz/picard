@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.formats.wav import WAVFile
@@ -41,7 +43,7 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_wave.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'write_wave_riff_info': {'widgets': ['write_wave_riff_info']},
         'remove_wave_riff_info': {'widgets': ['remove_wave_riff_info']},
         'wave_riff_info_encoding': {'widgets': ['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8']},

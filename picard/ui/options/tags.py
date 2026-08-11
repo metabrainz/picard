@@ -27,6 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import ClassVar
+
 from PyQt6 import QtWidgets
 
 from picard.config import get_config
@@ -52,7 +54,7 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'enable_tag_saving': {'widgets': ['write_tags']},
         'preserve_timestamps': {'widgets': ['preserve_timestamps']},
         'clear_existing_tags': {'widgets': ['clear_existing_tags']},

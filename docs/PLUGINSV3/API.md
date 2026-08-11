@@ -286,11 +286,12 @@ When a profile is active and overrides the option, reads from `api.plugin_config
 Declare widgets in the page's `OPTIONS` dict to enable visual highlighting when a profile overrides the option:
 
 ```python
+from typing import ClassVar
 from picard.plugin3.api import OptionsPage, PageOptionConfigs
 
 
 class MyOptionsPage(OptionsPage):
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'greeting': {'widgets': ['greeting_input']},
     }
 ```
