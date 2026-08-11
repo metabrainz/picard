@@ -30,7 +30,7 @@ from picard.plugin import ExtensionPoint
 from picard.ui.options import OptionsPage
 
 
-ext_point_options_pages = ExtensionPoint(label='options_pages')
+ext_point_options_pages = ExtensionPoint[type[OptionsPage]](label='options_pages')
 
 
 def register_options_page(page_class: type[OptionsPage]) -> None:

@@ -38,7 +38,10 @@ from collections.abc import (
     Callable,
     Iterator,
 )
-from typing import Any
+from typing import (
+    Generic,
+    TypeVar,
+)
 import uuid
 
 from picard import log
@@ -51,8 +54,10 @@ PLUGIN_MODULE_PREFIX_LEN = len(PLUGIN_MODULE_PREFIX)
 _extension_points: list['ExtensionPoint'] = []
 _plugin_uuid_to_module: dict[str, str] = {}  # Maps UUID -> module name for v3 plugins
 
+T = TypeVar('T')
 
-class ExtensionPoint:
+
+class ExtensionPoint(Generic[T]):
     def __init__(self, label: str | None = None) -> None:
         if label is None:
             self.label = uuid.uuid4()
@@ -68,13 +73,13 @@ class ExtensionPoint:
             return module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
         return None
 
-    def register(self, module: str, item: Any) -> None:
+    def register(self, module: str, item: T) -> None:
         name = self._derive_key(module)
         if name is not None:
             log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
         self.__dict[name].append(item)
 
-    def unregister(self, module: str, match: Callable[[Any], bool]) -> None:
+    def unregister(self, module: str, match: Callable[[T], bool]) -> None:
         """Remove items registered by *module* for which *match* returns True.
 
         Args:
@@ -99,7 +104,7 @@ class ExtensionPoint:
             # >>> #^^ no exception, after first read
             pass
 
-    def __iter__(self) -> Iterator[Any]:
+    def __iter__(self) -> Iterator[T]:
         config = get_config()
         if not config:
             # No config available, yield all

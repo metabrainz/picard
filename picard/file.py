@@ -1298,28 +1298,32 @@ class File(MetadataItem):
         return format_key not in disabled
 
 
-file_post_load_processors = PluginFunctions(label='file_post_load_processors')
-file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
-file_post_removal_to_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
-file_pre_save_processors = PluginFunctions(label='file_pre_save_processors')
-file_post_save_processors = PluginFunctions(label='file_post_save_processors')
+file_post_load_processors = PluginFunctions[[File], None](label='file_post_load_processors')
+file_post_addition_to_track_processors = PluginFunctions[['Track', File], None](
+    label='file_post_addition_to_track_processors'
+)
+file_post_removal_to_track_processors = PluginFunctions[['Track', File], None](
+    label='file_post_removal_from_track_processors'
+)
+file_pre_save_processors = PluginFunctions[[File], None](label='file_pre_save_processors')
+file_post_save_processors = PluginFunctions[[File], None](label='file_post_save_processors')
 
 
-def run_file_post_load_processors(file_object):
+def run_file_post_load_processors(file_object: File):
     file_post_load_processors.run(file_object)
 
 
-def run_file_post_addition_to_track_processors(track_object, file_object):
+def run_file_post_addition_to_track_processors(track_object: 'Track', file_object: File):
     file_post_addition_to_track_processors.run(track_object, file_object)
 
 
-def run_file_post_removal_from_track_processors(track_object, file_object):
+def run_file_post_removal_from_track_processors(track_object: 'Track', file_object: File):
     file_post_removal_to_track_processors.run(track_object, file_object)
 
 
-def run_file_pre_save_processors(file_object):
+def run_file_pre_save_processors(file_object: File):
     file_pre_save_processors.run(file_object)
 
 
-def run_file_post_save_processors(file_object):
+def run_file_post_save_processors(file_object: File):
     file_post_save_processors.run(file_object)

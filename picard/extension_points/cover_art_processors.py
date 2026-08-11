@@ -43,9 +43,6 @@ from picard.util.imageinfo import (
 )
 
 
-ext_point_cover_art_processors = ExtensionPoint(label='cover_art_processors')
-
-
 class CoverArtProcessingError(Exception):
     pass
 
@@ -178,6 +175,9 @@ class ImageProcessor:
         pass
 
 
+ext_point_cover_art_processors = ExtensionPoint[ImageProcessor](label='cover_art_processors')
+
+
 def get_cover_art_processors() -> dict[ImageProcessor.Target, list[ImageProcessor]]:
     queues = defaultdict(list)
     for processor in ext_point_cover_art_processors:
@@ -192,6 +192,6 @@ def get_cover_art_processors() -> dict[ImageProcessor.Target, list[ImageProcesso
     return queues
 
 
-def register_cover_art_processor(cover_art_processor):
+def register_cover_art_processor(cover_art_processor: type[ImageProcessor]) -> None:
     instance = cover_art_processor()
     ext_point_cover_art_processors.register(cover_art_processor.__module__, instance)

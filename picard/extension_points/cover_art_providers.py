@@ -29,7 +29,7 @@ from picard.extension_points.options_pages import register_options_page
 from picard.plugin import ExtensionPoint
 
 
-ext_point_cover_art_providers = ExtensionPoint(label='cover_art_providers')
+ext_point_cover_art_providers = ExtensionPoint[type[CoverArtProvider]](label='cover_art_providers')
 
 
 def register_cover_art_provider(provider: type[CoverArtProvider]) -> None:

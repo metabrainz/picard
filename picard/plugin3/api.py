@@ -19,6 +19,7 @@
 
 from picard.cluster import Cluster
 from picard.extension_points.cover_art_processors import ProcessingImage
+from picard.item import MetadataItem
 from picard.plugin3.api_impl import (
     Album,
     BaseAction,
@@ -28,7 +29,6 @@ from picard.plugin3.api_impl import (
     ImageInfo,
     ImageProcessor,
     Metadata,
-    MetadataItem,
     MetadataTagAction,
     OptionsPage,
     PluginApi,

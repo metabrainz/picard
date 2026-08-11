@@ -20,15 +20,19 @@
 
 
 from collections.abc import Callable
+from typing import TypeAlias
 
 from picard.disc.utils import TocNumbers
 from picard.extension_points import ExtensionPoint
 
 
-ext_point_disc_log_readers = ExtensionPoint(label='disc_log_readers')
+LogReader: TypeAlias = Callable[[str], TocNumbers]
 
 
-def register_disc_log_reader(function: Callable[[str], TocNumbers]) -> None:
+ext_point_disc_log_readers = ExtensionPoint[LogReader](label='disc_log_readers')
+
+
+def register_disc_log_reader(function: LogReader) -> None:
     """Registers a disc log reader function.
 
     A disc log reader is a function that takes a file path and returns

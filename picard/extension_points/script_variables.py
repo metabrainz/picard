@@ -31,15 +31,15 @@ if TYPE_CHECKING:
     from picard.plugin3.api_impl import PluginApi
 
 
-ext_point_script_variables = ExtensionPoint(label='script_variables')
-
-
 @dataclass(frozen=True)
 class PluginVariable:
     name: str
     documentation: str
     plugin_name: str
     title: str | None = None
+
+
+ext_point_script_variables = ExtensionPoint[PluginVariable](label='script_variables')
 
 
 def _check_if_duplicate_variable_name(name: str) -> str | None:

@@ -59,9 +59,6 @@ except ImportError:
     pass
 
 
-ext_point_script_functions = ExtensionPoint(label='script_functions')
-
-
 Bound = namedtuple('Bound', ['lower', 'upper'])
 
 
@@ -113,6 +110,9 @@ class FunctionRegistryItem:
         else:
             ret = ''
         return self._postprocess(ret, postprocessor)
+
+
+ext_point_script_functions = ExtensionPoint[tuple[str, FunctionRegistryItem]](label='script_functions')
 
 
 def register_script_function(

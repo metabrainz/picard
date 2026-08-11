@@ -18,13 +18,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard.item import MetadataItem
 from picard.plugin import ExtensionPoint
+from picard.util.display_title_base import HasDisplayTitle
 
 
-ext_point_metadata_tag_actions = ExtensionPoint(label='metadata_tag_actions')
+class MetadataTagAction(HasDisplayTitle):
+    """Base class for metadata tag context menu actions."""
+
+    TITLE: str = ""
+
+    def callback(self, tags: list[str], objects: set[MetadataItem]) -> None:
+        raise NotImplementedError
+
+    def is_visible(self, tags: list[str], objects: set[MetadataItem]) -> bool:
+        return True
 
 
-def register_metadata_tag_action(action: type) -> None:
+ext_point_metadata_tag_actions = ExtensionPoint[type[MetadataTagAction]](label='metadata_tag_actions')
+
+
+def register_metadata_tag_action(action: type[MetadataTagAction]) -> None:
     """Register a context menu action for metadata tags.
 
     The action class must define:

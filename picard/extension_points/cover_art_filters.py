@@ -23,6 +23,7 @@ from collections.abc import Callable
 from typing import (
     TYPE_CHECKING,
     Any,
+    TypeAlias,
 )
 
 from picard.album import Album
@@ -34,17 +35,16 @@ if TYPE_CHECKING:
     from picard.plugin3.api import ImageInfo
 
 
-ext_point_cover_art_filters = ExtensionPoint(label='cover_art_filters')
-ext_point_cover_art_metadata_filters = ExtensionPoint(label='cover_art_metadata_filters')
+CoverArtFilter: TypeAlias = Callable[[bytes, 'ImageInfo', Album | None, CoverArtImage], bool]
+CoverArtMetadataFilter: TypeAlias = Callable[[dict[str, Any]], bool]
+
+ext_point_cover_art_filters = ExtensionPoint[CoverArtFilter](label='cover_art_filters')
+ext_point_cover_art_metadata_filters = ExtensionPoint[CoverArtMetadataFilter](label='cover_art_metadata_filters')
 
 
-def register_cover_art_filter(
-    cover_art_filter: Callable[[bytes, 'ImageInfo', Album | None, CoverArtImage], bool],
-) -> None:
+def register_cover_art_filter(cover_art_filter: CoverArtFilter) -> None:
     ext_point_cover_art_filters.register(cover_art_filter.__module__, cover_art_filter)
 
 
-def register_cover_art_metadata_filter(
-    cover_art_metadata_filter: Callable[[dict[str, Any]], bool],
-) -> None:
+def register_cover_art_metadata_filter(cover_art_metadata_filter: CoverArtMetadataFilter) -> None:
     ext_point_cover_art_metadata_filters.register(cover_art_metadata_filter.__module__, cover_art_metadata_filter)

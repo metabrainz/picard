@@ -88,11 +88,11 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
         raise NotImplementedError
 
 
-ext_point_album_actions = ExtensionPoint(label='album_actions')
-ext_point_cluster_actions = ExtensionPoint(label='cluster_actions')
-ext_point_clusterlist_actions = ExtensionPoint(label='clusterlist_actions')
-ext_point_file_actions = ExtensionPoint(label='file_actions')
-ext_point_track_actions = ExtensionPoint(label='track_actions')
+ext_point_album_actions = ExtensionPoint[type[BaseAction]](label='album_actions')
+ext_point_cluster_actions = ExtensionPoint[type[BaseAction]](label='cluster_actions')
+ext_point_clusterlist_actions = ExtensionPoint[type[BaseAction]](label='clusterlist_actions')
+ext_point_file_actions = ExtensionPoint[type[BaseAction]](label='file_actions')
+ext_point_track_actions = ExtensionPoint[type[BaseAction]](label='track_actions')
 
 
 def register_album_action(action: type[BaseAction]) -> None:
