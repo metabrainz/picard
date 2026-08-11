@@ -59,9 +59,13 @@ WEBLATE_URL = 'https://translations.metabrainz.org/user'
 GITHUB_URL = 'https://github.com'
 
 
+QUIET = False
+
+
 def debug(msg):
-    """Print a debug message to stderr."""
-    print(f"  {msg}", file=sys.stderr)
+    """Print a debug message to stderr unless quiet mode is enabled."""
+    if not QUIET:
+        print(f"  {msg}", file=sys.stderr)
 
 
 def _find_git():
@@ -350,7 +354,16 @@ def main():
         default=None,
         help="ending release tag (default: most recent release)",
     )
+    parser.add_argument(
+        '-q',
+        '--quiet',
+        action='store_true',
+        help="suppress progress messages on stderr",
+    )
     args = parser.parse_args()
+
+    global QUIET
+    QUIET = args.quiet
 
     if not args.from_tag or not args.to_tag:
         tags = get_release_tags()
@@ -362,7 +375,7 @@ def main():
             args.from_tag = tags[1]
 
     rev_range = f'{args.from_tag}..{args.to_tag}'
-    print(f"{rev_range}:", file=sys.stderr)
+    debug(f"{rev_range}:")
 
     github_users = get_github_users(rev_range)
     weblate_users = get_weblate_users(rev_range)
