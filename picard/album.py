@@ -1215,8 +1215,8 @@ class NatAlbum(Album):
         return False
 
 
-album_post_removal_processors = PluginFunctions(label='album_post_removal_processors')
+album_post_removal_processors = PluginFunctions[[Album], None](label='album_post_removal_processors')
 
 
-def run_album_post_removal_processors(album_object):
+def run_album_post_removal_processors(album_object: Album):
     album_post_removal_processors.run(album_object)

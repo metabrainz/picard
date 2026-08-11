@@ -39,6 +39,11 @@ from collections.abc import (
     Iterator,
 )
 from functools import partial
+from typing import (
+    Generic,
+    ParamSpec,
+    TypeVar,
+)
 
 from picard.config import (
     Option,
@@ -65,25 +70,29 @@ PluginInformation = namedtuple(
 )
 
 
-class PluginFunctions:
+P = ParamSpec('P')
+R = TypeVar('R')
+
+
+class PluginFunctions(Generic[P, R]):
     """
     Store ExtensionPoint in a defaultdict with priority as key
     run() method will execute entries with higher priority value first
     """
 
     def __init__(self, label: str | None = None):
-        self.functions = ExtensionPoint(label=label)
+        self.functions = ExtensionPoint[Callable[P, R]](label=label)
         self.priorities: dict = {}
         self.config_priorities: dict = {}
         self.processor_type = label.split('_')[0] if label else ''
         Option.add_if_missing('setting', 'plugins3_exec_order', dict())
 
-    def make_exec_order_key(self, function: Callable) -> str:
+    def make_exec_order_key(self, function: Callable[P, R]) -> str:
         """Make the plugin key based on the module name"""
         key = f"{function.__module__}:{self.processor_type}:{getattr(function, '__name__', str(function))}"
         return key
 
-    def get_priority(self, function: Callable) -> int:
+    def get_priority(self, function: Callable[P, R]) -> int:
         key = self.make_exec_order_key(function)
         if key in self.config_priorities:
             return self.config_priorities[key]
@@ -91,7 +100,7 @@ class PluginFunctions:
             return self.priorities[key]
         return 0  # Default priority
 
-    def register(self, module: str, item: Callable, priority: int = 0) -> None:
+    def register(self, module: str, item: Callable[P, R], priority: int = 0) -> None:
         key = self.make_exec_order_key(item)
         self.priorities[key] = priority
         self.functions.register(module, item)
@@ -130,18 +139,18 @@ class PluginFunctions:
                 plugin_name=plugin_name,
                 plugin_description=plugin_description,
                 processor=processor,
-                function_name=function.__name__,
+                function_name=function.__name__ if hasattr(function, '__name__') else str(function),
                 function_description=getattr(function, '__doc__', None) or _("No function description available."),
                 priority=self.get_priority(function),
             )
 
-    def _get_functions(self) -> Iterator[Callable]:
+    def _get_functions(self) -> Iterator[Callable[P, R]]:
         """Returns registered functions by order of priority (highest first) and registration"""
         config = get_config()
         self.config_priorities = dict(config.setting['plugins3_exec_order'])
         yield from sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True)
 
-    def run(self, *args, **kwargs) -> None:
+    def run(self, *args: P.args, **kwargs: P.kwargs) -> None:
         """Execute registered functions with passed parameters honouring priority"""
         for function in self._get_functions():
             function(*args, **kwargs)

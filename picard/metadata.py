@@ -57,7 +57,9 @@ from picard.util.imagelist import ImageList
 
 
 if TYPE_CHECKING:
+    from picard.album import Album
     from picard.coverart.image import CoverArtImage
+    from picard.track import Track
 
 MULTI_VALUED_JOINER = '; '
 
@@ -514,13 +516,17 @@ class MultiMetadataProxy:
         return self.__read('__repr__')
 
 
-album_metadata_processors = PluginFunctions(label='album_metadata_processors')
-track_metadata_processors = PluginFunctions(label='track_metadata_processors')
+album_metadata_processors = PluginFunctions[['Album', Metadata, dict], None](label='album_metadata_processors')
+track_metadata_processors = PluginFunctions[['Track', Metadata, dict, dict | None], None](
+    label='track_metadata_processors'
+)
 
 
-def run_album_metadata_processors(album_object, metadata, release_node):
+def run_album_metadata_processors(album_object: 'Album', metadata: Metadata, release_node: dict):
     album_metadata_processors.run(album_object, metadata, release_node)
 
 
-def run_track_metadata_processors(track_object, metadata, track_node, release_node=None):
+def run_track_metadata_processors(
+    track_object: 'Track', metadata: Metadata, track_node: dict, release_node: dict | None = None
+):
     track_metadata_processors.run(track_object, metadata, track_node, release_node)

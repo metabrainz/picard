@@ -32,7 +32,7 @@ class Signaler(QObject):
 
 
 signaler = Signaler()
-ext_point_plugin_tools_items = ExtensionPoint(label='plugin_tools_items')
+ext_point_plugin_tools_items = ExtensionPoint[type[BaseAction]](label='plugin_tools_items')
 
 
 def register_tools_menu_action(action: type[BaseAction]) -> None:

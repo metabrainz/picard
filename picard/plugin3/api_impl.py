@@ -88,7 +88,10 @@ from picard.extension_points.metadata import (
     register_album_metadata_processor,
     register_track_metadata_processor,
 )
-from picard.extension_points.metadata_tag_actions import register_metadata_tag_action
+from picard.extension_points.metadata_tag_actions import (
+    MetadataTagAction as _MetadataTagAction,
+    register_metadata_tag_action,
+)
 from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.plugin_tools_menu import register_tools_menu_action
 from picard.extension_points.script_functions import register_script_function
@@ -98,7 +101,6 @@ from picard.extension_points.script_variables import (
     unregister_script_variable,
 )
 from picard.file import File
-from picard.item import MetadataItem
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
     PluginTranslator,
@@ -190,17 +192,10 @@ class ProviderOptions(_ProviderOptions):
     api: 'PluginApi'
 
 
-class MetadataTagAction(HasDisplayTitle):
+class MetadataTagAction(_MetadataTagAction):
     """Base class for metadata tag context menu actions."""
 
-    TITLE: str = ""
     api: 'PluginApi'
-
-    def callback(self, tags: list[str], objects: set[MetadataItem]) -> None:
-        raise NotImplementedError
-
-    def is_visible(self, tags: list[str], objects: set[MetadataItem]) -> bool:
-        return True
 
 
 class PluginApi:
