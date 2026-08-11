@@ -222,7 +222,7 @@ def get_weblate_users_from_api(api_key, rev_range):
                             credits.setdefault(full_name, username)
         debug(f"Found {len(credits)} translators from Weblate API")
     except Exception as e:
-        debug(f"Weblate API error: {e}")
+        debug(f"Weblate API error for {url}: {e}")
     return credits
 
 
