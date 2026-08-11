@@ -329,16 +329,26 @@ def get_github_display_names(github_users):
     return display_names
 
 
-def format_code_authors(code_authors, github_users, display_names):
-    """Format code contributors with optional GitHub links."""
+def format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_users):
+    """Format code contributors with optional GitHub links.
+
+    For authors who also contributed translations (confirmed via Weblate
+    user identification), their translated languages are shown.
+    """
     names = []
     for name in sorted(code_authors, key=str.casefold):
         gh_user = github_users.get(name)
         display = display_names.get(name, name)
         if gh_user:
-            names.append(html_link(f'{GITHUB_URL}/{quote(gh_user)}', quote_name(display)))
+            entry = html_link(f'{GITHUB_URL}/{quote(gh_user)}', quote_name(display))
         else:
-            names.append(quote_name(display))
+            entry = quote_name(display)
+        # Only show translation languages if the person is a confirmed
+        # Weblate translator (not just the merge author of squashed commits)
+        if name in weblate_users and name in translator_langs:
+            langs = ', '.join(sorted(translator_langs[name]))
+            entry += f" ({langs}+)"
+        names.append(entry)
     return f"Code contributions by {join_names(names)}."
 
 
@@ -407,7 +417,7 @@ def main():
     )
 
     if code_authors:
-        print(format_code_authors(code_authors, github_users, display_names))
+        print(format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_users))
     if translators:
         print(format_translators(translators, translator_langs, weblate_users))
 
