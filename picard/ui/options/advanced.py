@@ -93,7 +93,7 @@ class AdvancedOptionsPage(OptionsPage):
     def _update_test_file_path_playground(self):
         regex_text = self.ui.ignore_regex.text()
         try:
-            self.file_path_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
+            self.file_path_filter = re.compile(regex_text) if regex_text else None
         except re.error:
             self.file_path_filter = None
 
