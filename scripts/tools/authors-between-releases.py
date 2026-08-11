@@ -118,13 +118,29 @@ def get_github_users_from_merges(rev_range):
     return github_users
 
 
+def iter_git_log(rev_range, format_fields, *pathspecs):
+    """Yield tuples from git log with tab-separated format fields.
+
+    Args:
+        rev_range: Git revision range (e.g. 'tag1..tag2')
+        format_fields: Git format placeholders (e.g. '%aN', '%aE', '%s')
+        *pathspecs: Optional pathspec arguments for git log
+    """
+    fmt = '\t'.join(format_fields)
+    args = ['log', f'--format={fmt}', rev_range]
+    if pathspecs:
+        args.extend(('--', *pathspecs))
+    num_fields = len(format_fields)
+    for line in git(*args).splitlines():
+        if '\t' not in line:
+            continue
+        yield line.split('\t', num_fields - 1)
+
+
 def get_github_users_from_emails(rev_range):
     """Map author names to GitHub usernames from noreply emails."""
     github_users = {}
-    for line in git('log', '--format=%aN\t%aE', rev_range).splitlines():
-        if '\t' not in line:
-            continue
-        name, email = line.split('\t', 1)
+    for name, email in iter_git_log(rev_range, ('%aN', '%aE')):
         match = re.match(r'(?:\d+\+)?(.+)@users\.noreply\.github\.com$', email)
         if match and name not in EXCLUDE:
             github_users.setdefault(name, match.group(1))
@@ -144,10 +160,7 @@ def get_github_users(rev_range):
 def get_weblate_users_from_emails(rev_range):
     """Map author names to Weblate usernames from noreply emails in git log."""
     weblate_users = {}
-    for line in git('log', '--format=%aN\t%aE', rev_range, '--', *TRANSLATION_PATHS).splitlines():
-        if '\t' not in line:
-            continue
-        name, email = line.split('\t', 1)
+    for name, email in iter_git_log(rev_range, ('%aN', '%aE'), *TRANSLATION_PATHS):
         match = re.match(r'(.+)@users\.noreply\.translations\.metabrainz\.org$', email)
         if match and name not in EXCLUDE:
             weblate_users.setdefault(name, match.group(1))
@@ -232,10 +245,7 @@ def get_translator_langs(rev_range):
     Parses "Translated using Weblate (Language)" commit messages.
     """
     translator_langs = {}
-    for line in git('log', '--format=%aN\t%s', rev_range, '--', *TRANSLATION_PATHS).splitlines():
-        if '\t' not in line:
-            continue
-        author, subject = line.split('\t', 1)
+    for author, subject in iter_git_log(rev_range, ('%aN', '%s'), *TRANSLATION_PATHS):
         if author in EXCLUDE:
             continue
         match = re.search(r'Translated using Weblate \((.+)\)', subject)
