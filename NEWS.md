@@ -1,5 +1,36 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b9 - 2026-08-11
+
+### Bugfixes
+- [PICARD-3349](https://tickets.metabrainz.org/browse/PICARD-3349) - Copying the "new" column of a deleted tag in the metadata box copies the old value instead of empty
+- [PICARD-3351](https://tickets.metabrainz.org/browse/PICARD-3351) - Options dialog is sometimes too big in height, impossible to access Make It So button
+- [PICARD-3352](https://tickets.metabrainz.org/browse/PICARD-3352) - "Embed only a single front image" option can prevent images to be loaded
+- [PICARD-3357](https://tickets.metabrainz.org/browse/PICARD-3357) - Some Cyanrip log files fail to be parsed
+- [PICARD-3365](https://tickets.metabrainz.org/browse/PICARD-3365) - Debug options tooltips not shown
+- [PICARD-3368](https://tickets.metabrainz.org/browse/PICARD-3368) - Removing multiple tags from multiple tracks is slow
+- [PICARD-3372](https://tickets.metabrainz.org/browse/PICARD-3372) - Infinite OAuth retry loop when refresh token is revoked
+
+### New Features
+- [PICARD-163](https://tickets.metabrainz.org/browse/PICARD-163) - ISRC support for lookup and submission
+- [PICARD-2482](https://tickets.metabrainz.org/browse/PICARD-2482) - Submit ISRCs from CD
+- [PICARD-3355](https://tickets.metabrainz.org/browse/PICARD-3355) - Allow plugins to unregister script variables and allow double registering
+- [PICARD-3356](https://tickets.metabrainz.org/browse/PICARD-3356) - Expose `plugin_persist` storage in plugin v3 API
+- [PICARD-3358](https://tickets.metabrainz.org/browse/PICARD-3358) - Add metadata tag context menu extension point and script variable title for plugins
+- [PICARD-3363](https://tickets.metabrainz.org/browse/PICARD-3363) - Add option to allow complete albums to be auto removed after save
+- [PICARD-3367](https://tickets.metabrainz.org/browse/PICARD-3367) - Add shell completion generation for picard-cli
+- [PICARD-3369](https://tickets.metabrainz.org/browse/PICARD-3369) - Add a test playground for checking file names in local cover art options
+
+### Improvements
+- [PICARD-1164](https://tickets.metabrainz.org/browse/PICARD-1164) - Word diff for tags
+- [PICARD-1444](https://tickets.metabrainz.org/browse/PICARD-1444) - Redesign release preferences UI
+- [PICARD-1638](https://tickets.metabrainz.org/browse/PICARD-1638) - Show authorization required dialog only once
+- [PICARD-2772](https://tickets.metabrainz.org/browse/PICARD-2772) - Support MetaBrainz OAuth2
+- [PICARD-3366](https://tickets.metabrainz.org/browse/PICARD-3366) - Updated match icons, clearer indication of bad match and near-perfect matches
+- [PICARD-3370](https://tickets.metabrainz.org/browse/PICARD-3370) - Refresh About dialog styling and layout
+- [PICARD-3371](https://tickets.metabrainz.org/browse/PICARD-3371) - Speedup opening Options dialog
+
+
 ## Version 3.0.0b7 - 2026-07-16
 
 ### Bugfixes
@@ -15,7 +46,7 @@
 - [PICARD-3344](https://tickets.metabrainz.org/browse/PICARD-3344) - Crash when refreshing collections list
 - [PICARD-3345](https://tickets.metabrainz.org/browse/PICARD-3345) - Exception when reading `SYLT` tag with newline
 
-### New Feature
+### New Features
 - [PICARD-30](https://tickets.metabrainz.org/browse/PICARD-30) - Add `_artistcomment` and `_albumartistcomment` variables
 - [PICARD-3328](https://tickets.metabrainz.org/browse/PICARD-3328) - Support TOML-based exportable/importable profiles
 - [PICARD-3346](https://tickets.metabrainz.org/browse/PICARD-3346) - Cyanrip log support
