@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-09 11:38+0200\n"
+"POT-Creation-Date: 2026-08-11 08:13+0200\n"
 "PO-Revision-Date: 2026-08-09 10:07+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -212,7 +212,7 @@ msgid "Log cover art filter, resize and convert operations"
 msgstr ""
 "Registra les operacions de filtre, canvi de mida i conversió de les caràtules"
 
-#: picard/debug_opts.py:169 picard/ui/forms/ui_options_matching.py:77
+#: picard/debug_opts.py:169 picard/ui/forms/ui_options_matching.py:134
 #: picard/ui/options/matching.py:38
 msgid "Matching"
 msgstr "Coincidència"
@@ -358,15 +358,15 @@ msgstr "Informació"
 msgid "Debug"
 msgstr "Depuració"
 
-#: picard/oauth.py:193
+#: picard/oauth.py:201
 msgid "Unexpected token revocation error"
 msgstr "S'ha produït un error inesperat en revocar el testimoni"
 
-#: picard/oauth.py:357 picard/oauth.py:384
+#: picard/oauth.py:370 picard/oauth.py:398
 msgid "Unexpected authentication error"
 msgstr "S'ha produït un error inesperat d'autenticació"
 
-#: picard/oauth.py:396
+#: picard/oauth.py:410
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "S'ha produït un error inesperat a la sol·licitud (codi HTTP %s)"
@@ -415,7 +415,7 @@ msgstr "Ignora la compleció: pistes amb silenci"
 msgid "Completeness ignore: Video tracks"
 msgstr "Ignora la compleció: pistes de vídeo"
 
-#: picard/options.py:186 picard/ui/forms/ui_options_advanced.py:153
+#: picard/options.py:186 picard/ui/forms/ui_options_advanced.py:64
 msgid "Ignore hidden files"
 msgstr "Ignora els fitxers ocults"
 
@@ -587,15 +587,15 @@ msgstr "Ignora les empremtes AcoustID existents"
 msgid "Save AcoustID fingerprints"
 msgstr "Desa les empremtes AcoustID"
 
-#: picard/options.py:343 picard/ui/forms/ui_options_general.py:143
+#: picard/options.py:343 picard/ui/forms/ui_options_lookup.py:86
 msgid "Automatically scan all new files"
 msgstr "Analitza automàticament tots els fitxers nous"
 
-#: picard/options.py:344 picard/ui/forms/ui_options_general.py:144
+#: picard/options.py:344 picard/ui/forms/ui_options_lookup.py:87
 msgid "Automatically cluster all new files"
 msgstr "Agrupa automàticament tots els fitxers nous"
 
-#: picard/options.py:345 picard/ui/forms/ui_options_general.py:145
+#: picard/options.py:345 picard/ui/forms/ui_options_lookup.py:88
 msgid "Ignore MBIDs when loading new files"
 msgstr "Ignora els MBID en carregar fitxers nous"
 
@@ -616,11 +616,11 @@ msgstr "Envia al servidor configurat"
 msgid "Read ISRCs from CD"
 msgstr ""
 
-#: picard/options.py:350 picard/ui/forms/ui_options_general.py:141
+#: picard/options.py:350
 msgid "Enable managing user collections"
 msgstr "Habilita la gestió de col·leccions de l'usuari"
 
-#: picard/options.py:355 picard/ui/forms/ui_options_general.py:146
+#: picard/options.py:355 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
 msgstr ""
 
@@ -628,7 +628,7 @@ msgstr ""
 msgid "Use album artist genres"
 msgstr "Fes servir els gèneres dels artistes de l'àlbum"
 
-#: picard/options.py:362 picard/ui/forms/ui_options_genres.py:133
+#: picard/options.py:362 picard/ui/forms/ui_options_genres.py:149
 msgid "Use folksonomy tags as genre"
 msgstr "Fes servir les etiquetes de folcsonomia com a gènere"
 
@@ -648,11 +648,11 @@ msgstr "Nombre màxim de gèneres"
 msgid "Minimal genre usage"
 msgstr "Ús mínim del gènere"
 
-#: picard/options.py:373 picard/ui/forms/ui_options_genres.py:131
+#: picard/options.py:373
 msgid "Use only my genres"
 msgstr "Fes servir només els meus gèneres"
 
-#: picard/options.py:374 picard/ui/forms/ui_options_genres.py:130
+#: picard/options.py:374 picard/ui/forms/ui_options_genres.py:146
 msgid "Use genres from MusicBrainz"
 msgstr "Fes servir els gèneres de MusicBrainz"
 
@@ -676,7 +676,7 @@ msgstr "Confirma en desar"
 msgid "Confirm quit if unsaved changes"
 msgstr "Confirma en sortir si hi ha canvis sense desar"
 
-#: picard/options.py:392 picard/ui/forms/ui_options_interface.py:128
+#: picard/options.py:392 picard/ui/forms/ui_options_interface.py:120
 msgid "Show icons in menus"
 msgstr "Mostra icones als menús"
 
@@ -688,11 +688,11 @@ msgstr "Mostra un avís en iniciar Picard"
 msgid "Begin browsing in a specific directory"
 msgstr "Inicia l'exploració en un directori específic"
 
-#: picard/options.py:399 picard/ui/forms/ui_options_interface.py:140
+#: picard/options.py:399 picard/ui/forms/ui_options_interface.py:130
 msgid "Directory to begin browsing"
 msgstr "Directori on iniciar l'exploració"
 
-#: picard/options.py:403 picard/ui/forms/ui_options_interface.py:127
+#: picard/options.py:403 picard/ui/forms/ui_options_interface.py:119
 msgid "Show text labels under icons"
 msgstr "Mostra etiquetes de text sota les icones"
 
@@ -878,7 +878,7 @@ msgstr "Fes servir un servidor intermediari"
 msgid "Plugins execution order"
 msgstr "Ordre d'execució dels connectors"
 
-#: picard/options.py:564 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:564
 msgid "Enable track ratings"
 msgstr "Habilita les puntuacions de les pistes"
 
@@ -886,7 +886,7 @@ msgstr "Habilita les puntuacions de les pistes"
 msgid "Email for saving ratings"
 msgstr "Adreça electrònica per a desar les puntuacions"
 
-#: picard/options.py:569 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:569 picard/ui/forms/ui_options_ratings.py:62
 msgid "Submit ratings to MusicBrainz"
 msgstr "Envia les puntuacions a MusicBrainz"
 
@@ -994,7 +994,7 @@ msgstr "Tipus d'actualitzacions a comprovar"
 msgid "Log verbosity level"
 msgstr "Nivel de detall del registre"
 
-#: picard/options.py:644 picard/ui/forms/ui_options_tags.py:94
+#: picard/options.py:644 picard/ui/forms/ui_options_tags.py:96
 msgid "Clear existing tags"
 msgstr "Esborra les etiquetes existents"
 
@@ -1122,12 +1122,12 @@ msgid "Unknown Plugin"
 msgstr "Connector desconegut"
 
 #: picard/plugin.py:123 picard/ui/cdlookup.py:66
-#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1181
+#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1183
 msgid "Album"
 msgstr "Àlbum"
 
 #: picard/plugin.py:125 picard/ui/cdlookup.py:230
-#: picard/ui/isrcsubmitdialog.py:52 picard/ui/mainwindow/__init__.py:1183
+#: picard/ui/isrcsubmitdialog.py:52 picard/ui/mainwindow/__init__.py:1185
 msgid "Track"
 msgstr "Pista"
 
@@ -1200,7 +1200,7 @@ msgstr "El rerefons del Git no està disponible"
 msgid "Disabled by command line parameter"
 msgstr "Inhabilitat per un paràmetre de la línia d'ordres"
 
-#: picard/tagger.py:639 picard/ui/forms/ui_options_general.py:138
+#: picard/tagger.py:639 picard/ui/forms/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "Compte de MusicBrainz"
 
@@ -1208,13 +1208,13 @@ msgstr "Compte de MusicBrainz"
 msgid "Authorization code:"
 msgstr "Codi d'autorització:"
 
-#: picard/tagger.py:766 picard/ui/mainwindow/__init__.py:1560
-#: picard/ui/mainwindow/__init__.py:1586
+#: picard/tagger.py:766 picard/ui/mainwindow/__init__.py:1562
+#: picard/ui/mainwindow/__init__.py:1588
 msgid "Failed to load session"
 msgstr "No s'ha pogut carregar la sessió"
 
-#: picard/tagger.py:767 picard/ui/mainwindow/__init__.py:1561
-#: picard/ui/mainwindow/__init__.py:1587
+#: picard/tagger.py:767 picard/ui/mainwindow/__init__.py:1563
+#: picard/ui/mainwindow/__init__.py:1589
 #, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
@@ -1310,7 +1310,7 @@ msgid "SCSI TOC file"
 msgstr "Fitxer SCSI TOC"
 
 #: picard/script/serializer.py:385 picard/tagger.py:1346
-#: picard/ui/coverartbox/__init__.py:386 picard/ui/mainwindow/__init__.py:1292
+#: picard/ui/coverartbox/__init__.py:386 picard/ui/mainwindow/__init__.py:1294
 #: picard/ui/options/maintenance.py:212 picard/ui/options/scripting.py:139
 msgid "All files"
 msgstr "Tots els fitxers"
@@ -1477,7 +1477,7 @@ msgstr "Cover Art Archive: Publicació"
 msgid "Cover Art Archive: Release Group"
 msgstr "Cover Art Archive: Grup de publicacions"
 
-#: picard/coverart/providers/local.py:50
+#: picard/coverart/providers/local.py:45
 #, fuzzy
 #| msgid ""
 #| "<html><head/><body>\n"
@@ -1510,11 +1510,11 @@ msgstr ""
 "</p>\n"
 "</body></html>"
 
-#: picard/coverart/providers/local.py:81
+#: picard/coverart/providers/local.py:76
 msgid "Enter file names to test, one per line"
 msgstr ""
 
-#: picard/coverart/providers/local.py:149
+#: picard/coverart/providers/local.py:106
 msgid "Local Files"
 msgstr "Fitxers locals"
 
@@ -3379,7 +3379,8 @@ msgstr "Notes"
 msgid "Option Settings"
 msgstr "Paràmetres"
 
-#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:209
+#: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:189
+#: picard/ui/forms/ui_aboutdialog.py:253
 msgid "Links"
 msgstr "Enllaços"
 
@@ -3429,69 +3430,18 @@ msgstr "<p><strong>{title}:</strong> {values}.</p>"
 msgid "%s — MusicBrainz Picard"
 msgstr "%s — MusicBrainz Picard"
 
-#: picard/ui/aboutdialog.py:124
+#: picard/ui/aboutdialog.py:128
 #, fuzzy, python-format
 #| msgid "Version"
 msgid "Version %s"
 msgstr "Versió"
 
-#: picard/ui/aboutdialog.py:134
-msgid "Supported formats"
-msgstr "Formats admesos"
-
-#: picard/ui/aboutdialog.py:140
-msgid "Please donate"
-msgstr "Feu una donació"
-
-#: picard/ui/aboutdialog.py:143
-msgid ""
-"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
-"is operated by the MetaBrainz Foundation with the help of thousands of "
-"volunteers. If you like this application please consider donating to the "
-"MetaBrainz Foundation to keep the service running."
-msgstr ""
-"Gràcies per fer servir Picard. Picard depèn de la base de dades MusicBrainz, "
-"que funciona gràcies a MetaBrainz Foundation amb l'ajuda de milers de "
-"persones voluntàries. Si us agrada aquesta aplicació, considereu la "
-"possibilitat de fer una donació a MetaBrainz Foundation per a mantenir el "
-"servei en funcionament."
-
-#: picard/ui/aboutdialog.py:148
-msgid "Donate now!"
-msgstr "Vull fer una donació ara!"
-
-#: picard/ui/aboutdialog.py:152
-msgid "Credits"
-msgstr "Crèdits"
-
-#: picard/ui/aboutdialog.py:156
-msgid ""
-"A <a href=\"https://metabrainz.org\">MetaBrainz Foundation</a> project, "
-"powered by the <a href=\"https://musicbrainz.org\">MusicBrainz</a> database."
-msgstr ""
-
-#: picard/ui/aboutdialog.py:173
+#: picard/ui/aboutdialog.py:159
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
 msgstr "Copyright © %(copyright_years)s %(authors_credits)s i altres"
 
-#: picard/ui/aboutdialog.py:182
-msgid "translator-credits"
-msgstr ""
-"Equip de traducció de MusicBrainz al català:\n"
-"https://translations.metabrainz.org/languages/ca/\n"
-"\n"
-"Col·laboracions històriques via Launchpad:\n"
-"David Martín Alaminos https://launchpad.net/~gnomyst\n"
-"animarval https://launchpad.net/~animarval\n"
-"iletlovein https://launchpad.net/~soma27"
-
-#: picard/ui/aboutdialog.py:185
-#, python-format
-msgid "Translated to LANG by %(translators)s"
-msgstr "Traduït al català per %(translators)s"
-
-#: picard/ui/aboutdialog.py:196
+#: picard/ui/aboutdialog.py:176
 msgid ""
 "Icons made by Sambhav Kothari and <a href=\"http://www.flaticon.com/authors/"
 "madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/authors/"
@@ -3509,21 +3459,21 @@ msgstr ""
 "www.flaticon.com/authors/smashicons\">Smashicons</a> de <a href=\"https://"
 "www.flaticon.com\">www.flaticon.com</a>"
 
-#: picard/ui/aboutdialog.py:211
+#: picard/ui/aboutdialog.py:191
 msgid "Official website"
 msgstr "Lloc web oficial"
 
-#: picard/ui/aboutdialog.py:212 picard/ui/forms/ui_options_script.py:136
+#: picard/ui/aboutdialog.py:192 picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
 msgstr "Documentació"
 
-#: picard/ui/aboutdialog.py:213
+#: picard/ui/aboutdialog.py:193
 #, fuzzy
 #| msgid "Community"
 msgid "Community forum"
 msgstr "Comunitat"
 
-#: picard/ui/aboutdialog.py:214
+#: picard/ui/aboutdialog.py:194
 msgid "License"
 msgstr "Llicència"
 
@@ -3576,13 +3526,13 @@ msgid "C&lear all"
 msgstr "Esb&orra-ho tot"
 
 #: picard/ui/caa_types_selector.py:274
-#: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:310
+#: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:312
 #: picard/ui/options/renaming_compat.py:217
 msgid "Restore &Defaults"
 msgstr "Reini&cialitza"
 
 #: picard/ui/cdlookup.py:67 picard/ui/itemviews/columns.py:146
-#: picard/ui/mainwindow/__init__.py:1182 picard/ui/searchdialog/album.py:162
+#: picard/ui/mainwindow/__init__.py:1184 picard/ui/searchdialog/album.py:162
 #: picard/ui/searchdialog/track.py:78
 msgid "Artist"
 msgstr "Artista"
@@ -3758,7 +3708,7 @@ msgstr "Elements dels fitxers"
 msgid "Image Items"
 msgstr "Elements de les imatges"
 
-#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:131
+#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:123
 msgid "Miscellaneous"
 msgstr "Miscel·lània"
 
@@ -4575,7 +4525,7 @@ msgstr "/camí/del/directori/del/connector"
 #: picard/ui/dialogs/installplugin.py:177
 #: picard/ui/dialogs/installplugin.py:178
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
-#: picard/ui/forms/ui_options_interface.py:141
+#: picard/ui/forms/ui_options_interface.py:131
 #: picard/ui/forms/ui_options_maintenance.py:149
 #: picard/ui/forms/ui_options_renaming.py:138
 msgid "Select directory"
@@ -4797,7 +4747,7 @@ msgid "Move selected plugin down"
 msgstr "Mou el connector seleccionat avall"
 
 #: picard/ui/dialogs/plugin_order_selector.py:202
-#: picard/ui/options/dialog.py:947
+#: picard/ui/options/dialog.py:963
 msgid "Confirm Reset"
 msgstr "Confirmació de la reinicialització"
 
@@ -4909,13 +4859,60 @@ msgstr "Comunitat"
 msgid "Unregistered"
 msgstr "Sense registrar"
 
-#: picard/ui/forms/ui_aboutdialog.py:228
+#: picard/ui/forms/ui_aboutdialog.py:243
 msgid "About Picard"
 msgstr "Quant a Picard"
 
-#: picard/ui/forms/ui_aboutdialog.py:229 picard/ui/mainwindow/__init__.py:272
+#: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:274
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
+
+#: picard/ui/forms/ui_aboutdialog.py:245
+msgid "Supported formats"
+msgstr "Formats admesos"
+
+#: picard/ui/forms/ui_aboutdialog.py:246
+msgid "Please donate"
+msgstr "Feu una donació"
+
+#: picard/ui/forms/ui_aboutdialog.py:247
+msgid ""
+"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
+"is operated by the MetaBrainz Foundation with the help of thousands of "
+"volunteers. If you like this application please consider donating to the "
+"MetaBrainz Foundation to keep the service running."
+msgstr ""
+"Gràcies per fer servir Picard. Picard depèn de la base de dades MusicBrainz, "
+"que funciona gràcies a MetaBrainz Foundation amb l'ajuda de milers de "
+"persones voluntàries. Si us agrada aquesta aplicació, considereu la "
+"possibilitat de fer una donació a MetaBrainz Foundation per a mantenir el "
+"servei en funcionament."
+
+#: picard/ui/forms/ui_aboutdialog.py:248
+msgid "Donate now!"
+msgstr "Vull fer una donació ara!"
+
+#: picard/ui/forms/ui_aboutdialog.py:249
+msgid "Credits"
+msgstr "Crèdits"
+
+#: picard/ui/forms/ui_aboutdialog.py:250
+msgid ""
+"A <a href=\"https://metabrainz.org\">MetaBrainz Foundation</a> project, "
+"powered by the <a href=\"https://musicbrainz.org\">MusicBrainz</a> database."
+msgstr ""
+
+#: picard/ui/forms/ui_aboutdialog.py:251
+msgid ""
+"Translated by the MusicBrainz community. Thank you to everyone who helps "
+"make Picard available in more languages!"
+msgstr ""
+
+#: picard/ui/forms/ui_aboutdialog.py:252
+#, fuzzy
+#| msgid "Plugin Translations"
+msgid "Help with translation"
+msgstr "Traduccions dels connectors"
 
 #: picard/ui/forms/ui_cdlookup.py:91 picard/ui/forms/ui_options_cdlookup.py:50
 #: picard/ui/forms/ui_options_cdlookup_select.py:56
@@ -5062,56 +5059,19 @@ msgstr "Configuracions regionals disponibles"
 msgid "Options"
 msgstr "Opcions"
 
-#: picard/ui/forms/ui_options_advanced.py:148
+#: picard/ui/forms/ui_options_advanced.py:61
 msgid "Advanced options"
 msgstr "Opcions avançades"
 
-#: picard/ui/forms/ui_options_advanced.py:149
+#: picard/ui/forms/ui_options_advanced.py:62
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
 "Ignora els camins de fitxers que coincideixin amb l'expressió regular "
 "següent:"
 
-#: picard/ui/forms/ui_options_advanced.py:150
-msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Nombre màxim d'entitats que es retornaran per consulta a MusicBrainz"
-
-#: picard/ui/forms/ui_options_advanced.py:151
-msgid "Ignore track duration difference under this number of seconds"
-msgstr ""
-"Ignora les diferències de durada de les pistes inferiors a aquest nombre de "
-"segons"
-
-#: picard/ui/forms/ui_options_advanced.py:152
+#: picard/ui/forms/ui_options_advanced.py:63
 msgid "Include sub-folders when adding files from folder"
 msgstr "Inclou les subcarpetes en afegir els fitxers d'una carpeta"
-
-#: picard/ui/forms/ui_options_advanced.py:154
-msgid ""
-"Ignore the following tracks when determining whether a release is complete"
-msgstr ""
-"Ignora les pistes següents a l'hora de determinar si una publicació està "
-"completa"
-
-#: picard/ui/forms/ui_options_advanced.py:155
-msgid "Video tracks"
-msgstr "Pistes de vídeo"
-
-#: picard/ui/forms/ui_options_advanced.py:156
-msgid "Data tracks"
-msgstr "Pistes de dades"
-
-#: picard/ui/forms/ui_options_advanced.py:157
-msgid "Pregap tracks"
-msgstr "Pistes al pregap"
-
-#: picard/ui/forms/ui_options_advanced.py:158
-msgid "Silent tracks"
-msgstr "Pistes amb silenci"
-
-#: picard/ui/forms/ui_options_advanced.py:159
-msgid "Tags to ignore for comparison:"
-msgstr "Etiquetes que s'han d'ignorar per a la comparació:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:110
 msgid "Sessions Management"
@@ -5171,7 +5131,7 @@ msgid "Load last saved session on startup"
 msgstr "Carrega la darrera sessió desada en iniciar"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:67
-#: picard/ui/options/dialog.py:491
+#: picard/ui/options/dialog.py:503
 msgid "Profiles Attached to Options"
 msgstr "Perfils vinculats a les opcions"
 
@@ -5368,16 +5328,16 @@ msgstr "Clau de l'API:"
 msgid "Get API key…"
 msgstr "Obtén una clau de l'API…"
 
-#: picard/ui/forms/ui_options_general.py:133
+#: picard/ui/forms/ui_options_general.py:126
 msgid "MusicBrainz Server"
 msgstr "Servidor de MusicBrainz"
 
-#: picard/ui/forms/ui_options_general.py:134
+#: picard/ui/forms/ui_options_general.py:127
 #: picard/ui/forms/ui_options_network.py:178
 msgid "Server address:"
 msgstr "Adreça del servidor:"
 
-#: picard/ui/forms/ui_options_general.py:135
+#: picard/ui/forms/ui_options_general.py:130
 msgid ""
 "You have configured an unofficial MusicBrainz server. By default submissions "
 "of releases, recordings and disc IDs will go to the primary database on "
@@ -5387,114 +5347,113 @@ msgstr ""
 "enviaments de publicacions, enregistraments i ID de discs aniran a la base "
 "de dades principal a musicbrainz.org."
 
-#: picard/ui/forms/ui_options_general.py:136
+#: picard/ui/forms/ui_options_general.py:133
 msgid "Submit data to the configured server"
 msgstr "Envia les dades al servidor configurat"
 
-#: picard/ui/forms/ui_options_general.py:137
+#: picard/ui/forms/ui_options_general.py:134
 #: picard/ui/forms/ui_options_network.py:176
 msgid "Port:"
 msgstr "Port:"
 
-#: picard/ui/forms/ui_options_general.py:139
+#: picard/ui/forms/ui_options_general.py:136
 msgid "Log in"
 msgstr "Inicia la sessió"
 
-#: picard/ui/forms/ui_options_general.py:140
+#: picard/ui/forms/ui_options_general.py:137
 msgid "Log out"
 msgstr "Tanca la sessió"
 
-#: picard/ui/forms/ui_options_general.py:142 picard/ui/options/general.py:52
-msgid "General"
-msgstr "General"
+#: picard/ui/forms/ui_options_general.py:138
+#, fuzzy
+#| msgid "Enable managing user collections"
+msgid "Enable managing user collections (requires login)"
+msgstr "Habilita la gestió de col·leccions de l'usuari"
 
-#: picard/ui/forms/ui_options_genres.py:132
+#: picard/ui/forms/ui_options_genres.py:147
+#, fuzzy
+#| msgid "Use only my genres"
+msgid "Use only my genres (requires login)"
+msgstr "Fes servir només els meus gèneres"
+
+#: picard/ui/forms/ui_options_genres.py:148
 msgid "Fall back to album's artists genres"
 msgstr "Fes servir com a alternativa els gèneres dels artistes de l'àlbum"
 
-#: picard/ui/forms/ui_options_genres.py:134
+#: picard/ui/forms/ui_options_genres.py:150
 msgid "Minimal genre usage:"
 msgstr "Ús mínim del gènere:"
 
-#: picard/ui/forms/ui_options_genres.py:135
-#: picard/ui/forms/ui_options_matching.py:79
-#: picard/ui/forms/ui_options_matching.py:81
-#: picard/ui/forms/ui_options_matching.py:83
+#: picard/ui/forms/ui_options_genres.py:151
+#: picard/ui/forms/ui_options_matching.py:136
+#: picard/ui/forms/ui_options_matching.py:138
+#: picard/ui/forms/ui_options_matching.py:140
 msgid " %"
 msgstr " %"
 
-#: picard/ui/forms/ui_options_genres.py:136
+#: picard/ui/forms/ui_options_genres.py:152
 msgid "Maximum number of genres:"
 msgstr "Nombre màxim de gèneres:"
 
-#: picard/ui/forms/ui_options_genres.py:137
+#: picard/ui/forms/ui_options_genres.py:153
 msgid "Join multiple genres with:"
 msgstr "Concatena els gèneres amb:"
 
-#: picard/ui/forms/ui_options_genres.py:138
+#: picard/ui/forms/ui_options_genres.py:154
 #: picard/ui/forms/ui_options_network.py:182
 msgid " / "
 msgstr " / "
 
-#: picard/ui/forms/ui_options_genres.py:139
+#: picard/ui/forms/ui_options_genres.py:155
 #: picard/ui/itemviews/custom_columns/validation.py:110
 msgid ", "
 msgstr ", "
 
-#: picard/ui/forms/ui_options_genres.py:140
+#: picard/ui/forms/ui_options_genres.py:156
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
 "Gèneres o etiquetes de folcsonomia que s'han d'incloure o excloure, un per "
 "línia:"
 
-#: picard/ui/forms/ui_options_genres.py:141
+#: picard/ui/forms/ui_options_genres.py:157
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 "Espai de proves de filtres de gèneres o etiquetes de folcsonomia (s'esborra "
 "en sortir):"
 
-#: picard/ui/forms/ui_options_interface.py:126
+#: picard/ui/forms/ui_options_interface.py:118
 msgid "Appearance"
 msgstr "Aparença"
 
-#: picard/ui/forms/ui_options_interface.py:129
+#: picard/ui/forms/ui_options_interface.py:121
 msgid "User interface language:"
 msgstr "Llengua de la interfície d'usuari:"
 
-#: picard/ui/forms/ui_options_interface.py:130
+#: picard/ui/forms/ui_options_interface.py:122
 msgid "User interface color theme:"
 msgstr "Tema de color de la interfície d'usuari:"
 
-#: picard/ui/forms/ui_options_interface.py:132
+#: picard/ui/forms/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
 msgstr "Permet seleccionar diversos directoris"
 
-#: picard/ui/forms/ui_options_interface.py:133
-msgid "Use builtin search rather than looking in browser"
-msgstr "Fes servir la cerca incorporada en comptes de la cerca al navegador"
-
-#: picard/ui/forms/ui_options_interface.py:134
-#: picard/ui/searchdialog/__init__.py:101
-msgid "Use advanced query syntax"
-msgstr "Fes servir la sintaxi de consulta avançada"
-
-#: picard/ui/forms/ui_options_interface.py:135
+#: picard/ui/forms/ui_options_interface.py:125
 msgid "Show the new user dialog when starting Picard"
 msgstr "Mostra el diàleg d'usuari nou en iniciar Picard"
 
-#: picard/ui/forms/ui_options_interface.py:136
+#: picard/ui/forms/ui_options_interface.py:126
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr "Mostra una confirmació en sortir si hi ha canvis sense desar"
 
-#: picard/ui/forms/ui_options_interface.py:137
+#: picard/ui/forms/ui_options_interface.py:127
 msgid "Show a confirmation dialog when saving files"
 msgstr "Mostra un diàleg de confirmació en desar els fitxers"
 
-#: picard/ui/forms/ui_options_interface.py:138
+#: picard/ui/forms/ui_options_interface.py:128
 msgid "Adjust horizontal position in file browser automatically"
 msgstr "Ajusta la posició horitzontal a l'explorador de fitxers automàticament"
 
-#: picard/ui/forms/ui_options_interface.py:139
+#: picard/ui/forms/ui_options_interface.py:129
 msgid "Begin browsing in the following directory:"
 msgstr "Inicia l'exploració al directori següent:"
 
@@ -5569,6 +5528,29 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
 "Mostra les etiquetes següents sobre la resta a la visualització de metadades"
 
+#: picard/ui/forms/ui_options_lookup.py:85
+#, fuzzy
+#| msgid "File Naming"
+msgid "File Loading"
+msgstr "Nom dels fitxers"
+
+#: picard/ui/forms/ui_options_lookup.py:89
+msgid "Query"
+msgstr ""
+
+#: picard/ui/forms/ui_options_lookup.py:90
+msgid "Maximum number of entities to return per MusicBrainz query"
+msgstr "Nombre màxim d'entitats que es retornaran per consulta a MusicBrainz"
+
+#: picard/ui/forms/ui_options_lookup.py:91
+msgid "Use builtin search rather than looking in browser"
+msgstr "Fes servir la cerca incorporada en comptes de la cerca al navegador"
+
+#: picard/ui/forms/ui_options_lookup.py:92
+#: picard/ui/searchdialog/__init__.py:101
+msgid "Use advanced query syntax"
+msgstr "Fes servir la sintaxi de consulta avançada"
+
 #: picard/ui/forms/ui_options_maintenance.py:146
 msgid "Configuration file:"
 msgstr "Fitxer de configuració:"
@@ -5597,17 +5579,55 @@ msgstr "Selecciona-ho tot"
 msgid "Remove selected options"
 msgstr "Suprimeix les opcions seleccionades"
 
-#: picard/ui/forms/ui_options_matching.py:78
+#: picard/ui/forms/ui_options_matching.py:135
 msgid "Minimum similarity:"
 msgstr "Similitud mínima:"
 
-#: picard/ui/forms/ui_options_matching.py:80
+#: picard/ui/forms/ui_options_matching.py:137
 msgid "Minimum margin between best and second-best match:"
 msgstr "Marge mínim entre la millor i la segona millor coincidència:"
 
-#: picard/ui/forms/ui_options_matching.py:82
+#: picard/ui/forms/ui_options_matching.py:139
 msgid "Minimal similarity for matching files to tracks:"
 msgstr "Similitud mínima per a fer coincidir els fitxers amb pistes:"
+
+#: picard/ui/forms/ui_options_matching.py:141
+msgid "Ignore track duration difference under this number of seconds"
+msgstr ""
+"Ignora les diferències de durada de les pistes inferiors a aquest nombre de "
+"segons"
+
+#: picard/ui/forms/ui_options_matching.py:142
+#, fuzzy
+#| msgid ""
+#| "Ignore the following tracks when determining whether a release is complete"
+msgid ""
+"Ignore the following tracks when determining whether a release is complete:"
+msgstr ""
+"Ignora les pistes següents a l'hora de determinar si una publicació està "
+"completa"
+
+#: picard/ui/forms/ui_options_matching.py:143
+msgid "Video tracks"
+msgstr "Pistes de vídeo"
+
+#: picard/ui/forms/ui_options_matching.py:144
+#, fuzzy
+#| msgid "Pregap tracks"
+msgid "Pre-gap tracks"
+msgstr "Pistes al pregap"
+
+#: picard/ui/forms/ui_options_matching.py:145
+msgid "Data tracks"
+msgstr "Pistes de dades"
+
+#: picard/ui/forms/ui_options_matching.py:146
+msgid "Silent tracks"
+msgstr "Pistes amb silenci"
+
+#: picard/ui/forms/ui_options_matching.py:147
+msgid "Tags to ignore for comparison:"
+msgstr "Etiquetes que s'han d'ignorar per a la comparació:"
 
 #: picard/ui/forms/ui_options_metadata.py:190
 msgid "Standardize artist names:"
@@ -5675,7 +5695,7 @@ msgstr "Enregistraments independents:"
 #: picard/ui/forms/ui_options_metadata.py:210
 #: picard/ui/forms/ui_options_metadata.py:211
 #: picard/ui/itemviews/custom_columns/shared.py:304
-#: picard/ui/options/interface.py:91 picard/ui/widgets/refselector.py:56
+#: picard/ui/options/interface.py:89 picard/ui/widgets/refselector.py:56
 msgid "Default"
 msgstr "Valor per defecte"
 
@@ -5772,7 +5792,13 @@ msgstr "Mou el perfil amunt"
 msgid "Move profile down"
 msgstr "Mou el perfil avall"
 
-#: picard/ui/forms/ui_options_ratings.py:54
+#: picard/ui/forms/ui_options_ratings.py:55
+#, fuzzy
+#| msgid "Enable track ratings"
+msgid "Enable track ratings (requires login)"
+msgstr "Habilita les puntuacions de les pistes"
+
+#: picard/ui/forms/ui_options_ratings.py:58
 msgid ""
 "Picard saves the ratings together with an e-mail address identifying the "
 "user who did the rating. That way different ratings for different users can "
@@ -5785,7 +5811,7 @@ msgstr ""
 "l'adreça electrònica que voleu fer servir per a desar les vostres "
 "puntuacions."
 
-#: picard/ui/forms/ui_options_ratings.py:55
+#: picard/ui/forms/ui_options_ratings.py:61
 msgid "E-mail:"
 msgstr "Adreça electrònica:"
 
@@ -5938,42 +5964,42 @@ msgstr "Actualitzacions que es comprovaran:"
 msgid "Default log level:"
 msgstr "Nivell de registre per defecte:"
 
-#: picard/ui/forms/ui_options_tags.py:91
+#: picard/ui/forms/ui_options_tags.py:93
 msgid "Write tags to files"
 msgstr "Escriu les etiquetes als fitxers"
 
-#: picard/ui/forms/ui_options_tags.py:92
+#: picard/ui/forms/ui_options_tags.py:94
 msgid "Preserve timestamps of tagged files"
 msgstr "Conserva les marques temporals dels fitxers etiquetats"
 
-#: picard/ui/forms/ui_options_tags.py:93
+#: picard/ui/forms/ui_options_tags.py:95
 msgid "Before Tagging"
 msgstr "Abans de l'etiquetatge"
 
-#: picard/ui/forms/ui_options_tags.py:95
+#: picard/ui/forms/ui_options_tags.py:97
 msgid "Keep embedded images when clearing tags"
 msgstr "Conserva les imatges incrustades en esborrar les etiquetes"
 
-#: picard/ui/forms/ui_options_tags.py:96
+#: picard/ui/forms/ui_options_tags.py:98
 msgid "Remove ID3 tags from FLAC files"
 msgstr "Suprimeix les etiquetes ID3 dels fitxers FLAC"
 
-#: picard/ui/forms/ui_options_tags.py:97
+#: picard/ui/forms/ui_options_tags.py:99
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "Suprimeix les etiquetes APEv2 dels fitxers MP3"
 
-#: picard/ui/forms/ui_options_tags.py:98
+#: picard/ui/forms/ui_options_tags.py:100
 msgid "Fix missing seekpoints for FLAC files"
 msgstr "Corregeix els punts de cerca absents en els fitxers FLAC"
 
-#: picard/ui/forms/ui_options_tags.py:99
+#: picard/ui/forms/ui_options_tags.py:102
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
 "Impedeix que aquestes etiquetes s'esborrin o siguin reemplaçades per dades "
 "de MusicBrainz:"
 
-#: picard/ui/forms/ui_options_tags.py:100
+#: picard/ui/forms/ui_options_tags.py:104
 msgid "Do not sanitize dates for these tag formats:"
 msgstr "No processis les dates per a aquests formats d'etiquetes:"
 
@@ -6116,7 +6142,7 @@ msgid "Windows-1252"
 msgstr "Windows-1252"
 
 #: picard/ui/forms/ui_passworddialog.py:67
-#: picard/ui/mainwindow/__init__.py:2025
+#: picard/ui/mainwindow/__init__.py:2051
 msgid "Authentication Required"
 msgstr "Es requereix autenticació"
 
@@ -6809,7 +6835,7 @@ msgid "Empty/whitespace values sort last."
 msgstr "Ordenació amb els valors buits o amb espais en blanc al final."
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:52
-#: picard/ui/mainwindow/__init__.py:461
+#: picard/ui/mainwindow/__init__.py:463
 msgid "Unsaved Changes"
 msgstr "Canvis sense desar"
 
@@ -6970,11 +6996,11 @@ msgstr "La columna no serà visible en cap visualització"
 msgid "Unknown views in add_to: %s"
 msgstr "S'han indicat visualitzacions desconegudes a «add_to»: %s"
 
-#: picard/ui/mainwindow/__init__.py:462
+#: picard/ui/mainwindow/__init__.py:464
 msgid "Are you sure you want to quit Picard?"
 msgstr "Segur que voleu sortir de Picard?"
 
-#: picard/ui/mainwindow/__init__.py:465
+#: picard/ui/mainwindow/__init__.py:467
 #, python-format
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
@@ -6986,47 +7012,47 @@ msgstr[1] ""
 "Hi ha %d fitxers sense desar. Si tanqueu Picard es perdran els canvis sense "
 "desar."
 
-#: picard/ui/mainwindow/__init__.py:474
+#: picard/ui/mainwindow/__init__.py:476
 msgid "&Quit Picard"
 msgstr "&Surt de Picard"
 
-#: picard/ui/mainwindow/__init__.py:507
+#: picard/ui/mainwindow/__init__.py:509
 msgid "Close Session"
 msgstr "Tancament de la sessió"
 
-#: picard/ui/mainwindow/__init__.py:508
+#: picard/ui/mainwindow/__init__.py:510
 msgid "Do you want to save the current session before continuing?"
 msgstr "Voleu desar la sessió actual abans de continuar?"
 
-#: picard/ui/mainwindow/__init__.py:509
+#: picard/ui/mainwindow/__init__.py:511
 msgid ""
 "Closing the session will clear all files, clusters and albums from the view."
 msgstr ""
 "Si tanqueu la sessió, s'esborraran tots els fitxers, agrupacions i àlbums de "
 "la visualització."
 
-#: picard/ui/mainwindow/__init__.py:511 picard/ui/mainwindow/actions.py:596
+#: picard/ui/mainwindow/__init__.py:513 picard/ui/mainwindow/actions.py:596
 msgid "&Save Session"
 msgstr "De&sa la sessió"
 
-#: picard/ui/mainwindow/__init__.py:512
+#: picard/ui/mainwindow/__init__.py:514
 msgid "Do&n't Save"
 msgstr "&No la desis"
 
-#: picard/ui/mainwindow/__init__.py:541 picard/ui/mainwindow/__init__.py:1523
+#: picard/ui/mainwindow/__init__.py:543 picard/ui/mainwindow/__init__.py:1525
 #, python-format
 msgid "Session saved to \"%(path)s\""
 msgstr "S'ha desat la sesssió a «%(path)s»"
 
-#: picard/ui/mainwindow/__init__.py:544 picard/ui/mainwindow/__init__.py:1520
+#: picard/ui/mainwindow/__init__.py:546 picard/ui/mainwindow/__init__.py:1522
 msgid "Failed to save session"
 msgstr "No s'ha pogut desar la sessió"
 
-#: picard/ui/mainwindow/__init__.py:581
+#: picard/ui/mainwindow/__init__.py:583
 msgid "Ready"
 msgstr "A punt"
 
-#: picard/ui/mainwindow/__init__.py:590
+#: picard/ui/mainwindow/__init__.py:592
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
@@ -7036,7 +7062,7 @@ msgstr ""
 "seleccioneu «Cerca» o «Obre al navegador» a Picard, si feu clic al botó "
 "«Editor d'etiquetes» de la pàgina web es carrega la publicació a Picard."
 
-#: picard/ui/mainwindow/__init__.py:608
+#: picard/ui/mainwindow/__init__.py:610
 msgid ""
 "There are updates available for installed plugins. Click to open the plugin "
 "manager."
@@ -7044,20 +7070,20 @@ msgstr ""
 "Hi ha actualitzacions disponibles per als connectors instal·lats. Feu clic "
 "per a obrir el gestor de connectors."
 
-#: picard/ui/mainwindow/__init__.py:637
+#: picard/ui/mainwindow/__init__.py:639
 #, python-format
 msgid "Listening on port %(port)d"
 msgstr "S'està escoltant al port %(port)d"
 
-#: picard/ui/mainwindow/__init__.py:647
+#: picard/ui/mainwindow/__init__.py:649
 msgid "Stopped by user"
 msgstr "Aturat per l'usuari"
 
-#: picard/ui/mainwindow/__init__.py:712
+#: picard/ui/mainwindow/__init__.py:714
 msgid "AcoustID submission not configured"
 msgstr "No s'ha configurat l'enviament d'AcoustID"
 
-#: picard/ui/mainwindow/__init__.py:713
+#: picard/ui/mainwindow/__init__.py:715
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
@@ -7065,149 +7091,149 @@ msgstr ""
 "Heu de configurar la clau de l'API d'AcoustID abans de poder enviar "
 "empremtes."
 
-#: picard/ui/mainwindow/__init__.py:715
+#: picard/ui/mainwindow/__init__.py:717
 msgid "Open AcoustID options"
 msgstr "Obre les opcions d'AcoustID"
 
-#: picard/ui/mainwindow/__init__.py:765
+#: picard/ui/mainwindow/__init__.py:767
 #, fuzzy
 #| msgid "Lookup CD…"
 msgid "Lookup by…"
 msgstr "Cerca el CD…"
 
-#: picard/ui/mainwindow/__init__.py:774 picard/ui/mainwindow/actions.py:407
+#: picard/ui/mainwindow/__init__.py:776 picard/ui/mainwindow/actions.py:407
 msgid "Lookup &CD…"
 msgstr "&Cerca el CD…"
 
-#: picard/ui/mainwindow/__init__.py:784
+#: picard/ui/mainwindow/__init__.py:786
 msgid "Recent Sessions"
 msgstr "Sessions recents"
 
-#: picard/ui/mainwindow/__init__.py:822
+#: picard/ui/mainwindow/__init__.py:824
 msgid "Recent sessions cleared"
 msgstr "S'han esborrat les sessions recents"
 
-#: picard/ui/mainwindow/__init__.py:841
+#: picard/ui/mainwindow/__init__.py:843
 msgid "Empty"
 msgstr "Buit"
 
-#: picard/ui/mainwindow/__init__.py:857 picard/ui/mainwindow/actions.py:620
+#: picard/ui/mainwindow/__init__.py:859 picard/ui/mainwindow/actions.py:620
 msgid "Clear Recent Sessions"
 msgstr "Esborra les sessions recents"
 
-#: picard/ui/mainwindow/__init__.py:960 picard/ui/scripteditor/__init__.py:245
+#: picard/ui/mainwindow/__init__.py:962 picard/ui/scripteditor/__init__.py:245
 msgid "&File"
 msgstr "&Fitxer"
 
-#: picard/ui/mainwindow/__init__.py:984
+#: picard/ui/mainwindow/__init__.py:986
 msgid "&Edit"
 msgstr "&Edita"
 
-#: picard/ui/mainwindow/__init__.py:993 picard/ui/scripteditor/__init__.py:311
+#: picard/ui/mainwindow/__init__.py:995 picard/ui/scripteditor/__init__.py:311
 msgid "&View"
 msgstr "&Visualització"
 
-#: picard/ui/mainwindow/__init__.py:1004
+#: picard/ui/mainwindow/__init__.py:1006
 msgid "File naming &scripts"
 msgstr "&Scripts de nom dels fitxers"
 
-#: picard/ui/mainwindow/__init__.py:1011
+#: picard/ui/mainwindow/__init__.py:1013
 msgid "&Profiles"
 msgstr "&Perfils"
 
-#: picard/ui/mainwindow/__init__.py:1017
+#: picard/ui/mainwindow/__init__.py:1019
 msgid "&Quick settings"
 msgstr "&Configuració ràpida"
 
-#: picard/ui/mainwindow/__init__.py:1021
+#: picard/ui/mainwindow/__init__.py:1023
 msgid "&Options"
 msgstr "&Opcions"
 
-#: picard/ui/mainwindow/__init__.py:1032
+#: picard/ui/mainwindow/__init__.py:1034
 msgid "&Tools"
 msgstr "Ei&nes"
 
-#: picard/ui/mainwindow/__init__.py:1047
+#: picard/ui/mainwindow/__init__.py:1049
 msgid "&Plugin Tools"
 msgstr "Eines dels &connectors"
 
-#: picard/ui/mainwindow/__init__.py:1054 picard/ui/scripteditor/__init__.py:332
+#: picard/ui/mainwindow/__init__.py:1056 picard/ui/scripteditor/__init__.py:332
 msgid "&Help"
 msgstr "&Ajuda"
 
-#: picard/ui/mainwindow/__init__.py:1122
+#: picard/ui/mainwindow/__init__.py:1124
 msgid "Actions"
 msgstr "Accions"
 
-#: picard/ui/mainwindow/__init__.py:1170 picard/ui/mainwindow/actions.py:399
+#: picard/ui/mainwindow/__init__.py:1172 picard/ui/mainwindow/actions.py:399
 #: picard/ui/searchdialog/__init__.py:64
 msgid "Search"
 msgstr "Cerca"
 
-#: picard/ui/mainwindow/__init__.py:1200
+#: picard/ui/mainwindow/__init__.py:1202
 msgid "&Advanced search"
 msgstr "Cerca &avançada"
 
-#: picard/ui/mainwindow/__init__.py:1201
+#: picard/ui/mainwindow/__init__.py:1203
 msgid "&Builtin search"
 msgstr "Cerca inte&grada"
 
-#: picard/ui/mainwindow/__init__.py:1291
+#: picard/ui/mainwindow/__init__.py:1293
 msgid "All supported formats"
 msgstr "Tots els formats admesos"
 
-#: picard/ui/mainwindow/__init__.py:1329
+#: picard/ui/mainwindow/__init__.py:1331
 #, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
 msgstr "S'estan afegint diversos directoris de «%(directory)s»…"
 
-#: picard/ui/mainwindow/__init__.py:1334
+#: picard/ui/mainwindow/__init__.py:1336
 #, python-format
 msgid "Adding directory: \"%(directory)s\" …"
 msgstr "S'està afegint el directori «%(directory)s»…"
 
-#: picard/ui/mainwindow/__init__.py:1420
+#: picard/ui/mainwindow/__init__.py:1422
 #, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
 msgstr[0] "Voleu moure «{filename}» a la paperera?"
 msgstr[1] "Voleu moure {count} fitxers a la paperera?"
 
-#: picard/ui/mainwindow/__init__.py:1426 picard/ui/mainwindow/actions.py:198
+#: picard/ui/mainwindow/__init__.py:1428 picard/ui/mainwindow/actions.py:198
 msgid "Move files to trash"
 msgstr "Mou els fitxers a la paperera"
 
-#: picard/ui/mainwindow/__init__.py:1512 picard/ui/mainwindow/__init__.py:1544
+#: picard/ui/mainwindow/__init__.py:1514 picard/ui/mainwindow/__init__.py:1546
 #, python-format
 msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr "Sessió de MusicBrainz Picard (%s);;Tots els fitxers (*)"
 
-#: picard/ui/mainwindow/__init__.py:1550 picard/ui/mainwindow/__init__.py:1575
+#: picard/ui/mainwindow/__init__.py:1552 picard/ui/mainwindow/__init__.py:1577
 #, python-format
 msgid "Loading session from \"%(path)s\" …"
 msgstr "S'està carregant la sessió des de «%(path)s»…"
 
-#: picard/ui/mainwindow/__init__.py:1566 picard/ui/mainwindow/__init__.py:1593
+#: picard/ui/mainwindow/__init__.py:1568 picard/ui/mainwindow/__init__.py:1595
 #, python-format
 msgid "Session loaded from \"%(path)s\""
 msgstr "S'ha carregat la sessió des de «%(path)s»…"
 
-#: picard/ui/mainwindow/__init__.py:1669
+#: picard/ui/mainwindow/__init__.py:1671
 msgid "Configuration Required"
 msgstr "Es requereix configuració"
 
-#: picard/ui/mainwindow/__init__.py:1670
+#: picard/ui/mainwindow/__init__.py:1672
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 "Encara no s'han configurat les empremtes d'àudio. Voleu configurar-les ara?"
 
-#: picard/ui/mainwindow/__init__.py:1811
+#: picard/ui/mainwindow/__init__.py:1813
 msgid "Browser integration not enabled"
 msgstr "La integració amb el navegador no està habilitada"
 
-#: picard/ui/mainwindow/__init__.py:1813
+#: picard/ui/mainwindow/__init__.py:1815
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
@@ -7215,56 +7241,98 @@ msgstr ""
 "Cal habilitar la integració amb el navegador per a enviar publicacions a "
 "MusicBrainz. Voleu habilitar la integració amb el navegador ara?"
 
-#: picard/ui/mainwindow/__init__.py:1926
+#: picard/ui/mainwindow/__init__.py:1928
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (error: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1932
+#: picard/ui/mainwindow/__init__.py:1934
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow/__init__.py:1941
+#: picard/ui/mainwindow/__init__.py:1943
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1948
+#: picard/ui/mainwindow/__init__.py:1950
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow/__init__.py:2027
-msgid ""
-"Picard needs authorization to access your personal data on the MusicBrainz "
-"server. Would you like to log in now?"
-msgstr ""
-"Picard requereix autorització per a accedir a les vostres dades personals al "
-"servidor de MusicBrainz. Voleu iniciar la sessió ara?"
+#: picard/ui/mainwindow/__init__.py:2035
+#, fuzzy
+#| msgid "Enable track ratings"
+msgid "personal ratings"
+msgstr "Habilita les puntuacions de les pistes"
 
-#: picard/ui/mainwindow/__init__.py:2045
+#: picard/ui/mainwindow/__init__.py:2037
+#, fuzzy
+#| msgid "Collections"
+msgid "collections"
+msgstr "Col·leccions"
+
+#: picard/ui/mainwindow/__init__.py:2039
+#, fuzzy
+#| msgid "Minimal genre usage"
+msgid "personal genres/tags"
+msgstr "Ús mínim del gènere"
+
+#: picard/ui/mainwindow/__init__.py:2043
+msgid "Your current settings require logging in to MusicBrainz to access:"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:2047
+msgid "A feature you are using requires logging in to MusicBrainz."
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:2048
+msgid "Would you like to log in now?"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:2058
+msgid "Waiting for MusicBrainz authentication…"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:2064
+#, fuzzy
+#| msgid "MusicBrainz Recording Id"
+msgid "MusicBrainz authentication declined"
+msgstr "ID de l'enregistrament de MusicBrainz"
+
+#: picard/ui/mainwindow/__init__.py:2072
+msgid "Successfully authenticated with MusicBrainz"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:2078
+#, fuzzy, python-format
+#| msgid "Authentication failed"
+msgid "MusicBrainz authentication failed: %(error)s"
+msgstr "S'ha produït un error d'autenticació"
+
+#: picard/ui/mainwindow/__init__.py:2085
 msgid "Authentication failed"
 msgstr "S'ha produït un error d'autenticació"
 
-#: picard/ui/mainwindow/__init__.py:2046 picard/ui/options/general.py:132
+#: picard/ui/mainwindow/__init__.py:2086 picard/ui/options/general.py:130
 #, python-format
 msgid "Login failed: %s"
 msgstr "S'ha produït un error en iniciar la sessió: %s"
 
-#: picard/ui/mainwindow/__init__.py:2296
+#: picard/ui/mainwindow/__init__.py:2336
 msgid "No profiles configured"
 msgstr "No hi ha cap perfil configurat"
 
-#: picard/ui/mainwindow/__init__.py:2301
+#: picard/ui/mainwindow/__init__.py:2341
 msgid "Configure profiles…"
 msgstr "Configura els perfils…"
 
-#: picard/ui/mainwindow/__init__.py:2368
+#: picard/ui/mainwindow/__init__.py:2408
 msgid "No quick settings configured"
 msgstr "No s'ha configurat cap paràmetre ràpid"
 
-#: picard/ui/mainwindow/__init__.py:2373
+#: picard/ui/mainwindow/__init__.py:2413
 msgid "Configure quick settings…"
 msgstr "&Configura els paràmetres ràpids…"
 
@@ -7849,16 +7917,16 @@ msgstr ""
 msgid "Processing"
 msgstr "Processament"
 
-#: picard/ui/options/dialog.py:134
+#: picard/ui/options/dialog.py:137
 msgid "This page failed to initialize"
 msgstr "No s'ha pogut inicialitzar aquesta pàgina"
 
-#: picard/ui/options/dialog.py:136
+#: picard/ui/options/dialog.py:139
 #, python-format
 msgid "Error while initializing option page \"%s\":"
 msgstr "S'ha produït un error en inicialitzar la pàgina d'opcions «%s»:"
 
-#: picard/ui/options/dialog.py:150
+#: picard/ui/options/dialog.py:153
 #, python-format
 msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
@@ -7867,40 +7935,35 @@ msgstr ""
 "Consulteu la <a href=\"%s\">Documentació de resolució de problemes</a> i "
 "informeu d'un error."
 
-#: picard/ui/options/dialog.py:232
-#, python-format
-msgid "%s (error)"
-msgstr "%s (error)"
-
-#: picard/ui/options/dialog.py:304
+#: picard/ui/options/dialog.py:306
 msgid "Display help regarding option profiles"
 msgstr "Mostra l'ajuda relacionada amb els perfils d'opcions"
 
-#: picard/ui/options/dialog.py:308
+#: picard/ui/options/dialog.py:310
 msgid "&Restore all Defaults"
 msgstr "&Reinicialitza-ho tot"
 
-#: picard/ui/options/dialog.py:309
+#: picard/ui/options/dialog.py:311
 msgid "Reset all of Picard's settings"
 msgstr "Reinicialitza tots els paràmetres de Picard"
 
-#: picard/ui/options/dialog.py:311
+#: picard/ui/options/dialog.py:313
 msgid "Reset all settings for current option page"
 msgstr "Reinicialitza tots els paràmetres de la pàgina d'opcions actual"
 
-#: picard/ui/options/dialog.py:314
+#: picard/ui/options/dialog.py:316
 msgid "Make It So!"
 msgstr "Aplica"
 
-#: picard/ui/options/dialog.py:327 picard/ui/options/dialog.py:966
+#: picard/ui/options/dialog.py:329 picard/ui/options/dialog.py:982
 msgid "Attached Profiles"
 msgstr "Perfils associats"
 
-#: picard/ui/options/dialog.py:328
+#: picard/ui/options/dialog.py:330
 msgid "Show which profiles are attached to the options on this page"
 msgstr "Mostra quins perfils estan associats a les opcions d'aquesta pàgina"
 
-#: picard/ui/options/dialog.py:492
+#: picard/ui/options/dialog.py:504
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
@@ -7908,48 +7971,48 @@ msgstr ""
 "Les opcions d'aquesta pàgina actualment no estan disponibles per a "
 "l'administració amb perfils."
 
-#: picard/ui/options/dialog.py:608 picard/ui/options/dialog.py:630
+#: picard/ui/options/dialog.py:620 picard/ui/options/dialog.py:642
 #, python-format
 msgid "This option is tracked by profile: %s"
 msgstr "Aquesta opció se segueix al perfil: %s"
 
-#: picard/ui/options/dialog.py:627
+#: picard/ui/options/dialog.py:639
 #, python-format
 msgid "This option is overridden by profile: %s"
 msgstr "Aquesta opció se sobreescriu al perfil: %s"
 
-#: picard/ui/options/dialog.py:697
+#: picard/ui/options/dialog.py:729
 #, python-format
 msgid "The highlighted settings on this page are overridden by %s"
 msgstr "Els paràmetres ressaltats d'aquesta pàgina se sobreescriuen a %s"
 
-#: picard/ui/options/dialog.py:699
+#: picard/ui/options/dialog.py:731
 #, python-format
 msgid "Some settings on this page are overridden by %s"
 msgstr "Alguns paràmetres d'aquesta pàgina se sobreescriuen a %s"
 
-#: picard/ui/options/dialog.py:890
+#: picard/ui/options/dialog.py:905
 msgid "Unexpected error"
 msgstr "S'ha produït un error inesperat"
 
-#: picard/ui/options/dialog.py:936
+#: picard/ui/options/dialog.py:952
 msgid "You are about to reset your options for this page."
 msgstr "Esteu a punt de reinicialitzar les opcions d'aquesta pàgina."
 
-#: picard/ui/options/dialog.py:940
+#: picard/ui/options/dialog.py:956
 msgid "Warning! This will reset all of your settings."
 msgstr "Avís: Això reinicialitzarà tots els paràmetres!"
 
-#: picard/ui/options/dialog.py:948
+#: picard/ui/options/dialog.py:964
 msgid "Are you sure?"
 msgstr "Segur que voleu continuar?"
 
-#: picard/ui/options/dialog.py:983
+#: picard/ui/options/dialog.py:999
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Perfils associats a les opcions de la secció %s"
 
-#: picard/ui/options/dialog.py:1013
+#: picard/ui/options/dialog.py:1029
 #, python-format
 msgid ""
 "Hover an option to see which profiles contain it.\n"
@@ -7958,7 +8021,7 @@ msgstr ""
 "Passeu el ratolí sobre una opció per a veure quins perfils la contenen.\n"
 "%s = l'opció és en aquest perfil, %s = l'opció no és en aquest perfil"
 
-#: picard/ui/options/dialog.py:1102
+#: picard/ui/options/dialog.py:1118
 msgid ""
 "This option is in the selected profile(s).\n"
 "Click to remove it from them."
@@ -7966,7 +8029,7 @@ msgstr ""
 "Aquesta opció és als perfils seleccionats.\n"
 "Feu clic per a suprimir-la."
 
-#: picard/ui/options/dialog.py:1109
+#: picard/ui/options/dialog.py:1125
 #, python-format
 msgid ""
 "This option is in: %s\n"
@@ -7975,7 +8038,7 @@ msgstr ""
 "Aquesta opció és a: %s\n"
 "Feu clic per a afegir-la als perfils seleccionats."
 
-#: picard/ui/options/dialog.py:1111
+#: picard/ui/options/dialog.py:1127
 msgid ""
 "This option is not in any profile.\n"
 "Click to add it to the selected profile(s)."
@@ -7996,16 +8059,20 @@ msgstr "Seleccioneu un executable fpcalc vàlid."
 msgid "Invalid fpcalc executable"
 msgstr "L'executable fpcalc no és vàlid"
 
-#: picard/ui/options/general.py:124
+#: picard/ui/options/general.py:53
+msgid "General"
+msgstr "General"
+
+#: picard/ui/options/general.py:123
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Heu iniciat la sessió com a <b>%s</b>."
 
-#: picard/ui/options/general.py:157
+#: picard/ui/options/general.py:153
 msgid "Logout error"
 msgstr "S'ha produït un error en tancar la sessió"
 
-#: picard/ui/options/general.py:160
+#: picard/ui/options/general.py:156
 #, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
@@ -8016,7 +8083,7 @@ msgstr ""
 "\n"
 "Voleu suprimir les credencials emmagatzemades localment de totes maneres?"
 
-#: picard/ui/options/genres.py:46
+#: picard/ui/options/genres.py:41
 msgid ""
 "<html><head/><body>\n"
 "<p>Lines not starting with <b>-</b> or <b>+</b> are ignored.</p>\n"
@@ -8083,7 +8150,7 @@ msgstr ""
 "</p>\n"
 "</body></html>"
 
-#: picard/ui/options/genres.py:73
+#: picard/ui/options/genres.py:68
 msgid ""
 "<html><head/><body>\n"
 "<p>You can add genres to test filters against, one per line.<br/>\n"
@@ -8105,7 +8172,7 @@ msgstr ""
 "</p>\n"
 "</body></html>"
 
-#: picard/ui/options/genres.py:86
+#: picard/ui/options/genres.py:81
 msgid "Genres"
 msgstr "Gèneres"
 
@@ -8113,49 +8180,49 @@ msgstr "Gèneres"
 msgid "User Interface"
 msgstr "Interfície d'usuari"
 
-#: picard/ui/options/interface.py:92
+#: picard/ui/options/interface.py:90
 msgid "The default color scheme based on the operating system display settings"
 msgstr ""
 "Esquema de colors per defecte basat en els paràmetres d'aparença del sistema "
 "operatiu"
 
-#: picard/ui/options/interface.py:95
+#: picard/ui/options/interface.py:93
 msgid "Dark"
 msgstr "Fosc"
 
-#: picard/ui/options/interface.py:96
+#: picard/ui/options/interface.py:94
 msgid "A dark display theme"
 msgstr "Tema fosc"
 
-#: picard/ui/options/interface.py:99
+#: picard/ui/options/interface.py:97
 msgid "Light"
 msgstr "Clar"
 
-#: picard/ui/options/interface.py:100
+#: picard/ui/options/interface.py:98
 msgid "A light display theme"
 msgstr "Tema clar"
 
-#: picard/ui/options/interface.py:122
+#: picard/ui/options/interface.py:120
 msgid "System default"
 msgstr "Valor per defecte del sistema"
 
-#: picard/ui/options/interface.py:144
+#: picard/ui/options/interface.py:142
 msgid "Reset tutorial and setup wizard…"
 msgstr "Reinicialitza el tutorial i l'assistent de configuració…"
 
-#: picard/ui/options/interface.py:194
+#: picard/ui/options/interface.py:188
 msgid "You have changed the application theme."
 msgstr "Heu canviat el tema de l'aplicació."
 
-#: picard/ui/options/interface.py:198
+#: picard/ui/options/interface.py:192
 msgid "You have changed the interface language."
 msgstr "Heu canviat la llengua de la interfície d'usuari."
 
-#: picard/ui/options/interface.py:222
+#: picard/ui/options/interface.py:216
 msgid "Option Setting Warning"
 msgstr "Avís de configuració"
 
-#: picard/ui/options/interface.py:224
+#: picard/ui/options/interface.py:218
 msgid ""
 "When enabling the multiple directories option setting Picard will no longer "
 "use the system file picker for selecting directories. This may result in "
@@ -8169,11 +8236,11 @@ msgstr ""
 "\n"
 "Segur que voleu habilitar aquesta opció?"
 
-#: picard/ui/options/interface.py:237
+#: picard/ui/options/interface.py:231
 msgid "Reset Tutorial"
 msgstr "Reinicialitza el tutorial"
 
-#: picard/ui/options/interface.py:238
+#: picard/ui/options/interface.py:232
 msgid ""
 "This will reset the tutorial and setup wizard so they are shown again. "
 "Continue?"
@@ -8218,7 +8285,7 @@ msgstr "Afegeix fitxers"
 msgid "Cluster"
 msgstr "Agrupa"
 
-#: picard/ui/options/interface_toolbar.py:94
+#: picard/ui/options/interface_toolbar.py:94 picard/ui/options/lookup.py:35
 msgid "Lookup"
 msgstr "Cerca"
 
@@ -10078,6 +10145,31 @@ msgstr ""
 "\n"
 "%s"
 
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Equip de traducció de MusicBrainz al català:\n"
+#~ "https://translations.metabrainz.org/languages/ca/\n"
+#~ "\n"
+#~ "Col·laboracions històriques via Launchpad:\n"
+#~ "David Martín Alaminos https://launchpad.net/~gnomyst\n"
+#~ "animarval https://launchpad.net/~animarval\n"
+#~ "iletlovein https://launchpad.net/~soma27"
+
+#, python-format
+#~ msgid "Translated to LANG by %(translators)s"
+#~ msgstr "Traduït al català per %(translators)s"
+
+#~ msgid ""
+#~ "Picard needs authorization to access your personal data on the "
+#~ "MusicBrainz server. Would you like to log in now?"
+#~ msgstr ""
+#~ "Picard requereix autorització per a accedir a les vostres dades personals "
+#~ "al servidor de MusicBrainz. Voleu iniciar la sessió ara?"
+
+#, python-format
+#~ msgid "%s (error)"
+#~ msgstr "%s (error)"
+
 #, python-format
 #~ msgid "Version %(version)s"
 #~ msgstr "Versió %(version)s"
@@ -10820,9 +10912,6 @@ msgstr ""
 
 #~ msgid "MusicBrainz Original Artist Id"
 #~ msgstr "ID de l'artista original de MusicBrainz"
-
-#~ msgid "MusicBrainz Recording Id"
-#~ msgstr "ID de l'enregistrament de MusicBrainz"
 
 #~ msgid "MusicBrainz Track Id"
 #~ msgstr "ID de la pista de MusicBrainz"
