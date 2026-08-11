@@ -51,8 +51,19 @@ from picard.util.display_title_base import HasDisplayTitle
 
 
 class BaseAction(QtGui.QAction, HasDisplayTitle):
-    TITLE = "Unknown"
-    MENU: list = []
+    """Base class for plugin actions.
+
+    Subclasses should set the `TITLE` and optionally the `MENU` attributes to define the
+    action's display title and menu path and implement the `callback` method to define
+    the action's behavior.
+    """
+
+    # Name of the action to display in the menu.
+    TITLE: str = "Unknown"
+
+    # Menu path for the action. Each item in the tuple is a submenu name.
+    # The action will be added as a child to the last submenu in the tuple.
+    MENU: tuple[str, ...] = tuple()
 
     def __init__(self, parent=None):
         super().__init__(self.display_title(), parent=parent)
