@@ -27,14 +27,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import datetime
-
 from PyQt6 import (
     QtCore,
     QtGui,
 )
 
-from picard import tagger_instance
+from picard import (
+    COPYRIGHT_YEARS,
+    tagger_instance,
+)
+from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
 from picard.util import (
@@ -80,7 +82,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             # Style the donate button with accent color
             text_color = 'white' if accent_color.lightness() < 160 else 'black'
             hover_color = accent_color.lighter(120).name()
-            self.ui.donate_button.setStyleSheet(f"""
+            button_style = f"""
                 QPushButton {{
                     background-color: {accent_css};
                     color: {text_color};
@@ -95,7 +97,9 @@ class AboutDialog(PicardDialog, SingletonDialog):
                 QPushButton:pressed {{
                     background-color: {accent_css};
                 }}
-            """)
+            """
+            self.ui.donate_button.setStyleSheet(button_style)
+            self.ui.translate_button.setStyleSheet(button_style)
 
         # Bold version label
         font = self.ui.version_label.font()
@@ -131,33 +135,15 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.ui.versions_detail_label.setText(third_parties)
 
         # Supported formats
-        self.ui.formats_heading.setText(_("Supported formats"))
         tagger = tagger_instance()
         formats = ", ".join(ext[1:] for ext in tagger.format_registry.supported_extensions())
         self.ui.formats_label.setText(formats)
 
         # Donate section
-        self.ui.donate_heading.setText(_("Please donate"))
-        self.ui.donate_text_label.setText(
-            _(
-                "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
-                "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
-                "consider donating to the MetaBrainz Foundation to keep the service running."
-            )
-        )
-        self.ui.donate_button.setText(_("Donate now!"))
         self.ui.donate_button.clicked.connect(self._open_donate_url)
 
         # Credits section
-        self.ui.credits_heading.setText(_("Credits"))
-
         # Project credit with links
-        project_credit = _(
-            'A <a href="https://metabrainz.org">MetaBrainz Foundation</a> project,'
-            ' powered by the <a href="https://musicbrainz.org">MusicBrainz</a> database.'
-        )
-        self.ui.project_credit_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
-        self.ui.project_credit_label.setText(project_credit)
         self.ui.project_credit_label.linkHovered.connect(self.ui.project_credit_label.setToolTip)
 
         authors_credits = ", ".join(
@@ -171,25 +157,19 @@ class AboutDialog(PicardDialog, SingletonDialog):
             ]
         )
         copyright_text = _("Copyright © %(copyright_years)s %(authors_credits)s and others") % {
-            'copyright_years': f'2004-{datetime.date.today().year}',
+            'copyright_years': COPYRIGHT_YEARS,
             'authors_credits': authors_credits,
         }
         self.ui.copyright_label.setText(copyright_text)
 
         # Translator credits
-        # TR: This is a magic string: translators replace it with their names.
-        # If untranslated, it returns 'translator-credits' and we hide the label.
-        translator_credits = _('translator-credits')
-        if translator_credits != 'translator-credits':
-            translator_credits = translator_credits.strip().replace("\n", ", ")
-            translator_text = _("Translated to LANG by %(translators)s") % {
-                'translators': translator_credits,
-            }
-            self.ui.translator_credits_label.setText(translator_text)
-            self.ui.translator_credits_label.setVisible(True)
-            self.ui.translator_credits_label.setVisible(True)
+        config = get_config()
+        ui_language = config.setting['ui_language']
+        if ui_language != 'en':
+            self.ui.translator_credits.setVisible(True)
+            self.ui.translate_button.clicked.connect(self._open_translate_url)
         else:
-            self.ui.translator_credits_label.setVisible(False)
+            self.ui.translator_credits.setVisible(False)
 
         # Icons credits (contains HTML links)
         icons_credits = _(
@@ -220,3 +200,6 @@ class AboutDialog(PicardDialog, SingletonDialog):
 
     def _open_donate_url(self):
         webbrowser2.open('donate')
+
+    def _open_translate_url(self):
+        webbrowser2.open('translate')
