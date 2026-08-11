@@ -25,6 +25,10 @@ Examples:
 """
 
 import argparse
+from datetime import (
+    date,
+    timedelta,
+)
 import json
 import os
 import re
@@ -177,11 +181,14 @@ def get_weblate_users_from_api(api_key, rev_range):
     """Fetch translator usernames from the Weblate project credits API.
 
     Uses the date range of the two release tags to query credits.
+    The end date is set to the day after the target tag to ensure
+    translations made on the tag date are included.
     Returns a dict mapping full_name to Weblate username.
     """
     from_tag, to_tag = rev_range.split('..', 1)
     start = get_tag_date(from_tag)
-    end = get_tag_date(to_tag)
+    end_date = date.fromisoformat(get_tag_date(to_tag)) + timedelta(days=1)
+    end = end_date.isoformat()
 
     debug(f"Fetching Weblate credits for {start}..{end}")
     credits = {}
