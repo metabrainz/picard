@@ -26,6 +26,7 @@
 
 import os
 import os.path
+from pathlib import Path
 import sys
 from tempfile import (
     NamedTemporaryFile,
@@ -343,6 +344,7 @@ class ReplaceExtensionTest(PicardTestCase):
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', '.wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', 'wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar', 'wvc'))
+        self.assertEqual(os.path.normpath('foo/bar.wvc'), replace_extension(Path('foo/bar.wv'), '.wvc'))
 
 
 class ShortenFilenameTest(PicardTestCase):
