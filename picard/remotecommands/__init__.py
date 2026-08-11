@@ -27,6 +27,7 @@ import queue
 import shlex
 from textwrap import fill
 import threading
+from typing import ClassVar
 
 from picard import log
 
@@ -40,7 +41,7 @@ class RemoteCommands:
     """Handler for remote commands processed from the command line using the '-e' option."""
 
     # Collection of command files currently being parsed
-    _command_files: set[str] = set()
+    _command_files: ClassVar[set[str]] = set()
 
     # Flag to indicate whether a 'QUIT' command has been queued
     _has_quit = False

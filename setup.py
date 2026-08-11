@@ -47,6 +47,7 @@ import re
 import stat
 import sys
 import tempfile
+from typing import ClassVar
 
 from setuptools import (
     Command,
@@ -110,7 +111,7 @@ class picard_install(install):
     user_options = install.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
     ]
-    boolean_options = ['disable-autoupdate']
+    boolean_options: ClassVar[list[str]] = ['disable-autoupdate']
 
     def initialize_options(self):
         install.initialize_options(self)
@@ -127,7 +128,7 @@ class picard_build(build):
         ('build-number=', None, 'build number (integer)'),
         ('disable-locales', None, 'skip building locales'),
     ]
-    boolean_options = ['disable-autoupdate', 'disable-locales']
+    boolean_options: ClassVar[list[str]] = ['disable-autoupdate', 'disable-locales']
 
     def initialize_options(self):
         super().initialize_options()
@@ -219,7 +220,7 @@ def ui_files():
 
 class picard_build_ui(Command):
     description = "build Qt UI files and resources"
-    user_options = [
+    user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ("files=", None, "comma-separated list of files to rebuild"),
     ]
 
@@ -317,7 +318,6 @@ from picard.i18n import gettext as _
 
 class picard_clean_ui(Command):
     description = "clean up compiled Qt UI files and resources"
-    user_options = []
 
     def initialize_options(self):
         pass
@@ -342,7 +342,6 @@ class picard_clean_ui(Command):
 
 class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
-    user_options = []
 
     re_release = re.compile(r'^# Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
 
@@ -382,7 +381,7 @@ class picard_build_appdata(Command):
 
 class picard_build_appxmanifest(Command):
     description = 'Build AppxManifest file'
-    user_options = [
+    user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('build-number=', None, 'build number (integer)'),
     ]
 
@@ -425,7 +424,6 @@ class picard_build_appxmanifest(Command):
 
 class picard_build_desktop_file(Command):
     description = 'Build XDG desktop file'
-    user_options = []
 
     def initialize_options(self):
         pass
@@ -449,7 +447,7 @@ class picard_build_desktop_file(Command):
 
 class picard_build_completions(Command):
     description = 'Generate shell completion scripts for picard-cli'
-    user_options = [
+    user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('output-dir=', 'o', 'output directory for completion scripts (default: build/completions)'),
     ]
 
@@ -489,7 +487,6 @@ class picard_build_completions(Command):
 
 class picard_regen_appdata_pot_file(Command):
     description = 'Regenerate translations from appdata metadata and XDG desktop file templates'
-    user_options = []
 
     def initialize_options(self):
         pass
@@ -573,7 +570,6 @@ except ImportError:
 
     class picard_regen_pot_file(Command):
         description = _regen_pot_description
-        user_options = []
 
         def initialize_options(self):
             pass
@@ -601,11 +597,11 @@ def _get_option_name(obj):
 
 class picard_update_constants(Command):
     description = "Regenerate attributes.py and countries.py"
-    user_options = [
+    user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('skip-pull', None, "skip the translation pull step"),
         ('weblate-key=', None, "Weblate API key"),
     ]
-    boolean_options = ['skip-pull']
+    boolean_options: ClassVar[list[str]] = ['skip-pull']
 
     def initialize_options(self):
         self.skip_pull = None
@@ -674,7 +670,7 @@ class picard_update_constants(Command):
 
 class picard_patch_version(Command):
     description = "Update PICARD_BUILD_VERSION_STR for daily builds"
-    user_options = [
+    user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('platform=', 'p', "platform for the build version, ie. osx or win"),
     ]
 

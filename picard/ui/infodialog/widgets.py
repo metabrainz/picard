@@ -29,6 +29,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import ClassVar
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -78,9 +80,9 @@ class ArtworkTable(QtWidgets.QTableWidget):
     NUM_ROWS = 0
     NUM_COLS = 3
 
-    _columns: dict[str, int] = {}
+    _columns: ClassVar[dict[str, int]] = {}
     _labels: tuple[str, ...] = ()
-    _tooltips: dict[str, str] = {}
+    _tooltips: ClassVar[dict[str, str]] = {}
     artwork_columns: tuple[str, ...] = ()
 
     def __init__(self, parent=None):
@@ -110,7 +112,7 @@ class ArtworkTableSimple(ArtworkTable):
 
 
 class ArtworkTableNew(ArtworkTableSimple):
-    _columns = {
+    _columns: ClassVar[dict[str, int]] = {
         'type': 0,
         'new': 1,
         'external': 2,
@@ -125,7 +127,7 @@ class ArtworkTableNew(ArtworkTableSimple):
         _("New Embedded"),
         _("New Exported"),
     )
-    _tooltips = {
+    _tooltips: ClassVar[dict[str, str]] = {
         'new': _("New cover art embedded into tags"),
         'external': _("New cover art saved as a separate file"),
     }
@@ -134,14 +136,14 @@ class ArtworkTableNew(ArtworkTableSimple):
 class ArtworkTableOriginal(ArtworkTableSimple):
     NUM_COLS = 2
 
-    _columns = {
+    _columns: ClassVar[dict[str, int]] = {
         'type': 0,
         'new': 1,
     }
 
     artwork_columns = ('new',)
     _labels = (_("Type"), _("Existing Cover"))
-    _tooltips = {
+    _tooltips: ClassVar[dict[str, str]] = {
         'new': _("Existing cover art already embedded into tags"),
     }
 
@@ -149,7 +151,7 @@ class ArtworkTableOriginal(ArtworkTableSimple):
 class ArtworkTableExisting(ArtworkTable):
     NUM_COLS = 4
 
-    _columns = {
+    _columns: ClassVar[dict[str, int]] = {
         'orig': 0,
         'type': 1,
         'new': 2,
@@ -167,7 +169,7 @@ class ArtworkTableExisting(ArtworkTable):
         _("New Embedded"),
         _("New Exported"),
     )
-    _tooltips = {
+    _tooltips: ClassVar[dict[str, str]] = {
         'orig': _("Existing cover art already embedded into tags"),
         'new': _("New cover art embedded into tags"),
         'external': _("New cover art saved as a separate file"),

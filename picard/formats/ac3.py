@@ -31,7 +31,7 @@ from .mutagenext import ac3
 
 
 class AC3File(APEv2File):
-    EXTENSIONS = [".ac3", ".eac3"]
+    EXTENSIONS = (".ac3", ".eac3")
     NAME = "AC-3"
     _File = ac3.AC3APEv2
 

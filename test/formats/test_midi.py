@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from types import MappingProxyType
+
 from picard.formats import midi
 
 from .common import (
@@ -31,12 +33,14 @@ from .common import (
 
 class MIDITest(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.mid'
-    expected_info = {
-        'length': 127997,
-        '~format': 'Standard MIDI File',
-        '~filesize': '8444',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 127997,
+            '~format': 'Standard MIDI File',
+            '~filesize': '8444',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def test_supports_tag(self):
         for tag in TAGS:

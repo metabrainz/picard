@@ -22,6 +22,7 @@
 
 from collections import namedtuple
 import re
+from typing import ClassVar
 
 
 class VersionError(Exception):
@@ -31,7 +32,7 @@ class VersionError(Exception):
 class Version(namedtuple('VersionBase', 'major minor patch identifier revision')):
     _version_re = re.compile(r"^(\d+)(?:[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?)?$")
 
-    _identifiers = {
+    _identifiers: ClassVar[dict[str, int]] = {
         'dev': 0,
         'alpha': 1,
         'a': 1,

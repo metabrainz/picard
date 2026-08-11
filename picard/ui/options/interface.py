@@ -85,7 +85,7 @@ class InterfaceOptionsPage(OptionsPage):
         'starting_directory_path': {'widgets': ['starting_directory_path']},
     }
     # Those are labels for theme display
-    _UI_THEME_LABELS = {
+    _UI_THEME_LABELS: ClassVar[dict[UiTheme, dict]] = {
         UiTheme.DEFAULT: {
             'label': N_("Default"),
             'desc': N_("The default color scheme based on the operating system display settings"),

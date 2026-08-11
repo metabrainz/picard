@@ -62,7 +62,7 @@ class FormatRegistry(QObject):
     def __iter__(self) -> Iterator[File]:
         yield from self._ext_point_formats
 
-    def supported_formats(self) -> list[tuple[list[str], str]]:
+    def supported_formats(self) -> list[tuple[tuple[str, ...], str]]:
         """Returns list of supported formats.
 
         Returns:

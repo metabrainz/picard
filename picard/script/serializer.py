@@ -106,7 +106,7 @@ class ScriptSerializer:
     OUTPUT_FIELDS = ('title', 'script_language_version', 'script', 'id')
 
     # Don't automatically trigger changing the `script_last_updated` property when updating these properties.
-    _last_updated_ignore_list = {'last_updated', 'id'}
+    _last_updated_ignore_list = frozenset({'last_updated', 'id'})
 
     def __init__(self, script='', title='', id=None, last_updated=None, script_language_version=None):
         """Base class for Picard script objects

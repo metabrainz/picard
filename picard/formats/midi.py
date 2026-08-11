@@ -28,7 +28,7 @@ from picard.metadata import Metadata
 
 
 class MIDIFile(File):
-    EXTENSIONS = [".mid", ".kar"]
+    EXTENSIONS = (".mid", ".kar")
     NAME = "Standard MIDI File"
     _File = SMF
 

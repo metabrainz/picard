@@ -61,6 +61,7 @@ import shutil
 import signal
 import sys
 import time
+from typing import ClassVar
 from urllib.parse import urlparse
 from uuid import uuid4
 
@@ -839,7 +840,7 @@ class Tagger(QtWidgets.QApplication):
             self.browser_integration.stop()
 
     _BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
-    _callback_queue: list = []
+    _callback_queue: ClassVar[list] = []
     _callback_timer_running: bool = False
 
     def _process_in_batches(

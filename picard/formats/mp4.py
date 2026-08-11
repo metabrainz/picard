@@ -33,6 +33,7 @@
 
 
 import re
+from types import MappingProxyType
 
 from mutagen.mp4 import (
     MP4,
@@ -67,110 +68,120 @@ def _is_valid_key(key):
 
 
 class MP4File(File):
-    EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".m4r", ".mp4"]
+    EXTENSIONS = (".m4a", ".m4b", ".m4p", ".m4v", ".m4r", ".mp4")
     NAME = "MPEG-4 Audio"
     _File = MP4
 
-    __text_tags = {
-        '\xa9ART': 'artist',
-        '\xa9nam': 'title',
-        '\xa9alb': 'album',
-        '\xa9wrt': 'composer',
-        'aART': 'albumartist',
-        '\xa9grp': 'grouping',
-        '\xa9day': 'date',
-        '\xa9gen': 'genre',
-        '\xa9lyr': 'lyrics',
-        '\xa9cmt': 'comment',
-        '\xa9too': 'encodedby',
-        '\xa9dir': 'director',
-        'cprt': 'copyright',
-        'soal': 'albumsort',
-        'soaa': 'albumartistsort',
-        'soar': 'artistsort',
-        'sonm': 'titlesort',
-        'soco': 'composersort',
-        'sosn': 'showsort',
-        'tvsh': 'show',
-        'purl': 'podcasturl',
-        '\xa9mvn': 'movement',
-        '\xa9wrk': 'work',
-    }
-    __r_text_tags = {v: k for k, v in __text_tags.items()}
+    __text_tags = MappingProxyType(
+        {
+            '\xa9ART': 'artist',
+            '\xa9nam': 'title',
+            '\xa9alb': 'album',
+            '\xa9wrt': 'composer',
+            'aART': 'albumartist',
+            '\xa9grp': 'grouping',
+            '\xa9day': 'date',
+            '\xa9gen': 'genre',
+            '\xa9lyr': 'lyrics',
+            '\xa9cmt': 'comment',
+            '\xa9too': 'encodedby',
+            '\xa9dir': 'director',
+            'cprt': 'copyright',
+            'soal': 'albumsort',
+            'soaa': 'albumartistsort',
+            'soar': 'artistsort',
+            'sonm': 'titlesort',
+            'soco': 'composersort',
+            'sosn': 'showsort',
+            'tvsh': 'show',
+            'purl': 'podcasturl',
+            '\xa9mvn': 'movement',
+            '\xa9wrk': 'work',
+        }
+    )
+    __r_text_tags = MappingProxyType({v: k for k, v in __text_tags.items()})
 
-    __bool_tags = {
-        'pcst': 'podcast',
-        'cpil': 'compilation',
-        'pgap': 'gapless',
-    }
-    __r_bool_tags = {v: k for k, v in __bool_tags.items()}
+    __bool_tags = MappingProxyType(
+        {
+            'pcst': 'podcast',
+            'cpil': 'compilation',
+            'pgap': 'gapless',
+        }
+    )
+    __r_bool_tags = MappingProxyType({v: k for k, v in __bool_tags.items()})
 
-    __int_tags = {
-        'tmpo': 'bpm',
-        '\xa9mvi': 'movementnumber',
-        '\xa9mvc': 'movementtotal',
-        'shwm': 'showmovement',
-    }
-    __r_int_tags = {v: k for k, v in __int_tags.items()}
+    __int_tags = MappingProxyType(
+        {
+            'tmpo': 'bpm',
+            '\xa9mvi': 'movementnumber',
+            '\xa9mvc': 'movementtotal',
+            'shwm': 'showmovement',
+        }
+    )
+    __r_int_tags = MappingProxyType({v: k for k, v in __int_tags.items()})
 
-    __freeform_tags = {
-        '----:com.apple.iTunes:MusicBrainz Track Id': 'musicbrainz_recordingid',
-        '----:com.apple.iTunes:MusicBrainz Artist Id': 'musicbrainz_artistid',
-        '----:com.apple.iTunes:MusicBrainz Album Id': 'musicbrainz_albumid',
-        '----:com.apple.iTunes:MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
-        '----:com.apple.iTunes:MusicIP PUID': 'musicip_puid',
-        '----:com.apple.iTunes:MusicBrainz Album Status': 'releasestatus',
-        '----:com.apple.iTunes:MusicBrainz Album Release Country': 'releasecountry',
-        '----:com.apple.iTunes:MusicBrainz Album Type': 'releasetype',
-        '----:com.apple.iTunes:MusicBrainz Disc Id': 'musicbrainz_discid',
-        '----:com.apple.iTunes:MusicBrainz TRM Id': 'musicbrainz_trmid',
-        '----:com.apple.iTunes:MusicBrainz Work Id': 'musicbrainz_workid',
-        '----:com.apple.iTunes:MusicBrainz Composer Id': 'musicbrainz_composerid',
-        '----:com.apple.iTunes:MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
-        '----:com.apple.iTunes:MusicBrainz Release Track Id': 'musicbrainz_trackid',
-        '----:com.apple.iTunes:MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
-        '----:com.apple.iTunes:MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
-        '----:com.apple.iTunes:Acoustid Fingerprint': 'acoustid_fingerprint',
-        '----:com.apple.iTunes:Acoustid Id': 'acoustid_id',
-        '----:com.apple.iTunes:ASIN': 'asin',
-        '----:com.apple.iTunes:BARCODE': 'barcode',
-        '----:com.apple.iTunes:PRODUCER': 'producer',
-        '----:com.apple.iTunes:LYRICIST': 'lyricist',
-        '----:com.apple.iTunes:CONDUCTOR': 'conductor',
-        '----:com.apple.iTunes:ENGINEER': 'engineer',
-        '----:com.apple.iTunes:MIXER': 'mixer',
-        '----:com.apple.iTunes:DJMIXER': 'djmixer',
-        '----:com.apple.iTunes:REMIXER': 'remixer',
-        '----:com.apple.iTunes:ISRC': 'isrc',
-        '----:com.apple.iTunes:MEDIA': 'media',
-        '----:com.apple.iTunes:LABEL': 'label',
-        '----:com.apple.iTunes:LICENSE': 'license',
-        '----:com.apple.iTunes:CATALOGNUMBER': 'catalognumber',
-        '----:com.apple.iTunes:SUBTITLE': 'subtitle',
-        '----:com.apple.iTunes:DISCSUBTITLE': 'discsubtitle',
-        '----:com.apple.iTunes:MOOD': 'mood',
-        '----:com.apple.iTunes:SCRIPT': 'script',
-        '----:com.apple.iTunes:LANGUAGE': 'language',
-        '----:com.apple.iTunes:ARTISTS': 'artists',
-        '----:com.apple.iTunes:WORK': 'work',
-        '----:com.apple.iTunes:initialkey': 'key',
-        '----:com.apple.iTunes:iTunes_CDDB_1': 'itunes_cddb_1',
-    }
-    __r_freeform_tags = {v: k for k, v in __freeform_tags.items()}
+    __freeform_tags = MappingProxyType(
+        {
+            '----:com.apple.iTunes:MusicBrainz Track Id': 'musicbrainz_recordingid',
+            '----:com.apple.iTunes:MusicBrainz Artist Id': 'musicbrainz_artistid',
+            '----:com.apple.iTunes:MusicBrainz Album Id': 'musicbrainz_albumid',
+            '----:com.apple.iTunes:MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
+            '----:com.apple.iTunes:MusicIP PUID': 'musicip_puid',
+            '----:com.apple.iTunes:MusicBrainz Album Status': 'releasestatus',
+            '----:com.apple.iTunes:MusicBrainz Album Release Country': 'releasecountry',
+            '----:com.apple.iTunes:MusicBrainz Album Type': 'releasetype',
+            '----:com.apple.iTunes:MusicBrainz Disc Id': 'musicbrainz_discid',
+            '----:com.apple.iTunes:MusicBrainz TRM Id': 'musicbrainz_trmid',
+            '----:com.apple.iTunes:MusicBrainz Work Id': 'musicbrainz_workid',
+            '----:com.apple.iTunes:MusicBrainz Composer Id': 'musicbrainz_composerid',
+            '----:com.apple.iTunes:MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
+            '----:com.apple.iTunes:MusicBrainz Release Track Id': 'musicbrainz_trackid',
+            '----:com.apple.iTunes:MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
+            '----:com.apple.iTunes:MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
+            '----:com.apple.iTunes:Acoustid Fingerprint': 'acoustid_fingerprint',
+            '----:com.apple.iTunes:Acoustid Id': 'acoustid_id',
+            '----:com.apple.iTunes:ASIN': 'asin',
+            '----:com.apple.iTunes:BARCODE': 'barcode',
+            '----:com.apple.iTunes:PRODUCER': 'producer',
+            '----:com.apple.iTunes:LYRICIST': 'lyricist',
+            '----:com.apple.iTunes:CONDUCTOR': 'conductor',
+            '----:com.apple.iTunes:ENGINEER': 'engineer',
+            '----:com.apple.iTunes:MIXER': 'mixer',
+            '----:com.apple.iTunes:DJMIXER': 'djmixer',
+            '----:com.apple.iTunes:REMIXER': 'remixer',
+            '----:com.apple.iTunes:ISRC': 'isrc',
+            '----:com.apple.iTunes:MEDIA': 'media',
+            '----:com.apple.iTunes:LABEL': 'label',
+            '----:com.apple.iTunes:LICENSE': 'license',
+            '----:com.apple.iTunes:CATALOGNUMBER': 'catalognumber',
+            '----:com.apple.iTunes:SUBTITLE': 'subtitle',
+            '----:com.apple.iTunes:DISCSUBTITLE': 'discsubtitle',
+            '----:com.apple.iTunes:MOOD': 'mood',
+            '----:com.apple.iTunes:SCRIPT': 'script',
+            '----:com.apple.iTunes:LANGUAGE': 'language',
+            '----:com.apple.iTunes:ARTISTS': 'artists',
+            '----:com.apple.iTunes:WORK': 'work',
+            '----:com.apple.iTunes:initialkey': 'key',
+            '----:com.apple.iTunes:iTunes_CDDB_1': 'itunes_cddb_1',
+        }
+    )
+    __r_freeform_tags = MappingProxyType({v: k for k, v in __freeform_tags.items()})
 
     # Tags to load case insensitive. Case is preserved, but the specified case
     # is written if it is unset.
-    __r_freeform_tags_ci = {
-        'replaygain_album_gain': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN',
-        'replaygain_album_peak': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK',
-        'replaygain_album_range': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE',
-        'replaygain_track_gain': '----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN',
-        'replaygain_track_peak': '----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK',
-        'replaygain_track_range': '----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE',
-        'replaygain_reference_loudness': '----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS',
-        'releasedate': '----:com.apple.iTunes:RELEASEDATE',
-    }
-    __freeform_tags_ci = {b.lower(): a for a, b in __r_freeform_tags_ci.items()}
+    __r_freeform_tags_ci = MappingProxyType(
+        {
+            'replaygain_album_gain': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN',
+            'replaygain_album_peak': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK',
+            'replaygain_album_range': '----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE',
+            'replaygain_track_gain': '----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN',
+            'replaygain_track_peak': '----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK',
+            'replaygain_track_range': '----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE',
+            'replaygain_reference_loudness': '----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS',
+            'releasedate': '----:com.apple.iTunes:RELEASEDATE',
+        }
+    )
+    __freeform_tags_ci = MappingProxyType({b.lower(): a for a, b in __r_freeform_tags_ci.items()})
 
     __other_supported_tags = ('discnumber', 'tracknumber', 'totaldiscs', 'totaltracks')
 

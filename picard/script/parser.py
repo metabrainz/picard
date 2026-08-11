@@ -37,7 +37,10 @@
 
 from collections.abc import MutableSequence
 from queue import LifoQueue
-from typing import TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+)
 
 from picard.extension_points import script_functions
 from picard.metadata import (
@@ -208,7 +211,7 @@ class ScriptParser:
       argument    ::= (variable | function | argtext)*
     """
 
-    _cache: dict[int, ScriptExpression] = {}
+    _cache: ClassVar[dict[int, ScriptExpression]] = {}
 
     def __init__(self):
         self._function_stack = LifoQueue()

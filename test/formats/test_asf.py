@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from types import MappingProxyType
+
 from mutagen.asf import ASFByteArrayAttribute
 
 from test.picardtestcase import (
@@ -92,50 +94,56 @@ class CommonAsfTests:
 class ASFTest(CommonAsfTests.AsfTestCase):
     testfile = 'test.asf'
     supports_ratings = True
-    expected_info = {
-        'length': 92,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '128.0',
-        '~filesize': '3744',
-    }
+    expected_info = MappingProxyType(
+        {
+            'length': 92,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '128.0',
+            '~filesize': '3744',
+        }
+    )
 
 
 class WMATest(CommonAsfTests.AsfTestCase):
     testfile = 'test.wma'
     supports_ratings = True
-    expected_info = {
-        'length': 139,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '64.0',
-        '~filesize': '8164',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 139,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '64.0',
+            '~filesize': '8164',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class WMVTest(CommonAsfTests.AsfTestCase):
     testfile = 'test.wmv'
     supports_ratings = True
-    expected_info = {
-        'length': 565,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '128.0',
-        '~video': '1',
-        '~filesize': '7373',
-    }
+    expected_info = MappingProxyType(
+        {
+            'length': 565,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '128.0',
+            '~video': '1',
+            '~filesize': '7373',
+        }
+    )
 
 
 class AsfUtilTest(PicardTestCase):
-    test_cases = [
+    test_cases = (
         # Empty MIME, description and data
         (('', b'', 2, ''), b'\x02\x00\x00\x00\x00\x00\x00\x00\x00'),
         # MIME, description set, 1 byte data
         (('M', b'x', 2, 'D'), b'\x02\x01\x00\x00\x00M\x00\x00\x00D\x00\x00\x00x'),
         # Empty MIME and description, 3 byte data
         (('', b'abc', 0, ''), b'\x00\x03\x00\x00\x00\x00\x00\x00\x00abc'),
-    ]
+    )
 
     def test_pack_and_unpack_image(self):
         mime = 'image/png'

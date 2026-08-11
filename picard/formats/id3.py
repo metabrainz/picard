@@ -38,6 +38,7 @@
 from collections import Counter
 from enum import IntEnum
 import re
+from types import MappingProxyType
 from urllib.parse import urlparse
 
 from mutagen import (
@@ -139,120 +140,133 @@ class ID3File(File):
     FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
     _File: type[FileType] | None = None
 
-    __upgrade = {
-        'XSOP': 'TSOP',
-        'TXXX:ALBUMARTISTSORT': 'TSO2',
-        'TXXX:COMPOSERSORT': 'TSOC',
-        'TXXX:mood': 'TMOO',
-        'TXXX:RELEASEDATE': 'TDRL',
-    }
+    __upgrade = MappingProxyType(
+        {
+            'XSOP': 'TSOP',
+            'TXXX:ALBUMARTISTSORT': 'TSO2',
+            'TXXX:COMPOSERSORT': 'TSOC',
+            'TXXX:mood': 'TMOO',
+            'TXXX:RELEASEDATE': 'TDRL',
+        }
+    )
 
-    __translate = {
-        # In same sequence as defined at http://id3.org/id3v2.4.0-frames
-        # 'TIT1': 'grouping', # Depends on itunes_compatible_grouping
-        'TIT2': 'title',
-        'TIT3': 'subtitle',
-        'TALB': 'album',
-        'TSST': 'discsubtitle',
-        'TSRC': 'isrc',
-        'TPE1': 'artist',
-        'TPE2': 'albumartist',
-        'TPE3': 'conductor',
-        'TPE4': 'remixer',
-        'TEXT': 'lyricist',
-        'TCOM': 'composer',
-        'TENC': 'encodedby',
-        'TBPM': 'bpm',
-        'TKEY': 'key',
-        'TLAN': 'language',
-        'TCON': 'genre',
-        'TMED': 'media',
-        'TMOO': 'mood',
-        'TCOP': 'copyright',
-        'TPUB': 'label',
-        'TDOR': 'originaldate',
-        'TDRC': 'date',
-        'TDRL': 'releasedate',
-        'TSSE': 'encodersettings',
-        'TSOA': 'albumsort',
-        'TSOP': 'artistsort',
-        'TSOT': 'titlesort',
-        'WCOP': 'license',
-        'WOAR': 'website',
-        'COMM': 'comment',
-        'TOAL': 'originalalbum',
-        'TOPE': 'originalartist',
-        'TOFN': 'originalfilename',
-        # The following are informal iTunes extensions to id3v2:
-        'TCMP': 'compilation',
-        'TSOC': 'composersort',
-        'TSO2': 'albumartistsort',
-        'MVNM': 'movement',
-    }
-    __rtranslate = {v: k for k, v in __translate.items()}
-    __translate['GRP1'] = 'grouping'  # Always read, but writing depends on itunes_compatible_grouping
+    __translate = MappingProxyType(
+        {
+            # In same sequence as defined at http://id3.org/id3v2.4.0-frames
+            # 'TIT1': 'grouping', # Depends on itunes_compatible_grouping
+            'TIT2': 'title',
+            'TIT3': 'subtitle',
+            'TALB': 'album',
+            'TSST': 'discsubtitle',
+            'TSRC': 'isrc',
+            'TPE1': 'artist',
+            'TPE2': 'albumartist',
+            'TPE3': 'conductor',
+            'TPE4': 'remixer',
+            'TEXT': 'lyricist',
+            'TCOM': 'composer',
+            'TENC': 'encodedby',
+            'TBPM': 'bpm',
+            'TKEY': 'key',
+            'TLAN': 'language',
+            'TCON': 'genre',
+            'TMED': 'media',
+            'TMOO': 'mood',
+            'TCOP': 'copyright',
+            'TPUB': 'label',
+            'TDOR': 'originaldate',
+            'TDRC': 'date',
+            'TDRL': 'releasedate',
+            'TSSE': 'encodersettings',
+            'TSOA': 'albumsort',
+            'TSOP': 'artistsort',
+            'TSOT': 'titlesort',
+            'WCOP': 'license',
+            'WOAR': 'website',
+            'COMM': 'comment',
+            'TOAL': 'originalalbum',
+            'TOPE': 'originalartist',
+            'TOFN': 'originalfilename',
+            # The following are informal iTunes extensions to id3v2:
+            'TCMP': 'compilation',
+            'TSOC': 'composersort',
+            'TSO2': 'albumartistsort',
+            'MVNM': 'movement',
+            'GRP1': 'grouping',
+        }
+    )
+    # Always read GRP1, but writing depends on itunes_compatible_grouping
+    __rtranslate = MappingProxyType({v: k for k, v in __translate.items() if k != 'GRP1'})
 
-    __translate_freetext = {
-        'MusicBrainz Artist Id': 'musicbrainz_artistid',
-        'MusicBrainz Album Id': 'musicbrainz_albumid',
-        'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
-        'MusicBrainz Album Type': 'releasetype',
-        'MusicBrainz Album Status': 'releasestatus',
-        'MusicBrainz TRM Id': 'musicbrainz_trmid',
-        'MusicBrainz Release Track Id': 'musicbrainz_trackid',
-        'MusicBrainz Disc Id': 'musicbrainz_discid',
-        'MusicBrainz Work Id': 'musicbrainz_workid',
-        'MusicBrainz Composer Id': 'musicbrainz_composerid',
-        'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
-        'MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
-        'MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
-        'MusicBrainz Album Release Country': 'releasecountry',
-        'MusicIP PUID': 'musicip_puid',
-        'Acoustid Fingerprint': 'acoustid_fingerprint',
-        'Acoustid Id': 'acoustid_id',
-        'SCRIPT': 'script',
-        'LICENSE': 'license',
-        'CATALOGNUMBER': 'catalognumber',
-        'BARCODE': 'barcode',
-        'ASIN': 'asin',
-        'MusicMagic Fingerprint': 'musicip_fingerprint',
-        'ARTISTS': 'artists',
-        'DIRECTOR': 'director',
-        'WORK': 'work',
-        'Writer': 'writer',
-        'SHOWMOVEMENT': 'showmovement',
-        'iTunes_CDDB_1': 'itunes_cddb_1',
-    }
-    __rtranslate_freetext = {v: k for k, v in __translate_freetext.items()}
-    __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
+    __translate_freetext = MappingProxyType(
+        {
+            'MusicBrainz Artist Id': 'musicbrainz_artistid',
+            'MusicBrainz Album Id': 'musicbrainz_albumid',
+            'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
+            'MusicBrainz Album Type': 'releasetype',
+            'MusicBrainz Album Status': 'releasestatus',
+            'MusicBrainz TRM Id': 'musicbrainz_trmid',
+            'MusicBrainz Release Track Id': 'musicbrainz_trackid',
+            'MusicBrainz Disc Id': 'musicbrainz_discid',
+            'MusicBrainz Work Id': 'musicbrainz_workid',
+            'MusicBrainz Composer Id': 'musicbrainz_composerid',
+            'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
+            'MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
+            'MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
+            'MusicBrainz Album Release Country': 'releasecountry',
+            'MusicIP PUID': 'musicip_puid',
+            'Acoustid Fingerprint': 'acoustid_fingerprint',
+            'Acoustid Id': 'acoustid_id',
+            'SCRIPT': 'script',
+            'LICENSE': 'license',
+            'CATALOGNUMBER': 'catalognumber',
+            'BARCODE': 'barcode',
+            'ASIN': 'asin',
+            'MusicMagic Fingerprint': 'musicip_fingerprint',
+            'ARTISTS': 'artists',
+            'DIRECTOR': 'director',
+            'WORK': 'work',
+            'Writer': 'writer',
+            'SHOWMOVEMENT': 'showmovement',
+            'iTunes_CDDB_1': 'itunes_cddb_1',
+            'writer': 'writer',  # For backward compatibility of case
+        }
+    )
+    __rtranslate_freetext = MappingProxyType({v: k for k, v in __translate_freetext.items() if k != 'writer'})
 
     # Freetext fields that are loaded case-insensitive
-    __rtranslate_freetext_ci = {
-        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
-        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
-        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
-        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
-        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
-        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
-        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
-    }
-    __translate_freetext_ci = {b.lower(): a for a, b in __rtranslate_freetext_ci.items()}
+    __rtranslate_freetext_ci = MappingProxyType(
+        {
+            'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+            'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+            'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+            'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+            'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+            'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+            'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
+        }
+    )
+    __translate_freetext_ci = MappingProxyType({b.lower(): a for a, b in __rtranslate_freetext_ci.items()})
 
     # Obsolete tag names which will still be loaded, but will get renamed on saving
-    __rename_freetext = {
-        'Artists': 'ARTISTS',
-        'Work': 'WORK',
-    }
-    __rrename_freetext = {v: k for k, v in __rename_freetext.items()}
+    __rename_freetext = MappingProxyType(
+        {
+            'Artists': 'ARTISTS',
+            'Work': 'WORK',
+        }
+    )
+    __rrename_freetext = MappingProxyType({v: k for k, v in __rename_freetext.items()})
 
-    _tipl_roles = {
-        'engineer': 'engineer',
-        'arranger': 'arranger',
-        'producer': 'producer',
-        'DJ-mix': 'djmixer',
-        'mix': 'mixer',
-    }
-    _rtipl_roles = {v: k for k, v in _tipl_roles.items()}
+    _tipl_roles = MappingProxyType(
+        {
+            'engineer': 'engineer',
+            'arranger': 'arranger',
+            'producer': 'producer',
+            'DJ-mix': 'djmixer',
+            'mix': 'mixer',
+        }
+    )
+    _rtipl_roles = MappingProxyType({v: k for k, v in _tipl_roles.items()})
 
     __other_supported_tags = (
         'discnumber',
@@ -262,11 +276,13 @@ class ID3File(File):
         'movementnumber',
         'movementtotal',
     )
-    __tag_re_parse = {
-        'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
-        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
-        'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$'),
-    }
+    __tag_re_parse = MappingProxyType(
+        {
+            'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
+            'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
+            'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$'),
+        }
+    )
 
     __lrc_time_format_re = r'\d+:\d{1,2}(?:.\d+)?'
     __lrc_line_re_parse = re.compile(r'(\[' + __lrc_time_format_re + r'\])')
@@ -1075,7 +1091,7 @@ class ID3File(File):
 class MP3File(ID3File):
     """MP3 file."""
 
-    EXTENSIONS = [".mp3", ".mp2", ".m2a"]
+    EXTENSIONS = (".mp3", ".mp2", ".m2a")
     NAME = "MPEG-1 Audio"
     _IsMP3 = True
     _File = mutagen.mp3.MP3
@@ -1094,7 +1110,7 @@ class MP3File(ID3File):
 class TrueAudioFile(ID3File):
     """TTA file."""
 
-    EXTENSIONS = [".tta"]
+    EXTENSIONS = (".tta",)
     NAME = "The True Audio"
     _File = mutagen.trueaudio.TrueAudio
 
@@ -1129,7 +1145,7 @@ class NonCompatID3File(ID3File):
 class DSFFile(NonCompatID3File):
     """DSF file."""
 
-    EXTENSIONS = [".dsf"]
+    EXTENSIONS = (".dsf",)
     NAME = "DSF"
     _File = mutagen.dsf.DSF
 
@@ -1137,14 +1153,14 @@ class DSFFile(NonCompatID3File):
 class AiffFile(NonCompatID3File):
     """AIFF file."""
 
-    EXTENSIONS = [".aiff", ".aif", ".aifc"]
+    EXTENSIONS = (".aiff", ".aif", ".aifc")
     NAME = "Audio Interchange File Format (AIFF)"
     _File = mutagen.aiff.AIFF
 
 
 class DSDIFFFile(NonCompatID3File):
-    """DSF file."""
+    """DSDIFF file."""
 
-    EXTENSIONS = [".dff"]
+    EXTENSIONS = (".dff",)
     NAME = "DSDIFF"
     _File = mutagen.dsdiff.DSDIFF

@@ -364,12 +364,12 @@ class UpdatesPage(SetupWizardPage):
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
 
-    PAGES: list[type[SetupWizardPage]] = [
+    PAGES: tuple[type[SetupWizardPage], ...] = (
         WelcomePage,
         FileOrganizationPage,
         CoverArtPage,
         UpdatesPage,
-    ]
+    )
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)

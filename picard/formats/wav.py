@@ -176,7 +176,7 @@ class RiffListInfo(MutableMapping):
 
 
 class WAVFile(NonCompatID3File):
-    EXTENSIONS = [".wav"]
+    EXTENSIONS = (".wav",)
     NAME = "Microsoft WAVE"
     _File = mutagen.wave.WAVE
 

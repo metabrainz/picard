@@ -25,6 +25,7 @@
 from contextlib import suppress
 import os.path
 import shutil
+from types import MappingProxyType
 
 from test.picardtestcase import PicardTestCase
 
@@ -77,24 +78,24 @@ def prepare_files(src_dir, dst_dir, src_files=None, dst_files=None, src_rel_path
 
 
 class SampleFileSystem(PicardTestCase):
-    settings = {
-        'enabled_plugins': '',
-        'move_files': True,
-        'move_additional_files': True,
-        'move_additional_files_pattern': 'cover.jpg',
-    }
+    settings = MappingProxyType(
+        {
+            'enabled_plugins': '',
+            'move_files': True,
+            'move_additional_files': True,
+            'move_additional_files_pattern': 'cover.jpg',
+        }
+    )
 
-    src_files = {
-        'test.mp3': None,
-        'cover.jpg': 'mb.jpg',
-        '.hidden.jpg': 'mb.jpg',
-    }
+    src_files = MappingProxyType(
+        {
+            'test.mp3': None,
+            'cover.jpg': 'mb.jpg',
+            '.hidden.jpg': 'mb.jpg',
+        }
+    )
 
-    dst_files = {
-        'test.mp3',
-        'cover.jpg',
-        '.hidden.jpg',
-    }
+    dst_files = ('test.mp3', 'cover.jpg', '.hidden.jpg')
 
     def setUp(self):
         super().setUp()
@@ -124,15 +125,17 @@ class SampleFileSystem(PicardTestCase):
 
 
 class TestAdditionalFilesMoves(SampleFileSystem):
-    src_files = {
-        'test.mp3': None,
-        'cover1.jpg': 'mb.jpg',
-        'cover2.JPG': 'mb.jpg',
-        '.hidden1.jpg': 'mb.jpg',
-        '.hidden2.JPG': 'mb.jpg',
-    }
+    src_files = MappingProxyType(
+        {
+            'test.mp3': None,
+            'cover1.jpg': 'mb.jpg',
+            'cover2.JPG': 'mb.jpg',
+            '.hidden1.jpg': 'mb.jpg',
+            '.hidden2.JPG': 'mb.jpg',
+        }
+    )
 
-    dst_files = list(src_files)
+    dst_files = tuple(src_files)
 
     def test_no_pattern(self):
         src, dst = self._prepare_files()

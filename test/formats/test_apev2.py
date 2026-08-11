@@ -23,6 +23,7 @@
 
 
 import os
+from types import MappingProxyType
 
 from mutagen.apev2 import (
     BINARY,
@@ -162,26 +163,30 @@ class CommonApeTests:
 class MonkeysAudioTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ape'
     supports_ratings = False
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bits_per_sample': '16',
-        '~filesize': '2432',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bits_per_sample': '16',
+            '~filesize': '2432',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class WavPackTest(CommonApeTests.ApeTestCase):
     testfile = 'test.wv'
     supports_ratings = False
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~filesize': '2478',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~filesize': '2478',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def setUp(self):
         super().setUp()
@@ -252,31 +257,35 @@ class WavPackTest(CommonApeTests.ApeTestCase):
 class MusepackSV7Test(CommonApeTests.ApeTestCase):
     testfile = 'test-sv7.mpc'
     supports_ratings = False
-    expected_info = {
-        'length': 91,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~filesize': '1605',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 91,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~filesize': '1605',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class MusepackSV8Test(CommonApeTests.ApeTestCase):
     testfile = 'test-sv8.mpc'
     supports_ratings = False
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~filesize': '1569',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~filesize': '1569',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class TAKTest(CommonApeTests.ApeTestCase):
     testfile = 'test.tak'
     supports_ratings = False
-    unexpected_info = ['~video']
+    unexpected_info = ('~video',)
 
     def setUp(self):
         super().setUp()
@@ -292,13 +301,15 @@ class TAKTest(CommonApeTests.ApeTestCase):
 class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ofr'
     supports_ratings = False
-    expected_info = {
-        'length': 0,
-        '~channels': '2',
-        '~sample_rate': '48000',
-        '~filesize': '117',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 0,
+            '~channels': '2',
+            '~sample_rate': '48000',
+            '~filesize': '117',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def test_format(self):
         metadata = load_metadata(self.format_registry, self.filename)
@@ -308,13 +319,15 @@ class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
 class OptimFROGDUalStreamTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ofs'
     supports_ratings = False
-    expected_info = {
-        'length': 0,
-        '~channels': '2',
-        '~sample_rate': '48000',
-        '~filesize': '117',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 0,
+            '~channels': '2',
+            '~sample_rate': '48000',
+            '~filesize': '117',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def test_format(self):
         metadata = load_metadata(self.format_registry, self.filename)

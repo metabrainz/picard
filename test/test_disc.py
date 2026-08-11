@@ -38,7 +38,7 @@ test_toc = [1, 11, 242457, 150, 44942, 61305, 72755, 96360, 130485, 147315, 1642
 class MockDisc:
     id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
     mcn = '5029343070452'
-    tracks = list(range(0, 11))
+    tracks = tuple(range(0, 11))
     toc_string = ' '.join(str(i) for i in test_toc)
 
 
@@ -159,24 +159,24 @@ class MockTrack:
 class MockDiscWithIsrcs:
     id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
     mcn = '5029343070452'
-    tracks = [
+    tracks = (
         MockTrack(1, 'USRC17607839'),
         MockTrack(2, 'GBAYE0000351'),
         MockTrack(3, None),
         MockTrack(4, 'FRZ039100014'),
-    ]
+    )
     toc_string = ' '.join(str(i) for i in test_toc)
 
 
 class MockDiscWithInvalidIsrcs:
     id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
     mcn = None
-    tracks = [
+    tracks = (
         MockTrack(1, 'USRC17607839'),
         MockTrack(2, 'INVALID'),
         MockTrack(3, ''),
         MockTrack(4, 'GBAYE0000351'),
-    ]
+    )
     toc_string = ' '.join(str(i) for i in test_toc)
 
 
@@ -185,7 +185,7 @@ class MockDiscNoIsrcAttr:
 
     id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
     mcn = None
-    tracks = list(range(0, 4))
+    tracks = tuple(range(0, 4))
     toc_string = ' '.join(str(i) for i in test_toc)
 
 
