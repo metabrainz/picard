@@ -35,6 +35,7 @@
 
 import os
 import re
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -70,7 +71,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming_compat.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'ascii_filenames': {'widgets': ['ascii_filenames']},
         'windows_compatibility': {'widgets': ['windows_compatibility']},
         'win_compat_replacements': {'widgets': ['btn_windows_compatibility_change']},

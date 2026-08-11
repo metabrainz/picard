@@ -21,6 +21,7 @@
 
 
 from functools import partial
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -104,7 +105,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'interface_colors': {},
         'interface_colors_dark': {},
     }

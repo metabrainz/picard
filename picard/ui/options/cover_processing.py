@@ -22,6 +22,7 @@
 
 
 from functools import partial
+from typing import ClassVar
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QSpinBox
@@ -55,7 +56,7 @@ class CoverProcessingOptionsPage(OptionsPage):
     SORT_ORDER = 0
     HELP_URL = "/config/options_cover_art_processing.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'filter_cover_by_size': {'widgets': ['filtering']},
         'cover_minimum_width': {'widgets': ['filtering_width_value']},
         'cover_minimum_height': {'widgets': ['filtering_height_value']},

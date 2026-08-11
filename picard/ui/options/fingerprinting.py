@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -69,7 +70,7 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_fingerprinting.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'fingerprinting_system': {'widgets': ['disable_fingerprinting', 'use_acoustid']},
         'acoustid_fpcalc': {},
         'acoustid_apikey': {},

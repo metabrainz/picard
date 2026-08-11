@@ -27,6 +27,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from PyQt6.QtCore import Qt
 
 from picard.config import (
@@ -60,7 +62,7 @@ class CoverOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cover.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'save_images_to_tags': {'widgets': ['save_images_to_tags']},
         'embed_only_one_front_image': {'widgets': ['cb_embed_front_only']},
         'dont_replace_with_smaller_cover': {'widgets': ['cb_dont_replace_with_smaller']},

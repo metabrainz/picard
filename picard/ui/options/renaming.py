@@ -34,6 +34,7 @@
 
 
 import os.path
+from typing import ClassVar
 
 from PyQt6 import QtWidgets
 
@@ -66,7 +67,7 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'move_files': {'widgets': ['move_files']},
         'move_files_to': {'widgets': ['move_files_to']},
         'move_overwrite_existing_files': {'widgets': ['move_overwrite_existing_files']},

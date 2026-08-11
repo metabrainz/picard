@@ -28,6 +28,7 @@ from enum import (
 import logging
 import os
 import shutil
+from typing import ClassVar
 
 from test.picardtestcase import PicardTestCase
 
@@ -896,7 +897,7 @@ class TestRestoreDefaults(TestPicardConfigCommon):
             PARENT = None
             SORT_ORDER = 9999
             OPTION_SECTION = 'setting'
-            OPTIONS: PageOptionConfigs = {'test_rd_prof': {}}
+            OPTIONS: ClassVar[PageOptionConfigs] = {'test_rd_prof': {}}
 
         from picard.extension_points.options_pages import register_options_page
 
@@ -935,7 +936,7 @@ class TestRestoreDefaults(TestPicardConfigCommon):
             PARENT = None
             SORT_ORDER = 9999
             OPTION_SECTION = 'plugin.test-rd'
-            OPTIONS: PageOptionConfigs = {'opt': {}}
+            OPTIONS: ClassVar[PageOptionConfigs] = {'opt': {}}
 
         from picard.extension_points.options_pages import register_options_page
 
@@ -984,7 +985,7 @@ class TestRestoreDefaults(TestPicardConfigCommon):
             PARENT = None
             SORT_ORDER = 9999
             OPTION_SECTION = 'plugin.test-rd2'
-            OPTIONS: PageOptionConfigs = {'opt': {}}
+            OPTIONS: ClassVar[PageOptionConfigs] = {'opt': {}}
 
         from picard.extension_points.options_pages import register_options_page
 

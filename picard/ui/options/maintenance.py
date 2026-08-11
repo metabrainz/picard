@@ -23,6 +23,7 @@
 
 import datetime
 import os
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -70,7 +71,7 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'autobackup_directory': {'widgets': ['autobackup_dir']},
     }
     signal_reload = QtCore.pyqtSignal()

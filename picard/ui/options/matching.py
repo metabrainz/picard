@@ -22,6 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
@@ -41,7 +43,7 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_matching.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'match_min_similarity': {'widgets': ['match_min_similarity']},
         'match_min_margin': {'widgets': ['match_min_margin']},
         'track_matching_threshold': {'widgets': ['track_matching_threshold']},

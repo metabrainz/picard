@@ -29,6 +29,7 @@
 
 
 import os
+from typing import ClassVar
 
 from PyQt6 import QtCore
 
@@ -107,7 +108,7 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'enable_tagger_scripts': {'widgets': ['enable_tagger_scripts']},
         'list_of_scripts': {'widgets': ['script_list']},
     }

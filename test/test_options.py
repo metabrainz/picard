@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from test.picardtestcase import PicardTestCase
 
 from picard.config import Option
@@ -58,7 +60,7 @@ class OptionsUtilitiesTest(PicardTestCase):
             TITLE = 'Test'
             PARENT = None
             SORT_ORDER = 9999
-            OPTIONS: PageOptionConfigs = {
+            OPTIONS: ClassVar[PageOptionConfigs] = {
                 'test_no_profile_opt': {'widgets': ['some_widget']},
             }
 
@@ -86,7 +88,7 @@ class OptionsUtilitiesTest(PicardTestCase):
             PARENT = None
             SORT_ORDER = 9999
             OPTION_SECTION = 'setting'
-            OPTIONS: PageOptionConfigs = {'test_rd_core': {}}
+            OPTIONS: ClassVar[PageOptionConfigs] = {'test_rd_core': {}}
 
         from picard.extension_points.options_pages import register_options_page
 

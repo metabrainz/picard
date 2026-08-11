@@ -22,6 +22,7 @@
 
 
 from functools import partial
+from typing import ClassVar
 
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
@@ -42,7 +43,7 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'write_id3v23': {'widgets': ['write_id3v23', 'write_id3v24']},
         'id3v2_encoding': {'widgets': ['enc_utf8', 'enc_utf16', 'enc_iso88591']},
         'id3v23_join_with': {'widgets': ['id3v23_join_with']},

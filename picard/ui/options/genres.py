@@ -22,6 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -84,7 +86,7 @@ class GenresOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_genres.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'use_genres': {'widgets': ['use_genres']},
         'only_my_genres': {'widgets': ['only_my_genres']},
         'artists_genres': {'widgets': ['artists_genres']},

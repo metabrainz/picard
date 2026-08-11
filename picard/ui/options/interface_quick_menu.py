@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -51,7 +53,7 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_quick_menu.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'quick_menu_items': {'widgets': ['quick_menu_groupBox']},
     }
 

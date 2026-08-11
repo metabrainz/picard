@@ -28,6 +28,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import ClassVar
+
 from PyQt6 import QtWidgets
 
 from picard import log
@@ -56,7 +58,7 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'server_host': {'widgets': ['server_host']},
         'server_port': {'widgets': ['server_port']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},

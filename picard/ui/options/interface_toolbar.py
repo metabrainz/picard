@@ -32,6 +32,7 @@
 
 from collections import namedtuple
 import os.path
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -74,7 +75,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
 
-    OPTIONS: PageOptionConfigs = {
+    OPTIONS: ClassVar[PageOptionConfigs] = {
         'toolbar_layout': {'widgets': ['customize_toolbar_box']},
     }
     TOOLBAR_BUTTONS = {

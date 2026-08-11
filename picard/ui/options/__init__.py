@@ -27,6 +27,7 @@
 from collections import defaultdict
 import re
 from typing import (
+    ClassVar,
     TypeAlias,
     TypedDict,
 )
@@ -75,14 +76,14 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
-    OPTIONS: PageOptionConfigs = {}
+    OPTIONS: ClassVar[PageOptionConfigs] = {}
 
     # Config section where this page's options are stored.
     # Core pages use 'setting'. Plugin pages are set to 'plugin.<uuid>'
     # automatically by register_options_page().
     OPTION_SECTION = 'setting'
 
-    _registered_settings: dict[str, list] = defaultdict(list)
+    _registered_settings: ClassVar[dict[str, list]] = defaultdict(list)
     initialized = False
     loaded = False
 
