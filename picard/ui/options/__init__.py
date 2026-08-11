@@ -61,7 +61,7 @@ class OptionsCheckError(Exception):
 
 
 class OptionConfig(TypedDict, total=False):
-    widgets: list[str]
+    widgets: list[str] | tuple[str, ...]
 
 
 PageOptionConfigs: TypeAlias = dict[str, OptionConfig]
