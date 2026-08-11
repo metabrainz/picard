@@ -250,17 +250,10 @@ def html_link(url, text):
 
 
 def quote_name(name):
-    """Enclose name in quotes if it contains a comma.
-
-    Handles both plain text and HTML link formatted names.
-    """
-    if ',' not in name:
-        return name
-    # If name is an HTML link, quote the link text inside the tag
-    match = re.match(r'^(<a\b[^>]*>)(.*)(</a>)$', name)
-    if match:
-        return f'{match.group(1)}"{match.group(2)}"{match.group(3)}'
-    return f'"{name}"'
+    """Enclose name in quotes if it contains a comma."""
+    if ',' in name:
+        return f'"{name}"'
+    return name
 
 
 def join_names(names):
@@ -306,7 +299,7 @@ def format_code_authors(code_authors, github_users, display_names):
         gh_user = github_users.get(name)
         display = display_names.get(name, name)
         if gh_user:
-            names.append(html_link(f'{GITHUB_URL}/{quote(gh_user)}', display))
+            names.append(html_link(f'{GITHUB_URL}/{quote(gh_user)}', quote_name(display)))
         else:
             names.append(quote_name(display))
     return f"Code contributions by {join_names(names)}."
@@ -318,7 +311,7 @@ def format_translators(translators, translator_langs, weblate_users):
     for name in sorted(translators, key=str.casefold):
         wb_user = weblate_users.get(name)
         if wb_user:
-            linked_name = html_link(f'{WEBLATE_URL}/{quote(wb_user)}/', name)
+            linked_name = html_link(f'{WEBLATE_URL}/{quote(wb_user)}/', quote_name(name))
         else:
             linked_name = quote_name(name)
         langs = ', '.join(sorted(translator_langs[name]))
