@@ -119,6 +119,8 @@ def get_github_users_from_merges(rev_range):
         input='\n'.join(pr_parents),
     )
     for line in result.splitlines():
+        if ' ' not in line:
+            continue
         sha, author = line.split(' ', 1)
         if author and author not in EXCLUDE:
             github_users.setdefault(author, pr_parents[sha])
