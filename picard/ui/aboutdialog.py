@@ -32,7 +32,10 @@ from PyQt6 import (
     QtGui,
 )
 
-from picard import tagger_instance
+from picard import (
+    COPYRIGHT_YEARS,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
@@ -154,7 +157,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             ]
         )
         copyright_text = _("Copyright © %(copyright_years)s %(authors_credits)s and others") % {
-            'copyright_years': '2004-2026',
+            'copyright_years': COPYRIGHT_YEARS,
             'authors_credits': authors_credits,
         }
         self.ui.copyright_label.setText(copyright_text)
