@@ -230,11 +230,14 @@ def get_weblate_api_key() -> str | None:
     if not api_key and WeblateConfig:
         config_path = os.path.join(os.path.dirname(__file__), '..', '..', '.weblate.ini')
         if os.path.exists(config_path):
-            config = WeblateConfig()
-            config.load(config_path)
-            url, key = config.get_url_key()
-            if url.rstrip('/') == WEBLATE_API_URL:
-                api_key = key
+            try:
+                config = WeblateConfig()
+                config.load(config_path)
+                url, key = config.get_url_key()
+                if url.rstrip('/') == WEBLATE_API_URL:
+                    api_key = key
+            except Exception as e:
+                debug(f"Warning: Failed to read Weblate config: {e}")
     return api_key
 
 
