@@ -49,6 +49,10 @@ except ImportError:
 
 EXCLUDE = {'Weblate', 'dependabot[bot]'}
 
+# Paths containing translation files managed via Weblate.
+# Used to separate translators from code contributors.
+TRANSLATION_PATHS = ('po/', 'installer/i18n/sources/')
+
 WEBLATE_API_URL = 'https://translations.metabrainz.org/api'
 WEBLATE_URL = 'https://translations.metabrainz.org/user'
 GITHUB_URL = 'https://github.com'
@@ -139,7 +143,7 @@ def get_github_users(rev_range):
 def get_weblate_users_from_emails(rev_range):
     """Map author names to Weblate usernames from noreply emails in git log."""
     weblate_users = {}
-    for line in git('log', '--format=%aN\t%aE', rev_range, '--', 'po/').splitlines():
+    for line in git('log', '--format=%aN\t%aE', rev_range, '--', *TRANSLATION_PATHS).splitlines():
         if '\t' not in line:
             continue
         name, email = line.split('\t', 1)
@@ -213,8 +217,9 @@ def get_weblate_users(rev_range):
 
 
 def get_code_authors(rev_range):
-    """Return set of author names who committed changes outside po/."""
-    lines = git('log', '--format=%aN', rev_range, '--', ':!po/').splitlines()
+    """Return set of author names who committed changes outside translation paths."""
+    excludes = [f':!{path}' for path in TRANSLATION_PATHS]
+    lines = git('log', '--format=%aN', rev_range, '--', *excludes).splitlines()
     authors = set(a for a in lines if a and a not in EXCLUDE)
     debug(f"Found {len(authors)} code authors")
     return authors
@@ -226,7 +231,7 @@ def get_translator_langs(rev_range):
     Parses "Translated using Weblate (Language)" commit messages.
     """
     translator_langs = {}
-    for line in git('log', '--format=%aN\t%s', rev_range, '--', 'po/').splitlines():
+    for line in git('log', '--format=%aN\t%s', rev_range, '--', *TRANSLATION_PATHS).splitlines():
         if '\t' not in line:
             continue
         author, subject = line.split('\t', 1)
@@ -260,7 +265,6 @@ def quote_name(name):
 
 def join_names(names):
     """Join names with commas and 'and' before the last one."""
-    names = [quote_name(n) for n in names]
     if len(names) <= 1:
         return ''.join(names)
     return ', '.join(names[:-1]) + ' and ' + names[-1]
@@ -304,7 +308,7 @@ def format_code_authors(code_authors, github_users, display_names):
         if gh_user:
             names.append(html_link(f'{GITHUB_URL}/{quote(gh_user)}', display))
         else:
-            names.append(display)
+            names.append(quote_name(display))
     return f"Code contributions by {join_names(names)}."
 
 
@@ -316,7 +320,7 @@ def format_translators(translators, translator_langs, weblate_users):
         if wb_user:
             linked_name = html_link(f'{WEBLATE_URL}/{quote(wb_user)}/', name)
         else:
-            linked_name = name
+            linked_name = quote_name(name)
         langs = ', '.join(sorted(translator_langs[name]))
         parts.append(f"{linked_name} ({langs})")
     return f"Translations were updated by {join_names(parts)}."
