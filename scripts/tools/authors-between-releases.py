@@ -37,10 +37,7 @@ import subprocess
 import sys
 import time
 import urllib.error
-from urllib.parse import (
-    quote as url_quote,
-    urlencode,
-)
+from urllib.parse import quote as url_quote
 from urllib.request import (
     Request,
     urlopen,
@@ -187,10 +184,30 @@ def get_weblate_users_from_emails(rev_range):
     return weblate_users
 
 
-def get_weblate_users_from_api(api_key, rev_range):
-    """Fetch translator usernames from the Weblate project credits API.
+WEBLATE_REPORT_POLL_INTERVAL = 2  # seconds between task polls
+WEBLATE_REPORT_TIMEOUT = 30  # max seconds to wait for report generation
 
-    Uses the date range of the two release tags to query credits.
+
+def _weblate_api_request(api_key, url, method='GET', data=None):
+    """Make an authenticated request to the Weblate API."""
+    headers = {
+        'Authorization': f'Token {api_key}',
+        'Accept': 'application/json',
+    }
+    if data is not None:
+        body = json.dumps(data).encode()
+        headers['Content-Type'] = 'application/json'
+    else:
+        body = None
+    req = Request(url, data=body, headers=headers, method=method)
+    with urlopen(req, timeout=10) as resp:
+        return json.loads(resp.read())
+
+
+def get_weblate_users_from_api(api_key, rev_range):
+    """Fetch translator usernames from the Weblate Reports API.
+
+    Schedules a credits report, polls for completion, and parses the result.
     The end date is set to the day after the target tag to ensure
     translations made on the tag date are included.
     Returns a dict mapping full_name to Weblate username.
@@ -203,26 +220,49 @@ def get_weblate_users_from_api(api_key, rev_range):
     debug(f"Fetching Weblate credits for {start}..{end}")
     credits = {}
     try:
-        url = f'{WEBLATE_API_URL}/projects/picard/credits/?{urlencode({"start": start, "end": end})}'
-        req = Request(
-            url,
-            headers={
-                'Authorization': f'Token {api_key}',
-                'Accept': 'application/json',
-            },
+        # Schedule the credits report
+        report = _weblate_api_request(
+            api_key,
+            f'{WEBLATE_API_URL}/reports/',
+            method='POST',
+            data={'kind': 'credits', 'start': start, 'end': end, 'project': 'picard'},
         )
-        with urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read())
-            for lang_entry in data:
-                for users in lang_entry.values():
-                    for user in users:
-                        full_name = user.get('full_name', '')
-                        username = user.get('username', '')
-                        if full_name and username:
-                            credits.setdefault(full_name, username)
+        task_path = report.get('task_url', '')
+        if not task_path:
+            debug("Weblate API: no task_url in response")
+            return credits
+
+        # Poll until the task completes
+        task_url = WEBLATE_API_URL.rsplit('/api', 1)[0] + task_path
+        elapsed = 0
+        while elapsed < WEBLATE_REPORT_TIMEOUT:
+            time.sleep(WEBLATE_REPORT_POLL_INTERVAL)
+            elapsed += WEBLATE_REPORT_POLL_INTERVAL
+            task = _weblate_api_request(api_key, task_url)
+            if task.get('completed'):
+                break
+        else:
+            debug("Weblate API: report generation timed out")
+            return credits
+
+        # Fetch the report JSON data
+        report_path = task.get('result', {}).get('url', '')
+        if not report_path:
+            debug("Weblate API: no report URL in task result")
+            return credits
+        report_url = WEBLATE_API_URL.rsplit('/api', 1)[0] + report_path + 'json/'
+        data = _weblate_api_request(api_key, report_url)
+
+        for lang_entry in data:
+            for users in lang_entry.values():
+                for user in users:
+                    full_name = user.get('full_name', '')
+                    username = user.get('username', '')
+                    if full_name and username:
+                        credits.setdefault(full_name, username)
         debug(f"Found {len(credits)} translators from Weblate API")
     except Exception as e:
-        debug(f"Weblate API error for {url}: {e}")
+        debug(f"Weblate API error: {e}")
     return credits
 
 
@@ -477,6 +517,7 @@ def main():
 
     github_users = get_github_users(rev_range)
     weblate_users = get_weblate_users(rev_range)
+    weblate_email_users = get_weblate_users_from_emails(rev_range)
     code_authors = get_code_authors(rev_range)
     translator_langs = get_translator_langs(rev_range)
     translators = set(translator_langs.keys()) - code_authors
@@ -486,7 +527,9 @@ def main():
     )
 
     if code_authors:
-        print(format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_users))
+        # Use email-confirmed users only for dual-contributor check to avoid
+        # crediting admins who appear in API credits from merge operations
+        print(format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_email_users))
     if translators:
         print(format_translators(translators, translator_langs, weblate_users))
 
