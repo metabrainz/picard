@@ -25,14 +25,14 @@
 # wileyfoxyx <wileyfoxyx@inbox.ru>, 2023.
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2025, 2026.
 # 4irefall <firekonstantin@mail.ru>, 2024.
-# liilliil <liilliil@liilliil.net>, 2024.
+# liilliil <liilliil@liilliil.net>, 2024, 2026.
 # EmO686 <eiswuste@gmail.com>, 2025.
+# AndrejsD1718 <rbox893@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-04-06 18:11+0000\n"
-"Last-Translator: wileyfoxyx "
-"<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-08-03 13:12+0000\n"
+"Last-Translator: liilliil <liilliil@liilliil.net>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ru/>\n"
 "Language: ru\n"
@@ -42,7 +42,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -52,9 +52,9 @@ msgid ""
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
 msgstr ""
-"Мотет – термин, который применяется к различным типам хоровых произведений "
-"(обычно без аккомпанемента). Музыкальная формата мотета меняется в разные "
-"временные эпохи."
+"«Мотет» – термин, относящийся к разным типам хоровых произведений (обычно "
+"без аккомпанемента). Конкретное понятие мотета меняется в зависимости от "
+"временного периода."
 
 #. name:Sonata
 #: DB:work_type/description:5
@@ -63,8 +63,8 @@ msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
-"Соната – общий термин, используемый для описания небольших (очень часто соло "
-"или соло + клавишные) инструментальных работ, изначально в музыке эпохи "
+"«Соната» – общий термин, используемый для описания небольших (очень часто "
+"соло или соло + клавишные) инструментальных работ, изначально в музыке эпохи "
 "барокко."
 
 #: DB:medium_format/name:205
@@ -521,8 +521,9 @@ msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
-"Четырех- или пятисторонняя коробка, обычно из картона или пластика, которая "
-"окружает вторую внутреннюю упаковку, например, Jewel Case."
+"Коробка с четырьмя или пятью сторонами, обычно изготавливаемая из картона "
+"или пластика и охватывающая вторую внутреннюю упаковку, такую как футляр для "
+"компакт-дисков."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -545,8 +546,8 @@ msgid ""
 "or all of the members might differ in different performances or recordings)."
 msgstr ""
 "Группа из нескольких музыкантов, которые часто выступают вместе (в некоторых "
-"случаях, состав участников может отличаться в некоторых или всех "
-"выступлениях или записях)."
+"случаях состав участников может частично или полностью меняться от "
+"выступления к выступлению или от записи к записи)."
 
 #. name:Family
 #: DB:instrument_type/description:7
@@ -602,6 +603,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
+"Лого, которое относится к конкретному мероприятию и используется только для "
+"него, а не является логотипом серии (например, лого фестиваля, повторно "
+"используемое много лет)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -822,6 +826,9 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
+"Защитная оболочка (обычно «внутренняя обложка») вокруг носителя (обычно "
+"виниловой пластинки, иногда CD), часто с напечатанными на ней пометками/"
+"картинками."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -966,23 +973,19 @@ msgstr "Серия релизов."
 
 #. name:Series award
 #: DB:series_type/description:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of recordings honoured by the same award."
 msgctxt "series_type"
 msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
-msgstr "Серия записей, награжденных одной и той же наградой."
+msgstr ""
+"Серия записей (напр. подкастов/фестивалей), награжденных одной и той же "
+"наградой."
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Серия событий."
+msgstr "Серия серий."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -1335,52 +1338,52 @@ msgstr "Адана"
 #: DB:work_attribute_type_allowed_value/value:849
 msgctxt "work_attribute_type_allowed_value"
 msgid "Adānā malhār"
-msgstr ""
+msgstr "Adānā malhār"
 
 #: DB:work_attribute_type_allowed_value/value:308
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aheng-i Tarab"
-msgstr ""
+msgstr "Aheng-i Tarab"
 
 #: DB:work_attribute_type_allowed_value/value:850
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahir lalit"
-msgstr ""
+msgstr "Ahir lalit"
 
 #: DB:work_attribute_type_allowed_value/value:851
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahira bhairav"
-msgstr ""
+msgstr "Ahira bhairav"
 
 #: DB:work_attribute_type_allowed_value/value:852
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ahiri tōḍī"
-msgstr ""
+msgstr "Ahiri tōḍī"
 
 #: DB:work_attribute_type_allowed_value/value:309
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ak Dügah"
-msgstr ""
+msgstr "Ak Dügah"
 
 #: DB:work_attribute_type_allowed_value/value:690
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aksak"
-msgstr ""
+msgstr "Аксак"
 
 #: DB:work_attribute_type_allowed_value/value:691
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aksaksemai"
-msgstr ""
+msgstr "Аксаксемай"
 
 #: DB:work_attribute_type_allowed_value/value:692
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aksaksemai Evferi"
-msgstr ""
+msgstr "Аксаксемай Эвфери"
 
 #: DB:work_attribute_type_allowed_value/value:853
 msgctxt "work_attribute_type_allowed_value"
 msgid "Alahaiyā bilāval"
-msgstr ""
+msgstr "Алахайя билавал"
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -1388,12 +1391,9 @@ msgid "Album"
 msgstr "Альбом"
 
 #: DB:work_attribute_type/name:216
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Track"
 msgctxt "work_attribute_type"
 msgid "AllTrack ID"
-msgstr "Трек"
+msgstr "ВсеТреки ID"
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -1404,7 +1404,7 @@ msgstr "Позволяет вручную устанавливать полож�
 #: DB:work_attribute_type_allowed_value/value:854
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ambikā"
-msgstr ""
+msgstr "Амбика"
 
 #: DB:place_type/name:43
 msgctxt "place_type"
@@ -1414,17 +1414,17 @@ msgstr "Амфитеатр"
 #: DB:work_attribute_type_allowed_value/value:855
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amr̥t varṣiṇi"
-msgstr ""
+msgstr "Амрит варшини"
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
-msgstr ""
+msgstr "Амритаваршини"
 
 #: DB:work_attribute_type_allowed_value/value:39
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
-msgstr ""
+msgstr "Амритавахини"
 
 #. name:EP
 #: DB:release_group_primary_type/description:3
@@ -1735,7 +1735,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
 msgid "Anberefşan"
-msgstr ""
+msgstr "Анберефшан"
 
 #. name:Official
 #: DB:release_status/description:1
@@ -1900,92 +1900,92 @@ msgstr "Айдын"
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin Devr-i Revanı"
-msgstr ""
+msgstr "Айин Девр-и Реван"
 
 #: DB:work_attribute_type_allowed_value/value:605
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin-i Şerif"
-msgstr ""
+msgstr "Айин-и Шериф"
 
 #: DB:work_attribute_type_allowed_value/value:696
 msgctxt "work_attribute_type_allowed_value"
 msgid "Azeri Yürüksemai"
-msgstr ""
+msgstr "Азери Йюрюксемаи"
 
 #: DB:work_attribute_type_allowed_value/value:682
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağır Aksaksemai"
-msgstr ""
+msgstr "Агир Аксаксемай"
 
 #: DB:work_attribute_type_allowed_value/value:683
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraksak"
-msgstr ""
+msgstr "Агираксак"
 
 #: DB:work_attribute_type_allowed_value/value:684
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraydın"
-msgstr ""
+msgstr "Агырайдын"
 
 #: DB:work_attribute_type_allowed_value/value:686
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdarbıfetih"
-msgstr ""
+msgstr "Агырдарбыфетих"
 
 #: DB:work_attribute_type_allowed_value/value:687
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdüyek"
-msgstr ""
+msgstr "Агырдюек"
 
 #: DB:work_attribute_type_allowed_value/value:688
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırevfer"
-msgstr ""
+msgstr "Агыревфер"
 
 #: DB:work_attribute_type_allowed_value/value:603
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsemai"
-msgstr ""
+msgstr "Агырсемаи"
 
 #: DB:work_attribute_type_allowed_value/value:689
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsenginsemai"
-msgstr ""
+msgstr "Агырсенгинсемаи"
 
 #: DB:work_attribute_type_allowed_value/value:685
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırçenber"
-msgstr ""
+msgstr "Агырченбер"
 
 #: DB:work_attribute_type_allowed_value/value:321
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Maye"
-msgstr ""
+msgstr "Аширан Майе"
 
 #: DB:work_attribute_type_allowed_value/value:320
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Zemzeme"
-msgstr ""
+msgstr "Аширан Земземе"
 
 #: DB:work_attribute_type_allowed_value/value:322
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşkefza"
-msgstr ""
+msgstr "Ашкефза"
 
 #: DB:work_attribute_type_allowed_value/value:857
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṣṭa rāg mālikā"
-msgstr ""
+msgstr "Ашта рага малика"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
-msgstr ""
+msgstr "Атана"
 
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭṭa"
-msgstr ""
+msgstr "Атта"
 
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
@@ -2060,32 +2060,32 @@ msgstr "Назад"
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahr-ı Nazik"
-msgstr ""
+msgstr "Бахр-ы Назик"
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahudāri"
-msgstr ""
+msgstr "Бахудари"
 
 #: DB:work_attribute_type_allowed_value/value:862
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahādurī tōḍī"
-msgstr ""
+msgstr "Бахадури тоди"
 
 #: DB:work_attribute_type_allowed_value/value:863
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahār"
-msgstr ""
+msgstr "Бехар"
 
 #: DB:work_attribute_type_allowed_value/value:864
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bairāgi"
-msgstr ""
+msgstr "Байраги"
 
 #: DB:work_attribute_type_allowed_value/value:48
 msgctxt "work_attribute_type_allowed_value"
 msgid "Balahaṁsa"
-msgstr ""
+msgstr "Балахамса"
 
 #: DB:work_type/name:2
 msgctxt "work_type"
@@ -2100,32 +2100,32 @@ msgstr "Баннер"
 #: DB:work_attribute_type_allowed_value/value:866
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant"
-msgstr ""
+msgstr "Басант"
 
 #: DB:work_attribute_type_allowed_value/value:867
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant bahār"
-msgstr ""
+msgstr "Басант бахар"
 
 #: DB:work_attribute_type_allowed_value/value:868
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant mukhāri"
-msgstr ""
+msgstr "Басант мукхари"
 
 #: DB:work_attribute_type_allowed_value/value:869
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basantī kēdār"
-msgstr ""
+msgstr "Басанти кедар"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bauḷi"
-msgstr ""
+msgstr "Баули"
 
 #: DB:work_attribute_type_allowed_value/value:51
 msgctxt "work_attribute_type_allowed_value"
 msgid "Behāg"
-msgstr ""
+msgstr "Бехаг"
 
 #: DB:work_type/name:26
 msgctxt "work_type"
@@ -2145,62 +2145,62 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Devr-i Revanı"
-msgstr ""
+msgstr "Бекташи Деври Реваны"
 
 #: DB:work_attribute_type_allowed_value/value:698
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksanı"
-msgstr ""
+msgstr "Бекташи Раксаны"
 
 #: DB:work_attribute_type_allowed_value/value:699
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı"
-msgstr ""
+msgstr "Бекташи Раксы"
 
 #: DB:work_attribute_type_allowed_value/value:700
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı Evferi"
-msgstr ""
+msgstr "Бекташи Раксы Евфери"
 
 #: DB:work_attribute_type_allowed_value/value:324
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bend-i Hisar"
-msgstr ""
+msgstr "Бенд-и Хисар"
 
 #: DB:work_attribute_type_allowed_value/value:701
 msgctxt "work_attribute_type_allowed_value"
 msgid "Berefşan"
-msgstr ""
+msgstr "Берефшан"
 
 #: DB:work_attribute_type_allowed_value/value:606
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste"
-msgstr ""
+msgstr "Бесте"
 
 #: DB:work_attribute_type_allowed_value/value:702
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Devr-i Revanı"
-msgstr ""
+msgstr "Бесте Деври Реваны"
 
 #: DB:work_attribute_type_allowed_value/value:325
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hicaz"
-msgstr ""
+msgstr "Бесте Хиказ"
 
 #: DB:work_attribute_type_allowed_value/value:326
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hisar"
-msgstr ""
+msgstr "Бесте Хисар"
 
 #: DB:work_attribute_type_allowed_value/value:327
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Isfahan"
-msgstr ""
+msgstr "Бесте Исфахан"
 
 #: DB:work_attribute_type_allowed_value/value:328
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
-msgstr ""
+msgstr "Бестенигар"
 
 #: DB:medium_format/name:131
 msgctxt "medium_format"
@@ -2215,78 +2215,78 @@ msgstr "Betamax"
 #: DB:work_attribute_type_allowed_value/value:329
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati"
-msgstr ""
+msgstr "Бейяти"
 
 #: DB:work_attribute_type_allowed_value/value:331
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Araban"
-msgstr ""
+msgstr "Бейяти Арабан"
 
 #: DB:work_attribute_type_allowed_value/value:332
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Arabanbuselik"
-msgstr ""
+msgstr "Бейяти Арабанбуселик"
 
 #: DB:work_attribute_type_allowed_value/value:333
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Arabankurdi"
-msgstr ""
+msgstr "Бейяти Арабанкурди"
 
 #: DB:work_attribute_type_allowed_value/value:330
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Ruy-i Acem"
-msgstr ""
+msgstr "Бейяти Руи-Ачем"
 
 #: DB:work_attribute_type_allowed_value/value:334
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyatibuselik"
-msgstr ""
+msgstr "Бейятиселик"
 
 #: DB:work_attribute_type_allowed_value/value:335
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bezm-i Tarab"
-msgstr ""
+msgstr "Безм-и Тараб"
 
 #: DB:work_attribute_type_allowed_value/value:870
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairav"
-msgstr ""
+msgstr "Бхайрав"
 
 #: DB:work_attribute_type_allowed_value/value:871
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairav bahār"
-msgstr ""
+msgstr "Бхайрав бахар"
 
 #: DB:work_attribute_type_allowed_value/value:52
 #: DB:work_attribute_type_allowed_value/value:872
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairavi"
-msgstr ""
+msgstr "Бхайрави"
 
 #: DB:work_attribute_type_allowed_value/value:874
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavamat bhairav"
-msgstr ""
+msgstr "Бхавамат бхайрав"
 
 #: DB:work_attribute_type_allowed_value/value:53
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavāni"
-msgstr ""
+msgstr "Бхавани"
 
 #: DB:work_attribute_type_allowed_value/value:876
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhimapalās"
-msgstr ""
+msgstr "Бхимапалас"
 
 #: DB:work_attribute_type_allowed_value/value:877
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhinna ṣaḍja"
-msgstr ""
+msgstr "Бхинна шаджа"
 
 #: DB:work_attribute_type_allowed_value/value:54
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāvapriya"
-msgstr ""
+msgstr "Бхаваприя"
 
 #: DB:work_attribute_type_allowed_value/value:873
 msgctxt "work_attribute_type_allowed_value"
@@ -3683,7 +3683,7 @@ msgstr "Фентези"
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
 msgid "Fatbox"
-msgstr ""
+msgstr "Фэтбокс"
 
 #: DB:gender/name:2
 msgctxt "gender"
@@ -4855,70 +4855,67 @@ msgstr "ID для южноафриканского правозащитного 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
-msgstr ""
+msgstr "ID правозащитного общества Испании SGAE"
 
 #. name:STIM ID
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "ID правозащитного общества Швеции STIM"
 
 #. name:SUISA ID
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
-msgstr ""
+msgstr "ID правозащитного общества Швейцарии SUISA"
 
 #. name:MÜST ID
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr ""
+msgstr "ID правозащитного общества Тайваня MÜST"
 
 #. name:MCT ID
 #: DB:work_attribute_type/description:72
 msgctxt "work_attribute_type"
 msgid "ID for the Thai rights society MCT"
-msgstr ""
+msgstr "ID Тайского правозащитного общества MCT"
 
 #. name:COTT ID
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
-msgstr ""
+msgstr "ID правозащитного общества Тринидада и Тобаго COTT"
 
 #. name:ASCAP ID
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
-msgstr ""
+msgstr "ID правозащитного общества США ASCAP"
 
 #. name:AllTrack ID
 #: DB:work_attribute_type/description:216
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Czech rights society OSA"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society AllTrack"
-msgstr "ID для чешского правозащитного общества OSA"
+msgstr "ID правозащитного общества США AllTrack"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr ""
+msgstr "ID правозащитного общества США BMI"
 
 #. name:GMR ID
 #: DB:work_attribute_type/description:106
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society GMR"
-msgstr ""
+msgstr "ID правозащитного общества США GMR"
 
 #. name:SESAC ID
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr ""
+msgstr "ID правозащитного общества США SESAC"
 
 #. name:UACRR ID
 #: DB:work_attribute_type/description:209
@@ -4930,19 +4927,19 @@ msgstr "ID Украинского агентства по авторским и 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
-msgstr ""
+msgstr "ID правозащитного общества Уругвая AGADU"
 
 #. name:SACVEN ID
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr ""
+msgstr "ID правозащитного общества Венесуэлы SACVEN"
 
 #. name:VCPMC ID
 #: DB:work_attribute_type/description:107
 msgctxt "work_attribute_type"
 msgid "ID for the Vietnamese rights society VCPMC"
-msgstr ""
+msgstr "ID правозащитного общества Вьетнама VCPMC"
 
 #. name:Soundreef ID
 #: DB:work_attribute_type/description:208
@@ -4950,40 +4947,42 @@ msgctxt "work_attribute_type"
 msgid ""
 "ID for the international (but primarily Italian) rights society Soundreef"
 msgstr ""
+"ID международного (но в основном итальянского) правозащитного общества "
+"Soundreef"
 
 #. name:AMRA ID
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
-msgstr ""
+msgstr "ID международного (ранее американского) правозащитного общества AMRA"
 
 #. name:LatinNet ID
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
 msgid "ID for the international rights society consortium LatinNet"
-msgstr ""
+msgstr "ID всемирного правозащитного консорциума LatinNet"
 
 #. name:CCLI ID
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr ""
+msgstr "ID частной лицензионной компании CCLI"
 
 #. name:HFA ID
 #: DB:work_attribute_type/description:64
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company HFA (Harry Fox Agency)"
-msgstr ""
+msgstr "ID частной лицензионной компании HFA (Harry Fox Agency)"
 
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr ""
+msgstr "IMRO ID"
 
 #: DB:work_attribute_type/name:70
 msgctxt "work_attribute_type"
 msgid "IPRS ID"
-msgstr ""
+msgstr "IPRS ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -5155,6 +5154,8 @@ msgid ""
 "Japanese case that holds an 8cm CD. It is rectangular but can be snapped to "
 "make it more compact (hence the name)."
 msgstr ""
+"Японская упаковка для CD диаметром 8 см. Квадратная, но можно сложить для "
+"компактности."
 
 #: DB:work_attribute_type_allowed_value/value:929
 msgctxt "work_attribute_type_allowed_value"
@@ -5189,7 +5190,7 @@ msgstr ""
 #: DB:release_packaging/name:1
 msgctxt "release_packaging"
 msgid "Jewel Case"
-msgstr ""
+msgstr "Джевелкейс"
 
 #: DB:work_attribute_type_allowed_value/value:119
 msgctxt "work_attribute_type_allowed_value"
@@ -5447,7 +5448,7 @@ msgstr ""
 #: DB:release_packaging/name:6
 msgctxt "release_packaging"
 msgid "Keep Case"
-msgstr ""
+msgstr "Кипкейс"
 
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
@@ -5502,7 +5503,7 @@ msgstr ""
 #: DB:medium_format/name:95
 msgctxt "medium_format"
 msgid "KiT Album"
-msgstr ""
+msgstr "KiT-альбом"
 
 #: DB:work_attribute_type_allowed_value/value:630
 msgctxt "work_attribute_type_allowed_value"
@@ -5703,7 +5704,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:957
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalit"
-msgstr ""
+msgstr "Лалит"
 
 #: DB:work_attribute_type_allowed_value/value:958
 msgctxt "work_attribute_type_allowed_value"
@@ -5728,7 +5729,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalita"
-msgstr ""
+msgstr "Лалита"
 
 #: DB:work_attribute_type_allowed_value/value:158
 msgctxt "work_attribute_type_allowed_value"
@@ -5743,7 +5744,7 @@ msgstr "LaserDisc"
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
 msgid "LatinNet ID"
-msgstr ""
+msgstr "LatinNet ID"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -5788,7 +5789,7 @@ msgstr "Концерт"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "Лого"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -5798,22 +5799,22 @@ msgstr ""
 #: DB:release_packaging/name:55
 msgctxt "release_packaging"
 msgid "Longbox"
-msgstr ""
+msgstr "Лонгбокс"
 
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "MACP ID"
 
 #: DB:work_attribute_type/name:71
 msgctxt "work_attribute_type"
 msgid "MCSC ID"
-msgstr ""
+msgstr "MCSC ID"
 
 #: DB:work_attribute_type/name:72
 msgctxt "work_attribute_type"
 msgid "MCT ID"
-msgstr ""
+msgstr "MCT ID"
 
 #: DB:work_attribute_type/name:212
 msgctxt "work_attribute_type"
@@ -5888,7 +5889,7 @@ msgstr ""
 #: DB:work_attribute_type/name:15
 msgctxt "work_attribute_type"
 msgid "Makam (Ottoman, Turkish)"
-msgstr ""
+msgstr "Макам (османская, турецкая)"
 
 #: DB:work_attribute_type_allowed_value/value:164
 msgctxt "work_attribute_type_allowed_value"
@@ -5953,7 +5954,7 @@ msgstr "Мастер-класс"
 #: DB:cover_art_archive.art_type/name:15
 msgctxt "cover_art_type"
 msgid "Matrix/Runout"
-msgstr ""
+msgstr "Матрица/Выбег"
 
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
@@ -6058,7 +6059,7 @@ msgstr ""
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
-msgstr ""
+msgstr "Микрокассета"
 
 #: DB:area_type/name:8
 msgctxt "area_type"
@@ -6316,7 +6317,7 @@ msgstr ""
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr ""
+msgstr "MÜST ID"
 
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
@@ -6466,7 +6467,7 @@ msgstr ""
 #: DB:work_attribute_type/name:59
 msgctxt "work_attribute_type"
 msgid "NICAUTOR ID"
-msgstr ""
+msgstr "NICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
@@ -6646,7 +6647,7 @@ msgstr ""
 #: DB:work_attribute_type/name:33
 msgctxt "work_attribute_type"
 msgid "NexTone ID"
-msgstr ""
+msgstr "NexTone ID"
 
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
@@ -6852,6 +6853,8 @@ msgid ""
 "originally developed in Japan and now mostly found as a Record Store Day "
 "curiosity."
 msgstr ""
+"Односторонний трёхдюймовый винил для специальных плееров; изначально "
+"разработан в Японии, но сейчас в основном доступен во время распродаж."
 
 #: DB:work_type/name:10
 msgctxt "work_type"
@@ -6956,7 +6959,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:81
 msgctxt "cover_art_type"
 msgid "Panel"
-msgstr ""
+msgstr "Панель"
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -7083,12 +7086,12 @@ msgstr "Название места"
 #: DB:release_packaging/description:20
 msgctxt "release_packaging"
 msgid "Plastic CD tray inside a cardboard slipcover"
-msgstr ""
+msgstr "Пластиковый CD-лоток в картонной сдвижной обложке"
 
 #: DB:release_packaging/name:18
 msgctxt "release_packaging"
 msgid "Plastic Sleeve"
-msgstr ""
+msgstr "Пластиковая обложка"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -7370,12 +7373,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Сырая/Неизменённая"
 
 #: DB:event_art_archive.art_type/name:9
 msgctxt "event_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Сырой/Неизменённый"
 
 #: DB:series_type/name:48
 msgctxt "series_type"
@@ -7490,7 +7493,7 @@ msgstr ""
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr ""
+msgstr "Правозащитное общество"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -7621,12 +7624,12 @@ msgstr "SACD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (2 канала)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (многоканальный)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -7636,7 +7639,7 @@ msgstr "SACEM ID"
 #: DB:work_attribute_type/name:56
 msgctxt "work_attribute_type"
 msgid "SACIM ID"
-msgstr ""
+msgstr "SACIM ID"
 
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
@@ -7646,7 +7649,7 @@ msgstr "SACM ID"
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr ""
+msgstr "SACVEN ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -7656,27 +7659,27 @@ msgstr "SADAIC ID"
 #: DB:work_attribute_type/name:68
 msgctxt "work_attribute_type"
 msgid "SAMRO ID"
-msgstr ""
+msgstr "SAMRO ID"
 
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "SAYCE ID"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "SAYCO ID"
 
 #: DB:work_attribute_type/name:140
 msgctxt "work_attribute_type"
 msgid "SAZAS ID"
-msgstr ""
+msgstr "SAZAS ID"
 
 #: DB:work_attribute_type/name:173
 msgctxt "work_attribute_type"
 msgid "SCD ID"
-msgstr ""
+msgstr "SCD ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -7691,7 +7694,7 @@ msgstr "SESAC ID"
 #: DB:work_attribute_type/name:60
 msgctxt "work_attribute_type"
 msgid "SGACEDOM ID"
-msgstr ""
+msgstr "SGACEDOM ID"
 
 #: DB:work_attribute_type/name:20
 msgctxt "work_attribute_type"
@@ -7711,22 +7714,22 @@ msgstr "SHM-SACD"
 #: DB:medium_format/name:89
 msgctxt "medium_format"
 msgid "SHM-SACD (2 channels)"
-msgstr ""
+msgstr "SHM-SACD (2 канала)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
 msgid "SHM-SACD (multichannel)"
-msgstr ""
+msgstr "SHM-SACD (многоканальный)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr ""
+msgstr "SIAE ID"
 
 #: DB:work_attribute_type/name:61
 msgctxt "work_attribute_type"
 msgid "SOBODAYCOM ID"
-msgstr ""
+msgstr "SOBODAYCOM ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -7736,32 +7739,32 @@ msgstr "SOCAN ID"
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr ""
+msgstr "SODRAC ID"
 
 #: DB:work_attribute_type/name:213
 msgctxt "work_attribute_type"
 msgid "SOKOJ ID"
-msgstr ""
+msgstr "SOKOJ ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr ""
+msgstr "SPA ID"
 
 #: DB:work_attribute_type/name:62
 msgctxt "work_attribute_type"
 msgid "SPAC ID"
-msgstr ""
+msgstr "SPAC ID"
 
 #: DB:work_attribute_type/name:54
 msgctxt "work_attribute_type"
 msgid "STEF ID"
-msgstr ""
+msgstr "STEF ID"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "STIM ID"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"

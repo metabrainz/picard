@@ -11,11 +11,12 @@
 # Tom Sawyer, 2022
 # Autom <filipbengtsson@live.se>, 2024.
 # Crowbardoctor <elin.ax1111@gmail.com>, 2025.
+# blueday <jonatan.k.nyberg@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-01-12 19:44+0000\n"
-"Last-Translator: Crowbardoctor <elin.ax1111@gmail.com>\n"
+"PO-Revision-Date: 2026-07-26 12:12+0000\n"
+"Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/sv/>\n"
 "Language: sv\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -578,8 +579,8 @@ msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
 msgstr ""
-"En fest, mottagning eller annat evenemang som hålls specifikt för "
-"lanseringen av en release."
+"En fest, mottagning eller annat evenemang som anordnas särskilt för "
+"lanseringen av en utgåva."
 
 #. name:Digibook
 #: DB:release_packaging/description:17
@@ -6877,9 +6878,6 @@ msgid "Poster"
 msgstr "Poster"
 
 #: DB:event_art_archive.art_type/name:1
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Poster"
 msgctxt "event_art_type"
 msgid "Poster"
 msgstr "Poster"
@@ -7866,7 +7864,7 @@ msgstr "Soundtrack"
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
-msgstr ""
+msgstr "Soundtrack"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
@@ -8909,9 +8907,6 @@ msgid "Watermark"
 msgstr "Vattenmärke"
 
 #: DB:event_art_archive.art_type/name:10
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Watermark"
 msgctxt "event_art_type"
 msgid "Watermark"
 msgstr "Vattenmärke"

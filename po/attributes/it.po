@@ -17,8 +17,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-07-05 19:12+0000\n"
-"Last-Translator: GABG <musicbrainz@gabg.email>\n"
+"PO-Revision-Date: 2026-07-28 19:12+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/it/>\n"
 "Language: it\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.7\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -519,7 +520,7 @@ msgid ""
 "surrounds a second inner package such as a jewel case."
 msgstr ""
 "Una scatola a quattro o cinque lati, solitamente in cartone o in plastica, "
-"che circonda una seconda confezione interna, come un jewel case."
+"che avvolge una seconda confezione interna, come un jewel case."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -597,9 +598,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
-"Un logo specifico per un determinato evento e utilizzato esclusivamente per "
-"quello, anziché essere il logo di una serie (come ad esempio il logo di un "
-"festival riutilizzato per diversi anni)."
+"Un logo proprio di un evento specifico e usato esclusivamente per quello, "
+"anziché essere il logo di una serie (come ad esempio il logo di un festival "
+"riutilizzato per diversi anni)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -825,8 +826,9 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
-"Una custodia protettiva (di solito interna) che avvolge un supporto (spesso "
-"un disco in vinile, raramente un CD), spesso contenente note o immagini."
+"Una busta protettiva (di solito una busta interna) che avvolge un supporto "
+"(solitamente un disco in vinile, ma a volte un CD) e che spesso ha stampate "
+"sopra annotazioni o immagini."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -926,7 +928,7 @@ msgstr "Una serie di esibizioni dello stesso spettacolo nello stesso locale."
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
-msgstr "Una serie di registrazioni onorate dello stesso premio."
+msgstr "Una serie di registrazioni insignite dello stesso premio."
 
 #. name:Recording series
 #: DB:series_type/description:3
@@ -961,7 +963,7 @@ msgstr ""
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
-msgstr "Una serie di gruppi di pubblicazioni onorati dello stesso premio."
+msgstr "Una serie di gruppi di pubblicazioni insigniti dello stesso premio."
 
 #. name:Release group series
 #: DB:series_type/description:1
@@ -982,20 +984,20 @@ msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
 msgstr ""
-"Una serie di altre serie (come podcast o festival) onorate dello stesso "
-"premio."
+"Una serie di serie (per esempio, di podcast o festival) insignite dello "
+"stesso premio."
 
 #. name:Series series
 #: DB:series_type/description:16
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Una serie di altre serie."
+msgstr "Una serie di serie."
 
 #. name:Work award
 #: DB:series_type/description:46
 msgctxt "series_type"
 msgid "A series of works honoured by the same award."
-msgstr "Una serie di opere onorate dello stesso premio."
+msgstr "Una serie di opere insignite dello stesso premio."
 
 #. name:Catalogue
 #: DB:series_type/description:5
@@ -7401,7 +7403,7 @@ msgstr "Grezza/non editata"
 #: DB:series_type/name:48
 msgctxt "series_type"
 msgid "Recording award"
-msgstr "Premio a registrazioni"
+msgstr "Premio per registrazioni"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -7446,7 +7448,7 @@ msgstr "Collezione di pubblicazioni"
 #: DB:series_type/name:47
 msgctxt "series_type"
 msgid "Release group award"
-msgstr "Premio a gruppi di pubblicazioni"
+msgstr "Premio per gruppi di pubblicazioni"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -7993,7 +7995,7 @@ msgstr "Nome della serie"
 #: DB:series_type/name:16
 msgctxt "series_type"
 msgid "Series series"
-msgstr "Serie di altre serie"
+msgstr "Serie di serie"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
@@ -9288,7 +9290,7 @@ msgstr "Ritirata"
 #: DB:series_type/name:46
 msgctxt "series_type"
 msgid "Work award"
-msgstr "Premio a opere"
+msgstr "Premio per opere"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
