@@ -35,6 +35,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 import urllib.error
 from urllib.parse import (
     quote as url_quote,
@@ -297,6 +298,38 @@ def join_names(names):
     return ', '.join(names[:-1]) + ' and ' + names[-1]
 
 
+MAX_RATE_LIMIT_WAIT = 10  # seconds; give up if wait is longer
+
+
+def _get_rate_limit_wait(headers):
+    """Extract wait time in seconds from rate-limit response headers.
+
+    Returns None if the wait would exceed MAX_RATE_LIMIT_WAIT.
+    """
+    wait = None
+    retry_after = headers.get('Retry-After')
+    if retry_after:
+        try:
+            wait = int(retry_after)
+        except ValueError:
+            pass
+    if wait is None:
+        reset = headers.get('X-RateLimit-Reset')
+        if reset:
+            try:
+                wait = max(0, int(reset) - int(time.time())) + 1
+            except ValueError:
+                pass
+    if wait is None:
+        wait = MAX_RATE_LIMIT_WAIT
+    if wait > MAX_RATE_LIMIT_WAIT:
+        return None
+    return wait
+
+
+MAX_RATE_LIMIT_RETRIES = 2
+
+
 def get_github_display_names(github_users):
     """Fetch real names from GitHub API for all known GitHub users."""
     if not github_users:
@@ -309,7 +342,15 @@ def get_github_display_names(github_users):
         headers['Authorization'] = f'token {token}'
     else:
         debug("Warning: GITHUB_TOKEN not set, GitHub API rate limits may apply")
-    for git_name, gh_user in github_users.items():
+    retries_left = MAX_RATE_LIMIT_RETRIES
+    users_iter = iter(github_users.items())
+    git_name, gh_user = None, None
+    while True:
+        if git_name is None:
+            item = next(users_iter, None)
+            if item is None:
+                break
+            git_name, gh_user = item
         try:
             url = f'https://api.github.com/users/{url_quote(gh_user)}'
             req = Request(url, headers=headers)
@@ -318,12 +359,24 @@ def get_github_display_names(github_users):
                 name = data.get('name')
                 if name:
                     display_names[git_name] = name
+            git_name, gh_user = None, None  # advance to next user
         except urllib.error.HTTPError as e:
+            is_rate_limit = e.code == 429 or (e.code == 403 and e.headers.get('X-RateLimit-Remaining') == '0')
+            if is_rate_limit and retries_left > 0:
+                wait = _get_rate_limit_wait(e.headers)
+                if wait is not None:
+                    debug(f"Rate limited, waiting {wait}s ({retries_left} retries left)")
+                    time.sleep(wait)
+                    retries_left -= 1
+                    continue
+            if is_rate_limit:
+                debug(f"Rate limited on {gh_user}, skipping remaining")
+                break
             debug(f"GitHub API error for {gh_user}: {e}")
-            if e.code in (403, 429):
-                break  # rate limited, skip remaining
+            git_name, gh_user = None, None  # skip this user, continue
         except Exception as e:
             debug(f"GitHub API error for {gh_user}: {e}")
+            git_name, gh_user = None, None  # skip this user, continue
     if display_names:
         debug(f"Resolved {len(display_names)} display names from GitHub")
     return display_names
