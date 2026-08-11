@@ -27,6 +27,7 @@
 
 
 import os.path
+from types import MappingProxyType
 from unittest.mock import patch
 
 import mutagen
@@ -663,13 +664,15 @@ class CommonId3Tests:
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
     supports_ratings = True
-    expected_info = {
-        'length': 156,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~filesize': '2760',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 156,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~filesize': '2760',
+        }
+    )
+    unexpected_info = ('~video',)
 
     @skipUnlessTestfile
     def test_remove_apev2(self):
@@ -696,66 +699,76 @@ class MP3Test(CommonId3Tests.Id3TestCase):
 class TTATest(CommonId3Tests.Id3TestCase):
     testfile = 'test.tta'
     supports_ratings = True
-    expected_info = {
-        'length': 82,
-        '~sample_rate': '44100',
-        '~filesize': '2300',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~sample_rate': '44100',
+            '~filesize': '2300',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class DSFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.dsf'
     supports_ratings = True
-    expected_info = {
-        'length': 10,
-        '~channels': '2',
-        '~sample_rate': '5644800',
-        '~bitrate': '11289.6',
-        '~bits_per_sample': '1',
-        '~filesize': '112988',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 10,
+            '~channels': '2',
+            '~sample_rate': '5644800',
+            '~bitrate': '11289.6',
+            '~bits_per_sample': '1',
+            '~filesize': '112988',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class DSDIFFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test-dsd.dff'
     supports_ratings = True
-    expected_info = {
-        'length': 10,
-        '~channels': '2',
-        '~sample_rate': '5644800',
-        '~bitrate': '11289.6',
-        '~bits_per_sample': '1',
-        '~filesize': '14242',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 10,
+            '~channels': '2',
+            '~sample_rate': '5644800',
+            '~bitrate': '11289.6',
+            '~bits_per_sample': '1',
+            '~filesize': '14242',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class DSDIFFDSTTest(CommonId3Tests.Id3TestCase):
     testfile = 'test-dst.dff'
     supports_ratings = True
-    expected_info = {
-        'length': 0,
-        '~channels': '2',
-        '~sample_rate': '5644800',
-        '~bits_per_sample': '1',
-        '~filesize': '2214',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 0,
+            '~channels': '2',
+            '~sample_rate': '5644800',
+            '~bits_per_sample': '1',
+            '~filesize': '2214',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class AIFFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.aiff'
     supports_ratings = False
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '1411.2',
-        '~filesize': '14662',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '1411.2',
+            '~filesize': '14662',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class Id3UtilTest(PicardTestCase):

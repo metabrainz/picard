@@ -228,7 +228,7 @@ class File(MetadataItem):
     # Whether date sanitization can be toggled for this format family via settings
     DATE_SANITIZATION_TOGGLEABLE: bool = False
 
-    EXTENSIONS: list[str] = []
+    EXTENSIONS: tuple[str, ...] = tuple()
 
     class State(Enum):
         UNDEFINED = -1

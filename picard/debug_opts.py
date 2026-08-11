@@ -27,12 +27,13 @@ from contextlib import contextmanager
 from enum import Enum
 import sys
 import time
+from typing import ClassVar
 
 from picard.i18n import N_
 
 
 class DebugOptEnum(int, Enum):
-    __registry__: set = set()
+    __registry__: ClassVar[set] = set()
     title: str
     description: str
 

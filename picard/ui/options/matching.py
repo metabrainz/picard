@@ -54,7 +54,7 @@ class MatchingOptionsPage(OptionsPage):
         'completeness_ignore_silence': {'widgets': ['completeness_ignore_silence']},
         'compare_ignore_tags': {'widgets': ['groupBox_ignore_tags']},
     }
-    _release_type_sliders: dict = {}
+    _release_type_sliders: ClassVar[dict] = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

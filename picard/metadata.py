@@ -65,7 +65,7 @@ MULTI_VALUED_JOINER = '; '
 class Metadata(MutableMapping[str, str | list[str] | None]):
     """List of metadata items with dict-like access."""
 
-    __weights = [
+    __weights = (
         ('title', 22),
         ('artist', 6),
         ('album', 12),
@@ -73,7 +73,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         ('totaltracks', 5),
         ('discnumber', 5),
         ('totaldiscs', 4),
-    ]
+    )
 
     multi_valued_joiner = MULTI_VALUED_JOINER
 
@@ -443,7 +443,7 @@ class MultiMetadataProxy:
     of the track.
     """
 
-    WRITE_METHODS = [
+    WRITE_METHODS = (
         'add_unique',
         'add',
         'apply_func',
@@ -456,7 +456,7 @@ class MultiMetadataProxy:
         'strip_whitespace',
         'unset',
         'update',
-    ]
+    )
 
     def __init__(self, metadata, *readonly_metadata):
         self.metadata = metadata

@@ -22,6 +22,7 @@
 
 
 import os
+from types import MappingProxyType
 
 from picard import config
 from picard.formats.apev2 import AACFile
@@ -37,27 +38,31 @@ from .test_apev2 import CommonApeTests
 
 class AACTest(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.aac'
-    expected_info = {
-        'length': 120,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '123.824',
-        '~filesize': '1896',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 120,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '123.824',
+            '~filesize': '1896',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class AACWithAPETest(CommonApeTests.ApeTestCase):
     testfile = 'test-apev2.aac'
     supports_ratings = False
-    expected_info = {
-        'length': 119,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '123.824',
-        '~filesize': '1974',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 119,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '123.824',
+            '~filesize': '1974',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class AACNoTagsTest(CommonTests.BaseFileTestCase):

@@ -22,6 +22,7 @@
 
 
 import os
+from types import MappingProxyType
 
 from picard import config
 from picard.formats.ac3 import AC3File
@@ -38,14 +39,16 @@ from .test_apev2 import CommonApeTests
 class AC3WithAPETest(CommonApeTests.ApeTestCase):
     testfile = 'test.ac3'
     supports_ratings = False
-    expected_info = {
-        'length': 104,
-        '~bitrate': '192.0',
-        '~sample_rate': '44100',
-        '~channels': '2',
-        '~filesize': '2506',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 104,
+            '~bitrate': '192.0',
+            '~sample_rate': '44100',
+            '~channels': '2',
+            '~filesize': '2506',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def setUp(self):
         super().setUp()
@@ -101,14 +104,16 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
 
 class EAC3Test(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.eac3'
-    expected_info = {
-        '~format': 'Enhanced AC-3',
-        'length': 104,
-        '~sample_rate': '44100',
-        '~channels': '2',
-        '~filesize': '2506',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            '~format': 'Enhanced AC-3',
+            'length': 104,
+            '~sample_rate': '44100',
+            '~channels': '2',
+            '~filesize': '2506',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def setUp(self):
         super().setUp()

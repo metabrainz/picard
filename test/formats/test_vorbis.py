@@ -24,6 +24,7 @@
 import base64
 from functools import partial
 import os
+from types import MappingProxyType
 from unittest.mock import patch
 
 from mutagen.flac import (
@@ -249,14 +250,16 @@ class CommonVorbisTests:
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'
     supports_ratings = True
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~format': 'FLAC',
-        '~filesize': '6546',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~format': 'FLAC',
+            '~filesize': '6546',
+        }
+    )
+    unexpected_info = ('~video',)
 
     @skipUnlessTestfile
     def test_preserve_waveformatextensible_channel_mask(self):
@@ -345,35 +348,41 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
 class OggVorbisTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.ogg'
     supports_ratings = True
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~filesize': '5221',
-    }
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~filesize': '5221',
+        }
+    )
 
 
 class OggSpxTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.spx'
     supports_ratings = True
-    expected_info = {
-        'length': 89,
-        '~channels': '2',
-        '~bitrate': '29.6',
-        '~filesize': '608',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 89,
+            '~channels': '2',
+            '~bitrate': '29.6',
+            '~filesize': '608',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class OggOpusTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.opus'
     supports_ratings = True
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~filesize': '1637',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~filesize': '1637',
+        }
+    )
+    unexpected_info = ('~video',)
 
     @skipUnlessTestfile
     def test_r128_replaygain_tags(self):
@@ -397,23 +406,27 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
 class OggTheoraTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.ogv'
     supports_ratings = True
-    expected_info = {
-        'length': 520,
-        '~bitrate': '200.0',
-        '~video': '1',
-        '~filesize': '5298',
-    }
+    expected_info = MappingProxyType(
+        {
+            'length': 520,
+            '~bitrate': '200.0',
+            '~video': '1',
+            '~filesize': '5298',
+        }
+    )
 
 
 class OggFlacTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test-oggflac.oga'
     supports_ratings = True
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~filesize': '2573',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 82,
+            '~channels': '2',
+            '~filesize': '2573',
+        }
+    )
+    unexpected_info = ('~video',)
 
 
 class VorbisUtilTest(PicardTestCase):

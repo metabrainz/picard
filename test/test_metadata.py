@@ -60,7 +60,7 @@ settings = {
 class CommonTests:
     class CommonMetadataTestCase(PicardTestCase):
         original = None
-        tags = []
+        tags = tuple()
 
         def setUp(self):
             super().setUp()

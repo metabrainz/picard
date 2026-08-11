@@ -23,6 +23,7 @@
 
 
 import os.path
+from types import MappingProxyType
 import unittest
 
 import mutagen
@@ -222,8 +223,8 @@ class CommonTests:
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
 
     class SimpleFormatsTestCase(BaseFileTestCase):
-        expected_info = {}
-        unexpected_info = []
+        expected_info = MappingProxyType({})
+        unexpected_info = tuple()
 
         @skipUnlessTestfile
         def test_can_open_and_save(self):

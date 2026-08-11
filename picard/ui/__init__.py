@@ -26,6 +26,7 @@
 
 
 import os
+from typing import ClassVar
 import uuid
 
 from PyQt6 import (
@@ -229,7 +230,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         if parent is None:
             self._register_parentless()
 
-    _parentless_instances: list['PicardDialog'] = []
+    _parentless_instances: ClassVar[list['PicardDialog']] = []
 
     def _register_parentless(self):
         self._parentless_instances.append(self)

@@ -32,7 +32,7 @@ from picard.formats.registry import FormatRegistry
 class MockFormat1(File):
     """Mock format for testing."""
 
-    EXTENSIONS = ['.ogg', '.ogv']
+    EXTENSIONS = ('.ogg', '.ogv')
     NAME = "Mock Format 1"
 
     def __init__(self, filename):
@@ -48,7 +48,7 @@ class MockFormat1(File):
 class MockFormat2(File):
     """Mock format for testing with overlapping extensions."""
 
-    EXTENSIONS = ['.mba', '.mbv', '.OGG']
+    EXTENSIONS = ('.mba', '.mbv', '.OGG')
     NAME = "Mock Format 2"
 
     def __init__(self, filename):
@@ -64,7 +64,7 @@ class MockFormat2(File):
 class MockFormat3(File):
     """Mock format for testing without NAME attribute."""
 
-    EXTENSIONS = ['.xyz']
+    EXTENSIONS = ('.xyz',)
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -90,7 +90,7 @@ class MockMutagenFile:
 class MockFormatWithScore(File):
     """Mock format with Mutagen-style scoring."""
 
-    EXTENSIONS = ['.mock']
+    EXTENSIONS = ('.mock',)
     NAME = "Mock Format With Score"
     _File = MockMutagenFile
 
@@ -187,15 +187,15 @@ class TestFormatRegistry:
 
         # Check structure
         for extensions, name in formats:
-            assert isinstance(extensions, list)
+            assert isinstance(extensions, tuple)
             assert isinstance(name, str)
 
         # Check specific formats
         format_dict = {name: extensions for extensions, name in formats}
         assert "Mock Format 1" in format_dict
         assert "Mock Format 2" in format_dict
-        assert format_dict["Mock Format 1"] == ['.ogg', '.ogv']
-        assert format_dict["Mock Format 2"] == ['.mba', '.mbv', '.OGG']
+        assert format_dict["Mock Format 1"] == ('.ogg', '.ogv')
+        assert format_dict["Mock Format 2"] == ('.mba', '.mbv', '.OGG')
 
     def test_supported_formats_skips_formats_without_name(self):
         """Test that formats without NAME attribute are skipped."""
@@ -437,7 +437,7 @@ class TestFormatRegistry:
                 return 100
 
         class FormatLowScore(File):
-            EXTENSIONS = ['.test']
+            EXTENSIONS = ('.test',)
             NAME = "Low Score"
             _File = MockMutagenLowScore
 
@@ -448,7 +448,7 @@ class TestFormatRegistry:
                 pass
 
         class FormatHighScore(File):
-            EXTENSIONS = ['.test']
+            EXTENSIONS = ('.test',)
             NAME = "High Score"
             _File = MockMutagenHighScore
 

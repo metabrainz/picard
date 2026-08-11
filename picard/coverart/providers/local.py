@@ -108,8 +108,8 @@ class CoverArtProviderLocal(CoverArtProvider):
     OPTIONS = ProviderOptionsLocal
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
-    _known_types = {t['name'] for t in CAA_TYPES}
-    _default_types = ['front']
+    _known_types = frozenset(t['name'] for t in CAA_TYPES)
+    _default_types = tuple('front')
 
     def queue_images(self):
         config = get_config()

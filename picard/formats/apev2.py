@@ -29,6 +29,7 @@
 
 from os.path import isfile
 import re
+from types import MappingProxyType
 
 from mutagen import FileType
 import mutagen.apev2
@@ -100,36 +101,38 @@ class APEv2File(File):
     FORMAT_DESCRIPTION = N_("APEv2 (Monkey's Audio, WavPack)")
     DATE_SANITIZATION_TOGGLEABLE = True
 
-    __translate = {
-        'albumartist': 'Album Artist',
-        'remixer': 'MixArtist',
-        'director': 'Director',
-        'website': 'Weblink',
-        'discsubtitle': 'DiscSubtitle',
-        'bpm': 'BPM',
-        'isrc': 'ISRC',
-        'catalognumber': 'CatalogNumber',
-        'barcode': 'Barcode',
-        'encodedby': 'EncodedBy',
-        'language': 'Language',
-        'movementnumber': 'MOVEMENT',
-        'movement': 'MOVEMENTNAME',
-        'movementtotal': 'MOVEMENTTOTAL',
-        'showmovement': 'SHOWMOVEMENT',
-        'releasestatus': 'MUSICBRAINZ_ALBUMSTATUS',
-        'releasetype': 'MUSICBRAINZ_ALBUMTYPE',
-        'musicbrainz_recordingid': 'musicbrainz_trackid',
-        'musicbrainz_trackid': 'musicbrainz_releasetrackid',
-        'originalartist': 'Original Artist',
-        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
-        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
-        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
-        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
-        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
-        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
-        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
-    }
-    __rtranslate = {v.lower(): k for k, v in __translate.items()}
+    __translate = MappingProxyType(
+        {
+            'albumartist': 'Album Artist',
+            'remixer': 'MixArtist',
+            'director': 'Director',
+            'website': 'Weblink',
+            'discsubtitle': 'DiscSubtitle',
+            'bpm': 'BPM',
+            'isrc': 'ISRC',
+            'catalognumber': 'CatalogNumber',
+            'barcode': 'Barcode',
+            'encodedby': 'EncodedBy',
+            'language': 'Language',
+            'movementnumber': 'MOVEMENT',
+            'movement': 'MOVEMENTNAME',
+            'movementtotal': 'MOVEMENTTOTAL',
+            'showmovement': 'SHOWMOVEMENT',
+            'releasestatus': 'MUSICBRAINZ_ALBUMSTATUS',
+            'releasetype': 'MUSICBRAINZ_ALBUMTYPE',
+            'musicbrainz_recordingid': 'musicbrainz_trackid',
+            'musicbrainz_trackid': 'musicbrainz_releasetrackid',
+            'originalartist': 'Original Artist',
+            'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+            'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+            'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+            'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+            'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+            'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+            'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
+        }
+    )
+    __rtranslate = MappingProxyType({v.lower(): k for k, v in __translate.items()})
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -312,7 +315,7 @@ class APEv2File(File):
 class MusepackFile(APEv2File):
     """Musepack file."""
 
-    EXTENSIONS = [".mpc", ".mp+"]
+    EXTENSIONS = (".mpc", ".mp+")
     NAME = "Musepack"
     _File = mutagen.musepack.Musepack
 
@@ -324,7 +327,7 @@ class MusepackFile(APEv2File):
 class WavPackFile(APEv2File):
     """WavPack file."""
 
-    EXTENSIONS = [".wv"]
+    EXTENSIONS = (".wv",)
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
 
@@ -347,7 +350,7 @@ class WavPackFile(APEv2File):
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
 
-    EXTENSIONS = [".ofr", ".ofs"]
+    EXTENSIONS = (".ofr", ".ofs")
     NAME = "OptimFROG"
     _File = mutagen.optimfrog.OptimFROG
 
@@ -366,7 +369,7 @@ class OptimFROGFile(APEv2File):
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
 
-    EXTENSIONS = [".ape"]
+    EXTENSIONS = (".ape",)
     NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
 
@@ -374,13 +377,13 @@ class MonkeysAudioFile(APEv2File):
 class TAKFile(APEv2File):
     """TAK file."""
 
-    EXTENSIONS = [".tak"]
+    EXTENSIONS = (".tak",)
     NAME = "Tom's lossless Audio Kompressor"
     _File = mutagen.tak.TAK
 
 
 class AACFile(APEv2File):
-    EXTENSIONS = [".aac"]
+    EXTENSIONS = (".aac",)
     NAME = "AAC"
     _File = aac.AACAPEv2
 

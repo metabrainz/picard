@@ -35,6 +35,7 @@
 from collections import namedtuple
 from functools import partial
 import json
+from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
@@ -285,7 +286,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     # keys are tags
     # values are FileLookup methods (as string)
     # to use to look up for the matching tag
-    LOOKUP_TAGS = {
+    LOOKUP_TAGS: ClassVar[dict[str, str]] = {
         'acoustid_id': 'acoust_lookup',
         'musicbrainz_albumartistid': 'artist_lookup',
         'musicbrainz_albumid': 'album_lookup',

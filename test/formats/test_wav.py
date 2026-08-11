@@ -66,7 +66,7 @@ riff_info_tags = {
 class WAVTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.wav'
     expected_info = expected_info
-    unexpected_info = ['~video']
+    unexpected_info = ('~video',)
     supports_ratings = True
 
     def setUp(self):

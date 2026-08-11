@@ -41,6 +41,7 @@ import os
 import shutil
 from typing import (
     Any,
+    ClassVar,
     TypeAlias,
 )
 
@@ -66,7 +67,7 @@ ConfigValueType: TypeAlias = str | int | float | bool | list | tuple | dict | En
 class Option(QtCore.QObject):
     """Generic option."""
 
-    registry: dict[tuple[str, str], 'Option'] = {}
+    registry: ClassVar[dict[tuple[str, str], 'Option']] = {}
     qtype: object = None
 
     def __init__(

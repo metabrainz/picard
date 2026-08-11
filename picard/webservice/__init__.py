@@ -40,6 +40,7 @@ import platform
 import sys
 from typing import (
     Any,
+    ClassVar,
     Protocol,
     TypeAlias,
     runtime_checkable,
@@ -387,7 +388,7 @@ class RequestPriorityQueue:
 
 
 class WebService(QtCore.QObject):
-    PARSERS: dict[str, Parser] = dict()
+    PARSERS: ClassVar[dict[str, Parser]] = dict()
 
     authorization_required = QtCore.pyqtSignal()
     authorization_state_changed = QtCore.pyqtSignal()

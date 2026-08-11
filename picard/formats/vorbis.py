@@ -32,6 +32,7 @@
 
 import base64
 import re
+from types import MappingProxyType
 
 from mutagen import FileType
 import mutagen.flac
@@ -129,14 +130,16 @@ class VCommentFile(File):
     FORMAT_DESCRIPTION = N_("Vorbis Comments (FLAC, Ogg Vorbis, Opus)")
     DATE_SANITIZATION_TOGGLEABLE = True
 
-    __translate = {
-        'movement': 'movementnumber',
-        'movementname': 'movement',
-        'musicbrainz_releasetrackid': 'musicbrainz_trackid',
-        'musicbrainz_trackid': 'musicbrainz_recordingid',
-        'waveformatextensible_channel_mask': '~waveformatextensible_channel_mask',
-    }
-    __rtranslate = {v: k for k, v in __translate.items()}
+    __translate = MappingProxyType(
+        {
+            'movement': 'movementnumber',
+            'movementname': 'movement',
+            'musicbrainz_releasetrackid': 'musicbrainz_trackid',
+            'musicbrainz_trackid': 'musicbrainz_recordingid',
+            'waveformatextensible_channel_mask': '~waveformatextensible_channel_mask',
+        }
+    )
+    __rtranslate = MappingProxyType({v: k for k, v in __translate.items()})
 
     def _load(self, filename):
         assert self._File, f"_File not defined for {self.__class__.__name__}"
@@ -431,7 +434,7 @@ class VCommentFile(File):
 class FLACFile(VCommentFile):
     """FLAC file."""
 
-    EXTENSIONS = [".flac"]
+    EXTENSIONS = (".flac",)
     NAME = "FLAC"
     _File = mutagen.flac.FLAC
 
@@ -439,7 +442,7 @@ class FLACFile(VCommentFile):
 class OggFLACFile(VCommentFile):
     """FLAC file."""
 
-    EXTENSIONS = [".oggflac"]
+    EXTENSIONS = (".oggflac",)
     NAME = "Ogg FLAC"
     _File = mutagen.oggflac.OggFLAC
 
@@ -447,7 +450,7 @@ class OggFLACFile(VCommentFile):
 class OggSpeexFile(VCommentFile):
     """Ogg Speex file."""
 
-    EXTENSIONS = [".spx"]
+    EXTENSIONS = (".spx",)
     NAME = "Speex"
     _File = mutagen.oggspeex.OggSpeex
 
@@ -455,7 +458,7 @@ class OggSpeexFile(VCommentFile):
 class OggTheoraFile(VCommentFile):
     """Ogg Theora file."""
 
-    EXTENSIONS = [".oggtheora"]
+    EXTENSIONS = (".oggtheora",)
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
 
@@ -467,7 +470,7 @@ class OggTheoraFile(VCommentFile):
 class OggVorbisFile(VCommentFile):
     """Ogg Vorbis file."""
 
-    EXTENSIONS: list[str] = []
+    EXTENSIONS = tuple()
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
@@ -475,7 +478,7 @@ class OggVorbisFile(VCommentFile):
 class OggOpusFile(VCommentFile):
     """Ogg Opus file."""
 
-    EXTENSIONS = [".opus"]
+    EXTENSIONS = (".opus",)
     NAME = "Ogg Opus"
     _File = mutagen.oggopus.OggOpus
 
@@ -489,7 +492,7 @@ class OggOpusFile(VCommentFile):
 class _OggFactoryFile(File):
     """Base factory class for generic Ogg files."""
 
-    _FILE_OPTIONS: list[type[VCommentFile]] = []
+    _FILE_OPTIONS: tuple[type[VCommentFile], ...] = tuple()
 
     def __new__(cls, filename):
         file_obj = _guess_format(filename, cls._FILE_OPTIONS)
@@ -507,31 +510,31 @@ class _OggFactoryFile(File):
 class OggAudioFile(_OggFactoryFile):
     """Generic Ogg audio file."""
 
-    EXTENSIONS = [".oga"]
+    EXTENSIONS = (".oga",)
     NAME = "Ogg Audio"
-    _FILE_OPTIONS = [OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile]
+    _FILE_OPTIONS = (OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile)
 
 
 class OggVideoFile(_OggFactoryFile):
     """Generic Ogg video file."""
 
-    EXTENSIONS = [".ogv"]
+    EXTENSIONS = (".ogv",)
     NAME = "Ogg Video"
-    _FILE_OPTIONS = [OggTheoraFile]
+    _FILE_OPTIONS = (OggTheoraFile,)
 
 
 class OggContainerFile(_OggFactoryFile):
     """Generic Ogg file."""
 
-    EXTENSIONS = [".ogg", ".ogx"]
+    EXTENSIONS = (".ogg", ".ogx")
     NAME = "Ogg"
-    _FILE_OPTIONS = [
+    _FILE_OPTIONS = (
         OggFLACFile,
         OggOpusFile,
         OggSpeexFile,
         OggTheoraFile,
         OggVorbisFile,
-    ]
+    )
 
 
 def _guess_format(filename, options):

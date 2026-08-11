@@ -324,7 +324,7 @@ class TestPreserveTimes(PicardTestCase):
 
 
 class FakeMp3File(File):
-    EXTENSIONS = ['.mp3']
+    EXTENSIONS = ('.mp3',)
 
 
 class FileNamingTest(PicardTestCase):
@@ -908,16 +908,13 @@ class FileCopyMetadataTest(PicardTestCase):
         mock_mutagen_file = Mock()
         mock_mutagen_file.score.return_value = 3
 
-        class MyFormat(File):
-            EXTENSIONS = ['.mp3']
-
-        score = MyFormat.score('/somepath/somefile.mp3', Mock(), b"abc")
+        score = FakeMp3File.score('/somepath/somefile.mp3', Mock(), b"abc")
         self.assertEqual(score, 1)
 
-        score = MyFormat.score('/somepath/somefile.MP3', Mock(), b"abc")
+        score = FakeMp3File.score('/somepath/somefile.MP3', Mock(), b"abc")
         self.assertEqual(score, 1)
 
-        score = MyFormat.score('/somepath/somefile.ogg', Mock(), b"abc")
+        score = FakeMp3File.score('/somepath/somefile.ogg', Mock(), b"abc")
         self.assertEqual(score, 0)
 
 

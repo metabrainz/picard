@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from types import MappingProxyType
+
 import mutagen
 
 from picard.metadata import Metadata
@@ -141,15 +143,17 @@ class CommonMP4Tests:
 class M4ATest(CommonMP4Tests.MP4TestCase):
     testfile = 'test.m4a'
     supports_ratings = False
-    expected_info = {
-        'length': 106,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '14.376',
-        '~bits_per_sample': '16',
-        '~filesize': '2559',
-    }
-    unexpected_info = ['~video']
+    expected_info = MappingProxyType(
+        {
+            'length': 106,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '14.376',
+            '~bits_per_sample': '16',
+            '~filesize': '2559',
+        }
+    )
+    unexpected_info = ('~video',)
 
     def test_hdvd_tag_considered_video(self):
         tags = mutagen.mp4.MP4Tags()
@@ -162,15 +166,17 @@ class M4ATest(CommonMP4Tests.MP4TestCase):
 class M4VTest(CommonMP4Tests.MP4TestCase):
     testfile = 'test.m4v'
     supports_ratings = False
-    expected_info = {
-        'length': 106,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bitrate': '108.043',
-        '~bits_per_sample': '16',
-        '~video': '1',
-        '~filesize': '4065',
-    }
+    expected_info = MappingProxyType(
+        {
+            'length': 106,
+            '~channels': '2',
+            '~sample_rate': '44100',
+            '~bitrate': '108.043',
+            '~bits_per_sample': '16',
+            '~video': '1',
+            '~filesize': '4065',
+        }
+    )
 
 
 class Mp4CoverArtTest(CommonCoverArtTests.CoverArtTestCase):

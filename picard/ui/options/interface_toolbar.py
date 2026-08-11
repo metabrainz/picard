@@ -78,7 +78,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     OPTIONS: ClassVar[PageOptionConfigs] = {
         'toolbar_layout': {'widgets': ['customize_toolbar_box']},
     }
-    TOOLBAR_BUTTONS = {
+    TOOLBAR_BUTTONS: ClassVar[dict[MainAction, ToolbarButtonDesc]] = {
         MainAction.ADD_DIRECTORY: ToolbarButtonDesc(
             N_("Add Folder"),
             'folder',
@@ -160,7 +160,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'system-search',
         ),
     }
-    ACTION_IDS = set(TOOLBAR_BUTTONS)
+    ACTION_IDS = frozenset(TOOLBAR_BUTTONS)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
