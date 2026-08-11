@@ -788,19 +788,21 @@ registrations are unaffected.
 
 ### UI Actions
 
+Plugins can register actions for context menus of albums, tracks, files, clusters, and cluster lists, as well as the Plugin Tools menu.
+
 Context menu actions:
 
-#### `register_album_action(action)`
-#### `register_track_action(action)`
-#### `register_file_action(action)`
-#### `register_cluster_action(action)`
-#### `register_clusterlist_action(action)`
+- `register_album_action(action)`
+- `register_track_action(action)`
+- `register_file_action(action)`
+- `register_cluster_action(action)`
+- `register_clusterlist_action(action)`
 
 Plugin Tools menu actions:
 
-#### `register_tools_menu_action(action)`
+- `register_tools_menu_action(action)`
 
-Register menu actions for different object types.
+#### Register menu actions for different object types
 
 ```python
 from picard.plugin3.api import BaseAction
@@ -823,11 +825,67 @@ def enable(api):
     api.register_clusterlist_action(MyAction)
 
     # Plugin Tools menu
-    register_tools_menu_action(action)
+    api.register_tools_menu_action(action)
 ```
 
 **Note**: Pass the class, not an instance. Picard makes `self.api` available inside
 the class to access the `PluginApi` instance of the plugin.
+
+#### Place actions in submenus
+
+Plugin actions can be placed in submenus by setting the `MENU` attribute of the action class.
+The `MENU` attribute is a tuple of parent menu names.
+
+Example:
+
+```python
+from picard.plugin3.api import BaseAction
+
+
+class MyAction1(BaseAction):
+    TITLE = "Action 1"
+    MENU = ("My Plugin",)
+
+    def callback(self, objs): ...
+
+
+class MyAction2(BaseAction):
+    TITLE = "Action 2"
+    MENU = ("My Plugin",)
+
+    def callback(self, objs): ...
+
+
+class MyAction3(BaseAction):
+    TITLE = "Action 3"
+    MENU = ("My Plugin", "Submenu")
+
+    def callback(self, objs): ...
+
+
+class MyAction4(BaseAction):
+    TITLE = "Action 4"
+    MENU = ("My Plugin", "Submenu")
+
+    def callback(self, objs): ...
+
+
+def enable(api):
+    api.register_tools_menu_action(MyAction1)
+    api.register_tools_menu_action(MyAction2)
+    api.register_tools_menu_action(MyAction3)
+    api.register_tools_menu_action(MyAction4)
+```
+
+The above example will create a "My Plugin" submenu in the Tools menu with four actions
+arranged like:
+
+- My Plugin
+  - Action 1
+  - Action 2
+  - Submenu
+    - Action 3
+    - Action 4
 
 ---
 
