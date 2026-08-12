@@ -8,13 +8,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2026.
 # Pintér Ádám <pinteradam2000@gmail.com>, 2016
 # Syp <http://musicbrainz.org/user/view.html?modname=syp>, 2005
+# hildgyorgy <hild.gyorgy@freemail.hu>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-09 10:07+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-08-12 13:12+0000\n"
+"Last-Translator: hildgyorgy <hild.gyorgy@freemail.hu>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/hu/>\n"
 "Language: hu\n"
@@ -147,7 +148,7 @@ msgstr "Eltávolítás"
 
 #: picard/config_upgrade_hooks.py:532
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Elsődleges"
 
 #: picard/debug_opts.py:162
 msgid "Plugin Fullpath"
