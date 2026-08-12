@@ -675,7 +675,8 @@ class WebService(QtCore.QObject):
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
-            log.debug(
+            log.debug_if(
+                DebugOpt.WS_REPLIES,
                 "Received reply for %s -> %s %d (%s) %s",
                 display_reply_url,
                 proto,

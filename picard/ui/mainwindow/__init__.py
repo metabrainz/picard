@@ -261,13 +261,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def suspend_while_loading_enter(self):
         for func in self._suspend_while_loading_funcs:
             if func.on_enter:
-                log.debug("enter, running: %r", func.on_enter)
                 func.on_enter()
 
     def suspend_while_loading_exit(self):
         for func in self._suspend_while_loading_funcs:
             if func.on_exit:
-                log.debug("exit, running: %r", func.on_exit)
                 func.on_exit()
 
     def setupUi(self):

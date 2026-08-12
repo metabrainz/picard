@@ -253,7 +253,6 @@ class MainPanel(QtWidgets.QSplitter):
     def set_sorting(self, sort=True):
         if sort != self._sort_enabled:
             self._sort_enabled = sort
-            log.debug("MainPanel sort=%r", sort)
             for view in self._views:
                 view.setSortingEnabled(sort)
 

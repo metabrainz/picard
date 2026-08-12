@@ -343,3 +343,66 @@ def enable_default_handlers() -> None:
     history_handler.setFormatter(history_formatter)
 
     history_logger.addHandler(history_handler)
+
+
+class StateChangeLogger:
+    """Logs a message only when a tracked value changes.
+
+    Useful for settings or status flags that are checked repeatedly but
+    should only produce log output when the value actually transitions.
+
+    Examples::
+
+        # Dict form: value → fixed message
+        _update_check_logger = log.StateChangeLogger(
+            log.info,
+            {
+                True: "Documentation updates enabled in user settings.",
+                False: "Documentation updates disabled in user settings.",
+            },
+        )
+        _update_check_logger.update(config.setting['check_rtd_updates'])
+
+        # Callable form: called with the new value, returns the message
+        _lang_logger = log.StateChangeLogger(
+            log.debug,
+            lambda v: "Matched documentation language set to '%s'" % v,
+        )
+        _lang_logger.update(matched_language)
+    """
+
+    __slots__ = ('_log_func', '_messages', '_current', '_has_value')
+
+    def __init__(self, log_func, messages):
+        """
+        Args:
+            log_func: Logging function to call (e.g. log.info, log.debug).
+            messages: Either a dict mapping value → message string, or a
+                callable that receives the new value and returns a message
+                string (or None to suppress logging for that value).
+        """
+        self._log_func = log_func
+        self._messages = messages
+        self._current = None
+        self._has_value = False
+
+    def update(self, value) -> bool:
+        """Update the tracked value. Logs only if the value changed.
+
+        Args:
+            value: The new value to track.
+
+        Returns:
+            True if the value changed, False otherwise.
+        """
+        if self._has_value and value == self._current:
+            return False
+        self._has_value = True
+        self._current = value
+        if callable(self._messages):
+            message = self._messages(value)
+        else:
+            message = self._messages.get(value)
+        if message:
+            self._log_func(message, stacklevel=2)
+        return True

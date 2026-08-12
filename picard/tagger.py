@@ -1036,7 +1036,7 @@ class Tagger(QtWidgets.QApplication):
                     new_files.append(file)
                 QtCore.QCoreApplication.processEvents()
         if new_files:
-            log.debug("Adding files %r", new_files)
+            log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
             self.window.suspend_while_loading_enter()
             self._pending_files_count += len(new_files)

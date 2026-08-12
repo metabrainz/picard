@@ -58,9 +58,25 @@ class ReadTheDocs:
 
     THROTTLED_MESSAGE = "Request was throttled."
     _webservice = None
+    _updates_logger = log.StateChangeLogger(
+        log.info,
+        {
+            True: "Documentation updates enabled in user settings.",
+            False: "Documentation updates disabled in user settings.",
+        },
+    )
 
     _languages_api = RtdApiItem('languages', 'translations')
     _versions_api = RtdApiItem('versions', 'versions')
+
+    _matched_language_logger = log.StateChangeLogger(
+        log.debug,
+        lambda v: "Matched documentation language set to '%s'" % v,
+    )
+    _matched_version_logger = log.StateChangeLogger(
+        log.debug,
+        lambda v: "Matched documentation version set to '%s'" % v,
+    )
 
     matched_language = READTHEDOCS_BASE_LANGUAGE
     """Best match to available languages"""
@@ -106,8 +122,9 @@ class ReadTheDocs:
 
         # User has updating disabled
         config = get_config()
-        if not config.setting['check_rtd_updates']:
-            log.info("Updates disabled in user settings.")
+        updates_enabled = config.setting['check_rtd_updates']
+        cls._updates_logger.update(updates_enabled)
+        if not updates_enabled:
             return
 
         api_item.check_in_progress = True
@@ -153,6 +170,7 @@ class ReadTheDocs:
 
         if cls._versions_api.available_items:
             cls.matched_version = cls._get_version()
+            cls._matched_version_logger.update(cls.matched_version)
 
         cls._versions_api.check_in_progress = False
 
@@ -187,6 +205,7 @@ class ReadTheDocs:
 
         if cls._languages_api.available_items:
             cls.matched_language = cls._get_language()
+            cls._matched_language_logger.update(cls.matched_language)
 
         cls._languages_api.check_in_progress = False
 
@@ -215,8 +234,6 @@ class ReadTheDocs:
                         matched_language = lang
                         break
 
-            log.debug("Matched documentation language set to '%s'", matched_language)
-
         return matched_language
 
     @classmethod
@@ -236,8 +253,6 @@ class ReadTheDocs:
             if version.identifier == 'final' and rtd_version in cls._versions_api.available_items:
                 matched_version = rtd_version
 
-            log.debug("Matched documentation version set to '%s'", matched_version)
-
         return matched_version
 
     @classmethod
@@ -248,3 +263,7 @@ class ReadTheDocs:
         cls._update_versions()
         cls.matched_language = cls._get_language()
         cls.matched_version = cls._get_version()
+        if cls._languages_api.available_items:
+            cls._matched_language_logger.update(cls.matched_language)
+        if cls._versions_api.available_items:
+            cls._matched_version_logger.update(cls.matched_version)

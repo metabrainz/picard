@@ -412,3 +412,78 @@ class NameFilterTestEndingSlashWin(PicardTestCase):
         record = FakeRecord(name=None, pathname='C:/path3/module/file.py')
         self.assertTrue(name_filter(record))
         self.assertEqual(record.name, '\\path3\\module\\file')
+
+
+class StateChangeLoggerTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        from picard.log import StateChangeLogger
+
+        self.logged_messages = []
+        self.logger = StateChangeLogger(
+            lambda msg, **kwargs: self.logged_messages.append(msg),
+            {
+                True: "Enabled",
+                False: "Disabled",
+            },
+        )
+
+    def test_first_update_logs(self):
+        changed = self.logger.update(False)
+        self.assertTrue(changed)
+        self.assertEqual(self.logged_messages, ["Disabled"])
+
+    def test_same_value_does_not_log(self):
+        self.logger.update(False)
+        self.logged_messages.clear()
+        changed = self.logger.update(False)
+        self.assertFalse(changed)
+        self.assertEqual(self.logged_messages, [])
+
+    def test_change_logs_new_message(self):
+        self.logger.update(False)
+        self.logged_messages.clear()
+        changed = self.logger.update(True)
+        self.assertTrue(changed)
+        self.assertEqual(self.logged_messages, ["Enabled"])
+
+    def test_multiple_changes(self):
+        self.logger.update(False)
+        self.logger.update(True)
+        self.logger.update(True)
+        self.logger.update(False)
+        self.assertEqual(self.logged_messages, ["Disabled", "Enabled", "Disabled"])
+
+    def test_value_not_in_messages_is_silent(self):
+        from picard.log import StateChangeLogger
+
+        logger = StateChangeLogger(
+            lambda msg, **kwargs: self.logged_messages.append(msg),
+            {True: "On"},
+        )
+        changed = logger.update(False)
+        self.assertTrue(changed)
+        self.assertEqual(self.logged_messages, [])
+
+    def test_callable_messages(self):
+        from picard.log import StateChangeLogger
+
+        logger = StateChangeLogger(
+            lambda msg, **kwargs: self.logged_messages.append(msg),
+            lambda v: "Value is %s" % v,
+        )
+        logger.update("hello")
+        logger.update("hello")
+        logger.update("world")
+        self.assertEqual(self.logged_messages, ["Value is hello", "Value is world"])
+
+    def test_callable_messages_returns_none(self):
+        from picard.log import StateChangeLogger
+
+        logger = StateChangeLogger(
+            lambda msg, **kwargs: self.logged_messages.append(msg),
+            lambda v: "Set to %s" % v if v else None,
+        )
+        changed = logger.update("")
+        self.assertTrue(changed)
+        self.assertEqual(self.logged_messages, [])
