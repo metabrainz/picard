@@ -1,5 +1,5 @@
 {
-    "MsgAlreadyInstalled": "„${PRODUCT_NAME}“ jau yra įdiegtas ir turi būti pašalinta prieš diegiant šį atnaujinimą į versiją ${PRODUCT_VERSION}.\n\nSpustelėkite Gerai, kad tęstumėte, arba Atšaukti, kad atšauktumėte šį atnaujinimą.",
+    "MsgAlreadyInstalled": "„${PRODUCT_NAME}“ jau yra įdiegtas ir turi būti pašalinta prieš diegiant šį atnaujinimą į versiją ${PRODUCT_VERSION}.\n\nSpauskite Gerai, kad tęstumėte, arba Atšaukti, kad atšauktumėte šį atnaujinimą.",
     "MsgApplicationRunning": "Programa „${PRODUCT_NAME}“ vykdoma. Užverkite ją ir bandykite dar kartą.",
     "MsgRequires64Bit": "Šiai „${PRODUCT_NAME}“ versijai reikia 64 bitų „Windows“ sistemos.",
     "MsgUninstallFailed": "Nepavyko pašalinti ankstesnės versijos.",
