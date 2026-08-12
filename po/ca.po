@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-09 10:07+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-08-12 13:12+0000\n"
+"Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
 "Language: ca\n"
@@ -3431,10 +3431,9 @@ msgid "%s — MusicBrainz Picard"
 msgstr "%s — MusicBrainz Picard"
 
 #: picard/ui/aboutdialog.py:128
-#, fuzzy, python-format
-#| msgid "Version"
+#, python-format
 msgid "Version %s"
-msgstr "Versió"
+msgstr "Versió %s"
 
 #: picard/ui/aboutdialog.py:159
 #, python-format
@@ -3806,10 +3805,8 @@ msgid "New ISRC"
 msgstr "ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:97
-#, fuzzy
-#| msgid "&Submit disc ID"
 msgid "&Submit"
-msgstr "En&via l'ID de disc"
+msgstr "En&via"
 
 #: picard/ui/logview.py:165
 msgid "&View detail…"
@@ -5598,14 +5595,11 @@ msgstr ""
 "segons"
 
 #: picard/ui/forms/ui_options_matching.py:142
-#, fuzzy
-#| msgid ""
-#| "Ignore the following tracks when determining whether a release is complete"
 msgid ""
 "Ignore the following tracks when determining whether a release is complete:"
 msgstr ""
 "Ignora les pistes següents a l'hora de determinar si una publicació està "
-"completa"
+"completa:"
 
 #: picard/ui/forms/ui_options_matching.py:143
 msgid "Video tracks"
@@ -6626,10 +6620,8 @@ msgid "File Type"
 msgstr "Tipus de fitxer"
 
 #: picard/ui/itemviews/columns.py:189
-#, fuzzy
-#| msgid "Directory:"
 msgid "Directory"
-msgstr "Directori:"
+msgstr "Directori"
 
 #: picard/ui/itemviews/columns.py:191
 msgid "File Extension"
@@ -7096,10 +7088,8 @@ msgid "Open AcoustID options"
 msgstr "Obre les opcions d'AcoustID"
 
 #: picard/ui/mainwindow/__init__.py:767
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup by…"
-msgstr "Cerca el CD…"
+msgstr "Cerca per…"
 
 #: picard/ui/mainwindow/__init__.py:776 picard/ui/mainwindow/actions.py:407
 msgid "Lookup &CD…"
@@ -7296,20 +7286,17 @@ msgid "Waiting for MusicBrainz authentication…"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:2064
-#, fuzzy
-#| msgid "MusicBrainz Recording Id"
 msgid "MusicBrainz authentication declined"
-msgstr "ID de l'enregistrament de MusicBrainz"
+msgstr "S'ha rebutjat l'autenticació de MusicBrainz"
 
 #: picard/ui/mainwindow/__init__.py:2072
 msgid "Successfully authenticated with MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:2078
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "MusicBrainz authentication failed: %(error)s"
-msgstr "S'ha produït un error d'autenticació"
+msgstr "S'ha produït un error d'autenticació a MusicBrainz: %(error)s"
 
 #: picard/ui/mainwindow/__init__.py:2085
 msgid "Authentication failed"
@@ -7469,10 +7456,8 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow/actions.py:255
-#, fuzzy
-#| msgid "Lookup &CD…"
 msgid "Lookup by &ISRC"
-msgstr "&Cerca el CD…"
+msgstr "Cerca per &ISRC"
 
 #: picard/ui/mainwindow/actions.py:256
 #, fuzzy
