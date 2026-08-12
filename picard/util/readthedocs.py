@@ -262,6 +262,8 @@ class ReadTheDocs:
         cls._update_languages()
         cls._update_versions()
         cls.matched_language = cls._get_language()
-        cls._matched_language_logger.update(cls.matched_language)
         cls.matched_version = cls._get_version()
-        cls._matched_version_logger.update(cls.matched_version)
+        if cls._languages_api.available_items:
+            cls._matched_language_logger.update(cls.matched_language)
+        if cls._versions_api.available_items:
+            cls._matched_version_logger.update(cls.matched_version)

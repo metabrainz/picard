@@ -421,7 +421,7 @@ class StateChangeLoggerTest(PicardTestCase):
 
         self.logged_messages = []
         self.logger = StateChangeLogger(
-            self.logged_messages.append,
+            lambda msg, **kwargs: self.logged_messages.append(msg),
             {
                 True: "Enabled",
                 False: "Disabled",
@@ -458,7 +458,7 @@ class StateChangeLoggerTest(PicardTestCase):
         from picard.log import StateChangeLogger
 
         logger = StateChangeLogger(
-            self.logged_messages.append,
+            lambda msg, **kwargs: self.logged_messages.append(msg),
             {True: "On"},
         )
         changed = logger.update(False)
@@ -469,7 +469,7 @@ class StateChangeLoggerTest(PicardTestCase):
         from picard.log import StateChangeLogger
 
         logger = StateChangeLogger(
-            self.logged_messages.append,
+            lambda msg, **kwargs: self.logged_messages.append(msg),
             lambda v: "Value is %s" % v,
         )
         logger.update("hello")
@@ -481,7 +481,7 @@ class StateChangeLoggerTest(PicardTestCase):
         from picard.log import StateChangeLogger
 
         logger = StateChangeLogger(
-            self.logged_messages.append,
+            lambda msg, **kwargs: self.logged_messages.append(msg),
             lambda v: "Set to %s" % v if v else None,
         )
         changed = logger.update("")

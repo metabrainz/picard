@@ -404,5 +404,5 @@ class StateChangeLogger:
         else:
             message = self._messages.get(value)
         if message:
-            self._log_func(message)
+            self._log_func(message, stacklevel=2)
         return True
