@@ -23,26 +23,110 @@
 
 from collections.abc import Callable
 
-from PyQt6.QtCore import QSignalBlocker
+from PyQt6.QtCore import (
+    QSignalBlocker,
+    pyqtSignal,
+)
 from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
 )
-from PyQt6.QtWidgets import QPlainTextEdit
+from PyQt6.QtWidgets import (
+    QGroupBox,
+    QLabel,
+    QPlainTextEdit,
+    QVBoxLayout,
+)
+
+from picard.i18n import gettext as _
 
 from picard.ui.colors import interface_colors
 
 
-class Playground:
-    """Playground widget update manager"""
+_STYLESHEET_ERROR = "QLabel { background-color: #f55; color: white; font-weight: bold; padding: 2px; }"
 
-    def __init__(self, playground_widget: QPlainTextEdit) -> None:
-        """Initialize the Playground with a QPlainTextEdit widget.
+
+class Playground(QGroupBox):
+    """Self-contained playground widget.
+
+    A group box containing an optional error label and a QPlainTextEdit
+    for entering test data. The error label is hidden by default and
+    shown only when set_error() is called.
+    """
+
+    textChanged = pyqtSignal()
+
+    def __init__(self, title: str, parent=None):
+        super().__init__(title, parent)
+        self.setFlat(True)
+        font = self.font()
+        font.setItalic(True)
+        self.setFont(font)
+
+        layout = QVBoxLayout(self)
+
+        self._error_label = QLabel(self)
+        self._error_label.setStyleSheet(_STYLESHEET_ERROR)
+        self._error_label.setWordWrap(True)
+        self._error_label.setVisible(False)
+        layout.addWidget(self._error_label)
+
+        self._text_edit = QPlainTextEdit(self)
+        layout.addWidget(self._text_edit)
+
+        self._text_edit.textChanged.connect(self.textChanged.emit)
+
+    def _skip_hl(self, text: str) -> str:
+        """Wrap text in an HTML span with the skip (red) highlight color."""
+        color = self._highlight_color('tagstatus_removed')
+        return f'<span style="background-color: rgba({color.red()},{color.green()},{color.blue()},{color.alpha()}); padding: 2px;">{text}</span>'
+
+    def _match_hl(self, text: str) -> str:
+        """Wrap text in an HTML span with the match (green) highlight color."""
+        color = self._highlight_color('tagstatus_added')
+        return f'<span style="background-color: rgba({color.red()},{color.green()},{color.blue()},{color.alpha()}); padding: 2px;">{text}</span>'
+
+    def set_description(self, description: str, match_meaning: str, skip_meaning: str) -> None:
+        """Configure the playground tooltip and placeholder text.
+
+        Sets a tooltip and placeholder on the playground widget with a
+        consistent layout. All string parameters must already be translated
+        by the caller.
 
         Args:
-            playground_widget (QPlainTextEdit): The playground widget to update.
+            description: What the playground does (e.g., "Enter file paths to test, one per line.")
+            match_meaning: What green/match means (e.g., "the file path matches")
+            skip_meaning: What red/skip means (e.g., "the file path does not match")
         """
-        self.playground_widget = playground_widget
+        from html import escape
+
+        not_preserved = _("This playground will not be preserved on exit.")
+        tooltip = ("<p>%(description)s</p><p>%(skip_line)s<br/>%(match_line)s</p><p><i>%(not_preserved)s</i></p>") % {
+            'description': escape(description),
+            'skip_line': self._skip_hl(escape(_("Red: %s.") % skip_meaning)),
+            'match_line': self._match_hl(escape(_("Green: %s.") % match_meaning)),
+            'not_preserved': escape(not_preserved),
+        }
+        self.setToolTip(tooltip)
+        self._text_edit.setPlaceholderText(description)
+
+    def set_error(self, message: str) -> None:
+        """Show an error message above the text area.
+
+        Args:
+            message: The error message to display.
+        """
+        self._error_label.setText(message)
+        self._error_label.setVisible(True)
+
+    def clear_error(self) -> None:
+        """Hide the error message."""
+        self._error_label.setText("")
+        self._error_label.setVisible(False)
+
+    def toPlainText(self) -> str:
+        """Return the playground text content."""
+        return self._text_edit.toPlainText()
 
     @staticmethod
     def _highlight_color(color_key):
@@ -70,11 +154,11 @@ class Playground:
         return fmt
 
     def _set_line_fmt(self, lineno, textformat):
-        cursor = QTextCursor(self.playground_widget.document().findBlockByNumber(lineno))
+        cursor = QTextCursor(self._text_edit.document().findBlockByNumber(lineno))
         cursor.setBlockFormat(textformat)
 
     def update(self, match_function: Callable[[str], bool] | None = None) -> None:
-        """Update the playground widget to color-code each line depending on whether it passes the match function.
+        """Update the playground to color-code each line depending on whether it passes the match function.
 
         Args:
             match_function: A function that takes a string and returns True if the string matches, otherwise False. Default is None.
@@ -83,13 +167,13 @@ class Playground:
         fmt_skip = self._get_fmt_skip()
         fmt_clear = self._get_fmt_clear()
 
-        text = self.playground_widget.toPlainText()
+        text = self._text_edit.toPlainText()
         lines = text.splitlines()
         # Add an empty string to the list of lines to process if the playground text ends with a new line. This is to
         # ensure that the blank line at the end of the playground widget doesn't inherit the color from the previous line.
         if text and text[-1] in "\n\r":
             lines.append('')
-        with QSignalBlocker(self.playground_widget):
+        with QSignalBlocker(self._text_edit):
             for lineno, line in enumerate(lines):
                 line = line.strip()
                 if not line or match_function is None:

@@ -216,26 +216,6 @@
       <item>
        <widget class="QPlainTextEdit" name="genres_filter"/>
       </item>
-      <item>
-       <widget class="QLabel" name="label_test_genres_filter">
-        <property name="text">
-         <string>Playground for genres or folksonomy tags filters (cleared on exit):</string>
-        </property>
-        <property name="buddy">
-         <cstring>test_genres_filter</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="test_genres_filter"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_test_genres_filter_error">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
