@@ -26,7 +26,7 @@ from picard.util.display_title_base import HasDisplayTitle
 class MetadataTagAction(HasDisplayTitle):
     """Base class for metadata tag context menu actions."""
 
-    TITLE: str = ""
+    TITLE: str | tuple[str, str, str] = ""
 
     def callback(self, tags: list[str], objects: set[MetadataItem]) -> None:
         raise NotImplementedError
