@@ -62,7 +62,7 @@ class TestPluginApiLocale(PicardTestCase):
     def test_get_locale_returns_current_locale(self):
         """Test get_locale() returns current QLocale."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
 
         locale = api.get_locale()
         # Should return a locale string like 'en_US', 'de_DE', etc.
@@ -74,7 +74,7 @@ class TestPluginTranslations(PicardTestCase):
     def test_tr_with_text(self):
         """Test basic translation with text parameter."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
 
         result = api.tr('submit_listens', 'Submit listens')
         self.assertEqual(result, 'Submit listens')
@@ -82,7 +82,7 @@ class TestPluginTranslations(PicardTestCase):
     def test_tr_without_text(self):
         """Test translation without text parameter returns key."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
 
         result = api.tr('submit_listens')
         self.assertEqual(result, 'submit_listens')
@@ -90,7 +90,7 @@ class TestPluginTranslations(PicardTestCase):
     def test_tr_with_placeholders(self):
         """Test translation with placeholder substitution."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
 
         result = api.tr('greeting', 'Hello {name}', name='World')
         self.assertEqual(result, 'Hello World')
@@ -98,7 +98,7 @@ class TestPluginTranslations(PicardTestCase):
     def test_tr_with_multiple_placeholders(self):
         """Test translation with multiple placeholders."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
 
         result = api.tr('user_info', '{name} has {count} items', name='Alice', count=5)
         self.assertEqual(result, 'Alice has 5 items')
@@ -166,8 +166,7 @@ class TestPluginTranslationLoading(PicardTestCase):
 
             with open(manifest_path, 'rb') as f:
                 manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
+                api = PluginApi(manifest, Mock(), Mock(), plugin_dir)
                 api.get_locale = Mock(return_value='en')
 
                 with self.assertLogs(api._logger, level='WARNING') as cm:

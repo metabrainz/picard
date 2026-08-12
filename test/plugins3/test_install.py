@@ -55,7 +55,7 @@ from picard.plugin3.manager.update import (
     UpdateResult,
 )
 from picard.plugin3.output import PluginOutput
-from picard.plugin3.plugin import Plugin
+from picard.plugin3.plugin import Plugin, PluginState
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.validator import generate_uuid
 
@@ -135,6 +135,7 @@ class TestPluginInstall(PicardTestCase):
 
         # Setup plugin with metadata
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.state = PluginState.ENABLED
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.read_manifest = Mock()

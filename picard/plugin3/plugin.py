@@ -573,12 +573,12 @@ class PluginSourceLocal(PluginSource):
 
 
 class Plugin:
-    local_path: Path | None = None
+    local_path: Path
     remote_url: str | None = None
     ref: str | None = None
-    module_name: str | None = None
+    module_name: str
     manifest: PluginManifest | None = None
-    state: PluginState | None = None
+    state: PluginState
     _module: types.ModuleType | None = None
 
     def __init__(self, plugins_dir: Path, plugin_id: str, uuid: str | None = None):
@@ -709,9 +709,8 @@ class Plugin:
             raise PluginAlreadyEnabledError(self.plugin_id)
 
         assert self.manifest is not None, "Plugin manifest must be loaded before enabling"
-        api = PluginApi(self.manifest, tagger)
-        api._plugin_module = self._module
-        api._plugin_dir = self.local_path
+        assert self._module is not None, "Plugin module must be loaded before enabling"
+        api = PluginApi(self.manifest, tagger, self._module, self.local_path)
         api._load_translations()
         api._install_qt_translator()
 
