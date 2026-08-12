@@ -262,7 +262,7 @@ class _NoOpLogger:
 _NOOP_LOGGER = _NoOpLogger()
 
 
-def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
+def debug_if(debug_opt, msg=None, *args, msg_func=None, stacklevel=3, **kwargs):
     """Log a debug message only if the specified debug option is enabled.
 
     Can also be used as a guard that returns a callable logger for blocks
@@ -274,6 +274,8 @@ def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
         *args: Arguments for the message format string
         msg_func: A callable returning the message string. Called only if the
             debug option is enabled. Mutually exclusive with msg/args.
+        stacklevel: How many frames to skip for source location (default 3).
+            Increase by 1 for each additional wrapper frame.
         **kwargs: Additional keyword arguments passed to logger.debug()
 
     Returns:
@@ -297,7 +299,7 @@ def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
         if msg is not None or msg_func is not None:
             if msg_func is not None:
                 msg = msg_func()
-            logger(msg, *args, stacklevel=3, **kwargs)
+            logger(msg, *args, stacklevel=stacklevel, **kwargs)
         return logger
     return _NOOP_LOGGER
 

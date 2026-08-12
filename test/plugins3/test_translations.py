@@ -170,7 +170,7 @@ class TestPluginTranslationLoading(PicardTestCase):
                 api._plugin_dir = plugin_dir
                 api.get_locale = Mock(return_value='en')
 
-                with self.assertLogs(api._logger, level='WARNING') as cm:
+                with self.assertLogs('main.plugin.test', level='WARNING') as cm:
                     api._load_translations()
 
                 self.assertTrue(any('nested structure' in msg.lower() for msg in cm.output))

@@ -77,6 +77,7 @@ The following classes are available through the `api` module:
 - `Track` - Track object
 - `File` - File base class (for custom formats)
 - `Cluster` - Cluster object
+- `DebugOpt` - Debug option enum for conditional logging
 - `Metadata` - Metadata container for tags
 - `BaseAction` - Base class for UI actions
 - `MetadataTagAction` - Base class for metadata tag context menu actions
@@ -158,19 +159,66 @@ def enable(api):
 
 ---
 
-### `logger: Logger`
+### `logger: PluginLogger`
 
 Plugin-specific logger instance.
 
+Provides standard logging methods (`debug`, `info`, `warning`, `error`, `exception`)
+plus `debug_if()` for conditional debug logging gated on debug options.
+
 ```python
+from picard.plugin3.api import DebugOpt
+
+
 def enable(api):
+    # Standard logging
     api.logger.debug("Debug message")
     api.logger.info("Info message")
     api.logger.warning("Warning message")
     api.logger.error("Error message")
+
+    # Conditional debug logging (only logs when the option is enabled)
+    api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, "Processing: %s", item)
+
+    # Lazy formatting (expensive_call() only runs if option is enabled)
+    api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, msg_func=lambda: "State: %s" % expensive_call())
+
+    # Block guard — skip expensive code entirely when disabled
+    if dbg := api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
+        for item in items:
+            dbg("item: %r", item)
 ```
 
 **Namespace**: Logs are prefixed with `plugin.{module_name}`
+
+#### `debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs)`
+
+Log a debug message only if the specified debug option is enabled. Users enable
+debug options via `--debug-opts=plugin_development` on the command line.
+
+**Parameters**:
+- `debug_opt`: A `DebugOpt` enum value (e.g., `DebugOpt.PLUGIN_DEVELOPMENT`)
+- `msg`: Format string (optional if using as guard or with `msg_func`)
+- `*args`: Arguments for the format string
+- `msg_func`: Callable returning the message string, only called if the option is
+  enabled. Mutually exclusive with `msg`/`args`.
+
+**Returns**: A truthy callable if enabled (can be used as a logger), a falsy no-op
+if disabled. This enables the walrus-operator guard pattern shown above.
+
+#### Available debug options
+
+| Option | Constant | Description |
+|---|---|---|
+| `plugin_development` | `DebugOpt.PLUGIN_DEVELOPMENT` | General plugin development logging |
+| `coverart` | `DebugOpt.COVERART` | Cover art operations |
+| `matching` | `DebugOpt.MATCHING` | Similarity scores and match decisions |
+
+Use `DebugOpt.PLUGIN_DEVELOPMENT` for general plugin debug output. If your plugin
+is specifically related to a domain (cover art, matching, etc.), use the
+corresponding option for consistency with Picard's own logging.
+
+**Import**: `from picard.plugin3.api import DebugOpt`
 
 ---
 

@@ -199,6 +199,56 @@ class MetadataTagAction(_MetadataTagAction):
     api: 'PluginApi'
 
 
+class PluginLogger:
+    """Wrapper around :class:`logging.Logger` that adds :meth:`debug_if`.
+
+    Delegates all standard logging methods (debug, info, warning, error, etc.)
+    to the underlying logger via ``__getattr__`` while providing access to
+    Picard's conditional debug logging.
+    """
+
+    __slots__ = ('_underlying_logger',)
+
+    def __init__(self, logger: Logger):
+        self._underlying_logger = logger
+
+    def __getattr__(self, name):
+        return getattr(self._underlying_logger, name)
+
+    def debug_if(self, debug_opt: DebugOpt, msg=None, *args, msg_func=None, **kwargs):
+        """Log a debug message only if the specified debug option is enabled.
+
+        Can also be used as a guard that returns a callable logger for blocks
+        of debug statements.
+
+        Args:
+            debug_opt: A :class:`DebugOpt` enum value to check
+            msg: The message format string
+            *args: Arguments for the message format string
+            msg_func: A callable returning the message string. Called only if
+                the debug option is enabled. Mutually exclusive with msg/args.
+            **kwargs: Additional keyword arguments passed to logger.debug()
+
+        Returns:
+            A truthy callable logger if the debug option is enabled,
+            a falsy no-op otherwise.
+
+        Examples:
+            # Single message
+            api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, "Processing: %s", item)
+
+            # Lazy formatting with msg_func
+            api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT,
+                                msg_func=lambda: "State: %s" % expensive())
+
+            # Block guard to skip expensive code entirely when disabled
+            if dbg := api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
+                for item in items:
+                    dbg("item: %r", item)
+        """
+        return log.debug_if(debug_opt, msg, *args, msg_func=msg_func, stacklevel=4, **kwargs)
+
+
 class PluginApi:
     # Class-level registries for get_api()
     _instances: ClassVar[dict[str, 'PluginApi']] = {}  # Maps module name -> PluginApi instance
@@ -211,7 +261,7 @@ class PluginApi:
         self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
         self._plugin_id = manifest.module_name
         full_name = f'plugin.{self._manifest.uuid}'
-        self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
+        self._logger = PluginLogger(getLogger(f'main.plugin.{self._manifest.module_name}'))
         self._api_config = ProfileConfigSection(get_config(), full_name)
         self._api_config.display_name = manifest.name()
         self._api_persist = ConfigSection(get_config(), f'plugin_persist.{self._manifest.uuid}')
@@ -496,14 +546,18 @@ class PluginApi:
         return self._mb_api
 
     @property
-    def logger(self) -> Logger:
+    def logger(self) -> PluginLogger:
         """Plugin-specific logger instance.
 
         Log messages are namespaced under ``plugin.{module_name}`` so that
         output can be attributed to the originating plugin.
 
+        Provides standard logging methods (debug, info, warning, error) plus
+        :meth:`~PluginLogger.debug_if` for conditional debug logging gated
+        on :class:`~picard.debug_opts.DebugOpt` options.
+
         Returns:
-            Logger: The logger instance for this plugin.
+            PluginLogger: The logger instance for this plugin.
 
         Example:
             def enable(api):
@@ -511,6 +565,9 @@ class PluginApi:
                 api.logger.info("Info message")
                 api.logger.warning("Warning message")
                 api.logger.error("Error message")
+
+                # Conditional debug (only logs if option is enabled)
+                api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, "Details: %s", data)
         """
         return self._logger
 
