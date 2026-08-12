@@ -280,6 +280,25 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         with self._lock.lock_for_read():
             return self._store.__contains__(self.normalize_tag(name))
 
+    def get_new(self, name, default=''):
+        """Get a value only from the new metadata.
+
+        On a plain Metadata object this is the same as get().
+        On a MultiMetadataProxy this ignores the readonly fallback.
+        Provides a consistent interface for script functions.
+        """
+        return self.get(name, default)
+
+    def get_original(self, name, default=''):
+        """Get a value from the original (file) metadata.
+
+        On a plain Metadata object this is the same as get() (there is no
+        separate original source).
+        On a MultiMetadataProxy this reads only from the readonly fallback.
+        Provides a consistent interface for script functions.
+        """
+        return self.get(name, default)
+
     def _del(self, name):
         name = self.normalize_tag(name)
         try:
@@ -462,9 +481,11 @@ class MultiMetadataProxy:
 
     def __init__(self, metadata, *readonly_metadata):
         self.metadata = metadata
-        self.combined_metadata = Metadata()
+        self._original_metadata = Metadata()
         for m in reversed(readonly_metadata):
-            self.combined_metadata.update(m)
+            self._original_metadata.update(m)
+        self.combined_metadata = Metadata()
+        self.combined_metadata.update(self._original_metadata)
         self.combined_metadata.update(metadata)
 
     def __getattr__(self, name):
@@ -478,7 +499,7 @@ class MultiMetadataProxy:
                 return attribute
 
     def __setattr__(self, name, value):
-        if name in {'metadata', 'combined_metadata'}:
+        if name in {'metadata', 'combined_metadata', '_original_metadata'}:
             super().__setattr__(name, value)
         else:
             self.metadata.__setattr__(name, value)
@@ -511,6 +532,28 @@ class MultiMetadataProxy:
 
     def __contains__(self, name):
         return self.__read('__contains__', name)
+
+    def get_new(self, name, default=''):
+        """Get a value only from the new (writable) metadata, ignoring fallback.
+
+        This allows distinguishing values that were set by MusicBrainz/scripts
+        from values that only exist in the readonly fallback (file metadata).
+
+        Returns:
+            The value from the new metadata, or default if not present.
+        """
+        return self.metadata.get(name, default)
+
+    def get_original(self, name, default=''):
+        """Get a value only from the readonly (file) metadata, ignoring new metadata.
+
+        This allows accessing the file's original tag values regardless of
+        what MusicBrainz or scripts have set.
+
+        Returns:
+            The value from the readonly file metadata, or default if not present.
+        """
+        return self._original_metadata.get(name, default)
 
     def __repr__(self):
         return self.__read('__repr__')

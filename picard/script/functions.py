@@ -396,6 +396,54 @@ def func_get(parser, name):
 
 
 @script_function(
+    signature=N_("$get_new(name)"),
+    documentation=N_(
+        """Returns the value of the variable `name` from the new metadata only
+(from MusicBrainz or set by a script), ignoring values that only exist in the
+file's original tags.
+
+This is useful to check whether MusicBrainz actually provided a specific tag.
+When a file is matched to a track, `%name%` may return a value from the file's
+existing tags even if MusicBrainz did not provide one. `$get_new` only returns
+the value if it was set by MusicBrainz or by a script.
+
+Example:
+
+    $if($get_new(composer),,$set(composer,$if2(%lyricist%,%writer%,%arranger%)))
+
+This sets the composer from other fields only if MusicBrainz did not provide one,
+regardless of what composer tag the file originally had.
+
+_Since Picard 3.0_"""
+    ),
+)
+def func_get_new(parser, name):
+    """Returns the variable from new (primary/track) metadata only."""
+    return parser.context.get_new(normalize_tagname(name), "")
+
+
+@script_function(
+    signature=N_("$get_original(name)"),
+    documentation=N_(
+        """Returns the value of the variable `name` from the file's original metadata
+only, ignoring values from MusicBrainz or scripts.
+
+This is useful to access the file's existing tag values regardless of what
+MusicBrainz has provided.
+
+Example:
+
+    $set(comment,Original artist was: $get_original(artist))
+
+_Since Picard 3.0_"""
+    ),
+)
+def func_get_original(parser, name):
+    """Returns the variable from original (file) metadata only."""
+    return parser.context.get_original(normalize_tagname(name), "")
+
+
+@script_function(
     signature=N_("$copy(new,old)"),
     documentation=N_(
         """Copies metadata from variable `old` to `new`.
