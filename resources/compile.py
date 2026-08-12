@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2013-2014, 2018, 2020 Laurent Monin
+# Copyright (C) 2013-2014, 2018, 2020, 2026 Laurent Monin
 # Copyright (C) 2014 Shadab Zafar
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2022 Philipp Wolfer
@@ -24,44 +23,60 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from distutils import log
-from distutils.spawn import (
-    DistutilsExecError,
-    spawn,
-)
-import os.path
+import logging
+import os
+from pathlib import Path
 from shutil import which
+import subprocess
+import sys
+import tempfile
 
-from setuptools.modified import newer
+
+log = logging.getLogger(__name__)
 
 
 def fix_qtcore_import(path):
-    with open(path, 'r') as f:
-        data = f.read()
-    data = data.replace('PySide6', 'PyQt6')
-    with open(path, 'w') as f:
-        f.write(data)
+    data = path.read_text()
+    data = data.replace('from PySide6', 'from PyQt6')
+    path.write_text(data)
+
+
+def find_rcc():
+    """Find the Qt6 rcc binary."""
+    rcc = 'rcc'
+    for path in (
+        '/usr/lib64/qt6/libexec',
+        '/usr/lib/qt6/libexec',
+    ):
+        rcc_path = which(rcc, path=path)
+        if rcc_path:
+            return rcc_path
+    return which(rcc)
 
 
 def main():
-    scriptdir = os.path.dirname(os.path.abspath(__file__))
-    topdir = os.path.abspath(os.path.join(scriptdir, ".."))
-    pyfile = os.path.join(topdir, "picard", "resources.py")
-    qrcfile = os.path.join(topdir, "resources", "picard.qrc")
-    if newer(qrcfile, pyfile):
-        rcc = 'rcc'
-        rcc_path = which(rcc, path='/usr/lib64/qt6/libexec/') or which(rcc, path='/usr/lib/qt6/libexec/') or which(rcc)
-        if rcc_path is None:
-            log.error("%s command not found, cannot build resource file !", rcc)
-        else:
-            cmd = [rcc_path, '-g', 'python', '-o', pyfile, qrcfile]
-            try:
-                spawn(cmd, search_path=0)
-                fix_qtcore_import(pyfile)
-            except DistutilsExecError as e:
-                log.error(e)
+    topdir = Path(__file__).resolve().parent.parent
+    pyfile = topdir / "picard" / "resources.py"
+    qrcfile = topdir / "resources" / "picard.qrc"
+    rcc_path = find_rcc()
+    if rcc_path is None:
+        log.error("rcc command not found, cannot build resource file!")
+        sys.exit(1)
+    if not pyfile.exists() or qrcfile.stat().st_mtime > pyfile.stat().st_mtime:
+        log.info("Using rcc: %s", rcc_path)
+        fd, tmp_name = tempfile.mkstemp(dir=pyfile.parent, suffix='.tmp')
+        os.close(fd)
+        tmp_path = Path(tmp_name)
+        try:
+            cmd = [rcc_path, '-g', 'python', '-o', str(tmp_path), str(qrcfile)]
+            subprocess.check_call(cmd)
+            fix_qtcore_import(tmp_path)
+            tmp_path.replace(pyfile)
+        except BaseException:
+            tmp_path.unlink(missing_ok=True)
+            raise
 
 
 if __name__ == "__main__":
-    log.set_verbosity(1)
+    logging.basicConfig(level=logging.INFO)
     main()
