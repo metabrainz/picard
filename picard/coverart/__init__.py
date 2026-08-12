@@ -201,7 +201,7 @@ class CoverArt:
                 log.debug("Trying cover art provider %s …", provider.name)
                 result = instance.queue_images()
             else:
-                log.debug("Skipping cover art provider %s …", provider.name)
+                log.debug_if(DebugOpt.COVERART, "Skipping cover art provider %s …", provider.name)
         except BaseException:
             log.error(traceback.format_exc())
             raise
