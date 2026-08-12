@@ -67,16 +67,6 @@ comment
 </p>
 </body></html>""")
 
-TOOLTIP_TEST_GENRES_FILTER = N_("""<html><head/><body>
-<p>You can add genres to test filters against, one per line.<br/>
-This playground will not be preserved on Options exit.
-</p>
-<p>
-Red background means the tag will be skipped.<br/>
-Green background means the tag will be kept.
-</p>
-</body></html>""")
-
 
 class GenresOptionsPage(OptionsPage):
     NAME = 'genres'
@@ -105,10 +95,14 @@ class GenresOptionsPage(OptionsPage):
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
 
-        self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
-        self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
-
-        self.playground = Playground(self.ui.test_genres_filter)
+        self.playground = Playground(_("Test genres filter:"), parent=self)
+        self.playground.set_description(
+            description=_("Enter genres or folksonomy tags to test, one per line."),
+            match_meaning=_("the tag will be kept"),
+            skip_meaning=_("the tag will be skipped"),
+        )
+        self.ui.verticalLayout.addWidget(self.playground)
+        self.playground.textChanged.connect(self.update_test_genres_filter)
 
     def load(self):
         config = get_config()
@@ -136,8 +130,11 @@ class GenresOptionsPage(OptionsPage):
         filters = self.ui.genres_filter.toPlainText()
         tagfilter = TagGenreFilter(filters)
 
-        # FIXME: very simple error reporting, improve
-        self.ui.label_test_genres_filter_error.setText("\n".join(tagfilter.format_errors()))
+        errors = list(tagfilter.format_errors())
+        if errors:
+            self.playground.set_error("\n".join(errors))
+        else:
+            self.playground.clear_error()
 
         def check_line(line: str) -> bool:
             return not tagfilter.skip(line)

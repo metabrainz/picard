@@ -22,17 +22,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import re
 from typing import ClassVar
 
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui.forms.ui_options_advanced import Ui_AdvancedOptionsPage
 from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
+from picard.ui.playground import Playground
 
 
 class AdvancedOptionsPage(OptionsPage):
@@ -53,7 +58,17 @@ class AdvancedOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
-        self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
+
+        self.playground = Playground(_("Test file path matching:"), parent=self)
+        self.playground.set_description(
+            description=_("Enter file paths to test, one per line."),
+            match_meaning=_("the file path matches"),
+            skip_meaning=_("the file path does not match"),
+        )
+        self.ui.groupBox.layout().addWidget(self.playground)
+
+        self.ui.ignore_regex.textChanged.connect(self._update_test_file_path_playground)
+        self.playground.textChanged.connect(self._update_test_file_path_playground)
 
     def load(self):
         config = get_config()
@@ -66,6 +81,24 @@ class AdvancedOptionsPage(OptionsPage):
         config.setting['ignore_regex'] = self.ui.ignore_regex.text()
         config.setting['ignore_hidden_files'] = self.ui.ignore_hidden_files.isChecked()
         config.setting['recursively_add_files'] = self.ui.recursively_add_files.isChecked()
+
+    def _update_test_file_path_playground(self):
+        regex_text = self.ui.ignore_regex.text()
+        try:
+            file_path_filter = re.compile(regex_text) if regex_text else None
+            self.playground.clear_error()
+        except re.error as e:
+            file_path_filter = None
+            self.playground.set_error(_("Invalid regular expression: %s") % e)
+
+        if file_path_filter:
+
+            def check_line(line: str) -> bool:
+                return bool(file_path_filter.search(line))
+
+            self.playground.update(check_line)
+        else:
+            self.playground.update(None)
 
 
 register_options_page(AdvancedOptionsPage)

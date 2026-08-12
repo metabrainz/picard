@@ -25,7 +25,6 @@ from PyQt6.QtGui import (
     QTextBlockFormat,
     QTextCursor,
 )
-from PyQt6.QtWidgets import QPlainTextEdit
 
 import pytest
 
@@ -51,88 +50,106 @@ class MockPlayground(Playground):
 
 
 @pytest.fixture()
-def playground_widget(qapp):
-    widget = QPlainTextEdit()
-    widget.setPlainText("foo\nbar\nbaz\n")
-    return widget
+def playground(qapp):
+    p = MockPlayground("Test:")
+    p._text_edit.setPlainText("foo\nbar\nbaz\n")
+    return p
 
 
-@pytest.fixture()
-def playground(playground_widget):
-    return MockPlayground(playground_widget)
-
-
-def _get_block_background(widget, lineno):
-    """Get the background color of a specific block (line) in the widget."""
-    block = widget.document().findBlockByNumber(lineno)
+def _get_block_background(playground, lineno):
+    """Get the background color of a specific block (line) in the playground."""
+    block = playground._text_edit.document().findBlockByNumber(lineno)
     cursor = QTextCursor(block)
     return cursor.blockFormat().background().color()
 
 
-def _has_background(widget, lineno):
+def _has_background(playground, lineno):
     """Check if a specific block has a non-default background set."""
-    block = widget.document().findBlockByNumber(lineno)
+    block = playground._text_edit.document().findBlockByNumber(lineno)
     cursor = QTextCursor(block)
     return cursor.blockFormat().background().style() != Qt.BrushStyle.NoBrush
 
 
 class TestPlayground:
-    def test_update_with_none_clears_all_lines(self, playground, playground_widget):
+    def test_update_with_none_clears_all_lines(self, playground):
         """When match_function is None, all lines should have no background."""
         # First apply some coloring
         playground.update(lambda line: line == "foo")
-        assert _has_background(playground_widget, 0)
+        assert _has_background(playground, 0)
 
         # Now clear with None
         playground.update(None)
         for lineno in range(3):
-            assert not _has_background(playground_widget, lineno)
+            assert not _has_background(playground, lineno)
 
-    def test_update_matching_lines_get_match_color(self, playground, playground_widget):
+    def test_update_matching_lines_get_match_color(self, playground):
         """Lines that match should get the match color."""
         playground.update(lambda line: line == "foo")
-        assert _get_block_background(playground_widget, 0) == MATCH_COLOR
+        assert _get_block_background(playground, 0) == MATCH_COLOR
 
-    def test_update_non_matching_lines_get_skip_color(self, playground, playground_widget):
+    def test_update_non_matching_lines_get_skip_color(self, playground):
         """Lines that don't match should get the skip color."""
         playground.update(lambda line: line == "foo")
-        assert _get_block_background(playground_widget, 1) == SKIP_COLOR
+        assert _get_block_background(playground, 1) == SKIP_COLOR
 
-    def test_update_empty_lines_get_cleared(self, playground_widget):
+    def test_update_empty_lines_get_cleared(self, qapp):
         """Empty lines should always get cleared regardless of match function."""
-        playground_widget.setPlainText("foo\n\nbaz")
-        playground = MockPlayground(playground_widget)
+        playground = MockPlayground("Test:")
+        playground._text_edit.setPlainText("foo\n\nbaz")
         playground.update(lambda line: True)
-        assert not _has_background(playground_widget, 1)
-        assert _has_background(playground_widget, 0)
-        assert _has_background(playground_widget, 2)
+        assert not _has_background(playground, 1)
+        assert _has_background(playground, 0)
+        assert _has_background(playground, 2)
 
-    def test_update_whitespace_only_lines_treated_as_empty(self, playground_widget):
+    def test_update_whitespace_only_lines_treated_as_empty(self, qapp):
         """Lines with only whitespace should be treated as empty."""
-        playground_widget.setPlainText("foo\n   \nbaz")
-        playground = MockPlayground(playground_widget)
+        playground = MockPlayground("Test:")
+        playground._text_edit.setPlainText("foo\n   \nbaz")
         playground.update(lambda line: True)
-        assert not _has_background(playground_widget, 1)
+        assert not _has_background(playground, 1)
 
-    def test_update_all_match(self, playground, playground_widget):
+    def test_update_all_match(self, playground):
         """When all lines match, they should all get the match color."""
         playground.update(lambda line: True)
         for lineno in range(3):
-            assert _get_block_background(playground_widget, lineno) == MATCH_COLOR
+            assert _get_block_background(playground, lineno) == MATCH_COLOR
 
-    def test_update_none_match(self, playground, playground_widget):
+    def test_update_none_match(self, playground):
         """When no lines match, they should all get the skip color."""
         playground.update(lambda line: False)
         for lineno in range(3):
-            assert _get_block_background(playground_widget, lineno) == SKIP_COLOR
+            assert _get_block_background(playground, lineno) == SKIP_COLOR
 
-    def test_signals_not_emitted_during_update(self, playground, playground_widget):
+    def test_signals_not_emitted_during_update(self, playground):
         """The update should block signals to avoid recursive textChanged triggers."""
         signal_count = []
 
         def on_text_changed():
             signal_count.append(1)
 
-        playground_widget.textChanged.connect(on_text_changed)
+        playground.textChanged.connect(on_text_changed)
         playground.update(lambda line: True)
         assert len(signal_count) == 0
+
+    def test_set_error_shows_label(self, playground):
+        """set_error should show the error label with the message."""
+        playground.set_error("Test error")
+        assert not playground._error_label.isHidden()
+        assert playground._error_label.text() == "Test error"
+
+    def test_clear_error_hides_label(self, playground):
+        """clear_error should hide the error label."""
+        playground.set_error("Test error")
+        playground.clear_error()
+        assert playground._error_label.isHidden()
+
+    def test_error_label_hidden_by_default(self, playground):
+        """Error label should be hidden initially."""
+        assert playground._error_label.isHidden()
+
+    def test_text_changed_signal(self, playground):
+        """Typing in the text area should emit textChanged."""
+        signal_count = []
+        playground.textChanged.connect(lambda: signal_count.append(1))
+        playground._text_edit.setPlainText("new text")
+        assert len(signal_count) > 0

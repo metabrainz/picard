@@ -43,17 +43,6 @@ from picard.ui.options import PageOptionConfigs
 from picard.ui.playground import Playground
 
 
-TOOLTIP_TEST_COVERART_FILTER = N_("""<html><head/><body>
-<p>Enter file names to test the regex against, one per line.<br/>
-This playground will not be preserved on exit.
-</p>
-<p>
-Red background means the file name does not match.<br/>
-Green background means the file name matches.
-</p>
-</body></html>""")
-
-
 class ProviderOptionsLocal(ProviderOptions):
     """
     Options for Local Files cover art provider
@@ -70,14 +59,17 @@ class ProviderOptionsLocal(ProviderOptions):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
+
+        self.playground = Playground(_("Test file name matching:"), parent=self)
+        self.playground.set_description(
+            description=_("Enter file names to test, one per line."),
+            match_meaning=_("the file name matches"),
+            skip_meaning=_("the file name does not match"),
+        )
+        self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self.playground)
 
         self.ui.local_cover_regex_edit.textChanged.connect(self._update_test_coverart_filter)
-        self.ui.test_coverart_filter.setToolTip(_(TOOLTIP_TEST_COVERART_FILTER))
-        self.ui.test_coverart_filter.setPlaceholderText(_("Enter file names to test, one per line"))
-        self.ui.test_coverart_filter.textChanged.connect(self._update_test_coverart_filter)
-
-        self.playground = Playground(self.ui.test_coverart_filter)
+        self.playground.textChanged.connect(self._update_test_coverart_filter)
 
     def load(self):
         config = get_config()
@@ -91,13 +83,19 @@ class ProviderOptionsLocal(ProviderOptions):
         regex_text = self.ui.local_cover_regex_edit.text()
         try:
             coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
-        except re.error:
+            self.playground.clear_error()
+        except re.error as e:
             coverart_filter = None
+            self.playground.set_error(_("Invalid regular expression: %s") % e)
 
-        def check_line(line: str) -> bool:
-            return bool(coverart_filter.search(line))
+        if coverart_filter:
 
-        self.playground.update(check_line if coverart_filter else None)
+            def check_line(line: str) -> bool:
+                return bool(coverart_filter.search(line))
+
+            self.playground.update(check_line)
+        else:
+            self.playground.update(None)
 
 
 class CoverArtProviderLocal(CoverArtProvider):
