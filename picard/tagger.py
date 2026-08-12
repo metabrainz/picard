@@ -1348,7 +1348,7 @@ class Tagger(QtWidgets.QApplication):
             ]
         )
         if file_chooser.exec():
-            filepath = file_chooser.selectedFiles()[0]
+            filepath = Path(file_chooser.selectedFiles()[0])
             self.run_lookup_discid_from_logfile(filepath)
 
     def run_lookup_discid_from_logfile(self, filepath):

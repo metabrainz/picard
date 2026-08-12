@@ -139,7 +139,7 @@ class FilterTestFiltering(PicardTestCase):
         """Test with file-related filters"""
 
         test_file = get_test_data_path('test.flac')
-        test_object = File(test_file)
+        test_object = File(str(test_file))
 
         tests = [
             self.TestConditions(
@@ -226,7 +226,7 @@ class FilterTestFiltering(PicardTestCase):
         """Test with no filter provided"""
 
         test_file = get_test_data_path('test.flac')
-        test_object = File(test_file)
+        test_object = File(str(test_file))
 
         tests = [
             self.TestConditions(
@@ -259,7 +259,7 @@ class FilterTestFiltering(PicardTestCase):
         """Test with non-file-related filter provided"""
 
         test_file = get_test_data_path('test.flac')
-        test_object = File(test_file)
+        test_object = File(str(test_file))
 
         tests = [
             self.TestConditions(

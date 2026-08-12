@@ -931,7 +931,7 @@ class TestPluginManager(PicardTestCase):
         manager = _create_manager()
 
         # Load compatible plugin (API 3.0, 3.1)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
+        plugin = manager._load_plugin(get_test_data_path('testplugins3'), 'example')
 
         self.assertIsNotNone(plugin)
         self.assertEqual(plugin.plugin_id, 'example')
@@ -942,7 +942,7 @@ class TestPluginManager(PicardTestCase):
         manager = _create_manager()
 
         # Load incompatible plugin (API 2.0, 2.1)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
+        plugin = manager._load_plugin(get_test_data_path('testplugins3'), 'incompatible')
 
         self.assertIsNone(plugin)
 
@@ -951,7 +951,7 @@ class TestPluginManager(PicardTestCase):
         manager = _create_manager()
 
         # Load plugin requiring future API (3.5, 3.6)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
+        plugin = manager._load_plugin(get_test_data_path('testplugins3'), 'newer-api')
 
         self.assertIsNone(plugin)
 

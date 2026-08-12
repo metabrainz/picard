@@ -289,7 +289,7 @@ class ID3File(File):
     __lrc_syllable_re_parse = re.compile(r'(<' + __lrc_time_format_re + r'>)')
     __lrc_both_re_parse = re.compile(r'(\[' + __lrc_time_format_re + r'\]|<' + __lrc_time_format_re + r'>)')
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         super().__init__(filename)
         self.__casemap = {}
 

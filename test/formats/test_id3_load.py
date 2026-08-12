@@ -50,7 +50,7 @@ class TestID3Load(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-        self.id3_file = ID3File(get_test_data_path("test.mp3"))
+        self.id3_file = ID3File(str(get_test_data_path("test.mp3")))
 
     def test_load_tit1_frame(self):
         frame = MagicMock(spec=TIT1)

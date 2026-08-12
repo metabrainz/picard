@@ -26,6 +26,7 @@
 # SOFTWARE.
 
 from collections.abc import Iterator
+from pathlib import Path
 import re
 
 from picard.disc.utils import (
@@ -85,7 +86,7 @@ def filter_toc_entries(lines: Iterator[str]) -> Iterator[TocEntry]:
         yield TocEntry(int(m['num']), int(m['start_sector']), int(m['end_sector']))
 
 
-def toc_from_file(path: str) -> TocNumbers:
+def toc_from_file(path: Path) -> TocNumbers:
     """Reads EAC / XLD / fre:ac log files, generates MusicBrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong

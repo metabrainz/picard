@@ -1303,7 +1303,7 @@ ENCODING_BOMS = {
 }
 
 
-def detect_file_encoding(path: str, max_bytes_to_read: int = 1024 * 256) -> str:
+def detect_file_encoding(path: Path | str, max_bytes_to_read: int = 1024 * 256) -> str:
     """Attempts to guess the unicode encoding of a file based on the BOM, and
     depending on avalibility, using a charset detection method.
 

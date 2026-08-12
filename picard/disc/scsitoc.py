@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from pathlib import Path
 from typing import BinaryIO
 
 from picard.disc.utils import (
@@ -74,7 +75,7 @@ def parse_toc_entries(f: BinaryIO) -> TocNumbers:
     return (first_track, last_track, leadout_offset + PREGAP_LENGTH) + offsets
 
 
-def toc_from_file(path: str) -> TocNumbers:
+def toc_from_file(path: Path) -> TocNumbers:
     """Reads a TOC in the SCSI format, generates MusicBrainz disc TOC listing for use as discid."""
 
     with open(path, 'rb') as f:
