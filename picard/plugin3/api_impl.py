@@ -1071,7 +1071,7 @@ class PluginApi:
         return register_cover_art_provider(provider_class)
 
     def register_cover_art_filter(
-        self, filter: Callable[['PluginApi', bytes, ImageInfo, Album | None, CoverArtImage], bool]
+        self, filter: Callable[['PluginApi', bytes, ImageInfo, Album, CoverArtImage], bool]
     ) -> None:
         """Register a filter to decide which cover art images to keep.
 

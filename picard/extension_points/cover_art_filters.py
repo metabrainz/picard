@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from picard.plugin3.api import ImageInfo
 
 
-CoverArtFilter: TypeAlias = Callable[[bytes, 'ImageInfo', Album | None, CoverArtImage], bool]
+CoverArtFilter: TypeAlias = Callable[[bytes, 'ImageInfo', Album, CoverArtImage], bool]
 CoverArtMetadataFilter: TypeAlias = Callable[[dict[str, Any]], bool]
 
 ext_point_cover_art_filters = ExtensionPoint[CoverArtFilter](label='cover_art_filters')
