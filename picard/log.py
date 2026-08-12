@@ -351,8 +351,9 @@ class StateChangeLogger:
     Useful for settings or status flags that are checked repeatedly but
     should only produce log output when the value actually transitions.
 
-    Example::
+    Examples::
 
+        # Dict form: value → fixed message
         _update_check_logger = log.StateChangeLogger(
             log.info,
             {
@@ -360,20 +361,25 @@ class StateChangeLogger:
                 False: "Documentation updates disabled in user settings.",
             },
         )
-
-        # Only logs when the value differs from the previous call:
         _update_check_logger.update(config.setting['check_rtd_updates'])
+
+        # Callable form: called with the new value, returns the message
+        _lang_logger = log.StateChangeLogger(
+            log.debug,
+            lambda v: "Matched documentation language set to '%s'" % v,
+        )
+        _lang_logger.update(matched_language)
     """
 
     __slots__ = ('_log_func', '_messages', '_current', '_has_value')
 
-    def __init__(self, log_func, messages: dict):
+    def __init__(self, log_func, messages):
         """
         Args:
             log_func: Logging function to call (e.g. log.info, log.debug).
-            messages: Mapping of value → message string. When the tracked value
-                changes to a key in this dict, the corresponding message is logged.
-                Values not in the dict are tracked silently.
+            messages: Either a dict mapping value → message string, or a
+                callable that receives the new value and returns a message
+                string (or None to suppress logging for that value).
         """
         self._log_func = log_func
         self._messages = messages
@@ -393,7 +399,10 @@ class StateChangeLogger:
             return False
         self._has_value = True
         self._current = value
-        message = self._messages.get(value)
+        if callable(self._messages):
+            message = self._messages(value)
+        else:
+            message = self._messages.get(value)
         if message:
             self._log_func(message)
         return True

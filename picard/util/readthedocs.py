@@ -69,6 +69,15 @@ class ReadTheDocs:
     _languages_api = RtdApiItem('languages', 'translations')
     _versions_api = RtdApiItem('versions', 'versions')
 
+    _matched_language_logger = log.StateChangeLogger(
+        log.debug,
+        lambda v: "Matched documentation language set to '%s'" % v,
+    )
+    _matched_version_logger = log.StateChangeLogger(
+        log.debug,
+        lambda v: "Matched documentation version set to '%s'" % v,
+    )
+
     matched_language = READTHEDOCS_BASE_LANGUAGE
     """Best match to available languages"""
 
@@ -161,6 +170,7 @@ class ReadTheDocs:
 
         if cls._versions_api.available_items:
             cls.matched_version = cls._get_version()
+            cls._matched_version_logger.update(cls.matched_version)
 
         cls._versions_api.check_in_progress = False
 
@@ -195,6 +205,7 @@ class ReadTheDocs:
 
         if cls._languages_api.available_items:
             cls.matched_language = cls._get_language()
+            cls._matched_language_logger.update(cls.matched_language)
 
         cls._languages_api.check_in_progress = False
 
@@ -223,8 +234,6 @@ class ReadTheDocs:
                         matched_language = lang
                         break
 
-            log.debug("Matched documentation language set to '%s'", matched_language)
-
         return matched_language
 
     @classmethod
@@ -244,8 +253,6 @@ class ReadTheDocs:
             if version.identifier == 'final' and rtd_version in cls._versions_api.available_items:
                 matched_version = rtd_version
 
-            log.debug("Matched documentation version set to '%s'", matched_version)
-
         return matched_version
 
     @classmethod
@@ -255,4 +262,6 @@ class ReadTheDocs:
         cls._update_languages()
         cls._update_versions()
         cls.matched_language = cls._get_language()
+        cls._matched_language_logger.update(cls.matched_language)
         cls.matched_version = cls._get_version()
+        cls._matched_version_logger.update(cls.matched_version)

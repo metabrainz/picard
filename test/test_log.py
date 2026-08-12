@@ -464,3 +464,26 @@ class StateChangeLoggerTest(PicardTestCase):
         changed = logger.update(False)
         self.assertTrue(changed)
         self.assertEqual(self.logged_messages, [])
+
+    def test_callable_messages(self):
+        from picard.log import StateChangeLogger
+
+        logger = StateChangeLogger(
+            self.logged_messages.append,
+            lambda v: "Value is %s" % v,
+        )
+        logger.update("hello")
+        logger.update("hello")
+        logger.update("world")
+        self.assertEqual(self.logged_messages, ["Value is hello", "Value is world"])
+
+    def test_callable_messages_returns_none(self):
+        from picard.log import StateChangeLogger
+
+        logger = StateChangeLogger(
+            self.logged_messages.append,
+            lambda v: "Set to %s" % v if v else None,
+        )
+        changed = logger.update("")
+        self.assertTrue(changed)
+        self.assertEqual(self.logged_messages, [])
