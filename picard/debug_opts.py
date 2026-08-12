@@ -171,3 +171,4 @@ class DebugOpt(DebugOptEnum):
     PLUGIN_DEVELOPMENT = 9, N_('Plugin Development'), N_('Log plugin details typically only used during development')
     TIMINGS = 10, N_('Timings'), N_('Log timing information for operations affecting UI responsiveness')
     ISRC = 11, N_('ISRC'), N_('Log ISRC processing, submission, and lookup details')
+    RATECONTROL = 12, N_('Rate Control'), N_('Log request throttling, congestion window, and backoff details')

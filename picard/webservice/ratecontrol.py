@@ -29,6 +29,7 @@ import time
 from typing import TypeAlias
 
 from picard import log
+from picard.debug_opts import DebugOpt
 from picard.webservice.utils import hostkey_from_url
 
 
@@ -116,19 +117,25 @@ def get_delay_to_next_request(hostkey: HostKey) -> tuple[bool, int]:
 
     interval = REQUEST_DELAY[hostkey]
     if not interval:
-        log.debug("%s: Starting another request without delay", hostkey)
+        log.debug_if(DebugOpt.RATECONTROL, "%s: Starting another request without delay", hostkey)
         return (False, 0)
     last_request = LAST_REQUEST_TIMES[hostkey]
     if not last_request:
-        log.debug("%s: First request", hostkey)
+        log.debug_if(DebugOpt.RATECONTROL, "%s: First request", hostkey)
         _remember_request_time(hostkey)  # set it on first run
         return (False, interval)
     elapsed = (time.time() - last_request) * 1000
     if elapsed >= interval:
-        log.debug("%s: Last request was %d ms ago, starting another one", hostkey, elapsed)
+        log.debug_if(DebugOpt.RATECONTROL, "%s: Last request was %d ms ago, starting another one", hostkey, elapsed)
         return (False, interval)
     delay = int(math.ceil(interval - elapsed))
-    log.debug("%s: Last request was %d ms ago, waiting %d ms before starting another one", hostkey, elapsed, delay)
+    log.debug_if(
+        DebugOpt.RATECONTROL,
+        "%s: Last request was %d ms ago, waiting %d ms before starting another one",
+        hostkey,
+        elapsed,
+        delay,
+    )
     return (True, delay)
 
 
@@ -144,14 +151,14 @@ def increment_requests(hostkey: HostKey):
     _remember_request_time(hostkey)
     # Increment the number of unack'd requests on sending a new one
     CONGESTION_UNACK[hostkey] += 1
-    log.debug("%s: Incrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
+    log.debug_if(DebugOpt.RATECONTROL, "%s: Incrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
 
 
 def decrement_requests(hostkey: HostKey):
     """Decrement counter, it has to be called on each reply"""
     assert CONGESTION_UNACK[hostkey] > 0
     CONGESTION_UNACK[hostkey] -= 1
-    log.debug("%s: Decrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
+    log.debug_if(DebugOpt.RATECONTROL, "%s: Decrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
 
 
 def copy_minimal_delay(from_hostkey: HostKey, to_hostkey: HostKey):
@@ -160,7 +167,8 @@ def copy_minimal_delay(from_hostkey: HostKey, to_hostkey: HostKey):
     """
     if from_hostkey in REQUEST_DELAY_MINIMUM and to_hostkey not in REQUEST_DELAY_MINIMUM:
         REQUEST_DELAY_MINIMUM[to_hostkey] = REQUEST_DELAY_MINIMUM[from_hostkey]
-        log.debug(
+        log.debug_if(
+            DebugOpt.RATECONTROL,
             "%s: Copy minimun delay from %s, setting it to %dms",
             to_hostkey,
             from_hostkey,
@@ -194,7 +202,8 @@ def _slow_down(hostkey: HostKey):
     CONGESTION_SSTHRESH[hostkey] = int(CONGESTION_WINDOW_SIZE[hostkey] / 2.0)
     CONGESTION_WINDOW_SIZE[hostkey] = 1.0
 
-    log.debug(
+    log.debug_if(
+        DebugOpt.RATECONTROL,
         '%s: slowdown; delay: %dms -> %dms; ssthresh: %d; cws: %.3f',
         hostkey,
         REQUEST_DELAY[hostkey],
@@ -226,7 +235,8 @@ def _out_of_backoff(hostkey: HostKey):
         cws += 1
 
     if REQUEST_DELAY[hostkey] != delay or CONGESTION_WINDOW_SIZE[hostkey] != cws:
-        log.debug(
+        log.debug_if(
+            DebugOpt.RATECONTROL,
             '%s: oobackoff; delay: %dms -> %dms; %s; window size %.3f -> %.3f',
             hostkey,
             REQUEST_DELAY[hostkey],
