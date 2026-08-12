@@ -343,3 +343,57 @@ def enable_default_handlers() -> None:
     history_handler.setFormatter(history_formatter)
 
     history_logger.addHandler(history_handler)
+
+
+class StateChangeLogger:
+    """Logs a message only when a tracked value changes.
+
+    Useful for settings or status flags that are checked repeatedly but
+    should only produce log output when the value actually transitions.
+
+    Example::
+
+        _update_check_logger = log.StateChangeLogger(
+            log.info,
+            {
+                True: "Documentation updates enabled in user settings.",
+                False: "Documentation updates disabled in user settings.",
+            },
+        )
+
+        # Only logs when the value differs from the previous call:
+        _update_check_logger.update(config.setting['check_rtd_updates'])
+    """
+
+    __slots__ = ('_log_func', '_messages', '_current', '_has_value')
+
+    def __init__(self, log_func, messages: dict):
+        """
+        Args:
+            log_func: Logging function to call (e.g. log.info, log.debug).
+            messages: Mapping of value → message string. When the tracked value
+                changes to a key in this dict, the corresponding message is logged.
+                Values not in the dict are tracked silently.
+        """
+        self._log_func = log_func
+        self._messages = messages
+        self._current = None
+        self._has_value = False
+
+    def update(self, value) -> bool:
+        """Update the tracked value. Logs only if the value changed.
+
+        Args:
+            value: The new value to track.
+
+        Returns:
+            True if the value changed, False otherwise.
+        """
+        if self._has_value and value == self._current:
+            return False
+        self._has_value = True
+        self._current = value
+        message = self._messages.get(value)
+        if message:
+            self._log_func(message)
+        return True

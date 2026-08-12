@@ -58,6 +58,13 @@ class ReadTheDocs:
 
     THROTTLED_MESSAGE = "Request was throttled."
     _webservice = None
+    _updates_logger = log.StateChangeLogger(
+        log.info,
+        {
+            True: "Documentation updates enabled in user settings.",
+            False: "Documentation updates disabled in user settings.",
+        },
+    )
 
     _languages_api = RtdApiItem('languages', 'translations')
     _versions_api = RtdApiItem('versions', 'versions')
@@ -106,8 +113,9 @@ class ReadTheDocs:
 
         # User has updating disabled
         config = get_config()
-        if not config.setting['check_rtd_updates']:
-            log.info("Updates disabled in user settings.")
+        updates_enabled = config.setting['check_rtd_updates']
+        cls._updates_logger.update(updates_enabled)
+        if not updates_enabled:
             return
 
         api_item.check_in_progress = True
