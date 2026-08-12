@@ -32,6 +32,7 @@ from PyQt6.QtCore import (
 )
 
 from picard import log
+from picard.debug_opts import DebugOpt
 
 
 if TYPE_CHECKING:
@@ -498,7 +499,9 @@ class PluginManager(QObject):
             if entry.is_dir() and not entry.name.startswith('.'):
                 plugin = self._load_plugin(plugin_dir, entry.name)
                 if plugin:
-                    log.debug('Found plugin %s in %s', plugin.plugin_id, plugin.local_path)
+                    log.debug_if(
+                        DebugOpt.PLUGIN_DEVELOPMENT, 'Found plugin %s in %s', plugin.plugin_id, plugin.local_path
+                    )
                     self._plugins.append(plugin)
 
         self._plugin_dirs.append(plugin_dir)

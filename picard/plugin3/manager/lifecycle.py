@@ -31,6 +31,7 @@ from picard import (
     log,
 )
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
@@ -202,7 +203,8 @@ class PluginLifecycleManager:
             assert plugin.manifest is not None
             compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
             if compatible_versions:
-                log.debug(
+                log.debug_if(
+                    DebugOpt.PLUGIN_DEVELOPMENT,
                     'Plugin "%s" is compatible (requires API %s, Picard supports %s)',
                     plugin.plugin_id,
                     plugin.manifest.api_versions,
