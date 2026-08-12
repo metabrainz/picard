@@ -5,14 +5,14 @@
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023, 2026.
-# ninjum <ninjum@gmx.es>, 2025.
+# ninjum <ninjum@gmx.es>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-09 10:07+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-08-12 13:12+0000\n"
+"Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
 "Language: gl\n"
@@ -173,11 +173,11 @@ msgstr "Rexistrar o contido das respostas do servizo web"
 
 #: picard/debug_opts.py:165
 msgid "Git Backend"
-msgstr ""
+msgstr "Backend de Git"
 
 #: picard/debug_opts.py:165
 msgid "Log git backend method calls"
-msgstr ""
+msgstr "Rexistrar as chamadas aos métodos do backend de Git"
 
 #: picard/debug_opts.py:166
 #, fuzzy
@@ -187,7 +187,7 @@ msgstr "[cargando a información do álbum]"
 
 #: picard/debug_opts.py:166
 msgid "Log plugin translation lookups and fallbacks"
-msgstr ""
+msgstr "Rexistrar as buscas e as alternativas de tradución dos complementos"
 
 #: picard/debug_opts.py:167
 #, fuzzy
@@ -198,6 +198,8 @@ msgstr "Actualización de complementos de Picard"
 #: picard/debug_opts.py:167
 msgid "Log detailed plugin version checking and update detection"
 msgstr ""
+"Rexistrar información detallada sobre a comprobación de versións dos "
+"complementos e a detección de actualizacións"
 
 #: picard/debug_opts.py:168 picard/plugin3/categories.py:33
 #: picard/ui/options/cover.py:57 picard/ui/setupwizard.py:261
@@ -207,6 +209,8 @@ msgstr "Portada"
 #: picard/debug_opts.py:168
 msgid "Log cover art filter, resize and convert operations"
 msgstr ""
+"Rexistrar as operacións de filtrado, redimensionamento e conversión das "
+"portadas"
 
 #: picard/debug_opts.py:169 picard/ui/forms/ui_options_matching.py:134
 #: picard/ui/options/matching.py:38
@@ -215,7 +219,7 @@ msgstr "Coincidente"
 
 #: picard/debug_opts.py:169
 msgid "Log similarity scores and match decisions"
-msgstr ""
+msgstr "Rexistrar as puntuacións de similitude e as decisións de coincidencia"
 
 #: picard/debug_opts.py:170
 #, fuzzy
@@ -226,14 +230,18 @@ msgstr "Complementos"
 #: picard/debug_opts.py:170
 msgid "Log plugin details typically only used during development"
 msgstr ""
+"Rexistrar detalles dos complementos normalmente utilizados só durante o "
+"desenvolvemento"
 
 #: picard/debug_opts.py:171
 msgid "Timings"
-msgstr ""
+msgstr "Tempos"
 
 #: picard/debug_opts.py:171
 msgid "Log timing information for operations affecting UI responsiveness"
 msgstr ""
+"Rexistrar información sobre os tempos das operacións que afectan á "
+"capacidade de resposta da interface"
 
 #: picard/debug_opts.py:172 picard/ui/cdlookup.py:230
 #: picard/ui/itemviews/columns.py:174
@@ -242,15 +250,15 @@ msgstr "ISRC"
 
 #: picard/debug_opts.py:172
 msgid "Log ISRC processing, submission, and lookup details"
-msgstr ""
+msgstr "Rexistrar detalles do procesamento, envío e busca de ISRC"
 
 #: picard/file.py:329
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "Non se pode gardar o ficheiro: o ficheiro xa non existe."
 
 #: picard/file.py:333
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "Non se pode gardar o ficheiro: permiso denegado."
 
 #: picard/file.py:338
 msgid ""
@@ -285,7 +293,7 @@ msgstr "Buscando os metadatos para o ficheiro %(filename)s …"
 
 #: picard/isrcsubmit.py:272
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "Atopouse o mesmo ISRC para gravacións diferentes"
 
 #: picard/isrcsubmit.py:278
 #, fuzzy
@@ -301,7 +309,7 @@ msgstr "Xa se enviou a pegada dixital"
 
 #: picard/isrcsubmit.py:286
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "O ficheiro ten varios ISRC (orixe incerta)"
 
 #: picard/isrcsubmit.py:325
 #, fuzzy
@@ -560,7 +568,7 @@ msgstr "Mostrar o tipo MIME da portada nas etiquetas de información"
 
 #: picard/options.py:251
 msgid "Discard small images"
-msgstr ""
+msgstr "Descartar imaxes pequenas"
 
 #: picard/options.py:252
 #, fuzzy
@@ -576,11 +584,11 @@ msgstr "Altura mínima:"
 
 #: picard/options.py:254
 msgid "Allow enlarging tag images"
-msgstr ""
+msgstr "Permitir ampliar as imaxes das etiquetas"
 
 #: picard/options.py:255
 msgid "Allow resizing tag images"
-msgstr ""
+msgstr "Permitir redimensionar as imaxes das etiquetas"
 
 #: picard/options.py:260
 #, fuzzy
@@ -590,11 +598,11 @@ msgstr "Redimensionar imaxes gardadas nas etiquetas"
 
 #: picard/options.py:267
 msgid "Resized tag image height"
-msgstr ""
+msgstr "Altura das imaxes redimensionadas das etiquetas"
 
 #: picard/options.py:271
 msgid "Tag image resize mode"
-msgstr ""
+msgstr "Modo de redimensionamento das imaxes das etiquetas"
 
 #: picard/options.py:273
 #, fuzzy
@@ -616,19 +624,19 @@ msgstr "Permitir a selección de múltiples directorios"
 
 #: picard/options.py:282
 msgid "Allow resizing file images"
-msgstr ""
+msgstr "Permitir redimensionar as imaxes dos ficheiros"
 
 #: picard/options.py:287
 msgid "Resized file image width"
-msgstr ""
+msgstr "Largura das imaxes redimensionadas dos ficheiros"
 
 #: picard/options.py:294
 msgid "Resized file image height"
-msgstr ""
+msgstr "Altura das imaxes redimensionadas dos ficheiros"
 
 #: picard/options.py:298
 msgid "File image resize mode"
-msgstr ""
+msgstr "Modo de redimensionamento das imaxes dos ficheiros"
 
 #: picard/options.py:300
 #, fuzzy
@@ -691,7 +699,7 @@ msgstr "Enviar datos ao servidor configurado"
 #: picard/options.py:349 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr ""
+msgstr "Ler os ISRC dos CD"
 
 #: picard/options.py:350
 #, fuzzy
@@ -701,7 +709,7 @@ msgstr "Escribir as etiquetas nos ficheiros"
 
 #: picard/options.py:355 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
-msgstr ""
+msgstr "Eliminar os álbums completos despois de gardalos"
 
 #: picard/options.py:361
 msgid "Use album artist genres"
@@ -802,11 +810,11 @@ msgstr "Usar a sintaxe de busca avanzada"
 
 #: picard/options.py:410
 msgid "Enable \"now playing\" notifications"
-msgstr ""
+msgstr "Activar as notificacións de «reproducindo agora»"
 
 #: picard/options.py:412
 msgid "Enable ListenBrainz listen submissions"
-msgstr ""
+msgstr "Activar o envío de reproducións a ListenBrainz"
 
 #: picard/options.py:418
 #, fuzzy
@@ -816,7 +824,7 @@ msgstr "Enviar puntuacións a MusicBrainz"
 
 #: picard/options.py:421 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr ""
+msgstr "Token de usuario de ListenBrainz"
 
 #: picard/options.py:429
 msgid "Colors to use for light theme"
@@ -930,7 +938,7 @@ msgstr "Traducir nomes de artistas"
 
 #: picard/options.py:509 picard/ui/forms/ui_options_metadata.py:206
 msgid "Use artist sort name for translation"
-msgstr ""
+msgstr "Usar o nome de ordenación do artista para a tradución"
 
 #: picard/options.py:515
 msgid "Translate artist names exception"
@@ -996,7 +1004,7 @@ msgstr "Usar un servidor proxy web"
 
 #: picard/options.py:555
 msgid "Plugins execution order"
-msgstr ""
+msgstr "Orde de execución dos complementos"
 
 #: picard/options.py:564
 msgid "Enable track ratings"
@@ -1128,7 +1136,7 @@ msgstr "Actualizacións a comprobar"
 
 #: picard/options.py:639
 msgid "Log verbosity level"
-msgstr ""
+msgstr "Nivel de detalle do rexistro"
 
 #: picard/options.py:644 picard/ui/forms/ui_options_tags.py:96
 msgid "Clear existing tags"
@@ -1242,7 +1250,7 @@ msgstr "Script de nomeado de ficheiros seleccionado"
 
 #: picard/options.py:691 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
-msgstr ""
+msgstr "Non facer coincidencias automáticas ao cargar"
 
 #: picard/options.py:698
 #, fuzzy
@@ -1252,11 +1260,11 @@ msgstr "Produciuse un erro ao gardar a vista de rexistro no ficheiro"
 
 #: picard/options.py:705
 msgid "Auto-save interval"
-msgstr ""
+msgstr "ntervalo de gardado automático"
 
 #: picard/options.py:712
 msgid "Backup session on unexpected exit"
-msgstr ""
+msgstr "Facer unha copia de seguridade da sesión ao saír inesperadamente"
 
 #: picard/options.py:719
 #, fuzzy
@@ -1278,7 +1286,7 @@ msgstr "Directorio de destino"
 
 #: picard/options.py:762
 msgid "Plugins to exclude from updates"
-msgstr ""
+msgstr "Complementos que se deben excluír das actualizacións"
 
 #: picard/plugin.py:118
 #, fuzzy
@@ -1367,11 +1375,11 @@ msgstr "[sen información de lanzamento]"
 
 #: picard/tagger.py:444
 msgid "Git backend not available"
-msgstr ""
+msgstr "Backend de Git non dispoñible"
 
 #: picard/tagger.py:446
 msgid "Disabled by command line parameter"
-msgstr ""
+msgstr "Desactivado mediante un parámetro da liña de ordes"
 
 #: picard/tagger.py:639 picard/ui/forms/ui_options_general.py:135
 msgid "MusicBrainz Account"
@@ -1408,10 +1416,16 @@ msgid ""
 "These plugins may contain security vulnerabilities or malicious code. They "
 "have been automatically disabled for your protection."
 msgstr ""
+"Os seguintes complementos foron incluídos na lista negra e desactiváronse:\n"
+"\n"
+"{plugin_list}\n"
+"\n"
+"Estes complementos poden conter vulnerabilidades de seguridade ou código "
+"malicioso. Desactiváronse automaticamente para a túa protección."
 
 #: picard/tagger.py:815
 msgid "Blacklisted Plugins Detected"
-msgstr ""
+msgstr "Detectáronse complementos incluídos na lista negra"
 
 #: picard/tagger.py:822
 #, fuzzy
@@ -1426,6 +1440,9 @@ msgid ""
 "\n"
 "{plugin_list}"
 msgstr ""
+"Os seguintes complementos non se puideron cargar e desactiváronse:\n"
+"\n"
+"{plugin_list}"
 
 #: picard/tagger.py:1275
 #, python-format
@@ -1441,7 +1458,7 @@ msgstr "Erro ao importar \"%(filename)s\": %(error)s"
 #: picard/tagger.py:1309
 #, python-format
 msgid "Moved %(count)i files to trash"
-msgstr ""
+msgstr "Movéronse %(count)i ficheiros ao lixo"
 
 #: picard/tagger.py:1315
 msgid "CD Lookup Error"
@@ -1472,7 +1489,7 @@ msgstr "Ficheiros de rexistro de dBpoweramp"
 
 #: picard/tagger.py:1345
 msgid "SCSI TOC file"
-msgstr ""
+msgstr "Ficheiro TOC de SCSI"
 
 #: picard/script/serializer.py:385 picard/tagger.py:1346
 #: picard/ui/coverartbox/__init__.py:386 picard/ui/mainwindow/__init__.py:1294
@@ -1487,7 +1504,7 @@ msgstr "Fallo ao analizar o rexistro de extracción \"%s\""
 
 #: picard/tagger.py:1392 picard/tagger.py:1407
 msgid "Disc information could not be found"
-msgstr ""
+msgstr "Non se puido atopar a información do disco"
 
 #: picard/tagger.py:1394 picard/tagger.py:1409 picard/tagger.py:1417
 #, fuzzy
@@ -1498,15 +1515,17 @@ msgstr "Produciuse un erro na consulta do CD"
 #: picard/tagger.py:1415
 msgid "Selected files contain tags with conflicting disc information"
 msgstr ""
+"Os ficheiros seleccionados conteñen etiquetas con información do disco en "
+"conflito"
 
 #: picard/tagger.py:1432
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
-msgstr ""
+msgstr "Non se puido analizar a información do disco das etiquetas: %s"
 
 #: picard/tagger.py:1441
 msgid "Looking up disc from tags…"
-msgstr ""
+msgstr "Buscando o disco a partir das etiquetas…"
 
 #: picard/track.py:143
 #, python-format
@@ -1685,7 +1704,7 @@ msgstr ""
 
 #: picard/coverart/providers/local.py:76
 msgid "Enter file names to test, one per line"
-msgstr ""
+msgstr "Introduce os nomes dos ficheiros que se van probar, un por liña"
 
 #: picard/coverart/providers/local.py:106
 msgid "Local Files"
@@ -1736,7 +1755,7 @@ msgstr "Programación de scripts"
 
 #: picard/plugin3/categories.py:38
 msgid "UI"
-msgstr ""
+msgstr "IU"
 
 #: picard/plugin3/plugin_metadata.py:128
 #, fuzzy
@@ -1745,13 +1764,14 @@ msgid "local"
 msgstr "Ficheiros Locais"
 
 #: picard/plugin3/plugin_metadata.py:129
+#, fuzzy
 msgid "local-dev"
-msgstr ""
+msgstr "local-dev"
 
 #: picard/plugin3/ref_item.py:102
 #, python-brace-format
 msgid "{base} (current)"
-msgstr ""
+msgstr "{base} (actual)"
 
 #: picard/profiles/importer.py:96
 #, fuzzy, python-format
@@ -1761,11 +1781,11 @@ msgstr "Título non válido"
 
 #: picard/profiles/importer.py:101
 msgid "Missing required [profile] section"
-msgstr ""
+msgstr "Falta a sección [profile] obrigatoria"
 
 #: picard/profiles/importer.py:105
 msgid "Missing required 'title' in [profile] section"
-msgstr ""
+msgstr "Falta o campo «title» obrigatorio na sección [profile]"
 
 #: picard/profiles/importer.py:112
 #, python-format
@@ -6112,10 +6132,8 @@ msgid "Trusted"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:248
-#, fuzzy
-#| msgid "Comment"
 msgid "Community"
-msgstr "Comentario"
+msgstr "Comunidade"
 
 #: picard/ui/dialogs/plugininfo.py:249
 msgid "Unregistered"
