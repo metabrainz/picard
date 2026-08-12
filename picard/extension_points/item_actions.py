@@ -59,7 +59,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
     """
 
     # Name of the action to display in the menu.
-    TITLE: str = "Unknown"
+    TITLE: str | tuple[str, str, str] = "Unknown"
 
     # Menu path for the action. Each item in the tuple is a submenu name.
     # The action will be added as a child to the last submenu in the tuple.

@@ -21,6 +21,9 @@ from picard.i18n import _
 
 
 class HasDisplayTitle:
+    TITLE: str | tuple[str, str, str]
+    NAME: str
+
     """This class can be used as a mix-in by classes providing a static display title.
 
     This is usually be used by base classes that are supposed to be sub classes, where
