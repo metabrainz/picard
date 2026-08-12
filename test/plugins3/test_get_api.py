@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from pathlib import Path
 import sys
 import types
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -43,13 +45,12 @@ class TestPluginApiGetApi(PicardTestCase):
 
         manifest = FakeManifest(module_name)
 
-        api = PluginApi(manifest, None)
-
         # Create fake module
         module = types.ModuleType(module_name)
         sys.modules[module_name] = module
 
-        api._plugin_module = module
+        api = PluginApi(manifest, Mock(), module, Path(""))
+
         PluginApi._instances[module_name] = api
 
         return api, module

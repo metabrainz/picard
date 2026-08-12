@@ -482,8 +482,7 @@ def create_test_plugin_api(plugin_dir, locale='en', module_name='test'):
 
     with open(manifest_path, 'rb') as f:
         manifest = PluginManifest(module_name, f)
-        api = PluginApi(manifest, Mock())
-        api._plugin_dir = plugin_dir
+        api = PluginApi(manifest, Mock(), Mock(), plugin_dir)
         api.get_locale = Mock(return_value=locale)
         api._load_translations()
     return api

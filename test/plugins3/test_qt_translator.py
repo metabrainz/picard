@@ -113,9 +113,8 @@ class TestPluginApiQtTranslator(PicardTestCase):
             tagger = self._create_mock_tagger()
             tagger._qt_translators = Translators(tagger)
 
-            api = PluginApi(manifest, tagger)
+            api = PluginApi(manifest, tagger, Mock(), plugin_dir)
             if translations:
-                api._plugin_dir = plugin_dir
                 api.get_locale = Mock(return_value='en')
 
             return api, tagger

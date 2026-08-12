@@ -205,10 +205,10 @@ class PluginApi:
     _module_cache: ClassVar[dict[str, 'PluginApi']] = {}  # Maps module name -> PluginApi instance (for faster lookup)
     _deprecation_warnings_emitted: ClassVar[set[tuple[str, str, int]]] = set()  # Track emitted deprecation warnings
 
-    def __init__(self, manifest: PluginManifest, tagger: 'Tagger') -> None:
+    def __init__(self, manifest: PluginManifest, tagger: 'Tagger', module: types.ModuleType, plugin_dir: Path) -> None:
         self._tagger: Tagger = tagger
         self._manifest = manifest
-        self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
+        self._plugin_module: types.ModuleType = module
         self._plugin_id = manifest.module_name
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
@@ -217,7 +217,7 @@ class PluginApi:
         self._api_persist = ConfigSection(get_config(), f'plugin_persist.{self._manifest.uuid}')
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
-        self._plugin_dir: Path | None = None
+        self._plugin_dir: Path = plugin_dir
         self._qt_translator: PluginTranslator | None = None
         self._mb_api: MBAPIHelper | None = None
 
@@ -249,7 +249,7 @@ class PluginApi:
         return plugin_name, filename, lineno
 
     @classmethod
-    def deprecation_warning(cls, message, *args, frame_depth=3):
+    def deprecation_warning(cls, message: str, *args: Any, frame_depth: int = 3):
         """Emit a deprecation warning once per unique caller location.
 
         Args:
@@ -331,9 +331,6 @@ class PluginApi:
         Returns:
             (file_path, format) or (None, None) if not found
         """
-        if not self._plugin_dir:
-            return None, None
-
         locale_dir = self._plugin_dir / 'locale'
         if not locale_dir.exists():
             return None, None
@@ -400,9 +397,6 @@ class PluginApi:
 
         Only loads translations for the current locale to avoid unnecessary I/O.
         """
-        if not self._plugin_dir:
-            return
-
         locale_dir = self._plugin_dir / 'locale'
         if not locale_dir.exists():
             return
@@ -526,7 +520,6 @@ class PluginApi:
         This is the value that :class:`ExtensionPoint` uses internally to
         group items by plugin (e.g. ``picard.plugins.myplugin``).
         """
-        assert self._plugin_module is not None
         return self._plugin_module.__name__
 
     @property
@@ -568,11 +561,11 @@ class PluginApi:
         return self._api_persist
 
     @property
-    def plugin_dir(self) -> Path | None:
+    def plugin_dir(self) -> Path:
         """Path to the plugin directory.
 
         Returns:
-            Path: Plugin directory path, or None if not available
+            Path: Plugin directory path
         """
         return self._plugin_dir
 

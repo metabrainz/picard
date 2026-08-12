@@ -261,6 +261,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_update_plugin_dirty_with_discard(self):
         """Test that update_plugin works with discard_changes=True."""
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.state = PluginState.ENABLED
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
         mock_plugin.manifest = Mock()
@@ -974,6 +975,7 @@ class TestPluginErrors(PicardTestCase):
         # Create a plugin that will fail to load
         bad_uuid = 'bad-uuid-1234'
         bad_plugin = Mock(spec=Plugin)
+        bad_plugin.local_path = Path('')
         bad_plugin.plugin_id = 'bad-plugin'
         bad_plugin.manifest = Mock()
         bad_plugin.manifest.uuid = bad_uuid
