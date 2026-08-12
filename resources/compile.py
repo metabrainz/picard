@@ -50,7 +50,7 @@ def main():
     qrcfile = os.path.join(topdir, "resources", "picard.qrc")
     if newer(qrcfile, pyfile):
         rcc = 'rcc'
-        rcc_path = which(rcc, path='/usr/lib/qt6/libexec/') or which(rcc)
+        rcc_path = which(rcc, path='/usr/lib64/qt6/libexec/') or which(rcc, path='/usr/lib/qt6/libexec/') or which(rcc)
         if rcc_path is None:
             log.error("%s command not found, cannot build resource file !", rcc)
         else:
