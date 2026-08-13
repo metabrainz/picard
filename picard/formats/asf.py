@@ -283,6 +283,8 @@ class ASFFile(File):
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             tags['WM/Picture'] = cover
+        elif 'WM/Picture' in tags and metadata.images.should_remove_images_from_tags():
+            del tags['WM/Picture']
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'

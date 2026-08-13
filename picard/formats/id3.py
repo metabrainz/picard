@@ -765,6 +765,8 @@ class ID3File(File):
         """Save cover art images to tags."""
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if not images_to_save:
+            if metadata.images.should_remove_images_from_tags():
+                tags.delall('APIC')
             return
 
         tags.delall('APIC')

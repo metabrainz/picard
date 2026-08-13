@@ -69,7 +69,10 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
-from .coverartthumbnail import CoverArtThumbnail
+from .coverartthumbnail import (
+    THUMBNAIL_WIDTH,
+    CoverArtThumbnail,
+)
 from .imageurldialog import ImageURLDialog
 
 from picard.ui.util import FileDialog
@@ -109,6 +112,15 @@ class CoverArtBox(QtWidgets.QGroupBox):
             QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
         )
         self.orig_cover_art_info_label.setWordWrap(True)
+        self.cover_removal_warning_label = QtWidgets.QLabel('')
+        self.cover_removal_warning_label.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
+        self.cover_removal_warning_label.setWordWrap(True)
+        # Keep wrapping within the thumbnail column instead of widening the box
+        self.cover_removal_warning_label.setMaximumWidth(THUMBNAIL_WIDTH)
+        self.cover_removal_warning_label.setStyleSheet('QLabel { color: #a00000; font-weight: bold; }')
+        self.cover_removal_warning_label.setHidden(True)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.show_details_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info
@@ -119,6 +131,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
         self.layout.addWidget(self.orig_cover_art_info_label)
+        self.layout.addWidget(self.cover_removal_warning_label)
         self.layout.addWidget(self.show_details_button)
         self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
@@ -182,6 +195,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.cover_art.setToolTip("<br/>".join(tooltip_cover_lines))
         self.orig_cover_art.setToolTip("<br/>".join(tooltip_orig_lines))
 
+        removal_warning_label = getattr(self, 'cover_removal_warning_label', None)
+        if removal_warning_label is not None:
+            removal_predicted = getattr(self, '_removal_predicted', False)
+            removal_warning_label.setText(_("\u26a0 Cover art will be removed from tags") if removal_predicted else '')
+            removal_warning_label.setVisible(removal_predicted)
+
     def set_item(self, item):
         if not item.can_show_coverart:
             self.cover_art.set_metadata(None)
@@ -209,6 +228,16 @@ class CoverArtBox(QtWidgets.QGroupBox):
         else:
             self.cover_art.set_metadata(metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
+
+        # Predict whether saving will strip cover art already embedded in tags,
+        # using the same rules the format save code applies (see ImageList).
+        self._removal_predicted = bool(
+            metadata
+            and orig_metadata
+            and orig_metadata.images
+            and metadata.images.should_remove_images_from_tags()
+            and not list(metadata.images.to_be_saved_to_tags())
+        )
         self.update_display()
 
     @staticmethod

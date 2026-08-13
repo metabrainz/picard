@@ -204,14 +204,15 @@ class APEv2File(File):
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
         images_to_save = list(metadata.images.to_be_saved_to_tags())
+        remove_images = metadata.images.should_remove_images_from_tags()
         if config.setting['clear_existing_tags']:
             preserved = []
-            if config.setting['preserve_images']:
+            if not remove_images and config.setting['preserve_images']:
                 preserved = list(self._iter_cover_art_tags(tags))
             tags.clear()
             for name, value in preserved:
                 tags[name] = value
-        elif images_to_save:
+        elif images_to_save or remove_images:
             for name, _value in self._iter_cover_art_tags(tags):
                 del tags[name]
         temp = {}

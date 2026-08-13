@@ -33,6 +33,7 @@ from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -44,26 +45,29 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
 
     SIZE = 170
 
-    def __init__(self, pixmap=None, text=None, size=None, parent=None):
+    def __init__(self, pixmap=None, text=None, size=None, parent=None, marked_for_removal=False):
         super().__init__(parent=parent)
         layout = QtWidgets.QVBoxLayout()
 
         if pixmap is not None:
             if size is None:
                 size = self.SIZE
-            image_label = QtWidgets.QLabel()
-            image_label.setPixmap(
-                pixmap.scaled(
-                    size,
-                    size,
-                    QtCore.Qt.AspectRatioMode.KeepAspectRatio,
-                    QtCore.Qt.TransformationMode.SmoothTransformation,
-                )
+            scaled_pixmap = pixmap.scaled(
+                size,
+                size,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation,
             )
+            if marked_for_removal:
+                scaled_pixmap = self._removal_overlay(scaled_pixmap)
+            image_label = QtWidgets.QLabel()
+            image_label.setPixmap(scaled_pixmap)
             image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(image_label)
 
         if text is not None:
+            if marked_for_removal:
+                text = self._strikethrough_text(text)
             text_label = QtWidgets.QLabel()
             text_label.setText(text)
             text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -71,6 +75,20 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
             layout.addWidget(text_label)
 
         self.setLayout(layout)
+
+    @staticmethod
+    def _removal_overlay(pixmap):
+        """Draw a dotted translucent red overlay signaling the image will be removed from tags."""
+        overlaid = QtGui.QPixmap(pixmap)
+        painter = QtGui.QPainter(overlaid)
+        brush = QtGui.QBrush(QtGui.QColor(200, 0, 0, 200), QtCore.Qt.BrushStyle.Dense4Pattern)
+        painter.fillRect(overlaid.rect(), brush)
+        painter.end()
+        return overlaid
+
+    @staticmethod
+    def _strikethrough_text(text):
+        return f'<span style="color:#a00000; text-decoration:line-through;">{text}</span>'
 
 
 class ArtworkTable(QtWidgets.QTableWidget):

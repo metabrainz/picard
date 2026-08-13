@@ -123,6 +123,18 @@ class ImageList(MutableSequence['CoverArtImage']):
                     return
             yield from self
 
+    def should_remove_images_from_tags(self, settings: SettingConfigSection | None = None) -> bool:
+        """Whether images embedded in tags should be removed.
+
+        Only true when explicitly requested and images are also saved to
+        external files, so cover art is never deleted without being kept
+        somewhere else.
+        """
+        if settings is None:
+            config = get_config()
+            settings = config.setting
+        return bool(settings['remove_images_from_tags'] and settings['save_images_to_files'])
+
     def strip_front_images(self) -> None:
         self._images = [image for image in self._images if not image.is_front_image()]
         self._dirty = True

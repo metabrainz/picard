@@ -353,6 +353,8 @@ class MP4File(File):
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
         if covr:
             tags['covr'] = covr
+        elif 'covr' in tags and metadata.images.should_remove_images_from_tags():
+            del tags['covr']
 
         self._remove_deleted_tags(metadata, tags)
 

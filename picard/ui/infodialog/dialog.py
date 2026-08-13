@@ -92,6 +92,13 @@ class InfoDialog(PicardDialog):
 
         self.has_new_external_images = any(image.external_file_coverart for image in self.new_images)
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
+        # Predict whether saving will strip cover art already embedded in tags,
+        # using the same rules the format save code applies (see ImageList).
+        self.removal_predicted = bool(
+            has_orig_images
+            and obj.metadata.images.should_remove_images_from_tags()
+            and not list(obj.metadata.images.to_be_saved_to_tags())
+        )
         if has_orig_images:
             # Apply per-file "never replace" filters to show what will actually be saved
             if get_config().setting['save_images_to_tags']:
@@ -260,6 +267,14 @@ class InfoDialog(PicardDialog):
             'sourcefile': escape(image.source),
         }
 
+    def _existing_cover_colname(self):
+        """Column showing cover art currently embedded in tags, if any."""
+        if isinstance(self.artwork_table, ArtworkTableExisting):
+            return 'orig'
+        if isinstance(self.artwork_table, ArtworkTableOriginal):
+            return 'new'
+        return None
+
     def _display_artwork_image_cell(self, row_index, colname):
         """Display artwork image, depending on source (new/orig), in the proper column"""
         col_index = self.artwork_table.get_column_index(colname)
@@ -272,6 +287,8 @@ class InfoDialog(PicardDialog):
             source = 'new_external_image'
         image = getattr(self.artwork_rows[row_index], source)
         item = QtWidgets.QTableWidgetItem()
+
+        marked_for_removal = bool(image and self.removal_predicted and colname == self._existing_cover_colname())
 
         if image:
             try:
@@ -286,7 +303,12 @@ class InfoDialog(PicardDialog):
                 if data:
                     pixmap = QtGui.QPixmap()
                     pixmap.loadFromData(data)
-                    item.setToolTip(self._artwork_tooltip(_("Double-click to open in external viewer"), image))
+                    tooltip_message = _("Double-click to open in external viewer")
+                    if marked_for_removal:
+                        tooltip_message = (
+                            _("This cover art will be removed from tags when saved") + "<br />" + tooltip_message
+                        )
+                    item.setToolTip(self._artwork_tooltip(tooltip_message, image))
                     item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
@@ -294,7 +316,7 @@ class InfoDialog(PicardDialog):
                 item.setToolTip(self._artwork_tooltip(_("Missing temporary file"), image))
             infos = "<br />".join(escape(t) for t in self._artwork_infos(image))
 
-        img_wgt = ArtworkCoverWidget(pixmap=pixmap, text=infos)
+        img_wgt = ArtworkCoverWidget(pixmap=pixmap, text=infos, marked_for_removal=marked_for_removal)
         self.artwork_table.setCellWidget(row_index, col_index, img_wgt)
         self.artwork_table.setItem(row_index, col_index, item)
 

@@ -73,6 +73,7 @@ class CoverOptionsPage(OptionsPage):
         'save_images_overwrite': {'widgets': ['save_images_overwrite']},
         'save_only_one_front_image': {'widgets': ['save_only_one_front_image']},
         'image_type_as_filename': {'widgets': ['image_type_as_filename']},
+        'remove_images_from_tags': {'widgets': ['remove_images_from_tags']},
         'ca_providers': {'widgets': ['ca_providers_groupbox']},
     }
 
@@ -115,6 +116,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
         self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
         self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
+        self.ui.remove_images_from_tags.setChecked(config.setting['remove_images_from_tags'])
         self._load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
@@ -135,6 +137,9 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
         config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
         config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
+        config.setting['remove_images_from_tags'] = (
+            self.ui.save_images_to_files.isChecked() and self.ui.remove_images_from_tags.isChecked()
+        )
         config.setting['ca_providers'] = list(self._ca_providers())
 
     def update_ca_providers_groupbox_state(self):
