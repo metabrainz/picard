@@ -167,12 +167,6 @@ class BaseAction(_BaseAction):
     api: 'PluginApi'
 
 
-class CoverArtProvider(_CoverArtProvider):
-    """Base class for cover art providers"""
-
-    api: 'PluginApi'
-
-
 class ImageProcessor(_ImageProcessor):
     """Base class for cover art image processors"""
 
@@ -190,6 +184,14 @@ class OptionsPage(_OptionsPage):
 
 class ProviderOptions(_ProviderOptions):
     """Base class for plugin cover art option pages"""
+
+    api: 'PluginApi'
+
+
+class CoverArtProvider(_CoverArtProvider):
+    """Base class for cover art providers"""
+
+    OPTIONS: type[ProviderOptions] | None = None
 
     api: 'PluginApi'
 
@@ -1138,7 +1140,7 @@ class PluginApi:
         """
         provider_class.api = self
         self._set_class_name_and_title(provider_class)
-        if getattr(provider_class, 'OPTIONS', None):
+        if provider_class.OPTIONS:
             provider_class.OPTIONS.api = self  # type: ignore[attr-defined]
             provider_class.OPTIONS.OPTION_SECTION = self._api_config.section_name
         return register_cover_art_provider(provider_class)
