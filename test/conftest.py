@@ -145,3 +145,32 @@ def _install_defaulting_config(monkeypatch):
 
     # Yield control to test session
     yield
+
+
+@pytest.fixture()
+def patch_tagger_instance(monkeypatch):
+    """Patch ``tagger_instance`` in one or more modules to return a shared MockTagger.
+
+    Usage in a test::
+
+        def test_something(patch_tagger_instance):
+            patch_tagger_instance('picard.ui.options')
+            ...
+
+    Returns a callable that accepts module path strings.  The underlying
+    mock tagger is available as the ``tagger`` attribute on the callable.
+    """
+    from test.picardtestcase import MockTagger
+
+    tagger = MockTagger()
+
+    def _patch(*modules):
+        for module_path in modules:
+            import importlib
+
+            module = importlib.import_module(module_path)
+            monkeypatch.setattr(module, 'tagger_instance', lambda: tagger)
+        return tagger
+
+    _patch.tagger = tagger
+    return _patch
