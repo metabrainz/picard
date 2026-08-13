@@ -135,6 +135,7 @@ class Ui_CoverOptionsPage(object):
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
         self.image_type_as_filename.setToolTip(_("Always use the primary image type as the file name for non-front images"))
         self.image_type_as_filename.setText(_("Use the primary image type as the file name"))
+        self.remove_images_from_tags.setToolTip(_("Delete cover images embedded in tags when saving"))
         self.remove_images_from_tags.setText(_("Remove cover images from tags"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.move_label.setText(_("Reorder Priority:"))
