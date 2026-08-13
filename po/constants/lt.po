@@ -3,16 +3,15 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025, 2026.
 # Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-05-02 12:12+0000\n"
-"Last-Translator: Automatic translation add-on <noreply-addon-"
-"autotranslate@weblate.org>\n"
+"PO-Revision-Date: 2026-08-13 14:12+0000\n"
+"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/lt/>\n"
 "Language: lt\n"
@@ -22,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -5492,15 +5491,15 @@ msgstr "„ReplayGain“ takelio rėžis"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
-msgstr ""
+msgstr "Takelio rėžio nustatymas, gautas atlikus takelio „ReplayGain“ analizę."
 
 #: picard/const/tags.py:1063
 msgid "Sample Rate"
-msgstr ""
+msgstr "Skaimeninimo dažnis"
 
 #: picard/const/tags.py:1064
 msgid "The sample rate of the audio file."
-msgstr ""
+msgstr "Garso įrašo failo skaitmeninimo dažnis."
 
 #: picard/const/tags.py:1073
 msgid "Script"
@@ -5511,6 +5510,8 @@ msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr ""
+"Raštas, naudojamas leidinio takelių sąrašui rašyti. Galimos reikšmės paimtos "
+"iš ISO 15924 standarto."
 
 #: picard/const/tags.py:1082
 msgid "Secondary Release Type"
@@ -5528,7 +5529,7 @@ msgstr ""
 
 #: picard/const/tags.py:1095
 msgid "Silence"
-msgstr ""
+msgstr "Tyla"
 
 #: picard/const/tags.py:1096
 msgid "1 if the track title is \"[silence]\""
@@ -5563,13 +5564,15 @@ msgstr ""
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr "Šou pavadinimo rikiavimo tvarka"
+msgstr "Laidos pavadinimo rikiavimo tvarka"
 
 #: picard/const/tags.py:1122
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
 msgstr ""
+"Laidos rikiavimo pavadinimas, jei įrašas susijęs su televizijos (laidos) "
+"programa."
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
@@ -5578,14 +5581,15 @@ msgstr "Popavadinimas"
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
 msgstr ""
+"Tai naudojama informacijai, tiesiogiai susijusiai su turinio pavadinimu."
 
 #: picard/const/tags.py:1133
 msgid "Synced Lyrics"
-msgstr ""
+msgstr "Sinchronizuoti dainų tekstai"
 
 #: picard/const/tags.py:1134
 msgid "Synchronized lyrics for the track."
-msgstr ""
+msgstr "Sinchronizuoti dainos tekstas takeliui."
 
 #: picard/const/tags.py:1139
 msgid "Title"
@@ -5593,7 +5597,7 @@ msgstr "Pavadinimas"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
-msgstr ""
+msgstr "Takelio pavadinimas."
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
@@ -5601,15 +5605,15 @@ msgstr "Pavadinimo rikiavimo tvarka"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
-msgstr ""
+msgstr "Takelio pavadinimo rikiavimo pavadinimas."
 
 #: picard/const/tags.py:1151
 msgid "Total Album Tracks"
-msgstr ""
+msgstr "Iš viso albumo takelių"
 
 #: picard/const/tags.py:1152
 msgid "The total number of tracks across all discs of this release."
-msgstr ""
+msgstr "Bendras šio leidinio takelių skaičius visuose diskuose."
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
@@ -5617,7 +5621,7 @@ msgstr "Iš viso diskų"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "Bendras šio leidinio diskų skaičius."
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
@@ -5625,7 +5629,7 @@ msgstr "Iš viso takelių"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
-msgstr ""
+msgstr "Bendras šio disko takelių skaičius."
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
@@ -5641,7 +5645,7 @@ msgstr "Vaizdo įrašas"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
-msgstr "Nustatykite „1“, jei takelis yra vaizdo įrašas."
+msgstr "Nustatykite į „1“, jei takelis yra vaizdo įrašas."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
@@ -5730,8 +5734,8 @@ msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
-"Tai galite sujungti su kompozitoriais naudojant skriptą kaip "
-"`$copymerge(kompozitorius,rašytojas)`."
+"Tai galite sujungti su kompozitoriais skriptu kaip `$copymerge"
+"(kompozitorius,rašytojas)`."
 
 #: picard/const/tags.py:1243
 msgid "Writer Sort"

@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-09 10:07+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-08-13 14:12+0000\n"
+"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
 "Language: lt\n"
@@ -24,8 +24,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -6342,53 +6342,41 @@ msgstr ""
 "Spėti takelio numerį ir pavadinimą iš failo pavadinimo, jei yra tuščias"
 
 #: picard/ui/forms/ui_options_metadata.py:197
-#, fuzzy
-#| msgid "Plugin Translations"
 msgid "Translations"
-msgstr "Įskiepių vertimai"
+msgstr "Vertimai"
 
 #: picard/ui/forms/ui_options_metadata.py:198
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate names when available:"
-msgstr "Versti atlikėjų vardus"
+msgstr "Versti pavadinimus, kai pasiekiama:"
 
 #: picard/ui/forms/ui_options_metadata.py:199
-#, fuzzy
-#| msgid "Artists"
 msgid "Artist names"
-msgstr "Atlikėjai"
+msgstr "Atlikėjų pavadinimai"
 
 #: picard/ui/forms/ui_options_metadata.py:200
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album titles"
-msgstr "Albumo atlikėjas"
+msgstr "Albumų pavadinimai"
 
 #: picard/ui/forms/ui_options_metadata.py:201
-#, fuzzy
-#| msgid "Tracks"
 msgid "Track titles"
-msgstr "Takeliai"
+msgstr "Takelių pavadinimai"
 
 #: picard/ui/forms/ui_options_metadata.py:202
-#, fuzzy
-#| msgid "Preferred Releases"
 msgid "Preferred locales:"
-msgstr "Pageidaujami leidiniai"
+msgstr "Pageidautinos lokalės:"
 
 #: picard/ui/forms/ui_options_metadata.py:203
 #: picard/ui/forms/ui_options_metadata.py:205
 msgid "Select…"
-msgstr ""
+msgstr "Pasirinkti…"
 
 #: picard/ui/forms/ui_options_metadata.py:204
 msgid "Ignore name translation for these language scripts:"
-msgstr ""
+msgstr "Nepaisyti šių kalbų raštų pavadinimų vertimo:"
 
 #: picard/ui/forms/ui_options_metadata.py:207
 msgid "Custom Fields"
-msgstr ""
+msgstr "Pasirinktiniai laukeliai"
 
 #: picard/ui/forms/ui_options_metadata.py:208
 msgid "Various artists:"
@@ -6396,7 +6384,7 @@ msgstr "Įvairūs atlikėjai:"
 
 #: picard/ui/forms/ui_options_metadata.py:209
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Atskiri įrašai:"
 
 #: picard/ui/forms/ui_options_metadata.py:210
 #: picard/ui/forms/ui_options_metadata.py:211
@@ -6408,25 +6396,25 @@ msgstr "Numatytas"
 
 #: picard/ui/forms/ui_options_network.py:172
 msgid "Web Proxy"
-msgstr ""
+msgstr "Interneto tarpinis serveris"
 
 #: picard/ui/forms/ui_options_network.py:173
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: picard/ui/forms/ui_options_network.py:174
 msgid "SOCKS"
-msgstr ""
+msgstr "SOCKS"
 
 #: picard/ui/forms/ui_options_network.py:175
 #: picard/ui/forms/ui_passworddialog.py:68
 msgid "Username:"
-msgstr ""
+msgstr "Naudotojo vardas:"
 
 #: picard/ui/forms/ui_options_network.py:177
 #: picard/ui/forms/ui_passworddialog.py:69
 msgid "Password:"
-msgstr ""
+msgstr "Slaptažodis:"
 
 #: picard/ui/forms/ui_options_network.py:179
 msgid "Network options"
@@ -6434,23 +6422,19 @@ msgstr "Tinklo parinktys"
 
 #: picard/ui/forms/ui_options_network.py:180
 msgid "Request timeout in seconds:"
-msgstr ""
+msgstr "Užklausos laiko riba sekundėmis:"
 
 #: picard/ui/forms/ui_options_network.py:181
-#, fuzzy
-#| msgid "Cache size (MB):"
 msgid "Cache usage:"
-msgstr "Podėlio dydis (MB):"
+msgstr "Podėlio naudojimas:"
 
 #: picard/ui/forms/ui_options_network.py:183
 msgid " MB"
-msgstr ""
+msgstr " MB"
 
 #: picard/ui/forms/ui_options_network.py:184
-#, fuzzy
-#| msgid "C&lear all"
 msgid "Clear cache"
-msgstr "Iš&valyti visus"
+msgstr "&Valyti podėlį"
 
 #: picard/ui/forms/ui_options_network.py:185
 msgid "Browser Integration"
@@ -6462,17 +6446,15 @@ msgstr "Numatytas klausymo prievadas:"
 
 #: picard/ui/forms/ui_options_player.py:59
 msgid "ListenBrainz user name"
-msgstr ""
+msgstr "„ListenBrainz“ naudotojo vardas"
 
 #: picard/ui/forms/ui_options_player.py:60
 msgid "Enable audio player \"now playing\" notifications"
-msgstr ""
+msgstr "Įjungti garso leistuvo „dabar leidžiama“ pranešimus"
 
 #: picard/ui/forms/ui_options_player.py:61
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit listens to ListenBrainz"
-msgstr "Siųsti vertinimus į „MusicBrainz“"
+msgstr "Teikti klausymus į „ListenBrainz“"
 
 #: picard/ui/forms/ui_options_player.py:62
 msgid "Submit only tagged files"
@@ -6480,7 +6462,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_player.py:63
 msgid "ListenBrainz user token:"
-msgstr ""
+msgstr "„ListenBrainz“ naudotojo prieigos raktas:"
 
 #: picard/ui/forms/ui_options_player.py:65
 msgid ""
@@ -6521,7 +6503,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_ratings.py:61
 msgid "E-mail:"
-msgstr ""
+msgstr "El. paštas:"
 
 #: picard/ui/forms/ui_options_releases.py:118
 #: picard/ui/forms/ui_options_releases.py:119
@@ -6581,16 +6563,16 @@ msgstr ""
 #: picard/ui/forms/ui_options_renaming.py:146
 #: picard/ui/forms/ui_scripteditor.py:218
 msgid "Before"
-msgstr ""
+msgstr "Prieš"
 
 #: picard/ui/forms/ui_options_renaming.py:147
 #: picard/ui/forms/ui_scripteditor.py:219
 msgid "After"
-msgstr ""
+msgstr "Po"
 
 #: picard/ui/forms/ui_options_renaming_compat.py:97
 msgid "Customize…"
-msgstr ""
+msgstr "Tinkinti…"
 
 #: picard/ui/forms/ui_options_renaming_compat.py:98
 msgid "Allow paths longer than 259 characters"
@@ -6633,7 +6615,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_script.py:133
 msgid "Remove tagger script"
-msgstr "Pašalinti žymeklio skriptą"
+msgstr "Šalinti žymeklio skriptą"
 
 #: picard/ui/forms/ui_options_script.py:134 picard/ui/options/profiles.py:175
 msgid "Import"
@@ -9352,31 +9334,26 @@ msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
 
 #: picard/ui/options/plugins.py:130 picard/ui/options/plugins.py:344
-#, fuzzy
-#| msgid "Details"
 msgid "Hide Details"
-msgstr "Išsami informacija"
+msgstr "Slėpti išsamią informaciją"
 
 #: picard/ui/options/plugins.py:133
 msgid "Show/hide plugin details panel"
 msgstr ""
 
 #: picard/ui/options/plugins.py:215
-#, fuzzy, python-brace-format
-#| msgid "plus {extra_file_count:,d} other plugin."
-#| msgid_plural "plus {extra_file_count:,d} other plugins."
+#, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
-msgstr[0] "ir {extra_file_count:,d} kitas įskiepis."
-msgstr[1] "ir {extra_file_count:,d} kiti įskiepiai."
-msgstr[2] "ir {extra_file_count:,d} kito įskiepio."
-msgstr[3] "ir {extra_file_count:,d} kitų įskiepių."
+msgstr[0] "{plugin_count:,d} įskiepis įdiegtas"
+msgstr[1] "{plugin_count:,d} įskiepiai įdiegti"
+msgstr[2] "{plugin_count:,d} įskiepio įdiegta"
+msgstr[3] "{plugin_count:,d} įskiepių įdiegta"
 
 #: picard/ui/options/plugins.py:224
-#, fuzzy, python-brace-format
-#| msgid "Error loading plugins list: %(error)s"
+#, python-brace-format
 msgid "Error loading plugins: {}"
-msgstr "Klaida įkeliant įskiepių sąrašą: %(error)s."
+msgstr "Klaida įkeliant įskiepių sąrašą: {}."
 
 #: picard/ui/options/plugins.py:229
 #, fuzzy
