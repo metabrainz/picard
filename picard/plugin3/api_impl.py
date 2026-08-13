@@ -202,9 +202,9 @@ class MetadataTagAction(_MetadataTagAction):
 class PluginLogger:
     """Wrapper around :class:`logging.Logger` that adds :meth:`debug_if`.
 
-    Delegates all standard logging methods (debug, info, warning, error, etc.)
-    to the underlying logger via ``__getattr__`` while providing access to
-    Picard's conditional debug logging.
+    Standard logging methods are defined explicitly for editor autocompletion
+    and type checking.  Any other attribute access (e.g. ``name``,
+    ``setLevel``) is forwarded to the underlying :class:`logging.Logger`.
     """
 
     __slots__ = ('_underlying_logger',)
@@ -247,6 +247,26 @@ class PluginLogger:
                     dbg("item: %r", item)
         """
         return log.debug_if(debug_opt, msg, *args, msg_func=msg_func, stacklevel=4, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        """Log a message with level DEBUG."""
+        self._underlying_logger.debug(msg, *args, stacklevel=2, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        """Log a message with level INFO."""
+        self._underlying_logger.info(msg, *args, stacklevel=2, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        """Log a message with level WARNING."""
+        self._underlying_logger.warning(msg, *args, stacklevel=2, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        """Log a message with level ERROR."""
+        self._underlying_logger.error(msg, *args, stacklevel=2, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+        """Log a message with level ERROR, including exception info."""
+        self._underlying_logger.exception(msg, *args, stacklevel=2, **kwargs)
 
 
 class PluginApi:

@@ -57,18 +57,18 @@ class TestPluginLogger(PicardTestCase):
         self._logger = ImplPluginLogger(self._underlying)
 
     def test_delegates_standard_methods(self):
-        """Standard logging methods should be delegated to the underlying logger."""
+        """Standard logging methods should delegate to the underlying logger."""
         with patch.object(self._underlying, 'debug') as mock_debug:
             self._logger.debug("test %s", "msg")
-            mock_debug.assert_called_once_with("test %s", "msg")
+            mock_debug.assert_called_once_with("test %s", "msg", stacklevel=2)
 
         with patch.object(self._underlying, 'info') as mock_info:
             self._logger.info("info %s", "msg")
-            mock_info.assert_called_once_with("info %s", "msg")
+            mock_info.assert_called_once_with("info %s", "msg", stacklevel=2)
 
         with patch.object(self._underlying, 'warning') as mock_warning:
             self._logger.warning("warn %s", "msg")
-            mock_warning.assert_called_once_with("warn %s", "msg")
+            mock_warning.assert_called_once_with("warn %s", "msg", stacklevel=2)
 
     def test_delegates_attributes(self):
         """Attributes like name should be delegated to the underlying logger."""
