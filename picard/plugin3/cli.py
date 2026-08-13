@@ -771,7 +771,7 @@ class PluginCLI(BaseCLI):
 
             try:
                 # Check if it's a plugin ID (no slashes, no protocol)
-                if '/' not in url_or_id and '://' not in url_or_id:
+                if '/' not in url_or_id and '://' not in url_or_id and url_or_id not in {'.', '..'}:
                     if not self._ensure_registry():
                         return ExitCode.ERROR
 
