@@ -153,11 +153,11 @@ class TestPluginApiLogger(PicardTestCase):
 
     def test_logger_is_plugin_logger(self):
         """api.logger should return a PluginLogger instance."""
-        api = PluginApi(load_plugin_manifest('example'), Mock())
+        api = PluginApi(load_plugin_manifest('example'), Mock(), Mock(), Mock())
         self.assertIsInstance(api.logger, ImplPluginLogger)
 
     def test_logger_has_debug_if(self):
         """api.logger should have a debug_if method."""
-        api = PluginApi(load_plugin_manifest('example'), Mock())
+        api = PluginApi(load_plugin_manifest('example'), Mock(), Mock(), Mock())
         self.assertTrue(hasattr(api.logger, 'debug_if'))
         self.assertTrue(callable(api.logger.debug_if))

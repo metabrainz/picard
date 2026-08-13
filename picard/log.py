@@ -32,6 +32,7 @@ from collections import (
     deque,
     namedtuple,
 )
+from collections.abc import Callable
 from importlib.machinery import PathFinder
 import logging
 from pathlib import (
@@ -39,6 +40,7 @@ from pathlib import (
     PurePath,
 )
 from threading import Lock
+from typing import Protocol
 
 from PyQt6 import QtCore
 
@@ -232,6 +234,12 @@ exception = main_logger.exception
 log = main_logger.log
 
 
+class LoggerFunc(Protocol):
+    def __bool__(self) -> bool: ...
+
+    def __call__(self, msg: str, *args, stacklevel: int = 2, **kwargs) -> None: ...
+
+
 class _DebugLogger:
     """Callable returned by debug_if when the debug option is enabled."""
 
@@ -262,7 +270,14 @@ class _NoOpLogger:
 _NOOP_LOGGER = _NoOpLogger()
 
 
-def debug_if(debug_opt, msg=None, *args, msg_func=None, stacklevel=3, **kwargs):
+def debug_if(
+    debug_opt: DebugOpt,
+    msg: str | None = None,
+    *args,
+    msg_func: Callable[[], str] | None = None,
+    stacklevel: int = 3,
+    **kwargs,
+) -> LoggerFunc:
     """Log a debug message only if the specified debug option is enabled.
 
     Can also be used as a guard that returns a callable logger for blocks
