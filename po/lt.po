@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-07-31 19:12+0000\n"
+"PO-Revision-Date: 2026-08-13 14:12+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
 ": n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -4738,7 +4738,7 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
-msgstr ""
+msgstr "Pasirinkti…"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
@@ -4750,7 +4750,7 @@ msgstr "Naudoti takelio santykius"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
-msgstr ""
+msgstr "Pasirinktiniai laukeliai"
 
 #: picard/ui/ui_options_metadata.py:141
 msgid "Various artists:"
@@ -4758,7 +4758,7 @@ msgstr "Įvairūs atlikėjai:"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Atskiri įrašai:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -4768,27 +4768,27 @@ msgstr ""
 
 #: picard/ui/ui_options_network.py:131
 msgid "Web Proxy"
-msgstr ""
+msgstr "Interneto tarpinis serveris"
 
 #: picard/ui/ui_options_network.py:132
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: picard/ui/ui_options_network.py:133
 msgid "SOCKS"
-msgstr ""
+msgstr "SOCKS"
 
 #: picard/ui/ui_options_network.py:134 picard/ui/ui_passworddialog.py:63
 msgid "Username:"
-msgstr ""
+msgstr "Naudotojo vardas:"
 
 #: picard/ui/ui_options_network.py:136 picard/ui/ui_passworddialog.py:64
 msgid "Password:"
-msgstr ""
+msgstr "Slaptažodis:"
 
 #: picard/ui/ui_options_network.py:138
 msgid "Request timeout in seconds:"
-msgstr ""
+msgstr "Užklausos laiko riba sekundėmis:"
 
 #: picard/ui/ui_options_network.py:139
 msgid "Browser Integration"
@@ -4854,7 +4854,7 @@ msgstr ""
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
-msgstr ""
+msgstr "El. paštas:"
 
 #: picard/ui/ui_options_releases.py:112 picard/ui/ui_options_releases.py:113
 msgid "Add to preferred release countries"
@@ -4902,11 +4902,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
 msgid "Before"
-msgstr ""
+msgstr "Prieš"
 
 #: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
 msgid "After"
-msgstr ""
+msgstr "Po"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
@@ -4914,7 +4914,7 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:91
 msgid "Customize…"
-msgstr ""
+msgstr "Tinkinti…"
 
 #: picard/ui/ui_options_renaming_compat.py:92
 msgid "Allow paths longer than 259 characters"
@@ -4956,7 +4956,7 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:127
 msgid "Remove tagger script"
-msgstr "Pašalinti žymeklio skriptą"
+msgstr "Šalinti žymeklio skriptą"
 
 #: picard/ui/ui_options_script.py:128
 msgid "Import"
