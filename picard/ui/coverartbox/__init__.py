@@ -205,6 +205,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if not item.can_show_coverart:
             self.cover_art.set_metadata(None)
             self.orig_cover_art.set_metadata(None)
+            self._removal_predicted = False
+            self.update_display()
             return
 
         if self.item and hasattr(self.item, 'metadata_images_changed'):
