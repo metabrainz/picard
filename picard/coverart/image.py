@@ -203,9 +203,9 @@ class CoverArtImage:
     # Indicate if types are provided by the source, ie. CAA or certain file
     # formats may have types associated with cover art, but some other sources
     # don't provide such information
-    support_types = False
+    support_types: bool = False
     # Indicates that the source supports multiple types per image.
-    support_multi_types = False
+    support_multi_types: bool = False
     # `is_front` has to be explicitly set, it is used to handle CAA is_front
     # indicator
     is_front: bool | None = None
@@ -370,7 +370,7 @@ class CoverArtImage:
             return 0
         return hash(self.datahash.hash)
 
-    def set_data(self, data: bytes):
+    def set_data(self, data: bytes) -> None:
         """Set the binary image data for this file.
 
         The image data is stored as a `DataHash` object in a temporary file. If the
@@ -394,7 +394,7 @@ class CoverArtImage:
         except OSError as e:
             raise CoverArtImageIOError(e) from e
 
-    def set_external_file_data(self, data: bytes):
+    def set_external_file_data(self, data: bytes) -> None:
         self.external_file_coverart = CoverArtImage(
             data=data,
             url=self.url,
@@ -406,7 +406,7 @@ class CoverArtImage:
         )
 
     @property
-    def maintype(self):
+    def maintype(self) -> str:
         """Returns one type only, even for images having more than one type set.
         This is mostly used when saving cover art to tags because most formats
         don't support multiple types for one image.
@@ -428,7 +428,7 @@ class CoverArtImage:
             return image_type_as_id3_num(self.maintype)
 
     @id3_type.setter
-    def id3_type(self, type: Id3ImageType | None):
+    def id3_type(self, type: Id3ImageType | None) -> None:
         """Explicitly sets the ID3 APIC image type.
         If set to None the type will be derived from `maintype`."""
         if type is not None:
@@ -461,7 +461,7 @@ class CoverArtImage:
         filename = make_save_path(filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return filename
 
-    def save(self, dirname: str, metadata: Metadata, counters: dict[str, int]):
+    def save(self, dirname: str, metadata: Metadata, counters: dict[str, int]) -> None:
         """Saves this image.
 
         :dirname: The name of the directory that contains the audio file
