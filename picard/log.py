@@ -235,7 +235,9 @@ log = main_logger.log
 
 
 class LoggerFunc(Protocol):
-    def __call__(self, msg: str, *args, stacklevel: int = 2, **kwargs): ...
+    def __bool__(self) -> bool: ...
+
+    def __call__(self, msg: str, *args, stacklevel: int = 2, **kwargs) -> None: ...
 
 
 class _DebugLogger:
