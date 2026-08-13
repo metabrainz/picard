@@ -102,6 +102,7 @@ from picard.extension_points.script_variables import (
     unregister_script_variable,
 )
 from picard.file import File
+from picard.log import LoggerFunc
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
     PluginTranslator,
@@ -215,7 +216,9 @@ class PluginLogger:
     def __getattr__(self, name):
         return getattr(self._underlying_logger, name)
 
-    def debug_if(self, debug_opt: DebugOpt, msg=None, *args, msg_func=None, **kwargs):
+    def debug_if(
+        self, debug_opt: DebugOpt, msg: str | None = None, *args, msg_func: Callable[[], str] | None = None, **kwargs
+    ) -> LoggerFunc:
         """Log a debug message only if the specified debug option is enabled.
 
         Can also be used as a guard that returns a callable logger for blocks
@@ -248,23 +251,23 @@ class PluginLogger:
         """
         return log.debug_if(debug_opt, msg, *args, msg_func=msg_func, stacklevel=4, **kwargs)
 
-    def debug(self, msg, *args, **kwargs):
+    def debug(self, msg: str, *args, **kwargs) -> None:
         """Log a message with level DEBUG."""
         self._underlying_logger.debug(msg, *args, stacklevel=2, **kwargs)
 
-    def info(self, msg, *args, **kwargs):
+    def info(self, msg: str, *args, **kwargs) -> None:
         """Log a message with level INFO."""
         self._underlying_logger.info(msg, *args, stacklevel=2, **kwargs)
 
-    def warning(self, msg, *args, **kwargs):
+    def warning(self, msg: str, *args, **kwargs) -> None:
         """Log a message with level WARNING."""
         self._underlying_logger.warning(msg, *args, stacklevel=2, **kwargs)
 
-    def error(self, msg, *args, **kwargs):
+    def error(self, msg: str, *args, **kwargs) -> None:
         """Log a message with level ERROR."""
         self._underlying_logger.error(msg, *args, stacklevel=2, **kwargs)
 
-    def exception(self, msg, *args, **kwargs):
+    def exception(self, msg: str, *args, **kwargs) -> None:
         """Log a message with level ERROR, including exception info."""
         self._underlying_logger.exception(msg, *args, stacklevel=2, **kwargs)
 
