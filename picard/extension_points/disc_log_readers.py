@@ -21,13 +21,16 @@
 
 from collections.abc import Callable
 from pathlib import Path
-from typing import TypeAlias
+from typing import TYPE_CHECKING, TypeAlias
 
-from picard.disc.utils import TocNumbers
 from picard.extension_points import ExtensionPoint
 
 
-LogReader: TypeAlias = Callable[[Path], TocNumbers]
+if TYPE_CHECKING:
+    from picard.disc.utils import TocNumbers
+
+
+LogReader: TypeAlias = Callable[[Path], 'TocNumbers']
 
 
 ext_point_disc_log_readers = ExtensionPoint[LogReader](label='disc_log_readers')
