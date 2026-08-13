@@ -18,6 +18,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from picard.cluster import Cluster
+from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_processors import ProcessingImage
 from picard.item import MetadataItem
 from picard.plugin3.api_impl import (
@@ -32,6 +33,7 @@ from picard.plugin3.api_impl import (
     MetadataTagAction,
     OptionsPage,
     PluginApi,
+    PluginLogger,
     ProviderOptions,
     Track,
     t_,
@@ -47,6 +49,7 @@ __all__ = [
     'Cluster',
     'CoverArtImage',
     'CoverArtProvider',
+    'DebugOpt',
     'File',
     'ImageInfo',
     'ImageProcessor',
@@ -56,6 +59,7 @@ __all__ = [
     'OptionsPage',
     'PageOptionConfigs',
     'PluginApi',
+    'PluginLogger',
     'ProcessingImage',
     'ProviderOptions',
     'ScriptParser',
