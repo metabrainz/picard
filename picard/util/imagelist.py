@@ -152,6 +152,8 @@ class ImageList(MutableSequence['CoverArtImage']):
         if previous_images and settings['remove_images_from_tags']:
             index_by_type = {image.normalized_types(): i for i, image in enumerate(exported)}
             for prev_image in previous_images:
+                # Filter on is_front_image() first so normalized_types() is only
+                # computed for images that can actually be candidates.
                 if only_one_front and not prev_image.is_front_image():
                     continue
                 types = prev_image.normalized_types()
