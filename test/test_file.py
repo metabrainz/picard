@@ -579,8 +579,8 @@ class FileUpdateTest(PicardTestCase):
 
     def test_same_image(self):
         image = create_image(b'a')
-        self.file.metadata.images = [image]
-        self.file.orig_metadata.images = [image]
+        self.file.metadata.images = ImageList([image])
+        self.file.orig_metadata.images = ImageList([image])
         self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
@@ -598,8 +598,8 @@ class FileUpdateTest(PicardTestCase):
 
     def test_same_image_changed_state(self):
         image = create_image(b'a')
-        self.file.metadata.images = [image]
-        self.file.orig_metadata.images = [image]
+        self.file.metadata.images = ImageList([image])
+        self.file.orig_metadata.images = ImageList([image])
         self.file.state = File.State.CHANGED
 
         self.file.update(signal=False)
@@ -609,8 +609,8 @@ class FileUpdateTest(PicardTestCase):
     def test_changed_image(self):
         old_image = create_image(b'a')
         new_image = create_image(b'b')
-        self.file.metadata.images = [new_image]
-        self.file.orig_metadata.images = [old_image]
+        self.file.metadata.images = ImageList([new_image])
+        self.file.orig_metadata.images = ImageList([old_image])
         self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)

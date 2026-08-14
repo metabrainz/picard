@@ -585,6 +585,22 @@ class File(MetadataItem):
             self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
 
+    def _expected_embedded_images(self) -> 'ImageList':
+        """Images that should end up embedded in tags for the current metadata.
+
+        Mirrors the rules applied when actually saving (see ImageList): per-file
+        "never replace" filters may reject a new image for tags, or
+        remove_images_from_tags may clear tags entirely while the image is kept
+        only as an external file (and, for the CoverArtBox, in self.metadata).
+        """
+        images_to_save = list(self.metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
+        if images_to_save:
+            return ImageList(images_to_save)
+        elif self.metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images):
+            return ImageList()
+        else:
+            return self.orig_metadata.images.copy()
+
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
         # Result is None if save was skipped
@@ -599,18 +615,7 @@ class File(MetadataItem):
             length = self.orig_metadata.length
             temp_info = {}
             self._copy_file_info_tags(temp_info, self.orig_metadata)
-            # Determine what images actually ended up embedded in tags, using the
-            # same rules the format save code applies (see ImageList). This can
-            # differ from self.metadata.images alone: per-file "never replace"
-            # filters may reject a new image for tags, or remove_images_from_tags
-            # may have cleared tags while the image was kept as an external file.
-            images_to_save = list(self.metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
-            if images_to_save:
-                embedded_images = ImageList(images_to_save)
-            elif self.metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images):
-                embedded_images = ImageList()
-            else:
-                embedded_images = self.orig_metadata.images.copy()
+            embedded_images = self._expected_embedded_images()
             images_changed = self.orig_metadata.images != embedded_images
             # Copy new metadata to original metadata, applying format specific
             # conversions (e.g. for ID3v2.3)
@@ -962,7 +967,7 @@ class File(MetadataItem):
             else:
                 self.similarity = 1.0
                 if self.state in (File.State.CHANGED, File.State.NORMAL):
-                    if self.metadata.images and self.orig_metadata.images != self.metadata.images:
+                    if self.metadata.images and self.orig_metadata.images != self._expected_embedded_images():
                         self.state = File.State.CHANGED
                     else:
                         self.state = File.State.NORMAL
