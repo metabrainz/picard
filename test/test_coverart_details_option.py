@@ -125,11 +125,11 @@ def test_option_default() -> None:
     assert opt.default is False
 
 
-@pytest.mark.skip(reason="This test fails if ran in parallel")
-def test_options_page_load_and_save() -> None:
-    from picard.ui.options.cover import CoverOptionsPage
+def test_options_page_load_and_save(patch_tagger_instance) -> None:
+    patch_tagger_instance('picard.ui.options')
+    from picard.ui.options.interface_cover_art_box import InterfaceCoverArtBoxOptionsPage
 
-    page = CoverOptionsPage()
+    page = InterfaceCoverArtBoxOptionsPage()
     page.load()
     config = get_config()
     # Default is False
@@ -224,14 +224,17 @@ def _set_details_config(
     config.setting['show_cover_art_details_mimetype'] = mime_on
 
 
-@pytest.mark.skip(reason="This test fails if ran in parallel")
-def test_options_page_children_enable_disable_and_save(_restore_cover_details_options: None) -> None:
-    from picard.ui.options.cover import CoverOptionsPage
+def test_options_page_children_enable_disable_and_save(
+    patch_tagger_instance,
+    _restore_cover_details_options: None,
+) -> None:
+    patch_tagger_instance('picard.ui.options')
+    from picard.ui.options.interface_cover_art_box import InterfaceCoverArtBoxOptionsPage
 
     # Ensure parent starts unchecked for this test
     get_config().setting['show_cover_art_details'] = False
 
-    page = CoverOptionsPage()
+    page = InterfaceCoverArtBoxOptionsPage()
     page.load()
     # Initially parent unchecked, children should be disabled (greyed out)
     assert page.ui.cb_show_cover_art_details.isChecked() is False

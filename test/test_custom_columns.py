@@ -24,6 +24,7 @@ from unittest.mock import Mock
 from weakref import ref
 
 from picard.metadata import Metadata
+import picard.script  # noqa: F401 - Ensure built-in script functions are registered
 
 import pytest
 
@@ -260,9 +261,8 @@ def test_callable_column_handles_exceptions() -> None:
     assert col.provider.evaluate(fake_item) == ""
 
 
-# TODO: Skip due to upstream global state interference with ScriptParser functions when full suite runs.
-# Does not impact live usage; scripts load functions correctly in app context.
-@pytest.mark.skip(reason="Temporarily skipped pending upstream global state investigation")
+# Previously skipped due to test-ordering sensitivity: ScriptParser functions
+# require `picard.script` to be imported for registration (see import above).
 def test_script_column_with_complex_expression(fake_item: _FakeItem) -> None:
     """Test script column with complex expressions."""
     script = "$if(%artist%,%artist% by %album%,Unknown)"
