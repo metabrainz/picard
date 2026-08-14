@@ -42,7 +42,6 @@ from picard import log
 from picard.album import Album
 from picard.config import get_config
 from picard.coverart.image import CoverArtImageIOError
-from picard.coverart.processing.filters import filter_image_for_file
 from picard.coverart.utils import translated_types_as_string
 from picard.debug_opts import DebugOpt
 from picard.file import File
@@ -67,13 +66,22 @@ from picard.ui.forms.ui_infodialog import Ui_InfoDialog
 
 
 class ArtworkRow:
-    def __init__(self, orig_image=None, new_image=None, types=None):
+    def __init__(self, orig_image=None, new_image=None, types=None, external_fallback=False):
         self.orig_image = orig_image
         self.new_image = new_image
         self.types = types
         self.new_external_image = None
         if self.new_image:
             self.new_external_image = self.new_image.external_file_coverart
+            if self.new_external_image is None and external_fallback:
+                # Without a separately processed version the image itself
+                # is what gets exported to a file (see CoverArtImage.save)
+                self.new_external_image = self.new_image
+        elif external_fallback and self.orig_image:
+            # No replacement was found for this type: the originally tagged
+            # image itself becomes what gets exported to a file instead of
+            # being lost (see ImageList.to_be_saved_to_files)
+            self.new_external_image = self.orig_image
 
 
 class InfoDialog(PicardDialog):
@@ -96,22 +104,35 @@ class InfoDialog(PicardDialog):
         # using the same rules the format save code applies (see ImageList).
         self.removal_predicted = bool(
             has_orig_images
-            and obj.metadata.images.should_remove_images_from_tags()
-            and not list(obj.metadata.images.to_be_saved_to_tags())
+            and obj.metadata.images.should_remove_images_from_tags(
+                previous_images=obj.orig_metadata.images if has_orig_images else None
+            )
+            and not list(
+                obj.metadata.images.to_be_saved_to_tags(
+                    previous_images=obj.orig_metadata.images if has_orig_images else None
+                )
+            )
         )
+        if self.removal_predicted:
+            # Removal implies save_images_to_files, and higher quality tagged
+            # art is exported instead of being lost, so something always gets
+            # exported even without separately processed versions
+            self.has_new_external_images = True
         if has_orig_images:
-            # Apply per-file "never replace" filters to show what will actually be saved
+            # Show what will actually be embedded in tags, applying the same
+            # per-file "never replace" filters the format save code uses.
+            # Images rejected here may still be saved to an external file.
             if get_config().setting['save_images_to_tags']:
-                self.new_images = [
-                    image for image in self.new_images if filter_image_for_file(image, obj.orig_metadata.images)
-                ]
+                self.new_images = sorted(
+                    obj.metadata.images.to_be_saved_to_tags(previous_images=obj.orig_metadata.images)
+                )
             artworktable_class = ArtworkTableOriginal
             has_new_different_images = sorted(obj.orig_metadata.images) != self.new_images
             if has_new_different_images or self.has_new_external_images:
                 is_track = isinstance(obj, Track)
                 is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
                 is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
-                if is_track or is_linked_file or is_album_with_files:
+                if is_track or is_linked_file or is_album_with_files or self.removal_predicted:
                     self.orig_images = sorted(obj.orig_metadata.images)
                     artworktable_class = ArtworkTableExisting
 
@@ -344,6 +365,7 @@ class InfoDialog(PicardDialog):
         """Generate artwork rows, trying to match orig/new image types"""
         # we work on a copy, since will pop matched images
         new_images = self.new_images[:]
+        external_fallback = self.removal_predicted
         if self.orig_images:
             for orig_image in self.orig_images:
                 types = orig_image.normalized_types()
@@ -354,10 +376,19 @@ class InfoDialog(PicardDialog):
                         # we found one, pop it from new_images, we don't want to match it again
                         found_new_image = new_images.pop(i)
                         break
-                yield ArtworkRow(orig_image=orig_image, new_image=found_new_image, types=types)
+                yield ArtworkRow(
+                    orig_image=orig_image,
+                    new_image=found_new_image,
+                    types=types,
+                    external_fallback=external_fallback,
+                )
         # now, remaining images that weren't matched to orig images
         for new_image in new_images:
-            yield ArtworkRow(new_image=new_image, types=new_image.normalized_types())
+            yield ArtworkRow(
+                new_image=new_image,
+                types=new_image.normalized_types(),
+                external_fallback=external_fallback,
+            )
 
     def _display_artwork_rows(self):
         """Display rows of images and types in artwork tab"""

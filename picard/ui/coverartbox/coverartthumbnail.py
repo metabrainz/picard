@@ -49,6 +49,7 @@ from picard.coverart.image import CoverArtImageIOError
 from picard.i18n import gettext as _
 
 from picard.ui.colors import interface_colors
+from picard.ui.util import apply_removal_overlay
 from picard.ui.widgets import ActiveLabel
 
 
@@ -82,6 +83,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.clicked.connect(self.open_release_page)
         self.related_images = []
         self.current_pixmap_key = None
+        self.marked_for_removal = False
 
     def screen_changed(self, screen):
         pixel_ratio = screen.devicePixelRatio()
@@ -169,6 +171,15 @@ class CoverArtThumbnail(ActiveLabel):
     def show(self):
         self.set_data(self.data, True)
 
+    def set_marked_for_removal(self, marked_for_removal):
+        """Toggle the removal overlay and refresh the displayed pixmap."""
+        marked_for_removal = bool(marked_for_removal)
+        if marked_for_removal == self.marked_for_removal:
+            return
+        self.marked_for_removal = marked_for_removal
+        if self.data:
+            self.set_data(self.data, force=True, has_common_images=self.has_common_images)
+
     def set_data(self, data, force=False, has_common_images=True):
         if not force and self.data == data and self.has_common_images == has_common_images:
             return
@@ -188,8 +199,11 @@ class CoverArtThumbnail(ActiveLabel):
             has_common_images = True
 
         key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images, self.pixel_ratio))
+        # The overlay only affects rendering, not image identity: `key` stays
+        # comparable between thumbnails regardless of removal marking.
+        cache_key = (key, self.marked_for_removal)
         try:
-            pixmap = self._pixmap_cache[key]
+            pixmap = self._pixmap_cache[cache_key]
         except KeyError:
             if len(self.data) == 1:
                 pixmap = QtGui.QPixmap()
@@ -202,7 +216,9 @@ class CoverArtThumbnail(ActiveLabel):
                     pixmap = self.file_missing_pixmap
             else:
                 pixmap = self.render_cover_stack(self.data, has_common_images)
-            self._pixmap_cache[key] = pixmap
+            if self.marked_for_removal:
+                pixmap = apply_removal_overlay(pixmap)
+            self._pixmap_cache[cache_key] = pixmap
 
         self.setPixmap(pixmap)
         self.current_pixmap_key = key

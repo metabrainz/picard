@@ -54,6 +54,21 @@ def find_starting_directory():
     return find_existing_path(path)
 
 
+def apply_removal_overlay(pixmap):
+    """Draw a dotted translucent red overlay signaling the image will be removed from tags."""
+    overlaid = QtGui.QPixmap(pixmap)
+    painter = QtGui.QPainter(overlaid)
+    brush = QtGui.QBrush(QtGui.QColor(200, 0, 0, 200), QtCore.Qt.BrushStyle.Dense4Pattern)
+    painter.fillRect(overlaid.rect(), brush)
+    painter.end()
+    return overlaid
+
+
+def strikethrough_removal_text(text):
+    """Style rich text as struck-through dark red, signaling removal from tags."""
+    return f'<span style="color:#a00000; text-decoration:line-through;">{text}</span>'
+
+
 def _picardize_caption(caption):
     return _("%s - %s") % (caption, PICARD_DISPLAY_NAME)
 

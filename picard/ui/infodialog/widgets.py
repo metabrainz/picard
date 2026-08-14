@@ -33,11 +33,15 @@ from typing import ClassVar
 
 from PyQt6 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
 from picard.i18n import gettext as _
+
+from picard.ui.util import (
+    apply_removal_overlay,
+    strikethrough_removal_text,
+)
 
 
 class ArtworkCoverWidget(QtWidgets.QWidget):
@@ -59,7 +63,7 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
                 QtCore.Qt.TransformationMode.SmoothTransformation,
             )
             if marked_for_removal:
-                scaled_pixmap = self._removal_overlay(scaled_pixmap)
+                scaled_pixmap = apply_removal_overlay(scaled_pixmap)
             image_label = QtWidgets.QLabel()
             image_label.setPixmap(scaled_pixmap)
             image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -67,7 +71,7 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
 
         if text is not None:
             if marked_for_removal:
-                text = self._strikethrough_text(text)
+                text = strikethrough_removal_text(text)
             text_label = QtWidgets.QLabel()
             text_label.setText(text)
             text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -75,20 +79,6 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
             layout.addWidget(text_label)
 
         self.setLayout(layout)
-
-    @staticmethod
-    def _removal_overlay(pixmap):
-        """Draw a dotted translucent red overlay signaling the image will be removed from tags."""
-        overlaid = QtGui.QPixmap(pixmap)
-        painter = QtGui.QPainter(overlaid)
-        brush = QtGui.QBrush(QtGui.QColor(200, 0, 0, 200), QtCore.Qt.BrushStyle.Dense4Pattern)
-        painter.fillRect(overlaid.rect(), brush)
-        painter.end()
-        return overlaid
-
-    @staticmethod
-    def _strikethrough_text(text):
-        return f'<span style="color:#a00000; text-decoration:line-through;">{text}</span>'
 
 
 class ArtworkTable(QtWidgets.QTableWidget):

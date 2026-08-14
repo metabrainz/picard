@@ -37,6 +37,7 @@
 
 from collections.abc import Sequence
 from functools import partial
+from html import escape
 import os
 import re
 
@@ -69,13 +70,13 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
-from .coverartthumbnail import (
-    THUMBNAIL_WIDTH,
-    CoverArtThumbnail,
-)
+from .coverartthumbnail import CoverArtThumbnail
 from .imageurldialog import ImageURLDialog
 
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    strikethrough_removal_text,
+)
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
@@ -91,6 +92,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
         self.item = None
+        self._removal_predicted = False
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -112,15 +114,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
             QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
         )
         self.orig_cover_art_info_label.setWordWrap(True)
-        self.cover_removal_warning_label = QtWidgets.QLabel('')
-        self.cover_removal_warning_label.setAlignment(
-            QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
-        )
-        self.cover_removal_warning_label.setWordWrap(True)
-        # Keep wrapping within the thumbnail column instead of widening the box
-        self.cover_removal_warning_label.setMaximumWidth(THUMBNAIL_WIDTH)
-        self.cover_removal_warning_label.setStyleSheet('QLabel { color: #a00000; font-weight: bold; }')
-        self.cover_removal_warning_label.setHidden(True)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.show_details_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info
@@ -131,7 +124,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
         self.layout.addWidget(self.orig_cover_art_info_label)
-        self.layout.addWidget(self.cover_removal_warning_label)
         self.layout.addWidget(self.show_details_button)
         self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
@@ -155,8 +147,15 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 self.orig_cover_art.show()
 
         # We want to show the 2 coverarts only if they are different
-        # and orig_cover_art data is set and not the default cd shadow
-        if self.orig_cover_art.data is None or self.cover_art.data is None or self.cover_art == self.orig_cover_art:
+        # and orig_cover_art data is set and not the default cd shadow.
+        # When removal is predicted, the original tagged image and the
+        # exported copy are shown separately even if they are identical, so
+        # the artwork being kept as a file remains visible and unmarked.
+        data_missing = self.orig_cover_art.data is None or self.cover_art.data is None
+        # __eq__ requires both data to be set, so only compare when present
+        same_data = not data_missing and self.cover_art == self.orig_cover_art
+        removal_predicted = self._removal_predicted
+        if data_missing or (same_data and not removal_predicted):
             self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(False)
             self.orig_cover_art_label.setText('')
@@ -167,7 +166,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
             # Show headers above when both are visible
-            self.cover_art_label.setText(_('New Cover Art'))
+            if same_data and removal_predicted:
+                self.cover_art_label.setText(_('Saved to File'))
+            else:
+                self.cover_art_label.setText(_('New Cover Art'))
             self.orig_cover_art_label.setText(_('Original Cover Art'))
             self.orig_cover_art_info_label.setVisible(True)
 
@@ -175,6 +177,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # Tooltips must always show details regardless of preference
         tooltip_cover_lines = self._first_image_info_lines(self.cover_art.related_images)
         tooltip_orig_lines = self._first_image_info_lines(self.orig_cover_art.related_images)
+
+        cover_marked = self.cover_art.marked_for_removal
+        orig_marked = self.orig_cover_art.marked_for_removal
+        removal_notice = _("This cover art will be removed from tags when saved")
+        if cover_marked:
+            tooltip_cover_lines = [removal_notice, *tooltip_cover_lines]
+        if orig_marked:
+            tooltip_orig_lines = [removal_notice, *tooltip_orig_lines]
 
         # Labels can be toggled by preference for vertical space
         # Default is False per option definition
@@ -187,24 +197,20 @@ class CoverArtBox(QtWidgets.QGroupBox):
             cover_text_lines = []
             orig_text_lines = []
 
-        self.cover_art_info_label.setText("\n".join(cover_text_lines))
-        self.orig_cover_art_info_label.setText("\n".join(orig_text_lines))
+        self.cover_art_info_label.setText(self._format_info_text(cover_text_lines, marked_for_removal=cover_marked))
+        self.orig_cover_art_info_label.setText(self._format_info_text(orig_text_lines, marked_for_removal=orig_marked))
         self.cover_art_info_label.setVisible(bool(cover_text_lines))
         self.orig_cover_art_info_label.setVisible(bool(orig_text_lines) and self.orig_cover_art.isVisible())
 
         self.cover_art.setToolTip("<br/>".join(tooltip_cover_lines))
         self.orig_cover_art.setToolTip("<br/>".join(tooltip_orig_lines))
 
-        removal_warning_label = getattr(self, 'cover_removal_warning_label', None)
-        if removal_warning_label is not None:
-            removal_predicted = getattr(self, '_removal_predicted', False)
-            removal_warning_label.setText(_("\u26a0 Cover art will be removed from tags") if removal_predicted else '')
-            removal_warning_label.setVisible(removal_predicted)
-
     def set_item(self, item):
         if not item.can_show_coverart:
             self.cover_art.set_metadata(None)
             self.orig_cover_art.set_metadata(None)
+            self.cover_art.set_marked_for_removal(False)
+            self.orig_cover_art.set_marked_for_removal(False)
             self._removal_predicted = False
             self.update_display()
             return
@@ -237,10 +243,27 @@ class CoverArtBox(QtWidgets.QGroupBox):
             metadata
             and orig_metadata
             and orig_metadata.images
-            and metadata.images.should_remove_images_from_tags()
-            and not list(metadata.images.to_be_saved_to_tags())
+            and metadata.images.should_remove_images_from_tags(previous_images=orig_metadata.images)
+            and not list(metadata.images.to_be_saved_to_tags(previous_images=orig_metadata.images))
         )
+        if self._removal_predicted:
+            self.orig_cover_art.set_marked_for_removal(True)
+            # The exported copy is shown as its own unmarked panel (see
+            # update_display), so only the original needs the overlay.
+            self.cover_art.set_marked_for_removal(False)
+        else:
+            self.cover_art.set_marked_for_removal(False)
+            self.orig_cover_art.set_marked_for_removal(False)
         self.update_display()
+
+    @staticmethod
+    def _format_info_text(lines: list[str], *, marked_for_removal: bool = False) -> str:
+        """Join info lines, styled as struck-through red when marked for removal."""
+        if not lines:
+            return ""
+        if marked_for_removal:
+            return strikethrough_removal_text("<br/>".join(escape(line) for line in lines))
+        return "\n".join(lines)
 
     @staticmethod
     def _first_image_info_lines(
