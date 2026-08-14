@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 #
@@ -17,8 +16,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 import argparse
@@ -54,6 +52,11 @@ ALIASES = {
     'vishal choudhary': 'Vishal Choudhary',
     'vishichoudhary': 'Vishal Choudhary',
     'yvanzo': 'Yvan Rivière',
+    'knguyen': 'Khoa Nguyen',
+    'iron-prog': 'Deepak Tiwari',
+    'Stevil Knevil': 'StevilKnevil',
+    'deepakss-74': 'Deepak Kumar',
+    'Thuna': 'Thuna-Cing',
 }
 
 
@@ -141,7 +144,7 @@ def parse_file(path, encoding='utf-8'):
 
     fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
     skip_pattern = re.compile(
-        r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PyQt6)',
+        r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+Qt)',
         re.IGNORECASE,
     )
     with open(path, encoding=encoding) as f:
@@ -223,10 +226,6 @@ def parse_file(path, encoding='utf-8'):
         return found, authors_from_file, authors_from_log, "".join(before), "".join(after)
 
 
-CODING_TEXT = """# -*- coding: utf-8 -*-
-#
-"""
-
 LICENSE_TOP = """# Picard, the next-generation MusicBrainz tagger
 #
 """
@@ -243,8 +242,7 @@ LICENSE_BOTTOM = """#
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 """
 
 
@@ -285,7 +283,6 @@ def fix_header(path, encoding='utf-8'):
             None,
             [
                 found["shebang"],
-                CODING_TEXT.strip(),
                 LICENSE_TOP.strip() if not found['nolicense'] else None,
                 new_copyright.strip() if not found['nolicense'] else None,
                 (LICENSE_BOTTOM.strip() + ("\n\n" if has_content else "")) if not found['nolicense'] else None,
