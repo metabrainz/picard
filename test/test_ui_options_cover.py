@@ -53,6 +53,7 @@ def test_force_remove_images_false(cover_options_page):
 
 
 def test_save_keep_remove_images_true(cover_options_page):
+    cover_options_page.ui.save_images_to_tags.setChecked(False)
     cover_options_page.ui.save_images_to_files.setChecked(True)
     cover_options_page.ui.remove_images_from_tags.setChecked(True)
     cover_options_page.save()
@@ -60,3 +61,28 @@ def test_save_keep_remove_images_true(cover_options_page):
     config = get_config()
     assert config.setting['save_images_to_files'] is True
     assert config.setting['remove_images_from_tags'] is True
+
+
+def test_embed_and_remove_are_mutually_exclusive(cover_options_page):
+    cover_options_page.ui.save_images_to_files.setChecked(True)
+    cover_options_page.ui.save_images_to_tags.setChecked(False)
+    cover_options_page.ui.remove_images_from_tags.setChecked(True)
+    assert cover_options_page.ui.remove_images_from_tags.isEnabled()
+
+    # Enabling embed disables and unchecks remove, regardless of prior state
+    cover_options_page.ui.save_images_to_tags.setChecked(True)
+    assert not cover_options_page.ui.remove_images_from_tags.isEnabled()
+    assert not cover_options_page.ui.remove_images_from_tags.isChecked()
+
+    cover_options_page.save()
+    config = get_config()
+    assert config.setting['save_images_to_tags'] is True
+    assert config.setting['remove_images_from_tags'] is False
+
+
+def test_load_disables_remove_when_embed_enabled(cover_options_page):
+    cover_options_page.ui.save_images_to_tags.setChecked(True)
+    assert not cover_options_page.ui.remove_images_from_tags.isEnabled()
+
+    cover_options_page.ui.save_images_to_tags.setChecked(False)
+    assert cover_options_page.ui.remove_images_from_tags.isEnabled()
