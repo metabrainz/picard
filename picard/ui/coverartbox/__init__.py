@@ -62,6 +62,7 @@ from picard.coverart.setters import (
     CoverArtSetterMode,
 )
 from picard.i18n import gettext as _
+from picard.metadata import Metadata
 from picard.util import (
     bytes2human,
     imageinfo,
@@ -93,6 +94,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.setFlat(True)
         self.item = None
         self._removal_predicted = False
+        # Snapshot of the last image known to be exported to an external file,
+        # kept so the box can still show it once remove_images_from_tags has
+        # cleared it from orig_metadata.images (see update_metadata).
+        self._exported_images = None
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -155,13 +160,18 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # __eq__ requires both data to be set, so only compare when present
         same_data = not data_missing and self.cover_art == self.orig_cover_art
         removal_predicted = self._removal_predicted
+        # cover_art has no live source of its own anymore (nothing left in
+        # metadata or orig_metadata), it's showing the exported snapshot instead.
+        showing_exported_only = (
+            self.orig_cover_art.data is None and self.cover_art.data is not None and self._exported_images
+        )
         if data_missing or (same_data and not removal_predicted):
             self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(False)
             self.orig_cover_art_label.setText('')
             self.orig_cover_art_info_label.setVisible(False)
             # No header above cover art when only one
-            self.cover_art_label.setText('')
+            self.cover_art_label.setText(_('Saved to File') if showing_exported_only else '')
         else:
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
@@ -212,9 +222,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.cover_art.set_marked_for_removal(False)
             self.orig_cover_art.set_marked_for_removal(False)
             self._removal_predicted = False
+            self._exported_images = None
             self.update_display()
             return
 
+        if self.item is not item:
+            self._exported_images = None
         if self.item and hasattr(self.item, 'metadata_images_changed'):
             self.item.metadata_images_changed.disconnect(self.update_metadata)
         self.item = item
@@ -231,10 +244,19 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
-        if not metadata or not metadata.images:
-            self.cover_art.set_metadata(orig_metadata)
-        else:
+        if metadata and metadata.images:
             self.cover_art.set_metadata(metadata)
+            self._exported_images = None
+        elif orig_metadata and orig_metadata.images:
+            self.cover_art.set_metadata(orig_metadata)
+        elif self._exported_images:
+            # remove_images_from_tags already cleared orig_metadata.images, but
+            # the image itself was kept as an external file (see ImageList);
+            # nothing in the current metadata references it anymore, so fall
+            # back to the snapshot taken below before it was cleared.
+            self.cover_art.set_metadata(Metadata(images=self._exported_images))
+        else:
+            self.cover_art.set_metadata(orig_metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
 
         # Predict whether saving will strip cover art already embedded in tags,
@@ -251,6 +273,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
             # The exported copy is shown as its own unmarked panel (see
             # update_display), so only the original needs the overlay.
             self.cover_art.set_marked_for_removal(False)
+            # Snapshot what will be exported before the next save clears
+            # orig_metadata.images, so it stays visible afterwards.
+            self._exported_images = orig_metadata.images.copy()
         else:
             self.cover_art.set_marked_for_removal(False)
             self.orig_cover_art.set_marked_for_removal(False)

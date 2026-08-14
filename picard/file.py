@@ -117,6 +117,7 @@ from picard.util.filenaming import (
     make_short_filename,
     move_ensure_casing,
 )
+from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
 
 from picard.ui.filter import Filter
@@ -598,7 +599,19 @@ class File(MetadataItem):
             length = self.orig_metadata.length
             temp_info = {}
             self._copy_file_info_tags(temp_info, self.orig_metadata)
-            images_changed = self.orig_metadata.images != self.metadata.images
+            # Determine what images actually ended up embedded in tags, using the
+            # same rules the format save code applies (see ImageList). This can
+            # differ from self.metadata.images alone: per-file "never replace"
+            # filters may reject a new image for tags, or remove_images_from_tags
+            # may have cleared tags while the image was kept as an external file.
+            images_to_save = list(self.metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
+            if images_to_save:
+                embedded_images = ImageList(images_to_save)
+            elif self.metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images):
+                embedded_images = ImageList()
+            else:
+                embedded_images = self.orig_metadata.images.copy()
+            images_changed = self.orig_metadata.images != embedded_images
             # Copy new metadata to original metadata, applying format specific
             # conversions (e.g. for ID3v2.3)
             config = get_config()
@@ -607,6 +620,10 @@ class File(MetadataItem):
                 self.orig_metadata = new_metadata
             else:
                 self.orig_metadata.update(new_metadata)
+            # Metadata.update() (and the plain replace above) leave images
+            # untouched when the new list is empty, but an empty result here is
+            # exactly what "removed from tags" means, so set it explicitly.
+            self.orig_metadata.images = embedded_images
             # After saving deleted tags should no longer be marked deleted
             self.metadata.clear_deleted()
             self.orig_metadata.clear_deleted()

@@ -191,6 +191,7 @@ class _RemovalBox:
         self.item = item
         self.cover_art = _RemovalThumb()
         self.orig_cover_art = _RemovalThumb()
+        self._exported_images = None
 
     def update_display(self, force: bool = False) -> None:
         pass
@@ -251,3 +252,22 @@ def test_update_metadata_no_removal_without_orig_images(removal_settings) -> Non
     box.update_metadata()
     assert not box._removal_predicted
     assert not box.cover_art.marked_for_removal
+
+
+def test_update_metadata_keeps_showing_exported_image_after_save(removal_settings) -> None:
+    """Once a save has cleared orig_metadata.images (see File._saving_finished),
+    cover_art must keep showing the image that was exported instead of falling
+    back to nothing, since neither metadata nor orig_metadata reference it
+    anymore."""
+    image = FakeImage()
+    box = _RemovalBox(_make_item([], [image]))
+    box.update_metadata()
+    assert box._removal_predicted
+    assert box.cover_art.data == [image]
+
+    # Simulate the save completing: orig_metadata.images is now empty too.
+    box.item = _make_item([], [])
+    box.update_metadata()
+    assert not box._removal_predicted
+    assert box.cover_art.data == [image]
+    assert box.orig_cover_art.data is None
