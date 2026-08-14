@@ -18,24 +18,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from test.picardtestcase import MockTagger
-
 from picard.config import get_config
 
 import pytest
 
-import picard.ui.options as options_module
 from picard.ui.options.cover import CoverOptionsPage
 
 
-@pytest.fixture(autouse=True)
-def _patch_tagger_instance(monkeypatch):
-    tagger = MockTagger()
-    monkeypatch.setattr(options_module, 'tagger_instance', lambda: tagger)
-
-
 @pytest.fixture()
-def cover_options_page(qapp):
+def cover_options_page(qapp, patch_tagger_instance):
+    patch_tagger_instance('picard.ui.options')
+
     page = CoverOptionsPage()
     page.load()
     return page
