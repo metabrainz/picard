@@ -278,12 +278,14 @@ class ASFFile(File):
             if cover:
                 tags['WM/Picture'] = cover
         cover = []
-        for image in metadata.images.to_be_saved_to_tags():
+        for image in metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images):
             tag_data = pack_image(image.mimetype, image.data, image.id3_type, image.comment)
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             tags['WM/Picture'] = cover
-        elif 'WM/Picture' in tags and metadata.images.should_remove_images_from_tags():
+        elif 'WM/Picture' in tags and metadata.images.should_remove_images_from_tags(
+            previous_images=self.orig_metadata.images
+        ):
             del tags['WM/Picture']
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

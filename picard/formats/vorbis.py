@@ -272,7 +272,7 @@ class VCommentFile(File):
         if file.tags is None:
             file.add_tags()
         assert file.tags is not None
-        remove_images = metadata.images.should_remove_images_from_tags()
+        remove_images = metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images)
         if config.setting['clear_existing_tags']:
             preserve_tags = ['waveformatextensible_channel_mask']
             if not is_flac and not remove_images and config.setting['preserve_images']:
@@ -285,7 +285,7 @@ class VCommentFile(File):
             file.tags.clear()
             for name, value in preserved_values.items():
                 file.tags[name] = value
-        images_to_save = list(metadata.images.to_be_saved_to_tags())
+        images_to_save = list(metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
         if is_flac and (
             images_to_save
             or remove_images

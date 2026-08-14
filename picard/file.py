@@ -767,10 +767,8 @@ class File(MetadataItem):
 
     def _save_images(self, dirname, metadata):
         """Save the cover images to disk."""
-        if not metadata.images:
-            return
         counters = Counter()
-        for image in metadata.images.to_be_saved_to_files():
+        for image in metadata.images.to_be_saved_to_files(previous_images=self.orig_metadata.images):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename, config):

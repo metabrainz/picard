@@ -334,6 +334,43 @@ class ImageListTest(PicardTestCase):
         with self.assertRaises(KeyError):
             next(to_be_saved(settings))
 
+    def test_to_be_saved_to_tags_with_previous_images(self):
+        """A "never replace with smaller" rejection only excludes the image
+        from tags, it stays available for external file saving."""
+        self.set_config_values(
+            {
+                'dont_replace_with_smaller_cover': True,
+                'dont_replace_cover_of_types': False,
+                'dont_replace_included_types': [],
+            }
+        )
+        settings = {
+            "save_images_to_tags": True,
+            "embed_only_one_front_image": False,
+        }
+        previous_image = self.images['b']  # front, larger by default (same size here)
+        previous_image.width = 1000
+        previous_image.height = 1000
+        previous_images = ImageList([previous_image])
+
+        smaller_front = self.images['c']
+        smaller_front.width = 500
+        smaller_front.height = 500
+        self.imagelist.append(smaller_front)
+
+        # rejected for tags because it is smaller than the previous front image
+        self.assertEqual(list(self.imagelist.to_be_saved_to_tags(settings, previous_images)), [])
+        # still available for saving to an external file
+        self.assertEqual(
+            list(
+                self.imagelist.to_be_saved_to_files({"save_images_to_files": True, "save_only_one_front_image": False})
+            ),
+            [smaller_front],
+        )
+
+        # without previous_images, no per-file filtering happens
+        self.assertEqual(list(self.imagelist.to_be_saved_to_tags(settings)), [smaller_front])
+
     def test_to_be_saved_to_files(self):
         def to_be_saved(settings):
             return self.imagelist.to_be_saved_to_files(settings=settings)
@@ -376,6 +413,71 @@ class ImageListTest(PicardTestCase):
         del settings["save_images_to_files"]
         with self.assertRaises(KeyError):
             next(to_be_saved(settings))
+
+    def test_should_remove_images_from_tags_requires_something_to_export(self):
+        """Never report tags-removal as intended unless an image will
+        actually be saved to an external file, to avoid deleting cover art
+        without keeping it anywhere (see PICARD-3380)."""
+        settings = {
+            "remove_images_from_tags": True,
+            "save_images_to_files": True,
+            "save_only_one_front_image": False,
+        }
+        # nothing in the list to export: must not report removal as safe
+        self.assertFalse(self.imagelist.should_remove_images_from_tags(settings))
+
+        # an image is available to export: removal is safe
+        self.imagelist.append(self.images['a'])
+        self.assertTrue(self.imagelist.should_remove_images_from_tags(settings))
+
+        # explicitly disabled by user
+        settings["remove_images_from_tags"] = False
+        self.assertFalse(self.imagelist.should_remove_images_from_tags(settings))
+
+        # not saving to files at all: nothing will be kept
+        settings["remove_images_from_tags"] = True
+        settings["save_images_to_files"] = False
+        self.assertFalse(self.imagelist.should_remove_images_from_tags(settings))
+
+    def test_to_be_saved_to_files_keeps_higher_quality_previous_image(self):
+        """When tags are about to be cleared, a previously tagged image is
+        exported to disk instead of being lost, unless a same-or-better
+        replacement is already being exported (see PICARD-3380)."""
+
+        def front_image(name, width, height):
+            image = CoverArtImage(
+                url='file://' + name,
+                data=create_fake_png(name.encode('utf-8')),
+                types=['front'],
+                support_types=True,
+            )
+            image.width = width
+            image.height = height
+            return image
+
+        settings = {
+            "remove_images_from_tags": True,
+            "save_images_to_files": True,
+            "save_only_one_front_image": False,
+        }
+        previous_front = front_image('previous', 1000, 1000)
+        previous_images = ImageList([previous_front])
+
+        # no new image at all: the previous (tagged) image is preserved
+        self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [previous_front])
+
+        # new replacement is smaller: the previous, bigger image is used instead
+        smaller_front = front_image('smaller', 500, 500)
+        self.imagelist.append(smaller_front)
+        self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [previous_front])
+
+        # new replacement is bigger: it is exported, the previous one is not duplicated
+        bigger_front = front_image('bigger', 2000, 2000)
+        self.imagelist = ImageList([bigger_front])
+        self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [bigger_front])
+
+        # without previous_images, nothing extra is added
+        self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings)), [bigger_front])
 
     def test_strip_front_images(self):
         self.imagelist.append(self.images['a'])

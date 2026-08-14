@@ -38,10 +38,7 @@
 from enum import IntEnum
 
 from picard import log
-from picard.config import get_config
 from picard.coverart.image import CoverArtImage
-from picard.coverart.processing.filters import filter_image_for_file
-from picard.debug_opts import DebugOpt
 from picard.file import File
 from picard.item import MetadataItem
 
@@ -97,8 +94,9 @@ class CoverArtSetter:
         """
         Set the cover art image on an object based on the current mode.
 
-        For File objects, applies per-file "never replace" filters when
-        save_images_to_tags is enabled.
+        Per-file "never replace" filters are applied later, when tags are
+        actually saved (see `ImageList.to_be_saved_to_tags`), so the image is
+        always appended here and remains available for external file saving.
 
         Parameters
         ----------
@@ -108,24 +106,8 @@ class CoverArtSetter:
         Returns
         -------
         bool
-            True if the image was set, False if filtered out
+            True if the image was set
         """
-        if isinstance(obj, File) and get_config().setting['save_images_to_tags']:
-            if not filter_image_for_file(self.coverartimage, obj.orig_metadata.images):
-                log.debug_if(
-                    DebugOpt.COVERART,
-                    "Per-file filter rejected %r for %r",
-                    self.coverartimage,
-                    obj,
-                )
-                return False
-            log.debug_if(
-                DebugOpt.COVERART,
-                "Per-file filter accepted %r for %r",
-                self.coverartimage,
-                obj,
-            )
-
         attrs_to_update = ['metadata']
         # Update original metadata, if requested, but not for files unless they
         # are the source object.
