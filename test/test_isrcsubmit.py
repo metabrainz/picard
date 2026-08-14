@@ -356,6 +356,7 @@ class ISRCUpdateTest(PicardTestCase):
         self.tagger.isrc_submit_manager = self.manager
         self.tagger.window = MagicMock()
         self.tagger.window.enable_action = MagicMock()
+        self._tracks = []
 
     def _make_file_with_track(self, file_isrcs, mb_isrcs, recording_id='rec-1'):
         """Create a File with a mock parent track."""
@@ -367,6 +368,7 @@ class ISRCUpdateTest(PicardTestCase):
         track.orig_metadata.__getitem__ = lambda self, key: recording_id if key == 'musicbrainz_recordingid' else ''
         track.orig_metadata.getall = lambda key: mb_isrcs if key == 'isrc' else []
         file.parent_item = track
+        self._tracks.append(track)
         return file
 
     def test_single_new_isrc_submitted(self):
