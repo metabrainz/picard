@@ -52,6 +52,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.cluster import Cluster
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
@@ -276,8 +277,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         # Predict whether saving will strip cover art already embedded in tags,
         # using the same rules the format save code applies (see ImageList).
+        # Only show the removal indicator for items in the right pane (matched
+        # to an album/track). Files still in a cluster (left pane) haven't been
+        # matched yet, so the warning would be premature.
+        is_unmatched = isinstance(getattr(self.item, 'parent_item', None), Cluster)
         self._removal_predicted = bool(
-            metadata
+            not is_unmatched
+            and metadata
             and orig_metadata
             and orig_metadata.images
             and metadata.images.should_remove_images_from_tags(previous_images=orig_metadata.images)

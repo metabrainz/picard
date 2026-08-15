@@ -28,6 +28,7 @@ from PyQt6 import (
     QtGui,
 )
 
+from picard.cluster import Cluster
 from picard.config import get_config
 from picard.util.imagelist import ImageList
 from picard.util.lrucache import LRUCache
@@ -253,6 +254,19 @@ def test_update_metadata_no_removal_without_orig_images(removal_settings) -> Non
     box.update_metadata()
     assert not box._removal_predicted
     assert not box.cover_art.marked_for_removal
+
+
+def test_update_metadata_no_removal_for_file_in_cluster(removal_settings) -> None:
+    """Files in a cluster (left pane) should not show the removal indicator.
+    The warning should only appear once the file is matched to a track."""
+    image = FakeImage()
+    item = _make_item([image], [image])
+    # Simulate a File whose parent_item is a Cluster
+    item.parent_item = Cluster("Test Cluster")
+    box = _RemovalBox(item)
+    box.update_metadata()
+    assert not box._removal_predicted
+    assert not box.orig_cover_art.marked_for_removal
 
 
 def test_update_metadata_keeps_showing_exported_image_after_save(removal_settings) -> None:
