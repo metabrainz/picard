@@ -335,6 +335,164 @@ ALL_TAGS = TagVars(
         is_from_mb=False,
     ),
     TagVar(
+        'dance_caller',
+        shortdesc=N_('Caller'),
+        longdesc=N_('The name of the dance caller(s) heard in the track.'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_choreographer',
+        shortdesc=N_('Dance Choreographer'),
+        longdesc=N_('The name of the author(s) of the danc(es) being called in the track for called folk dances.'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+        is_multi_value=True,
+    ),
+    TagVar(
+        'dance_choreography',
+        shortdesc=N_('Dance Choreography'),
+        longdesc=N_(
+            'The moves of the dance as text for called folk dances. This should not include the dance title, author, or other information covered by other tags.'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_crooked',
+        shortdesc=N_('Crooked'),
+        longdesc=N_('Whether a traditional called folk dance tune is "crooked" (ie. not in perfect dance form).'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_form',
+        shortdesc=N_('Dance Form'),
+        longdesc=N_(
+            'The form of a called dance with no particular format, eg. "contra" or "square dance" or "duple minor improper contra".'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_intro',
+        shortdesc=N_('Intro Beats'),
+        longdesc=N_('The number of intro beats before the dance or any potatoes for called folk dances.'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_issong',
+        shortdesc=N_('Has Vocals'),
+        longdesc=N_(
+            'Whether the track is a song (has sung vocals other than the caller) or a tune (instrumental only) for traditional music forms that make this distinction.'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_license',
+        shortdesc=N_('Dance License'),
+        longdesc=N_(
+            'Like the license field except relating to the choreography of the dance being called for called folk dances.'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_potatoes',
+        shortdesc=N_('Potatoes'),
+        longdesc=N_('The number of "potatoes" (syncronization beats played before some traditional folk dances).'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_roles',
+        shortdesc=N_('Dance Roles'),
+        longdesc=N_(
+            'The role terms used for calls in a called folk dance, eg. "Larks/Robins" or "Leads/Follows" or "Positional".'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_start',
+        shortdesc=N_('Dance Start Time'),
+        longdesc=N_('The start time (in milliseconds) of the first time through the dance in a called folk dance.'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+    ),
+    TagVar(
+        'dance_times',
+        shortdesc=N_('Dance Times'),
+        longdesc=N_(
+            'The number of complete times through the dance excluding any intro, outro, or potatoes for a called folk dance. The exact definition will depend on the type of dance.'
+        ),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+        is_multi_value=True,
+    ),
+    TagVar(
+        'dance_title',
+        shortdesc=N_('Dance Title'),
+        longdesc=N_('The name of the dance(es) being called for called folk dances.'),
+        doc_links=(
+            DocumentLink(
+                N_('I-D: Metadata for Called Folk Dances'),
+                'https://datatracker.ietf.org/doc/draft-swhited-contra-tags/',
+            ),
+        ),
+        is_multi_value=True,
+    ),
+    TagVar(
         'datatrack',
         shortdesc=N_('Data Track'),
         longdesc=N_('Set to 1 if the track is a "data track", otherwise empty.'),

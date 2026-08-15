@@ -137,6 +137,18 @@ class VCommentFile(File):
             'musicbrainz_releasetrackid': 'musicbrainz_trackid',
             'musicbrainz_trackid': 'musicbrainz_recordingid',
             'waveformatextensible_channel_mask': '~waveformatextensible_channel_mask',
+            'dance:caller': 'dance_caller',
+            'dance:choreographer': 'dance_choreographer',
+            'dance:choreography': 'dance_choreography',
+            'dance:crooked': 'dance_crooked',
+            'dance:form': 'dance_form',
+            'dance:intro': 'dance_intro',
+            'dance:issong': 'dance_song',
+            'dance:license': 'dance_license',
+            'dance:potatoes': 'dance_potatoes',
+            'dance:roles': 'dance_roles',
+            'dance:start': 'dance_start',
+            'dance:titles': 'dance_titles',
         }
     )
     __rtranslate = MappingProxyType({v: k for k, v in __translate.items()})
