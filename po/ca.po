@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-12 13:12+0000\n"
+"PO-Revision-Date: 2026-08-15 12:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -248,7 +248,7 @@ msgstr "ISRC"
 
 #: picard/debug_opts.py:172
 msgid "Log ISRC processing, submission, and lookup details"
-msgstr ""
+msgstr "Registra els detalls de processament, enviament i cerca d'ISRC"
 
 #: picard/file.py:329
 msgid "Cannot save file: the file no longer exists."
@@ -288,39 +288,31 @@ msgstr "S'estan cercant les metadades del fitxer %(filename)s…"
 
 #: picard/isrcsubmit.py:272
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "S'ha trobat el mateix ISRC per a enregistraments diferents"
 
 #: picard/isrcsubmit.py:278
 msgid "ISRC already assigned to another track on this release"
-msgstr ""
+msgstr "L'ISRC ja s'ha assignat a una altra pista d'aquesta publicació"
 
 #: picard/isrcsubmit.py:281
-#, fuzzy
-#| msgid "Fingerprint has already been submitted"
 msgid "ISRC already submitted"
-msgstr "Ja s'ha enviat l'empremta"
+msgstr "Ja s'ha enviat l'ISRC"
 
 #: picard/isrcsubmit.py:286
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "El fitxer té diversos ISRC (origen incert)"
 
 #: picard/isrcsubmit.py:325
-#, fuzzy
-#| msgid "Submitting AcoustIDs …"
 msgid "Submitting ISRCs …"
-msgstr "S'estan enviant els AcoustID…"
+msgstr "S'estan enviant els ISRC…"
 
 #: picard/isrcsubmit.py:336
-#, fuzzy
-#| msgid "AcoustID submission not configured"
 msgid "ISRC submission failed"
-msgstr "No s'ha configurat l'enviament d'AcoustID"
+msgstr "No s'ha pogut enviar l'ISRC"
 
 #: picard/isrcsubmit.py:351
-#, fuzzy
-#| msgid "AcoustID submission finished successfully"
 msgid "ISRC submission finished successfully"
-msgstr "L'enviament d'AcoustID ha finalitzat correctament"
+msgstr "L'enviament d'ISRC ha finalitzat correctament"
 
 #: picard/item.py:345
 #, python-format
@@ -614,7 +606,7 @@ msgstr "Envia al servidor configurat"
 #: picard/options.py:349 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr ""
+msgstr "Llegeix els ISRC del CD"
 
 #: picard/options.py:350
 msgid "Enable managing user collections"
@@ -622,7 +614,7 @@ msgstr "Habilita la gestió de col·leccions de l'usuari"
 
 #: picard/options.py:355 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
-msgstr ""
+msgstr "Suprimeix els àlbums complets després de desar"
 
 #: picard/options.py:361
 msgid "Use album artist genres"
@@ -717,8 +709,6 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr "Habilita l'enviament de reproduccions a ListenBrainz"
 
 #: picard/options.py:418
-#, fuzzy
-#| msgid "Submit only tagged files ListenBrainz"
 msgid "Submit only tagged files to ListenBrainz"
 msgstr "Envia només els fitxers etiquetats a ListenBrainz"
 
@@ -904,10 +894,8 @@ msgid "Preferred release types"
 msgstr "Tipus de publicacions preferits"
 
 #: picard/options.py:579
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Discouraged release types"
-msgstr "Tipus de publicacions preferits"
+msgstr "Tipus de publicacions no recomanats"
 
 #: picard/options.py:583 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
@@ -1478,17 +1466,6 @@ msgid "Cover Art Archive: Release Group"
 msgstr "Cover Art Archive: Grup de publicacions"
 
 #: picard/coverart/providers/local.py:45
-#, fuzzy
-#| msgid ""
-#| "<html><head/><body>\n"
-#| "<p>You can add genres to test filters against, one per line.<br/>\n"
-#| "This playground will not be preserved on Options exit.\n"
-#| "</p>\n"
-#| "<p>\n"
-#| "Red background means the tag will be skipped.<br/>\n"
-#| "Green background means the tag will be kept.\n"
-#| "</p>\n"
-#| "</body></html>"
 msgid ""
 "<html><head/><body>\n"
 "<p>Enter file names to test the regex against, one per line.<br/>\n"
@@ -1501,18 +1478,19 @@ msgid ""
 "</body></html>"
 msgstr ""
 "<html><head/><body>\n"
-"<p>Podeu afegir gèneres per a provar els filtres, un per línia.<br/>\n"
-"Aquest espai de proves s'esborrarà quan sortiu de les opcions.\n"
+"<p>Introduïu noms de fitxers amb què provar l'expressió regular, un per "
+"línia.<br/>\n"
+"Aquest espai de proves s'esborrarà quan sortiu.\n"
 "</p>\n"
 "<p>\n"
-"Un fons vermell indica que s'ometrà l'etiqueta.<br/>\n"
-"Un fons verd indica que es conservarà l'etiqueta.\n"
+"Un fons vermell indica que el nom del fitxer no coincideix.<br/>\n"
+"Un fons verd indica que el nom del fitxer coincideix.\n"
 "</p>\n"
 "</body></html>"
 
 #: picard/coverart/providers/local.py:76
 msgid "Enter file names to test, one per line"
-msgstr ""
+msgstr "Introduïu els noms dels fitxers que voleu provar, un per línia"
 
 #: picard/coverart/providers/local.py:106
 msgid "Local Files"
@@ -3467,10 +3445,8 @@ msgid "Documentation"
 msgstr "Documentació"
 
 #: picard/ui/aboutdialog.py:193
-#, fuzzy
-#| msgid "Community"
 msgid "Community forum"
-msgstr "Comunitat"
+msgstr "Fòrum de la comunitat"
 
 #: picard/ui/aboutdialog.py:194
 msgid "License"
@@ -3552,19 +3528,15 @@ msgstr "Núm. de catàleg"
 #: picard/ui/cdlookup.py:152
 #, python-format
 msgid "View ISRCs (%(count)d)"
-msgstr ""
+msgstr "Visualitza els ISRC (%(count)d)"
 
 #: picard/ui/cdlookup.py:224
-#, fuzzy
-#| msgid "Disc IDs"
 msgid "Disc ISRCs"
-msgstr "ID del disc"
+msgstr "ISRC del disc"
 
 #: picard/ui/cdlookup.py:245
-#, fuzzy
-#| msgid "Clos&e"
 msgid "&Close"
-msgstr "T&anca"
+msgstr "Tan&ca"
 
 #: picard/ui/collectionmenu.py:64
 msgid "Refresh List"
@@ -3777,32 +3749,24 @@ msgid "Pending requests"
 msgstr "Peticions pendents"
 
 #: picard/ui/isrcsubmitdialog.py:44 picard/ui/options/interface_toolbar.py:126
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit ISRCs"
-msgstr "Envia les empremtes AcoustID"
+msgstr "Envia els ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:48
-#, fuzzy
-#| msgid "The following releases on MusicBrainz match the CD:"
 msgid "The following ISRCs will be submitted to MusicBrainz:"
-msgstr "Les publicacions de MusicBrainz següents coincideixen amb el CD:"
+msgstr "S'enviaran els ISRC següents a MusicBrainz:"
 
 #: picard/ui/isrcsubmitdialog.py:52 picard/ui/itemviews/columns.py:126
 msgid "Title"
 msgstr "Títol"
 
 #: picard/ui/isrcsubmitdialog.py:52
-#, fuzzy
-#| msgid "Existing Cover"
 msgid "Existing ISRCs"
-msgstr "Caràtula existent"
+msgstr "ISRC existents"
 
 #: picard/ui/isrcsubmitdialog.py:52
-#, fuzzy
-#| msgid "ISRC"
 msgid "New ISRC"
-msgstr "ISRC"
+msgstr "ISRC nou"
 
 #: picard/ui/isrcsubmitdialog.py:97
 msgid "&Submit"
@@ -4898,18 +4862,21 @@ msgid ""
 "A <a href=\"https://metabrainz.org\">MetaBrainz Foundation</a> project, "
 "powered by the <a href=\"https://musicbrainz.org\">MusicBrainz</a> database."
 msgstr ""
+"Un projecte de la <a href=\"https://metabrainz.org\">MetaBrainz Foundation</"
+"a>, amb la tecnologia de la base de dades <a href=\"https://"
+"musicbrainz.org\">MusicBrainz</a>."
 
 #: picard/ui/forms/ui_aboutdialog.py:251
 msgid ""
 "Translated by the MusicBrainz community. Thank you to everyone who helps "
 "make Picard available in more languages!"
 msgstr ""
+"Traduït per la comunitat de MusicBrainz. Gràcies a totes les persones que "
+"ajuden que Picard estigui disponible en més llengües!"
 
 #: picard/ui/forms/ui_aboutdialog.py:252
-#, fuzzy
-#| msgid "Plugin Translations"
 msgid "Help with translation"
-msgstr "Traduccions dels connectors"
+msgstr "Vull ajudar amb la traducció"
 
 #: picard/ui/forms/ui_cdlookup.py:91 picard/ui/forms/ui_options_cdlookup.py:50
 #: picard/ui/forms/ui_options_cdlookup_select.py:56
@@ -5146,6 +5113,8 @@ msgid ""
 "When enabled, ISRCs will be read from the CD during disc lookup. This may "
 "significantly slow down the disc read on some drives."
 msgstr ""
+"Si s'habilita, es llegiran els ISRC del CD durant la cerca del disc. Això "
+"pot alentir significativament la lectura del disc en algunes unitats."
 
 #: picard/ui/forms/ui_options_cdlookup_select.py:57
 msgid "Default CD-ROM drive to use for lookups:"
@@ -5362,16 +5331,13 @@ msgid "Log out"
 msgstr "Tanca la sessió"
 
 #: picard/ui/forms/ui_options_general.py:138
-#, fuzzy
-#| msgid "Enable managing user collections"
 msgid "Enable managing user collections (requires login)"
-msgstr "Habilita la gestió de col·leccions de l'usuari"
+msgstr ""
+"Habilita la gestió de col·leccions de l'usuari (requereix iniciar la sessió)"
 
 #: picard/ui/forms/ui_options_genres.py:147
-#, fuzzy
-#| msgid "Use only my genres"
 msgid "Use only my genres (requires login)"
-msgstr "Fes servir només els meus gèneres"
+msgstr "Fes servir només els meus gèneres (requereix iniciar la sessió)"
 
 #: picard/ui/forms/ui_options_genres.py:148
 msgid "Fall back to album's artists genres"
@@ -5526,14 +5492,12 @@ msgstr ""
 "Mostra les etiquetes següents sobre la resta a la visualització de metadades"
 
 #: picard/ui/forms/ui_options_lookup.py:85
-#, fuzzy
-#| msgid "File Naming"
 msgid "File Loading"
-msgstr "Nom dels fitxers"
+msgstr "Càrrega dels fitxers"
 
 #: picard/ui/forms/ui_options_lookup.py:89
 msgid "Query"
-msgstr ""
+msgstr "Consulta"
 
 #: picard/ui/forms/ui_options_lookup.py:90
 msgid "Maximum number of entities to return per MusicBrainz query"
@@ -5606,8 +5570,6 @@ msgid "Video tracks"
 msgstr "Pistes de vídeo"
 
 #: picard/ui/forms/ui_options_matching.py:144
-#, fuzzy
-#| msgid "Pregap tracks"
 msgid "Pre-gap tracks"
 msgstr "Pistes al pregap"
 
@@ -5787,10 +5749,8 @@ msgid "Move profile down"
 msgstr "Mou el perfil avall"
 
 #: picard/ui/forms/ui_options_ratings.py:55
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "Enable track ratings (requires login)"
-msgstr "Habilita les puntuacions de les pistes"
+msgstr "Habilita les puntuacions de les pistes (requereix iniciar la sessió)"
 
 #: picard/ui/forms/ui_options_ratings.py:58
 msgid ""
@@ -6170,7 +6130,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_provider_options_local.py:69
 msgid "Test file name matching:"
-msgstr ""
+msgstr "Prova de la coincidència del nom dels fitxers:"
 
 #: picard/ui/forms/ui_scripteditor.py:214
 msgid "Edit file naming script:"
@@ -7252,38 +7212,36 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow/__init__.py:2035
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "personal ratings"
-msgstr "Habilita les puntuacions de les pistes"
+msgstr "Puntuacions personals"
 
 #: picard/ui/mainwindow/__init__.py:2037
-#, fuzzy
-#| msgid "Collections"
 msgid "collections"
 msgstr "Col·leccions"
 
 #: picard/ui/mainwindow/__init__.py:2039
-#, fuzzy
-#| msgid "Minimal genre usage"
 msgid "personal genres/tags"
-msgstr "Ús mínim del gènere"
+msgstr "Gèneres/etiquetes personals"
 
 #: picard/ui/mainwindow/__init__.py:2043
 msgid "Your current settings require logging in to MusicBrainz to access:"
 msgstr ""
+"Els paràmetres actuals requereixen iniciar la sessió a MusicBrainz per a "
+"accedir al següent:"
 
 #: picard/ui/mainwindow/__init__.py:2047
 msgid "A feature you are using requires logging in to MusicBrainz."
 msgstr ""
+"Una característica que feu servir requereix que inicieu la sessió a "
+"MusicBrainz."
 
 #: picard/ui/mainwindow/__init__.py:2048
 msgid "Would you like to log in now?"
-msgstr ""
+msgstr "Voleu iniciar la sessió ara?"
 
 #: picard/ui/mainwindow/__init__.py:2058
 msgid "Waiting for MusicBrainz authentication…"
-msgstr ""
+msgstr "S'està esperant l'autenticació de MusicBrainz…"
 
 #: picard/ui/mainwindow/__init__.py:2064
 msgid "MusicBrainz authentication declined"
@@ -7291,7 +7249,7 @@ msgstr "S'ha rebutjat l'autenticació de MusicBrainz"
 
 #: picard/ui/mainwindow/__init__.py:2072
 msgid "Successfully authenticated with MusicBrainz"
-msgstr ""
+msgstr "Us heu autenticat correctament amb MusicBrainz"
 
 #: picard/ui/mainwindow/__init__.py:2078
 #, python-format
@@ -7416,16 +7374,12 @@ msgid "Submit acoustic fingerprints"
 msgstr "Envia les empremtes d'àudio"
 
 #: picard/ui/mainwindow/actions.py:216
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit &ISRCs"
-msgstr "Envia les empremtes AcoustID"
+msgstr "Envia els &ISRC"
 
 #: picard/ui/mainwindow/actions.py:217
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit ISRCs to MusicBrainz"
-msgstr "Envia les puntuacions a MusicBrainz"
+msgstr "Envia els ISRC a MusicBrainz"
 
 #: picard/ui/mainwindow/actions.py:225
 msgid "E&xit"
@@ -7460,10 +7414,8 @@ msgid "Lookup by &ISRC"
 msgstr "Cerca per &ISRC"
 
 #: picard/ui/mainwindow/actions.py:256
-#, fuzzy
-#| msgid "Lookup selected items in MusicBrainz"
 msgid "Lookup selected item by ISRC"
-msgstr "Cerca els elements seleccionats a MusicBrainz"
+msgstr "Cerca l'element seleccionat per ISRC"
 
 #: picard/ui/mainwindow/actions.py:265
 msgid "Submit cluster as release…"
@@ -7896,7 +7848,7 @@ msgstr "Avançat"
 
 #: picard/ui/options/cdlookup.py:73
 msgid "ISRC extraction is not supported on this platform."
-msgstr ""
+msgstr "L'extracció d'ISRC no és compatible amb aquesta plataforma."
 
 #: picard/ui/options/cover_processing.py:53
 msgid "Processing"
@@ -8699,7 +8651,7 @@ msgstr "Exporta el perfil a un fitxer"
 
 #: picard/ui/options/profiles.py:170
 msgid "Export unavailable, tomlkit is not installed"
-msgstr ""
+msgstr "L'exportació no està disponible, no s'ha instal·lat tomlkit"
 
 #: picard/ui/options/profiles.py:176
 msgid "Import a profile from a file or clipboard"
@@ -8920,10 +8872,8 @@ msgid "Preferred Releases"
 msgstr "Publicacions preferides"
 
 #: picard/ui/options/releases.py:86
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Preferred release types (higher priority first)"
-msgstr "Tipus de publicacions preferits"
+msgstr "Tipus de publicacions preferits (com més amunt, més prioritat)"
 
 #: picard/ui/options/releases.py:89
 msgid ""
@@ -8931,10 +8881,14 @@ msgid ""
 "<br>The top item gets the strongest preference.<br>Unlisted types are "
 "treated neutrally."
 msgstr ""
+"Quan diverses publicacions coincideixen amb un fitxer, els tipus d'aquesta "
+"llista obtenen una puntuació més alta.<br>L'element superior de la llista té "
+"la preferència més alta.<br>Els tipus no inclosos a la llista es tracten de "
+"manera neutral."
 
 #: picard/ui/options/releases.py:99
 msgid "Discouraged release types (avoided when matching)"
-msgstr ""
+msgstr "Tipus de publicacions no recomanats (s'eviten durant la coincidència)"
 
 #: picard/ui/options/releases.py:102
 msgid ""
@@ -8942,24 +8896,25 @@ msgid ""
 "chosen if no other release matches.<br>Useful for avoiding compilations, DJ-"
 "mixes, etc."
 msgstr ""
+"Les publicacions amb aquests tipus es penalitzen durant la coincidència.<br>"
+"Només es triaran si no coincideix cap altra publicació.<br>És útil per a "
+"evitar compilacions, mescles de DJ, etc."
 
 #: picard/ui/options/releases.py:118
-#, fuzzy
-#| msgid "Preferred release countries"
 msgid "Preferred release countries (higher priority first)"
-msgstr "Països de publicació preferits"
+msgstr "Països de publicació preferits (com més amunt, més prioritat)"
 
 #: picard/ui/options/releases.py:121
 msgid ""
 "When multiple editions of a release exist, prefer those from countries "
 "listed here.<br>The top country gets the strongest preference."
 msgstr ""
+"Quan existeixen diverses edicions d'una publicació, es prefereixen les dels "
+"països d'aquesta llista.<br>El país superior té la preferència més alta."
 
 #: picard/ui/options/releases.py:134
-#, fuzzy
-#| msgid "Preferred medium formats"
 msgid "Preferred medium formats (higher priority first)"
-msgstr "Formats de suport preferits"
+msgstr "Formats de suport preferits (com més amunt, més prioritat)"
 
 #: picard/ui/options/releases.py:137
 msgid ""
@@ -8967,6 +8922,9 @@ msgid ""
 "here (e.g. CD over Digital Media).<br>The top format gets the strongest "
 "preference."
 msgstr ""
+"Quan existeixen diverses edicions d'una publicació, es prefereixen els "
+"formats d'aquesta llista (per exemple, CD per davant de suport digital).<br>"
+"El format superior té la preferència més alta."
 
 #: picard/ui/options/renaming.py:63
 msgid "File Naming"
@@ -9842,19 +9800,15 @@ msgstr "Seleccioneu o indiqueu la referència a què voleu canviar."
 
 #: picard/ui/widgets/preferencelistwidget.py:35
 msgid "Add…"
-msgstr ""
+msgstr "Afegeix…"
 
 #: picard/ui/widgets/preferencelistwidget.py:90
-#, fuzzy
-#| msgid "Move tag up"
 msgid "Move up"
-msgstr "Mou l'etiqueta amunt"
+msgstr "Mou amunt"
 
 #: picard/ui/widgets/preferencelistwidget.py:91
-#, fuzzy
-#| msgid "Move tag down"
 msgid "Move down"
-msgstr "Mou l'etiqueta avall"
+msgstr "Mou avall"
 
 #: picard/ui/widgets/profilelistwidget.py:54
 msgid "Rename profile"
