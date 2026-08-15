@@ -84,6 +84,15 @@ HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
+    # Settings that affect whether cover art removal is predicted.
+    _REMOVAL_SETTINGS = frozenset(
+        (
+            'remove_images_from_tags',
+            'save_images_to_files',
+            'save_images_to_tags',
+        )
+    )
+
     def __init__(self, parent=None):
         super().__init__("", parent=parent)
         self.layout = QtWidgets.QVBoxLayout()
@@ -135,6 +144,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.orig_cover_art.setHidden(True)
         self.show_details_button.setHidden(True)
         self.show_details_button.clicked.connect(self.show_cover_art_info)
+        config = get_config()
+        config.setting.setting_changed.connect(self._on_setting_changed)
+
+    def _on_setting_changed(self, name, old_value, new_value):
+        if name in self._REMOVAL_SETTINGS:
+            self.update_metadata()
 
     def show_cover_art_info(self):
         self.tagger.window.view_info(default_tab=1, item=self.item)

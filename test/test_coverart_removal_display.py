@@ -185,6 +185,7 @@ class _RemovalThumb:
 
 
 class _RemovalBox:
+    _REMOVAL_SETTINGS = CoverArtBox._REMOVAL_SETTINGS
     update_metadata = CoverArtBox.update_metadata
 
     def __init__(self, item) -> None:
@@ -271,3 +272,37 @@ def test_update_metadata_keeps_showing_exported_image_after_save(removal_setting
     assert not box._removal_predicted
     assert box.cover_art.data == [image]
     assert box.orig_cover_art.data is None
+
+
+def test_setting_changed_triggers_update_metadata(removal_settings, monkeypatch) -> None:
+    """Changing remove_images_from_tags via the config signal must trigger
+    update_metadata so the cover art box refreshes without re-selecting."""
+    config = get_config()
+    image = FakeImage()
+    box = _RemovalBox(_make_item([image], [image]))
+    box.update_metadata()
+    assert box._removal_predicted
+
+    # Simulate the signal path: connect _on_setting_changed and fire it
+    from picard.ui.coverartbox import CoverArtBox
+
+    call_log = []
+    original_update = box.update_metadata
+
+    def tracking_update():
+        call_log.append('update_metadata')
+        original_update()
+
+    box.update_metadata = tracking_update
+    on_setting_changed = CoverArtBox._on_setting_changed.__get__(box, type(box))
+
+    # Disabling the option should trigger an update
+    config.setting['remove_images_from_tags'] = False
+    on_setting_changed('remove_images_from_tags', True, False)
+    assert 'update_metadata' in call_log
+    assert not box._removal_predicted
+
+    # An unrelated setting should not trigger an update
+    call_log.clear()
+    on_setting_changed('some_other_setting', None, None)
+    assert call_log == []
