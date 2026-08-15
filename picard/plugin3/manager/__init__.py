@@ -210,54 +210,6 @@ class PluginManager(QObject):
             pass
         return None, None
 
-    def format_refs_for_display(self, refs, current_ref=None):
-        """Format refs for display with commit IDs and current markers.
-
-        Args:
-            refs: Dict with 'tags' and 'branches' lists
-            current_ref: Current ref name to mark as (current)
-
-        Returns:
-            dict: Formatted refs with display_name for each ref
-        """
-        formatted_refs = {'tags': [], 'branches': []}
-
-        # Format tags
-        for ref in refs.get('tags', []):
-            # Create RefItem object for formatting
-            ref_item = RefItem(
-                shortname=ref['name'],
-                ref_type=RefItem.Type.TAG,
-                commit=ref.get('commit', ''),
-            )
-            is_current = current_ref and ref['name'] == current_ref
-            formatted_refs['tags'].append(
-                {
-                    'name': ref['name'],
-                    'commit': ref.get('commit'),
-                    'display_name': ref_item.format(is_current=is_current),
-                }
-            )
-
-        # Format branches
-        for ref in refs.get('branches', []):
-            # Create RefItem object for formatting
-            ref_item = RefItem(
-                shortname=ref['name'],
-                ref_type=RefItem.Type.BRANCH,
-                commit=ref.get('commit', ''),
-            )
-            is_current = current_ref and ref['name'] == current_ref
-            formatted_refs['branches'].append(
-                {
-                    'name': ref['name'],
-                    'commit': ref.get('commit'),
-                    'display_name': ref_item.format(is_current=is_current),
-                }
-            )
-
-        return formatted_refs
-
     def fetch_all_git_refs(self, url):
         """Fetch all branches and tags from a git repository.
 
