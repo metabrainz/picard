@@ -800,12 +800,6 @@ class PluginManager(QObject):
         ref_item = RefItem.from_git_ref(git_ref)
         return ref_item.format()
 
-    def get_plugin_homepage(self, plugin):
-        """Get plugin homepage URL from manifest."""
-        if not plugin.manifest:
-            return None
-        return plugin.manifest._data.get('homepage')
-
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
         if not plugin.uuid:
