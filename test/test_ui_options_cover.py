@@ -34,15 +34,16 @@ def cover_options_page(qapp, patch_tagger_instance):
     return page
 
 
-def test_force_remove_images_false(cover_options_page):
-    # remove_images_from_tags is checked, but save_images_to_files is not
+def test_save_preserves_remove_even_without_save_to_files(cover_options_page):
+    # The checkbox state is persisted as-is; the runtime guards against
+    # removing images when save_images_to_files is disabled.
     cover_options_page.ui.save_images_to_files.setChecked(False)
     cover_options_page.ui.remove_images_from_tags.setChecked(True)
     cover_options_page.save()
 
     config = get_config()
     assert config.setting['save_images_to_files'] is False
-    assert config.setting['remove_images_from_tags'] is False
+    assert config.setting['remove_images_from_tags'] is True
 
 
 def test_save_keep_remove_images_true(cover_options_page):
@@ -62,15 +63,23 @@ def test_embed_and_remove_are_mutually_exclusive(cover_options_page):
     cover_options_page.ui.remove_images_from_tags.setChecked(True)
     assert cover_options_page.ui.remove_images_from_tags.isEnabled()
 
-    # Enabling embed disables and unchecks remove, regardless of prior state
+    # Enabling embed disables remove but preserves the checked state,
+    # so it's restored when embedding is turned off again.
     cover_options_page.ui.save_images_to_tags.setChecked(True)
     assert not cover_options_page.ui.remove_images_from_tags.isEnabled()
-    assert not cover_options_page.ui.remove_images_from_tags.isChecked()
+    assert cover_options_page.ui.remove_images_from_tags.isChecked()
 
+    # Saving with embed active persists the checkbox state (True), since
+    # the runtime code already guards against the incompatible combination.
     cover_options_page.save()
     config = get_config()
     assert config.setting['save_images_to_tags'] is True
-    assert config.setting['remove_images_from_tags'] is False
+    assert config.setting['remove_images_from_tags'] is True
+
+    # Turning embed off re-enables the checkbox with its prior state intact
+    cover_options_page.ui.save_images_to_tags.setChecked(False)
+    assert cover_options_page.ui.remove_images_from_tags.isEnabled()
+    assert cover_options_page.ui.remove_images_from_tags.isChecked()
 
 
 def test_load_disables_remove_when_embed_enabled(cover_options_page):

@@ -139,11 +139,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
         config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
         config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
-        config.setting['remove_images_from_tags'] = (
-            self.ui.save_images_to_files.isChecked()
-            and self.ui.remove_images_from_tags.isChecked()
-            and not self.ui.save_images_to_tags.isChecked()
-        )
+        config.setting['remove_images_from_tags'] = self.ui.remove_images_from_tags.isChecked()
         config.setting['ca_providers'] = list(self._ca_providers())
 
     def update_ca_providers_groupbox_state(self):
@@ -153,10 +149,10 @@ class CoverOptionsPage(OptionsPage):
 
     def update_remove_images_from_tags_state(self):
         # Embedding into tags and removing from tags are mutually exclusive.
+        # Disable the checkbox when embedding is active, but preserve the
+        # user's checked state so it's restored when embedding is turned off.
         embed_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.remove_images_from_tags.setDisabled(embed_enabled)
-        if embed_enabled:
-            self.ui.remove_images_from_tags.setChecked(False)
 
     def select_never_replace_image_types(self):
         (included_types, ok) = CoverTypesSelectorDialog.display(
