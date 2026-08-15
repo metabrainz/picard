@@ -296,10 +296,6 @@ class Album(MetadataItem):
         """Check if there are any critical tasks pending."""
         return any(r.type == TaskType.CRITICAL for r in self._pending_tasks.values())
 
-    def get_pending_tasks(self):
-        """Get all pending tasks for debugging."""
-        return dict(self._pending_tasks)
-
     def _warn_deprecated_requests(self, operation):
         """Emit deprecation warning for album._requests usage (once per location)."""
         # Avoid circular import: album → plugin3.api → plugin3.api_impl → album
