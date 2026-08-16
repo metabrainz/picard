@@ -1203,6 +1203,118 @@ def enable(api):
 
 ---
 
+## Interface Colors
+
+Plugins can register their own configurable colors and access Picard's core
+interface colors. Plugin colors appear in the Interface Colors options page,
+grouped under the plugin's name.
+
+### `api.is_dark_theme`
+
+Property that returns whether the current UI theme is dark.
+
+```python
+if api.is_dark_theme:
+    api.logger.info("Running in dark mode")
+```
+
+### `api.register_color(name, title, light_value=None, dark_value=None)`
+
+Register a configurable color for the plugin.
+
+**Parameters:**
+- `name` — Simple identifier (alphanumeric and underscores, e.g., `'highlight'`)
+- `title` — User-visible label (use `api.tr()` for translation)
+- `light_value` — Color for light theme (hex string or CSS color name)
+- `dark_value` — Color for dark theme (hex string or CSS color name)
+
+At least one of `light_value`/`dark_value` must be provided. If only one is
+given, the other defaults to the same value.
+
+Colors are automatically unregistered when the plugin is disabled.
+
+```python
+def enable(api):
+    api.register_color(
+        'highlight',
+        title=api.tr('colors.highlight', "Highlight color"),
+        light_value='#FFDD00',
+        dark_value='#AA9900',
+    )
+    api.register_color(
+        'warning_text',
+        title=api.tr('colors.warning', "Warning text"),
+        light_value='darkorange',
+    )
+```
+
+### `api.get_plugin_color(name)` / `api.get_plugin_qcolor(name)`
+
+Read a plugin-registered color.
+
+```python
+color_hex = api.get_plugin_color('highlight')  # Returns '#ffdd00'
+qcolor = api.get_plugin_qcolor('highlight')  # Returns QColor
+```
+
+### `api.get_color(name)` / `api.get_qcolor(name)`
+
+Read a core Picard interface color (read-only). Useful for matching your
+plugin's UI to Picard's look.
+
+**Available core color keys:**
+- `entity_error`, `entity_pending`, `entity_saved` — Entity states
+- `log_debug`, `log_error`, `log_info`, `log_warning` — Log view
+- `tagstatus_added`, `tagstatus_changed`, `tagstatus_removed` — Tag states
+- `profile_hl_bg`, `profile_hl_fg` — Profile highlighting
+- `row_highlight`, `first_cover_hl` — Miscellaneous highlights
+- `syntax_hl_*` — Script syntax highlighting
+
+```python
+error_color = api.get_color('entity_error')  # Returns '#c80000'
+qcolor = api.get_qcolor('tagstatus_added')  # Returns QColor
+```
+
+### `api.unregister_color(name)` / `api.unregister_all_colors()`
+
+Manually unregister colors. Normally not needed since colors are
+automatically cleaned up on plugin disable.
+
+### Complete Example
+
+```python
+from picard.plugin3.api import PluginApi
+
+
+def enable(api: PluginApi):
+    # Register custom colors for this plugin
+    api.register_color(
+        'match_highlight',
+        title=api.tr('colors.match_hl', "Match highlight"),
+        light_value='#E6FFE6',
+        dark_value='#1A3D1A',
+    )
+    api.register_color(
+        'no_match',
+        title=api.tr('colors.no_match', "No match indicator"),
+        light_value='#FFE6E6',
+        dark_value='#3D1A1A',
+    )
+    api.register_track_metadata_processor(process_track)
+
+
+def process_track(api, album, metadata, track, release):
+    # Read plugin's own color
+    highlight = api.get_plugin_color('match_highlight')
+    # Read core color for consistency
+    saved_color = api.get_color('entity_saved')
+    # Adapt to theme
+    if api.is_dark_theme:
+        ...
+```
+
+---
+
 ## Album Background Task Management
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.

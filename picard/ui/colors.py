@@ -77,10 +77,25 @@ class DefaultColor:
         self.description = description
 
 
-def register_color(themes, name, value):
-    description = _COLOR_DESCRIPTIONS.get(name, "FIXME: color desc for %s" % name)
+def register_color(themes, name, value, description=None):
+    if description is None:
+        description = _COLOR_DESCRIPTIONS.get(name, "FIXME: color desc for %s" % name)
+    else:
+        _COLOR_DESCRIPTIONS[name] = description
     for theme_name in themes:
         _DEFAULT_COLORS[theme_name][name] = DefaultColor(value, description)
+
+
+def unregister_color(name):
+    """Remove a color from the registry.
+
+    Removes the color from descriptions, default colors (both themes),
+    and the active InterfaceColors instance.
+    """
+    _COLOR_DESCRIPTIONS.pop(name, None)
+    _DEFAULT_COLORS['light'].pop(name, None)
+    _DEFAULT_COLORS['dark'].pop(name, None)
+    interface_colors._colors.pop(name, None)
 
 
 _DARK = ('dark',)

@@ -752,6 +752,7 @@ class Plugin:
         for name, api in list(PluginApi._instances.items()):
             if api._plugin_module is self._module:
                 api._remove_qt_translator()
+                api.unregister_all_colors()
                 profile_groups_remove_group(api._api_config.section_name)
                 del PluginApi._instances[name]
                 # Remove from cache (entries for this module and submodules)

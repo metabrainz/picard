@@ -118,6 +118,12 @@ from picard.webservice import (
 )
 from picard.webservice.api_helpers import MBAPIHelper
 
+from picard.ui.colors import (
+    ColorDescription,
+    interface_colors,
+    register_color as _register_color,
+    unregister_color as _unregister_color,
+)
 from picard.ui.options import OptionsPage as _OptionsPage
 
 
@@ -295,6 +301,7 @@ class PluginApi:
         self._plugin_dir: Path = plugin_dir
         self._qt_translator: PluginTranslator | None = None
         self._mb_api: MBAPIHelper | None = None
+        self._registered_colors: list[str] = []
 
     @staticmethod
     def _get_caller_info(frame_depth=2):
@@ -1657,6 +1664,153 @@ class PluginApi:
         # The options page needs a unique name if no name was given
         self._set_class_name_and_title(page_class)
         return register_options_page(page_class)
+
+    # Interface colors API
+
+    def _color_key(self, name: str) -> str:
+        """Return the internal namespaced key for a plugin color."""
+        return f'plugin:{self._manifest.uuid}:{name}'
+
+    @property
+    def is_dark_theme(self) -> bool:
+        """Whether the current UI theme is dark.
+
+        Example::
+
+            def enable(api):
+                if api.is_dark_theme:
+                    api.logger.info("Running in dark mode")
+        """
+        return interface_colors.dark_theme
+
+    def register_color(
+        self,
+        name: str,
+        title: str,
+        light_value: str | None = None,
+        dark_value: str | None = None,
+    ) -> None:
+        """Register a configurable color for this plugin.
+
+        The color appears in the Interface Colors options page, grouped
+        under the plugin's name. Users can customize it like any other
+        interface color.
+
+        Args:
+            name: Simple identifier (alphanumeric and underscores only,
+                  e.g., 'highlight', 'error_text').
+            title: User-visible label. Use api.tr() for translation.
+            light_value: Color value for light theme (hex string or CSS
+                         color name, e.g., '#FF0000' or 'red').
+            dark_value: Color value for dark theme.
+
+        At least one of light_value/dark_value must be provided. If only
+        one is given, the other defaults to the same value.
+
+        Colors are automatically unregistered when the plugin is disabled.
+
+        Example::
+
+            def enable(api):
+                api.register_color(
+                    'highlight',
+                    title=api.tr('colors.highlight', "Highlight color"),
+                    light_value='#FFDD00',
+                    dark_value='#AA9900',
+                )
+        """
+        if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', name):
+            raise ValueError(f"Invalid color name '{name}': must be alphanumeric with underscores")
+        if light_value is None and dark_value is None:
+            raise ValueError(f"register_color('{name}'): at least one of light_value or dark_value must be provided")
+        if light_value is None:
+            light_value = dark_value
+        if dark_value is None:
+            dark_value = light_value
+
+        key = self._color_key(name)
+        group = self._manifest.name_i18n()
+        description = ColorDescription(title=title, group=group)
+
+        _register_color(('light',), key, light_value, description=description)
+        _register_color(('dark',), key, dark_value, description=description)
+
+        # Make the color immediately available in the active instance
+        interface_colors.set_default_color(key)
+
+        self._registered_colors.append(key)
+
+    def unregister_color(self, name: str) -> None:
+        """Unregister a plugin color by name.
+
+        Args:
+            name: The same name used in register_color().
+        """
+        key = self._color_key(name)
+        _unregister_color(key)
+        if key in self._registered_colors:
+            self._registered_colors.remove(key)
+
+    def unregister_all_colors(self) -> None:
+        """Unregister all colors registered by this plugin."""
+        for key in list(self._registered_colors):
+            _unregister_color(key)
+        self._registered_colors.clear()
+
+    def get_plugin_color(self, name: str) -> str:
+        """Get the current hex color value for a plugin-registered color.
+
+        Args:
+            name: The name used in register_color().
+
+        Returns:
+            Hex color string (e.g., '#ff0000').
+
+        Example::
+
+            color = api.get_plugin_color('highlight')
+        """
+        return interface_colors.get_color(self._color_key(name))
+
+    def get_plugin_qcolor(self, name: str):
+        """Get a QColor for a plugin-registered color.
+
+        Args:
+            name: The name used in register_color().
+
+        Returns:
+            A QColor instance.
+        """
+        return interface_colors.get_qcolor(self._color_key(name))
+
+    def get_color(self, name: str) -> str:
+        """Get the current hex color value for a core interface color.
+
+        This provides read-only access to Picard's built-in interface
+        colors, allowing plugins to style their UI consistently.
+
+        Args:
+            name: Core color key (e.g., 'entity_error', 'tagstatus_added').
+
+        Returns:
+            Hex color string (e.g., '#c80000').
+
+        Example::
+
+            error_color = api.get_color('entity_error')
+        """
+        return interface_colors.get_color(name)
+
+    def get_qcolor(self, name: str):
+        """Get a QColor for a core interface color.
+
+        Args:
+            name: Core color key (e.g., 'entity_error', 'tagstatus_added').
+
+        Returns:
+            A QColor instance.
+        """
+        return interface_colors.get_qcolor(name)
 
     # Album task management for plugins
     def add_album_task(
