@@ -70,10 +70,17 @@ _COLOR_DESCRIPTIONS = {
 _DEFAULT_COLORS: dict[str, dict] = defaultdict(dict)
 
 
+def _color_to_string(qcolor):
+    """Convert a QColor to a string, preserving alpha only when not fully opaque."""
+    if qcolor.alpha() == 255:
+        return qcolor.name()
+    return qcolor.name(QtGui.QColor.NameFormat.HexArgb)
+
+
 class DefaultColor:
     def __init__(self, value, description):
         qcolor = QtGui.QColor(value)
-        self.value = qcolor.name()
+        self.value = _color_to_string(qcolor)
         self.description = description
 
 
@@ -220,7 +227,7 @@ class InterfaceColors:
             qcolor = QtGui.QColor(color_value)
             if not qcolor.isValid():
                 qcolor = QtGui.QColor(self.default_colors[color_key].value)
-            self._colors[color_key] = qcolor.name()
+            self._colors[color_key] = _color_to_string(qcolor)
         else:
             raise UnknownColorException("Unknown color key: %s" % color_key)
 

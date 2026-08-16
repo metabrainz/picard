@@ -38,7 +38,10 @@ from picard.i18n import (
 )
 from picard.util import icontheme
 
-from picard.ui.colors import interface_colors
+from picard.ui.colors import (
+    _color_to_string,
+    interface_colors,
+)
 from picard.ui.forms.ui_options_interface_colors import (
     Ui_InterfaceColorsOptionsPage,
 )
@@ -52,6 +55,8 @@ from picard.ui.util import changes_require_restart_warning
 class ColorButton(QtWidgets.QPushButton):
     color_changed = QtCore.pyqtSignal(str)
 
+    _checkerboard = None
+
     def __init__(self, initial_color=None, parent=None):
         super().__init__('    ', parent=parent)
         # On macOS the style override in picard.ui.theme breaks styling these
@@ -63,24 +68,48 @@ class ColorButton(QtWidgets.QPushButton):
             color = QtGui.QColor('black')
         self.color = color
         self.clicked.connect(self.open_color_dialog)
-        self.update_color()
+
+    @classmethod
+    def _get_checkerboard(cls):
+        """Create a cached checkerboard pixmap for alpha visualization."""
+        if cls._checkerboard is None:
+            size = 8
+            pixmap = QtGui.QPixmap(size * 2, size * 2)
+            painter = QtGui.QPainter(pixmap)
+            painter.fillRect(0, 0, size, size, QtGui.QColor(204, 204, 204))
+            painter.fillRect(size, 0, size, size, QtGui.QColor(255, 255, 255))
+            painter.fillRect(0, size, size, size, QtGui.QColor(255, 255, 255))
+            painter.fillRect(size, size, size, size, QtGui.QColor(204, 204, 204))
+            painter.end()
+            cls._checkerboard = pixmap
+        return cls._checkerboard
+
+    def paintEvent(self, event):
+        painter = QtGui.QPainter(self)
+        rect = self.rect()
+        if self.color.alpha() < 255:
+            # Draw checkerboard behind semi-transparent color
+            painter.drawTiledPixmap(rect, self._get_checkerboard())
+        painter.fillRect(rect, self.color)
+        painter.end()
 
     def update_color(self, qcolor=None):
         if qcolor is not None:
             self.color = qcolor
-        self.setStyleSheet("QPushButton { background-color: %s; }" % self.color.name())
+        self.update()
 
     def open_color_dialog(self):
         new_color = QtWidgets.QColorDialog.getColor(
             self.color,
             title=_("Choose a color"),
             parent=self.parent(),
+            options=QtWidgets.QColorDialog.ColorDialogOption.ShowAlphaChannel,
         )
 
         if new_color.isValid():
             self.color = new_color
             self.update_color()
-            self.color_changed.emit(self.color.name())
+            self.color_changed.emit(_color_to_string(self.color))
 
 
 def delete_items_of_layout(layout):

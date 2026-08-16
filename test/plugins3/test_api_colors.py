@@ -227,3 +227,46 @@ class TestUnregisterColor(PicardTestCase):
     def test_unregister_nonexistent_is_safe(self):
         """Test that unregistering a non-existent color doesn't raise."""
         unregister_color('totally_fake_color_key')
+
+
+class TestColorAlphaSupport(PicardTestCase):
+    """Test that colors with alpha are properly stored and retrieved."""
+
+    def test_opaque_color_stored_as_rrggbb(self):
+        """Opaque colors are stored as #RRGGBB (6 digits)."""
+        from picard.ui.colors import _color_to_string
+
+        c = QColor('#FF0000')
+        self.assertEqual(_color_to_string(c), '#ff0000')
+
+    def test_alpha_color_stored_as_aarrggbb(self):
+        """Colors with alpha < 255 are stored as #AARRGGBB (8 digits)."""
+        from picard.ui.colors import _color_to_string
+
+        c = QColor('#80FF0000')
+        self.assertEqual(_color_to_string(c), '#80ff0000')
+
+    def test_register_color_with_alpha(self):
+        """Plugin can register a color with alpha."""
+        from pathlib import Path
+        from unittest.mock import Mock
+
+        from test.plugins3.helpers import load_plugin_manifest
+
+        from picard.plugin3.api import PluginApi
+
+        api = PluginApi(load_plugin_manifest('example'), Mock(), Mock(), Path(''))
+        api.register_color('semi_transparent', title="Semi", light_value='#80FF0000')
+        color = api.get_plugin_color('semi_transparent')
+        self.assertEqual(color, '#80ff0000')
+        qcolor = api.get_plugin_qcolor('semi_transparent')
+        self.assertEqual(qcolor.alpha(), 128)
+        self.assertEqual(qcolor.red(), 255)
+        api.unregister_all_colors()
+
+    def test_shorthand_normalized_to_rrggbb(self):
+        """Shorthand #RGB input is normalized to #RRGGBB."""
+        from picard.ui.colors import _color_to_string
+
+        c = QColor('#ABC')
+        self.assertEqual(_color_to_string(c), '#aabbcc')
