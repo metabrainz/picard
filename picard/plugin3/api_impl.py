@@ -39,6 +39,7 @@ from typing import (
 )
 
 from PyQt6.QtCore import QLocale
+from PyQt6.QtGui import QColor
 
 from picard import log
 from picard.album import Album
@@ -1721,8 +1722,12 @@ class PluginApi:
         """
         if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', name):
             raise ValueError(f"Invalid color name '{name}': must be alphanumeric with underscores")
+        if light_value is not None and not QColor(light_value).isValid():
+            raise ValueError(f"register_color('{name}'): invalid light_value '{light_value}'")
+        if dark_value is not None and not QColor(dark_value).isValid():
+            raise ValueError(f"register_color('{name}'): invalid dark_value '{dark_value}'")
         if light_value is None and dark_value is None:
-            raise ValueError(f"register_color('{name}'): at least one of light_value or dark_value must be provided")
+            raise ValueError(f"register_color('{name}'): no valid color values provided")
         if light_value is None:
             light_value = dark_value
         if dark_value is None:

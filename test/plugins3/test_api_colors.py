@@ -201,6 +201,21 @@ class TestPluginApiColors(PicardTestCase):
         self.assertEqual(color_light, QColor('red').name())
         self.assertEqual(color_dark, QColor('darkred').name())
 
+    def test_register_color_invalid_light_raises(self):
+        """Test that invalid light_value raises ValueError."""
+        with self.assertRaises(ValueError):
+            self.api.register_color('bad', title="Bad", light_value='notacolor', dark_value='#00FF00')
+
+    def test_register_color_invalid_dark_raises(self):
+        """Test that invalid dark_value raises ValueError."""
+        with self.assertRaises(ValueError):
+            self.api.register_color('bad', title="Bad", light_value='#FF0000', dark_value='xyz')
+
+    def test_register_color_both_invalid_raises(self):
+        """Test that both values invalid raises ValueError."""
+        with self.assertRaises(ValueError):
+            self.api.register_color('bad', title="Bad", light_value='nope', dark_value='alsonope')
+
 
 class TestUnregisterColor(PicardTestCase):
     """Test the module-level unregister_color function."""
