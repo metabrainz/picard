@@ -52,6 +52,7 @@ _COLOR_DESCRIPTIONS = {
     'log_error': ColorDescription(title=N_('Log view text (error)'), group=N_("Logging")),
     'log_info': ColorDescription(title=N_('Log view text (info)'), group=N_("Logging")),
     'log_warning': ColorDescription(title=N_('Log view text (warning)'), group=N_("Logging")),
+    'match_similarity_low': ColorDescription(title=N_("Low match similarity background"), group=N_("Others")),
     'profile_hl_bg': ColorDescription(title=N_("Profile highlight background"), group=N_("Profiles")),
     'profile_hl_fg': ColorDescription(title=N_("Profile highlight foreground"), group=N_("Profiles")),
     'tagstatus_added': ColorDescription(title=N_("Tag added"), group=N_("Tags")),
@@ -104,6 +105,7 @@ register_color(_DARK, 'profile_hl_bg', '#1c71d8')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
 register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
 register_color(_DARK, 'first_cover_hl', 'orange')
+register_color(_ALL, 'match_similarity_low', '#DF7D7D')
 
 # syntax highlighting colors
 register_color(_LIGHT, 'syntax_hl_error', 'red')
