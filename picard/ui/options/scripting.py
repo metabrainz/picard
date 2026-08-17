@@ -65,6 +65,7 @@ from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
     PageOptionConfigs,
+    stylesheet_validation_error,
 )
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
@@ -263,7 +264,7 @@ class ScriptingOptionsPage(OptionsPage):
             self.check()
         except OptionsCheckError as e:
             list_item.has_error = True
-            self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
+            self.ui.script_error.setStyleSheet(stylesheet_validation_error())
             self.ui.script_error.setText(e.info)
             self.ui.script_error.show()
             return

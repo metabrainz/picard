@@ -41,9 +41,7 @@ from PyQt6.QtWidgets import (
 from picard.i18n import gettext as _
 
 from picard.ui.colors import interface_colors
-
-
-_STYLESHEET_ERROR = "QLabel { background-color: #f55; color: white; font-weight: bold; padding: 2px; }"
+from picard.ui.options import stylesheet_validation_error
 
 
 class Playground(QGroupBox):
@@ -66,7 +64,7 @@ class Playground(QGroupBox):
         layout = QVBoxLayout(self)
 
         self._error_label = QLabel(self)
-        self._error_label.setStyleSheet(_STYLESHEET_ERROR)
+        self._error_label.setStyleSheet(stylesheet_validation_error())
         self._error_label.setWordWrap(True)
         self._error_label.setVisible(False)
         layout.addWidget(self._error_label)

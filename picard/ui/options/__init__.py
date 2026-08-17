@@ -53,6 +53,31 @@ from picard.profile import (
 )
 from picard.util.display_title_base import HasDisplayTitle
 
+from picard.ui.theme import theme
+
+
+# Theme-aware validation indicator colors.
+# These are not user-configurable; they are standard UX patterns
+# (green = success, red = error) that adapt to dark/light themes.
+_VALIDATION_COLORS = {
+    'light': {'success_bg': '#229922', 'error_bg': '#ff5555'},
+    'dark': {'success_bg': '#2d8a2d', 'error_bg': '#cc4444'},
+}
+
+
+def _validation_colors():
+    return _VALIDATION_COLORS['dark'] if theme.is_dark_theme else _VALIDATION_COLORS['light']
+
+
+def stylesheet_validation_success():
+    bg = _validation_colors()['success_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; padding: 2px; }}"
+
+
+def stylesheet_validation_error():
+    bg = _validation_colors()['error_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; font-weight: bold; padding: 2px; }}"
+
 
 class OptionsCheckError(Exception):
     def __init__(self, title, info):
@@ -73,8 +98,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     SORT_ORDER = 1000
     ACTIVE = True
     HELP_URL = None
-    STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
-    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
+
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
     OPTIONS: ClassVar[PageOptionConfigs] = {}
 
@@ -170,7 +194,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
             try:
                 check()
             except OptionsCheckError as e:
-                regex_error.setStyleSheet(self.STYLESHEET_ERROR)
+                regex_error.setStyleSheet(stylesheet_validation_error())
                 regex_error.setText(e.info)
                 regex_error.setVisible(True)
 

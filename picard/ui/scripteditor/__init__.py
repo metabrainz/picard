@@ -75,7 +75,7 @@ from picard.ui import (
 )
 from picard.ui.forms.ui_scripteditor import Ui_ScriptEditor
 from picard.ui.forms.ui_scripteditor_details import Ui_ScriptDetails
-from picard.ui.options import OptionsPage
+from picard.ui.options import stylesheet_validation_error
 from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
@@ -103,7 +103,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     """File Naming Script Editor Page"""
 
     TITLE = N_("File naming script editor")
-    STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
     modality = QtCore.Qt.WindowModality.NonModal
 
     help_url = 'doc_naming_script_edit'
@@ -1030,7 +1029,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             # Update script in combobox item if no errors.
             self.update_script_text()
         except ScriptCheckError as e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
+            self.ui.renaming_error.setStyleSheet(stylesheet_validation_error())
             self.ui.renaming_error.setText(e.info)
             save_enabled = False
         self.set_button_states(save_enabled=save_enabled)
