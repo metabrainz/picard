@@ -54,7 +54,6 @@ _COLOR_DESCRIPTIONS = {
     'log_warning': ColorDescription(title=N_('Log view text (warning)'), group=N_("Logging")),
     'profile_hl_bg': ColorDescription(title=N_("Profile highlight background"), group=N_("Profiles")),
     'profile_hl_fg': ColorDescription(title=N_("Profile highlight foreground"), group=N_("Profiles")),
-    'row_highlight': ColorDescription(title=N_("Row Highlight"), group=N_("Others")),
     'tagstatus_added': ColorDescription(title=N_("Tag added"), group=N_("Tags")),
     'tagstatus_changed': ColorDescription(title=N_("Tag changed"), group=N_("Tags")),
     'tagstatus_removed': ColorDescription(title=N_("Tag removed"), group=N_("Tags")),
@@ -103,8 +102,6 @@ register_color(_DARK, 'profile_hl_fg', '#ffffff')
 register_color(_LIGHT, 'profile_hl_fg', '#000000')
 register_color(_DARK, 'profile_hl_bg', '#1c71d8')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
-register_color(_LIGHT, 'row_highlight', '#FFFFE0')
-register_color(_DARK, 'row_highlight', '#90907E')
 register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
 register_color(_DARK, 'first_cover_hl', 'orange')
 
