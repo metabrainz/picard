@@ -153,6 +153,9 @@ class TagsDocumentationPage(DocumentationPage):
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
+        tagger = tagger_instance()
+        manager = tagger.get_plugin_manager() if tagger else None
+
         tags: list[DocItem] = []
 
         # Process system-defined tags and variables
@@ -167,11 +170,16 @@ class TagsDocumentationPage(DocumentationPage):
 
         # Process plugin variables separately to allow plugin descriptions for duplicated variables.
         for var in ext_point_script_variables:
+            plugin_name = ''
+            if var.plugin_id and manager:
+                plugin = manager.plugin_id_to_plugin(var.plugin_id)
+                if plugin:
+                    plugin_name = plugin.name()
             tags.append(
                 DocItem(
-                    name=var.name,
-                    desc=display_plugin_tag_full_description(var.name, var.documentation),
-                    plugin=var.plugin_name,
+                    name=var.script_name(),
+                    desc=display_plugin_tag_full_description(var.script_name(), var._longdesc),
+                    plugin=plugin_name,
                 )
             )
 
