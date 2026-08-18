@@ -56,6 +56,7 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.forms.ui_scripting_documentation_dialog import (
     Ui_ScriptingDocumentationDialog,
@@ -65,7 +66,6 @@ from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
     PageOptionConfigs,
-    stylesheet_validation_error,
 )
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget

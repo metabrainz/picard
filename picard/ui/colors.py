@@ -229,3 +229,26 @@ class InterfaceColors:
 
 
 interface_colors = InterfaceColors()
+
+
+# Theme-aware validation indicator colors.
+# These are not user-configurable; they are standard UX patterns
+# (green = success, red = error) that adapt to dark/light themes.
+_VALIDATION_COLORS = {
+    'light': {'success_bg': '#229922', 'error_bg': '#ff5555'},
+    'dark': {'success_bg': '#2d8a2d', 'error_bg': '#cc4444'},
+}
+
+
+def _validation_colors():
+    return _VALIDATION_COLORS['dark'] if theme.is_dark_theme else _VALIDATION_COLORS['light']
+
+
+def stylesheet_validation_success():
+    bg = _validation_colors()['success_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; padding: 2px; }}"
+
+
+def stylesheet_validation_error():
+    bg = _validation_colors()['error_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; font-weight: bold; padding: 2px; }}"

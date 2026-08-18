@@ -45,6 +45,10 @@ from picard.util import (
     webbrowser2,
 )
 
+from picard.ui.colors import (
+    stylesheet_validation_error,
+    stylesheet_validation_success,
+)
 from picard.ui.forms.ui_options_fingerprinting import (
     Ui_FingerprintingOptionsPage,
 )
@@ -52,8 +56,6 @@ from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
     PageOptionConfigs,
-    stylesheet_validation_error,
-    stylesheet_validation_success,
 )
 from picard.ui.util import FileDialog
 

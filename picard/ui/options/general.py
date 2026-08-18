@@ -43,11 +43,11 @@ from picard.i18n import (
 )
 from picard.util.mbserver import is_official_server
 
+from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
 from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
-    stylesheet_validation_error,
 )
 
 

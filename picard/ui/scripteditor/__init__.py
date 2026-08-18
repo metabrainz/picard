@@ -73,9 +73,9 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_scripteditor import Ui_ScriptEditor
 from picard.ui.forms.ui_scripteditor_details import Ui_ScriptDetails
-from picard.ui.options import stylesheet_validation_error
 from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,

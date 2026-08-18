@@ -40,8 +40,10 @@ from PyQt6.QtWidgets import (
 
 from picard.i18n import gettext as _
 
-from picard.ui.colors import interface_colors
-from picard.ui.options import stylesheet_validation_error
+from picard.ui.colors import (
+    interface_colors,
+    stylesheet_validation_error,
+)
 
 
 class Playground(QGroupBox):
