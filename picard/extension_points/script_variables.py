@@ -18,28 +18,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from picard.i18n import _
 from picard.plugin import ExtensionPoint
 from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
 from picard.tags import script_variable_tag_names
+from picard.tags.tagvar import TagVar
 
 
 if TYPE_CHECKING:
     from picard.plugin3.api_impl import PluginApi
 
 
-@dataclass(frozen=True)
-class PluginVariable:
-    name: str
-    documentation: str
-    plugin_name: str
-    title: str | None = None
-
-
-ext_point_script_variables = ExtensionPoint[PluginVariable](label='script_variables')
+ext_point_script_variables = ExtensionPoint[TagVar](label='script_variables')
 
 
 def _check_if_duplicate_variable_name(name: str) -> str | None:
@@ -49,7 +40,10 @@ def _check_if_duplicate_variable_name(name: str) -> str | None:
 
     for var in ext_point_script_variables:
         if name == var.name:
-            sources.append(f'"{var.plugin_name}"')
+            if var.plugin_id:
+                sources.append(f'"{var.plugin_id}"')
+            else:
+                sources.append('"Unknown"')
 
     return ', '.join(sources) if sources else None
 
@@ -80,7 +74,7 @@ def register_script_variable(
     api : PluginApi, optional
         The plugin API instance
     title : str, optional
-        Display title for the metadata box (e.g., "Pinned Tags").
+        Display title for the metadata box (e.g., "Caller").
         If provided, the tag will show this title instead of the raw name.
 
     Examples
@@ -97,25 +91,22 @@ def register_script_variable(
 
     if api:
         module_name = api.module_path
+        plugin_id = api.plugin_id
     else:
         module_name = 'unknown'
-
-    plugin_name = api.manifest.name_i18n() if api else _("Unknown Plugin")
-    plugin_documentation = documentation or ""
-    if plugin_documentation and plugin_name:
-        plugin_documentation += "\n\n"
-    if plugin_name:
-        plugin_documentation += _("Plugin: %s") % plugin_name
+        plugin_id = None
 
     # Remove any existing entry with the same name from this plugin to avoid duplicates
     ext_point_script_variables.unregister(module_name, lambda item: item.name == name)
     ext_point_script_variables.register(
         module_name,
-        PluginVariable(
+        TagVar(
             name=name,
-            documentation=plugin_documentation,
-            plugin_name=plugin_name,
-            title=title,
+            shortdesc=title,
+            longdesc=documentation,
+            is_from_mb=False,
+            is_populated_by_picard=False,
+            plugin_id=plugin_id,
         ),
     )
 
@@ -170,7 +161,7 @@ def get_plugin_variable_documentation(name: str) -> str | None:
     """
     for var in ext_point_script_variables:
         if var.name == name:
-            return var.documentation
+            return var._longdesc
     return None
 
 
@@ -189,5 +180,5 @@ def get_plugin_variable_title(name: str) -> str | None:
     """
     for var in ext_point_script_variables:
         if var.name == name:
-            return var.title
+            return var._shortdesc
     return None
