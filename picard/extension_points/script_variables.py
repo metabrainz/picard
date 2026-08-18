@@ -119,6 +119,12 @@ def register_script_variable(
             longdesc=documentation,
             is_hidden=is_hidden,
             is_multi_value=is_multi_value,
+            # Locked attributes for plugin-registered variables
+            is_preserved=False,
+            is_script_variable=True,
+            is_tag=True,
+            is_calculated=False,
+            is_file_info=False,
             is_from_mb=False,
             is_populated_by_picard=False,
             plugin_id=plugin_id,
