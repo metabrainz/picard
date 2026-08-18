@@ -60,7 +60,12 @@ def _is_valid_plugin_variable_name(name: str | None) -> bool:
 
 
 def register_script_variable(
-    name: str, documentation: str | None = None, api: 'PluginApi | None' = None, title: str | None = None
+    name: str,
+    documentation: str | None = None,
+    api: 'PluginApi | None' = None,
+    title: str | None = None,
+    is_hidden: bool = False,
+    is_multi_value: bool = False,
 ) -> None:
     """Register a variable that plugins can provide for script completion.
 
@@ -78,6 +83,12 @@ def register_script_variable(
     title : str, optional
         Display title for the metadata box (e.g., "Caller").
         If provided, the tag will show this title instead of the raw name.
+    is_hidden : bool, optional
+        Whether this is a hidden variable (prefixed with ~ in tag names,
+        _ in scripts). Hidden variables don't appear in tag dropdowns.
+        Default: False.
+    is_multi_value : bool, optional
+        Whether this variable can hold multiple values. Default: False.
 
     Examples
     --------
@@ -106,6 +117,8 @@ def register_script_variable(
             name=name,
             shortdesc=title,
             longdesc=documentation,
+            is_hidden=is_hidden,
+            is_multi_value=is_multi_value,
             is_from_mb=False,
             is_populated_by_picard=False,
             plugin_id=plugin_id,
