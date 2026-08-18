@@ -293,6 +293,19 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         else:
             self.fail("Variable not found in extension point")
 
+    def test_register_script_variable_underscore_prefix_normalized(self):
+        """Names starting with _ should be normalized to is_hidden=True with stripped name."""
+        register_script_variable('_hidden_by_prefix', 'docs')
+        self.assertIn('hidden_by_prefix', get_plugin_variable_names())
+        self.assertNotIn('_hidden_by_prefix', get_plugin_variable_names())
+        for var in self.ext_point:
+            if var.name == 'hidden_by_prefix':
+                self.assertTrue(var.is_hidden)
+                self.assertEqual('_hidden_by_prefix', var.script_name())
+                break
+        else:
+            self.fail("Variable not found in extension point")
+
     def test_register_script_variable_deduplication(self):
         """Registering the same variable twice from the same plugin should update, not duplicate."""
         api = self._make_api()

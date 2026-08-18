@@ -98,6 +98,12 @@ def register_script_variable(
         msg = "Invalid script variable name; use letters, digits, underscores."
         raise ValueError(msg)
 
+    # Backward compatibility: plugins may register hidden variables using the
+    # script syntax prefix "_". Normalize to bare name + is_hidden=True.
+    if name.startswith('_'):
+        name = name[1:]
+        is_hidden = True
+
     duplicate = _check_if_duplicate_variable_name(name)
     if api and duplicate:
         api.logger.warning("Tag '%s' also found in %s.", name, duplicate)
