@@ -20,9 +20,9 @@
 
 from typing import TYPE_CHECKING
 
+from picard.const.tags import ALL_TAGS
 from picard.plugin import ExtensionPoint
 from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
-from picard.tags import script_variable_tag_names
 from picard.tags.tagvar import TagVar
 
 
@@ -35,7 +35,9 @@ ext_point_script_variables = ExtensionPoint[TagVar](label='script_variables')
 
 def _check_if_duplicate_variable_name(name: str) -> str | None:
     sources = []
-    if name in set(script_variable_tag_names()):
+    # Check against built-in system variables only (not plugin-registered ones)
+    builtin_names = {tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable}
+    if name in builtin_names:
         sources.append("System Variables")
 
     for var in ext_point_script_variables:

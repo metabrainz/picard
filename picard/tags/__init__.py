@@ -87,7 +87,14 @@ def parse_subtag(name):
 
 
 def tag_names():
+    """Tag names available for user assignment: built-in tags + plugin-provided tags."""
+    # Inline import to avoid circular dependency: script_variables imports from this module.
+    from picard.extension_points.script_variables import ext_point_script_variables
+
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag)
+    for var in ext_point_script_variables:
+        if var.is_tag and not var.is_hidden:
+            yield var.name
 
 
 def visible_tag_names():
@@ -123,7 +130,13 @@ def file_info_tag_names():
 
 def script_variable_tag_names():
     """Tag names available to scripts (used by script editor completer)"""
+    # Inline import to avoid circular dependency: script_variables imports from this module.
+    from picard.extension_points.script_variables import ext_point_script_variables
+
     yield from (tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable)
+    for var in ext_point_script_variables:
+        if var.is_script_variable:
+            yield var.script_name()
 
 
 def display_tag_name(name):
