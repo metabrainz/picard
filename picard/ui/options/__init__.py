@@ -53,6 +53,8 @@ from picard.profile import (
 )
 from picard.util.display_title_base import HasDisplayTitle
 
+from picard.ui.colors import stylesheet_validation_error
+
 
 class OptionsCheckError(Exception):
     def __init__(self, title, info):
@@ -73,8 +75,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     SORT_ORDER = 1000
     ACTIVE = True
     HELP_URL = None
-    STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
-    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
+
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
     OPTIONS: ClassVar[PageOptionConfigs] = {}
 
@@ -170,7 +171,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
             try:
                 check()
             except OptionsCheckError as e:
-                regex_error.setStyleSheet(self.STYLESHEET_ERROR)
+                regex_error.setStyleSheet(stylesheet_validation_error())
                 regex_error.setText(e.info)
                 regex_error.setVisible(True)
 

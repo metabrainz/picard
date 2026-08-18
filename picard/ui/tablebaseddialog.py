@@ -47,7 +47,6 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.colors import interface_colors
 from picard.ui.columns import (
     ColumnAlign,
     ColumnSortType,
@@ -232,7 +231,9 @@ class TableBasedDialog(PicardDialog):
 
     def highlight_row(self, row):
         model = self.table.model()
-        highlight_color = interface_colors.get_qcolor('row_highlight')
+        palette = self.table.palette()
+        highlight_color = palette.color(QtGui.QPalette.ColorRole.Highlight)
+        highlight_color.setAlpha(64)
         highlight_brush = QtGui.QBrush(highlight_color)
         for column in range(0, model.columnCount()):
             index = model.index(row, column)

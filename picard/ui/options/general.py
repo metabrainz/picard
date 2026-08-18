@@ -43,6 +43,7 @@ from picard.i18n import (
 )
 from picard.util.mbserver import is_official_server
 
+from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
 from picard.ui.options import (
     OptionsPage,
@@ -74,7 +75,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
         self.ui.logout.clicked.connect(self.logout)
-        self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
+        self.ui.login_error.setStyleSheet(stylesheet_validation_error())
         self.ui.login_error.hide()
         self.tagger.webservice.authorization_state_changed.connect(self.update_login_logout)
         self.update_login_logout()

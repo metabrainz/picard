@@ -56,6 +56,7 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.forms.ui_scripting_documentation_dialog import (
     Ui_ScriptingDocumentationDialog,
@@ -263,7 +264,7 @@ class ScriptingOptionsPage(OptionsPage):
             self.check()
         except OptionsCheckError as e:
             list_item.has_error = True
-            self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
+            self.ui.script_error.setStyleSheet(stylesheet_validation_error())
             self.ui.script_error.setText(e.info)
             self.ui.script_error.show()
             return

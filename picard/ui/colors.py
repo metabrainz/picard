@@ -52,9 +52,9 @@ _COLOR_DESCRIPTIONS = {
     'log_error': ColorDescription(title=N_('Log view text (error)'), group=N_("Logging")),
     'log_info': ColorDescription(title=N_('Log view text (info)'), group=N_("Logging")),
     'log_warning': ColorDescription(title=N_('Log view text (warning)'), group=N_("Logging")),
+    'match_similarity_low': ColorDescription(title=N_("Low match similarity background"), group=N_("Others")),
     'profile_hl_bg': ColorDescription(title=N_("Profile highlight background"), group=N_("Profiles")),
     'profile_hl_fg': ColorDescription(title=N_("Profile highlight foreground"), group=N_("Profiles")),
-    'row_highlight': ColorDescription(title=N_("Row Highlight"), group=N_("Others")),
     'tagstatus_added': ColorDescription(title=N_("Tag added"), group=N_("Tags")),
     'tagstatus_changed': ColorDescription(title=N_("Tag changed"), group=N_("Tags")),
     'tagstatus_removed': ColorDescription(title=N_("Tag removed"), group=N_("Tags")),
@@ -103,10 +103,9 @@ register_color(_DARK, 'profile_hl_fg', '#ffffff')
 register_color(_LIGHT, 'profile_hl_fg', '#000000')
 register_color(_DARK, 'profile_hl_bg', '#1c71d8')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
-register_color(_LIGHT, 'row_highlight', '#FFFFE0')
-register_color(_DARK, 'row_highlight', '#90907E')
 register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
 register_color(_DARK, 'first_cover_hl', 'orange')
+register_color(_ALL, 'match_similarity_low', '#DF7D7D')
 
 # syntax highlighting colors
 register_color(_LIGHT, 'syntax_hl_error', 'red')
@@ -230,3 +229,26 @@ class InterfaceColors:
 
 
 interface_colors = InterfaceColors()
+
+
+# Theme-aware validation indicator colors.
+# These are not user-configurable; they are standard UX patterns
+# (green = success, red = error) that adapt to dark/light themes.
+_VALIDATION_COLORS = {
+    'light': {'success_bg': '#229922', 'error_bg': '#ff5555'},
+    'dark': {'success_bg': '#2d8a2d', 'error_bg': '#cc4444'},
+}
+
+
+def _validation_colors():
+    return _VALIDATION_COLORS['dark'] if theme.is_dark_theme else _VALIDATION_COLORS['light']
+
+
+def stylesheet_validation_success():
+    bg = _validation_colors()['success_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; padding: 2px; }}"
+
+
+def stylesheet_validation_error():
+    bg = _validation_colors()['error_bg']
+    return f"QWidget {{ background-color: {bg}; color: white; font-weight: bold; padding: 2px; }}"

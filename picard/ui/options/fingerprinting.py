@@ -45,6 +45,10 @@ from picard.util import (
     webbrowser2,
 )
 
+from picard.ui.colors import (
+    stylesheet_validation_error,
+    stylesheet_validation_success,
+)
 from picard.ui.forms.ui_options_fingerprinting import (
     Ui_FingerprintingOptionsPage,
 )
@@ -182,14 +186,14 @@ class FingerprintingOptionsPage(OptionsPage):
     def _acoustid_fpcalc_set_success(self, version):
         self._fpcalc_valid = True
         self._fpcalc_checking = False
-        self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_SUCCESS)
+        self.ui.acoustid_fpcalc_info.setStyleSheet(stylesheet_validation_success())
         self.ui.acoustid_fpcalc_info.setText(version)
 
     def _acoustid_fpcalc_set_error(self, msg):
         log.warning('fpcalc error: %s', msg)
         self._fpcalc_valid = False
         self._fpcalc_checking = False
-        self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_ERROR)
+        self.ui.acoustid_fpcalc_info.setStyleSheet(stylesheet_validation_error())
         self.ui.acoustid_fpcalc_info.setText(_("Please select a valid fpcalc executable."))
 
     def check(self):

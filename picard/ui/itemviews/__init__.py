@@ -93,7 +93,8 @@ from picard.ui.match_icons import (
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
-    c2 = (223, 125, 125)
+    low_color = interface_colors.get_qcolor('match_similarity_low')
+    c2 = (low_color.red(), low_color.green(), low_color.blue())
     return QtGui.QColor(
         int(c2[0] + (c1[0] - c2[0]) * similarity),
         int(c2[1] + (c1[1] - c2[1]) * similarity),
