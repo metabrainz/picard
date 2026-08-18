@@ -108,6 +108,11 @@ class TagVarTest(PicardTestCase):
         tv = TagVar('name', is_hidden=True)
         self.assertEqual(tv.script_name(), '_name')
 
+    def test_hidden_script_name_without_is_hidden(self):
+        tv = TagVar('_name', is_hidden=False)
+        self.assertEqual(tv.name, 'name')
+        self.assertEqual(tv.script_name(), '_name')
+
     def test_basic_notes(self):
         see_also = (
             'a',

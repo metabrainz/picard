@@ -127,6 +127,10 @@ class TagVar:
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
         """
+        if name.startswith('_') and not is_hidden:
+            is_hidden = True
+            name = name[1:]  # to preserve tags starting with multiple underscores
+
         self.name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
