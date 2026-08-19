@@ -260,6 +260,11 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         with self.assertRaises(ValueError):
             register_script_variable('my-var1')
 
+    def test_register_script_variable_underscore_only(self):
+        """Registering just '_' should fail validation (empty name after stripping)."""
+        with self.assertRaises(ValueError):
+            register_script_variable('_')
+
     def test_register_script_variable_plugin_id(self):
         """Registered TagVar should carry the plugin_id from the API."""
         api = self._make_api()
@@ -272,8 +277,8 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
             self.fail("Variable not found in extension point")
 
     def test_register_script_variable_is_hidden(self):
-        """is_hidden parameter should be passed through to the TagVar."""
-        register_script_variable('hidden_var', 'docs', is_hidden=True)
+        """Names starting with _ should be registered as hidden variables."""
+        register_script_variable('_hidden_var', 'docs')
         for var in self.ext_point:
             if var.name == 'hidden_var':
                 self.assertTrue(var.is_hidden)
@@ -289,19 +294,6 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         for var in self.ext_point:
             if var.name == 'multi_var':
                 self.assertTrue(var.is_multi_value)
-                break
-        else:
-            self.fail("Variable not found in extension point")
-
-    def test_register_script_variable_underscore_prefix_normalized(self):
-        """Names starting with _ should be normalized to is_hidden=True with stripped name."""
-        register_script_variable('_hidden_by_prefix', 'docs')
-        self.assertIn('hidden_by_prefix', get_plugin_variable_names())
-        self.assertNotIn('_hidden_by_prefix', get_plugin_variable_names())
-        for var in self.ext_point:
-            if var.name == 'hidden_by_prefix':
-                self.assertTrue(var.is_hidden)
-                self.assertEqual('_hidden_by_prefix', var.script_name())
                 break
         else:
             self.fail("Variable not found in extension point")

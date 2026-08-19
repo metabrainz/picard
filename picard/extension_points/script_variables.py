@@ -64,7 +64,6 @@ def register_script_variable(
     documentation: str | None = None,
     api: 'PluginApi | None' = None,
     title: str | None = None,
-    is_hidden: bool = False,
     is_multi_value: bool = False,
 ) -> None:
     """Register a variable that plugins can provide for script completion.
@@ -75,7 +74,9 @@ def register_script_variable(
     Parameters
     ----------
     name : str
-        The variable name (without % symbols)
+        The variable name as it appears between percent signs in scripts.
+        Names starting with ``_`` are treated as hidden variables (they won't
+        appear in tag dropdowns but are available in scripts).
     documentation : str, optional
         Optional documentation for the variable
     api : PluginApi, optional
@@ -83,26 +84,23 @@ def register_script_variable(
     title : str, optional
         Display title for the metadata box (e.g., "Caller").
         If provided, the tag will show this title instead of the raw name.
-    is_hidden : bool, optional
-        Whether this is a hidden variable (prefixed with ~ in tag names,
-        _ in scripts). Hidden variables don't appear in tag dropdowns.
-        Default: False.
     is_multi_value : bool, optional
         Whether this variable can hold multiple values. Default: False.
 
     Examples
     --------
     >>> register_script_variable("my_plugin_var", "A custom variable from my plugin", title="My Variable")
+    >>> register_script_variable("_my_hidden_var", "A hidden variable only for scripts")
     """
-    if not _is_valid_plugin_variable_name(name):
-        msg = "Invalid script variable name; use letters, digits, underscores."
-        raise ValueError(msg)
-
-    # Backward compatibility: plugins may register hidden variables using the
-    # script syntax prefix "_". Normalize to bare name + is_hidden=True.
+    # Determine hidden status from name prefix: names starting with _ are hidden.
+    is_hidden = False
     if name.startswith('_'):
         name = name[1:]
         is_hidden = True
+
+    if not _is_valid_plugin_variable_name(name):
+        msg = "Invalid script variable name; use letters, digits, underscores."
+        raise ValueError(msg)
 
     duplicate = _check_if_duplicate_variable_name(name)
     if api and duplicate:

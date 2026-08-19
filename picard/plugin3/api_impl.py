@@ -1371,20 +1371,19 @@ class PluginApi:
         name: str,
         documentation: str | None = None,
         title: str | None = None,
-        is_hidden: bool = False,
         is_multi_value: bool = False,
     ) -> None:
         """Register a variable name for script autocomplete.
 
         Args:
-            name: The variable name without the surrounding ``%`` symbols.
+            name: The variable name as it appears between ``%`` symbols in
+                scripts. Names starting with ``_`` are treated as hidden
+                variables (they won't appear in tag dropdowns but are
+                available in scripts).
             documentation: Optional help text shown for the variable.
             title: Optional display title for the metadata box (e.g.,
                 "Caller"). If provided, the tag shows this title
                 instead of the raw name.
-            is_hidden: Whether this is a hidden variable (prefixed with
-                ``~`` in tag names, ``_`` in scripts). Hidden variables
-                don't appear in tag dropdowns. Default: False.
             is_multi_value: Whether this variable can hold multiple
                 values. Default: False.
 
@@ -1395,13 +1394,18 @@ class PluginApi:
                     documentation="A custom variable from my plugin",
                     title="My Variable",
                 )
+
+                # Hidden variable (only available in scripts):
+                api.register_script_variable(
+                    "_my_hidden_var",
+                    documentation="A hidden variable",
+                )
         """
         return register_script_variable(
             name,
             documentation,
             self,
             title=title,
-            is_hidden=is_hidden,
             is_multi_value=is_multi_value,
         )
 
