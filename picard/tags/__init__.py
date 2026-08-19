@@ -101,14 +101,6 @@ def tag_names():
     yield from (var.name for var in _all_tag_vars() if var.is_tag and not var.is_hidden)
 
 
-def visible_tag_names():
-    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and not tv.is_hidden)
-
-
-def hidden_tag_names():
-    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and tv.is_hidden)
-
-
 def filterable_tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_filterable)
 
