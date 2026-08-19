@@ -114,7 +114,7 @@ def register_script_variable(
         plugin_id = None
 
     # Remove any existing entry with the same name from this plugin to avoid duplicates
-    ext_point_script_variables.unregister(module_name, lambda item: item.name == name)
+    ext_point_script_variables.unregister(module_name, lambda item: item.name == name and item.is_hidden == is_hidden)
     ext_point_script_variables.register(
         module_name,
         TagVar(
