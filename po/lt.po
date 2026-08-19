@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-11 08:13+0200\n"
-"PO-Revision-Date: 2026-08-13 14:12+0000\n"
+"PO-Revision-Date: 2026-08-19 07:12+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -1605,10 +1605,9 @@ msgid "Allowed Cover Art URLs"
 msgstr "Leidžiami viršelių URL adresai"
 
 #: picard/extension_points/script_variables.py:108
-#, fuzzy, python-format
-#| msgid "Plugins"
+#, python-format
 msgid "Plugin: %s"
-msgstr "Įskiepiai"
+msgstr "Įskiepis: „%s“"
 
 #: picard/formats/apev2.py:100
 msgid "APEv2 (Monkey's Audio, WavPack)"
@@ -1662,10 +1661,9 @@ msgid "{base} (current)"
 msgstr ""
 
 #: picard/profiles/importer.py:96
-#, fuzzy, python-format
-#| msgid "Invalid Title"
+#, python-format
 msgid "Invalid TOML: %s"
-msgstr "Netinkamas pavadinimas"
+msgstr "Netinkamas TOML: „%s“"
 
 #: picard/profiles/importer.py:101
 msgid "Missing required [profile] section"
@@ -1758,15 +1756,8 @@ msgid "$if(if,then[,else])"
 msgstr ""
 
 #: picard/script/functions.py:76
-#, fuzzy
-#| msgid ""
-#| "`$if(if,then,else)`\n"
-#| "\n"
-#| "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgid "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
-"`$if(jei,tada,kitaip)`\n"
-"\n"
 "Jei `jei` nėra tuščias, jis grąžina `tada`. Priešingu atveju grąžina "
 "`kitaip`."
 
@@ -4045,16 +4036,14 @@ msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/__init__.py:298
-#, fuzzy, python-format
-#| msgid "MusicBrainz Picard"
+#, python-format
 msgid "%s — MusicBrainz Picard"
-msgstr "„MusicBrainz Picard“"
+msgstr "%s – „MusicBrainz Picard“"
 
 #: picard/ui/aboutdialog.py:128
-#, fuzzy, python-format
-#| msgid "Version"
+#, python-format
 msgid "Version %s"
-msgstr "Versija"
+msgstr "Versija %s"
 
 #: picard/ui/aboutdialog.py:159
 #, python-format
@@ -4346,10 +4335,8 @@ msgid "Miscellaneous"
 msgstr "Kita"
 
 #: picard/ui/columns.py:61
-#, fuzzy
-#| msgid "Manage custom columns…"
 msgid "Custom Columns"
-msgstr "Tvarkyti pasirinktinius stulpelius…"
+msgstr "Pasirinktiniai stulpeliai"
 
 #: picard/ui/filebrowser.py:57
 msgid "&Load selected files"
@@ -4446,10 +4433,8 @@ msgid "New ISRC"
 msgstr "ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:97
-#, fuzzy
-#| msgid "&Submit disc ID"
 msgid "&Submit"
-msgstr "&Pateikti disko ID"
+msgstr "&Pateikti"
 
 #: picard/ui/logview.py:165
 #, fuzzy
@@ -5093,10 +5078,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:72
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin"
-msgstr "Diegti įskiepį…"
+msgstr "Diegti įskiepį"
 
 #: picard/ui/dialogs/installplugin.py:108 picard/ui/options/plugins.py:111
 #, fuzzy
@@ -5175,10 +5158,8 @@ msgid "Select directory"
 msgstr "Pasirinkti veiksmą"
 
 #: picard/ui/dialogs/installplugin.py:182
-#, fuzzy
-#| msgid "Director"
 msgid "Directory:"
-msgstr "Režisierius"
+msgstr "Katalogas:"
 
 #: picard/ui/dialogs/installplugin.py:188
 msgid "Load in-place (ignore git)"
@@ -5442,10 +5423,8 @@ msgid "Version:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:105
-#, fuzzy
-#| msgid "Version"
 msgid "API Version:"
-msgstr "Versija"
+msgstr "PS versija:"
 
 #: picard/ui/dialogs/plugininfo.py:106
 msgid "Trust Level:"
@@ -5457,10 +5436,8 @@ msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:108
 #: picard/ui/widgets/plugindetailswidget.py:97
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors:"
-msgstr "Autoriai"
+msgstr "Autoriai:"
 
 #: picard/ui/dialogs/plugininfo.py:109
 #: picard/ui/widgets/plugindetailswidget.py:102
@@ -5483,10 +5460,8 @@ msgid "License:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:112
-#, fuzzy
-#| msgid "License"
 msgid "License URL:"
-msgstr "Licencija"
+msgstr "Licencijos URL:"
 
 #: picard/ui/dialogs/plugininfo.py:113
 msgid "Homepage:"
@@ -5502,16 +5477,13 @@ msgid "Path:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:116
-#, fuzzy
-#| msgid "Version"
 msgid "Versioning:"
-msgstr "Versija"
+msgstr "Versijavimas:"
 
 #: picard/ui/dialogs/plugininfo.py:123
 #: picard/ui/forms/ui_scripteditor_details.py:107
-#, fuzzy
 msgid "Description:"
-msgstr "Aprašymas:"
+msgstr "Aprašas:"
 
 #: picard/ui/dialogs/plugininfo.py:246
 #, fuzzy
@@ -7646,14 +7618,13 @@ msgstr[2] "%s (klaida)"
 msgstr[3] "%s (klaida)"
 
 #: picard/ui/itemviews/custom_columns/validation.py:109
-#, fuzzy, python-format
-#| msgid "Warning"
+#, python-format
 msgid "%d warning"
 msgid_plural "%d warnings"
-msgstr[0] "Įspėjimas"
-msgstr[1] "Įspėjimas"
-msgstr[2] "Įspėjimas"
-msgstr[3] "Įspėjimas"
+msgstr[0] "%d įspėjimas"
+msgstr[1] "%d įspėjimai"
+msgstr[2] "%d įspėjimo"
+msgstr[3] "%d įspėjimų"
 
 #: picard/ui/itemviews/custom_columns/validation.py:142
 msgid "Title is required and cannot be empty"
@@ -9960,11 +9931,11 @@ msgstr ""
 
 #: picard/ui/scripteditor/__init__.py:255
 msgid "Export the script to a file"
-msgstr ""
+msgstr "Eksportuoti skriptą į failą"
 
 #: picard/ui/scripteditor/__init__.py:260
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "A&tkurti visus skriptus"
 
 #: picard/ui/scripteditor/__init__.py:261
 msgid "Reset all scripts to the saved values"
@@ -9980,7 +9951,7 @@ msgstr "Išsaugoti skripto nustatymų pakeitimus ir išeiti"
 
 #: picard/ui/scripteditor/__init__.py:272
 msgid "E&xit without saving"
-msgstr ""
+msgstr "Iš&eiti neišsaugojus"
 
 #: picard/ui/scripteditor/__init__.py:273
 msgid "Close the script editor without saving changes"
@@ -9996,7 +9967,7 @@ msgstr "Peržiūrėti / redaguoti skripto &metaduomenis"
 
 #: picard/ui/scripteditor/__init__.py:282
 msgid "Display the details for the script"
-msgstr "Rodyti išsamią skripto informaciją"
+msgstr "Rodyti išsamiau apie skriptą"
 
 #: picard/ui/scripteditor/__init__.py:284
 msgid "Ctrl+M"
@@ -10012,7 +9983,7 @@ msgstr "&Kopijuoti dabartinį skriptą"
 
 #: picard/ui/scripteditor/__init__.py:293
 msgid "Save a copy of the script as a new script"
-msgstr "Išsaugoti skriptos kopiją kaip naują skriptą"
+msgstr "Išsaugoti skripto kopiją kaip naują skriptą"
 
 #: picard/ui/scripteditor/__init__.py:298
 msgid "&Delete the current script"
@@ -10023,14 +9994,12 @@ msgid "Delete the script"
 msgstr "Ištrinti skriptą"
 
 #: picard/ui/scripteditor/__init__.py:304
-#, fuzzy
-#| msgid "&Delete the current script"
 msgid "Rese&t current script"
-msgstr "&Ištrinti dabartinį skriptą"
+msgstr "Atkur&ti dabartinį skriptą"
 
 #: picard/ui/scripteditor/__init__.py:305
 msgid "Discard changes and reset to the last saved version"
-msgstr ""
+msgstr "Atmesti pakeitimus ir atkurti į paskutinę išsaugotą versiją"
 
 #: picard/ui/scripteditor/__init__.py:314
 msgid "&Reload random example files"
@@ -10061,16 +10030,12 @@ msgid "New Script"
 msgstr "Naujas skriptas"
 
 #: picard/ui/scripteditor/__init__.py:391
-#, fuzzy
-#| msgid "Reset all scripts to the saved values"
 msgid "Reset all scripts to their last saved versions?"
-msgstr "Atkurti visų skriptų išsaugotas reikšmes"
+msgstr "Atkurti visus skriptus į paskutines išsaugotas versijas?"
 
 #: picard/ui/scripteditor/__init__.py:398
-#, fuzzy
-#| msgid "Export the current script to a file."
 msgid "Reset the current script to its last saved version?"
-msgstr "Eksportuoti dabartinį skriptą į failą."
+msgstr "Atkurti dabartinį skriptą į paskutinę išsaugotą versiją?"
 
 #: picard/ui/scripteditor/__init__.py:453
 #, python-brace-format
@@ -10108,10 +10073,8 @@ msgid "The script title must not be empty."
 msgstr "Skripto pavadinimas neturi būti tuščias."
 
 #: picard/ui/scripteditor/__init__.py:688
-#, fuzzy
-#| msgid "Rename script"
 msgid "Activate script?"
-msgstr "Pervardinti skriptą"
+msgstr "Aktyvinti skriptą?"
 
 #: picard/ui/scripteditor/__init__.py:689
 #, python-format
@@ -10119,6 +10082,8 @@ msgid ""
 "The script \"%s\" is not the active file naming script. Do you want to make "
 "it active?"
 msgstr ""
+"Skriptas „%s“ nėra aktyvus failų pavadinimų skriptas. Ar norite jį padaryti "
+"aktyviu?"
 
 #: picard/ui/scripteditor/__init__.py:834
 msgid "Error Deleting Script"
@@ -10135,7 +10100,7 @@ msgstr ""
 "Skripto nepavyko ištrinti, nes jis naudojamas viename iš naudotojo "
 "profilių.\n"
 "\n"
-"Profilis: „%s“"
+"Profilis: „%s“."
 
 #: picard/ui/scripteditor/__init__.py:842
 msgid "Are you sure that you want to delete the script?"
@@ -10162,7 +10127,7 @@ msgstr "Perrašyti"
 
 #: picard/ui/scripteditor/__init__.py:1004
 msgid "The file naming format must not be empty."
-msgstr ""
+msgstr "Failo pavadinimo formatas neturi būti tuščias."
 
 #: picard/ui/scripteditor/__init__.py:1043
 msgid "Script Details"
@@ -10184,7 +10149,7 @@ msgstr "Pervadinimo parinktys yra išjungtos"
 
 #: picard/ui/scripteditor/examples.py:160
 msgid "Examples:"
-msgstr ""
+msgstr "Pavyzdžiai:"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -10225,24 +10190,21 @@ msgid "Retry"
 msgstr "Pakartoti"
 
 #: picard/ui/searchdialog/__init__.py:252
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "<strong>Following error occurred while fetching results:<br><br></"
-#| "strong>Network request error for %(url)s:<br>%(error)s (QT code %"
-#| "(qtcode)d, HTTP code %(statuscode)r)<br>"
+#, python-brace-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
 "strong>Network request error for {url}:<br>{error} (QT code {qtcode}, HTTP "
 "code {statuscode})<br>"
 msgstr ""
 "<strong>Gaunant rezultatus įvyko nurodyta klaida:<br><br></strong>Tinklo "
-"užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas %(qtcode)d, HTTP kodas %"
-"(statuscode)r)<br>."
+"užklausos klaida dėl {url}:<br>{error} (QT kodas {qtcode}, HTTP kodas "
+"{statuscode})<br>."
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
-"<strong>Rezultatų nerasta. Bandykite atlikti kitą paieškos užklausą.</strong>"
+"<strong>Rezultatų nerasta. Bandykite atlikti kitokią paieškos užklausą.</"
+"strong>"
 
 #: picard/ui/searchdialog/album.py:161 picard/ui/searchdialog/artist.py:48
 #: picard/ui/searchdialog/track.py:69
@@ -10340,7 +10302,7 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:385
 #: picard/ui/widgets/pluginlistwidget.py:627
 msgid "Update"
-msgstr "Atnaujinti"
+msgstr "Naujinti"
 
 #: picard/ui/widgets/plugindetailswidget.py:122
 #: picard/ui/widgets/pluginlistwidget.py:632
@@ -10354,12 +10316,12 @@ msgstr "Informacija"
 
 #: picard/ui/widgets/plugindetailswidget.py:154
 msgid "No description available"
-msgstr "Nėra aprašo"
+msgstr "Nėra aprašo."
 
 #: picard/ui/widgets/plugindetailswidget.py:197
 #: picard/ui/widgets/pluginlistwidget.py:624
 msgid "Reload"
-msgstr ""
+msgstr "Įkelti iš naujo"
 
 #: picard/ui/widgets/plugindetailswidget.py:245
 #: picard/ui/widgets/plugindetailswidget.py:367
@@ -10371,14 +10333,13 @@ msgid "N/A"
 msgstr "Netaikoma"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
-#, fuzzy, python-brace-format
-#| msgid "Updates to check:"
+#, python-brace-format
 msgid "Update to {version}"
-msgstr "Naujinimus tikrinti:"
+msgstr "Naujinti į {version}"
 
 #: picard/ui/widgets/plugindetailswidget.py:314
 msgid "Update Plugin"
-msgstr "Atnaujinti įskiepį"
+msgstr "Naujinti įskiepį"
 
 #: picard/ui/widgets/plugindetailswidget.py:315
 #, python-brace-format
@@ -10387,9 +10348,9 @@ msgid ""
 "\n"
 "Do you want to update it anyway?"
 msgstr ""
-"Įskiepis „{name}“ nustatytas neatsinaujinti automatiškai.\n"
+"Įskiepis „{name}“ nustatytas nesinaujinti automatiškai.\n"
 "\n"
-"Ar vis tiek norite jį atnaujinti?"
+"Ar vis tiek norite jį naujinti?"
 
 #: picard/ui/widgets/plugindetailswidget.py:367
 #, python-brace-format
@@ -10398,27 +10359,26 @@ msgstr "Nepavyko išdiegti įskiepį: {errmsg}."
 
 #: picard/ui/widgets/plugindetailswidget.py:374
 msgid "Updating…"
-msgstr "Atnaujinama…"
+msgstr "Naujinama…"
 
 #: picard/ui/widgets/pluginformat.py:32
 msgid "current"
-msgstr ""
+msgstr "dabartinė"
 
 #: picard/ui/widgets/pluginformat.py:33
 #, python-brace-format
 msgid "Commit date: {date}"
-msgstr ""
+msgstr "Įsipareigojimo data: {date}"
 
 #: picard/ui/widgets/pluginlistwidget.py:94
 #: picard/ui/widgets/pluginlistwidget.py:106
 msgid "Update All"
-msgstr "Atnaujinti visus"
+msgstr "Naujinti visus"
 
 #: picard/ui/widgets/pluginlistwidget.py:102
-#, fuzzy, python-brace-format
-#| msgid "Update All ({count})"
+#, python-brace-format
 msgid "Update Selected ({count})"
-msgstr "Atnaujinti visus ({count})"
+msgstr "Naujinti pasirinktus ({count})"
 
 #: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Enabled"
@@ -10438,7 +10398,7 @@ msgstr "Nauja versija"
 
 #: picard/ui/widgets/pluginlistwidget.py:314
 msgid "This plugin is included in updates"
-msgstr "Šis įskiepis yra įtrauktas naujinimuose."
+msgstr "Šis įskiepis yra įtrauktas atnaujinimuose."
 
 #: picard/ui/widgets/pluginlistwidget.py:316
 msgid "This plugin is excluded from updates"
@@ -10472,10 +10432,8 @@ msgid "Switch Ref"
 msgstr "Perjungimo nuor."
 
 #: picard/ui/widgets/pluginlistwidget.py:654
-#, fuzzy
-#| msgid "Director"
 msgid "View Directory"
-msgstr "Režisierius"
+msgstr "Peržiūrėti katalogą"
 
 #: picard/ui/widgets/pluginlistwidget.py:656
 msgid "View Repository"
@@ -10483,7 +10441,7 @@ msgstr "Peržiūrėti saugyklą"
 
 #: picard/ui/widgets/pluginlistwidget.py:662
 msgid "Report a Bug"
-msgstr ""
+msgstr "Pranešti riktą"
 
 #: picard/ui/widgets/pluginlistwidget.py:668
 msgid "Execution Order"
@@ -10522,7 +10480,7 @@ msgid ""
 "Failed to update plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
-"Nepavyko atnaujinti įskiepio „{name}“:\n"
+"Nepavyko naujinti įskiepio „{name}“:\n"
 "{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:734
@@ -10548,10 +10506,8 @@ msgid "Could not find plugin repository URL"
 msgstr "Nepavyko rasti įskiepio saugyklos URL."
 
 #: picard/ui/widgets/pluginlistwidget.py:782
-#, fuzzy
-#| msgid "Uninstall Plugin"
 msgid "Reinstall Local Plugin"
-msgstr "Išdiegti įskiepį"
+msgstr "Diegti vietinį įskiepį iš naujo"
 
 #: picard/ui/widgets/pluginlistwidget.py:785
 msgid ""
@@ -10560,16 +10516,18 @@ msgid ""
 "Do you want to keep it in local mode, or switch to git-managed mode (cloned "
 "to plugin directory)?"
 msgstr ""
+"Šis įskiepis įkeliamas vietiniame režime (Git nepaisomas).\n"
+"\n"
+"Ar norite laikyti jį vietiniame režime, ar perjungti į „Git“ valdomą režimą "
+"(klonuotas į įskiepių katalogą)?"
 
 #: picard/ui/widgets/pluginlistwidget.py:790
 msgid "Keep local"
-msgstr ""
+msgstr "Laikyti vietinį"
 
 #: picard/ui/widgets/pluginlistwidget.py:791
-#, fuzzy
-#| msgid "Switch Git Ref"
 msgid "Switch to git"
-msgstr "Perjungimo „Git“ nuor."
+msgstr "Perjungti į „Git“"
 
 #: picard/ui/widgets/pluginlistwidget.py:850
 #, python-brace-format
@@ -10582,7 +10540,7 @@ msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:887
 msgid "Plugin Re-enable Failed"
-msgstr ""
+msgstr "Įskiepio įjungimas iš naujo nepavyko"
 
 #: picard/ui/widgets/pluginlistwidget.py:889
 #, python-brace-format
@@ -10593,6 +10551,11 @@ msgid ""
 "\n"
 "The plugin is currently disabled."
 msgstr ""
+"Įskiepis „{name}“ buvo sėkmingai naujintas / perjungtas, bet jo nepavyko vėl "
+"įjungti:\n"
+"{error}.\n"
+"\n"
+"Šiuo metu įskiepis išjungtas."
 
 #: picard/ui/widgets/pluginlistwidget.py:934
 msgid "There were no installed metadata processing plugins found."
@@ -10630,7 +10593,7 @@ msgstr "Perjungimo „Git“ nuor."
 #: picard/ui/widgets/pluginlistwidget.py:1006
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
-msgstr "Perjungti nuor. į „{name}“"
+msgstr "Perjungti nuor. įskiepiui „{name}“"
 
 #: picard/ui/widgets/pluginlistwidget.py:1016
 msgid "Yes, Switch!"
@@ -10646,19 +10609,15 @@ msgstr "Pasirinkite arba įveskite nuor., į kurią norite perjungti."
 
 #: picard/ui/widgets/preferencelistwidget.py:35
 msgid "Add…"
-msgstr ""
+msgstr "Pridėti…"
 
 #: picard/ui/widgets/preferencelistwidget.py:90
-#, fuzzy
-#| msgid "Move profile up"
 msgid "Move up"
-msgstr "Pakelti profilį"
+msgstr "Pakelti"
 
 #: picard/ui/widgets/preferencelistwidget.py:91
-#, fuzzy
-#| msgid "Move profile down"
 msgid "Move down"
-msgstr "Nuleisti profilį"
+msgstr "Nuleisti"
 
 #: picard/ui/widgets/profilelistwidget.py:54
 msgid "Rename profile"
@@ -10669,26 +10628,20 @@ msgid "Remove profile"
 msgstr "Šalinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:61
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Export profile…"
-msgstr "Konfigūracijos failai"
+msgstr "Eksportuoti profilį…"
 
 #: picard/ui/widgets/profilelistwidget.py:65
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Kopijuoti į iškarpinę"
 
 #: picard/ui/widgets/profilelistwidget.py:69
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and replace…"
-msgstr "&Importuoti skripto failą"
+msgstr "Importuoti ir pakeisti…"
 
 #: picard/ui/widgets/profilelistwidget.py:72
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from clipboard"
-msgstr "Importuota iš %s"
+msgstr "Importuoti iš iškarpinės"
 
 #: picard/ui/widgets/profilelistwidget.py:109
 msgid "Are you sure you want to remove this profile?"
@@ -10707,14 +10660,13 @@ msgid "Custom"
 msgstr "Pasirinktinė"
 
 #: picard/ui/widgets/refselector.py:120
-#, fuzzy, python-brace-format
-#| msgid "Use default ref: {ref} ({description})"
+#, python-brace-format
 msgid "Recommended: <b>{ref}</b> ({description})"
-msgstr "Naudokite numatytąją nuor.: {ref} {description}"
+msgstr "Rekomenduojama: {ref} {description}"
 
 #: picard/ui/widgets/refselector.py:123
 msgid "Use the default ref (usually main/master branch)"
-msgstr "Naudoti numatytąją nuor. (paprastai pagrindinę / vyriausiąją atšaką)"
+msgstr "Naudoti numatytąją nuor. (paprastai pagrindinę / vyriausiąją šaką)"
 
 #: picard/ui/widgets/scriptdocumentation.py:132
 #, python-brace-format
@@ -10773,11 +10725,11 @@ msgstr ""
 
 #: picard/ui/widgets/scripttextedit.py:425
 msgid "&Word wrap script"
-msgstr "Ž&odžio skaidymas į eilutes skriptas"
+msgstr "Ž&odžių skaidymo į eilutes skriptas"
 
 #: picard/ui/widgets/scripttextedit.py:426
 msgid "Word wrap long lines in the editor"
-msgstr "Skaidyti žodžio ilgas eilutes rengyklėje"
+msgstr "Skaidyti žodžių ilgas eilutes rengyklėje"
 
 #: picard/ui/widgets/scripttextedit.py:428
 msgid "Ctrl+Shift+W"
@@ -10858,7 +10810,7 @@ msgstr "Klaida įkeliant „Picard“ leidimų sąrašą: {error_message}."
 #: picard/util/checkupdate.py:112 picard/util/checkupdate.py:149
 #: picard/util/checkupdate.py:173
 msgid "Picard Update"
-msgstr "„Picard“ naujinimas"
+msgstr "„Picard“ atnaujinimas"
 
 #: picard/util/checkupdate.py:113
 #, python-brace-format
@@ -10894,7 +10846,7 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-"Šiuo metu nėra naujinimo jūsų prenumeruojamam naujinimo lygiui: "
+"Šiuo metu nėra atnaujinimo jūsų prenumeruojamam atnaujinimo lygiui: "
 "{update_level}.\n"
 "\n"
 "Jūsų versija: {picard_old_version}\n"
