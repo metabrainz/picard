@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-13 14:12+0000\n"
+"PO-Revision-Date: 2026-08-19 07:12+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -4084,11 +4084,11 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:575
 msgid "Export the script to a file"
-msgstr ""
+msgstr "Eksportuoti skriptą į failą"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "A&tkurti visus skriptus"
 
 #: picard/ui/scripteditor.py:581
 msgid "Reset all scripts to the saved values"
@@ -4104,7 +4104,7 @@ msgstr "Išsaugoti skripto nustatymų pakeitimus ir išeiti"
 
 #: picard/ui/scripteditor.py:592
 msgid "E&xit without saving"
-msgstr ""
+msgstr "Iš&eiti neišsaugojus"
 
 #: picard/ui/scripteditor.py:593
 msgid "Close the script editor without saving changes"
@@ -4120,7 +4120,7 @@ msgstr "Peržiūrėti / redaguoti skripto &metaduomenis"
 
 #: picard/ui/scripteditor.py:602
 msgid "Display the details for the script"
-msgstr "Rodyti išsamią skripto informaciją"
+msgstr "Rodyti išsamiau apie skriptą"
 
 #: picard/ui/scripteditor.py:604
 msgid "Ctrl+M"
@@ -4136,7 +4136,7 @@ msgstr "&Kopijuoti dabartinį skriptą"
 
 #: picard/ui/scripteditor.py:613
 msgid "Save a copy of the script as a new script"
-msgstr "Išsaugoti skriptos kopiją kaip naują skriptą"
+msgstr "Išsaugoti skripto kopiją kaip naują skriptą"
 
 #: picard/ui/scripteditor.py:618
 msgid "&Delete the current script"
@@ -4222,7 +4222,7 @@ msgstr ""
 "Skripto nepavyko ištrinti, nes jis naudojamas viename iš naudotojo "
 "profilių.\n"
 "\n"
-"Profilis: „%s“"
+"Profilis: „%s“."
 
 #: picard/ui/scripteditor.py:1154
 msgid "Are you sure that you want to delete the script?"
@@ -4252,7 +4252,7 @@ msgstr "Kopijuoti"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1316
 msgid "The file naming format must not be empty."
-msgstr ""
+msgstr "Failo pavadinimo formatas neturi būti tuščias."
 
 #: picard/ui/scripteditor.py:1353
 msgid "Script Details"
@@ -5179,7 +5179,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
-msgstr ""
+msgstr "Aprašas:"
 
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
@@ -5962,7 +5962,8 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
-"<strong>Rezultatų nerasta. Bandykite atlikti kitą paieškos užklausą.</strong>"
+"<strong>Rezultatų nerasta. Bandykite atlikti kitokią paieškos užklausą.</"
+"strong>"
 
 #: picard/ui/searchdialog/album.py:145 picard/ui/searchdialog/track.py:63
 msgid "Load into Picard"
@@ -6059,11 +6060,11 @@ msgstr "Ar tikrai norite pašalinti šį skriptą?"
 
 #: picard/ui/widgets/scripttextedit.py:329
 msgid "&Word wrap script"
-msgstr "Ž&odžio skaidymas į eilutes skriptas"
+msgstr "Ž&odžių skaidymo į eilutes skriptas"
 
 #: picard/ui/widgets/scripttextedit.py:330
 msgid "Word wrap long lines in the editor"
-msgstr "Skaidyti žodžio ilgas eilutes rengyklėje"
+msgstr "Skaidyti žodžių ilgas eilutes rengyklėje"
 
 #: picard/ui/widgets/scripttextedit.py:332
 msgid "Ctrl+Shift+W"
@@ -6151,7 +6152,7 @@ msgstr "Klaida įkeliant „Picard“ leidimų sąrašą: {error_message}."
 #: picard/util/checkupdate.py:105 picard/util/checkupdate.py:139
 #: picard/util/checkupdate.py:159
 msgid "Picard Update"
-msgstr "„Picard“ naujinimas"
+msgstr "„Picard“ atnaujinimas"
 
 #: picard/util/checkupdate.py:106
 msgid ""
@@ -6188,7 +6189,7 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-"Šiuo metu nėra naujinimo jūsų prenumeruojamam naujinimo lygiui: "
+"Šiuo metu nėra atnaujinimo jūsų prenumeruojamam atnaujinimo lygiui: "
 "{update_level}.\n"
 "\n"
 "Jūsų versija: {picard_old_version}\n"
