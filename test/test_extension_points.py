@@ -40,6 +40,7 @@ from picard.extension_points.script_variables import (
 )
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
+from picard.tags.tagvar import TagVar
 
 
 def create_mock_plugin(uuid, plugin_id='testplugin') -> Plugin:
@@ -220,7 +221,7 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         super().setUp()
         patcher_ep = patch(
             'picard.extension_points.script_variables.ext_point_script_variables',
-            ExtensionPoint(label='test_variables'),
+            ExtensionPoint[TagVar](label='test_variables'),
         )
         patcher_config = patch('picard.extension_points.get_config', return_value=None)
         self.ext_point = patcher_ep.start()
@@ -239,11 +240,21 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
     def _registered_variable_names(self):
         return set(var.name for var in self.ext_point)
 
+    def _get_tagvar_by_name(self, name) -> TagVar:
+        for var in self.ext_point:
+            if var.name == name:
+                return var
+        raise ValueError(f'Variable "{name}" not found in extension point')
+
     def test_register_script_variable(self):
         register_script_variable('my_var1', 'some docs')
         register_script_variable('my_var2', 'other docs')
         self.assertEqual({'my_var1', 'my_var2'}, self._registered_variable_names())
         self.assertEqual('some docs', get_plugin_variable_documentation('my_var1'))
+        var = self._get_tagvar_by_name('my_var1')
+        self.assertTrue(var.is_tag)
+        self.assertFalse(var.is_hidden)
+        self.assertFalse(var.is_multi_value)
 
     def test_register_script_variable_no_docs(self):
         register_script_variable('my_var1')
@@ -271,34 +282,23 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         """Registered TagVar should carry the plugin_id from the API."""
         api = self._make_api()
         register_script_variable('my_var', 'docs', api)
-        for var in self.ext_point:
-            if var.name == 'my_var':
-                self.assertEqual('testplugin', var.plugin_id)
-                break
-        else:
-            self.fail("Variable not found in extension point")
+        var = self._get_tagvar_by_name('my_var')
+        self.assertEqual('testplugin', var.plugin_id)
 
     def test_register_script_variable_is_hidden(self):
         """Names starting with _ should be registered as hidden variables."""
         register_script_variable('_hidden_var', 'docs')
-        for var in self.ext_point:
-            if var.name == 'hidden_var':
-                self.assertTrue(var.is_hidden)
-                self.assertEqual('~hidden_var', str(var))
-                self.assertEqual('_hidden_var', var.script_name())
-                break
-        else:
-            self.fail("Variable not found in extension point")
+        var = self._get_tagvar_by_name('hidden_var')
+        self.assertTrue(var.is_hidden)
+        self.assertFalse(var.is_tag)
+        self.assertEqual('~hidden_var', str(var))
+        self.assertEqual('_hidden_var', var.script_name())
 
     def test_register_script_variable_is_multi_value(self):
         """is_multi_value parameter should be passed through to the TagVar."""
         register_script_variable('multi_var', 'docs', is_multi_value=True)
-        for var in self.ext_point:
-            if var.name == 'multi_var':
-                self.assertTrue(var.is_multi_value)
-                break
-        else:
-            self.fail("Variable not found in extension point")
+        var = self._get_tagvar_by_name('multi_var')
+        self.assertTrue(var.is_multi_value)
 
     def test_register_script_variable_deduplication(self):
         """Registering the same variable twice from the same plugin should update, not duplicate."""

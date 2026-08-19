@@ -126,7 +126,7 @@ def register_script_variable(
             # Locked attributes for plugin-registered variables
             is_preserved=False,
             is_script_variable=True,
-            is_tag=True,
+            is_tag=not is_hidden,
             is_calculated=False,
             is_file_info=False,
             is_from_mb=False,
