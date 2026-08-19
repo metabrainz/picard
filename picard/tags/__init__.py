@@ -31,9 +31,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Iterator
 import re
 
 from picard.const.tags import ALL_TAGS
+from picard.tags.tagvar import TagVar
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
@@ -86,15 +88,17 @@ def parse_subtag(name):
     return lang, desc
 
 
-def tag_names():
-    """Tag names available for user assignment: built-in tags + plugin-provided tags."""
+def _all_tag_vars() -> Iterator[TagVar]:
     # Inline import to avoid circular dependency: script_variables imports from this module.
     from picard.extension_points.script_variables import ext_point_script_variables
 
-    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag)
-    for var in ext_point_script_variables:
-        if var.is_tag and not var.is_hidden:
-            yield var.name
+    yield from ALL_TAGS
+    yield from ext_point_script_variables
+
+
+def tag_names():
+    """Tag names available for user assignment: built-in tags + plugin-provided tags."""
+    yield from (var.name for var in _all_tag_vars() if var.is_tag and not var.is_hidden)
 
 
 def visible_tag_names():
@@ -130,13 +134,7 @@ def file_info_tag_names():
 
 def script_variable_tag_names():
     """Tag names available to scripts (used by script editor completer)"""
-    # Inline import to avoid circular dependency: script_variables imports from this module.
-    from picard.extension_points.script_variables import ext_point_script_variables
-
-    yield from (tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable)
-    for var in ext_point_script_variables:
-        if var.is_script_variable:
-            yield var.script_name()
+    yield from (var.script_name() for var in _all_tag_vars() if var.is_script_variable)
 
 
 def display_tag_name(name):
