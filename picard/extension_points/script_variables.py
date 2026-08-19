@@ -160,17 +160,6 @@ def unregister_all_script_variables(api: 'PluginApi') -> None:
     ext_point_script_variables.unregister(api.module_path, lambda item: True)
 
 
-def get_plugin_variable_names() -> set[str]:
-    """Get all plugin-provided variable names.
-
-    Returns
-    -------
-    set[str]
-        Set of variable names provided by plugins
-    """
-    return {var.name for var in ext_point_script_variables}
-
-
 def get_plugin_variable_documentation(name: str) -> str | None:
     """Get documentation for a plugin-provided variable.
 

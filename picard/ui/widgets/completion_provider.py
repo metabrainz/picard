@@ -21,7 +21,6 @@
 """Completion choices provider for script completion."""
 
 from collections.abc import (
-    Callable,
     Iterable,
     Iterator,
 )
@@ -49,15 +48,12 @@ class CompletionChoicesProvider:
 
     Attributes
     ----------
-    _get_plugin_variable_names : Callable[[], set[str]]
-        Function that returns a set of plugin variable names.
     _user_script_scanner : UserScriptScanner | None
         User script scanner for extracting variables from user scripts.
     """
 
     def __init__(
         self,
-        get_plugin_variable_names: Callable[[], set[str]],
         user_script_scanner: UserScriptScanner | None = None,
     ):
         """Initialize the completion choices provider.
@@ -69,7 +65,6 @@ class CompletionChoicesProvider:
         user_script_scanner : UserScriptScanner | None
             Optional user script scanner for extracting variables from user scripts.
         """
-        self._get_plugin_variable_names = get_plugin_variable_names
         self._user_script_scanner = user_script_scanner
 
     def build_choices(
@@ -105,7 +100,6 @@ class CompletionChoicesProvider:
         - TAG_NAME_ARG: Returns variable names without formatting
         - DEFAULT/VARIABLE: Returns variable names with % prefix and suffix
         """
-        plugin_variables = self._get_plugin_variable_names()
         builtin_variables = set(builtin_variables)
 
         # Get user script variables if scanner is available
@@ -116,7 +110,7 @@ class CompletionChoicesProvider:
                 if cached_variables is not None:
                     user_script_variables = cached_variables
 
-        all_variables = list(builtin_variables | user_defined_variables | plugin_variables | user_script_variables)
+        all_variables = list(builtin_variables | user_defined_variables | user_script_variables)
         all_variables.sort(key=lambda x: (-usage_counts.get(x, 0), x))
 
         if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
