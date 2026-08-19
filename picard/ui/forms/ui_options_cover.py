@@ -37,9 +37,7 @@ class Ui_CoverOptionsPage(object):
         self.never_replace_types_layout = QtWidgets.QHBoxLayout()
         self.never_replace_types_layout.setObjectName("never_replace_types_layout")
         self.cb_never_replace_types = QtWidgets.QCheckBox(parent=self.save_images_to_tags)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cb_never_replace_types.sizePolicy().hasHeightForWidth())
@@ -82,9 +80,7 @@ class Ui_CoverOptionsPage(object):
         self.verticalLayout_2.addWidget(self.remove_images_from_tags)
         self.verticalLayout.addWidget(self.save_images_to_files)
         self.ca_providers_groupbox = QtWidgets.QGroupBox(parent=CoverOptionsPage)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ca_providers_groupbox.sizePolicy().hasHeightForWidth())
@@ -116,15 +112,11 @@ class Ui_CoverOptionsPage(object):
         self.down_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.down_button.setObjectName("down_button")
         self.ca_layout.addWidget(self.down_button)
-        spacerItem = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.ca_layout.addItem(spacerItem)
         self.ca_providers_layout.addLayout(self.ca_layout)
         self.verticalLayout.addWidget(self.ca_providers_groupbox, 0, QtCore.Qt.AlignmentFlag.AlignTop)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.label_use_filename.setBuddy(self.cover_image_filename)
 
@@ -141,15 +133,9 @@ class Ui_CoverOptionsPage(object):
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
-        self.image_type_as_filename.setToolTip(
-            _("Always use the primary image type as the file name for non-front images")
-        )
+        self.image_type_as_filename.setToolTip(_("Always use the primary image type as the file name for non-front images"))
         self.image_type_as_filename.setText(_("Use the primary image type as the file name"))
-        self.remove_images_from_tags.setToolTip(
-            _(
-                "When saving, remove cover images embedded in tags. Images will only be removed if they are also being saved as separate files."
-            )
-        )
+        self.remove_images_from_tags.setToolTip(_("When saving, remove cover images embedded in tags. Images will only be removed if they are also being saved as separate files."))
         self.remove_images_from_tags.setText(_("Remove cover images from tags"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.move_label.setText(_("Reorder Priority:"))

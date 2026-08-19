@@ -286,6 +286,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             and metadata
             and orig_metadata
             and orig_metadata.images
+            and not get_config().setting['save_images_to_tags']
             and metadata.images.should_remove_images_from_tags(previous_images=orig_metadata.images)
             and not list(metadata.images.to_be_saved_to_tags(previous_images=orig_metadata.images))
         )

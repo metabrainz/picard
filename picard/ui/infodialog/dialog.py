@@ -104,6 +104,7 @@ class InfoDialog(PicardDialog):
         # using the same rules the format save code applies (see ImageList).
         self.removal_predicted = bool(
             has_orig_images
+            and not get_config().setting['save_images_to_tags']
             and obj.metadata.images.should_remove_images_from_tags(
                 previous_images=obj.orig_metadata.images if has_orig_images else None
             )

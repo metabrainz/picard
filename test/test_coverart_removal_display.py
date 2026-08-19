@@ -256,6 +256,14 @@ def test_update_metadata_no_removal_without_orig_images(removal_settings) -> Non
     assert not box.cover_art.marked_for_removal
 
 
+def test_update_metadata_no_removal_when_saving_to_tags(removal_settings) -> None:
+    removal_settings.setting['save_images_to_tags'] = True
+    box = _RemovalBox(_make_item([], [FakeImage()]))
+    box.update_metadata()
+    assert not box._removal_predicted
+    assert not box.orig_cover_art.marked_for_removal
+
+
 def test_update_metadata_no_removal_for_file_in_cluster(removal_settings) -> None:
     """Files in a cluster (left pane) should not show the removal indicator.
     The warning should only appear once the file is matched to a track."""
