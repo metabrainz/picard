@@ -71,8 +71,8 @@ from picard.formats.mutagenext import (
 from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.tags import (
-    parse_comment_tag,
-    parse_subtag,
+    create_lang_desc_tag,
+    parse_lang_desc_tag,
 )
 from picard.util import (
     sanitize_date,
@@ -395,10 +395,8 @@ class ID3File(File):
                     # iTunes CDDB comment should be mapped to itunes_cddb_1 tag
                     if frame.desc == 'iTunes_CDDB_1':
                         name = 'itunes_cddb_1'
-                    elif frame.lang == 'eng':
-                        name = '%s:%s' % (name, frame.desc)
                     else:
-                        name = '%s:%s:%s' % (name, frame.lang, frame.desc)
+                        name = create_lang_desc_tag(name, frame.lang, frame.desc, default_language="eng")
                     metadata.add(name, text)
         else:
             metadata.add(name, frame)
@@ -460,9 +458,7 @@ class ID3File(File):
         """Process a USLT frame and add it to metadata.
         Handles unsynchronized lyrics, optionally with description.
         """
-        name = 'lyrics'
-        if frame.desc:
-            name += ':%s' % frame.desc
+        name = create_lang_desc_tag('lyrics', frame.lang, frame.desc)
         metadata.add(name, frame.text)
 
     def _load_sylt_frame(self, frame, metadata, config_params):
@@ -483,13 +479,7 @@ class ID3File(File):
                 config_params['filename'],
             )
             return
-        name = 'syncedlyrics'
-        if frame.lang:
-            name += ':%s' % frame.lang
-            if frame.desc:
-                name += ':%s' % frame.desc
-        elif frame.desc:
-            name += '::%s' % frame.desc
+        name = create_lang_desc_tag('syncedlyrics', frame.lang, frame.desc)
         lrc_lyrics = self._parse_sylt_text(frame.text, config_params['file_length'])
         metadata.add(name, lrc_lyrics)
 
@@ -797,7 +787,7 @@ class ID3File(File):
     def _save_comment_tag(self, tags, name, values, config_params):
         """Save comment tag to ID3 frames."""
         encoding = config_params['encoding']
-        (lang, desc) = parse_comment_tag(name)
+        (lang, desc) = parse_lang_desc_tag(name, default_language='eng')
         if desc.lower()[:4] == 'itun':
             tags.delall('COMM:' + desc)
             tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
@@ -807,17 +797,14 @@ class ID3File(File):
     def _save_lyrics_tag(self, tags, name, values, config_params):
         """Save lyrics tag to ID3 frames."""
         encoding = config_params['encoding']
-        if ':' in name:
-            desc = name.split(':', 1)[1]
-        else:
-            desc = ''
+        (lang, desc) = parse_lang_desc_tag(name)
         for value in values:
-            tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
+            tags.add(id3.USLT(encoding=encoding, lang=lang, desc=desc, text=value))
 
     def _save_synced_lyrics_tag(self, tags, name, values, config_params):
         """Save synchronized lyrics tag to ID3 frames."""
         encoding = config_params['encoding']
-        (lang, desc) = parse_subtag(name)
+        (lang, desc) = parse_lang_desc_tag(name)
         for value in values:
             sylt_lyrics = self._parse_lrc_text(value)
             # If the text does not contain any timestamps, the tag is not added
@@ -1022,24 +1009,21 @@ class ID3File(File):
 
     def _remove_comment_tag(self, tags, name):
         """Remove comment tag from ID3 frames."""
-        (lang, desc) = parse_comment_tag(name)
+        (lang, desc) = parse_lang_desc_tag(name, default_language='eng')
         for key, frame in list(tags.items()):
             if frame.FrameID == 'COMM' and frame.desc == desc and frame.lang == lang:
                 del tags[key]
 
     def _remove_lyrics_tag(self, tags, name):
         """Remove lyrics tag from ID3 frames."""
-        if ':' in name:
-            desc = name.split(':', 1)[1]
-        else:
-            desc = ''
+        (lang, desc) = parse_lang_desc_tag(name)
         for key, frame in list(tags.items()):
-            if frame.FrameID == 'USLT' and frame.desc == desc:
+            if frame.FrameID == 'USLT' and frame.desc == desc and frame.lang == lang:
                 del tags[key]
 
     def _remove_synced_lyrics_tag(self, tags, name):
         """Remove synchronized lyrics tag from ID3 frames."""
-        (lang, desc) = parse_subtag(name)
+        (lang, desc) = parse_lang_desc_tag(name)
         for key, frame in list(tags.items()):
             if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang and frame.type == 1:
                 del tags[key]

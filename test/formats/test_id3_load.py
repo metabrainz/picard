@@ -107,26 +107,27 @@ class TestID3Load(PicardTestCase):
         frame.FrameID = 'USLT'
         frame.desc = 'Test Lyrics'
         frame.text = 'These are the lyrics.'
+        frame.lang = 'eng'
         metadata = Metadata()
         config_params = {}
         self.id3_file._load_uslt_frame(frame, metadata, config_params)
-        self.assertIn('lyrics:Test Lyrics', metadata)
-        self.assertEqual(metadata['lyrics:Test Lyrics'], 'These are the lyrics.')
+        self.assertIn('lyrics:eng:Test Lyrics', metadata)
+        self.assertEqual(metadata['lyrics:eng:Test Lyrics'], 'These are the lyrics.')
 
     def test_load_sylt_frame(self):
         frame = MagicMock(spec=SYLT)
         frame.FrameID = 'SYLT'
         frame.type = 1
         frame.format = 2
-        frame.lang = 'ENG'
+        frame.lang = 'eng'
         frame.desc = 'Test Lyrics'
         frame.text = [('These are the lyrics.', 0), ('etc.', 1000)]
         metadata = Metadata()
         config_params = {'file_length': 120, 'filename': 'test.mp3'}
         self.id3_file._load_sylt_frame(frame, metadata, config_params)
-        self.assertIn('syncedlyrics:ENG:Test Lyrics', metadata)
+        self.assertIn('syncedlyrics:eng:Test Lyrics', metadata)
         self.assertEqual(
-            metadata['syncedlyrics:ENG:Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.'
+            metadata['syncedlyrics:eng:Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.'
         )
 
     def test_load_sylt_frame_no_lang(self):
@@ -211,8 +212,8 @@ class TestID3Load(PicardTestCase):
         metadata = Metadata()
         config_params = {}
         self.id3_file._load_standard_text_frame(frame, metadata, config_params)
-        self.assertIn('comment:Test Comment', metadata)
-        self.assertEqual(metadata['comment:Test Comment'], 'This is a test comment.')
+        self.assertIn('comment::Test Comment', metadata)
+        self.assertEqual(metadata['comment::Test Comment'], 'This is a test comment.')
 
     def test_load_standard_text_frame_TALB(self):
         frame = MagicMock(spec=TALB)

@@ -40,34 +40,7 @@ from picard.tags.tagvar import TagVar
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
 
 
-def parse_comment_tag(name):
-    """
-    Parses a tag name like "comment:XXX:desc", where XXX is the language.
-    If language is not set ("comment:desc") "eng" is assumed as default.
-    Returns a (lang, desc) tuple.
-    """
-    lang = 'eng'
-    desc = ''
-
-    split = name.split(':', 1)
-    if len(split) > 1:
-        desc = split[1]
-
-    match_ = RE_COMMENT_LANG.match(desc)
-    if match_:
-        lang = match_.group(1)
-        desc = desc[4:]
-        return lang, desc
-
-    # Special case for unspecified language + empty description
-    if desc == 'XXX':
-        lang = 'XXX'
-        desc = ''
-
-    return lang, desc
-
-
-def parse_subtag(name):
+def parse_lang_desc_tag(name: str, default_language: str = 'xxx') -> tuple[str, str]:
     """
     Parses a tag name like "lyrics:XXX:desc", where XXX is the language.
     If language is not set, the colons are still mandatory, and "eng" is
@@ -77,7 +50,7 @@ def parse_subtag(name):
     if len(split) > 1 and split[1]:
         lang = split[1]
     else:
-        lang = 'eng'
+        lang = default_language
 
     if len(split) > 2:
         desc = split[2]
@@ -85,6 +58,18 @@ def parse_subtag(name):
         desc = ''
 
     return lang, desc
+
+
+def create_lang_desc_tag(name: str, language: str = 'xxx', description: str = '', default_language: str = 'xxx') -> str:
+    name_parts = [name]
+    if language and language.lower() != default_language:
+        name_parts.append(language)
+    elif description:
+        # Add empty language part if description is also set
+        name_parts.append('')
+    if description:
+        name_parts.append(description)
+    return ':'.join(name_parts)
 
 
 def all_tag_vars() -> Iterator[TagVar]:

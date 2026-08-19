@@ -111,9 +111,9 @@ TAGS = {
     'barcode': 'Foo',
     'bpm': '80',
     'catalognumber': 'Foo',
-    'comment': 'Foo',
-    'comment:foo': 'Foo',
-    'comment:deu:foo': 'Foo',
+    'comment': 'Foo Comment',
+    'comment:foo': 'Foo Comment (foo)',
+    'comment:deu:foo': 'Foo Comment (deu)',
     'compilation': '1',
     'composer': 'Foo',
     'composersort': 'Foo',
@@ -381,12 +381,12 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_tags_with_description(self):
             for key in (
-                'comment:foo',
-                'comment:de:foo',
+                'comment::foo',
+                'comment:deu:foo',
                 'performer:foo',
-                'lyrics:foo',
-                'comment:a*',
-                'comment:a[',
+                'lyrics::foo',
+                'comment::a*',
+                'comment::a[',
                 'performer:(x)',
                 'performer: Ä é ',
             ):
@@ -554,17 +554,17 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_lyrics_with_description(self):
-            metadata = Metadata({'lyrics:foó': 'bar'})
+            metadata = Metadata({'lyrics::foó': 'bar'})
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertEqual(metadata['lyrics:foó'], loaded_metadata['lyrics'])
+            self.assertEqual(metadata['lyrics::foó'], loaded_metadata['lyrics'])
 
         @skipUnlessTestfile
         def test_comments_with_description(self):
-            if not self.format.supports_tag('comment:foó'):
+            if not self.format.supports_tag('comment::foó'):
                 return
-            metadata = Metadata({'comment:foó': 'bar'})
+            metadata = Metadata({'comment::foó': 'bar'})
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertEqual(metadata['comment:foó'], loaded_metadata['comment:foó'])
+            self.assertEqual(metadata['comment::foó'], loaded_metadata['comment::foó'])
 
         @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):
