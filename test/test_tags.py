@@ -26,10 +26,7 @@ import unittest.mock as mock
 
 from test.picardtestcase import PicardTestCase
 
-from picard.const import (
-    DOCS_SERVER_URL,
-    PICARD_URLS,
-)
+from picard.const import PICARD_URLS
 from picard.const.tags import ALL_TAGS
 from picard.options import (
     Option,
@@ -515,54 +512,78 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(display_tag_tooltip('performer'), result)
 
     def test_display_tag_full_description(self):
+        item = TagVar(name='my_var', longdesc='The tag description.')
+
+        # Tag with description only
+        expected = "<p>The tag description.</p>"
+        self.assertEqual(display_tag_full_description(item), expected)
+
+        # Multi-value tag with description only
+        item.is_multi_value = True
+        expected = "<p>The tag description.</p><p><strong>Notes:</strong> multi-value variable.</p>"
+        self.assertEqual(display_tag_full_description(item), expected)
+        item.is_multi_value = False
+
         # Tag with option setting only
-        if ('setting', 'use_genres') not in Option.registry:
-            Option('setting', 'use_genres', None, title='Use genres from MusicBrainz')
-        result = (
-            '<p><em>%genre%</em></p><p>The specified genre information from MusicBrainz.</p><p><strong>Notes:</strong> multi-value '
-            'variable.</p><p><strong>Option Settings:</strong> Use genres from MusicBrainz.</p>'
-        )
-        self.assertEqual(display_tag_full_description('genre'), result)
+        Option('setting', 'my_script_var_opt', None, title='Option description')
+        item.related_options = ('my_script_var_opt',)
+        expected = "<p>The tag description.</p><p><strong>Option Settings:</strong> Option description.</p>"
+        self.assertEqual(display_tag_full_description(item), expected)
+        item.related_options = None
 
-        # Tag with link only
-        result = (
-            '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
-            "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
-            "<a href='{server}en/latest/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
-        ).format(server=DOCS_SERVER_URL)
-        self.assertEqual(display_tag_full_description('barcode'), result)
+        # Tag with plugin info
+        item.plugin_name = "My Plugin"
+        expected = "<p>The tag description.</p><p><strong>Plugin:</strong> My Plugin.</p>"
+        self.assertEqual(display_tag_full_description(item), expected)
+        item.plugin_name = None
 
-        # Hidden tag with notes only.
-        result = (
-            '<p><em>%_sample_rate%</em></p><p>The sample rate of the audio file.</p>'
-            '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
+        # Tag with doc links
+        item.doc_links = (
+            DocumentLink('Link 1', 'https://example.com'),
+            DocumentLink('Link 2', 'https://example.com/foo'),
         )
-        self.assertEqual(display_tag_full_description('_sample_rate'), result)
+        expected = "<p>The tag description.</p><p><strong>Links:</strong> <a href='https://example.com'>Link 1</a>; <a href='https://example.com/foo'>Link 2</a>.</p>"
+        self.assertEqual(display_tag_full_description(item), expected)
+        item.doc_links = None
+
+        # Tag with see also references
+        item.see_also = ('artist', 'albumartist')
+        expected = '<p>The tag description.</p><p><strong>See Also:</strong> <a href="#artist">%artist%</a>; <a href="#albumartist">%albumartist%</a>.</p>'
+        self.assertEqual(display_tag_full_description(item), expected)
+        item.see_also = None
 
         # Tag with complex markdown (list items) and notes.
+        item.is_hidden = True
+        item.is_multi_value = True
+        item._longdesc = """Description of **My Var**:
+
+- Foo
+- Bar
+        """
         result = (
             (
-                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
+                '<p>Description of <strong>My Var</strong>:</p>\n'
                 '<ul>\n'
-                '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
-                '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
-                '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
-                '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
-                '</ul>'
-                '<p><strong>Notes:</strong> multi-value variable.</p>'
+                '<li>Foo</li>\n'
+                '<li>Bar</li>\n'
+                '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
             )
             if markdown is not None
             else (
-                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
-                '<br /><br />'
-                '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, '
-                '&quot;*guest guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
-                '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
-                '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
+                '<p>Description of **My Var**:<br /><br />'
+                '- Foo<br />'
+                '- Bar</p>'
                 '<p><strong>Notes:</strong> multi-value variable.</p>'
             )
         )
-        self.assertEqual(display_tag_full_description('performer'), result)
+        self.assertEqual(display_tag_full_description(item), result)
+        item.is_hidden = False
+        item.is_multi_value = False
+
+        # Tag with no description
+        item._longdesc = None
+        expected = '<p>my_var</p>'
+        self.assertEqual(display_tag_full_description(item), expected)
 
 
 class UtilTagsOptionsTest(PicardTestCase):
