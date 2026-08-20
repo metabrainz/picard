@@ -69,6 +69,180 @@ class PluginTranslator(QTranslator):
         return None
 
 
+def _plural_english(n: int) -> str:
+    return 'one' if n == 1 else 'other'
+
+
+def _plural_french(n: int) -> str:
+    return 'one' if n in {0, 1} else 'other'
+
+
+def _plural_polish(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
+        return 'few'
+    return 'many'
+
+
+def _plural_russian(n: int) -> str:
+    if n % 10 == 1 and n % 100 != 11:
+        return 'one'
+    if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
+        return 'few'
+    return 'many'
+
+
+def _plural_arabic(n: int) -> str:
+    if n == 0:
+        return 'zero'
+    if n == 1:
+        return 'one'
+    if n == 2:
+        return 'two'
+    if 3 <= n % 100 <= 10:
+        return 'few'
+    if 11 <= n % 100 <= 99:
+        return 'many'
+    return 'other'
+
+
+def _plural_hebrew(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if n == 2:
+        return 'two'
+    return 'other'
+
+
+def _plural_czech(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if 2 <= n <= 4:
+        return 'few'
+    return 'other'
+
+
+def _plural_romanian(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if n == 0 or (n != 1 and 1 <= n % 100 <= 19):
+        return 'few'
+    return 'other'
+
+
+def _plural_croatian(n: int) -> str:
+    if n % 10 == 1 and n % 100 != 11:
+        return 'one'
+    if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
+        return 'few'
+    return 'other'
+
+
+def _plural_catalan(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if n != 0 and n % 1_000_000 == 0:
+        return 'many'
+    return 'other'
+
+
+def _plural_lithuanian(n: int) -> str:
+    if n % 10 == 1 and not 11 <= n % 100 <= 19:
+        return 'one'
+    if 2 <= n % 10 <= 9 and not 11 <= n % 100 <= 19:
+        return 'few'
+    return 'other'
+
+
+def _plural_other(n: int) -> str:
+    return 'other'
+
+
+def _plural_icelandic(n: int) -> str:
+    if n % 10 == 1 and n % 100 != 11:
+        return 'one'
+    return 'other'
+
+
+def _plural_irish(n: int) -> str:
+    if n == 1:
+        return 'one'
+    if n == 2:
+        return 'two'
+    if n in {3, 4, 5, 6}:
+        return 'few'
+    if n in {7, 8, 9, 10}:
+        return 'many'
+    return 'other'
+
+
+def _plural_welsh(n: int) -> str:
+    if n == 0:
+        return 'zero'
+    if n == 1:
+        return 'one'
+    if n == 2:
+        return 'two'
+    if n == 3:
+        return 'few'
+    if n == 6:
+        return 'many'
+    return 'other'
+
+
+_PLURAL_RULES = {
+    # English, German, Spanish, Italian, Portuguese, etc.
+    'en': _plural_english,
+    'de': _plural_english,
+    'es': _plural_english,
+    'it': _plural_english,
+    'pt': _plural_english,
+    'nl': _plural_english,
+    'sv': _plural_english,
+    'da': _plural_english,
+    'no': _plural_english,
+    'fi': _plural_english,
+    # French, Punjabi (0 and 1 are singular)
+    'fr': _plural_french,
+    'pa': _plural_french,
+    # Polish
+    'pl': _plural_polish,
+    # Russian, Ukrainian
+    'ru': _plural_russian,
+    'uk': _plural_russian,
+    # Arabic
+    'ar': _plural_arabic,
+    # Hebrew
+    'he': _plural_hebrew,
+    # Czech, Slovak
+    'cs': _plural_czech,
+    'sk': _plural_czech,
+    # Romanian
+    'ro': _plural_romanian,
+    # Croatian, Bosnian, Serbian
+    'hr': _plural_croatian,
+    'bs': _plural_croatian,
+    'sr': _plural_croatian,
+    # Catalan
+    'ca': _plural_catalan,
+    # Lithuanian
+    'lt': _plural_lithuanian,
+    # Japanese, Korean, Malay, Vietnamese, Chinese
+    'ja': _plural_other,
+    'ko': _plural_other,
+    'ms': _plural_other,
+    'vi': _plural_other,
+    'zh': _plural_other,
+    # Icelandic
+    'is': _plural_icelandic,
+    # Irish
+    'ga': _plural_irish,
+    # Welsh
+    'cy': _plural_welsh,
+}
+
+
 def get_plural_form(locale: str, n: int) -> str:
     """Get CLDR plural form for a number in a given locale.
 
@@ -80,128 +254,4 @@ def get_plural_form(locale: str, n: int) -> str:
         One of: 'zero', 'one', 'two', 'few', 'many', 'other'
     """
     lang = locale.split('_')[0]
-
-    # English, German, Spanish, Italian, Portuguese, etc.
-    if lang in {'en', 'de', 'es', 'it', 'pt', 'nl', 'sv', 'da', 'no', 'fi'}:
-        return 'one' if n == 1 else 'other'
-
-    # French, Punjabi (0 and 1 are singular)
-    if lang in {'fr', 'pa'}:
-        return 'one' if n in {0, 1} else 'other'
-
-    # Polish
-    if lang == 'pl':
-        if n == 1:
-            return 'one'
-        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-            return 'few'
-        return 'many'
-
-    # Russian, Ukrainian
-    if lang in {'ru', 'uk'}:
-        if n % 10 == 1 and n % 100 != 11:
-            return 'one'
-        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-            return 'few'
-        return 'many'
-
-    # Arabic
-    if lang == 'ar':
-        if n == 0:
-            return 'zero'
-        if n == 1:
-            return 'one'
-        if n == 2:
-            return 'two'
-        if 3 <= n % 100 <= 10:
-            return 'few'
-        if 11 <= n % 100 <= 99:
-            return 'many'
-        return 'other'
-
-    # Hebrew
-    if lang == 'he':
-        if n == 1:
-            return 'one'
-        if n == 2:
-            return 'two'
-        return 'other'
-
-    # Czech, Slovak
-    if lang in {'cs', 'sk'}:
-        if n == 1:
-            return 'one'
-        if 2 <= n <= 4:
-            return 'few'
-        return 'other'
-
-    # Romanian (also: mo)  — one/few/other
-    if lang == 'ro':
-        if n == 1:
-            return 'one'
-        if n == 0 or (n != 1 and 1 <= n % 100 <= 19):
-            return 'few'
-        return 'other'
-
-    # Croatian (also: bs, sr) — one/few/other
-    if lang in {'hr', 'bs', 'sr'}:
-        if n % 10 == 1 and n % 100 != 11:
-            return 'one'
-        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-            return 'few'
-        return 'other'
-
-    # Catalan — one/many/other
-    if lang == 'ca':
-        if n == 1:
-            return 'one'
-        if n != 0 and n % 1_000_000 == 0:
-            return 'many'
-        return 'other'
-
-    # Lithuanian
-    if lang == 'lt':
-        if n % 10 == 1 and not 11 <= n % 100 <= 19:
-            return 'one'
-        if 2 <= n % 10 <= 9 and not 11 <= n % 100 <= 19:
-            return 'few'
-        return 'other'
-
-    # Japanese, Korean, Malay, Vietnamese, Chinese
-    if lang in {'ja', 'ko', 'ms', 'vi', 'zh'}:
-        return 'other'
-
-    # Icelandic
-    if lang == 'is':
-        if n % 10 == 1 and n % 100 != 11:
-            return 'one'
-        return 'other'
-
-    # Irish
-    if lang == 'ga':
-        if n == 1:
-            return 'one'
-        if n == 2:
-            return 'two'
-        if n in {3, 4, 5, 6}:
-            return 'few'
-        if n in {7, 8, 9, 10}:
-            return 'many'
-        return 'other'
-
-    # Welsh
-    if lang == 'cy':
-        if n == 0:
-            return 'zero'
-        if n == 1:
-            return 'one'
-        if n == 2:
-            return 'two'
-        if n == 3:
-            return 'few'
-        if n == 6:
-            return 'many'
-        return 'other'
-
-    # Default to English rules
-    return 'one' if n == 1 else 'other'
+    return _PLURAL_RULES.get(lang, _plural_english)(n)
