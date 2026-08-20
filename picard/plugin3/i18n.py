@@ -137,9 +137,9 @@ def get_plural_form(locale: str, n: int) -> str:
 
     # Lithuanian
     if lang == 'lt':
-        if n % 10 == 1 and n % 100 not in range(11, 20):
+        if n % 10 == 1 and not 11 <= n % 100 <= 19:
             return 'one'
-        if n % 10 in range(2, 10) and n % 100 not in range(11, 20):
+        if 2 <= n % 10 <= 9 and not 11 <= n % 100 <= 19:
             return 'few'
         return 'other'
 
