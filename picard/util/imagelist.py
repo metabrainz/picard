@@ -86,17 +86,31 @@ class ImageList(MutableSequence['CoverArtImage']):
                 return img
         return None
 
-    def to_be_saved_to_tags(self, settings: SettingConfigSection | None = None) -> Iterator['CoverArtImage']:
+    def to_be_saved_to_tags(
+        self,
+        settings: SettingConfigSection | None = None,
+        previous_images: 'ImageList | None' = None,
+    ) -> Iterator['CoverArtImage']:
         """Generator returning images to be saved to tags according to
-        passed settings or config.setting
+        passed settings or config.setting.
+
+        If `previous_images` (the images currently embedded in a specific file)
+        is given, the per-file "never replace" filters are applied against it,
+        so a new image can still be kept for external file saving even when it
+        is rejected for tags on this particular file.
         """
         if settings is None:
             config = get_config()
             settings = config.setting
         if settings['save_images_to_tags']:
+            # Imported here to avoid a circular import between imagelist and coverart.
+            from picard.coverart.processing.filters import filter_image_for_file
+
             only_one_front = settings['embed_only_one_front_image']
             for image in self:
                 if not image.can_be_saved_to_tags:
+                    continue
+                if previous_images is not None and not filter_image_for_file(image, previous_images):
                     continue
                 if only_one_front:
                     if image.is_front_image():
@@ -105,23 +119,71 @@ class ImageList(MutableSequence['CoverArtImage']):
                 else:
                     yield image
 
-    def to_be_saved_to_files(self, settings: SettingConfigSection | None = None) -> Iterator['CoverArtImage']:
+    def to_be_saved_to_files(
+        self,
+        settings: SettingConfigSection | None = None,
+        previous_images: 'ImageList | None' = None,
+    ) -> Iterator['CoverArtImage']:
         """Generator returning images to be saved as external files according to
         passed settings or config.setting.
 
         When save_only_one_front_image is enabled, yields only the first front
         image. Falls back to yielding all images if no front image is found.
+
+        If `previous_images` (the images currently embedded in tags) is given
+        and tags are about to be cleared (`remove_images_from_tags`), any
+        original image bigger than its replacement here (or with no
+        replacement at all) is used instead, so higher quality tagged art is
+        saved to disk instead of being lost when it is removed from tags.
         """
         if settings is None:
             config = get_config()
             settings = config.setting
-        if settings['save_images_to_files']:
-            if settings['save_only_one_front_image']:
-                front = self.get_front_image()
-                if front:
-                    yield front
-                    return
-            yield from self
+        if not settings['save_images_to_files']:
+            return
+
+        only_one_front = settings['save_only_one_front_image']
+        if only_one_front:
+            front = self.get_front_image()
+            exported = [front] if front else list(self)
+        else:
+            exported = list(self)
+
+        if previous_images and settings['remove_images_from_tags']:
+            index_by_type = {image.normalized_types(): i for i, image in enumerate(exported)}
+            for prev_image in previous_images:
+                # Filter on is_front_image() first so normalized_types() is only
+                # computed for images that can actually be candidates.
+                if only_one_front and not prev_image.is_front_image():
+                    continue
+                types = prev_image.normalized_types()
+                index = index_by_type.get(types)
+                if index is None:
+                    index_by_type[types] = len(exported)
+                    exported.append(prev_image)
+                elif prev_image.width > exported[index].width or prev_image.height > exported[index].height:
+                    # Keep the higher quality tagged image instead of the smaller replacement.
+                    exported[index] = prev_image
+
+        yield from exported
+
+    def should_remove_images_from_tags(
+        self,
+        settings: SettingConfigSection | None = None,
+        previous_images: 'ImageList | None' = None,
+    ) -> bool:
+        """Whether images embedded in tags should be removed.
+
+        Only true when explicitly requested and this list actually has at
+        least one image that will be saved to an external file, so cover art
+        is never deleted without being kept somewhere else.
+        """
+        if settings is None:
+            config = get_config()
+            settings = config.setting
+        if not settings['remove_images_from_tags']:
+            return False
+        return any(self.to_be_saved_to_files(settings, previous_images))
 
     def strip_front_images(self) -> None:
         self._images = [image for image in self._images if not image.is_front_image()]

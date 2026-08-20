@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -75,6 +75,9 @@ class Ui_CoverOptionsPage(object):
         self.image_type_as_filename = QtWidgets.QCheckBox(parent=self.save_images_to_files)
         self.image_type_as_filename.setObjectName("image_type_as_filename")
         self.verticalLayout_2.addWidget(self.image_type_as_filename)
+        self.remove_images_from_tags = QtWidgets.QCheckBox(parent=self.save_images_to_files)
+        self.remove_images_from_tags.setObjectName("remove_images_from_tags")
+        self.verticalLayout_2.addWidget(self.remove_images_from_tags)
         self.verticalLayout.addWidget(self.save_images_to_files)
         self.ca_providers_groupbox = QtWidgets.QGroupBox(parent=CoverOptionsPage)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
@@ -132,6 +135,8 @@ class Ui_CoverOptionsPage(object):
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
         self.image_type_as_filename.setToolTip(_("Always use the primary image type as the file name for non-front images"))
         self.image_type_as_filename.setText(_("Use the primary image type as the file name"))
+        self.remove_images_from_tags.setToolTip(_("When saving, remove cover images embedded in tags. Images will only be removed if they are also being saved as separate files."))
+        self.remove_images_from_tags.setText(_("Remove cover images from tags"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.move_label.setText(_("Reorder Priority:"))
         self.up_button.setToolTip(_("Move selected item up"))

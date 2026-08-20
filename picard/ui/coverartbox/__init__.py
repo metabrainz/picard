@@ -37,6 +37,7 @@
 
 from collections.abc import Sequence
 from functools import partial
+from html import escape
 import os
 import re
 
@@ -51,6 +52,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.cluster import Cluster
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
@@ -61,6 +63,7 @@ from picard.coverart.setters import (
     CoverArtSetterMode,
 )
 from picard.i18n import gettext as _
+from picard.metadata import Metadata
 from picard.util import (
     bytes2human,
     imageinfo,
@@ -72,13 +75,25 @@ from picard.util.lrucache import LRUCache
 from .coverartthumbnail import CoverArtThumbnail
 from .imageurldialog import ImageURLDialog
 
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    strikethrough_removal_text,
+)
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
+    # Settings that affect whether cover art removal is predicted.
+    _REMOVAL_SETTINGS = frozenset(
+        (
+            'remove_images_from_tags',
+            'save_images_to_files',
+            'save_images_to_tags',
+        )
+    )
+
     def __init__(self, parent=None):
         super().__init__("", parent=parent)
         self.layout = QtWidgets.QVBoxLayout()
@@ -88,6 +103,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
         self.item = None
+        self._removal_predicted = False
+        # Snapshot of the last image known to be exported to an external file,
+        # kept so the box can still show it once remove_images_from_tags has
+        # cleared it from orig_metadata.images (see update_metadata).
+        self._exported_images = None
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -125,6 +145,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.orig_cover_art.setHidden(True)
         self.show_details_button.setHidden(True)
         self.show_details_button.clicked.connect(self.show_cover_art_info)
+        config = get_config()
+        config.setting.setting_changed.connect(self._on_setting_changed)
+
+    def _on_setting_changed(self, name, old_value, new_value):
+        if name in self._REMOVAL_SETTINGS:
+            self.update_metadata()
 
     def show_cover_art_info(self):
         self.tagger.window.view_info(default_tab=1, item=self.item)
@@ -142,19 +168,34 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 self.orig_cover_art.show()
 
         # We want to show the 2 coverarts only if they are different
-        # and orig_cover_art data is set and not the default cd shadow
-        if self.orig_cover_art.data is None or self.cover_art.data is None or self.cover_art == self.orig_cover_art:
+        # and orig_cover_art data is set and not the default cd shadow.
+        # When removal is predicted, the original tagged image and the
+        # exported copy are shown separately even if they are identical, so
+        # the artwork being kept as a file remains visible and unmarked.
+        data_missing = self.orig_cover_art.data is None or self.cover_art.data is None
+        # __eq__ requires both data to be set, so only compare when present
+        same_data = not data_missing and self.cover_art == self.orig_cover_art
+        removal_predicted = self._removal_predicted
+        # cover_art has no live source of its own anymore (nothing left in
+        # metadata or orig_metadata), it's showing the exported snapshot instead.
+        showing_exported_only = (
+            self.orig_cover_art.data is None and self.cover_art.data is not None and self._exported_images
+        )
+        if data_missing or (same_data and not removal_predicted):
             self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(False)
             self.orig_cover_art_label.setText('')
             self.orig_cover_art_info_label.setVisible(False)
             # No header above cover art when only one
-            self.cover_art_label.setText('')
+            self.cover_art_label.setText(_('Saved to File') if showing_exported_only else '')
         else:
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
             # Show headers above when both are visible
-            self.cover_art_label.setText(_('New Cover Art'))
+            if same_data and removal_predicted:
+                self.cover_art_label.setText(_('Saved to File'))
+            else:
+                self.cover_art_label.setText(_('New Cover Art'))
             self.orig_cover_art_label.setText(_('Original Cover Art'))
             self.orig_cover_art_info_label.setVisible(True)
 
@@ -162,6 +203,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # Tooltips must always show details regardless of preference
         tooltip_cover_lines = self._first_image_info_lines(self.cover_art.related_images)
         tooltip_orig_lines = self._first_image_info_lines(self.orig_cover_art.related_images)
+
+        cover_marked = self.cover_art.marked_for_removal
+        orig_marked = self.orig_cover_art.marked_for_removal
+        removal_notice = _("This cover art will be removed from tags when saved")
+        if cover_marked:
+            tooltip_cover_lines = [removal_notice, *tooltip_cover_lines]
+        if orig_marked:
+            tooltip_orig_lines = [removal_notice, *tooltip_orig_lines]
 
         # Labels can be toggled by preference for vertical space
         # Default is False per option definition
@@ -174,8 +223,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
             cover_text_lines = []
             orig_text_lines = []
 
-        self.cover_art_info_label.setText("\n".join(cover_text_lines))
-        self.orig_cover_art_info_label.setText("\n".join(orig_text_lines))
+        self.cover_art_info_label.setText(self._format_info_text(cover_text_lines, marked_for_removal=cover_marked))
+        self.orig_cover_art_info_label.setText(self._format_info_text(orig_text_lines, marked_for_removal=orig_marked))
         self.cover_art_info_label.setVisible(bool(cover_text_lines))
         self.orig_cover_art_info_label.setVisible(bool(orig_text_lines) and self.orig_cover_art.isVisible())
 
@@ -186,8 +235,15 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if not item.can_show_coverart:
             self.cover_art.set_metadata(None)
             self.orig_cover_art.set_metadata(None)
+            self.cover_art.set_marked_for_removal(False)
+            self.orig_cover_art.set_marked_for_removal(False)
+            self._removal_predicted = False
+            self._exported_images = None
+            self.update_display()
             return
 
+        if self.item is not item:
+            self._exported_images = None
         if self.item and hasattr(self.item, 'metadata_images_changed'):
             self.item.metadata_images_changed.disconnect(self.update_metadata)
         self.item = item
@@ -204,12 +260,57 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
-        if not metadata or not metadata.images:
-            self.cover_art.set_metadata(orig_metadata)
-        else:
+        if metadata and metadata.images:
             self.cover_art.set_metadata(metadata)
+            self._exported_images = None
+        elif orig_metadata and orig_metadata.images:
+            self.cover_art.set_metadata(orig_metadata)
+        elif self._exported_images:
+            # remove_images_from_tags already cleared orig_metadata.images, but
+            # the image itself was kept as an external file (see ImageList);
+            # nothing in the current metadata references it anymore, so fall
+            # back to the snapshot taken below before it was cleared.
+            self.cover_art.set_metadata(Metadata(images=self._exported_images))
+        else:
+            self.cover_art.set_metadata(orig_metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
+
+        # Predict whether saving will strip cover art already embedded in tags,
+        # using the same rules the format save code applies (see ImageList).
+        # Only show the removal indicator for items in the right pane (matched
+        # to an album/track). Files still in a cluster (left pane) haven't been
+        # matched yet, so the warning would be premature.
+        is_unmatched = isinstance(getattr(self.item, 'parent_item', None), Cluster)
+        self._removal_predicted = bool(
+            not is_unmatched
+            and metadata
+            and orig_metadata
+            and orig_metadata.images
+            and not get_config().setting['save_images_to_tags']
+            and metadata.images.should_remove_images_from_tags(previous_images=orig_metadata.images)
+            and not list(metadata.images.to_be_saved_to_tags(previous_images=orig_metadata.images))
+        )
+        if self._removal_predicted:
+            self.orig_cover_art.set_marked_for_removal(True)
+            # The exported copy is shown as its own unmarked panel (see
+            # update_display), so only the original needs the overlay.
+            self.cover_art.set_marked_for_removal(False)
+            # Snapshot what will be exported before the next save clears
+            # orig_metadata.images, so it stays visible afterwards.
+            self._exported_images = orig_metadata.images.copy()
+        else:
+            self.cover_art.set_marked_for_removal(False)
+            self.orig_cover_art.set_marked_for_removal(False)
         self.update_display()
+
+    @staticmethod
+    def _format_info_text(lines: list[str], *, marked_for_removal: bool = False) -> str:
+        """Join info lines, styled as struck-through red when marked for removal."""
+        if not lines:
+            return ""
+        if marked_for_removal:
+            return strikethrough_removal_text("<br/>".join(escape(line) for line in lines))
+        return "\n".join(lines)
 
     @staticmethod
     def _first_image_info_lines(

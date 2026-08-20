@@ -763,8 +763,10 @@ class ID3File(File):
 
     def _save_images_to_tags(self, tags, metadata):
         """Save cover art images to tags."""
-        images_to_save = list(metadata.images.to_be_saved_to_tags())
+        images_to_save = list(metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
         if not images_to_save:
+            if metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images):
+                tags.delall('APIC')
             return
 
         tags.delall('APIC')

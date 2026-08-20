@@ -148,6 +148,53 @@ class CommonCoverArtTests:
             metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(image, metadata.images[0])
 
+        @skipUnlessTestfile
+        def test_cover_art_not_removed_from_tags_by_default(self):
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.format_registry, self.filename, image)
+            config.setting['save_images_to_tags'] = False
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
+            self.assertEqual(image, metadata.images[0])
+
+        @skipUnlessTestfile
+        def test_cover_art_remove_images_from_tags(self):
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.format_registry, self.filename, image)
+            config.setting['save_images_to_tags'] = False
+            config.setting['save_images_to_files'] = True
+            config.setting['remove_images_from_tags'] = True
+            # A new image is available to be saved to an external file.
+            new_image = CoverArtImage(data=self.jpegdata, types=['front'])
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata(images=[new_image]))
+            self.assertEqual(0, len(metadata.images))
+
+        @skipUnlessTestfile
+        def test_cover_art_removed_from_tags_and_original_kept_for_export(self):
+            # remove_images_from_tags must never delete the only copy of the
+            # cover art: with no new replacement, the existing tagged image
+            # itself becomes the one to be saved to an external file, so
+            # removal from tags still proceeds (the export is handled by
+            # File._save_images, exercised separately in test_imagelist.py).
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.format_registry, self.filename, image)
+            config.setting['save_images_to_tags'] = False
+            config.setting['save_images_to_files'] = True
+            config.setting['remove_images_from_tags'] = True
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
+            self.assertEqual(0, len(metadata.images))
+
+        @skipUnlessTestfile
+        def test_cover_art_remove_images_from_tags_requires_save_to_files(self):
+            # remove_images_from_tags must never delete the only copy of the
+            # cover art, so it is ignored while save_images_to_files is disabled.
+            image = CoverArtImage(data=self.pngdata, types=['front'])
+            file_save_image(self.format_registry, self.filename, image)
+            config.setting['save_images_to_tags'] = False
+            config.setting['save_images_to_files'] = False
+            config.setting['remove_images_from_tags'] = True
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
+            self.assertEqual(image, metadata.images[0])
+
         def _cover_metadata(self):
             imgdata = self.jpegdata
             metadata = Metadata()

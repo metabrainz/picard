@@ -38,32 +38,40 @@ from PyQt6 import (
 
 from picard.i18n import gettext as _
 
+from picard.ui.util import (
+    apply_removal_overlay,
+    strikethrough_removal_text,
+)
+
 
 class ArtworkCoverWidget(QtWidgets.QWidget):
     """A QWidget that can be added to artwork column cell of ArtworkTable."""
 
     SIZE = 170
 
-    def __init__(self, pixmap=None, text=None, size=None, parent=None):
+    def __init__(self, pixmap=None, text=None, size=None, parent=None, marked_for_removal=False):
         super().__init__(parent=parent)
         layout = QtWidgets.QVBoxLayout()
 
         if pixmap is not None:
             if size is None:
                 size = self.SIZE
-            image_label = QtWidgets.QLabel()
-            image_label.setPixmap(
-                pixmap.scaled(
-                    size,
-                    size,
-                    QtCore.Qt.AspectRatioMode.KeepAspectRatio,
-                    QtCore.Qt.TransformationMode.SmoothTransformation,
-                )
+            scaled_pixmap = pixmap.scaled(
+                size,
+                size,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation,
             )
+            if marked_for_removal:
+                scaled_pixmap = apply_removal_overlay(scaled_pixmap)
+            image_label = QtWidgets.QLabel()
+            image_label.setPixmap(scaled_pixmap)
             image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(image_label)
 
         if text is not None:
+            if marked_for_removal:
+                text = strikethrough_removal_text(text)
             text_label = QtWidgets.QLabel()
             text_label.setText(text)
             text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)

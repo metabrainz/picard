@@ -45,6 +45,7 @@ from picard.tags import (
     calculated_tag_names,
     file_info_tag_names,
 )
+from picard.util.imagelist import ImageList
 
 
 class FileTest(PicardTestCase):
@@ -578,8 +579,8 @@ class FileUpdateTest(PicardTestCase):
 
     def test_same_image(self):
         image = create_image(b'a')
-        self.file.metadata.images = [image]
-        self.file.orig_metadata.images = [image]
+        self.file.metadata.images = ImageList([image])
+        self.file.orig_metadata.images = ImageList([image])
         self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
@@ -597,8 +598,8 @@ class FileUpdateTest(PicardTestCase):
 
     def test_same_image_changed_state(self):
         image = create_image(b'a')
-        self.file.metadata.images = [image]
-        self.file.orig_metadata.images = [image]
+        self.file.metadata.images = ImageList([image])
+        self.file.orig_metadata.images = ImageList([image])
         self.file.state = File.State.CHANGED
 
         self.file.update(signal=False)
@@ -608,8 +609,8 @@ class FileUpdateTest(PicardTestCase):
     def test_changed_image(self):
         old_image = create_image(b'a')
         new_image = create_image(b'b')
-        self.file.metadata.images = [new_image]
-        self.file.orig_metadata.images = [old_image]
+        self.file.metadata.images = ImageList([new_image])
+        self.file.orig_metadata.images = ImageList([old_image])
         self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
@@ -781,6 +782,103 @@ class FileUpdateTest(PicardTestCase):
             self.assertEqual('val' + info, metadata[info])
         self.assertEqual('valb', metadata['b'])
         self.assertNotIn('a', metadata)
+
+
+class FileSavingFinishedImagesTest(PicardTestCase):
+    """Regression tests for PICARD-3380: orig_metadata.images must reflect
+    what actually ended up embedded in tags after a save, not just whatever
+    self.metadata.images happened to contain (see ImageList)."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.file = FakeMp3File('somepath/somefile.mp3')
+        self.tagger.files[self.file.filename] = self.file
+        self.set_config_values(
+            {
+                'clear_existing_tags': False,
+                'preserve_images': False,
+                'embed_only_one_front_image': False,
+                'enabled_plugins': [],
+            }
+        )
+
+    def _finish_saving(self):
+        self.file._saving_finished(result=self.file.filename)
+
+    def test_removed_from_tags_with_no_replacement(self):
+        """No new image was fetched, only the previously tagged image kept
+        for external export: tags end up empty, orig_metadata must match."""
+        image = create_image(b'a', types=['front'], support_types=True)
+        self.file.orig_metadata.images = ImageList([image])
+        self.file.metadata.copy(self.file.orig_metadata)
+        self.set_config_values(
+            {
+                'save_images_to_tags': False,
+                'save_images_to_files': True,
+                'remove_images_from_tags': True,
+            }
+        )
+
+        self._finish_saving()
+
+        self.assertEqual(0, len(self.file.orig_metadata.images))
+
+    def test_not_removed_when_remove_disabled(self):
+        """Without remove_images_from_tags, an untouched embedded image must
+        remain reflected in orig_metadata after saving."""
+        image = create_image(b'a', types=['front'], support_types=True)
+        self.file.orig_metadata.images = ImageList([image])
+        self.file.metadata.copy(self.file.orig_metadata)
+        self.set_config_values(
+            {
+                'save_images_to_tags': False,
+                'save_images_to_files': True,
+                'remove_images_from_tags': False,
+            }
+        )
+
+        self._finish_saving()
+
+        self.assertEqual([image], list(self.file.orig_metadata.images))
+
+    def test_replaced_image_reflected_after_save(self):
+        """A new embedded image replaces the old one in orig_metadata."""
+        old_image = create_image(b'a', types=['front'], support_types=True)
+        new_image = create_image(b'b', types=['front'], support_types=True)
+        self.file.orig_metadata.images = ImageList([old_image])
+        self.file.metadata.images = ImageList([new_image])
+        self.set_config_values(
+            {
+                'save_images_to_tags': True,
+                'save_images_to_files': False,
+                'remove_images_from_tags': False,
+            }
+        )
+
+        self._finish_saving()
+
+        self.assertEqual([new_image], list(self.file.orig_metadata.images))
+
+    def test_metadata_images_changed_emitted_on_removal(self):
+        """The removal must be signalled even though self.metadata.images
+        never differed from self.orig_metadata.images before saving."""
+        image = create_image(b'a', types=['front'], support_types=True)
+        self.file.orig_metadata.images = ImageList([image])
+        self.file.metadata.copy(self.file.orig_metadata)
+        self.set_config_values(
+            {
+                'save_images_to_tags': False,
+                'save_images_to_files': True,
+                'remove_images_from_tags': True,
+            }
+        )
+        received = []
+        self.file.metadata_images_changed.connect(lambda: received.append(True))
+
+        self._finish_saving()
+
+        self.assertEqual([True], received)
 
 
 class FileCopyMetadataTest(PicardTestCase):

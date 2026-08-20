@@ -73,6 +73,7 @@ class CoverOptionsPage(OptionsPage):
         'save_images_overwrite': {'widgets': ['save_images_overwrite']},
         'save_only_one_front_image': {'widgets': ['save_only_one_front_image']},
         'image_type_as_filename': {'widgets': ['image_type_as_filename']},
+        'remove_images_from_tags': {'widgets': ['remove_images_from_tags']},
         'ca_providers': {'widgets': ['ca_providers_groupbox']},
     }
 
@@ -83,6 +84,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cover_image_filename.setPlaceholderText(Option.get('setting', 'cover_image_filename').default)
         self.ui.save_images_to_files.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_images_to_tags.clicked.connect(self.update_ca_providers_groupbox_state)
+        self.ui.save_images_to_tags.toggled.connect(self.update_remove_images_from_tags_state)
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.ui.cb_never_replace_types.toggled.connect(self.ui.select_types_button.setEnabled)
         self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
@@ -115,9 +117,11 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
         self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
         self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
+        self.ui.remove_images_from_tags.setChecked(config.setting['remove_images_from_tags'])
         self._load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
+        self.update_remove_images_from_tags_state()
 
     def _ca_providers(self):
         for item in qlistwidget_items(self.ui.ca_providers_list):
@@ -135,12 +139,20 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
         config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
         config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
+        config.setting['remove_images_from_tags'] = self.ui.remove_images_from_tags.isChecked()
         config.setting['ca_providers'] = list(self._ca_providers())
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
+
+    def update_remove_images_from_tags_state(self):
+        # Embedding into tags and removing from tags are mutually exclusive.
+        # Disable the checkbox when embedding is active, but preserve the
+        # user's checked state so it's restored when embedding is turned off.
+        embed_enabled = self.ui.save_images_to_tags.isChecked()
+        self.ui.remove_images_from_tags.setDisabled(embed_enabled)
 
     def select_never_replace_image_types(self):
         (included_types, ok) = CoverTypesSelectorDialog.display(

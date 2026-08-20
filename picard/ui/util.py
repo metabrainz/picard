@@ -42,6 +42,7 @@ from picard.const.sys import IS_LINUX
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
 
+from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
 
 
@@ -52,6 +53,24 @@ def find_starting_directory():
     else:
         path = config.persist['current_directory'] or QtCore.QDir.homePath()
     return find_existing_path(path)
+
+
+def apply_removal_overlay(pixmap):
+    """Draw a dotted translucent red overlay signaling the image will be removed from tags."""
+    overlaid = QtGui.QPixmap(pixmap)
+    painter = QtGui.QPainter(overlaid)
+    color = interface_colors.get_qcolor('tagstatus_removed')
+    color.setAlpha(200)  # Translucent
+    brush = QtGui.QBrush(color, QtCore.Qt.BrushStyle.Dense4Pattern)
+    painter.fillRect(overlaid.rect(), brush)
+    painter.end()
+    return overlaid
+
+
+def strikethrough_removal_text(text):
+    """Style rich text as struck-through red, signaling removal from tags."""
+    color = interface_colors.get_color('tagstatus_removed')
+    return f'<span style="color:{color}; text-decoration:line-through;">{text}</span>'
 
 
 def _picardize_caption(caption):

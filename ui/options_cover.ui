@@ -134,6 +134,16 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="remove_images_from_tags">
+        <property name="toolTip">
+         <string>When saving, remove cover images embedded in tags. Images will only be removed if they are also being saved as separate files.</string>
+        </property>
+        <property name="text">
+         <string>Remove cover images from tags</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

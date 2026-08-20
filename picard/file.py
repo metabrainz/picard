@@ -117,6 +117,7 @@ from picard.util.filenaming import (
     make_short_filename,
     move_ensure_casing,
 )
+from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
 
 from picard.ui.filter import Filter
@@ -584,6 +585,22 @@ class File(MetadataItem):
             self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
 
+    def _expected_embedded_images(self) -> 'ImageList':
+        """Images that should end up embedded in tags for the current metadata.
+
+        Mirrors the rules applied when actually saving (see ImageList): per-file
+        "never replace" filters may reject a new image for tags, or
+        remove_images_from_tags may clear tags entirely while the image is kept
+        only as an external file (and, for the CoverArtBox, in self.metadata).
+        """
+        images_to_save = list(self.metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images))
+        if images_to_save:
+            return ImageList(images_to_save)
+        elif self.metadata.images.should_remove_images_from_tags(previous_images=self.orig_metadata.images):
+            return ImageList()
+        else:
+            return self.orig_metadata.images.copy()
+
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
         # Result is None if save was skipped
@@ -598,7 +615,8 @@ class File(MetadataItem):
             length = self.orig_metadata.length
             temp_info = {}
             self._copy_file_info_tags(temp_info, self.orig_metadata)
-            images_changed = self.orig_metadata.images != self.metadata.images
+            embedded_images = self._expected_embedded_images()
+            images_changed = self.orig_metadata.images != embedded_images
             # Copy new metadata to original metadata, applying format specific
             # conversions (e.g. for ID3v2.3)
             config = get_config()
@@ -607,6 +625,10 @@ class File(MetadataItem):
                 self.orig_metadata = new_metadata
             else:
                 self.orig_metadata.update(new_metadata)
+            # Metadata.update() (and the plain replace above) leave images
+            # untouched when the new list is empty, but an empty result here is
+            # exactly what "removed from tags" means, so set it explicitly.
+            self.orig_metadata.images = embedded_images
             # After saving deleted tags should no longer be marked deleted
             self.metadata.clear_deleted()
             self.orig_metadata.clear_deleted()
@@ -767,10 +789,8 @@ class File(MetadataItem):
 
     def _save_images(self, dirname, metadata):
         """Save the cover images to disk."""
-        if not metadata.images:
-            return
         counters = Counter()
-        for image in metadata.images.to_be_saved_to_files():
+        for image in metadata.images.to_be_saved_to_files(previous_images=self.orig_metadata.images):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename, config):
@@ -947,7 +967,7 @@ class File(MetadataItem):
             else:
                 self.similarity = 1.0
                 if self.state in (File.State.CHANGED, File.State.NORMAL):
-                    if self.metadata.images and self.orig_metadata.images != self.metadata.images:
+                    if self.metadata.images and self.orig_metadata.images != self._expected_embedded_images():
                         self.state = File.State.CHANGED
                     else:
                         self.state = File.State.NORMAL

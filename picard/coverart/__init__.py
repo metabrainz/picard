@@ -84,6 +84,7 @@ class CoverArt:
         'save_images_to_tags',
         'save_images_to_files',
         'save_images_overwrite',
+        'remove_images_from_tags',
         'cover_image_filename',
         'image_type_as_filename',
         'filter_cover_by_size',

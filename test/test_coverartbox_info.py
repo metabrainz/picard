@@ -52,6 +52,7 @@ class _DummyThumb:
         self.current_pixmap_key: int | None = None
         self._visible: bool = True
         self._tooltip: str = ""
+        self.marked_for_removal: bool = False
 
     def setVisible(self, visible: bool) -> None:  # noqa: N802 (Qt-style API)
         self._visible = visible
@@ -64,6 +65,9 @@ class _DummyThumb:
 
     def toolTip(self) -> str:  # noqa: N802
         return self._tooltip
+
+    def __eq__(self, other: object) -> bool:
+        return self.current_pixmap_key == getattr(other, 'current_pixmap_key', None)
 
 
 class _DummyLabel:
@@ -98,6 +102,7 @@ class _DummyButton:
 class CoverArtBoxLite:
     def __init__(self) -> None:
         self.item = None
+        self._removal_predicted = False
         self.cover_art_label = _DummyLabel()
         self.cover_art_info_label = _DummyLabel()
         self.orig_cover_art_label = _DummyLabel()
@@ -107,6 +112,7 @@ class CoverArtBoxLite:
         self.orig_cover_art = _DummyThumb()
         # Reuse real implementation helpers
         self._first_image_info_lines = CoverArtBox._first_image_info_lines  # type: ignore[assignment]
+        self._format_info_text = CoverArtBox._format_info_text  # type: ignore[assignment]
 
     def isHidden(self) -> bool:  # noqa: N802
         return False
@@ -294,3 +300,83 @@ def test_update_display_both_visible_headers_and_info(cover_art_box: CoverArtBox
     assert not cover_art_box.orig_cover_art_info_label.isVisible()
     assert cover_art_box.cover_art_info_label.text() == ""
     assert cover_art_box.orig_cover_art_info_label.text() == ""
+
+
+def test_update_display_marked_for_removal_tooltip(cover_art_box: CoverArtBox) -> None:
+    from picard.config import get_config
+
+    get_config().setting['show_cover_art_details'] = True
+
+    img_new = DummyImage("Front", 2000, 10, 10, "image/png")
+    img_orig = DummyImage("Back", 3000, 20, 20, "image/jpeg")
+    cover_art_box.cover_art.related_images = [img_new]
+    cover_art_box.orig_cover_art.related_images = [img_orig]
+    cover_art_box.cover_art.data = [_ImgLikeNew()]
+    cover_art_box.orig_cover_art.data = [_ImgLike()]
+    cover_art_box.cover_art.current_pixmap_key = 1
+    cover_art_box.orig_cover_art.current_pixmap_key = 2
+    cover_art_box._removal_predicted = True
+    cover_art_box.orig_cover_art.marked_for_removal = True
+
+    cover_art_box.show()
+    cover_art_box.update_display(force=True)
+
+    # Tooltip of the marked thumbnail explains the removal, and its info
+    # label is styled with a red strikethrough; the unmarked one stays plain
+    assert "removed from tags" in cover_art_box.orig_cover_art.toolTip()
+    assert "removed from tags" not in cover_art_box.cover_art.toolTip()
+    assert 'line-through' in cover_art_box.orig_cover_art_info_label.text()
+    assert 'line-through' not in cover_art_box.cover_art_info_label.text()
+
+
+def test_update_display_shows_export_panel_when_identical_to_original(cover_art_box: CoverArtBox) -> None:
+    """When nothing new was fetched, the image being removed from tags is
+    still the one exported to a file: both panels must stay visible and
+    only the original (tags) panel gets the removal styling."""
+    img = DummyImage("Front", 2000, 10, 10, "image/png")
+    cover_art_box.cover_art.related_images = [img]
+    cover_art_box.orig_cover_art.related_images = [img]
+    cover_art_box.cover_art.data = [_ImgLike()]
+    cover_art_box.orig_cover_art.data = [_ImgLike()]
+    cover_art_box.cover_art.current_pixmap_key = 1
+    cover_art_box.orig_cover_art.current_pixmap_key = 1
+    cover_art_box._removal_predicted = True
+    cover_art_box.orig_cover_art.marked_for_removal = True
+
+    cover_art_box.show()
+    cover_art_box.update_display(force=True)
+
+    assert cover_art_box.orig_cover_art.isVisible()
+    assert cover_art_box.cover_art_label.text() == "Saved to File"
+    assert cover_art_box.orig_cover_art_label.text() == "Original Cover Art"
+    assert "removed from tags" not in cover_art_box.cover_art.toolTip()
+    assert "removed from tags" in cover_art_box.orig_cover_art.toolTip()
+
+
+def test_update_display_no_data_does_not_crash(cover_art_box: CoverArtBoxLite, monkeypatch) -> None:
+    """Regression: update_display() must not crash on the real CoverArtThumbnail
+    when no item is selected yet (both thumbnails have data=None), since its
+    __eq__ calls len() on data (see startup crash after PICARD-3380 changes)."""
+    from unittest.mock import MagicMock
+
+    from PyQt6 import QtWidgets
+
+    mock_tagger = MagicMock()
+    mock_tagger.primaryScreen.return_value.devicePixelRatio.return_value = 1.0
+    monkeypatch.setattr(
+        'picard.ui.coverartbox.coverartthumbnail.tagger_instance',
+        lambda: mock_tagger,
+    )
+    from picard.util.lrucache import LRUCache
+
+    from picard.ui.coverartbox.coverartthumbnail import CoverArtThumbnail
+
+    parent = QtWidgets.QWidget()
+    try:
+        cache = LRUCache(10)
+        cover_art_box.cover_art = CoverArtThumbnail(pixmap_cache=cache, parent=parent)
+        cover_art_box.orig_cover_art = CoverArtThumbnail(pixmap_cache=cache, parent=parent)
+
+        cover_art_box.update_display(force=True)
+    finally:
+        parent.deleteLater()

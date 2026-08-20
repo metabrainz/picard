@@ -171,6 +171,7 @@ def test_vorbis_save_respects_date_sanitization_setting(
     md['date'] = input_date
 
     vorbis_file = OggVorbisFile.__new__(OggVorbisFile)
+    vorbis_file.orig_metadata = Metadata()
 
     # Act
     vorbis_file._save('dummy.ogg', md)

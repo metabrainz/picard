@@ -346,13 +346,17 @@ class MP4File(File):
                 tags['disk'] = [(discnumber, totaldiscs)]
 
         covr = []
-        for image in metadata.images.to_be_saved_to_tags():
+        for image in metadata.images.to_be_saved_to_tags(previous_images=self.orig_metadata.images):
             if image.mimetype == 'image/jpeg':
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
             elif image.mimetype == 'image/png':
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
         if covr:
             tags['covr'] = covr
+        elif 'covr' in tags and metadata.images.should_remove_images_from_tags(
+            previous_images=self.orig_metadata.images
+        ):
+            del tags['covr']
 
         self._remove_deleted_tags(metadata, tags)
 

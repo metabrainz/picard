@@ -239,6 +239,7 @@ BoolOption(
 BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files"), in_profile=True)
 BoolOption('setting', 'save_images_to_files', False, title=N_("Save images as separate files"), in_profile=True)
 BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed images into tags"), in_profile=True)
+BoolOption('setting', 'remove_images_from_tags', False, title=N_("Remove images from tags"), in_profile=True)
 BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only one front image"), in_profile=True)
 BoolOption('setting', 'show_cover_art_details', False, title=N_("Show cover art details in view"), in_profile=True)
 BoolOption('setting', 'show_cover_art_details_type', False, title=N_("Show cover art type"), in_profile=True)

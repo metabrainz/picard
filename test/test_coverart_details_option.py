@@ -48,6 +48,7 @@ class _DummyThumb:
         self.current_pixmap_key: int | None = None
         self._visible: bool = True
         self._tooltip: str = ""
+        self.marked_for_removal: bool = False
 
     def setVisible(self, visible: bool) -> None:  # noqa: N802
         self._visible = visible
@@ -94,6 +95,7 @@ class _DummyButton:
 class CoverArtBoxLite:
     def __init__(self) -> None:
         self.item = None
+        self._removal_predicted = False
         self.cover_art_label = _DummyLabel()
         self.cover_art_info_label = _DummyLabel()
         self.orig_cover_art_label = _DummyLabel()
@@ -103,6 +105,7 @@ class CoverArtBoxLite:
         self.orig_cover_art = _DummyThumb()
         # Bind helpers from real implementation
         self._first_image_info_lines = CoverArtBox._first_image_info_lines  # type: ignore[assignment]
+        self._format_info_text = CoverArtBox._format_info_text  # type: ignore[assignment]
 
     def isHidden(self) -> bool:  # noqa: N802
         return False
