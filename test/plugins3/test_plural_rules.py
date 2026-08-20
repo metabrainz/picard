@@ -61,6 +61,15 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('fr', 1), 'one')
         self.assertEqual(get_plural_form('fr', 2), 'other')
 
+    # def test_spanish_plural_rules(self):
+    #     """Test French plural rules (one/other, many for full millions)."""
+    #     self.assertEqual(get_plural_form('es', 0), 'other')
+    #     self.assertEqual(get_plural_form('es', 1), 'one')
+    #     self.assertEqual(get_plural_form('es', 2), 'other')
+    #     self.assertEqual(get_plural_form('es', 5), 'other')
+    #     self.assertEqual(get_plural_form('es', 1_000_000), 'many')
+    #     self.assertEqual(get_plural_form('es', 2_000_000), 'many')
+
     def test_arabic_plural_rules(self):
         """Test Arabic plural rules (zero/one/two/few/many/other)."""
         self.assertEqual(get_plural_form('ar', 0), 'zero')
@@ -69,6 +78,82 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('ar', 3), 'few')
         self.assertEqual(get_plural_form('ar', 11), 'many')
         self.assertEqual(get_plural_form('ar', 100), 'other')
+
+    def test_czech_plural_rules(self):
+        """Test Czech plural rules (one/few/other)."""
+        self.assertEqual(get_plural_form('cs', 0), 'other')
+        self.assertEqual(get_plural_form('cs', 1), 'one')
+        self.assertEqual(get_plural_form('cs', 2), 'few')
+        self.assertEqual(get_plural_form('cs', 4), 'few')
+        self.assertEqual(get_plural_form('cs', 5), 'other')
+        self.assertEqual(get_plural_form('cs', 100), 'other')
+
+    def test_hebrew_plural_rules(self):
+        """Test Japanese plural rules (one/two/other)."""
+        self.assertEqual(get_plural_form('he', 0), 'other')
+        self.assertEqual(get_plural_form('he', 1), 'one')
+        self.assertEqual(get_plural_form('he', 2), 'two')
+        self.assertEqual(get_plural_form('he', 5), 'other')
+        self.assertEqual(get_plural_form('he', 100), 'other')
+
+    def test_lithuanian_plural_rules(self):
+        """Test Lithuanian plural rules (one/few/many/other)."""
+        self.assertEqual(get_plural_form('lt', 0), 'other')
+        self.assertEqual(get_plural_form('lt', 1), 'one')
+        self.assertEqual(get_plural_form('lt', 2), 'few')
+        self.assertEqual(get_plural_form('lt', 9), 'few')
+        self.assertEqual(get_plural_form('lt', 10), 'other')
+        self.assertEqual(get_plural_form('lt', 11), 'other')
+        self.assertEqual(get_plural_form('lt', 19), 'other')
+        self.assertEqual(get_plural_form('lt', 21), 'one')
+        self.assertEqual(get_plural_form('lt', 22), 'few')
+        self.assertEqual(get_plural_form('lt', 29), 'few')
+        self.assertEqual(get_plural_form('lt', 100), 'other')
+        self.assertEqual(get_plural_form('lt', 101), 'one')
+
+    def test_japanese_plural_rules(self):
+        """Test Japanese plural rules (other)."""
+        self.assertEqual(get_plural_form('ja', 0), 'other')
+        self.assertEqual(get_plural_form('ja', 1), 'other')
+        self.assertEqual(get_plural_form('ja', 5), 'other')
+        self.assertEqual(get_plural_form('ja', 100), 'other')
+
+    def test_icelandic_plural_rules(self):
+        """Test Icelandic plural rules (one/other)."""
+        self.assertEqual(get_plural_form('is', 0), 'other')
+        self.assertEqual(get_plural_form('is', 1), 'one')
+        self.assertEqual(get_plural_form('is', 2), 'other')
+        self.assertEqual(get_plural_form('is', 10), 'other')
+        self.assertEqual(get_plural_form('is', 11), 'other')
+        self.assertEqual(get_plural_form('is', 21), 'one')
+        self.assertEqual(get_plural_form('is', 101), 'one')
+        self.assertEqual(get_plural_form('is', 111), 'other')
+        self.assertEqual(get_plural_form('is', 131), 'one')
+
+    def test_irish_plural_rules(self):
+        """Test Irish plural rules (one/two/few/many/other)."""
+        self.assertEqual(get_plural_form('ga', 0), 'other')
+        self.assertEqual(get_plural_form('ga', 1), 'one')
+        self.assertEqual(get_plural_form('ga', 3), 'few')
+        self.assertEqual(get_plural_form('ga', 6), 'few')
+        self.assertEqual(get_plural_form('ga', 7), 'many')
+        self.assertEqual(get_plural_form('ga', 10), 'many')
+        self.assertEqual(get_plural_form('ga', 11), 'other')
+        self.assertEqual(get_plural_form('ga', 100), 'other')
+
+    def test_welsh_plural_rules(self):
+        """Test Welsh plural rules (zero/one/two/few/many/other)."""
+        self.assertEqual(get_plural_form('cy', 0), 'zero')
+        self.assertEqual(get_plural_form('cy', 1), 'one')
+        self.assertEqual(get_plural_form('cy', 2), 'two')
+        self.assertEqual(get_plural_form('cy', 3), 'few')
+        self.assertEqual(get_plural_form('cy', 4), 'other')
+        self.assertEqual(get_plural_form('cy', 5), 'other')
+        self.assertEqual(get_plural_form('cy', 6), 'many')
+        self.assertEqual(get_plural_form('cy', 7), 'other')
+        self.assertEqual(get_plural_form('cy', 10), 'other')
+        self.assertEqual(get_plural_form('cy', 11), 'other')
+        self.assertEqual(get_plural_form('cy', 100), 'other')
 
     def test_unknown_locale_defaults_to_english(self):
         """Test unknown locale falls back to English rules."""

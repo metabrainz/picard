@@ -82,26 +82,26 @@ def get_plural_form(locale: str, n: int) -> str:
     lang = locale.split('_')[0]
 
     # English, German, Spanish, Italian, Portuguese, etc.
-    if lang in ('en', 'de', 'es', 'it', 'pt', 'nl', 'sv', 'da', 'no', 'fi'):
+    if lang in {'en', 'de', 'es', 'it', 'pt', 'nl', 'sv', 'da', 'no', 'fi'}:
         return 'one' if n == 1 else 'other'
 
-    # French (0 and 1 are singular)
-    if lang == 'fr':
-        return 'one' if n in (0, 1) else 'other'
+    # French, Punjabi (0 and 1 are singular)
+    if lang in {'fr', 'pa'}:
+        return 'one' if n in {0, 1} else 'other'
 
     # Polish
     if lang == 'pl':
         if n == 1:
             return 'one'
-        if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14):
+        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
             return 'few'
         return 'many'
 
     # Russian, Ukrainian
-    if lang in ('ru', 'uk'):
+    if lang in {'ru', 'uk'}:
         if n % 10 == 1 and n % 100 != 11:
             return 'one'
-        if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14):
+        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
             return 'few'
         return 'many'
 
@@ -119,12 +119,64 @@ def get_plural_form(locale: str, n: int) -> str:
             return 'many'
         return 'other'
 
+    # Hebrew
+    if lang == 'he':
+        if n == 1:
+            return 'one'
+        if n == 2:
+            return 'two'
+        return 'other'
+
     # Czech, Slovak
-    if lang in ('cs', 'sk'):
+    if lang in {'cs', 'sk'}:
         if n == 1:
             return 'one'
         if 2 <= n <= 4:
             return 'few'
+        return 'other'
+
+    # Lithuanian
+    if lang == 'lt':
+        if n % 10 == 1 and n % 100 not in range(11, 20):
+            return 'one'
+        if n % 10 in range(2, 10) and n % 100 not in range(11, 20):
+            return 'few'
+        return 'other'
+
+    # Japanese, Korean, Malay, Vietnamese, Chinese
+    if lang in {'ja', 'ko', 'ms', 'vi', 'zh'}:
+        return 'other'
+
+    # Icelandic
+    if lang == 'is':
+        if n % 10 == 1 and n % 100 != 11:
+            return 'one'
+        return 'other'
+
+    # Irish
+    if lang == 'ga':
+        if n == 1:
+            return 'one'
+        if n == 2:
+            return 'two'
+        if n in {3, 4, 5, 6}:
+            return 'few'
+        if n in {7, 8, 9, 10}:
+            return 'many'
+        return 'other'
+
+    # Welsh
+    if lang == 'cy':
+        if n == 0:
+            return 'zero'
+        if n == 1:
+            return 'one'
+        if n == 2:
+            return 'two'
+        if n == 3:
+            return 'few'
+        if n == 6:
+            return 'many'
         return 'other'
 
     # Default to English rules
