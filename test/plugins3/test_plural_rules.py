@@ -22,7 +22,10 @@ from typing import ClassVar
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.i18n import get_plural_form
+from picard.plugin3.i18n import (
+    Plural,
+    get_plural_form,
+)
 
 
 class TestPluralRules(PicardTestCase):
@@ -35,156 +38,156 @@ class TestPluralRules(PicardTestCase):
     PLURAL_RULES_TEST_DATA: ClassVar[dict] = {
         # English (also: de, es, it, pt, nl, sv, da, no, fi) — one/other
         'en': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'other'),
-            (5, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.OTHER),
+            (5, Plural.OTHER),
         ],
-        # French (also: pa) — one/other, 0 and 1 are 'one'
+        # French (also: pa) — one/other, 0 and 1 are Plural.ONE
         'fr': [
-            (0, 'one'),
-            (1, 'one'),
-            (2, 'other'),
+            (0, Plural.ONE),
+            (1, Plural.ONE),
+            (2, Plural.OTHER),
         ],
         # Polish — one/few/many
         'pl': [
-            (1, 'one'),
-            (2, 'few'),
-            (3, 'few'),
-            (4, 'few'),
-            (5, 'many'),
-            (10, 'many'),
-            (22, 'few'),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (3, Plural.FEW),
+            (4, Plural.FEW),
+            (5, Plural.MANY),
+            (10, Plural.MANY),
+            (22, Plural.FEW),
         ],
         # Russian (also: uk) — one/few/many
         'ru': [
-            (1, 'one'),
-            (2, 'few'),
-            (5, 'many'),
-            (21, 'one'),
-            (22, 'few'),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (5, Plural.MANY),
+            (21, Plural.ONE),
+            (22, Plural.FEW),
         ],
         # Arabic — zero/one/two/few/many/other
         'ar': [
-            (0, 'zero'),
-            (1, 'one'),
-            (2, 'two'),
-            (3, 'few'),
-            (11, 'many'),
-            (100, 'other'),
+            (0, Plural.ZERO),
+            (1, Plural.ONE),
+            (2, Plural.TWO),
+            (3, Plural.FEW),
+            (11, Plural.MANY),
+            (100, Plural.OTHER),
         ],
         # Czech (also: sk) — one/few/other
         'cs': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'few'),
-            (4, 'few'),
-            (5, 'other'),
-            (100, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (4, Plural.FEW),
+            (5, Plural.OTHER),
+            (100, Plural.OTHER),
         ],
         # Romanian — one/few/other
         'ro': [
-            (0, 'few'),
-            (1, 'one'),
-            (2, 'few'),
-            (12, 'few'),
-            (19, 'few'),
-            (20, 'other'),
-            (100, 'other'),
-            (101, 'few'),
-            (119, 'few'),
-            (120, 'other'),
+            (0, Plural.FEW),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (12, Plural.FEW),
+            (19, Plural.FEW),
+            (20, Plural.OTHER),
+            (100, Plural.OTHER),
+            (101, Plural.FEW),
+            (119, Plural.FEW),
+            (120, Plural.OTHER),
         ],
         # Croatian (also: bs, sr) — one/few/other
         'hr': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'few'),
-            (4, 'few'),
-            (5, 'other'),
-            (11, 'other'),
-            (12, 'other'),
-            (21, 'one'),
-            (22, 'few'),
-            (25, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (4, Plural.FEW),
+            (5, Plural.OTHER),
+            (11, Plural.OTHER),
+            (12, Plural.OTHER),
+            (21, Plural.ONE),
+            (22, Plural.FEW),
+            (25, Plural.OTHER),
         ],
         # Catalan — one/many/other
         'ca': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'other'),
-            (5, 'other'),
-            (1_000_000, 'many'),
-            (2_000_000, 'many'),
-            (1_000, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.OTHER),
+            (5, Plural.OTHER),
+            (1_000_000, Plural.MANY),
+            (2_000_000, Plural.MANY),
+            (1_000, Plural.OTHER),
         ],
         # Hebrew — one/two/other
         'he': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'two'),
-            (5, 'other'),
-            (100, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.TWO),
+            (5, Plural.OTHER),
+            (100, Plural.OTHER),
         ],
         # Lithuanian — one/few/other
         'lt': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'few'),
-            (9, 'few'),
-            (10, 'other'),
-            (11, 'other'),
-            (19, 'other'),
-            (21, 'one'),
-            (22, 'few'),
-            (29, 'few'),
-            (100, 'other'),
-            (101, 'one'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.FEW),
+            (9, Plural.FEW),
+            (10, Plural.OTHER),
+            (11, Plural.OTHER),
+            (19, Plural.OTHER),
+            (21, Plural.ONE),
+            (22, Plural.FEW),
+            (29, Plural.FEW),
+            (100, Plural.OTHER),
+            (101, Plural.ONE),
         ],
         # Japanese (also: ko, ms, vi, zh) — other only
         'ja': [
-            (0, 'other'),
-            (1, 'other'),
-            (5, 'other'),
-            (100, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.OTHER),
+            (5, Plural.OTHER),
+            (100, Plural.OTHER),
         ],
         # Icelandic — one/other
         'is': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'other'),
-            (10, 'other'),
-            (11, 'other'),
-            (21, 'one'),
-            (101, 'one'),
-            (111, 'other'),
-            (131, 'one'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.OTHER),
+            (10, Plural.OTHER),
+            (11, Plural.OTHER),
+            (21, Plural.ONE),
+            (101, Plural.ONE),
+            (111, Plural.OTHER),
+            (131, Plural.ONE),
         ],
         # Irish — one/two/few/many/other
         'ga': [
-            (0, 'other'),
-            (1, 'one'),
-            (2, 'two'),
-            (3, 'few'),
-            (6, 'few'),
-            (7, 'many'),
-            (10, 'many'),
-            (11, 'other'),
-            (100, 'other'),
+            (0, Plural.OTHER),
+            (1, Plural.ONE),
+            (2, Plural.TWO),
+            (3, Plural.FEW),
+            (6, Plural.FEW),
+            (7, Plural.MANY),
+            (10, Plural.MANY),
+            (11, Plural.OTHER),
+            (100, Plural.OTHER),
         ],
         # Welsh — zero/one/two/few/many/other
         'cy': [
-            (0, 'zero'),
-            (1, 'one'),
-            (2, 'two'),
-            (3, 'few'),
-            (4, 'other'),
-            (5, 'other'),
-            (6, 'many'),
-            (7, 'other'),
-            (10, 'other'),
-            (11, 'other'),
-            (100, 'other'),
+            (0, Plural.ZERO),
+            (1, Plural.ONE),
+            (2, Plural.TWO),
+            (3, Plural.FEW),
+            (4, Plural.OTHER),
+            (5, Plural.OTHER),
+            (6, Plural.MANY),
+            (7, Plural.OTHER),
+            (10, Plural.OTHER),
+            (11, Plural.OTHER),
+            (100, Plural.OTHER),
         ],
     }
 
@@ -197,11 +200,11 @@ class TestPluralRules(PicardTestCase):
 
     def test_unknown_locale_defaults_to_english(self):
         """Test unknown locale falls back to English rules."""
-        self.assertEqual(get_plural_form('xx', 1), 'one')
-        self.assertEqual(get_plural_form('xx', 2), 'other')
+        self.assertEqual(get_plural_form('xx', 1), Plural.ONE)
+        self.assertEqual(get_plural_form('xx', 2), Plural.OTHER)
 
     def test_locale_with_region(self):
         """Test that region suffix is stripped correctly."""
-        self.assertEqual(get_plural_form('en_US', 1), 'one')
-        self.assertEqual(get_plural_form('fr_CA', 0), 'one')
-        self.assertEqual(get_plural_form('zh_TW', 5), 'other')
+        self.assertEqual(get_plural_form('en_US', 1), Plural.ONE)
+        self.assertEqual(get_plural_form('fr_CA', 0), Plural.ONE)
+        self.assertEqual(get_plural_form('zh_TW', 5), Plural.OTHER)

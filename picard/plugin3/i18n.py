@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from enum import Enum
+
 from PyQt6.QtCore import QTranslator
 
 
@@ -69,126 +71,135 @@ class PluginTranslator(QTranslator):
         return None
 
 
-def _plural_english(n: int) -> str:
-    return 'one' if n == 1 else 'other'
+class Plural(Enum):
+    ZERO = 'zero'
+    ONE = 'one'
+    TWO = 'two'
+    FEW = 'few'
+    MANY = 'many'
+    OTHER = 'other'
 
 
-def _plural_french(n: int) -> str:
-    return 'one' if n in {0, 1} else 'other'
+def _plural_english(n: int) -> Plural:
+    return Plural.ONE if n == 1 else Plural.OTHER
 
 
-def _plural_polish(n: int) -> str:
+def _plural_french(n: int) -> Plural:
+    return Plural.ONE if n in {0, 1} else Plural.OTHER
+
+
+def _plural_polish(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-        return 'few'
-    return 'many'
+        return Plural.FEW
+    return Plural.MANY
 
 
-def _plural_russian(n: int) -> str:
+def _plural_russian(n: int) -> Plural:
     if n % 10 == 1 and n % 100 != 11:
-        return 'one'
+        return Plural.ONE
     if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-        return 'few'
-    return 'many'
+        return Plural.FEW
+    return Plural.MANY
 
 
-def _plural_arabic(n: int) -> str:
+def _plural_arabic(n: int) -> Plural:
     if n == 0:
-        return 'zero'
+        return Plural.ZERO
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n == 2:
-        return 'two'
+        return Plural.TWO
     if 3 <= n % 100 <= 10:
-        return 'few'
+        return Plural.FEW
     if 11 <= n % 100 <= 99:
-        return 'many'
-    return 'other'
+        return Plural.MANY
+    return Plural.OTHER
 
 
-def _plural_hebrew(n: int) -> str:
+def _plural_hebrew(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n == 2:
-        return 'two'
-    return 'other'
+        return Plural.TWO
+    return Plural.OTHER
 
 
-def _plural_czech(n: int) -> str:
+def _plural_czech(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if 2 <= n <= 4:
-        return 'few'
-    return 'other'
+        return Plural.FEW
+    return Plural.OTHER
 
 
-def _plural_romanian(n: int) -> str:
+def _plural_romanian(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n == 0 or (n != 1 and 1 <= n % 100 <= 19):
-        return 'few'
-    return 'other'
+        return Plural.FEW
+    return Plural.OTHER
 
 
-def _plural_croatian(n: int) -> str:
+def _plural_croatian(n: int) -> Plural:
     if n % 10 == 1 and n % 100 != 11:
-        return 'one'
+        return Plural.ONE
     if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
-        return 'few'
-    return 'other'
+        return Plural.FEW
+    return Plural.OTHER
 
 
-def _plural_catalan(n: int) -> str:
+def _plural_catalan(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n != 0 and n % 1_000_000 == 0:
-        return 'many'
-    return 'other'
+        return Plural.MANY
+    return Plural.OTHER
 
 
-def _plural_lithuanian(n: int) -> str:
+def _plural_lithuanian(n: int) -> Plural:
     if n % 10 == 1 and not 11 <= n % 100 <= 19:
-        return 'one'
+        return Plural.ONE
     if 2 <= n % 10 <= 9 and not 11 <= n % 100 <= 19:
-        return 'few'
-    return 'other'
+        return Plural.FEW
+    return Plural.OTHER
 
 
-def _plural_other(n: int) -> str:
-    return 'other'
+def _plural_other(n: int) -> Plural:
+    return Plural.OTHER
 
 
-def _plural_icelandic(n: int) -> str:
+def _plural_icelandic(n: int) -> Plural:
     if n % 10 == 1 and n % 100 != 11:
-        return 'one'
-    return 'other'
+        return Plural.ONE
+    return Plural.OTHER
 
 
-def _plural_irish(n: int) -> str:
+def _plural_irish(n: int) -> Plural:
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n == 2:
-        return 'two'
+        return Plural.TWO
     if n in {3, 4, 5, 6}:
-        return 'few'
+        return Plural.FEW
     if n in {7, 8, 9, 10}:
-        return 'many'
-    return 'other'
+        return Plural.MANY
+    return Plural.OTHER
 
 
-def _plural_welsh(n: int) -> str:
+def _plural_welsh(n: int) -> Plural:
     if n == 0:
-        return 'zero'
+        return Plural.ZERO
     if n == 1:
-        return 'one'
+        return Plural.ONE
     if n == 2:
-        return 'two'
+        return Plural.TWO
     if n == 3:
-        return 'few'
+        return Plural.FEW
     if n == 6:
-        return 'many'
-    return 'other'
+        return Plural.MANY
+    return Plural.OTHER
 
 
 _PLURAL_RULES = {
@@ -243,7 +254,7 @@ _PLURAL_RULES = {
 }
 
 
-def get_plural_form(locale: str, n: int) -> str:
+def get_plural_form(locale: str, n: int) -> Plural:
     """Get CLDR plural form for a number in a given locale.
 
     Args:
@@ -251,7 +262,7 @@ def get_plural_form(locale: str, n: int) -> str:
         n: Number to get plural form for
 
     Returns:
-        One of: 'zero', 'one', 'two', 'few', 'many', 'other'
+        Plural enum value
     """
     lang = locale.split('_')[0]
     return _PLURAL_RULES.get(lang, _plural_english)(n)
