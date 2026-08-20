@@ -21,7 +21,6 @@
 
 from picard.const.tags import ALL_TAGS
 from picard.i18n import gettext as _
-from picard.tags import all_tag_vars
 from picard.tags.tagvar import (
     TEXT_NO_DESCRIPTION,
     TagVar,
@@ -48,7 +47,17 @@ def _get_tagvar_item(tagname):
     else:
         tagdesc = None
 
-    item = next((var for var in all_tag_vars() if var.name == tagname.lstrip('~_')), None)
+    # O(1) lookup for built-in tags
+    item = ALL_TAGS.tagvar_from_name(tagname)
+
+    # Linear scan for plugin variables (typically very few)
+    if not item:
+        # Inline import to avoid circular dependency: script_variables imports from this module.
+        from picard.extension_points.script_variables import ext_point_script_variables
+
+        bare_name = tagname.lstrip('~_')
+        item = next((var for var in ext_point_script_variables if var.name == bare_name), None)
+
     if item:
         return item.script_name(), item, tagdesc
     return tagname, None, None
