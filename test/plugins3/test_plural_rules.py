@@ -61,6 +61,12 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('fr', 1), 'one')
         self.assertEqual(get_plural_form('fr', 2), 'other')
 
+    def test_punjabi_plural_rules(self):
+        """Test Punjabi plural rules (same as French: 0 and 1 are 'one')."""
+        self.assertEqual(get_plural_form('pa', 0), 'one')
+        self.assertEqual(get_plural_form('pa', 1), 'one')
+        self.assertEqual(get_plural_form('pa', 2), 'other')
+
     def test_arabic_plural_rules(self):
         """Test Arabic plural rules (zero/one/two/few/many/other)."""
         self.assertEqual(get_plural_form('ar', 0), 'zero')
@@ -88,7 +94,7 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('he', 100), 'other')
 
     def test_lithuanian_plural_rules(self):
-        """Test Lithuanian plural rules (one/few/many/other)."""
+        """Test Lithuanian plural rules (one/few/other)."""
         self.assertEqual(get_plural_form('lt', 0), 'other')
         self.assertEqual(get_plural_form('lt', 1), 'one')
         self.assertEqual(get_plural_form('lt', 2), 'few')
@@ -125,6 +131,7 @@ class TestPluralRules(PicardTestCase):
         """Test Irish plural rules (one/two/few/many/other)."""
         self.assertEqual(get_plural_form('ga', 0), 'other')
         self.assertEqual(get_plural_form('ga', 1), 'one')
+        self.assertEqual(get_plural_form('ga', 2), 'two')
         self.assertEqual(get_plural_form('ga', 3), 'few')
         self.assertEqual(get_plural_form('ga', 6), 'few')
         self.assertEqual(get_plural_form('ga', 7), 'many')
