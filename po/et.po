@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-19 15:50+0000\n"
+"PO-Revision-Date: 2026-08-20 06:36+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -782,10 +782,8 @@ msgid "Translation script exceptions"
 msgstr "Tõlkeskripti vead"
 
 #: picard/options.py:498
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names"
-msgstr "Kasutatakse standardiseeritud esitajanimesid"
+msgstr "Normaliseeri esitajate nimed"
 
 #: picard/options.py:501 picard/ui/forms/ui_options_metadata.py:191
 #, fuzzy
@@ -988,9 +986,8 @@ msgid "Days between update checks"
 msgstr "Päevi uuenduste kontrollimise vahel"
 
 #: picard/options.py:638
-#, fuzzy
 msgid "Update types to check"
-msgstr "Lubatud uuendused:"
+msgstr "Kontrollitavad uuenduste tüübid"
 
 #: picard/options.py:639
 msgid "Log verbosity level"
@@ -1517,10 +1514,8 @@ msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
 msgstr "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
 
 #: picard/plugin3/categories.py:34
-#, fuzzy
-#| msgid "Format"
 msgid "Formats"
-msgstr "Formaat"
+msgstr "Vormingud"
 
 #: picard/plugin3/categories.py:35 picard/ui/forms/ui_options_metadata.py:189
 #: picard/ui/options/metadata.py:88
@@ -1528,9 +1523,8 @@ msgid "Metadata"
 msgstr "Metaandmed"
 
 #: picard/plugin3/categories.py:36
-#, fuzzy
 msgid "Other"
-msgstr "muu"
+msgstr "Muu"
 
 #: picard/plugin3/categories.py:37 picard/ui/options/scripting.py:106
 msgid "Scripting"
@@ -1541,10 +1535,8 @@ msgid "UI"
 msgstr "Kasutajaliides"
 
 #: picard/plugin3/plugin_metadata.py:128
-#, fuzzy
-#| msgid "Local Files"
 msgid "local"
-msgstr "Kohalikud failid"
+msgstr "kohalik"
 
 #: picard/plugin3/plugin_metadata.py:129
 msgid "local-dev"
@@ -1962,28 +1954,16 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:390
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get(name)"
-msgstr "Vietnami"
+msgstr "$get(name)"
 
 #: picard/script/functions.py:391
-#, fuzzy
-#| msgid ""
-#| "`$get(name)`\n"
-#| "\n"
-#| "Returns the variable `name` (equivalent to `%name%`)."
 msgid "Returns the variable `name` (equivalent to `%name%`)."
-msgstr ""
-"`$get(muutuja)`\n"
-"\n"
-"Tagastab `muutuja` (sama nagu `%muutuja%`)."
+msgstr "Tagastab `muutuja` (sama nagu `%muutuja%`)."
 
 #: picard/script/functions.py:399
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get_new(name)"
-msgstr "Vietnami"
+msgstr "$get_new(name)"
 
 #: picard/script/functions.py:401
 msgid ""
@@ -2013,10 +1993,8 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:426
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get_original(name)"
-msgstr "Vietnami"
+msgstr "$get_original(name)"
 
 #: picard/script/functions.py:428
 msgid ""
@@ -2066,7 +2044,7 @@ msgstr ""
 
 #: picard/script/functions.py:485
 msgid "$trim(text[,char])"
-msgstr ""
+msgstr "$trim(text[,char])"
 
 #: picard/script/functions.py:487
 msgid ""
@@ -2139,28 +2117,12 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:619
-#, fuzzy
-#| msgid ""
-#| "`$not(x)`\n"
-#| "\n"
-#| "Returns true if `x` is empty."
 msgid "Returns true if `x` is empty."
-msgstr ""
-"`$not(x)`\n"
-"\n"
-"Tagastab tõese väärtuse, kui `x` on tühi."
+msgstr "Tagastab tõese väärtuse, kui `x` on tühi."
 
 #: picard/script/functions.py:629
-#, fuzzy
-#| msgid ""
-#| "`$eq(x,y)`\n"
-#| "\n"
-#| "Returns true if `x` equals `y`."
 msgid "Returns true if `x` equals `y`."
-msgstr ""
-"`$eq(x,y)`\n"
-"\n"
-"Tagastab tõese väärtuse, kui `x` on võrdne `y-ga`."
+msgstr "Tagastab tõese väärtuse, kui `x` on võrdne `y-ga`."
 
 #: picard/script/functions.py:639
 #, fuzzy
@@ -2176,7 +2138,7 @@ msgstr ""
 
 #: picard/script/functions.py:682
 msgid "$lt(x,y[,type])"
-msgstr ""
+msgstr "$lt(x,y[,type])"
 
 #: picard/script/functions.py:684
 msgid ""
@@ -2197,7 +2159,7 @@ msgstr ""
 
 #: picard/script/functions.py:698
 msgid "$lte(x,y[,type])"
-msgstr ""
+msgstr "$lte(x,y[,type])"
 
 #: picard/script/functions.py:700
 msgid ""
@@ -2218,7 +2180,7 @@ msgstr ""
 
 #: picard/script/functions.py:714
 msgid "$gt(x,y[,type])"
-msgstr ""
+msgstr "$gt(x,y[,type])"
 
 #: picard/script/functions.py:716
 msgid ""
@@ -2239,7 +2201,7 @@ msgstr ""
 
 #: picard/script/functions.py:730
 msgid "$gte(x,y[,type])"
-msgstr ""
+msgstr "$gte(x,y[,type])"
 
 #: picard/script/functions.py:732
 msgid ""
@@ -2260,23 +2222,15 @@ msgstr ""
 
 #: picard/script/functions.py:746
 msgid "$len(text)"
-msgstr ""
+msgstr "$len(text)"
 
 #: picard/script/functions.py:747
-#, fuzzy
-#| msgid ""
-#| "`$len(text)`\n"
-#| "\n"
-#| "Returns the number of characters in `text`."
 msgid "Returns the number of characters in `text`."
-msgstr ""
-"`$len(tekst)`\n"
-"\n"
-"Tagastab märkide arvu `tekstis`."
+msgstr "Tagastab märkide arvu `tekstis`."
 
 #: picard/script/functions.py:755
 msgid "$lenmulti(name[,separator=; ])"
-msgstr ""
+msgstr "$lenmulti(name[,separator=; ])"
 
 #: picard/script/functions.py:757
 msgid ""
@@ -2338,7 +2292,7 @@ msgstr ""
 
 #: picard/script/functions.py:855
 msgid "$initials(text)"
-msgstr ""
+msgstr "$initials(text)"
 
 #: picard/script/functions.py:857
 msgid ""
@@ -2350,7 +2304,7 @@ msgstr ""
 
 #: picard/script/functions.py:867
 msgid "$firstwords(text,length)"
-msgstr ""
+msgstr "$firstwords(text,length)"
 
 #: picard/script/functions.py:869
 msgid ""
@@ -2362,46 +2316,28 @@ msgstr ""
 
 #: picard/script/functions.py:891
 msgid "$startswith(text,prefix)"
-msgstr ""
+msgstr "$startswith(text,prefix)"
 
 #: picard/script/functions.py:893
-#, fuzzy
-#| msgid ""
-#| "`$startswith(text,prefix)`\n"
-#| "\n"
-#| "Returns true if `text` starts with `prefix`.\n"
-#| "\n"
-#| "_Since Picard 1.4_"
 msgid ""
 "Returns true if `text` starts with `prefix`.\n"
 "\n"
 "_Since Picard 1.4_"
 msgstr ""
-"`$startswith(tekst,prefiks)`\n"
-"\n"
 "Tagastab tõese väärtuse, kui `tekst` algab `prefiksiga`.\n"
 "\n"
 "_Alates Picard 1.4-st_"
 
 #: picard/script/functions.py:905
 msgid "$endswith(text,suffix)"
-msgstr ""
+msgstr "$endswith(text,suffix)"
 
 #: picard/script/functions.py:907
-#, fuzzy
-#| msgid ""
-#| "`$endswith(text,suffix)`\n"
-#| "\n"
-#| "Returns true if `text` ends with `suffix`.\n"
-#| "\n"
-#| "_Since Picard 1.4_"
 msgid ""
 "Returns true if `text` ends with `suffix`.\n"
 "\n"
 "_Since Picard 1.4_"
 msgstr ""
-"`$endswith(tekst,sufiks)`\n"
-"\n"
 "Tagastab tõese väärtuse, kui `tekst` lõpeb `sufiksiga`.\n"
 "\n"
 "_Alates Picard 1.4-st_"
@@ -2411,20 +2347,11 @@ msgid "$truncate(text,length)"
 msgstr ""
 
 #: picard/script/functions.py:921
-#, fuzzy
-#| msgid ""
-#| "`$truncate(text,length)`\n"
-#| "\n"
-#| "Truncate `text` to `length`.\n"
-#| "\n"
-#| "_Since Picard 0.12_"
 msgid ""
 "Truncate `text` to `length`.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
-"`$truncate(tekst,pikkus)`\n"
-"\n"
 "Kärbib `teksti` määratud arvu märkide `pikkuseks`.\n"
 "\n"
 "_Alates Picard 0.12-st_"
@@ -2991,35 +2918,35 @@ msgstr ""
 
 #: picard/script/serializer.py:255
 msgid "Export Script"
-msgstr ""
+msgstr "Ekspordi skript"
 
 #: picard/script/serializer.py:256
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr ""
+msgstr "Skripti eksportimine asukohta „%s“ õnnestus"
 
 #: picard/script/serializer.py:266
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Viga „%(filename)s“ faili importimisel: %(error)s"
 
 #: picard/script/serializer.py:267
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "Viga „%(filename)s“ faili dekodeerimisel: %(error)s"
 
 #: picard/script/serializer.py:269
 msgid "Import Script File"
-msgstr ""
+msgstr "Impordi skriptifail"
 
 #: picard/script/serializer.py:293
 msgid "The file was empty"
-msgstr ""
+msgstr "See fail oli tühi"
 
 #: picard/script/serializer.py:304
 #, python-format
 msgid "Imported from %s"
-msgstr ""
+msgstr "Imporditud „%s“ failist"
 
 #: picard/script/serializer.py:322
 msgid "Argument is not a dictionary"
@@ -3032,23 +2959,23 @@ msgstr ""
 #: picard/script/serializer.py:334
 #, python-format
 msgid "%s (Copy)"
-msgstr ""
+msgstr "%s (koopia)"
 
 #: picard/script/serializer.py:365
 msgid "File content not a dictionary"
-msgstr ""
+msgstr "Faili sisu pole sõnastik"
 
 #: picard/script/serializer.py:375 picard/ui/options/scripting.py:217
 msgid "Unnamed Script"
-msgstr ""
+msgstr "Ilma nimeta skript"
 
 #: picard/script/serializer.py:386 picard/ui/options/scripting.py:142
 msgid "Picard script files"
-msgstr ""
+msgstr "Picardi skriptifailid"
 
 #: picard/script/serializer.py:387
 msgid "Picard script package"
-msgstr ""
+msgstr "Picardi skriptipakett"
 
 #: picard/session/session_loader.py:102
 #, python-brace-format
@@ -3245,21 +3172,21 @@ msgstr ""
 
 #: picard/ui/caa_types_selector.py:271
 msgid "I&nclude all"
-msgstr "Kaasa kõik"
+msgstr "Kaasa kõ&ik"
 
 #: picard/ui/caa_types_selector.py:272
 msgid "E&xclude all"
-msgstr "Välista kõik"
+msgstr "Väli&sta kõik"
 
 #: picard/ui/caa_types_selector.py:273
 msgid "C&lear all"
-msgstr "Puhasta kõik"
+msgstr "Eema&lda kõik"
 
 #: picard/ui/caa_types_selector.py:274
 #: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:312
 #: picard/ui/options/renaming_compat.py:218
 msgid "Restore &Defaults"
-msgstr "Taasta vaikeseaded"
+msgstr "Taasta vaikesea&distused"
 
 #: picard/ui/cdlookup.py:67 picard/ui/itemviews/columns.py:146
 #: picard/ui/mainwindow/__init__.py:1182 picard/ui/searchdialog/album.py:162
@@ -3470,9 +3397,8 @@ msgid "Custom Columns"
 msgstr "Helitugevuse muutmine"
 
 #: picard/ui/filebrowser.py:57
-#, fuzzy
 msgid "&Load selected files"
-msgstr "Valitud failide mängimine"
+msgstr "&Laadi valitud failid"
 
 #: picard/ui/filebrowser.py:60
 msgid "&Move tagged files here"
@@ -3484,7 +3410,7 @@ msgstr "Näita &peidetud faile"
 
 #: picard/ui/filebrowser.py:69
 msgid "&Set as starting directory"
-msgstr "Määra algkataloogiks"
+msgstr "&Seadista lähtekaustaks"
 
 #: picard/ui/filter.py:64
 #, fuzzy
@@ -3575,9 +3501,8 @@ msgid "&View detail…"
 msgstr "Näita täpsemalt…"
 
 #: picard/ui/logview.py:170 picard/ui/metadatabox/__init__.py:731
-#, fuzzy
 msgid "&Copy"
-msgstr "Kopeeri"
+msgstr "&Kopeeri"
 
 #: picard/ui/itemviews/basetreeview.py:206 picard/ui/logview.py:175
 msgid "Select &all"
@@ -4095,9 +4020,8 @@ msgstr ""
 
 #: picard/ui/coverartbox/__init__.py:411
 #: picard/ui/itemviews/basetreeview.py:316
-#, fuzzy
 msgid "Show &more details…"
-msgstr "Näita täpsemalt…"
+msgstr "Näita &täiendavaid üksikasju…"
 
 #: picard/ui/coverartbox/__init__.py:417
 msgid "Keep original cover art"
@@ -4754,9 +4678,8 @@ msgid "&Info"
 msgstr "&Info"
 
 #: picard/ui/forms/ui_infodialog.py:104
-#, fuzzy
 msgid "&Error"
-msgstr "Viga"
+msgstr "&Viga"
 
 #: picard/ui/forms/ui_infodialog.py:105
 msgid "A&rtwork"
@@ -6311,7 +6234,7 @@ msgstr "Kogud"
 
 #: picard/ui/itemviews/basetreeview.py:352
 msgid "P&lugins"
-msgstr "Pluginad"
+msgstr "&Lisamoodulid"
 
 #: picard/ui/itemviews/basetreeview.py:378
 msgid "&Run scripts"
@@ -6762,7 +6685,7 @@ msgstr[1] ""
 
 #: picard/ui/mainwindow/__init__.py:474
 msgid "&Quit Picard"
-msgstr "Sulge Picard"
+msgstr "&Sulge Picard"
 
 #: picard/ui/mainwindow/__init__.py:507
 #, fuzzy
