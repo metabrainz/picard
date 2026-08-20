@@ -61,15 +61,6 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('fr', 1), 'one')
         self.assertEqual(get_plural_form('fr', 2), 'other')
 
-    # def test_spanish_plural_rules(self):
-    #     """Test French plural rules (one/other, many for full millions)."""
-    #     self.assertEqual(get_plural_form('es', 0), 'other')
-    #     self.assertEqual(get_plural_form('es', 1), 'one')
-    #     self.assertEqual(get_plural_form('es', 2), 'other')
-    #     self.assertEqual(get_plural_form('es', 5), 'other')
-    #     self.assertEqual(get_plural_form('es', 1_000_000), 'many')
-    #     self.assertEqual(get_plural_form('es', 2_000_000), 'many')
-
     def test_arabic_plural_rules(self):
         """Test Arabic plural rules (zero/one/two/few/many/other)."""
         self.assertEqual(get_plural_form('ar', 0), 'zero')
