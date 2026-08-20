@@ -89,7 +89,7 @@ class TestPluralRules(PicardTestCase):
         self.assertEqual(get_plural_form('cs', 100), 'other')
 
     def test_hebrew_plural_rules(self):
-        """Test Japanese plural rules (one/two/other)."""
+        """Test Hebrew plural rules (one/two/other)."""
         self.assertEqual(get_plural_form('he', 0), 'other')
         self.assertEqual(get_plural_form('he', 1), 'one')
         self.assertEqual(get_plural_form('he', 2), 'two')
