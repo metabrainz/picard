@@ -5,7 +5,7 @@
 # Copyright (C) 2015, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2021, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Iterator
 import os
 import re
 from typing import ClassVar
@@ -113,6 +114,8 @@ class CoverArtProviderLocal(CoverArtProvider):
         config = get_config()
         regex = config.setting['local_cover_regex']
         if regex:
+            # Normalize backslashes to forward slashes as path separator
+            regex = regex.replace('\\\\', '/')
             _match_re = re.compile(regex, re.IGNORECASE)
             dirs_done = set()
 
@@ -125,16 +128,20 @@ class CoverArtProviderLocal(CoverArtProvider):
                     self.queue_put(image)
         return CoverArtProvider.QueueState.FINISHED
 
-    def get_types(self, string):
+    def get_types(self, string: str) -> list[str]:
         found = {x.lower() for x in self._types_split_re.split(string) if x}
         return list(found.intersection(self._known_types))
 
-    def find_local_images(self, current_dir, match_re):
+    def find_local_images(self, current_dir: str, match_re: re.Pattern) -> Iterator[LocalFileCoverArtImage]:
         for root, _dirs, files in os.walk(current_dir):
             for filename in files:
                 m = match_re.search(filename)
                 if not m:
-                    continue
+                    subpath = os.path.relpath(os.path.join(root, filename), current_dir)
+                    subpath = subpath.replace('\\', '/')
+                    m = match_re.search(subpath)
+                    if not m:
+                        continue
                 filepath = os.path.join(current_dir, root, filename)
                 if not os.path.exists(filepath):
                     continue
