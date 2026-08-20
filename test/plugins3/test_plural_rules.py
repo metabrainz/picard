@@ -82,6 +82,42 @@ class TestPluralRules(PicardTestCase):
             (5, 'other'),
             (100, 'other'),
         ],
+        # Romanian — one/few/other
+        'ro': [
+            (0, 'few'),
+            (1, 'one'),
+            (2, 'few'),
+            (12, 'few'),
+            (19, 'few'),
+            (20, 'other'),
+            (100, 'other'),
+            (101, 'few'),
+            (119, 'few'),
+            (120, 'other'),
+        ],
+        # Croatian (also: bs, sr) — one/few/other
+        'hr': [
+            (0, 'other'),
+            (1, 'one'),
+            (2, 'few'),
+            (4, 'few'),
+            (5, 'other'),
+            (11, 'other'),
+            (12, 'other'),
+            (21, 'one'),
+            (22, 'few'),
+            (25, 'other'),
+        ],
+        # Catalan — one/many/other
+        'ca': [
+            (0, 'other'),
+            (1, 'one'),
+            (2, 'other'),
+            (5, 'other'),
+            (1_000_000, 'many'),
+            (2_000_000, 'many'),
+            (1_000, 'other'),
+        ],
         # Hebrew — one/two/other
         'he': [
             (0, 'other'),

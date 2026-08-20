@@ -135,6 +135,30 @@ def get_plural_form(locale: str, n: int) -> str:
             return 'few'
         return 'other'
 
+    # Romanian (also: mo)  — one/few/other
+    if lang == 'ro':
+        if n == 1:
+            return 'one'
+        if n == 0 or (n != 1 and 1 <= n % 100 <= 19):
+            return 'few'
+        return 'other'
+
+    # Croatian (also: bs, sr) — one/few/other
+    if lang in {'hr', 'bs', 'sr'}:
+        if n % 10 == 1 and n % 100 != 11:
+            return 'one'
+        if n % 10 in {2, 3, 4} and n % 100 not in {12, 13, 14}:
+            return 'few'
+        return 'other'
+
+    # Catalan — one/many/other
+    if lang == 'ca':
+        if n == 1:
+            return 'one'
+        if n != 0 and n % 1_000_000 == 0:
+            return 'many'
+        return 'other'
+
     # Lithuanian
     if lang == 'lt':
         if n % 10 == 1 and not 11 <= n % 100 <= 19:
