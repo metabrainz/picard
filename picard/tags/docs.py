@@ -55,7 +55,7 @@ def _get_tagvar_item(tagname):
         # Inline import to avoid circular dependency: script_variables imports from this module.
         from picard.extension_points.script_variables import ext_point_script_variables
 
-        bare_name = tagname.lstrip('~_')
+        bare_name = tagname[1:] if tagname[:1] in ('~', '_') else tagname
         item = next((var for var in ext_point_script_variables if var.name == bare_name), None)
 
     if item:
