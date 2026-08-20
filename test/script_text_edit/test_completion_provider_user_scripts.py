@@ -34,12 +34,6 @@ from picard.ui.widgets.user_script_scanner import UserScriptScanner
 
 
 @pytest.fixture
-def mock_plugin_provider():
-    """Create a mock plugin variable provider."""
-    return Mock(return_value={'plugin_var1', 'plugin_var2'})
-
-
-@pytest.fixture
 def mock_user_script_scanner():
     """Create a mock user script scanner."""
     scanner = Mock(spec=UserScriptScanner)
@@ -48,28 +42,26 @@ def mock_user_script_scanner():
 
 
 @pytest.fixture
-def choices_provider_with_scanner(mock_plugin_provider, mock_user_script_scanner):
+def choices_provider_with_scanner(mock_user_script_scanner):
     """Create a CompletionChoicesProvider with user script scanner."""
-    return CompletionChoicesProvider(mock_plugin_provider, mock_user_script_scanner)
+    return CompletionChoicesProvider(mock_user_script_scanner)
 
 
 @pytest.fixture
-def choices_provider_without_scanner(mock_plugin_provider):
+def choices_provider_without_scanner():
     """Create a CompletionChoicesProvider without user script scanner."""
-    return CompletionChoicesProvider(mock_plugin_provider)
+    return CompletionChoicesProvider()
 
 
-def test_initialization_with_user_script_scanner(mock_plugin_provider, mock_user_script_scanner):
+def test_initialization_with_user_script_scanner(mock_user_script_scanner):
     """Test initialization with user script scanner."""
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_user_script_scanner)
-    assert provider._get_plugin_variable_names is mock_plugin_provider
+    provider = CompletionChoicesProvider(mock_user_script_scanner)
     assert provider._user_script_scanner is mock_user_script_scanner
 
 
-def test_initialization_without_user_script_scanner(mock_plugin_provider):
+def test_initialization_without_user_script_scanner():
     """Test initialization without user script scanner."""
-    provider = CompletionChoicesProvider(mock_plugin_provider)
-    assert provider._get_plugin_variable_names is mock_plugin_provider
+    provider = CompletionChoicesProvider()
     assert provider._user_script_scanner is None
 
 
@@ -89,8 +81,6 @@ def test_build_choices_includes_user_script_variables(choices_provider_with_scan
     assert '%user_script_var2%' in choices
     assert '%user_defined_var%' in choices
     assert '%builtin_var%' in choices
-    assert '%plugin_var1%' in choices
-    assert '%plugin_var2%' in choices
 
 
 def test_build_choices_without_user_script_scanner(choices_provider_without_scanner):
@@ -109,8 +99,6 @@ def test_build_choices_without_user_script_scanner(choices_provider_without_scan
     assert '%user_script_var2%' not in choices
     assert '%user_defined_var%' in choices
     assert '%builtin_var%' in choices
-    assert '%plugin_var1%' in choices
-    assert '%plugin_var2%' in choices
 
 
 def test_build_choices_deduplication_with_user_scripts(choices_provider_with_scanner):
@@ -183,18 +171,16 @@ def test_build_choices_tag_name_arg_mode_with_user_scripts(choices_provider_with
         'user_script_var2',
         'user_defined_var',
         'builtin_var',
-        'plugin_var1',
-        'plugin_var2',
     }
     actual_names = set(choices)
     assert actual_names == expected_names
 
 
-def test_build_choices_user_script_scanner_exception(mock_plugin_provider):
+def test_build_choices_user_script_scanner_exception():
     """Test handling when user script scanner raises exception."""
     mock_scanner = Mock(spec=UserScriptScanner)
     mock_scanner.get_cached_variables.side_effect = AttributeError("Scanner error")
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_scanner)
+    provider = CompletionChoicesProvider(mock_scanner)
 
     # Should not raise exception
     choices = list(
@@ -209,14 +195,13 @@ def test_build_choices_user_script_scanner_exception(mock_plugin_provider):
     # Should still include other variables
     assert '%user_defined_var%' in choices
     assert '%builtin_var%' in choices
-    assert '%plugin_var1%' in choices
 
 
-def test_build_choices_user_script_scanner_returns_none(mock_plugin_provider):
+def test_build_choices_user_script_scanner_returns_none():
     """Test handling when user script scanner returns None."""
     mock_scanner = Mock(spec=UserScriptScanner)
     mock_scanner.get_cached_variables.return_value = None
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_scanner)
+    provider = CompletionChoicesProvider(mock_scanner)
 
     # Should not raise exception
     choices = list(
@@ -231,14 +216,13 @@ def test_build_choices_user_script_scanner_returns_none(mock_plugin_provider):
     # Should still include other variables
     assert '%user_defined_var%' in choices
     assert '%builtin_var%' in choices
-    assert '%plugin_var1%' in choices
 
 
-def test_build_choices_empty_user_script_variables(mock_plugin_provider):
+def test_build_choices_empty_user_script_variables():
     """Test handling when user script scanner returns empty set."""
     mock_scanner = Mock(spec=UserScriptScanner)
     mock_scanner.get_cached_variables.return_value = set()
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_scanner)
+    provider = CompletionChoicesProvider(mock_scanner)
 
     choices = list(
         provider.build_choices(
@@ -252,15 +236,14 @@ def test_build_choices_empty_user_script_variables(mock_plugin_provider):
     # Should include other variables but not user script variables
     assert '%user_defined_var%' in choices
     assert '%builtin_var%' in choices
-    assert '%plugin_var1%' in choices
     assert '%user_script_var1%' not in choices
 
 
-def test_build_choices_unicode_user_script_variables(mock_plugin_provider):
+def test_build_choices_unicode_user_script_variables():
     """Test handling of unicode user script variable names."""
     mock_scanner = Mock(spec=UserScriptScanner)
     mock_scanner.get_cached_variables.return_value = {'var_ñ', 'var_中文'}
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_scanner)
+    provider = CompletionChoicesProvider(mock_scanner)
 
     choices = list(
         provider.build_choices(
@@ -275,12 +258,12 @@ def test_build_choices_unicode_user_script_variables(mock_plugin_provider):
     assert '%var_中文%' in choices
 
 
-def test_build_choices_very_long_user_script_variables(mock_plugin_provider):
+def test_build_choices_very_long_user_script_variables():
     """Test handling of very long user script variable names."""
     long_name = 'a' * 1000
     mock_scanner = Mock(spec=UserScriptScanner)
     mock_scanner.get_cached_variables.return_value = {long_name}
-    provider = CompletionChoicesProvider(mock_plugin_provider, mock_scanner)
+    provider = CompletionChoicesProvider(mock_scanner)
 
     choices = list(
         provider.build_choices(

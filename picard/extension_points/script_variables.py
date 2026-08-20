@@ -114,7 +114,7 @@ def register_script_variable(
         plugin_id = None
 
     # Remove any existing entry with the same name from this plugin to avoid duplicates
-    ext_point_script_variables.unregister(module_name, lambda item: item.name == name)
+    ext_point_script_variables.unregister(module_name, lambda item: item.name == name and item.is_hidden == is_hidden)
     ext_point_script_variables.register(
         module_name,
         TagVar(
@@ -126,7 +126,7 @@ def register_script_variable(
             # Locked attributes for plugin-registered variables
             is_preserved=False,
             is_script_variable=True,
-            is_tag=True,
+            is_tag=not is_hidden,
             is_calculated=False,
             is_file_info=False,
             is_from_mb=False,
@@ -158,17 +158,6 @@ def unregister_all_script_variables(api: 'PluginApi') -> None:
         The plugin API instance (identifies which plugin's registrations to remove)
     """
     ext_point_script_variables.unregister(api.module_path, lambda item: True)
-
-
-def get_plugin_variable_names() -> set[str]:
-    """Get all plugin-provided variable names.
-
-    Returns
-    -------
-    set[str]
-        Set of variable names provided by plugins
-    """
-    return {var.name for var in ext_point_script_variables}
 
 
 def get_plugin_variable_documentation(name: str) -> str | None:

@@ -39,13 +39,11 @@ from picard.profile import profile_groups_add_setting
 from picard.tags import (
     display_tag_name,
     filterable_tag_names,
-    hidden_tag_names,
     parse_comment_tag,
     parse_subtag,
     preserved_tag_names,
     script_variable_tag_names,
     tag_names,
-    visible_tag_names,
 )
 from picard.tags.docs import (
     display_tag_full_description,
@@ -617,20 +615,6 @@ class TagsGeneratorTest(PicardTestCase):
 
         for tag in tags:
             self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_tag)
-
-    def test_all_visible_tags(self):
-        tags = list(visible_tag_names())
-        self.assertTrue(len(tags) > 0)
-
-        for tag in tags:
-            self.assertFalse(ALL_TAGS.tagvar_from_name(tag).is_hidden)
-
-    def test_all_hidden_tags(self):
-        tags = list(hidden_tag_names())
-        self.assertTrue(len(tags) > 0)
-
-        for tag in tags:
-            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_hidden)
 
     def test_all_preserved_tags(self):
         tags = list(preserved_tag_names())
