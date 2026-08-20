@@ -149,8 +149,11 @@ class FunctionsDocumentationPage(DocumentationPage):
 
 class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        def process_tag(tag_name: str, tag_desc: str):
+        def process_tag(tag_name: str, tag_desc: str, plugin_name: str | None):
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
+            if plugin_name:
+                plugin_label = _("Plugin: {plugin_name}").format(plugin_name=plugin_name)
+                tag_desc = f'{tag_desc}[{plugin_label}]'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
         tagger = tagger_instance()
@@ -164,13 +167,13 @@ class TagsDocumentationPage(DocumentationPage):
                 DocItem(
                     name=tag_name,
                     desc=display_tag_full_description(tag_name),
-                    plugin='',
+                    plugin=None,
                 )
             )
 
         # Process plugin variables separately to allow plugin descriptions for duplicated variables.
         for var in ext_point_script_variables:
-            plugin_name = ''
+            plugin_name = None
             if var.plugin_id and manager:
                 plugin = manager.plugin_id_to_plugin(var.plugin_id)
                 if plugin:
@@ -186,8 +189,8 @@ class TagsDocumentationPage(DocumentationPage):
         html = ''
         # Sort tags alphabetically regardless of whether they are hidden, with system tags shown
         # before plugin tags having the same name.
-        for tag in sorted(tags, key=lambda x: f"{x.name.lstrip('_')}:{x.plugin}"):
-            html += process_tag(tag.name, tag.desc)
+        for tag in sorted(tags, key=lambda x: (x.name.lstrip('_'), x.plugin or '')):
+            html += process_tag(tag.name, tag.desc, tag.plugin)
 
         return html
 

@@ -240,11 +240,11 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
     def _registered_variable_names(self):
         return set(var.name for var in self.ext_point)
 
-    def _get_tagvar_by_name(self, name) -> TagVar:
+    def _get_tagvar_by_name(self, name, is_hidden=None) -> TagVar:
         for var in self.ext_point:
-            if var.name == name:
+            if var.name == name and (is_hidden is None or var.is_hidden == is_hidden):
                 return var
-        raise ValueError(f'Variable "{name}" not found in extension point')
+        raise ValueError(f'Variable "{name}" (is_hidden={is_hidden}) not found in extension point')
 
     def test_register_script_variable(self):
         register_script_variable('my_var1', 'some docs')
@@ -293,6 +293,31 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         self.assertFalse(var.is_tag)
         self.assertEqual('~hidden_var', str(var))
         self.assertEqual('_hidden_var', var.script_name())
+
+    def test_register_same_name_hidden_and_non_hidden(self):
+        """Registering the same base name as both hidden and non-hidden should be rejected."""
+        api = self._make_api()
+        register_script_variable('my_var', 'Non-hidden docs', api)
+
+        with self.assertRaises(ValueError, msg="Cannot register '_my_var'"):
+            register_script_variable('_my_var', 'Hidden docs', api)
+
+        # Original registration should remain unchanged
+        var = self._get_tagvar_by_name('my_var')
+        self.assertFalse(var.is_hidden)
+        self.assertEqual('Non-hidden docs', get_plugin_variable_documentation('my_var'))
+
+    def test_register_same_name_hidden_then_non_hidden_rejected(self):
+        """Registering non-hidden after hidden with same base name should be rejected."""
+        register_script_variable('_my_var', 'Hidden docs')
+
+        with self.assertRaises(ValueError, msg="Cannot register 'my_var'"):
+            register_script_variable('my_var', 'Non-hidden docs')
+
+        # Original hidden registration should remain unchanged
+        var = self._get_tagvar_by_name('my_var')
+        self.assertTrue(var.is_hidden)
+        self.assertEqual('Hidden docs', get_plugin_variable_documentation('my_var'))
 
     def test_register_script_variable_is_multi_value(self):
         """is_multi_value parameter should be passed through to the TagVar."""

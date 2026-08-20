@@ -113,8 +113,21 @@ def register_script_variable(
         module_name = 'unknown'
         plugin_id = None
 
+    # Reject registering the same base name with a different is_hidden status.
+    # A plugin cannot register both 'foo' and '_foo' — the base name must be unique.
+    for var in ext_point_script_variables:
+        if var.name == name and var.is_hidden != is_hidden:
+            prefix = '_' if is_hidden else ''
+            existing_prefix = '_' if var.is_hidden else ''
+            msg = (
+                f"Cannot register '{prefix}{name}': "
+                f"'{existing_prefix}{name}' is already registered "
+                f"with different hidden status."
+            )
+            raise ValueError(msg)
+
     # Remove any existing entry with the same name from this plugin to avoid duplicates
-    ext_point_script_variables.unregister(module_name, lambda item: item.name == name and item.is_hidden == is_hidden)
+    ext_point_script_variables.unregister(module_name, lambda item: item.name == name)
     ext_point_script_variables.register(
         module_name,
         TagVar(
@@ -166,7 +179,7 @@ def get_plugin_variable_documentation(name: str) -> str | None:
     Parameters
     ----------
     name : str
-        The variable name
+        The variable name (bare name without prefix)
 
     Returns
     -------
@@ -185,7 +198,7 @@ def get_plugin_variable_title(name: str) -> str | None:
     Parameters
     ----------
     name : str
-        The variable name
+        The variable name (bare name without prefix)
 
     Returns
     -------
