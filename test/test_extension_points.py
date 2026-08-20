@@ -317,7 +317,7 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         # Original hidden registration should remain unchanged
         var = self._get_tagvar_by_name('my_var')
         self.assertTrue(var.is_hidden)
-        self.assertEqual('Hidden docs', get_plugin_variable_documentation('my_var'))
+        self.assertEqual('Hidden docs', get_plugin_variable_documentation('_my_var'))
 
     def test_register_script_variable_is_multi_value(self):
         """is_multi_value parameter should be passed through to the TagVar."""

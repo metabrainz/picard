@@ -187,7 +187,7 @@ def get_plugin_variable_documentation(name: str) -> str | None:
         Documentation string if available, None otherwise
     """
     for var in ext_point_script_variables:
-        if var.name == name:
+        if var.script_name() == name:
             return var._longdesc
     return None
 
@@ -206,6 +206,6 @@ def get_plugin_variable_title(name: str) -> str | None:
         Display title if available, None otherwise
     """
     for var in ext_point_script_variables:
-        if var.name == name:
+        if var.script_name() == name:
             return var._shortdesc
     return None
