@@ -131,6 +131,7 @@ class TagVar:
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
         plugin_id: the plugin module id that registered this tag (str or None, default: None)
+        plugin_name: the display name of the plugin that registered this tag (str or None, default: None)
         """
         self.name = name
         self._shortdesc = shortdesc
