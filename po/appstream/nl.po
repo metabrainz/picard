@@ -5,7 +5,7 @@
 # Maurits Meulenbelt, 2021
 # Transifex Bot <>, 2023
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
-# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024, 2026.
 #
 # Translators:
 #
@@ -14,9 +14,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2024-01-07 12:28+0000\n"
-"Last-Translator: mfmeulenbelt <mfmeulenbelt@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2026-08-20 08:12+0000\n"
+"Last-Translator: mfmeulenbelt "
+"<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
 "appstream/nl/>\n"
 "Language: nl\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -41,7 +41,7 @@ msgid ""
 "files even without any existing metadata."
 msgstr ""
 "Wil je je muziekbibliotheek opschonen? Picard is een openbrontagger voor "
-"meerdere platformen van MusicBrainz. Het kan je audiobestanden zelfs zonder "
+"meerdere platformen van MusicBrainz. Hij kan je audiobestanden zelfs zonder "
 "bestaande tags identificeren."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
@@ -71,8 +71,8 @@ msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"Veel bestandsformaten: Picard ondersteunt alle populaire muziekformaten, "
-"waaronder mp3, FLAC, OGG, M4A, WMA, WAV en nog veel meer."
+"Veel bestandsindelingen: Picard ondersteunt alle populaire soorten "
+"muziekbestanden, waaronder mp3, FLAC, OGG, M4A, WMA en WAV."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
