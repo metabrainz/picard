@@ -819,6 +819,11 @@ def enable(api):
 - `is_multi_value`: Whether this variable can hold multiple values
   (default: `False`).
 
+**Raises**: `ValueError` if:
+- The variable name is invalid (must use only letters, digits, underscores).
+- The same base name is already registered with a different hidden status
+  (e.g., registering `_foo` when `foo` is already registered, or vice versa).
+
 ---
 
 #### `unregister_script_variable(name)`
