@@ -416,6 +416,17 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['performer:guitar family'], 'Ed Sheeran')
 
 
+class RecordingGenericInstrumentTest(MBJSONTest):
+    filename = 'recording_generic_instrument.json'
+
+    def test_recording_generic_instrument(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['performer:instruments'], 'SixteenInMono')
+        self.assertEqual(m['performer:vocals'], 'Camila; Michi Mochievee')
+
+
 class RecordingMultiArtistsTest1(MBJSONTest):
     """Test multiple artists with some common contries."""
 

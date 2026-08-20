@@ -136,7 +136,7 @@ _RELEASE_GROUP_TO_METADATA = {
 }
 
 _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
-_BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
+_BLANK_SPECIAL_RELTYPES = {'instrument': 'instruments', 'vocal': 'vocals'}
 
 
 Node: TypeAlias = dict[str, Any]

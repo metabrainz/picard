@@ -1,0 +1,171 @@
+{
+  "title": "Kill V. Maim",
+  "disambiguation": "",
+  "video": true,
+  "length": 247000,
+  "relations": [
+    {
+      "ended": false,
+      "direction": "backward",
+      "begin": null,
+      "type": "animation",
+      "source-credit": "",
+      "attribute-ids": {},
+      "target-type": "artist",
+      "target-credit": "",
+      "artist": {
+        "country": null,
+        "sort-name": "ilhamdz",
+        "id": "45b1303c-5bbe-4bef-b387-8cfdc4d72c85",
+        "name": "ilhamdz",
+        "disambiguation": "video editor",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person"
+      },
+      "attributes": [],
+      "attribute-values": {},
+      "type-id": "fd33dadb-a588-40f4-8055-32373f1bd19b",
+      "end": null
+    },
+    {
+      "end": null,
+      "type-id": "0c73d6e6-d741-4098-9d74-e8da0c63fe14",
+      "attributes": [],
+      "artist": {
+        "disambiguation": "Illustrator",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "sort-name": "Xeapher",
+        "country": null,
+        "name": "Xeapher",
+        "id": "ee4a8441-a2eb-411d-b63c-a33f6ca564e1"
+      },
+      "target-credit": "",
+      "attribute-values": {},
+      "target-type": "artist",
+      "attribute-ids": {},
+      "source-credit": "",
+      "type": "illustration",
+      "begin": null,
+      "direction": "backward",
+      "ended": false
+    },
+    {
+      "begin": null,
+      "direction": "backward",
+      "ended": false,
+      "source-credit": "",
+      "attribute-ids": {},
+      "type": "instrument",
+      "attributes": [],
+      "target-credit": "",
+      "artist": {
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "disambiguation": "",
+        "name": "SixteenInMono",
+        "id": "8c5055c5-23ba-48c7-879c-a001c323805c",
+        "sort-name": "SixteenInMono",
+        "country": "US"
+      },
+      "attribute-values": {},
+      "target-type": "artist",
+      "end": null,
+      "type-id": "59054b12-01ac-43ee-a618-285fd397e461"
+    },
+    {
+      "end": null,
+      "type-id": "3e3102e1-1896-4f50-b5b2-dd9824e46efe",
+      "artist": {
+        "type": null,
+        "type-id": null,
+        "disambiguation": "Vocaloid producer",
+        "name": "QueenPb",
+        "id": "27658762-e1a4-4313-ab26-cc6635f31d85",
+        "country": null,
+        "sort-name": "QueenPb"
+      },
+      "target-credit": "",
+      "attributes": [],
+      "attribute-values": {},
+      "target-type": "artist",
+      "type": "mix",
+      "source-credit": "",
+      "attribute-ids": {},
+      "direction": "backward",
+      "begin": null,
+      "ended": false
+    },
+    {
+      "type-id": "0cd6aa63-c297-42ed-8725-c16d31913a98",
+      "end": null,
+      "target-type": "artist",
+      "attributes": [],
+      "artist": {
+        "disambiguation": "",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "sort-name": "Barriage, Todd",
+        "country": null,
+        "id": "6ac395ad-8c5e-4e9a-b34f-973ca42f52a9",
+        "name": "Todd Barriage"
+      },
+      "target-credit": "Todd Barriage",
+      "attribute-values": {},
+      "attribute-ids": {},
+      "source-credit": "",
+      "type": "sound",
+      "ended": false,
+      "begin": null,
+      "direction": "backward"
+    },
+    {
+      "ended": false,
+      "direction": "backward",
+      "begin": null,
+      "type": "vocal",
+      "attribute-ids": {},
+      "source-credit": "",
+      "target-type": "artist",
+      "target-credit": "",
+      "artist": {
+        "type": "Character",
+        "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+        "disambiguation": "Vtuber",
+        "name": "Camila",
+        "id": "24600fff-2857-40be-98b7-cb7fe62d3876",
+        "country": null,
+        "sort-name": "Camila"
+      },
+      "attributes": [],
+      "attribute-values": {},
+      "type-id": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
+      "end": null
+    },
+    {
+      "ended": false,
+      "begin": null,
+      "direction": "backward",
+      "attribute-ids": {},
+      "source-credit": "",
+      "type": "vocal",
+      "target-type": "artist",
+      "attributes": [],
+      "target-credit": "",
+      "artist": {
+        "country": "ID",
+        "sort-name": "Mochievee, Michi",
+        "id": "ee57e871-9e13-419a-92e7-6a4711544ba1",
+        "name": "Michi Mochievee",
+        "disambiguation": "",
+        "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+        "type": "Character"
+      },
+      "attribute-values": {},
+      "type-id": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
+      "end": null
+    }
+  ],
+  "id": "161342cf-22b3-45f5-b13a-1c7b37d1c874",
+  "first-release-date": "2025-09-02"
+}
