@@ -109,9 +109,11 @@ def register_script_variable(
     if api:
         module_name = api.module_path
         plugin_id = api.plugin_id
+        plugin_name = api.manifest.name_i18n()
     else:
         module_name = 'unknown'
         plugin_id = None
+        plugin_name = None
 
     # Reject registering the same base name with a different is_hidden status.
     # A plugin cannot register both 'foo' and '_foo' — the base name must be unique.
@@ -145,6 +147,7 @@ def register_script_variable(
             is_from_mb=False,
             is_populated_by_picard=False,
             plugin_id=plugin_id,
+            plugin_name=plugin_name,
         ),
     )
 
@@ -173,25 +176,6 @@ def unregister_all_script_variables(api: 'PluginApi') -> None:
     ext_point_script_variables.unregister(api.module_path, lambda item: True)
 
 
-def get_plugin_variable_documentation(name: str) -> str | None:
-    """Get documentation for a plugin-provided variable.
-
-    Parameters
-    ----------
-    name : str
-        The variable name (bare name without prefix)
-
-    Returns
-    -------
-    str or None
-        Documentation string if available, None otherwise
-    """
-    for var in ext_point_script_variables:
-        if var.name == name:
-            return var._longdesc
-    return None
-
-
 def get_plugin_variable_title(name: str) -> str | None:
     """Get display title for a plugin-provided variable.
 
@@ -206,6 +190,6 @@ def get_plugin_variable_title(name: str) -> str | None:
         Display title if available, None otherwise
     """
     for var in ext_point_script_variables:
-        if var.name == name:
+        if var.script_name() == name:
             return var._shortdesc
     return None

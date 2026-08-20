@@ -34,17 +34,14 @@ from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
-from picard.tags.docs import (
-    display_plugin_tag_full_description,
-    display_tag_full_description,
-)
+from picard.tags.docs import display_tag_full_description
 from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
 
 
-DocItem = namedtuple('DocItem', 'name desc plugin')
+DocItem = namedtuple('DocItem', 'name desc')
 
 DOCUMENTATION_HTML_TEMPLATE = '''
 <!DOCTYPE html>
@@ -149,48 +146,35 @@ class FunctionsDocumentationPage(DocumentationPage):
 
 class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        def process_tag(tag_name: str, tag_desc: str, plugin_name: str | None):
+        def process_tag(tag_name: str, tag_desc: str):
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
-            if plugin_name:
-                plugin_label = _("Plugin: {plugin_name}").format(plugin_name=plugin_name)
-                tag_desc = f'{tag_desc}[{plugin_label}]'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
-
-        tagger = tagger_instance()
-        manager = tagger.get_plugin_manager() if tagger else None
 
         tags: list[DocItem] = []
 
         # Process system-defined tags and variables
-        for tag_name in [tag.script_name() for tag in ALL_TAGS]:
+        for var in ALL_TAGS:
             tags.append(
                 DocItem(
-                    name=tag_name,
-                    desc=display_tag_full_description(tag_name),
-                    plugin=None,
+                    name=var.script_name(),
+                    desc=display_tag_full_description(var),
                 )
             )
 
         # Process plugin variables separately to allow plugin descriptions for duplicated variables.
         for var in ext_point_script_variables:
-            plugin_name = None
-            if var.plugin_id and manager:
-                plugin = manager.plugin_id_to_plugin(var.plugin_id)
-                if plugin:
-                    plugin_name = plugin.name()
             tags.append(
                 DocItem(
                     name=var.script_name(),
-                    desc=display_plugin_tag_full_description(var.script_name(), var._longdesc),
-                    plugin=plugin_name,
+                    desc=display_tag_full_description(var),
                 )
             )
 
         html = ''
         # Sort tags alphabetically regardless of whether they are hidden, with system tags shown
         # before plugin tags having the same name.
-        for tag in sorted(tags, key=lambda x: (x.name.lstrip('_'), x.plugin or '')):
-            html += process_tag(tag.name, tag.desc, tag.plugin)
+        for tag in sorted(tags, key=lambda x: x.name.lstrip('_')):
+            html += process_tag(tag.name, tag.desc)
 
         return html
 
