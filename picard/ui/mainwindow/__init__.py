@@ -338,6 +338,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _setup_debug_shortcuts(self):
         """Set up keyboard shortcuts for development/debugging."""
         shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+Shift+D"), self)
+        shortcut.setContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
         shortcut.activated.connect(self._toggle_theme)
 
     def _toggle_theme(self):
