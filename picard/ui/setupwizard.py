@@ -30,6 +30,8 @@ from picard.config import (
 )
 from picard.const import PLUGINS_BACKGROUND_CHECK_DELAY
 from picard.const.sys import IS_WIN
+from picard.coverart.providers.caa import CoverArtProviderCaa
+from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 from picard.i18n import gettext as _
 from picard.util import (
     get_url,
@@ -273,6 +275,15 @@ class CoverArtPage(SetupWizardPage):
         )
         layout.addWidget(self.save_to_files_checkbox)
 
+        self.prefer_release_group_checkbox = WizardCheckbox(
+            _("Prefer release group cover art"),
+            _(
+                "Use the album's main cover art instead of edition-specific artwork. "
+                "This usually provides higher quality images but may not match your exact release."
+            ),
+        )
+        layout.addWidget(self.prefer_release_group_checkbox)
+
         layout.addStretch()
         hint = QtWidgets.QLabel(
             _("You can change these later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Cover Art.")
@@ -284,10 +295,71 @@ class CoverArtPage(SetupWizardPage):
         config = get_config()
         self.embed_checkbox.set_checked(config.setting['save_images_to_tags'])
         self.save_to_files_checkbox.set_checked(config.setting['save_images_to_files'])
+        self.prefer_release_group_checkbox.set_checked(self._is_release_group_preferred(config.setting['ca_providers']))
 
     def save_settings(self, config: Config) -> None:
         config.setting['save_images_to_tags'] = self.embed_checkbox.is_checked()
         config.setting['save_images_to_files'] = self.save_to_files_checkbox.is_checked()
+        config.setting['ca_providers'] = self._reorder_release_group_provider(
+            config.setting['ca_providers'],
+            prefer_release_group=self.prefer_release_group_checkbox.is_checked(),
+        )
+
+    @staticmethod
+    def _is_release_group_preferred(ca_providers: list[tuple[str, bool]]) -> bool:
+        """Check if CaaReleaseGroup is enabled and ordered before Cover Art Archive."""
+        rg_position = None
+        caa_position = None
+        for position, (name, enabled) in enumerate(ca_providers):
+            if name == CoverArtProviderCaaReleaseGroup.NAME:
+                if not enabled:
+                    return False
+                rg_position = position
+            elif name == CoverArtProviderCaa.NAME:
+                caa_position = position
+        if rg_position is None or caa_position is None:
+            return False
+        return rg_position < caa_position
+
+    @staticmethod
+    def _reorder_release_group_provider(
+        ca_providers: list[tuple[str, bool]],
+        prefer_release_group: bool,
+    ) -> list[tuple[str, bool]]:
+        """Reorder CaaReleaseGroup relative to Cover Art Archive.
+
+        If prefer_release_group is True, place it just before CAA and enable it.
+        Otherwise, place it just after CAA (preserving its enabled state).
+        Only the position of CaaReleaseGroup is changed; all other providers
+        keep their relative order.
+        """
+        providers = list(ca_providers)
+        rg_index = None
+        rg_enabled = False
+        caa_index = None
+        for i, (name, enabled) in enumerate(providers):
+            if name == CoverArtProviderCaaReleaseGroup.NAME:
+                rg_index = i
+                rg_enabled = enabled
+            elif name == CoverArtProviderCaa.NAME:
+                caa_index = i
+
+        if rg_index is None or caa_index is None:
+            return providers
+
+        if prefer_release_group:
+            rg_enabled = True
+
+        # Remove RG from its current position
+        del providers[rg_index]
+
+        # Find CAA's new index after removal
+        caa_index = next(i for i, (name, _) in enumerate(providers) if name == CoverArtProviderCaa.NAME)
+
+        # Insert before or after CAA
+        insert_index = caa_index if prefer_release_group else caa_index + 1
+        providers.insert(insert_index, (CoverArtProviderCaaReleaseGroup.NAME, rg_enabled))
+        return providers
 
 
 class UpdatesPage(SetupWizardPage):
