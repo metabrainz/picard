@@ -19,6 +19,7 @@
 
 
 import argparse
+import difflib
 import fnmatch
 import itertools
 import logging
@@ -438,6 +439,13 @@ def main():
     parser.add_argument('path', nargs='+', help='Path of a file or a folder of files')
     parser.add_argument('-e', '--extension', default='.py', help='File extension to filter by')
     parser.add_argument('-i', '--in-place', action='store_true', default=False, help='Edit files in place')
+    parser.add_argument(
+        '-n',
+        '--dry-run',
+        action='store_true',
+        default=False,
+        help='Show unified diff of changes without writing files',
+    )
     parser.add_argument('-r', '--recursive', action='store_true', default=False, help='Search through subfolders')
     parser.add_argument('--encoding', default='utf-8', help='File encoding of the source files')
     parser.add_argument(
@@ -509,7 +517,21 @@ def main():
         if new_content is None:
             logging.info("Skipping %s (%s)", path, info)
             continue
-        if args.in_place:
+        if args.dry_run:
+            try:
+                with open(path, encoding=args.encoding) as f:
+                    original = f.read()
+            except (OSError, UnicodeDecodeError):
+                original = ''
+            if original.rstrip('\n') != new_content.rstrip('\n'):
+                diff = difflib.unified_diff(
+                    original.splitlines(keepends=True),
+                    (new_content + '\n').splitlines(keepends=True),
+                    fromfile=f'a/{path}',
+                    tofile=f'b/{path}',
+                )
+                sys.stdout.writelines(diff)
+        elif args.in_place:
             logging.info("Parsing and fixing %s (in place)", path)
             try:
                 with open(path, 'w', encoding=args.encoding) as f:
