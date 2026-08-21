@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-20 08:12+0000\n"
+"PO-Revision-Date: 2026-08-21 15:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -201,10 +201,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Plugina \"%s\" laadimine nurjus"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Plugina \"%(plugin)s\" laadimine asukohast \"%(dirname)s\" nurjus"
+msgstr "„%(plugin)s“ lisamooduli laadimine ei õnnestunud"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -486,7 +485,7 @@ msgstr ""
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
-msgstr "Kaanepildid salvestatakse eraldi failidena"
+msgstr "Salvesta kaanepildid eraldi failidena"
 
 #: picard/profile.py:144
 msgid "File name for images"
@@ -498,7 +497,7 @@ msgstr "Kirjuta olemasolevad pildifailid üle"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
-msgstr ""
+msgstr "Salvesta vaid üks esikaanepilt eraldi failina"
 
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
@@ -651,7 +650,7 @@ msgstr "Tööriistariba paigutus"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
-msgstr "Muud"
+msgstr "Muud eelistused"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
@@ -663,7 +662,7 @@ msgstr "Eiratakse peidetud faile"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr "Kataloogi kaupa failide lisamisel kaasatakse ka alamkataloogid"
+msgstr "Kausta kaupa failide lisamisel kaasa ka alamkaustad"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
@@ -719,7 +718,7 @@ msgstr "Proksi salasõna"
 
 #: picard/profile.py:244
 msgid "Request timeout in seconds"
-msgstr ""
+msgstr "Päringu aegumine sekundites"
 
 #: picard/profile.py:245
 msgid "Browser integration"
@@ -734,9 +733,8 @@ msgid "Listen only on localhost"
 msgstr "Kuulatakse ainult \"localhost'il\""
 
 #: picard/profile.py:252
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Vähim sarnasus faili päringu jaoks:"
+msgstr "Väikseim sarnasus failide tuvastusel"
 
 #: picard/profile.py:253
 #, fuzzy
@@ -970,7 +968,7 @@ msgstr "Kohalikud failid"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr ""
+msgstr "Lubatud kaanepiltide võrguaadressid"
 
 #: picard/script/__init__.py:141
 msgid ""
@@ -2082,7 +2080,7 @@ msgstr "Viga „%(filename)s“ faili eksportimisel: %(error)s."
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr ""
+msgstr "Ekspordi skriptifail"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
@@ -2118,11 +2116,11 @@ msgstr "Imporditud „%s“ failist"
 
 #: picard/script/serializer.py:286
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "Argument pole sõnastik"
 
 #: picard/script/serializer.py:288 picard/script/serializer.py:332
 msgid "Invalid script package"
-msgstr ""
+msgstr "Vigane skriptipakett"
 
 #: picard/script/serializer.py:299
 #, python-format
@@ -2298,7 +2296,7 @@ msgstr "Täpsustus"
 
 #: picard/ui/collectionmenu.py:60
 msgid "Refresh List"
-msgstr "Värskenda loendit"
+msgstr "Laadi loend uuesti"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
@@ -2373,7 +2371,7 @@ msgstr "Algne kaanepilt"
 
 #: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
-msgstr ""
+msgstr "Kõik toetatud pildivormingud"
 
 #: picard/ui/coverartbox.py:632
 msgid "Show more details…"
@@ -2385,15 +2383,15 @@ msgstr "Säilita algne kaanepilt"
 
 #: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
-msgstr ""
+msgstr "Vali kohalik fail…"
 
 #: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
-msgstr ""
+msgstr "Asenda esikaane pilt"
 
 #: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
-msgstr ""
+msgstr "Täienda esikaane pilti"
 
 #: picard/ui/edittagdialog.py:69
 msgid "YYYY-MM-DD"
@@ -2539,7 +2537,7 @@ msgstr "Rühma teave"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "Hinnanguline aeg"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:632
 msgid "Files"
@@ -2654,7 +2652,7 @@ msgstr "Taasta algsed veerud"
 
 #: picard/ui/itemviews.py:403
 msgid "Lock columns"
-msgstr ""
+msgstr "Lukusta veerud"
 
 #: picard/ui/itemviews.py:455
 msgid "&Expand all"
@@ -2811,7 +2809,7 @@ msgstr "Selle nimega fail on juba olemas, kas kirjutada see üle?"
 
 #: picard/ui/logview.py:280
 msgid "Failed to save Log View to file"
-msgstr "Logifaili salvestamine nurjus"
+msgstr "Logivaate salvestamine faili ei õnnestunud"
 
 #: picard/ui/logview.py:281
 #, python-format
@@ -3074,9 +3072,8 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:716
-#, fuzzy
 msgid "&Metadata"
-msgstr "Metaandmed"
+msgstr "&Metaandmed"
 
 #: picard/ui/mainwindow.py:720
 msgid "Ctrl+Shift+M"
@@ -3310,11 +3307,11 @@ msgstr "Lugu"
 
 #: picard/ui/mainwindow.py:1172
 msgid "&Advanced search"
-msgstr "Täpsem otsing"
+msgstr "&Täpsem otsing"
 
 #: picard/ui/mainwindow.py:1173
 msgid "&Builtin search"
-msgstr "Sisseehitatud otsing"
+msgstr "&Sisseehitatud otsing"
 
 #: picard/ui/mainwindow.py:1268
 msgid "All supported formats"
@@ -3488,7 +3485,7 @@ msgstr ""
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
-msgstr ""
+msgstr "Näita Picardi järgmisel käivitamisel seda teadet uuesti."
 
 #: picard/ui/newuserdialog.py:54
 msgid "New User Warning"
@@ -3579,7 +3576,7 @@ msgstr "Helitugevuse muutmine"
 
 #: picard/ui/playertoolbar.py:411
 msgid "Audio volume"
-msgstr "Helitugevus"
+msgstr "Helivaljus"
 
 #: picard/ui/pluginupdatedialog.py:38
 msgid "Perform this check again the next time you start Picard."
@@ -3742,9 +3739,8 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:598
-#, fuzzy
 msgid "&Script"
-msgstr "Kirjasüsteem"
+msgstr "&Skript"
 
 #: picard/ui/scripteditor.py:601
 msgid "View/Edit Script &Metadata"
@@ -3759,9 +3755,8 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:607
-#, fuzzy
 msgid "Add a &new script"
-msgstr "Lisa uus skript"
+msgstr "Lisa &uus skript"
 
 #: picard/ui/scripteditor.py:612
 msgid "&Copy the current script"
@@ -3851,7 +3846,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1240
 msgid "File Error"
-msgstr ""
+msgstr "Failiviga"
 
 #: picard/ui/scripteditor.py:1261
 msgid ""
@@ -3998,49 +3993,47 @@ msgstr "Vorm"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr ""
+msgstr "Lokaadivalija"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr ""
+msgstr "Valitud lokaadid"
 
 #: picard/ui/ui_multi_locale_selector.py:87
-#, fuzzy
 msgid "Move selected locale up"
-msgstr "Liiguta valitud väärtus ülespoole"
+msgstr "Liiguta valitud lokaat ülespoole"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr ""
+msgstr "Lisa valitud lokaatide sekka"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr ""
+msgstr "Eemalda valitud lokaat"
 
 #: picard/ui/ui_multi_locale_selector.py:90
-#, fuzzy
 msgid "Move selected locale down"
-msgstr "Liiguta valitud väärtus allapoole"
+msgstr "Liiguta valitud lokaat allapoole"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr ""
+msgstr "Saadaval lokaadid"
 
 #: picard/ui/ui_options.py:50
 msgid "Options"
-msgstr "Seaded"
+msgstr "Seadistused"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
-msgstr "Lisaseaded"
+msgstr "Seadistused oskuskasutajatele"
 
 #: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
-msgstr "Eiratakse faile, mille asukoht vastab regulaaravaldisele:"
+msgstr "Eira faile, mille asukoht vastab regulaaravaldisele:"
 
 #: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
-msgstr "Lubatav erinevus rajapikkustes (sek):"
+msgstr "Eira lugude kestuse erinevust antud sekundite võrra"
 
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
@@ -4242,9 +4235,8 @@ msgstr ""
 "(tühjendatakse sulgemisel):"
 
 #: picard/ui/ui_options_interface.py:118
-#, fuzzy
 msgid "Appearance"
-msgstr "Esinemised"
+msgstr "Välimus"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
@@ -4324,9 +4316,8 @@ msgid "Remove selected options"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:91
-#, fuzzy
 msgid "Select all"
-msgstr "V&ali kõik"
+msgstr "Vali kõik"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -4370,9 +4361,8 @@ msgid "Various artists:"
 msgstr "Mitu esitajat:"
 
 #: picard/ui/ui_options_metadata.py:142
-#, fuzzy
 msgid "Standalone recordings:"
-msgstr "Eraldiseisev salvestis"
+msgstr "Eraldiseisvad salvestised:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -4447,14 +4437,12 @@ msgid "Option Profile(s)"
 msgstr ""
 
 #: picard/ui/ui_options_profiles.py:76
-#, fuzzy
 msgid "Move profile up"
-msgstr "Liiguta fail ülespoole"
+msgstr "Liiguta profiil ülespoole"
 
 #: picard/ui/ui_options_profiles.py:77
-#, fuzzy
 msgid "Move profile down"
-msgstr "Liiguta fail allapoole"
+msgstr "Liiguta profiil allapoole"
 
 #: picard/ui/ui_options_ratings.py:48
 msgid ""
@@ -4516,14 +4504,12 @@ msgid "Files will be named like this:"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
-#, fuzzy
 msgid "Before"
-msgstr "enne"
+msgstr "Enne"
 
 #: picard/ui/ui_options_renaming.py:160 picard/ui/ui_scripteditor.py:213
-#, fuzzy
 msgid "After"
-msgstr "pärast"
+msgstr "Pärast"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
@@ -4584,7 +4570,6 @@ msgid "Export"
 msgstr ""
 
 #: picard/ui/ui_options_script.py:130
-#, fuzzy
 msgid "Documentation"
 msgstr "Dokumentatsioon"
 
@@ -4756,9 +4741,8 @@ msgid "Version number of the file naming script."
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:93
-#, fuzzy
 msgid "Last Updated:"
-msgstr "Viimati uuendatud"
+msgstr "Viimati uuendatud:"
 
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the file naming script was last updated (UTC)."
@@ -4769,9 +4753,8 @@ msgid "Now"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:96
-#, fuzzy
 msgid "Author:"
-msgstr "Autorid"
+msgstr "Autor:"
 
 #: picard/ui/ui_scripteditor_details.py:97
 msgid "Version:"
@@ -4847,7 +4830,7 @@ msgstr ""
 
 #: picard/ui/util.py:49
 msgid "&Ok"
-msgstr "&OK"
+msgstr "S&obib"
 
 #: picard/ui/util.py:52
 msgid "Clos&e"
@@ -4859,7 +4842,7 @@ msgstr "Regulaaravaldise viga"
 
 #: picard/ui/options/dialog.py:129
 msgid "&Restore all Defaults"
-msgstr "Taasta kõik vaikeseaded"
+msgstr "&Taasta kõik vaikeseadistused"
 
 #: picard/ui/options/dialog.py:130
 msgid "Reset all of Picard's settings"
@@ -4914,9 +4897,8 @@ msgid "Are you sure?"
 msgstr "Kas oled kindel?"
 
 #: picard/ui/options/dialog.py:478 picard/ui/options/maintenance.py:93
-#, fuzzy
 msgid "Option"
-msgstr "Seadistamine"
+msgstr "Valik"
 
 #: picard/ui/options/dialog.py:485
 #, python-format
@@ -5439,7 +5421,7 @@ msgstr "Failide sihtkoha väli ei tohi olla tühi."
 
 #: picard/ui/options/renaming_compat.py:69
 msgid "Compatibility"
-msgstr ""
+msgstr "Ühilduvus"
 
 #: picard/ui/options/renaming_compat.py:135
 msgid "Invalid directory separator replacement"
@@ -5477,7 +5459,7 @@ msgstr ""
 #: picard/ui/options/scripting.py:176
 #, python-format
 msgid "%s (imported)"
-msgstr ""
+msgstr "%s (imporditud)"
 
 #: picard/ui/options/scripting.py:243
 msgid "Script Error"
@@ -5597,20 +5579,19 @@ msgstr "Eraldiseisev salvestis"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
-msgstr ""
+msgstr "Muuda profiili nime"
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Remove profile"
-msgstr ""
+msgstr "Eemalda profiil"
 
 #: picard/ui/widgets/profilelistwidget.py:83
-#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr "Kas oled kindel, et soovid selle skripti eemaldada?"
+msgstr "Kas oled kindel, et soovid selle profiili eemaldada?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "Ava skriptikoostamise juhend veebibrauseris"
 
 #: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
@@ -5626,7 +5607,7 @@ msgstr "Kas oled kindel, et soovid selle skripti eemaldada?"
 
 #: picard/ui/widgets/scripttextedit.py:329
 msgid "&Word wrap script"
-msgstr "Muura pikad read"
+msgstr "&Murra pikad read"
 
 #: picard/ui/widgets/scripttextedit.py:330
 msgid "Word wrap long lines in the editor"
@@ -5723,7 +5704,7 @@ msgid ""
 "Unable to retrieve the latest version information from the website.\n"
 "({url})"
 msgstr ""
-"Veebist uusima versiooniteabe hankimine nurjus.\n"
+"Veebist uusima versiooniteabe hankimine ei õnnestunud.\n"
 "({url})"
 
 #: picard/util/checkupdate.py:140
@@ -5823,7 +5804,7 @@ msgstr ""
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
-msgstr "Plaadi-ID"
+msgstr "Plaadi tunnus"
 
 #: picard/util/tags.py:59
 msgid "Disc Number"
@@ -5895,43 +5876,43 @@ msgstr "Liikumiste arv"
 
 #: picard/util/tags.py:82
 msgid "MusicBrainz Release Artist Id"
-msgstr "Väljalaske esitaja ID MusicBrainzis"
+msgstr "Väljalaske esitaja tunnus MusicBrainzis"
 
 #: picard/util/tags.py:83
 msgid "MusicBrainz Release Id"
-msgstr "Väljalaske ID MusicBrainzis"
+msgstr "Väljalaske tunnus MusicBrainzis"
 
 #: picard/util/tags.py:84
 msgid "MusicBrainz Artist Id"
-msgstr "Esitaja ID MusicBrainzis"
+msgstr "Esitaja tunnus MusicBrainzis"
 
 #: picard/util/tags.py:85
 msgid "MusicBrainz Disc Id"
-msgstr "Plaadi-ID MusicBrainzis"
+msgstr "Plaaditunnus MusicBrainzis"
 
 #: picard/util/tags.py:86
 msgid "MusicBrainz Original Release Id"
-msgstr "Algse väljalaske ID MusicBrainzis"
+msgstr "Algse väljalaske tunnus MusicBrainzis"
 
 #: picard/util/tags.py:87
 msgid "MusicBrainz Original Artist Id"
-msgstr "Originaalesitaja ID MusicBrainzis"
+msgstr "Originaalesitaja tunnus MusicBrainzis"
 
 #: picard/util/tags.py:88
 msgid "MusicBrainz Recording Id"
-msgstr "Salvestise ID MusicBrainzis"
+msgstr "Salvestise tunnus MusicBrainzis"
 
 #: picard/util/tags.py:89
 msgid "MusicBrainz Release Group Id"
-msgstr "Väljalaskerühma ID MusicBrainzis"
+msgstr "Väljalaskerühma tunnus MusicBrainzis"
 
 #: picard/util/tags.py:90
 msgid "MusicBrainz Track Id"
-msgstr "Raja ID MusicBrainzis"
+msgstr "Loo tunnus MusicBrainzis"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"
-msgstr "Teose ID MusicBrainzis"
+msgstr "Teose tunnus MusicBrainzis"
 
 #: picard/util/tags.py:92
 msgid "MusicIP Fingerprint"
