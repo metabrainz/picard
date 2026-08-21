@@ -89,6 +89,7 @@ from picard.ui.match_icons import (
     match_pending_icons,
     similarity_to_level,
 )
+from picard.ui.theme import theme
 
 
 def get_match_color(similarity, basecolor):
@@ -167,6 +168,36 @@ class MainPanel(QtWidgets.QSplitter):
                 File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
         )
+
+        theme.colors_changed.connect(self._refresh_colors)
+
+    def _refresh_colors(self):
+        """Refresh cached color attributes after a theme or color change."""
+        TreeItem.base_color = self.palette().base().color()
+        TreeItem.text_color = self.palette().text().color()
+        TreeItem.text_color_secondary = (
+            self.palette().brush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text).color()
+        )
+        TrackItem.track_colors = defaultdict(
+            lambda: TreeItem.text_color,
+            {
+                File.State.NORMAL: interface_colors.get_qcolor('entity_saved'),
+                File.State.CHANGED: TreeItem.text_color,
+                File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.State.ERROR: interface_colors.get_qcolor('entity_error'),
+            },
+        )
+        FileItem.file_colors = defaultdict(
+            lambda: TreeItem.text_color,
+            {
+                File.State.NORMAL: TreeItem.text_color,
+                File.State.CHANGED: TreeItem.text_color,
+                File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.State.ERROR: interface_colors.get_qcolor('entity_error'),
+            },
+        )
+        for view in self._views:
+            view.viewport().update()
 
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
