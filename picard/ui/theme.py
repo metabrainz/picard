@@ -156,24 +156,24 @@ class MacOverrideStyle(QtWidgets.QProxyStyle):
         return super().styleHint(hint, option, widget, returnData)
 
 
-def apply_dark_palette_colors(palette: QtGui.QPalette) -> None:
-    """Apply dark palette colors to the given palette."""
-    for key, value in DARK_PALETTE_COLORS.items():
+def _apply_palette_colors(palette: QtGui.QPalette, colors: dict) -> None:
+    """Apply a set of color definitions to the given palette."""
+    for key, value in colors.items():
         if isinstance(key, tuple):
             group, role = key
             palette.setColor(group, role, value)
         else:
             palette.setColor(key, value)
+
+
+def apply_dark_palette_colors(palette: QtGui.QPalette) -> None:
+    """Apply dark palette colors to the given palette."""
+    _apply_palette_colors(palette, DARK_PALETTE_COLORS)
 
 
 def apply_light_palette_colors(palette: QtGui.QPalette) -> None:
     """Apply light palette colors to the given palette."""
-    for key, value in LIGHT_PALETTE_COLORS.items():
-        if isinstance(key, tuple):
-            group, role = key
-            palette.setColor(group, role, value)
-        else:
-            palette.setColor(key, value)
+    _apply_palette_colors(palette, LIGHT_PALETTE_COLORS)
 
 
 def set_color_scheme(color_scheme: QtCore.Qt.ColorScheme) -> None:
@@ -394,8 +394,7 @@ class BaseTheme(QtCore.QObject):
         # Unpolish + polish forces the style to recompute, and update()
         # schedules a repaint. Use QWidget.update() directly to avoid
         # calling overridden update() methods with different signatures.
-        if hasattr(app, 'allWidgets'):
-            style = app.style()
+        if style and hasattr(app, 'allWidgets'):
             for widget in app.allWidgets():
                 style.unpolish(widget)
                 style.polish(widget)
