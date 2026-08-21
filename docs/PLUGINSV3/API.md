@@ -771,9 +771,15 @@ def enable(api):
 
 ---
 
-#### `register_script_variable(name, documentation=None)`
+#### `register_script_variable(name, documentation=None, title=None, is_multi_value=False)`
 
-Register a variable name for script autocomplete.
+Register a variable name for script autocomplete and tag dropdowns.
+
+Registered variables become available in:
+- The script editor autocomplete (`%variable_name%`)
+- The edit tag dialog dropdown (for non-hidden variables)
+- The tag list editor in options pages (for non-hidden variables)
+- The scripting documentation panel
 
 If the same variable name has already been registered by this plugin, the
 existing entry is replaced (no duplicate is created). This allows plugins to
@@ -781,15 +787,42 @@ safely re-register variables without needing to unregister first.
 
 ```python
 def enable(api):
+    # Regular variable — appears in tag dropdowns and scripts
     api.register_script_variable(
         "my_plugin_var",
         documentation="A custom variable from my plugin",
+        title="My Variable",
+    )
+
+    # Hidden variable — available in scripts only, not in tag dropdowns
+    api.register_script_variable(
+        "_my_hidden_var",
+        documentation="A computed value for use in scripts",
+    )
+
+    # Multi-value variable
+    api.register_script_variable(
+        "my_list_var",
+        documentation="A variable that can hold multiple values",
+        is_multi_value=True,
     )
 ```
 
 **Parameters**:
-- `name`: Variable name (without % symbols)
-- `documentation`: Optional help text for the variable
+- `name`: The variable name as it appears between `%` symbols in scripts.
+  Names starting with `_` are treated as hidden variables (they won't appear
+  in tag dropdowns but are available in scripts).
+- `documentation`: Optional help text shown in the scripting documentation panel.
+- `title`: Optional display title for the metadata box (e.g., "Caller"). If
+  provided, the tag shows this human-readable title instead of the raw name in
+  the UI.
+- `is_multi_value`: Whether this variable can hold multiple values
+  (default: `False`).
+
+**Raises**: `ValueError` if:
+- The variable name is invalid (must use only letters, digits, underscores).
+- The same base name is already registered with a different hidden status
+  (e.g., registering `_foo` when `foo` is already registered, or vice versa).
 
 ---
 

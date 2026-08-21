@@ -25,7 +25,6 @@ that injected dependencies are used correctly and model reuse works
 as expected.
 """
 
-from collections.abc import Callable
 from unittest.mock import Mock
 
 from picard.script.parser import ScriptParser
@@ -66,13 +65,6 @@ def mock_context_detector() -> Mock:
 
 
 @pytest.fixture
-def mock_plugin_variable_provider() -> Callable[[], set[str]]:
-    """Create a mock plugin variable provider."""
-    provider = Mock(return_value={'plugin_var1', 'plugin_var2'})
-    return provider
-
-
-@pytest.fixture
 def mock_choices_provider() -> Mock:
     """Create a mock CompletionChoicesProvider."""
     provider = Mock(spec=CompletionChoicesProvider)
@@ -86,7 +78,6 @@ def script_completer_with_injections(
     mock_parser: Mock,
     mock_variable_extractor: Mock,
     mock_context_detector: Mock,
-    mock_plugin_variable_provider: Callable[[], set[str]],
     mock_choices_provider: Mock,
 ) -> ScriptCompleter:
     """Create a ScriptCompleter with all dependencies injected."""
@@ -94,7 +85,6 @@ def script_completer_with_injections(
         parser=mock_parser,
         variable_extractor=mock_variable_extractor,
         context_detector=mock_context_detector,
-        plugin_variable_provider=mock_plugin_variable_provider,
         choices_provider=mock_choices_provider,
     )
 
@@ -126,14 +116,6 @@ class TestScriptCompleterDependencyInjection:
         """Test that injected context detector is used."""
         assert script_completer_with_injections._context_detector is mock_context_detector
 
-    def test_uses_injected_plugin_provider(
-        self,
-        script_completer_with_injections: ScriptCompleter,
-        mock_plugin_variable_provider: Callable[[], set[str]],
-    ) -> None:
-        """Test that injected plugin provider is used."""
-        assert script_completer_with_injections._plugin_variable_provider is mock_plugin_variable_provider
-
     def test_uses_injected_choices_provider(
         self,
         script_completer_with_injections: ScriptCompleter,
@@ -150,7 +132,6 @@ class TestScriptCompleterDependencyInjection:
         assert isinstance(completer._parser, ScriptParser)
         assert isinstance(completer._variable_extractor, VariableExtractor)
         assert isinstance(completer._context_detector, ContextDetector)
-        assert completer._plugin_variable_provider is not None
         assert isinstance(completer._choices_provider, CompletionChoicesProvider)
 
     def test_variable_extractor_uses_injected_parser(
@@ -351,11 +332,7 @@ class TestScriptCompleterIntegration:
         # Should get choices for the context
         assert isinstance(choices, list)
 
-    def test_plugin_provider_integration(
-        self,
-        script_completer_with_injections: ScriptCompleter,
-        mock_plugin_variable_provider: Callable[[], set[str]],
-    ) -> None:
+    def test_plugin_provider_integration(self, script_completer_with_injections: ScriptCompleter) -> None:
         """Test integration between completer and plugin provider."""
         # Generate choices
         choices = list(script_completer_with_injections.choices)
@@ -392,7 +369,6 @@ class TestScriptCompleterEdgeCases:
             parser=None,
             variable_extractor=None,
             context_detector=None,
-            plugin_variable_provider=None,
             choices_provider=None,
         )
 
@@ -400,7 +376,6 @@ class TestScriptCompleterEdgeCases:
         assert completer._parser is not None
         assert completer._variable_extractor is not None
         assert completer._context_detector is not None
-        assert completer._plugin_variable_provider is not None
         assert completer._choices_provider is not None
 
     def test_handles_empty_script_content(

@@ -33,14 +33,13 @@ from picard.extension_points import (
     unset_plugin_uuid,
 )
 from picard.extension_points.script_variables import (
-    get_plugin_variable_documentation,
-    get_plugin_variable_names,
     register_script_variable,
     unregister_all_script_variables,
     unregister_script_variable,
 )
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
+from picard.tags.tagvar import TagVar
 
 
 def create_mock_plugin(uuid, plugin_id='testplugin') -> Plugin:
@@ -221,7 +220,7 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         super().setUp()
         patcher_ep = patch(
             'picard.extension_points.script_variables.ext_point_script_variables',
-            ExtensionPoint(label='test_variables'),
+            ExtensionPoint[TagVar](label='test_variables'),
         )
         patcher_config = patch('picard.extension_points.get_config', return_value=None)
         self.ext_point = patcher_ep.start()
@@ -233,39 +232,109 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         api = MagicMock()
         api._plugin_module.__name__ = module
         api.module_path = module
+        api.plugin_id = module.split('.')[-1]
         api.manifest.name_i18n.return_value = name
         return api
+
+    def _registered_variable_names(self):
+        return set(var.name for var in self.ext_point)
+
+    def _get_tagvar_by_name(self, name, is_hidden=None) -> TagVar:
+        for var in self.ext_point:
+            if var.name == name and (is_hidden is None or var.is_hidden == is_hidden):
+                return var
+        raise ValueError(f'Variable "{name}" (is_hidden={is_hidden}) not found in extension point')
 
     def test_register_script_variable(self):
         register_script_variable('my_var1', 'some docs')
         register_script_variable('my_var2', 'other docs')
-        self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
-        self.assertEqual('some docs\n\nPlugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
+        self.assertEqual({'my_var1', 'my_var2'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('my_var1')
+        self.assertEqual('some docs', var._longdesc)
+        self.assertTrue(var.is_tag)
+        self.assertFalse(var.is_hidden)
+        self.assertFalse(var.is_multi_value)
 
     def test_register_script_variable_no_docs(self):
         register_script_variable('my_var1')
-        self.assertEqual({'my_var1'}, get_plugin_variable_names())
-        self.assertEqual('Plugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
+        self.assertEqual({'my_var1'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('my_var1')
+        self.assertIsNone(var._longdesc)
 
     def test_register_script_variable_with_api(self):
         api = self._make_api()
         register_script_variable('my_var1', 'Some docs', api)
         register_script_variable('my_var2', api=api)
-        self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
-        self.assertEqual('Some docs\n\nPlugin: Test Plugin', get_plugin_variable_documentation('my_var1'))
-        self.assertEqual('Plugin: Test Plugin', get_plugin_variable_documentation('my_var2'))
+        self.assertEqual({'my_var1', 'my_var2'}, self._registered_variable_names())
+        var1 = self._get_tagvar_by_name('my_var1')
+        self.assertEqual('Some docs', var1._longdesc)
+        var2 = self._get_tagvar_by_name('my_var2')
+        self.assertIsNone(var2._longdesc)
 
     def test_register_script_variable_invalid_name(self):
         with self.assertRaises(ValueError):
             register_script_variable('my-var1')
+
+    def test_register_script_variable_underscore_only(self):
+        """Registering just '_' should fail validation (empty name after stripping)."""
+        with self.assertRaises(ValueError):
+            register_script_variable('_')
+
+    def test_register_script_variable_plugin_id(self):
+        """Registered TagVar should carry the plugin_id from the API."""
+        api = self._make_api()
+        register_script_variable('my_var', 'docs', api)
+        var = self._get_tagvar_by_name('my_var')
+        self.assertEqual('testplugin', var.plugin_id)
+
+    def test_register_script_variable_is_hidden(self):
+        """Names starting with _ should be registered as hidden variables."""
+        register_script_variable('_hidden_var', 'docs')
+        var = self._get_tagvar_by_name('hidden_var')
+        self.assertTrue(var.is_hidden)
+        self.assertFalse(var.is_tag)
+        self.assertEqual('~hidden_var', str(var))
+        self.assertEqual('_hidden_var', var.script_name())
+
+    def test_register_same_name_hidden_and_non_hidden(self):
+        """Registering the same base name as both hidden and non-hidden should be rejected."""
+        api = self._make_api()
+        register_script_variable('my_var', 'Non-hidden docs', api)
+
+        with self.assertRaises(ValueError, msg="Cannot register '_my_var'"):
+            register_script_variable('_my_var', 'Hidden docs', api)
+
+        # Original registration should remain unchanged
+        var = self._get_tagvar_by_name('my_var')
+        self.assertFalse(var.is_hidden)
+        self.assertEqual('Non-hidden docs', var._longdesc)
+
+    def test_register_same_name_hidden_then_non_hidden_rejected(self):
+        """Registering non-hidden after hidden with same base name should be rejected."""
+        register_script_variable('_my_var', 'Hidden docs')
+
+        with self.assertRaises(ValueError, msg="Cannot register 'my_var'"):
+            register_script_variable('my_var', 'Non-hidden docs')
+
+        # Original hidden registration should remain unchanged
+        var = self._get_tagvar_by_name('my_var')
+        self.assertTrue(var.is_hidden)
+        self.assertEqual('Hidden docs', var._longdesc)
+
+    def test_register_script_variable_is_multi_value(self):
+        """is_multi_value parameter should be passed through to the TagVar."""
+        register_script_variable('multi_var', 'docs', is_multi_value=True)
+        var = self._get_tagvar_by_name('multi_var')
+        self.assertTrue(var.is_multi_value)
 
     def test_register_script_variable_deduplication(self):
         """Registering the same variable twice from the same plugin should update, not duplicate."""
         api = self._make_api()
         register_script_variable('my_var', 'First docs', api)
         register_script_variable('my_var', 'Updated docs', api)
-        self.assertEqual({'my_var'}, get_plugin_variable_names())
-        self.assertEqual('Updated docs\n\nPlugin: Test Plugin', get_plugin_variable_documentation('my_var'))
+        self.assertEqual({'my_var'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('my_var')
+        self.assertEqual('Updated docs', var._longdesc)
 
     def test_register_same_variable_different_plugins(self):
         """Same variable name from different plugins should both be kept."""
@@ -273,17 +342,18 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         api2 = self._make_api('picard.plugins.plugin2', 'Plugin Two')
         register_script_variable('shared_var', 'Docs from plugin1', api1)
         register_script_variable('shared_var', 'Docs from plugin2', api2)
-        self.assertEqual({'shared_var'}, get_plugin_variable_names())
-        self.assertEqual('Docs from plugin1\n\nPlugin: Plugin One', get_plugin_variable_documentation('shared_var'))
+        self.assertEqual({'shared_var'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('shared_var')
+        self.assertEqual('Docs from plugin1', var._longdesc)
 
     def test_unregister_script_variable(self):
         """Unregistering a single variable should remove only that variable."""
         api = self._make_api()
         register_script_variable('var1', 'Docs 1', api)
         register_script_variable('var2', 'Docs 2', api)
-        self.assertEqual({'var1', 'var2'}, get_plugin_variable_names())
+        self.assertEqual({'var1', 'var2'}, self._registered_variable_names())
         unregister_script_variable('var1', api)
-        self.assertEqual({'var2'}, get_plugin_variable_names())
+        self.assertEqual({'var2'}, self._registered_variable_names())
 
     def test_unregister_script_variable_nonexistent(self):
         """Unregistering a variable that doesn't exist should not raise."""
@@ -296,9 +366,9 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         register_script_variable('var1', 'Docs 1', api)
         register_script_variable('var2', 'Docs 2', api)
         register_script_variable('var3', 'Docs 3', api)
-        self.assertEqual({'var1', 'var2', 'var3'}, get_plugin_variable_names())
+        self.assertEqual({'var1', 'var2', 'var3'}, self._registered_variable_names())
         unregister_all_script_variables(api)
-        self.assertEqual(set(), get_plugin_variable_names())
+        self.assertEqual(set(), self._registered_variable_names())
 
     def test_unregister_all_does_not_affect_other_plugins(self):
         """Unregistering all variables from one plugin should not affect another."""
@@ -307,7 +377,7 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         register_script_variable('var_from_p1', 'Docs', api1)
         register_script_variable('var_from_p2', 'Docs', api2)
         unregister_all_script_variables(api1)
-        self.assertEqual({'var_from_p2'}, get_plugin_variable_names())
+        self.assertEqual({'var_from_p2'}, self._registered_variable_names())
 
     def test_unregister_does_not_affect_other_plugins(self):
         """Unregistering a variable name should only remove it from the calling plugin."""
@@ -316,8 +386,9 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         register_script_variable('shared_var', 'Docs from p1', api1)
         register_script_variable('shared_var', 'Docs from p2', api2)
         unregister_script_variable('shared_var', api1)
-        self.assertEqual({'shared_var'}, get_plugin_variable_names())
-        self.assertEqual('Docs from p2\n\nPlugin: Plugin Two', get_plugin_variable_documentation('shared_var'))
+        self.assertEqual({'shared_var'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('shared_var')
+        self.assertEqual('Docs from p2', var._longdesc)
 
     def test_extension_point_unregister_with_match(self):
         """ExtensionPoint.unregister should remove only items matching the callable."""

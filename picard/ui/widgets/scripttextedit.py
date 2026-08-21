@@ -23,7 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import Callable
 import contextlib
 import re
 import unicodedata
@@ -47,7 +46,6 @@ from PyQt6.QtWidgets import (
 
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
-from picard.extension_points.script_variables import get_plugin_variable_names
 from picard.i18n import gettext as _
 from picard.script import (
     ScriptFunctionDocError,
@@ -199,7 +197,6 @@ class ScriptCompleter(QCompleter):
         parser: ScriptParser | None = None,
         variable_extractor: VariableExtractor | None = None,
         context_detector: ContextDetector | None = None,
-        plugin_variable_provider: Callable[[], set[str]] | None = None,
         choices_provider: CompletionChoicesProvider | None = None,
         user_script_scanner: UserScriptScanner | None = None,
     ):
@@ -229,10 +226,7 @@ class ScriptCompleter(QCompleter):
         self.highlighted.connect(self.set_highlighted)
 
         # IOC for plugin variables and choices provider
-        self._plugin_variable_provider = plugin_variable_provider or get_plugin_variable_names
-        self._choices_provider = choices_provider or CompletionChoicesProvider(
-            self._plugin_variable_provider, self._user_script_scanner
-        )
+        self._choices_provider = choices_provider or CompletionChoicesProvider(self._user_script_scanner)
 
         # Initialize the model with initial choices
         self._model.setStringList(list(self.choices))

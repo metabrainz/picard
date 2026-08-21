@@ -34,17 +34,14 @@ from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
-from picard.tags.docs import (
-    display_plugin_tag_full_description,
-    display_tag_full_description,
-)
+from picard.tags.docs import display_tag_full_description
 from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
 
 
-DocItem = namedtuple('DocItem', 'name desc plugin')
+DocItem = namedtuple('DocItem', 'name desc')
 
 DOCUMENTATION_HTML_TEMPLATE = '''
 <!DOCTYPE html>
@@ -156,12 +153,11 @@ class TagsDocumentationPage(DocumentationPage):
         tags: list[DocItem] = []
 
         # Process system-defined tags and variables
-        for tag_name in [tag.script_name() for tag in ALL_TAGS]:
+        for var in ALL_TAGS:
             tags.append(
                 DocItem(
-                    name=tag_name,
-                    desc=display_tag_full_description(tag_name),
-                    plugin='',
+                    name=var.script_name(),
+                    desc=display_tag_full_description(var),
                 )
             )
 
@@ -169,16 +165,15 @@ class TagsDocumentationPage(DocumentationPage):
         for var in ext_point_script_variables:
             tags.append(
                 DocItem(
-                    name=var.name,
-                    desc=display_plugin_tag_full_description(var.name, var.documentation),
-                    plugin=var.plugin_name,
+                    name=var.script_name(),
+                    desc=display_tag_full_description(var),
                 )
             )
 
         html = ''
         # Sort tags alphabetically regardless of whether they are hidden, with system tags shown
         # before plugin tags having the same name.
-        for tag in sorted(tags, key=lambda x: f"{x.name.lstrip('_')}:{x.plugin}"):
+        for tag in sorted(tags, key=lambda x: x.name.lstrip('_')):
             html += process_tag(tag.name, tag.desc)
 
         return html

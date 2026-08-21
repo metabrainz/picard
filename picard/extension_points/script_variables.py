@@ -18,38 +18,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from picard.i18n import _
+from picard.const.tags import ALL_TAGS
 from picard.plugin import ExtensionPoint
 from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
-from picard.tags import script_variable_tag_names
+from picard.tags.tagvar import TagVar
 
 
 if TYPE_CHECKING:
     from picard.plugin3.api_impl import PluginApi
 
 
-@dataclass(frozen=True)
-class PluginVariable:
-    name: str
-    documentation: str
-    plugin_name: str
-    title: str | None = None
-
-
-ext_point_script_variables = ExtensionPoint[PluginVariable](label='script_variables')
+ext_point_script_variables = ExtensionPoint[TagVar](label='script_variables')
 
 
 def _check_if_duplicate_variable_name(name: str) -> str | None:
     sources = []
-    if name in set(script_variable_tag_names()):
+    # Check against built-in system variables only (not plugin-registered ones)
+    builtin_names = {tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable}
+    if name in builtin_names:
         sources.append("System Variables")
 
     for var in ext_point_script_variables:
         if name == var.name:
-            sources.append(f'"{var.plugin_name}"')
+            if var.plugin_id:
+                sources.append(f'"{var.plugin_id}"')
+            else:
+                sources.append('"Unknown"')
 
     return ', '.join(sources) if sources else None
 
@@ -64,7 +60,11 @@ def _is_valid_plugin_variable_name(name: str | None) -> bool:
 
 
 def register_script_variable(
-    name: str, documentation: str | None = None, api: 'PluginApi | None' = None, title: str | None = None
+    name: str,
+    documentation: str | None = None,
+    api: 'PluginApi | None' = None,
+    title: str | None = None,
+    is_multi_value: bool = False,
 ) -> None:
     """Register a variable that plugins can provide for script completion.
 
@@ -74,19 +74,30 @@ def register_script_variable(
     Parameters
     ----------
     name : str
-        The variable name (without % symbols)
+        The variable name as it appears between percent signs in scripts.
+        Names starting with ``_`` are treated as hidden variables (they won't
+        appear in tag dropdowns but are available in scripts).
     documentation : str, optional
         Optional documentation for the variable
     api : PluginApi, optional
         The plugin API instance
     title : str, optional
-        Display title for the metadata box (e.g., "Pinned Tags").
+        Display title for the metadata box (e.g., "Caller").
         If provided, the tag will show this title instead of the raw name.
+    is_multi_value : bool, optional
+        Whether this variable can hold multiple values. Default: False.
 
     Examples
     --------
     >>> register_script_variable("my_plugin_var", "A custom variable from my plugin", title="My Variable")
+    >>> register_script_variable("_my_hidden_var", "A hidden variable only for scripts")
     """
+    # Determine hidden status from name prefix: names starting with _ are hidden.
+    is_hidden = False
+    if name.startswith('_'):
+        name = name[1:]
+        is_hidden = True
+
     if not _is_valid_plugin_variable_name(name):
         msg = "Invalid script variable name; use letters, digits, underscores."
         raise ValueError(msg)
@@ -97,25 +108,46 @@ def register_script_variable(
 
     if api:
         module_name = api.module_path
+        plugin_id = api.plugin_id
+        plugin_name = api.manifest.name_i18n()
     else:
         module_name = 'unknown'
+        plugin_id = None
+        plugin_name = None
 
-    plugin_name = api.manifest.name_i18n() if api else _("Unknown Plugin")
-    plugin_documentation = documentation or ""
-    if plugin_documentation and plugin_name:
-        plugin_documentation += "\n\n"
-    if plugin_name:
-        plugin_documentation += _("Plugin: %s") % plugin_name
+    # Reject registering the same base name with a different is_hidden status.
+    # A plugin cannot register both 'foo' and '_foo' — the base name must be unique.
+    for var in ext_point_script_variables:
+        if var.name == name and var.is_hidden != is_hidden:
+            prefix = '_' if is_hidden else ''
+            existing_prefix = '_' if var.is_hidden else ''
+            msg = (
+                f"Cannot register '{prefix}{name}': "
+                f"'{existing_prefix}{name}' is already registered "
+                f"with different hidden status."
+            )
+            raise ValueError(msg)
 
     # Remove any existing entry with the same name from this plugin to avoid duplicates
     ext_point_script_variables.unregister(module_name, lambda item: item.name == name)
     ext_point_script_variables.register(
         module_name,
-        PluginVariable(
+        TagVar(
             name=name,
-            documentation=plugin_documentation,
+            shortdesc=title,
+            longdesc=documentation,
+            is_hidden=is_hidden,
+            is_multi_value=is_multi_value,
+            # Locked attributes for plugin-registered variables
+            is_preserved=False,
+            is_script_variable=True,
+            is_tag=not is_hidden,
+            is_calculated=False,
+            is_file_info=False,
+            is_from_mb=False,
+            is_populated_by_picard=False,
+            plugin_id=plugin_id,
             plugin_name=plugin_name,
-            title=title,
         ),
     )
 
@@ -144,43 +176,13 @@ def unregister_all_script_variables(api: 'PluginApi') -> None:
     ext_point_script_variables.unregister(api.module_path, lambda item: True)
 
 
-def get_plugin_variable_names() -> set[str]:
-    """Get all plugin-provided variable names.
-
-    Returns
-    -------
-    set[str]
-        Set of variable names provided by plugins
-    """
-    return {var.name for var in ext_point_script_variables}
-
-
-def get_plugin_variable_documentation(name: str) -> str | None:
-    """Get documentation for a plugin-provided variable.
-
-    Parameters
-    ----------
-    name : str
-        The variable name
-
-    Returns
-    -------
-    str or None
-        Documentation string if available, None otherwise
-    """
-    for var in ext_point_script_variables:
-        if var.name == name:
-            return var.documentation
-    return None
-
-
 def get_plugin_variable_title(name: str) -> str | None:
     """Get display title for a plugin-provided variable.
 
     Parameters
     ----------
     name : str
-        The variable name
+        The variable name (bare name without prefix)
 
     Returns
     -------
@@ -188,6 +190,6 @@ def get_plugin_variable_title(name: str) -> str | None:
         Display title if available, None otherwise
     """
     for var in ext_point_script_variables:
-        if var.name == name:
-            return var.title
+        if var.script_name() == name:
+            return var._shortdesc
     return None

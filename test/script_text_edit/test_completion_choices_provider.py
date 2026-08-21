@@ -25,9 +25,7 @@ to handle completion choices generation with proper ordering, mode handling,
 deduplication, and error handling.
 """
 
-from collections.abc import Callable
 from unittest.mock import (
-    Mock,
     patch,
 )
 
@@ -38,15 +36,9 @@ from picard.ui.widgets.context_detector import CompletionMode
 
 
 @pytest.fixture
-def mock_plugin_provider() -> Mock:
-    """Create a mock plugin variable provider."""
-    return Mock(return_value={'plugin_var1', 'plugin_var2', 'plugin_var3'})
-
-
-@pytest.fixture
-def choices_provider(mock_plugin_provider: Mock) -> CompletionChoicesProvider:
+def choices_provider() -> CompletionChoicesProvider:
     """Create a CompletionChoicesProvider instance for testing."""
-    return CompletionChoicesProvider(mock_plugin_provider)
+    return CompletionChoicesProvider()
 
 
 @pytest.fixture
@@ -71,30 +63,6 @@ def sample_builtin_variables() -> list[str]:
 def sample_user_variables() -> set[str]:
     """Sample user-defined variables for testing."""
     return {'user_var1', 'user_var2', 'artist'}  # 'artist' overlaps with builtin
-
-
-class TestCompletionChoicesProviderInitialization:
-    """Test CompletionChoicesProvider initialization."""
-
-    def test_initialization_with_provider(self, mock_plugin_provider: Callable[[], set[str]]) -> None:
-        """Test initialization with plugin provider."""
-        provider = CompletionChoicesProvider(mock_plugin_provider)
-        assert provider._get_plugin_variable_names is mock_plugin_provider
-
-    def test_plugin_provider_integration(self, mock_plugin_provider: Callable[[], set[str]]) -> None:
-        """Test that plugin provider is integrated correctly."""
-        # Create a fresh provider to avoid calls during fixture creation
-        provider = CompletionChoicesProvider(mock_plugin_provider)
-
-        # Test that plugin variables are included in the results
-        choices = list(provider.build_choices(CompletionMode.VARIABLE, set(), [], {}))
-
-        # Should include plugin variables
-        plugin_choices = [choice for choice in choices if 'plugin_var' in choice]
-        assert len(plugin_choices) > 0
-        assert any('plugin_var1' in choice for choice in choices)
-        assert any('plugin_var2' in choice for choice in choices)
-        assert any('plugin_var3' in choice for choice in choices)
 
 
 class TestCompletionChoicesProviderOrdering:
@@ -127,11 +95,8 @@ class TestCompletionChoicesProviderOrdering:
             'artist',  # 5 uses
             'user_var1',  # 4 uses
             'album',  # 3 uses
-            'plugin_var1',  # 2 uses
             'title',  # 1 use
             'date',  # 0 uses
-            'plugin_var2',  # 0 uses
-            'plugin_var3',  # 0 uses
             'user_var2',  # 0 uses
         ]
 
@@ -249,9 +214,6 @@ class TestCompletionChoicesProviderModes:
             'date',
             'user_var1',
             'user_var2',
-            'plugin_var1',
-            'plugin_var2',
-            'plugin_var3',
         }
         actual_names = set(choices)
         assert actual_names == expected_names
@@ -282,30 +244,6 @@ class TestCompletionChoicesProviderModes:
 class TestCompletionChoicesProviderDeduplication:
     """Test deduplication across builtin/plugin/user variables."""
 
-    def test_deduplication_builtin_plugin_overlap(
-        self,
-        choices_provider: CompletionChoicesProvider,
-    ) -> None:
-        """Test deduplication when builtin and plugin variables overlap."""
-        # Mock plugin provider to return overlapping variables
-        choices_provider._get_plugin_variable_names.return_value = {'artist', 'plugin_var'}  # type: ignore
-
-        choices = list(
-            choices_provider.build_choices(
-                CompletionMode.VARIABLE,
-                set(),
-                ['artist', 'album'],
-                {},
-            )
-        )
-
-        # Should not have duplicates
-        var_names = [choice[1:-1] for choice in choices if choice.startswith('%') and choice.endswith('%')]
-        assert len(var_names) == len(set(var_names))
-        assert 'artist' in var_names
-        assert 'album' in var_names
-        assert 'plugin_var' in var_names
-
     def test_deduplication_user_builtin_overlap(
         self,
         choices_provider: CompletionChoicesProvider,
@@ -323,26 +261,6 @@ class TestCompletionChoicesProviderDeduplication:
         var_names = [choice[1:-1] for choice in choices if choice.startswith('%') and choice.endswith('%')]
         assert len(var_names) == len(set(var_names))
         assert var_names.count('artist') == 1  # Should appear only once
-
-    def test_deduplication_user_plugin_overlap(
-        self,
-        choices_provider: CompletionChoicesProvider,
-    ) -> None:
-        """Test deduplication when user and plugin variables overlap."""
-        choices_provider._get_plugin_variable_names.return_value = {'plugin_var', 'user_var'}  # type: ignore
-
-        choices = list(
-            choices_provider.build_choices(
-                CompletionMode.VARIABLE,
-                {'user_var', 'other_user_var'},
-                [],
-                {},
-            )
-        )
-
-        var_names = [choice[1:-1] for choice in choices if choice.startswith('%') and choice.endswith('%')]
-        assert len(var_names) == len(set(var_names))
-        assert var_names.count('user_var') == 1  # Should appear only once
 
     def test_stable_output_with_equal_weights(
         self,
@@ -379,8 +297,6 @@ class TestCompletionChoicesProviderErrorHandling:
         choices_provider: CompletionChoicesProvider,
     ) -> None:
         """Test handling when plugin provider returns empty set."""
-        choices_provider._get_plugin_variable_names.return_value = set()  # type: ignore
-
         choices = list(
             choices_provider.build_choices(
                 CompletionMode.VARIABLE,
@@ -394,40 +310,6 @@ class TestCompletionChoicesProviderErrorHandling:
         assert 'user_var' in var_names
         assert 'builtin_var' in var_names
         # No plugin variables should be present
-
-    def test_plugin_provider_raises_exception(
-        self,
-        choices_provider: CompletionChoicesProvider,
-    ) -> None:
-        """Test handling when plugin provider raises exception."""
-        choices_provider._get_plugin_variable_names.side_effect = RuntimeError("Plugin error")  # type: ignore
-
-        with pytest.raises(RuntimeError, match="Plugin error"):
-            list(
-                choices_provider.build_choices(
-                    CompletionMode.VARIABLE,
-                    {'user_var'},
-                    ['builtin_var'],
-                    {},
-                )
-            )
-
-    def test_plugin_provider_returns_none(
-        self,
-        choices_provider: CompletionChoicesProvider,
-    ) -> None:
-        """Test handling when plugin provider returns None."""
-        choices_provider._get_plugin_variable_names.return_value = None  # type: ignore
-
-        with pytest.raises(TypeError):
-            list(
-                choices_provider.build_choices(
-                    CompletionMode.VARIABLE,
-                    {'user_var'},
-                    ['builtin_var'],
-                    {},
-                )
-            )
 
     def test_empty_inputs(
         self,
@@ -445,8 +327,7 @@ class TestCompletionChoicesProviderErrorHandling:
 
         # Should only contain plugin variables
         var_names = [choice[1:-1] for choice in choices if choice.startswith('%') and choice.endswith('%')]
-        expected_plugin_vars = {'plugin_var1', 'plugin_var2', 'plugin_var3'}
-        assert set(var_names) == expected_plugin_vars
+        assert set(var_names) == set()
 
 
 class TestCompletionChoicesProviderEdgeCases:
@@ -457,12 +338,10 @@ class TestCompletionChoicesProviderEdgeCases:
         choices_provider: CompletionChoicesProvider,
     ) -> None:
         """Test handling of unicode variable names."""
-        choices_provider._get_plugin_variable_names.return_value = {'var_ñ', 'var_中文'}  # type: ignore
-
         choices = list(
             choices_provider.build_choices(
                 CompletionMode.VARIABLE,
-                set(),
+                {'var_ñ', 'var_中文'},
                 [],
                 {},
             )
@@ -477,12 +356,10 @@ class TestCompletionChoicesProviderEdgeCases:
         choices_provider: CompletionChoicesProvider,
     ) -> None:
         """Test handling of variable names with colons."""
-        choices_provider._get_plugin_variable_names.return_value = {'tag:artist', 'tag:album'}  # type: ignore
-
         choices = list(
             choices_provider.build_choices(
                 CompletionMode.VARIABLE,
-                set(),
+                {'tag:artist', 'tag:album'},
                 [],
                 {},
             )
@@ -498,12 +375,10 @@ class TestCompletionChoicesProviderEdgeCases:
     ) -> None:
         """Test handling of very long variable names."""
         long_name = 'a' * 1000
-        choices_provider._get_plugin_variable_names.return_value = {long_name}  # type: ignore
-
         choices = list(
             choices_provider.build_choices(
                 CompletionMode.VARIABLE,
-                set(),
+                {long_name},
                 [],
                 {},
             )

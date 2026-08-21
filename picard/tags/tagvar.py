@@ -60,6 +60,7 @@ class Section(IntEnum):
     options = 2
     links = 3
     see_also = 4
+    plugin_info = 5
 
 
 SectionInfo = namedtuple('SectionInfo', ('title', 'tagvar_func'))
@@ -68,6 +69,7 @@ SECTIONS = {
     Section.options: SectionInfo(N_('Option Settings'), 'related_options_titles'),
     Section.links: SectionInfo(N_('Links'), 'links'),
     Section.see_also: SectionInfo(N_('See Also'), 'see_alsos'),
+    Section.plugin_info: SectionInfo(N_('Plugin'), 'plugin_info'),
 }
 
 TEXT_NO_DESCRIPTION = N_('No description available.')
@@ -103,6 +105,8 @@ class TagVar:
         see_also=None,
         related_options=None,
         doc_links=None,
+        plugin_id=None,
+        plugin_name=None,
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -126,6 +130,8 @@ class TagVar:
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
+        plugin_id: the plugin module id that registered this tag (str or None, default: None)
+        plugin_name: the display name of the plugin that registered this tag (str or None, default: None)
         """
         self.name = name
         self._shortdesc = shortdesc
@@ -144,6 +150,8 @@ class TagVar:
         self.see_also = see_also
         self.related_options = related_options
         self.doc_links = doc_links
+        self.plugin_id = plugin_id
+        self.plugin_name = plugin_name
 
     @property
     def shortdesc(self):
@@ -259,7 +267,7 @@ class TagVars(MutableSequence):
         return self.item_from_name(name).item
 
     def script_name_from_name(self, name):
-        tagname, tagdesc, search_name, item = self.item_from_name(name)
+        item = self.tagvar_from_name(name)
         if item:
             return str(item)
         return None
@@ -303,6 +311,11 @@ class TagVars(MutableSequence):
             if self.script_name_from_name(tag):
                 yield f'<a href="#{tag}">%{tag}%</a>'
 
+    def plugin_info(self, item: TagVar):
+        if not item.plugin_name:
+            return
+        yield item.plugin_name
+
     def _base_description(self, item: TagVar):
         return _markdown(_(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION))
 
@@ -325,7 +338,7 @@ class TagVars(MutableSequence):
 
     def tooltip_content(self, item: TagVar):
         content = self._base_description(item)
-        content += self._add_sections(item, (Section.notes,))
+        content += self._add_sections(item, (Section.notes, Section.plugin_info))
         return content
 
     def full_description_content(self, item: TagVar):
@@ -336,12 +349,7 @@ class TagVars(MutableSequence):
             content += _markdown(_(item.additionaldesc))
 
         # Append additional sections as required
-        include_sections = (
-            Section.notes,
-            Section.options,
-            Section.links,
-            Section.see_also,
-        )
+        include_sections = (Section.notes, Section.options, Section.links, Section.see_also, Section.plugin_info)
         content += self._add_sections(item, include_sections)
 
         return content
