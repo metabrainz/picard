@@ -80,6 +80,17 @@ DEFAULT_EXCLUDED_DIRS = frozenset(
     }
 )
 
+# Pre-compiled regex patterns
+_RE_GITLOG_LINE = re.compile(r'^(\d+)¤([^¤]*)¤(.*)$')
+_RE_GITLOG_BATCH_LINE = re.compile(r'^[0-9a-f]+¤(\d+)¤([^¤]*)¤(.*)$')
+_RE_COPYRIGHT = re.compile(r'^# Copyright \D*((?:\d{4}(?:,? *|-))+) (.+)\s*$')
+_RE_YEAR_RANGE = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
+_RE_FIX_HEADER = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
+_RE_SKIP_INDICATOR = re.compile(
+    r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+Qt)',
+    re.IGNORECASE,
+)
+
 
 def _is_excluded_dir(dirname, excluded_dirs):
     """Check if a directory name matches any exclusion pattern."""
@@ -146,9 +157,8 @@ def extract_authors_from_gitlog(path):
         return {}
 
     authors = {}
-    pattern = re.compile(r'^(\d+)¤([^¤]*)¤(.*)$')
     for line in output.split("\n"):
-        m = pattern.match(line)
+        m = _RE_GITLOG_LINE.match(line)
         if m:
             year = int(m.group(1))
             author = _resolve_alias(m.group(2), m.group(3))
@@ -181,7 +191,6 @@ def batch_extract_authors_from_gitlog(paths):
         return None
 
     authors_by_path = {}
-    commit_pattern = re.compile(r'^[0-9a-f]+¤(\d+)¤([^¤]*)¤(.*)$')
     path_set = set(paths)
 
     current_year = None
@@ -193,7 +202,7 @@ def batch_extract_authors_from_gitlog(paths):
             current_author = None
             continue
 
-        m = commit_pattern.match(line)
+        m = _RE_GITLOG_BATCH_LINE.match(line)
         if m:
             current_year = int(m.group(1))
             current_author = _resolve_alias(m.group(2), m.group(3))
@@ -209,11 +218,9 @@ def batch_extract_authors_from_gitlog(paths):
 def parse_copyright_text(text):
     """Parse existing copyright lines into {author: set(years)}."""
     authors = {}
-    pattern_copyright = re.compile(r'^# Copyright \D*((?:\d{4}(?:,? *|-))+) (.+)\s*$')
-    range_pattern = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
 
     for line in text.split("\n"):
-        matched = pattern_copyright.match(line)
+        matched = _RE_COPYRIGHT.match(line)
         if not matched:
             continue
         years_group = matched.group(1)
@@ -221,7 +228,7 @@ def parse_copyright_text(text):
 
         all_years = set()
         for part in years_group.split(','):
-            m = range_pattern.match(part.strip())
+            m = _RE_YEAR_RANGE.match(part.strip())
             if m:
                 all_years.update(range(int(m.group(1)), int(m.group(2)) + 1))
             else:
@@ -238,11 +245,6 @@ def parse_file(path, encoding='utf-8', authors_from_log=None):
     if authors_from_log is None:
         authors_from_log = extract_authors_from_gitlog(path)
 
-    fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
-    skip_pattern = re.compile(
-        r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+Qt)',
-        re.IGNORECASE,
-    )
     try:
         with open(path, encoding=encoding) as f:
             lines = f.readlines()
@@ -256,12 +258,12 @@ def parse_file(path, encoding='utf-8', authors_from_log=None):
         del lines[0]
 
     for line in lines:
-        skip_matched = skip_pattern.search(line)
+        skip_matched = _RE_SKIP_INDICATOR.search(line)
         if skip_matched:
             found['skip'] = skip_matched.group(1)
             logging.debug("Found skip indicator: %s", found['skip'])
             return (found, {}, {}, '', "".join(lines))
-        fix_header_matched = fix_header_pattern.search(line)
+        fix_header_matched = _RE_FIX_HEADER.search(line)
         if fix_header_matched:
             words = fix_header_matched.group(2).lower().split()
             if 'nolicense' in words:
