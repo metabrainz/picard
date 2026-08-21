@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2013, 2019-2020, 2023-2024, 2026 Laurent Monin
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2023 Philipp Wolfer
+# Copyright (C) 2019, 2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

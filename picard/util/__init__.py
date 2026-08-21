@@ -25,6 +25,7 @@
 # Copyright (C) 2022 skelly37
 # Copyright (C) 2024 Arnab Chakraborty
 # Copyright (C) 2024 ShubhamBhut
+# Copyright (C) 2025 Khoa Nguyen
 # Copyright (C) 2025 Marethyun
 # Copyright (C) 2025 StevilKnevil
 # Copyright (C) 2026 Deepak Kumar
