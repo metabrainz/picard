@@ -19,7 +19,7 @@
 
 
 import argparse
-from fnmatch import fnmatch
+import fnmatch
 import itertools
 import logging
 import os
@@ -92,9 +92,19 @@ _RE_SKIP_INDICATOR = re.compile(
 )
 
 
-def _is_excluded_dir(dirname, excluded_dirs):
-    """Check if a directory name matches any exclusion pattern."""
-    return any(fnmatch(dirname, pattern) for pattern in excluded_dirs)
+def _compile_exclusion_patterns(patterns):
+    """Pre-compile exclusion patterns into a single combined regex for fast matching."""
+    if not patterns:
+        return None
+    regex_parts = [fnmatch.translate(p) for p in patterns]
+    return re.compile('|'.join(regex_parts))
+
+
+def _is_excluded_dir(dirname, exclusion_regex):
+    """Check if a directory name matches the pre-compiled exclusion regex."""
+    if exclusion_regex is None:
+        return False
+    return exclusion_regex.match(dirname) is not None
 
 
 def _resolve_alias(author, email):
@@ -379,7 +389,7 @@ def fix_header(path, encoding='utf-8', authors_from_log=None):
     return "\n".join(parts), None
 
 
-def collect_files(paths, extension, recursive, excluded_dirs, use_git=True):
+def collect_files(paths, extension, recursive, exclusion_regex, use_git=True):
     """Collect files to process.
 
     When use_git is True (default), uses 'git ls-files' which automatically
@@ -400,7 +410,7 @@ def collect_files(paths, extension, recursive, excluded_dirs, use_git=True):
                     continue
             # Fallback: os.walk with exclusion patterns
             for dirpath, dirnames, filenames in os.walk(path):
-                dirnames[:] = [d for d in dirnames if not _is_excluded_dir(d, excluded_dirs)]
+                dirnames[:] = [d for d in dirnames if not _is_excluded_dir(d, exclusion_regex)]
                 for filename in filenames:
                     _name, ext = os.path.splitext(filename)
                     if extension in {'', ext}:
@@ -467,8 +477,9 @@ def main():
         if args.exclude:
             base.update(args.exclude)
         excluded_dirs = frozenset(base)
+    exclusion_regex = _compile_exclusion_patterns(excluded_dirs)
 
-    files = collect_files(args.path, args.extension, args.recursive, excluded_dirs, use_git=not args.no_git_ls)
+    files = collect_files(args.path, args.extension, args.recursive, exclusion_regex, use_git=not args.no_git_ls)
 
     if not files:
         logging.info("No valid file found")
