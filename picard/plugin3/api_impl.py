@@ -106,6 +106,7 @@ from picard.log import LoggerFunc
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
     PluginTranslator,
+    Plural,
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
@@ -464,7 +465,7 @@ class PluginApi:
 
     def _is_plural_dict(self, d: dict) -> bool:
         """Check if dict is a plural forms dict (has keys like 'one', 'other', etc.)."""
-        plural_keys = {'zero', 'one', 'two', 'few', 'many', 'other'}
+        plural_keys = set(e.value for e in Plural)
         return bool(d.keys() & plural_keys)
 
     def _load_translations(self) -> None:
@@ -795,12 +796,12 @@ class PluginApi:
             locale = self.get_locale()
             plural_form = get_plural_form(locale, n)
 
-            def get_plural_translation(trans: Any, plural_form: str) -> str | None:
+            def get_plural_translation(trans: Any, plural_form: Plural) -> str | None:
                 if isinstance(trans, dict):
-                    if plural_form in trans:
-                        return trans[plural_form]
-                    elif 'other' in trans:
-                        return trans['other']
+                    if plural_form.value in trans:
+                        return trans[plural_form.value]
+                    elif Plural.OTHER.value in trans:
+                        return trans[Plural.OTHER.value]
                 return None
 
             # Try exact locale match
