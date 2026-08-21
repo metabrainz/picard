@@ -377,8 +377,13 @@ def fix_header(path, encoding='utf-8', authors_from_log=None):
     return "\n".join(parts), None
 
 
-def collect_files(paths, extension, recursive, excluded_dirs):
-    """Collect files to process using os.walk for efficient directory traversal."""
+def collect_files(paths, extension, recursive, excluded_dirs, use_git=True):
+    """Collect files to process.
+
+    When use_git is True (default), uses 'git ls-files' which automatically
+    respects .gitignore and only returns tracked/staged files. Falls back
+    to os.walk if git is unavailable or the path is outside a git repo.
+    """
     files = set()
     for path in paths:
         if os.path.isfile(path):
@@ -386,14 +391,31 @@ def collect_files(paths, extension, recursive, excluded_dirs):
             if extension in {'', ext}:
                 files.add(path)
         elif os.path.isdir(path) and recursive:
+            if use_git:
+                git_files = _collect_files_git(path, extension)
+                if git_files is not None:
+                    files.update(git_files)
+                    continue
+            # Fallback: os.walk with exclusion patterns
             for dirpath, dirnames, filenames in os.walk(path):
-                # Prune excluded directories in-place to avoid descending into them
                 dirnames[:] = [d for d in dirnames if not _is_excluded_dir(d, excluded_dirs)]
                 for filename in filenames:
                     _name, ext = os.path.splitext(filename)
                     if extension in {'', ext}:
                         files.add(os.path.join(dirpath, filename))
     return files
+
+
+def _collect_files_git(path, extension):
+    """Use git ls-files to discover tracked files matching the extension."""
+    pattern = f'*{extension}' if extension else None
+    cmd = ['git', 'ls-files', '--cached', '--others', '--exclude-standard']
+    if pattern:
+        cmd.append(pattern)
+    output = _run_git(cmd + ['--', path])
+    if output is None:
+        return None
+    return {f for f in output.splitlines() if f}
 
 
 def main():
@@ -427,6 +449,12 @@ def main():
         default=False,
         help='Disable batch git log (use per-file git log instead)',
     )
+    parser.add_argument(
+        '--no-git-ls',
+        action='store_true',
+        default=False,
+        help='Disable git ls-files for file discovery (use os.walk with exclusions instead)',
+    )
     args = parser.parse_args()
 
     # Build the exclusion set
@@ -438,7 +466,7 @@ def main():
             base.update(args.exclude)
         excluded_dirs = frozenset(base)
 
-    files = collect_files(args.path, args.extension, args.recursive, excluded_dirs)
+    files = collect_files(args.path, args.extension, args.recursive, excluded_dirs, use_git=not args.no_git_ls)
 
     if not files:
         logging.info("No valid file found")
