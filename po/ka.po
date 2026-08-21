@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 3.0.0b9\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-20 06:41+0000\n"
+"PO-Revision-Date: 2026-08-21 07:12+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translations.metabrainz.org/projects/picard/"
 "3/app/ka/>\n"
@@ -4220,7 +4220,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:272
 msgid "MusicBrainz Picard"
-msgstr ""
+msgstr "MusicBrainz Picard"
 
 #: picard/ui/forms/ui_aboutdialog.py:245
 msgid "Supported formats"
