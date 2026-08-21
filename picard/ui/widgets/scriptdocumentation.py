@@ -127,9 +127,9 @@ class FunctionsDocumentationPage(DocumentationPage):
                 if function.plugin_id and manager:
                     plugin = manager.plugin_id_to_plugin(function.plugin_id)
                     name = _("Plugin: {plugin_name}").format(plugin_name=plugin.name()) if plugin else function.module
-                    module = '[' + name + ']'
+                    module = '<p>[' + name + ']</p>'
                 else:
-                    module = '[' + function.module + ']'
+                    module = '<p>[' + function.module + ']</p>'
             else:
                 module = ''
             try:
