@@ -32,7 +32,7 @@ import sys
 logging.basicConfig(
     force=True,
     format="%(asctime)s:%(levelname)s: %(message)s",
-    level=logging.DEBUG,
+    level=logging.INFO,
     stream=sys.stderr,
 )
 
@@ -447,6 +447,7 @@ def main():
         help='Show unified diff of changes without writing files',
     )
     parser.add_argument('-r', '--recursive', action='store_true', default=False, help='Search through subfolders')
+    parser.add_argument('-v', '--verbose', action='store_true', default=False, help='Enable debug logging')
     parser.add_argument('--encoding', default='utf-8', help='File encoding of the source files')
     parser.add_argument(
         '--exclude',
@@ -476,6 +477,9 @@ def main():
         help='Disable git ls-files for file discovery (use os.walk with exclusions instead)',
     )
     args = parser.parse_args()
+
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
 
     # Build the exclusion set
     if args.no_default_excludes:
