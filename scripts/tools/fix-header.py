@@ -56,7 +56,6 @@ ALIASES = {
     'Stevil Knevil': 'StevilKnevil',
     'deepakss-74': 'Deepak Kumar',
     'Thuna': 'Thuna-Cing',
-    'Frederik "Freso" S. Olesen': 'Frederik "Freso" S. Olesen',
 }
 
 # Directories excluded by default when recursively scanning for files.
