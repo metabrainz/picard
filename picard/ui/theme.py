@@ -268,6 +268,7 @@ class BaseTheme(QtCore.QObject):
         self._dark_mode_strategies: list[Callable[[], bool]] = []
 
     def setup(self, app: QtWidgets.QApplication) -> None:
+        self._app = app
         config = get_config()
         wanted_theme = UiTheme(config.setting['ui_theme'])
         self._loaded_config_theme = wanted_theme
@@ -281,6 +282,9 @@ class BaseTheme(QtCore.QObject):
         app.setStyleSheet(
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }',
         )
+
+        if style_hints := get_style_hints():
+            style_hints.colorSchemeChanged.connect(self._on_color_scheme_changed)
 
         # Determine the system accent color before applying the theme,
         # so apply_theme() can include it in the palette.
@@ -341,6 +345,13 @@ class BaseTheme(QtCore.QObject):
                 text_color.name(),
                 highlight_color.name(),
             )
+
+    def _on_color_scheme_changed(self, color_scheme: QtCore.Qt.ColorScheme) -> None:
+        config = get_config()
+        wanted_theme = UiTheme(config.setting['ui_theme'])
+        if wanted_theme == UiTheme.DEFAULT:
+            ui_theme = UiTheme.DARK if color_scheme == QtCore.Qt.ColorScheme.Dark else UiTheme.LIGHT
+            self.apply_theme(self._app, ui_theme)
 
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
         # Iterate through all registered strategies
