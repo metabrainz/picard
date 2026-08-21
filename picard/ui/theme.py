@@ -204,8 +204,15 @@ def apply_accent_color_to_palette(palette: QtGui.QPalette, accent_color: QtGui.Q
     palette.setColor(QtGui.QPalette.ColorRole.Link, link_color)
 
 
-class BaseTheme:
+class BaseTheme(QtCore.QObject):
+    # Emitted after a full theme switch (dark↔light). Implies colors also changed.
+    theme_changed = QtCore.pyqtSignal()
+
+    # Emitted when interface colors change without a full theme switch.
+    colors_changed = QtCore.pyqtSignal()
+
     def __init__(self):
+        super().__init__()
         self._loaded_config_theme: UiTheme = UiTheme.DEFAULT
         self._applied_theme: UiTheme = UiTheme.DEFAULT
         self._accent_color: QtGui.QColor | None = None
