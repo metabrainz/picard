@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Automatically generated - don't edit.
 # Use `python setup.py update_constants` to update it.
 
