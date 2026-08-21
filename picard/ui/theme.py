@@ -280,7 +280,8 @@ class BaseTheme(QtCore.QObject):
         """Apply a theme to the application.
 
         This method is safe to call multiple times at runtime to switch
-        between dark and light themes.
+        between dark and light themes.  Emits theme_changed after the
+        palette has been updated.
         """
         qt_color_scheme = QtCore.Qt.ColorScheme.Dark if ui_theme == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
         set_color_scheme(qt_color_scheme)
@@ -293,6 +294,7 @@ class BaseTheme(QtCore.QObject):
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
         self._applied_theme = ui_theme
+        self.theme_changed.emit()
 
     @property
     def is_dark_theme(self) -> bool:

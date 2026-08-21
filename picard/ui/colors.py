@@ -236,6 +236,11 @@ class InterfaceColors:
 
 interface_colors = InterfaceColors()
 
+# Reload colors automatically when the theme changes at runtime.
+# After reload, also emit colors_changed to notify color consumers.
+theme.theme_changed.connect(interface_colors.reload)
+theme.theme_changed.connect(theme.colors_changed)
+
 
 # Theme-aware validation indicator colors.
 # These are not user-configurable; they are standard UX patterns

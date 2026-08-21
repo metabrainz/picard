@@ -93,3 +93,21 @@ class InterfaceColorsTest(PicardTestCase):
         colors = InterfaceColors(dark_theme=False)
         colors.reload()
         self.assertEqual(colors.get_color('entity_error'), '#112233')
+
+    def test_theme_changed_triggers_reload(self):
+        """Test that theme.theme_changed signal triggers interface_colors reload."""
+        from picard.ui.theme import theme
+
+        # Set distinct colors in dark config
+        config.setting['interface_colors_dark'] = {'entity_error': '#aabbcc'}
+        # Simulate a theme switch by emitting theme_changed
+        # (normally apply_theme would set is_dark_theme first, but we can
+        #  just verify the signal connection works by checking reload was called)
+        original_dark = interface_colors._dark_theme
+        interface_colors._dark_theme = True
+        theme.theme_changed.emit()
+        dark_error = interface_colors.get_color('entity_error')
+        self.assertEqual(dark_error, '#aabbcc')
+        # Restore
+        interface_colors._dark_theme = original_dark
+        interface_colors.reload()
