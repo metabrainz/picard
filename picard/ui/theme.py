@@ -351,7 +351,8 @@ class BaseTheme(QtCore.QObject):
         wanted_theme = UiTheme(config.setting['ui_theme'])
         if wanted_theme == UiTheme.DEFAULT:
             ui_theme = UiTheme.DARK if color_scheme == QtCore.Qt.ColorScheme.Dark else UiTheme.LIGHT
-            self.apply_theme(self._app, ui_theme)
+            if ui_theme != self._applied_theme:
+                self.apply_theme(self._app, ui_theme)
 
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
         # Iterate through all registered strategies
