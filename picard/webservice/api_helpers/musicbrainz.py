@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018, 2020-2021, 2023-2024 Laurent Monin
+# Copyright (C) 2018, 2020-2021, 2023-2024, 2026 Laurent Monin
 # Copyright (C) 2018-2023, 2026 Philipp Wolfer
 # Copyright (C) 2026 metaisfacil
 #
@@ -19,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from collections.abc import (
     Iterable,

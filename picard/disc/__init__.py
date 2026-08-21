@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Matthias Friedrich
 # Copyright (C) 2007-2008 Lukáš Lalinský
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2009, 2013, 2018-2023 Philipp Wolfer
+# Copyright (C) 2009, 2013, 2018-2023, 2026 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
 # Copyright (C) 2013 Wieland Hoffmann
-# Copyright (C) 2013, 2018-2021, 2023-2024 Laurent Monin
+# Copyright (C) 2013, 2018-2021, 2023-2026 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2026 metaisfacil
@@ -26,8 +24,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from functools import partial
 import traceback

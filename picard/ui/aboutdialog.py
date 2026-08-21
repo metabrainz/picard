@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2014 Lukáš Lalinský
-# Copyright (C) 2008, 2013, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008, 2013, 2018-2026 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011, 2013 Wieland Hoffmann
 # Copyright (C) 2013 Michael Wiencek
@@ -23,8 +21,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 from PyQt6 import (

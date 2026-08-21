@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-#
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2020-2021, 2023 Laurent Monin
-# Copyright (C) 2020-2022 Philipp Wolfer
+# Copyright (C) 2020-2021, 2023, 2025 Laurent Monin
+# Copyright (C) 2020-2022, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,6 +56,7 @@ ALIASES = {
     'Stevil Knevil': 'StevilKnevil',
     'deepakss-74': 'Deepak Kumar',
     'Thuna': 'Thuna-Cing',
+    'Frederik "Freso" S. Olesen': 'Frederik “Freso” S. Olesen',
 }
 
 
@@ -69,7 +69,16 @@ def ranges(i):
 
 def extract_authors_from_gitlog(path):
     authors = {}
-    cmd = ['git', 'log', r'--pretty=format:%ad¤%aN¤%aE', r'--date=format:%Y', r'--', path]
+    cmd = [
+        'git',
+        'log',
+        r'--invert-grep',
+        r'--grep=fix-header:\ skip',
+        r'--pretty=format:%ad¤%aN¤%aE',
+        r'--date=format:%Y',
+        r'--',
+        path,
+    ]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)  # nosec: B603
     aliased = set()
     if result.returncode == 0:

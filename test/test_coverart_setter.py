@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2009, 2018-2024 Philipp Wolfer
+# Copyright (C) 2009, 2018-2024, 2026 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012-2014 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2017-2025 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2026 Laurent Monin
 # Copyright (C) 2014 Francois Ferrand
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2016 Ville Skyttä
@@ -31,8 +29,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 from unittest.mock import (

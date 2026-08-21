@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2018-2021, 2023-2024 Laurent Monin
-# Copyright (C) 2018-2022, 2024 Philipp Wolfer
+# Copyright (C) 2018-2021, 2023-2025 Laurent Monin
+# Copyright (C) 2018-2022, 2024, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,8 +16,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from operator import attrgetter
 

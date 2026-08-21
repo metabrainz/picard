@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2013, 2018-2022 Laurent Monin
+# Copyright (C) 2013, 2018-2022, 2025 Laurent Monin
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2021 Philipp Wolfer
 #
@@ -18,8 +16,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 from test.picardtestcase import PicardTestCase

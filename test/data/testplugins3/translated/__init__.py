@@ -1,3 +1,8 @@
+# Plugin with translated strings
+#
+# fix-header: skip
+
+
 def enable(api):
     """Enable the translated plugin."""
     # Test basic translation

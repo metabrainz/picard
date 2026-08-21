@@ -1,4 +1,6 @@
 # Basic Picard 3 plugin example
+#
+# fix-header: skip
 
 from picard.plugin3.api import PluginApi
 
