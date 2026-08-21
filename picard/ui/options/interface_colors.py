@@ -44,7 +44,7 @@ from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
-from picard.ui.util import changes_require_restart_warning
+from picard.ui.theme import theme
 
 
 class ColorButton(QtWidgets.QPushButton):
@@ -174,7 +174,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
 
     def save(self):
         if interface_colors.save_to_config():
-            changes_require_restart_warning(self, warnings=[_("You have changed the interface colors.")])
+            # Emit colors_changed to notify all consumers to refresh
+            theme.colors_changed.emit()
 
     def restore_defaults(self):
         interface_colors.set_default_colors()

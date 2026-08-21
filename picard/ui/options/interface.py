@@ -54,6 +54,7 @@ from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
     UiTheme,
+    theme,
 )
 from picard.ui.util import (
     FileDialog,
@@ -108,11 +109,11 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_browse.setIcon(icon)
 
         self.ui.ui_theme.clear()
-        for theme in AVAILABLE_UI_THEMES:
-            label = self._UI_THEME_LABELS[theme]['label']
-            desc = self._UI_THEME_LABELS[theme]['desc']
-            self.ui.ui_theme.addItem(_(label), theme)
-            idx = self.ui.ui_theme.findData(theme)
+        for ui_theme in AVAILABLE_UI_THEMES:
+            label = self._UI_THEME_LABELS[ui_theme]['label']
+            desc = self._UI_THEME_LABELS[ui_theme]['desc']
+            self.ui.ui_theme.addItem(_(label), ui_theme)
+            idx = self.ui.ui_theme.findData(ui_theme)
             self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ItemDataRole.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
 
@@ -184,8 +185,13 @@ class InterfaceOptionsPage(OptionsPage):
         warnings = []
         notes = []
         if new_theme_setting != config.setting['ui_theme']:
-            warnings.append(_("You have changed the application theme."))
             config.setting['ui_theme'] = new_theme_setting
+            # Apply the theme change live
+            wanted_theme = UiTheme(new_theme_setting)
+            app = self.tagger
+            if wanted_theme == UiTheme.DEFAULT:
+                wanted_theme = theme.get_system_theme(app)
+            theme.apply_theme(app, wanted_theme)
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
             warnings.append(_("You have changed the interface language."))
