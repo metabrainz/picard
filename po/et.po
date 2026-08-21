@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-20 06:36+0000\n"
+"PO-Revision-Date: 2026-08-21 07:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -751,9 +751,8 @@ msgid "Minimum margin"
 msgstr ""
 
 #: picard/options.py:483
-#, fuzzy
 msgid "Similarity for matching files to tracks"
-msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
+msgstr "Sarnasus failide klapitamisel lugudega"
 
 #: picard/options.py:488
 msgid "Translation locales"
@@ -1477,16 +1476,13 @@ msgid "the file name matches"
 msgstr "Failinimi piltide jaoks"
 
 #: picard/coverart/providers/local.py:67
-#, fuzzy
-#| msgid "The file naming format must not be empty."
 msgid "the file name does not match"
-msgstr "Failinimeskeem ei tohi olla tühi."
+msgstr "failinimed ei klapi"
 
 #: picard/coverart/providers/local.py:89 picard/ui/options/advanced.py:92
-#, fuzzy, python-format
-#| msgid "Ignore file paths (regular expression)"
+#, python-format
 msgid "Invalid regular expression: %s"
-msgstr "Eira faile, mille asukoht vastab regulaaravaldisele"
+msgstr "Vigane regulaaravaldis: %s"
 
 #: picard/coverart/providers/local.py:105
 msgid "Local Files"
@@ -1633,16 +1629,8 @@ msgid "$if(if,then[,else])"
 msgstr "$if(if,then[,else])"
 
 #: picard/script/functions.py:76
-#, fuzzy
-#| msgid ""
-#| "`$if(if,then,else)`\n"
-#| "\n"
-#| "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgid "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr ""
-"`$if(tingimus,siis,muidu)`\n"
-"\n"
-"Kui `tingimus` pole tühi, tagastab `siis`, muul juhul tagastab `muidu`."
+msgstr "Kui `tingimus` pole tühi, tagastab `siis`, muul juhul tagastab `muidu`."
 
 #: picard/script/functions.py:88
 msgid "$if2(a1,a2,a3,…)"
@@ -1663,64 +1651,32 @@ msgid "$left(text,number)"
 msgstr "$left(text,number)"
 
 #: picard/script/functions.py:109
-#, fuzzy
-#| msgid ""
-#| "`$left(text,number)`\n"
-#| "\n"
-#| "Returns the first `number` characters from `text`."
 msgid "Returns the first `number` characters from `text`."
-msgstr ""
-"`$left(tekst,arv)`\n"
-"\n"
-"Tagastab `teksti` esimesed `arv` märki."
+msgstr "Tagastab `teksti` esimesed `arv` märki."
 
 #: picard/script/functions.py:119
 msgid "$right(text,number)"
 msgstr ""
 
 #: picard/script/functions.py:120
-#, fuzzy
-#| msgid ""
-#| "`$right(text,number)`\n"
-#| "\n"
-#| "Returns the last `number` characters from `text`."
 msgid "Returns the last `number` characters from `text`."
-msgstr ""
-"`$right(tekst,arv)`\n"
-"\n"
-"Tagastab `teksti` viimased `arv` märki."
+msgstr "Tagastab `teksti` viimased `arv` märki."
 
 #: picard/script/functions.py:130
 msgid "$lower(text)"
 msgstr "$lower(text)"
 
 #: picard/script/functions.py:131
-#, fuzzy
-#| msgid ""
-#| "`$lower(text)`\n"
-#| "\n"
-#| "Returns `text` in lower case."
 msgid "Returns `text` in lower case."
-msgstr ""
-"`$lower(tekst)`\n"
-"\n"
-"Tagastab `teksti` väiketähtedega."
+msgstr "Vormindab `teksti` väiketähtedeks."
 
 #: picard/script/functions.py:138
 msgid "$upper(text)"
 msgstr "$upper(text)"
 
 #: picard/script/functions.py:139
-#, fuzzy
-#| msgid ""
-#| "`$upper(text)`\n"
-#| "\n"
-#| "Returns `text` in upper case."
 msgid "Returns `text` in upper case."
-msgstr ""
-"`$upper(tekst)`\n"
-"\n"
-"Tagastab `teksti` suurtähtedega."
+msgstr "Vormindab `teksti` suurtähtedeks."
 
 #: picard/script/functions.py:146
 msgid "$pad(text,length,char)"
@@ -1749,18 +1705,10 @@ msgid "$replace(text,search,replace)"
 msgstr "$replace(text,search,replace)"
 
 #: picard/script/functions.py:173
-#, fuzzy
-#| msgid ""
-#| "`$replace(text,search,replace)`\n"
-#| "\n"
-#| "Replaces occurrences of `search` in `text` with value of `replace` and "
-#| "returns the resulting string."
 msgid ""
 "Replaces occurrences of `search` in `text` with value of `replace` and "
 "returns the resulting string."
 msgstr ""
-"`$replace(tekst,otsitav,asendus)`\n"
-"\n"
 "Asendab `tekstis` `otsitava` esinemiskorrad `asendusega` ja tagastab saadud "
 "stringi."
 
@@ -1785,16 +1733,8 @@ msgid "$in(x,y)"
 msgstr "$in(x,y)"
 
 #: picard/script/functions.py:209
-#, fuzzy
-#| msgid ""
-#| "`$in(x,y)`\n"
-#| "\n"
-#| "Returns true, if `x` contains `y`."
 msgid "Returns true, if `x` contains `y`."
-msgstr ""
-"`$in(x,y)`\n"
-"\n"
-"Tagastab tõese väärtuse, kui `x` sisaldab `y-it`."
+msgstr "Tagastab tõese väärtuse, kui `x` sisaldab `y-it`."
 
 #: picard/script/functions.py:220
 #, python-format
@@ -1855,15 +1795,8 @@ msgid "$num(number,length)"
 msgstr "$num(number,length)"
 
 #: picard/script/functions.py:300
-#, fuzzy
-#| msgid ""
-#| "`$num(number,length)`\n"
-#| "\n"
-#| "Returns `number` formatted to `length` digits (maximum 20)."
 msgid "Returns `number` formatted to `length` digits (maximum 20)."
 msgstr ""
-"`$num(arv,pikkus)`\n"
-"\n"
 "Tagastab `arvu`, millele on lisatud piisavalt algusnulle, et saavutada "
 "`pikkus` (max 20)."
 
@@ -2125,16 +2058,8 @@ msgid "Returns true if `x` equals `y`."
 msgstr "Tagastab tõese väärtuse, kui `x` on võrdne `y-ga`."
 
 #: picard/script/functions.py:639
-#, fuzzy
-#| msgid ""
-#| "`$ne(x,y)`\n"
-#| "\n"
-#| "Returns true if `x` does not equal `y`."
 msgid "Returns true if `x` does not equal `y`."
-msgstr ""
-"`$ne(x,y)`\n"
-"\n"
-"Tagastab tõese väärtuse, kui `x` ei ole võrdne `y-ga`."
+msgstr "Tagastab tõese väärtuse, kui `x` ei ole võrdne `y-ga`."
 
 #: picard/script/functions.py:682
 msgid "$lt(x,y[,type])"
@@ -2485,18 +2410,6 @@ msgid "$find(haystack,needle)"
 msgstr ""
 
 #: picard/script/functions.py:1109
-#, fuzzy
-#| msgid ""
-#| "`$find(haystack,needle)`\n"
-#| "\n"
-#| "Finds the location of one string within another.\n"
-#| "    Returns the index of the first occurrence of `needle` in `haystack`, "
-#| "or \"\" if `needle` was not found.\n"
-#| "\n"
-#| "_Since Picard 2.3_\n"
-#| "\n"
-#| "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was "
-#| "not found."
 msgid ""
 "Finds the location of one string within another.\n"
 "    Returns the index of the first occurrence of `needle` in `haystack`, or "
@@ -2507,8 +2420,6 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not "
 "found."
 msgstr ""
-"`$find(heinakuhi,nõel)`\n"
-"\n"
 "Leiab ühe stringi asukoha teise sees.\n"
 "    Tagastab `nõela` esimese esinemiskoha indeksi `heinakuhjas` või \"\" kui "
 "`nõela` ei leita.\n"
@@ -2950,11 +2861,11 @@ msgstr "Imporditud „%s“ failist"
 
 #: picard/script/serializer.py:322
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "Argument pole sõnastik"
 
 #: picard/script/serializer.py:324 picard/script/serializer.py:367
 msgid "Invalid script package"
-msgstr ""
+msgstr "Vigane skriptipakett"
 
 #: picard/script/serializer.py:334
 #, python-format
@@ -2993,23 +2904,20 @@ msgid "Waiting on network ({requests} requests)…"
 msgstr ""
 
 #: picard/session/session_loader.py:111
-#, fuzzy
-#| msgid "Loading…"
 msgid "Finalizing…"
-msgstr "Laadimine…"
+msgstr "Lõpetan…"
 
 #: picard/session/session_loader.py:114
 msgid "Reading session…"
-msgstr ""
+msgstr "Loen sessiooni…"
 
 #: picard/session/session_loader.py:115
 msgid "Applying overrides…"
-msgstr ""
+msgstr "Rakendan sürjutamisi…"
 
 #: picard/session/session_loader.py:119
-#, fuzzy
 msgid "Session restored"
-msgstr "Sihtkataloog:"
+msgstr "Sessioon on taastatud"
 
 #: picard/tags/docs.py:55
 #, python-brace-format
@@ -3023,22 +2931,20 @@ msgstr ""
 
 #: picard/tags/tagvar.py:67
 msgid "Notes"
-msgstr ""
+msgstr "Märkmed"
 
 #: picard/tags/tagvar.py:68
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Option Settings"
-msgstr "Kodeerija seadistused"
+msgstr "Valiku seadistused"
 
 #: picard/tags/tagvar.py:69 picard/ui/aboutdialog.py:189
 #: picard/ui/forms/ui_aboutdialog.py:253
 msgid "Links"
-msgstr ""
+msgstr "Lingid"
 
 #: picard/tags/tagvar.py:70
 msgid "See Also"
-msgstr ""
+msgstr "Vaata ka"
 
 #: picard/tags/tagvar.py:73
 msgid "No description available."
@@ -3046,7 +2952,7 @@ msgstr "Kirjeldust pole saadaval."
 
 #: picard/tags/tagvar.py:76
 msgid "multi-value variable"
-msgstr ""
+msgstr "mitme väärtusega muutuja"
 
 #: picard/tags/tagvar.py:77
 msgid "preserved read-only"
@@ -3119,15 +3025,12 @@ msgid "Official website"
 msgstr "Ametlik veebisait"
 
 #: picard/ui/aboutdialog.py:192 picard/ui/forms/ui_options_script.py:136
-#, fuzzy
 msgid "Documentation"
 msgstr "Dokumentatsioon"
 
 #: picard/ui/aboutdialog.py:193
-#, fuzzy
-#| msgid "Comment"
 msgid "Community forum"
-msgstr "Kommentaar"
+msgstr "Kogukonna foorum"
 
 #: picard/ui/aboutdialog.py:194
 msgid "License"
@@ -3210,23 +3113,19 @@ msgstr "Katalooginumbrid"
 #: picard/ui/cdlookup.py:152
 #, python-format
 msgid "View ISRCs (%(count)d)"
-msgstr ""
+msgstr "Vaata ISRC-koode (%(count)d)"
 
 #: picard/ui/cdlookup.py:224
-#, fuzzy
-#| msgid "Disc Id"
 msgid "Disc ISRCs"
-msgstr "Plaadi-ID"
+msgstr "Plaadi ISRC-koodid"
 
 #: picard/ui/cdlookup.py:245
-#, fuzzy
-#| msgid "Clos&e"
 msgid "&Close"
-msgstr "Sulge"
+msgstr "&Sulge"
 
 #: picard/ui/collectionmenu.py:64
 msgid "Refresh List"
-msgstr "Värskenda loendit"
+msgstr "Laadi loend uuesti"
 
 #: picard/ui/collectionmenu.py:155
 #, python-format
@@ -3241,7 +3140,7 @@ msgstr "Vigane olem"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
 msgid "Entities"
-msgstr ""
+msgstr "Olemid"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -3266,7 +3165,7 @@ msgstr "Logivaate tekst, silumisteave"
 #: picard/ui/colors.py:51 picard/ui/colors.py:52 picard/ui/colors.py:53
 #: picard/ui/colors.py:54 picard/ui/forms/ui_options_startup.py:131
 msgid "Logging"
-msgstr ""
+msgstr "Logimine"
 
 #: picard/ui/colors.py:52
 msgid "Log view text (error)"
@@ -4062,10 +3961,8 @@ msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox/imageurldialog.py:53
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "Kaanepilt"
+msgstr "Kaanepildi võrguaadress:"
 
 #: picard/ui/dialogs/installconfirm.py:51
 msgid "Confirm Plugin Installation"
@@ -4456,10 +4353,8 @@ msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:108
 #: picard/ui/widgets/plugindetailswidget.py:97
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors:"
-msgstr "Autorid"
+msgstr "Autorid:"
 
 #: picard/ui/dialogs/plugininfo.py:109
 #: picard/ui/widgets/plugindetailswidget.py:102
@@ -4469,10 +4364,8 @@ msgstr ""
 #: picard/ui/dialogs/plugininfo.py:110
 #: picard/ui/widgets/plugindetailswidget.py:110
 #: picard/ui/widgets/plugindetailswidget.py:189
-#, fuzzy
-#| msgid "Verbosity"
 msgid "Repository:"
-msgstr "Jutukus"
+msgstr "Lähtekoodihoidla:"
 
 #: picard/ui/dialogs/plugininfo.py:111
 #: picard/ui/forms/ui_scripteditor_details.py:104
@@ -4765,10 +4658,8 @@ msgid "Sessions directory:"
 msgstr "Sihtkataloog:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:116
-#, fuzzy
-#| msgid "Version"
 msgid "Saving sessions:"
-msgstr "Versioon"
+msgstr "Salvestan sessioone:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:117
 msgid "Auto-save every N minutes (0 to disable):"
@@ -4787,9 +4678,8 @@ msgid "Do not make MusicBrainz requests on restore"
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
-#, fuzzy
 msgid "Loading sessions:"
-msgstr "Valitud failide mängimine"
+msgstr "Laadin sessioone:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:122
 msgid "Load last saved session on startup"
@@ -4903,10 +4793,8 @@ msgid "Minimum height:"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:302
-#, fuzzy
-#| msgid "Only use images of the following size:"
 msgid "Resize images to the given size"
-msgstr "Kasutatakse vaid selles suuruses pilte:"
+msgstr "Muuda piltide suurused etteantud mõõdu alusel"
 
 #: picard/ui/forms/ui_options_cover_processing.py:303
 #, fuzzy
@@ -5227,10 +5115,8 @@ msgid "Use advanced query syntax"
 msgstr "Laiendatud päringusüntaks"
 
 #: picard/ui/forms/ui_options_maintenance.py:146
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration file:"
-msgstr "Vaja on seadistamist"
+msgstr "Seadistustefail:"
 
 #: picard/ui/forms/ui_options_maintenance.py:147
 msgid "Open folder…"
@@ -5275,7 +5161,7 @@ msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
 
 #: picard/ui/forms/ui_options_matching.py:141
 msgid "Ignore track duration difference under this number of seconds"
-msgstr "Lubatav erinevus rajapikkustes (sek):"
+msgstr "Eira lugude kestuse erinevust antud sekundite võrra"
 
 #: picard/ui/forms/ui_options_matching.py:142
 #, fuzzy
@@ -5308,10 +5194,8 @@ msgid "Tags to ignore for comparison:"
 msgstr "Võrdlemisel eiratavad sildid:"
 
 #: picard/ui/forms/ui_options_metadata.py:190
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names:"
-msgstr "Kasutatakse standardiseeritud esitajanimesid"
+msgstr "Normaliseeri esitajate nimesid:"
 
 #: picard/ui/forms/ui_options_metadata.py:193
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -5354,10 +5238,8 @@ msgid "Track titles"
 msgstr "Lood"
 
 #: picard/ui/forms/ui_options_metadata.py:202
-#, fuzzy
-#| msgid "Preferred Releases"
 msgid "Preferred locales:"
-msgstr "Eelistatud väljalasked"
+msgstr "Eelistatud lokaadid:"
 
 #: picard/ui/forms/ui_options_metadata.py:203
 #: picard/ui/forms/ui_options_metadata.py:205
@@ -5377,9 +5259,8 @@ msgid "Various artists:"
 msgstr "Mitu esitajat:"
 
 #: picard/ui/forms/ui_options_metadata.py:209
-#, fuzzy
 msgid "Standalone recordings:"
-msgstr "Eraldiseisev salvestis"
+msgstr "Eraldiseisvad salvestised:"
 
 #: picard/ui/forms/ui_options_metadata.py:210
 #: picard/ui/forms/ui_options_metadata.py:211
@@ -5847,10 +5728,8 @@ msgstr ""
 "eeldatakse, et tegu on esikaanega."
 
 #: picard/ui/forms/ui_scripteditor.py:214
-#, fuzzy
-#| msgid "Rename script"
 msgid "Edit file naming script:"
-msgstr "Nimeta skript ümber"
+msgstr "Muuda nimemuutmise skripti:"
 
 #: picard/ui/forms/ui_scripteditor.py:215
 msgid "Select the file naming script to load into the editor"
@@ -5870,9 +5749,8 @@ msgid "Version number of the file naming script."
 msgstr ""
 
 #: picard/ui/forms/ui_scripteditor_details.py:99
-#, fuzzy
 msgid "Last Updated:"
-msgstr "Viimati uuendatud"
+msgstr "Viimati uuendatud:"
 
 #: picard/ui/forms/ui_scripteditor_details.py:100
 msgid "Date and time the file naming script was last updated (UTC)."
@@ -5883,9 +5761,8 @@ msgid "Now"
 msgstr ""
 
 #: picard/ui/forms/ui_scripteditor_details.py:102
-#, fuzzy
 msgid "Author:"
-msgstr "Autorid"
+msgstr "Autor:"
 
 #: picard/ui/forms/ui_scripteditor_details.py:106
 msgid "License under which the file naming script is available."
@@ -5974,16 +5851,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/infodialog/dialog.py:289
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"Välises vaatajas avamiseks tee topeltklõps\n"
-"Ajutine fail: %(tempfile)s\n"
-"Allikas: %(sourcefile)s"
+msgstr "Topeltklõpsa välises vaatajas avamiseks"
 
 #: picard/ui/infodialog/dialog.py:294
 msgid "Missing temporary file"
@@ -6829,10 +6698,8 @@ msgid "&Tools"
 msgstr "&Tööriistad"
 
 #: picard/ui/mainwindow/__init__.py:1047
-#, fuzzy
-#| msgid "Plugins"
 msgid "&Plugin Tools"
-msgstr "Pluginad"
+msgstr "&Lisamoodulite tarvikud"
 
 #: picard/ui/mainwindow/__init__.py:1054 picard/ui/scripteditor/__init__.py:331
 msgid "&Help"
@@ -6849,11 +6716,11 @@ msgstr "&Otsing"
 
 #: picard/ui/mainwindow/__init__.py:1200
 msgid "&Advanced search"
-msgstr "Täpsem otsing"
+msgstr "&Täpsem otsing"
 
 #: picard/ui/mainwindow/__init__.py:1201
 msgid "&Builtin search"
-msgstr "Sisseehitatud otsing"
+msgstr "&Sisseehitatud otsing"
 
 #: picard/ui/mainwindow/__init__.py:1291
 msgid "All supported formats"
@@ -6952,9 +6819,8 @@ msgid "collections"
 msgstr "Kogud"
 
 #: picard/ui/mainwindow/__init__.py:2037
-#, fuzzy
 msgid "personal genres/tags"
-msgstr "Stiilimärgendi vähim lubatud kasutus:"
+msgstr "isiklikud žanrid/sildid"
 
 #: picard/ui/mainwindow/__init__.py:2041
 msgid "Your current settings require logging in to MusicBrainz to access:"
@@ -7088,7 +6954,7 @@ msgstr "Valitud failide salvestamine"
 
 #: picard/ui/mainwindow/actions.py:197
 msgid "Move to &trash"
-msgstr "Viska prügikasti"
+msgstr "Viska &prügikasti"
 
 #: picard/ui/mainwindow/actions.py:199
 #, fuzzy
@@ -7231,9 +7097,8 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow/actions.py:352
-#, fuzzy
 msgid "&Metadata"
-msgstr "Metaandmed"
+msgstr "&Metaandmed"
 
 #: picard/ui/mainwindow/actions.py:356
 msgid "Ctrl+Shift+M"
@@ -7418,10 +7283,8 @@ msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow/actions.py:541
-#, fuzzy
-#| msgid "Play"
 msgid "&Play"
-msgstr "Esita"
+msgstr "&Esita"
 
 #: picard/ui/mainwindow/actions.py:542 picard/ui/player/toolbar.py:70
 msgid "Play selected files"
@@ -7649,7 +7512,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:310
 msgid "&Restore all Defaults"
-msgstr "Taasta kõik vaikeseaded"
+msgstr "&Taasta kõik vaikeseadistused"
 
 #: picard/ui/options/dialog.py:311
 msgid "Reset all of Picard's settings"
@@ -7817,16 +7680,12 @@ msgid "Genres"
 msgstr "Muusikastiilid"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
 msgid "Test genres filter:"
-msgstr "Failid &nimetatakse ümber"
+msgstr "Testi žanrifiltrit:"
 
 #: picard/ui/options/genres.py:100
-#, fuzzy
-#| msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgid "Enter genres or folksonomy tags to test, one per line."
-msgstr ""
-"Kaasatavad või eiratavad stiili- ja folksonoomiamärgendid, üks rea kohta:"
+msgstr "Sisesta testitavad žanri- või folksonoomiamärgendid, üks rea kohta."
 
 #: picard/ui/options/genres.py:101
 msgid "the tag will be kept"
@@ -8372,10 +8231,8 @@ msgid "No enabled scripts"
 msgstr "Nimeta skript ümber"
 
 #: picard/ui/options/profiles.py:342
-#, fuzzy
-#| msgid "Rename script"
 msgid "Enabled scripts:"
-msgstr "Nimeta skript ümber"
+msgstr "Kasutusel skriptid:"
 
 #: picard/ui/options/profiles.py:347
 #, fuzzy
@@ -8846,9 +8703,8 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor/__init__.py:277
-#, fuzzy
 msgid "&Script"
-msgstr "Kirjasüsteem"
+msgstr "&Skript"
 
 #: picard/ui/scripteditor/__init__.py:280
 msgid "View/Edit Script &Metadata"
@@ -8863,9 +8719,8 @@ msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor/__init__.py:286
-#, fuzzy
 msgid "Add a &new script"
-msgstr "Lisa uus skript"
+msgstr "Lisa &uus skript"
 
 #: picard/ui/scripteditor/__init__.py:291
 msgid "&Copy the current script"
@@ -9146,7 +9001,7 @@ msgstr "Taasta algsed veerud"
 
 #: picard/ui/widgets/configurablecolumnsheader.py:198
 msgid "Lock columns"
-msgstr ""
+msgstr "Lukusta veerud"
 
 #: picard/ui/widgets/configurablecolumnsheader.py:224
 msgid "Manage custom columns…"
@@ -9163,44 +9018,36 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:205
 #: picard/ui/widgets/plugindetailswidget.py:385
 #: picard/ui/widgets/pluginlistwidget.py:627
-#, fuzzy
 msgid "Update"
-msgstr "Viimati uuendatud"
+msgstr "Uuenda"
 
 #: picard/ui/widgets/plugindetailswidget.py:122
 #: picard/ui/widgets/pluginlistwidget.py:632
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall"
-msgstr "Eemalda plugin"
+msgstr "Eemalda"
 
 #: picard/ui/widgets/plugindetailswidget.py:126
 #: picard/ui/widgets/pluginlistwidget.py:647
 msgid "Information"
-msgstr ""
+msgstr "Teave"
 
 #: picard/ui/widgets/plugindetailswidget.py:154
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available"
-msgstr "Uus versioon saadaval"
+msgstr "Kirjeldust pole saadaval"
 
 #: picard/ui/widgets/plugindetailswidget.py:197
 #: picard/ui/widgets/pluginlistwidget.py:624
 msgid "Reload"
-msgstr ""
+msgstr "Laadi uuesti"
 
 #: picard/ui/widgets/plugindetailswidget.py:245
 #: picard/ui/widgets/plugindetailswidget.py:367
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Failed"
-msgstr "Eemalda plugin"
+msgstr "Eemaldamine ei õnnestunud"
 
 #: picard/ui/widgets/plugindetailswidget.py:280
-#, fuzzy
 msgid "N/A"
-msgstr "pole"
+msgstr "pole teada"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
 #, python-brace-format
@@ -9208,10 +9055,8 @@ msgid "Update to {version}"
 msgstr "Uuenda versioonini {version}"
 
 #: picard/ui/widgets/plugindetailswidget.py:314
-#, fuzzy
-#| msgid "Update Checking"
 msgid "Update Plugin"
-msgstr "Uuenduste otsimine"
+msgstr "Uuenda lisamoodulit"
 
 #: picard/ui/widgets/plugindetailswidget.py:315
 #, python-brace-format
@@ -9220,31 +9065,32 @@ msgid ""
 "\n"
 "Do you want to update it anyway?"
 msgstr ""
+"„{name}“ on märgitud automaatselt mitteuuendatavaks.\n"
+"\n"
+"Kas tahaksid seda ikkagi teha?"
 
 #: picard/ui/widgets/plugindetailswidget.py:367
 #, python-brace-format
 msgid "Failed to uninstall plugin: {errmsg}"
-msgstr ""
+msgstr "Lisamooduli eemaldamine ei õnnestunud: {errmsg}"
 
 #: picard/ui/widgets/plugindetailswidget.py:374
-#, fuzzy
-#| msgid "Loading…"
 msgid "Updating…"
-msgstr "Laadimine…"
+msgstr "Uuendan…"
 
 #: picard/ui/widgets/pluginformat.py:32
 msgid "current"
-msgstr ""
+msgstr "praegune"
 
 #: picard/ui/widgets/pluginformat.py:33
 #, python-brace-format
 msgid "Commit date: {date}"
-msgstr ""
+msgstr "Sissekande kuupäev: {date}"
 
 #: picard/ui/widgets/pluginlistwidget.py:94
 #: picard/ui/widgets/pluginlistwidget.py:106
 msgid "Update All"
-msgstr ""
+msgstr "Uuenda kõik"
 
 #: picard/ui/widgets/pluginlistwidget.py:102
 #, python-brace-format
@@ -9256,69 +9102,59 @@ msgid "Enabled"
 msgstr "Lubatud"
 
 #: picard/ui/widgets/pluginlistwidget.py:148
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin"
-msgstr "Pluginad"
+msgstr "Lisamoodul"
 
 #: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Version"
 msgstr "Versioon"
 
 #: picard/ui/widgets/pluginlistwidget.py:148
-#, fuzzy
-#| msgid "Version"
 msgid "New Version"
-msgstr "Versioon"
+msgstr "Uus versioon"
 
 #: picard/ui/widgets/pluginlistwidget.py:314
 msgid "This plugin is included in updates"
-msgstr ""
+msgstr "See lisamoodul on uuendustesse kaasatud"
 
 #: picard/ui/widgets/pluginlistwidget.py:316
 msgid "This plugin is excluded from updates"
-msgstr ""
+msgstr "See lisamoodul pole uuendustesse kaasatud"
 
 #: picard/ui/widgets/pluginlistwidget.py:328
 msgid "In Progress…"
-msgstr ""
+msgstr "Töös…"
 
 #: picard/ui/widgets/pluginlistwidget.py:337
 #: picard/ui/widgets/pluginlistwidget.py:371
 #: picard/ui/widgets/pluginlistwidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:381
 msgid "Available"
-msgstr ""
+msgstr "Saadaval"
 
 #: picard/ui/widgets/pluginlistwidget.py:611
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable"
-msgstr "Keelatud"
+msgstr "Lülita välja"
 
 #: picard/ui/widgets/pluginlistwidget.py:614
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Lubatud"
+msgstr "Lülita sisse"
 
 #: picard/ui/widgets/pluginlistwidget.py:636
 msgid "Reinstall"
-msgstr ""
+msgstr "Paigalda uuesti"
 
 #: picard/ui/widgets/pluginlistwidget.py:641
 msgid "Switch Ref"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:654
-#, fuzzy
-#| msgid "Destination directory:"
 msgid "View Directory"
-msgstr "Sihtkataloog:"
+msgstr "Vaata kausta"
 
 #: picard/ui/widgets/pluginlistwidget.py:656
 msgid "View Repository"
-msgstr ""
+msgstr "Vaata lähtekoodihoidlat"
 
 #: picard/ui/widgets/pluginlistwidget.py:662
 msgid "Report a Bug"
@@ -9326,7 +9162,7 @@ msgstr "Teata veast"
 
 #: picard/ui/widgets/pluginlistwidget.py:668
 msgid "Execution Order"
-msgstr ""
+msgstr "Käivitamise järjestus"
 
 #: picard/ui/widgets/pluginlistwidget.py:677
 #: picard/ui/widgets/pluginlistwidget.py:684
@@ -9334,10 +9170,8 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:733
 #: picard/ui/widgets/pluginlistwidget.py:763
 #: picard/ui/widgets/pluginlistwidget.py:849
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Error"
-msgstr "Pluginad"
+msgstr "Lisamooduli viga"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
 #, python-brace-format
@@ -9427,13 +9261,11 @@ msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:935
 msgid "No Data"
-msgstr ""
+msgstr "Andmeid pole"
 
 #: picard/ui/widgets/pluginlistwidget.py:955
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Plugin"
-msgstr "Eemalda plugin"
+msgstr "Eemalda lisamoodul"
 
 #: picard/ui/widgets/pluginlistwidget.py:963
 #, python-brace-format
@@ -9442,11 +9274,11 @@ msgstr "Kas oled kindel, et soovid „{name}“ lisamooduli eemaldada?"
 
 #: picard/ui/widgets/pluginlistwidget.py:966
 msgid "Also remove plugin configuration"
-msgstr ""
+msgstr "Lisaks eemalda lisamooduli seadistused"
 
 #: picard/ui/widgets/pluginlistwidget.py:967
 msgid "Remove all saved settings and configuration for this plugin"
-msgstr ""
+msgstr "Eemalda selle lisamooduli kõik seadistused ning andmed"
 
 #: picard/ui/widgets/pluginlistwidget.py:971
 msgid "Yes, Uninstall!"
@@ -9475,27 +9307,23 @@ msgstr ""
 
 #: picard/ui/widgets/preferencelistwidget.py:35
 msgid "Add…"
-msgstr ""
+msgstr "Lisa…"
 
 #: picard/ui/widgets/preferencelistwidget.py:90
-#, fuzzy
-#| msgid "Move tag up"
 msgid "Move up"
-msgstr "Liiguta silt ülespoole"
+msgstr "Liiguta ülespoole"
 
 #: picard/ui/widgets/preferencelistwidget.py:91
-#, fuzzy
-#| msgid "Move tag down"
 msgid "Move down"
-msgstr "Liiguta silt allapoole"
+msgstr "Liiguta allapoole"
 
 #: picard/ui/widgets/profilelistwidget.py:54
 msgid "Rename profile"
-msgstr ""
+msgstr "Muuda profiili nime"
 
 #: picard/ui/widgets/profilelistwidget.py:57
 msgid "Remove profile"
-msgstr ""
+msgstr "Eemalda profiil"
 
 #: picard/ui/widgets/profilelistwidget.py:61
 msgid "Export profile…"
@@ -9503,20 +9331,19 @@ msgstr "Ekspordi profiil…"
 
 #: picard/ui/widgets/profilelistwidget.py:65
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Kopeeri lõikelauale"
 
 #: picard/ui/widgets/profilelistwidget.py:69
 msgid "Import and replace…"
-msgstr ""
+msgstr "Impordi ja asenda…"
 
 #: picard/ui/widgets/profilelistwidget.py:72
 msgid "Import from clipboard"
-msgstr ""
+msgstr "Impordi lõikelaualt"
 
 #: picard/ui/widgets/profilelistwidget.py:109
-#, fuzzy
 msgid "Are you sure you want to remove this profile?"
-msgstr "Kas oled kindel, et soovid selle skripti eemaldada?"
+msgstr "Kas oled kindel, et soovid selle profiili eemaldada?"
 
 #: picard/ui/widgets/refselector.py:70
 msgid "Branches"
@@ -9527,19 +9354,17 @@ msgid "Enter custom ref (tag, branch, or commit):"
 msgstr ""
 
 #: picard/ui/widgets/refselector.py:81
-#, fuzzy
-#| msgid "Custom Fields"
 msgid "Custom"
-msgstr "Kohandatud väljad"
+msgstr "Kohandatud"
 
 #: picard/ui/widgets/refselector.py:120
 #, python-brace-format
 msgid "Recommended: <b>{ref}</b> ({description})"
-msgstr ""
+msgstr "Soovitatud: <b>{ref}</b> ({description})"
 
 #: picard/ui/widgets/refselector.py:123
 msgid "Use the default ref (usually main/master branch)"
-msgstr ""
+msgstr "Kasuta vaikimisi viidet (tavaliselt on haru nimeks main/master)"
 
 #: picard/ui/widgets/scriptdocumentation.py:132
 #, python-brace-format
@@ -9548,34 +9373,32 @@ msgstr "Lisamoodul: {plugin_name}"
 
 #: picard/ui/widgets/scriptdocumentation.py:207
 msgid "Find:"
-msgstr ""
+msgstr "Otsi:"
 
 #: picard/ui/widgets/scriptdocumentation.py:222
 msgid "Find previous"
-msgstr ""
+msgstr "Leia eelmine"
 
 #: picard/ui/widgets/scriptdocumentation.py:229
 msgid "Find next"
-msgstr ""
+msgstr "Leia järgmine"
 
 #: picard/ui/widgets/scriptdocumentation.py:243
-#, fuzzy
-#| msgid "Actions"
 msgid "Functions"
-msgstr "Toimingud"
+msgstr "Funktsioonid"
 
 #: picard/ui/widgets/scriptdocumentation.py:258
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "Ava skriptikoostamise juhend veebibrauseris"
 
 #: picard/ui/widgets/scriptdocumentation.py:288
 #, python-brace-format
 msgid "({item} of {total})"
-msgstr ""
+msgstr "({item} / {total})"
 
 #: picard/ui/widgets/scriptdocumentation.py:290
 msgid "(not found)"
-msgstr ""
+msgstr "(ei leidu)"
 
 #: picard/ui/widgets/scriptlistwidget.py:58
 msgid "Rename script"
@@ -9595,14 +9418,16 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
+"<em>Funktsooni <code>$%s</code> pole olemas.<br><br>Ons ul mõni lisamoodul "
+"puudu?</em>"
 
 #: picard/ui/widgets/scripttextedit.py:425
 msgid "&Word wrap script"
-msgstr ""
+msgstr "&Murra pikad read"
 
 #: picard/ui/widgets/scripttextedit.py:426
 msgid "Word wrap long lines in the editor"
-msgstr ""
+msgstr "Muura skripti muutmisvaates pikad read"
 
 #: picard/ui/widgets/scripttextedit.py:428
 msgid "Ctrl+Shift+W"
@@ -9610,15 +9435,15 @@ msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:434
 msgid "Show help &tooltips"
-msgstr ""
+msgstr "Näita abiteavet ja koh&tvihjeid"
 
 #: picard/ui/widgets/scripttextedit.py:435
 msgid "Show tooltips for script elements"
-msgstr ""
+msgstr "Näita skripti elementide kohtvihjeid"
 
 #: picard/util/__init__.py:446
 msgid "No Title"
-msgstr ""
+msgstr "Pealkirja pole"
 
 #: picard/util/bytes2human.py:43
 #, python-format
@@ -9726,22 +9551,22 @@ msgstr ""
 #: picard/util/time.py:47
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
-msgstr ""
+msgstr "%(days).2d pv %(hours).2d t"
 
 #: picard/util/time.py:49
 #, python-format
 msgid "%(hours).2dh %(minutes).2dm"
-msgstr ""
+msgstr "%(hours).2d t %(minutes).2d min"
 
 #: picard/util/time.py:51
 #, python-format
 msgid "%(minutes).2dm %(seconds).2ds"
-msgstr ""
+msgstr "%(minutes).2d min %(seconds).2d sek"
 
 #: picard/util/time.py:53
 #, python-format
 msgid "%(seconds).2ds"
-msgstr ""
+msgstr "%(seconds).2d sek"
 
 #: picard/util/versions.py:108
 msgid "is not installed"
