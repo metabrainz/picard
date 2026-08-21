@@ -13,7 +13,6 @@
 # Copyright (C) 2014 Shadab Zafar
 # Copyright (C) 2014-2015, 2018-2021, 2023-2026 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
-# Copyright (C) 2017 Frederik "Freso" S. Olesen
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2023 tuspar
