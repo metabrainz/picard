@@ -70,3 +70,26 @@ class InterfaceColorsTest(PicardTestCase):
 
     def test_interface_colors_default(self):
         self.assertIsInstance(interface_colors, InterfaceColors)
+
+    def test_reload_switches_color_set(self):
+        """Test that reload() picks up colors for the current theme."""
+        # Create instance for light theme
+        colors = InterfaceColors(dark_theme=False)
+        colors.load_from_config()
+        light_log_debug = colors.get_color('log_debug')
+
+        # Switch to dark theme and reload
+        colors._dark_theme = True
+        colors.reload()
+        dark_log_debug = colors.get_color('log_debug')
+
+        # Dark and light should differ for log_debug
+        self.assertNotEqual(light_log_debug, dark_log_debug)
+
+    def test_reload_loads_user_config(self):
+        """Test that reload() loads user customizations from config."""
+        # Set a known value in config first
+        config.setting['interface_colors'] = {'entity_error': '#112233'}
+        colors = InterfaceColors(dark_theme=False)
+        colors.reload()
+        self.assertEqual(colors.get_color('entity_error'), '#112233')
