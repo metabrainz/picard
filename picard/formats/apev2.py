@@ -6,6 +6,7 @@
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Calvin Walton
 # Copyright (C) 2013-2015, 2018-2021, 2023-2026 Laurent Monin
+# Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2024 Giorgio Fontanive

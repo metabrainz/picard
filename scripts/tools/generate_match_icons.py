@@ -17,7 +17,6 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-#
 # Generate match quality icon PNGs for MusicBrainz Picard.
 #
 # This script produces the static icon files used at runtime.  The rendering

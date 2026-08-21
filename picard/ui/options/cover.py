@@ -9,6 +9,7 @@
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2025 Khoa Nguyen
 # Copyright (C) 2026 Bryan Roessler
 #
 # This program is free software; you can redistribute it and/or

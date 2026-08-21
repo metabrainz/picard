@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2021-2022, 2025 Philipp Wolfer
 # Copyright (C) 2021-2026 Laurent Monin
+# Copyright (C) 2025 Khoa Nguyen
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

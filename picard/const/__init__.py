@@ -14,6 +14,7 @@
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
+# Copyright (C) 2025 Khoa Nguyen
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
