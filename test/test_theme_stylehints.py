@@ -327,18 +327,21 @@ class TestGenericTheme:
     """Generic theme behavior."""
 
     def test_apply_theme_light(self, mock_palette):
-        """Test WindowsTheme uses apply_dark_theme_to_palette in update_palette."""
+        """Test that light theme does not apply dark palette colors."""
         app = MagicMock()
         app.palette.return_value = mock_palette
+        app.style.return_value.standardPalette.return_value = mock_palette
         theme = theme_mod.GenericTheme()
 
         with (
             patch("picard.ui.theme.set_color_scheme") as mock_set_color_scheme,
-            patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply,
+            patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply_dark,
+            patch("picard.ui.theme.apply_light_theme_to_palette") as mock_apply_light,
         ):
             theme.apply_theme(app, theme_mod.UiTheme.LIGHT)
             mock_set_color_scheme.assert_called_once()
-            mock_apply.assert_not_called()
+            mock_apply_dark.assert_not_called()
+            mock_apply_light.assert_called_once_with(mock_palette)
 
     def test_apply_theme_dark(self, mock_palette):
         """Test WindowsTheme uses apply_dark_theme_to_palette in update_palette."""

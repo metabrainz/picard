@@ -64,6 +64,27 @@ DARK_PALETTE_COLORS = {
     (QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText): QtCore.Qt.GlobalColor.white,
 }
 
+# Light palette colors matching Fusion's standard light appearance.
+# Used as a fallback when setColorScheme does not take effect (e.g., Linux
+# without QT_PLATFORM_THEME=gnome) and standardPalette() remains dark.
+LIGHT_BG_COLOR = QtGui.QColor(239, 239, 239)
+
+LIGHT_PALETTE_COLORS = {
+    QtGui.QPalette.ColorRole.Window: LIGHT_BG_COLOR,
+    QtGui.QPalette.ColorRole.WindowText: QtCore.Qt.GlobalColor.black,
+    QtGui.QPalette.ColorRole.Base: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.AlternateBase: LIGHT_BG_COLOR,
+    QtGui.QPalette.ColorRole.ToolTipBase: QtGui.QColor(255, 255, 220),
+    QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.black,
+    QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.black,
+    QtGui.QPalette.ColorRole.Button: LIGHT_BG_COLOR,
+    QtGui.QPalette.ColorRole.ButtonText: QtCore.Qt.GlobalColor.black,
+    QtGui.QPalette.ColorRole.BrightText: QtCore.Qt.GlobalColor.red,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text): QtCore.Qt.GlobalColor.darkGray,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText): QtCore.Qt.GlobalColor.darkGray,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base): LIGHT_BG_COLOR,
+}
+
 
 OS_SUPPORTS_THEMES = True
 AppKit = None
@@ -144,6 +165,16 @@ def apply_dark_palette_colors(palette: QtGui.QPalette) -> None:
             palette.setColor(key, value)
 
 
+def apply_light_palette_colors(palette: QtGui.QPalette) -> None:
+    """Apply light palette colors to the given palette."""
+    for key, value in LIGHT_PALETTE_COLORS.items():
+        if isinstance(key, tuple):
+            group, role = key
+            palette.setColor(group, role, value)
+        else:
+            palette.setColor(key, value)
+
+
 def set_color_scheme(color_scheme: QtCore.Qt.ColorScheme) -> None:
     """Set the color scheme using style hints if available.
 
@@ -179,6 +210,22 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
     # colors to the palette.
     if not palette_is_dark(palette):
         apply_dark_palette_colors(palette)
+
+
+def apply_light_theme_to_palette(palette: QtGui.QPalette) -> None:
+    """Apply light theme colors to the given palette.
+
+    The function applies a lightness check on the existing palette's base color. Only
+    if the base color appears to be dark, light colors are applied to the palette.
+
+    Args:
+        palette: The palette to apply light colors to
+    """
+    # If setColorScheme worked, standardPalette() already returns a light palette.
+    # But if it didn't (e.g., Linux without proper platform theme integration),
+    # the palette may still be dark. Explicitly apply light colors in that case.
+    if palette_is_dark(palette):
+        apply_light_palette_colors(palette)
 
 
 def get_accent_color_from_palette(palette: QtGui.QPalette) -> QtGui.QColor:
@@ -295,6 +342,8 @@ class BaseTheme(QtCore.QObject):
         palette = style.standardPalette() if style else QtGui.QPalette()
         if ui_theme == UiTheme.DARK:
             apply_dark_theme_to_palette(palette)
+        else:
+            apply_light_theme_to_palette(palette)
         if self._accent_color and self._accent_color_is_system:
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
