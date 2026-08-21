@@ -116,6 +116,7 @@ class InterfaceOptionsPage(OptionsPage):
             idx = self.ui.ui_theme.findData(ui_theme)
             self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ItemDataRole.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
+        self.ui.ui_theme.currentIndexChanged.connect(self._on_theme_changed)
 
         self.ui.ui_language.addItem(_("System default"), '')
         language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
@@ -147,6 +148,17 @@ class InterfaceOptionsPage(OptionsPage):
         self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
         self.ui.vboxlayout1.addWidget(self.reset_tutorial_button)
 
+    def _on_theme_changed(self, index):
+        """Apply the theme immediately when the user selects it."""
+        selected_theme = self.ui.ui_theme.itemData(index)
+        if selected_theme is None:
+            return
+        wanted_theme = selected_theme
+        app = self.tagger
+        if wanted_theme == UiTheme.DEFAULT:
+            wanted_theme = theme.get_system_theme(app)
+        theme.apply_theme(app, wanted_theme)
+
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
@@ -165,7 +177,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory.setChecked(config.setting['starting_directory'])
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
+        self.ui.ui_theme.blockSignals(True)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+        self.ui.ui_theme.blockSignals(False)
 
         # re-enable the multi-selection warning
         self.ui.allow_multi_dirs_selection.blockSignals(False)
@@ -186,12 +200,6 @@ class InterfaceOptionsPage(OptionsPage):
         notes = []
         if new_theme_setting != config.setting['ui_theme']:
             config.setting['ui_theme'] = new_theme_setting
-            # Apply the theme change live
-            wanted_theme = UiTheme(new_theme_setting)
-            app = self.tagger
-            if wanted_theme == UiTheme.DEFAULT:
-                wanted_theme = theme.get_system_theme(app)
-            theme.apply_theme(app, wanted_theme)
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
             warnings.append(_("You have changed the interface language."))
