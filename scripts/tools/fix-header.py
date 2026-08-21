@@ -68,7 +68,16 @@ def ranges(i):
 
 def extract_authors_from_gitlog(path):
     authors = {}
-    cmd = ['git', 'log', r'--pretty=format:%ad¤%aN¤%aE', r'--date=format:%Y', r'--', path]
+    cmd = [
+        'git',
+        'log',
+        r'--invert-grep',
+        r'--grep=fix-header:\ skip',
+        r'--pretty=format:%ad¤%aN¤%aE',
+        r'--date=format:%Y',
+        r'--',
+        path,
+    ]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)  # nosec: B603
     aliased = set()
     if result.returncode == 0:
