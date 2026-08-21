@@ -488,7 +488,7 @@ def main():
     logging.info("Found %d file(s) to process", len(files))
 
     # Try batch git log for all files at once (much faster for large sets)
-    authors_cache = {}
+    authors_cache = None
     if not args.no_batch and len(files) > 1:
         logging.debug("Attempting batch git log for %d files", len(files))
         batch_result = batch_extract_authors_from_gitlog(list(files))
@@ -499,7 +499,12 @@ def main():
             logging.debug("Batch git log failed, falling back to per-file extraction")
 
     for path in sorted(files):
-        authors_from_log = authors_cache.get(path)
+        # If batch succeeded, use its result (even if empty for this path).
+        # Only fall back to per-file git log if batch didn't run at all.
+        if authors_cache is not None:
+            authors_from_log = authors_cache.get(path, {})
+        else:
+            authors_from_log = None
         new_content, info = fix_header(path, encoding=args.encoding, authors_from_log=authors_from_log)
         if new_content is None:
             logging.info("Skipping %s (%s)", path, info)
