@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 amckinle
-# Copyright (C) 2008-2010, 2014-2015, 2018-2025 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2026 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2010 Andrew Barnert
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -16,19 +14,21 @@
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013 brainz34
 # Copyright (C) 2013-2014, 2017 Sophist-UK
-# Copyright (C) 2013-2015, 2017-2024 Laurent Monin
+# Copyright (C) 2013-2015, 2017-2026 Laurent Monin
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Simon Legner
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2022-2023, 2025 Bob Swift
+# Copyright (C) 2018, 2022-2023, 2025-2026 Bob Swift
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2022 Kamil
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2025 Khoa Nguyen
+# Copyright (C) 2026 leo60228
 # Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
@@ -42,8 +42,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 import argparse

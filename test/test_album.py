@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2026 Laurent Monin
 # Copyright (C) 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
@@ -16,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from unittest.mock import (
     Mock,

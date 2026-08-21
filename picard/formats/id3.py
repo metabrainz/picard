@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2009, 2011-2012 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2021, 2023, 2025 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021, 2023, 2025-2026 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012 Johannes Weißl
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2011-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013-2014, 2017-2021, 2023-2024 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2021, 2023-2026 Laurent Monin
 # Copyright (C) 2013-2015, 2017, 2021 Sophist-UK
 # Copyright (C) 2015 Frederik “Freso” S. Olesen
 # Copyright (C) 2016 Christoph Reiter
@@ -18,7 +16,13 @@
 # Copyright (C) 2019 Zenara Daley
 # Copyright (C) 2023 certuna
 # Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2024 Yohay
 # Copyright (C) 2024 YohayAiTe
+# Copyright (C) 2025 Bob Swift
+# Copyright (C) 2025 Khoa Nguyen
+# Copyright (C) 2026 Bryan Roessler
+# Copyright (C) 2026 Deepak Tiwari
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,8 +35,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 from collections import Counter

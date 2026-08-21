@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2019-2023, 2026 Philipp Wolfer
-# Copyright (C) 2019-2025 Laurent Monin
+# Copyright (C) 2019-2026 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from collections import deque
 from collections.abc import Iterable

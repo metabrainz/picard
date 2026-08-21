@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2025 Bob Swift
 # Copyright (C) 2025 The MusicBrainz Picard Team
+# Copyright (C) 2025-2026 Laurent Monin
+# Copyright (C) 2025-2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 from picard.cluster import Cluster
 from picard.debug_opts import DebugOpt

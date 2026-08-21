@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2025 Khoa Nguyen
 # Copyright (C) 2025 The MusicBrainz Team
 #
 # This program is free software; you can redistribute it and/or
@@ -15,8 +14,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 """Value resolution chain for scripts: object, context, then parser.
 

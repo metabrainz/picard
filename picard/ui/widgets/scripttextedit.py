@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2014 m42i
-# Copyright (C) 2020-2024 Laurent Monin
-# Copyright (C) 2020-2024 Philipp Wolfer
+# Copyright (C) 2020-2026 Laurent Monin
+# Copyright (C) 2020-2026 Philipp Wolfer
 # Copyright (C) 2021-2022, 2025 Bob Swift
+# Copyright (C) 2025 Khoa Nguyen
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,8 +18,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 import contextlib

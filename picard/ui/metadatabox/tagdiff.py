@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2007, 2012 Lukáš Lalinský
 # Copyright (C) 2011-2014 Michael Wiencek
 # Copyright (C) 2012 Nikolai Prokoschenko
-# Copyright (C) 2013-2014, 2017-2025 Laurent Monin
+# Copyright (C) 2013-2014, 2017-2026 Laurent Monin
 # Copyright (C) 2013-2014, 2021 Sophist-UK
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Wieland Hoffmann
@@ -16,6 +14,8 @@
 # Copyright (C) 2020 Felix Schwarz
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2024 Arnab Chakraborty
+# Copyright (C) 2025 Bob Swift
+# Copyright (C) 2025 StevilKnevil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,8 +28,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
 from collections import (
