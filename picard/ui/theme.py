@@ -293,6 +293,16 @@ class BaseTheme(QtCore.QObject):
         if self._accent_color:
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
+        # Force all widgets to refresh their style and repaint.
+        # Unpolish + polish forces the style to recompute, and update()
+        # schedules a repaint. Use QWidget.update() directly to avoid
+        # calling overridden update() methods with different signatures.
+        if hasattr(app, 'allWidgets'):
+            style = app.style()
+            for widget in app.allWidgets():
+                style.unpolish(widget)
+                style.polish(widget)
+                QtWidgets.QWidget.update(widget)
         self._applied_theme = ui_theme
         self.theme_changed.emit()
 
