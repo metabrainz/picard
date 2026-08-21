@@ -421,11 +421,13 @@ def collect_files(paths, extension, recursive, exclusion_regex, use_git=True):
 
 def _collect_files_git(path, extension):
     """Use git ls-files to discover tracked files matching the extension."""
-    pattern = f'*{extension}' if extension else None
-    cmd = ['git', 'ls-files', '--cached', '--others', '--exclude-standard']
-    if pattern:
-        cmd.append(pattern)
-    output = _run_git(cmd + ['--', path])
+    cmd = ['git', 'ls-files', '--cached', '--others', '--exclude-standard', '--']
+    if extension:
+        # Use glob pathspec to match the extension recursively
+        cmd.append(f'{path}/**/*{extension}')
+    else:
+        cmd.append(path)
+    output = _run_git(cmd)
     if output is None:
         return None
     return {f for f in output.splitlines() if f}
