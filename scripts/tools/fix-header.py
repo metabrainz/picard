@@ -19,7 +19,7 @@
 
 
 import argparse
-from collections import defaultdict
+from fnmatch import fnmatch
 import itertools
 import logging
 import os
@@ -83,29 +83,54 @@ DEFAULT_EXCLUDED_DIRS = frozenset(
 
 def _is_excluded_dir(dirname, excluded_dirs):
     """Check if a directory name matches any exclusion pattern."""
-    for pattern in excluded_dirs:
-        if '*' in pattern:
-            # Simple glob matching (e.g., "*.egg-info")
-            # Only supports leading or trailing wildcards
-            if pattern.startswith('*') and dirname.endswith(pattern[1:]):
-                return True
-            if pattern.endswith('*') and dirname.startswith(pattern[:-1]):
-                return True
-        elif dirname == pattern:
-            return True
-    return False
+    return any(fnmatch(dirname, pattern) for pattern in excluded_dirs)
+
+
+def _resolve_alias(author, email):
+    """Resolve an author name/email combination through ALIASES."""
+    for key in (f"{author} <{email}>", email, author):
+        if key in ALIASES:
+            return ALIASES[key]
+    return author
+
+
+def _run_git(cmd, timeout=30):
+    """Run a git command and return decoded stdout, or None on failure."""
+    try:
+        result = subprocess.run(  # nosec: B603
+            cmd,
+            capture_output=True,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired:
+        logging.warning("git command timed out: %s", ' '.join(cmd[:3]))
+        return None
+    except OSError as e:
+        logging.error("Failed to run git: %s", e)
+        return None
+
+    if result.returncode != 0:
+        stderr_text = result.stderr.decode('utf-8', errors='replace').strip()
+        if stderr_text:
+            logging.warning("git failed: %s", stderr_text)
+        return None
+
+    return result.stdout.decode('utf-8', errors='replace')
 
 
 # https://stackoverflow.com/a/4629241
-def ranges(i):
-    for _a, b in itertools.groupby(enumerate(i), lambda pair: pair[1] - pair[0]):
+def _year_ranges(years):
+    """Collapse a sorted list of years into range strings (e.g. [2020,2021,2023] -> ['2020-2021','2023'])."""
+    result = []
+    for _a, b in itertools.groupby(enumerate(sorted(years)), lambda pair: pair[1] - pair[0]):
         b = list(b)
-        yield b[0][1], b[-1][1]
+        y1, y2 = b[0][1], b[-1][1]
+        result.append(str(y1) if y1 == y2 else f"{y1}-{y2}")
+    return result
 
 
 def extract_authors_from_gitlog(path):
     """Extract authors and their contribution years from git log for a single file."""
-    authors = {}
     cmd = [
         'git',
         'log',
@@ -116,65 +141,26 @@ def extract_authors_from_gitlog(path):
         r'--',
         path,
     ]
-    try:
-        result = subprocess.run(  # nosec: B603
-            cmd,
-            capture_output=True,
-            timeout=30,
-        )
-    except subprocess.TimeoutExpired:
-        logging.warning("git log timed out for %s", path)
-        return {}
-    except OSError as e:
-        logging.error("Failed to run git log for %s: %s", path, e)
+    output = _run_git(cmd)
+    if output is None:
         return {}
 
-    if result.returncode != 0:
-        stderr_text = result.stderr.decode('utf-8', errors='replace').strip()
-        if stderr_text:
-            logging.warning("git log failed for %s: %s", path, stderr_text)
-        return {}
-
-    aliased = set()
-    pattern = re.compile(r'^(?P<year>\d+)¤(?P<name>[^¤]*)¤(?P<email>.*)$')
-    try:
-        output = result.stdout.decode('utf-8')
-    except UnicodeDecodeError:
-        output = result.stdout.decode('utf-8', errors='replace')
-        logging.warning("Encoding issues in git log output for %s", path)
-
+    authors = {}
+    pattern = re.compile(r'^(\d+)¤([^¤]*)¤(.*)$')
     for line in output.split("\n"):
-        matched = pattern.search(line)
-        if matched:
-            year = int(matched.group('year'))
-            author = matched.group('name')
-            email = matched.group('email')
-            for c in (f"{author} <{email}>", email, author):
-                if c in ALIASES:
-                    alias = ALIASES[c]
-                    aliased.add(f"{author} <{email}> -> {alias}")
-                    author = alias
-                    break
-            if author in authors:
-                if year not in authors[author]:
-                    authors[author].append(year)
-            else:
-                authors[author] = [year]
-
-    for a in aliased:
-        logging.debug("Alias found: %s", a)
-
+        m = pattern.match(line)
+        if m:
+            year = int(m.group(1))
+            author = _resolve_alias(m.group(2), m.group(3))
+            authors.setdefault(author, set()).add(year)
     return authors
 
 
 def batch_extract_authors_from_gitlog(paths):
     """Extract authors for multiple files in a single git log call.
 
-    This is significantly faster than calling git log per-file when
-    processing many files, as it avoids the overhead of spawning a
-    subprocess for each file.
-
-    Returns a dict mapping each path to its authors dict.
+    Returns a dict mapping each path to its {author: set(years)} dict,
+    or None on failure.
     """
     if not paths:
         return {}
@@ -190,38 +176,16 @@ def batch_extract_authors_from_gitlog(paths):
         r'--',
     ] + list(paths)
 
-    try:
-        result = subprocess.run(  # nosec: B603
-            cmd,
-            capture_output=True,
-            timeout=120,
-        )
-    except subprocess.TimeoutExpired:
-        logging.warning("Batch git log timed out, falling back to per-file extraction")
-        return None
-    except OSError as e:
-        logging.error("Failed to run batch git log: %s", e)
+    output = _run_git(cmd, timeout=120)
+    if output is None:
         return None
 
-    if result.returncode != 0:
-        stderr_text = result.stderr.decode('utf-8', errors='replace').strip()
-        if stderr_text:
-            logging.warning("Batch git log failed: %s", stderr_text)
-        return None
-
-    try:
-        output = result.stdout.decode('utf-8')
-    except UnicodeDecodeError:
-        output = result.stdout.decode('utf-8', errors='replace')
-
-    # Parse the output: each commit block is separated by a blank line.
-    # Format: HASH¤YEAR¤NAME¤EMAIL\nFILE1\nFILE2\n...\n\n
-    authors_by_path = defaultdict(dict)
-    commit_pattern = re.compile(r'^[0-9a-f]+¤(?P<year>\d+)¤(?P<name>[^¤]*)¤(?P<email>.*)$')
+    authors_by_path = {}
+    commit_pattern = re.compile(r'^[0-9a-f]+¤(\d+)¤([^¤]*)¤(.*)$')
+    path_set = set(paths)
 
     current_year = None
     current_author = None
-    path_set = set(paths)
 
     for line in output.split("\n"):
         if not line:
@@ -229,64 +193,41 @@ def batch_extract_authors_from_gitlog(paths):
             current_author = None
             continue
 
-        commit_match = commit_pattern.match(line)
-        if commit_match:
-            current_year = int(commit_match.group('year'))
-            author = commit_match.group('name')
-            email = commit_match.group('email')
-            for c in (f"{author} <{email}>", email, author):
-                if c in ALIASES:
-                    author = ALIASES[c]
-                    break
-            current_author = author
+        m = commit_pattern.match(line)
+        if m:
+            current_year = int(m.group(1))
+            current_author = _resolve_alias(m.group(2), m.group(3))
         elif current_year is not None and current_author is not None:
-            # This is a filename line
             file_path = line.strip()
             if file_path in path_set:
-                author_years = authors_by_path[file_path]
-                if current_author in author_years:
-                    if current_year not in author_years[current_author]:
-                        author_years[current_author].append(current_year)
-                else:
-                    author_years[current_author] = [current_year]
+                file_authors = authors_by_path.setdefault(file_path, {})
+                file_authors.setdefault(current_author, set()).add(current_year)
 
-    return dict(authors_by_path)
+    return authors_by_path
 
 
 def parse_copyright_text(text):
+    """Parse existing copyright lines into {author: set(years)}."""
     authors = {}
     pattern_copyright = re.compile(r'^# Copyright \D*((?:\d{4}(?:,? *|-))+) (.+)\s*$')
     range_pattern = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
 
     for line in text.split("\n"):
-        matched = pattern_copyright.search(line)
-        if matched:
-            all_years = []
-            years_group = matched.group(1)
-            author = matched.group(2)
-            author = ALIASES.get(author, author)
-            comma_years = []
-            if ',' in years_group:
-                for year in years_group.split(','):
-                    comma_years.append(year.strip())
-            else:
-                comma_years.append(years_group.strip())
+        matched = pattern_copyright.match(line)
+        if not matched:
+            continue
+        years_group = matched.group(1)
+        author = ALIASES.get(matched.group(2), matched.group(2))
 
-            for years in comma_years:
-                m = range_pattern.search(years)
-                if m:
-                    year1 = int(m.group(1))
-                    year2 = int(m.group(2))
-                    for y in range(min(year1, year2), max(year1, year2) + 1):
-                        all_years.append(y)
-                else:
-                    all_years.append(int(years))
-            if author in authors:
-                for y in all_years:
-                    if y not in authors[author]:
-                        authors[author].append(y)
+        all_years = set()
+        for part in years_group.split(','):
+            m = range_pattern.match(part.strip())
+            if m:
+                all_years.update(range(int(m.group(1)), int(m.group(2)) + 1))
             else:
-                authors[author] = all_years
+                all_years.add(int(part.strip()))
+
+        authors.setdefault(author, set()).update(all_years)
     return authors
 
 
@@ -296,8 +237,6 @@ EMPTY_LINE = ("\n", "#\n")
 def parse_file(path, encoding='utf-8', authors_from_log=None):
     if authors_from_log is None:
         authors_from_log = extract_authors_from_gitlog(path)
-    start = end = None
-    authors_from_file = {}
 
     fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
     skip_pattern = re.compile(
@@ -307,17 +246,15 @@ def parse_file(path, encoding='utf-8', authors_from_log=None):
     try:
         with open(path, encoding=encoding) as f:
             lines = f.readlines()
-    except OSError as e:
+    except (OSError, UnicodeDecodeError) as e:
         logging.error("Failed to read %s: %s", path, e)
-        return (defaultdict(lambda: None), {}, {}, '', '')
-    except UnicodeDecodeError as e:
-        logging.error("Encoding error reading %s with %s: %s", path, encoding, e)
-        return (defaultdict(lambda: None), {}, {}, '', '')
+        return ({'skip': str(e)}, {}, {}, '', '')
 
-    found = defaultdict(lambda: None)
+    found = {}
     if lines and lines[0].startswith('#!'):
         found["shebang"] = lines[0].rstrip()
         del lines[0]
+
     for line in lines:
         skip_matched = skip_pattern.search(line)
         if skip_matched:
@@ -328,12 +265,11 @@ def parse_file(path, encoding='utf-8', authors_from_log=None):
         if fix_header_matched:
             words = fix_header_matched.group(2).lower().split()
             if 'nolicense' in words:
-                # do not add a license header
                 logging.debug("Found fix-header: nolicense")
                 found['nolicense'] = True
             if 'skip' in words:
-                logging.debug("Found fix-header: skip")
                 found['skip'] = fix_header_matched.group(1) + ' ' + fix_header_matched.group(2)
+                logging.debug("Found fix-header: skip")
                 return (found, {}, {}, '', "".join(lines))
 
     for num, line in enumerate(lines):
@@ -345,59 +281,48 @@ def parse_file(path, encoding='utf-8', authors_from_log=None):
             while i < len(lines) and lines[i] in EMPTY_LINE:
                 del lines[i]
             break
+
+    start = end = None
     for num, line in enumerate(lines):
         if not line.startswith("#") and line not in EMPTY_LINE:
             break
         if "GNU General Public License" in line:
-            found['license'] = num
-            break
-    if found['license'] is not None:
-        i = starting_pos = found['license']
-        while lines[i].startswith("#"):
-            if i == 0:
-                break
-            if lines[i].startswith("# Picard"):
-                break
-            i -= 1
-        while True:
-            if i == 0:
-                break
-            if lines[i - 1] in EMPTY_LINE:
+            # Find start of license block (search backwards)
+            i = num
+            while lines[i].startswith("#") and i > 0 and not lines[i].startswith("# Picard"):
                 i -= 1
-            else:
-                break
-        start = i
-        i = starting_pos
-        while lines[i].startswith("#"):
-            if i == len(lines) - 1:
-                break
-            # Detect end of license block: old-style (FSF address ending
-            # in "USA.") or new-style (URL ending in "licenses/>.").
-            if lines[i].endswith(" USA.\n") or lines[i].endswith("licenses/>.\n"):
-                break
-            i += 1
-        while True:
-            if i == len(lines) - 1:
-                break
-            if lines[i + 1] in EMPTY_LINE:
+            while i > 0 and lines[i - 1] in EMPTY_LINE:
+                i -= 1
+            start = i
+
+            # Find end of license block (search forwards)
+            i = num
+            while i < len(lines) - 1 and lines[i].startswith("#"):
+                # Detect end: old-style (FSF address "USA.") or new-style ("licenses/>.").
+                if lines[i].endswith(" USA.\n") or lines[i].endswith("licenses/>.\n"):
+                    break
                 i += 1
-            else:
-                break
-        end = i
+            while i < len(lines) - 1 and lines[i + 1] in EMPTY_LINE:
+                i += 1
+            end = i
+            break
+
+    if start is not None and end is not None:
         authors_from_file = parse_copyright_text("".join(lines[start:end]))
         before = lines[:start]
         after = lines[end + 1 :]
     else:
+        authors_from_file = {}
         before = []
         after = lines
+
     return found, authors_from_file, authors_from_log, "".join(before), "".join(after)
 
 
-LICENSE_TOP = """# Picard, the next-generation MusicBrainz tagger
-#
-"""
+LICENSE_TOP = "# Picard, the next-generation MusicBrainz tagger\n#\n"
 
-LICENSE_BOTTOM = """#
+LICENSE_BOTTOM = """\
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -417,59 +342,43 @@ def fix_header(path, encoding='utf-8', authors_from_log=None):
     found, authors_from_file, authors_from_log, before, after = parse_file(
         path, encoding, authors_from_log=authors_from_log
     )
-    if found['skip'] is not None:
+    if found.get('skip') is not None:
         return None, found['skip']
 
+    # Merge authors from git log and file header
     authors = {}
-    for a in authors_from_log:
-        if a not in authors:
-            authors[a] = set(authors_from_log[a])
-    for b in authors_from_file:
-        if b not in authors:
-            authors[b] = set(authors_from_file[b])
-        else:
-            authors[b] = authors[b].union(authors_from_file[b])
+    for source in (authors_from_log, authors_from_file):
+        for author, years in source.items():
+            authors.setdefault(author, set()).update(years)
 
-    new_authors = {}
-    for a in authors:
-        new_authors[a] = []
-        for y1, y2 in list(ranges(sorted(authors[a]))):
-            if y1 == y2:
-                new_authors[a].append(str(y1))
-            else:
-                new_authors[a].append("%d-%d" % (y1, y2))
-
-    new_copyright = ""
-    for author, years in sorted(new_authors.items(), key=lambda x: (sorted(x[1]), x[0])):
-        new_copyright += "# Copyright (C) %s %s\n" % (", ".join(years), author)
+    # Build copyright lines sorted by earliest year then name
+    copyright_lines = []
+    for author, years in sorted(authors.items(), key=lambda x: (sorted(_year_ranges(x[1])), x[0])):
+        copyright_lines.append(f"# Copyright (C) {', '.join(_year_ranges(years))} {author}")
+    new_copyright = "\n".join(copyright_lines)
 
     before = before.strip()
     after = after.strip()
     has_content = bool(before + after)
+    nolicense = found.get('nolicense')
 
-    parts = list(
-        filter(
-            None,
-            [
-                found["shebang"],
-                LICENSE_TOP.strip() if not found['nolicense'] else None,
-                new_copyright.strip() if not found['nolicense'] else None,
-                (LICENSE_BOTTOM.strip() + ("\n\n" if has_content else "")) if not found['nolicense'] else None,
-                before.strip(),
-                after.strip(),
-            ],
-        )
-    )
+    parts = []
+    if found.get("shebang"):
+        parts.append(found["shebang"])
+    if not nolicense:
+        parts.append(LICENSE_TOP.strip())
+        parts.append(new_copyright)
+        parts.append(LICENSE_BOTTOM.strip() + ("\n\n" if has_content else ""))
+    if before:
+        parts.append(before)
+    if after:
+        parts.append(after)
+
     return "\n".join(parts), None
 
 
 def collect_files(paths, extension, recursive, excluded_dirs):
-    """Collect files to process using os.walk for efficient directory traversal.
-
-    Uses os.walk with in-place modification of dirs list to skip excluded
-    directories, which is more efficient than recursive glob as it avoids
-    descending into irrelevant subtrees entirely.
-    """
+    """Collect files to process using os.walk for efficient directory traversal."""
     files = set()
     for path in paths:
         if os.path.isfile(path):
@@ -478,8 +387,7 @@ def collect_files(paths, extension, recursive, excluded_dirs):
                 files.add(path)
         elif os.path.isdir(path) and recursive:
             for dirpath, dirnames, filenames in os.walk(path):
-                # Modify dirnames in-place to skip excluded directories.
-                # This prevents os.walk from descending into them.
+                # Prune excluded directories in-place to avoid descending into them
                 dirnames[:] = [d for d in dirnames if not _is_excluded_dir(d, excluded_dirs)]
                 for filename in filenames:
                     _name, ext = os.path.splitext(filename)
@@ -504,7 +412,7 @@ def main():
         default=None,
         metavar='DIR',
         help='Directory name to exclude (can be specified multiple times). '
-        'Supports simple glob patterns like "*.egg-info". '
+        'Supports glob patterns (fnmatch). '
         'Defaults: ' + ', '.join(sorted(DEFAULT_EXCLUDED_DIRS)),
     )
     parser.add_argument(
@@ -563,12 +471,10 @@ def main():
             except OSError as e:
                 logging.error("Failed to write %s: %s", path, e)
         else:
-            # by default, we just output to stdout
             logging.info("Parsing and fixing %s (stdout)", path)
             print(new_content)
 
 
 if __name__ == '__main__':
     logging.debug("Starting...")
-
     main()
