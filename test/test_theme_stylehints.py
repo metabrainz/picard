@@ -63,6 +63,7 @@ def mock_app():
     """Create a mock app for testing."""
     app = MagicMock()
     app.palette.return_value = QtGui.QPalette()
+    app.style.return_value.standardPalette.return_value = QtGui.QPalette()
     return app
 
 
@@ -343,6 +344,7 @@ class TestGenericTheme:
         """Test WindowsTheme uses apply_dark_theme_to_palette in update_palette."""
         app = MagicMock()
         app.palette.return_value = mock_palette
+        app.style.return_value.standardPalette.return_value = mock_palette
         theme = theme_mod.WindowsTheme()
 
         with (
@@ -529,6 +531,7 @@ class TestLinuxDarkModeDetection:
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.ColorRole.Base, QtGui.QColor(0, 0, 0))
         mock_app.palette.return_value = palette
+        mock_app.style.return_value.standardPalette.return_value = palette
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),

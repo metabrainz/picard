@@ -233,19 +233,19 @@ class BaseTheme(QtCore.QObject):
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }',
         )
 
+        # Determine the system accent color before applying the theme,
+        # so apply_theme() can include it in the palette.
+        system_accent_color = self.get_system_accent_color()
+        if system_accent_color:
+            self._accent_color = system_accent_color
+
         # Apply dark/light theme based on configuration or system settings
         if wanted_theme == UiTheme.DEFAULT:
             wanted_theme = self.get_system_theme(app)
         self.apply_theme(app, wanted_theme)
 
-        # Get the system accent color, if available, and apply if to the palette
-        system_accent_color = self.get_system_accent_color()
-        if system_accent_color:
-            self._accent_color = system_accent_color
-            palette = app.palette()
-            apply_accent_color_to_palette(palette, self._accent_color)
-            app.setPalette(palette)
-        else:
+        # If no system accent color was found, use whatever the palette provides
+        if not self._accent_color:
             self._accent_color = get_accent_color_from_palette(app.palette())
 
         if self._accent_color:
@@ -276,14 +276,23 @@ class BaseTheme(QtCore.QObject):
     def get_system_accent_color(self) -> QtGui.QColor | None:
         return None
 
-    def apply_theme(self, app: QtWidgets.QApplication, theme: UiTheme) -> None:
-        qt_color_theme = QtCore.Qt.ColorScheme.Dark if theme == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
-        set_color_scheme(qt_color_theme)
-        if theme == UiTheme.DARK:
-            palette = app.palette()
+    def apply_theme(self, app: QtWidgets.QApplication, ui_theme: UiTheme) -> None:
+        """Apply a theme to the application.
+
+        This method is safe to call multiple times at runtime to switch
+        between dark and light themes.
+        """
+        qt_color_scheme = QtCore.Qt.ColorScheme.Dark if ui_theme == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
+        set_color_scheme(qt_color_scheme)
+        # Get a fresh base palette from the style (preferred) or create a new one
+        style = app.style()
+        palette = style.standardPalette() if style else QtGui.QPalette()
+        if ui_theme == UiTheme.DARK:
             apply_dark_theme_to_palette(palette)
-            app.setPalette(palette)
-        self._applied_theme = theme
+        if self._accent_color:
+            apply_accent_color_to_palette(palette, self._accent_color)
+        app.setPalette(palette)
+        self._applied_theme = ui_theme
 
     @property
     def is_dark_theme(self) -> bool:
@@ -350,14 +359,14 @@ class MacTheme(BaseTheme):
         else:
             return UiTheme.LIGHT
 
-    def apply_theme(self, app: QtWidgets.QApplication, theme: UiTheme) -> None:
-        super().apply_theme(app, theme)
+    def apply_theme(self, app: QtWidgets.QApplication, ui_theme: UiTheme) -> None:
+        super().apply_theme(app, ui_theme)
 
         # MacOS uses a NSAppearance object to change the current application appearance
         # We call this even if UiTheme is the default, preventing MacOS from switching on-the-fly
         if OS_SUPPORTS_THEMES and AppKit:
             try:
-                if theme == UiTheme.DARK:
+                if ui_theme == UiTheme.DARK:
                     appearance = AppKit.NSAppearance._darkAquaAppearance()
                 else:
                     appearance = AppKit.NSAppearance._aquaAppearance()
