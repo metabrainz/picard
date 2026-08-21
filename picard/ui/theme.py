@@ -216,6 +216,7 @@ class BaseTheme(QtCore.QObject):
         self._loaded_config_theme: UiTheme = UiTheme.DEFAULT
         self._applied_theme: UiTheme = UiTheme.DEFAULT
         self._accent_color: QtGui.QColor | None = None
+        self._accent_color_is_system: bool = False
         self._dark_mode_strategies: list[Callable[[], bool]] = []
 
     def setup(self, app: QtWidgets.QApplication) -> None:
@@ -238,6 +239,7 @@ class BaseTheme(QtCore.QObject):
         system_accent_color = self.get_system_accent_color()
         if system_accent_color:
             self._accent_color = system_accent_color
+            self._accent_color_is_system = True
 
         # Apply dark/light theme based on configuration or system settings
         if wanted_theme == UiTheme.DEFAULT:
@@ -283,6 +285,9 @@ class BaseTheme(QtCore.QObject):
         between dark and light themes.  Emits theme_changed after the
         palette has been updated.
         """
+        # setColorScheme tells Qt which color scheme we want. On Linux this
+        # is unreliable for native widgets but still needed so that
+        # style.standardPalette() returns the correct base palette.
         qt_color_scheme = QtCore.Qt.ColorScheme.Dark if ui_theme == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
         set_color_scheme(qt_color_scheme)
         # Get a fresh base palette from the style (preferred) or create a new one
@@ -290,7 +295,7 @@ class BaseTheme(QtCore.QObject):
         palette = style.standardPalette() if style else QtGui.QPalette()
         if ui_theme == UiTheme.DARK:
             apply_dark_theme_to_palette(palette)
-        if self._accent_color:
+        if self._accent_color and self._accent_color_is_system:
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
         # Force all widgets to refresh their style and repaint.
