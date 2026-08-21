@@ -37,6 +37,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.debug_opts import DebugOpt
 
 from picard.ui.theme_detect import get_linux_dark_mode_strategies
 
@@ -310,6 +311,37 @@ class BaseTheme(QtCore.QObject):
             accent_color_str,
         )
 
+        if DebugOpt.THEME.enabled:
+            palette = app.palette()
+            base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
+            highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
+            window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
+            text_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text)
+            style_hints = get_style_hints()
+            color_scheme_supported = style_hints is not None
+            if color_scheme_supported and hasattr(style_hints, 'colorScheme'):
+                current_scheme = style_hints.colorScheme().name
+            else:
+                current_scheme = "N/A"
+            log.debug(
+                "Theme diagnostics: style=%s platform=%s "
+                "color_scheme_supported=%s current_scheme=%s "
+                "accent_color_is_system=%s",
+                app.style().objectName() if app.style() else "None",
+                QtGui.QGuiApplication.platformName(),
+                color_scheme_supported,
+                current_scheme,
+                self._accent_color_is_system,
+            )
+            log.debug(
+                "Theme palette: base=%s (lightness=%d) window=%s text=%s highlight=%s",
+                base_color.name(),
+                base_color.lightness(),
+                window_color.name(),
+                text_color.name(),
+                highlight_color.name(),
+            )
+
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
         # Iterate through all registered strategies
         if any(strategy() for strategy in self._dark_mode_strategies):
@@ -347,6 +379,17 @@ class BaseTheme(QtCore.QObject):
         if self._accent_color and self._accent_color_is_system:
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
+
+        if DebugOpt.THEME.enabled:
+            base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
+            highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
+            log.debug(
+                "Theme apply_theme: target=%s base=%s (lightness=%d) highlight=%s",
+                ui_theme.value,
+                base_color.name(),
+                base_color.lightness(),
+                highlight_color.name(),
+            )
         # Force all widgets to refresh their style and repaint.
         # Unpolish + polish forces the style to recompute, and update()
         # schedules a repaint. Use QWidget.update() directly to avoid
