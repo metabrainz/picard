@@ -153,11 +153,9 @@ class InterfaceOptionsPage(OptionsPage):
         selected_theme = self.ui.ui_theme.itemData(index)
         if selected_theme is None:
             return
-        wanted_theme = selected_theme
-        app = self.tagger
-        if wanted_theme == UiTheme.DEFAULT:
-            wanted_theme = theme.get_system_theme(app)
-        theme.apply_theme(app, wanted_theme)
+        if selected_theme == UiTheme.DEFAULT:
+            selected_theme = theme.get_system_theme(self.tagger)
+        theme.apply_theme(self.tagger, selected_theme)
 
     def load(self):
         # Don't display the multi-selection warning when loading values.
