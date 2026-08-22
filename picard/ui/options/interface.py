@@ -177,9 +177,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory.setChecked(config.setting['starting_directory'])
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
-        self.ui.ui_theme.blockSignals(True)
-        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
-        self.ui.ui_theme.blockSignals(False)
+        with QtCore.QSignalBlocker(self.ui.ui_theme):
+            self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
 
         # re-enable the multi-selection warning
         self.ui.allow_multi_dirs_selection.blockSignals(False)
