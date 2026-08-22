@@ -230,6 +230,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.toolbar = None
         self.player = None
+        self.plugin_updates_button = None
         self.status_indicators = []
         if DesktopStatusIndicator:
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
@@ -367,12 +368,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _update_statusbar_plugin_icon(self):
         """Swap the plugin updates icon for the current theme."""
-        if hasattr(self, 'plugin_updates_button'):
-            if theme.is_dark_theme:
-                icon = QtGui.QIcon(":/images/plugin-dark.png")
-            else:
-                icon = QtGui.QIcon(":/images/plugin.png")
-            self.plugin_updates_button.setIcon(icon)
+        if not self.plugin_updates_button:
+            return
+        if theme.is_dark_theme:
+            icon = QtGui.QIcon(":/images/plugin-dark.png")
+        else:
+            icon = QtGui.QIcon(":/images/plugin.png")
+        self.plugin_updates_button.setIcon(icon)
 
     def _setup_player(self):
         # Local import: player depends on QtMultimedia which is an optional runtime dependency
