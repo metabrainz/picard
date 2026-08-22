@@ -113,6 +113,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+from picard.ui.theme import theme as _theme
 
 
 if TYPE_CHECKING:
@@ -386,6 +387,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Set initial selection after plugin refresh
         if self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+        _theme.colors_changed.connect(self.highlight_enabled_profile_options)
 
         if DebugOpt.TIMINGS.enabled:
             log.debug("OptionsDialog: total __init__ in %.1f ms", (time.perf_counter_ns() - _init_t0) / 1_000_000)

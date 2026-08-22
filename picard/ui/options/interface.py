@@ -54,6 +54,7 @@ from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
     UiTheme,
+    theme,
 )
 from picard.ui.util import (
     FileDialog,
@@ -108,13 +109,14 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_browse.setIcon(icon)
 
         self.ui.ui_theme.clear()
-        for theme in AVAILABLE_UI_THEMES:
-            label = self._UI_THEME_LABELS[theme]['label']
-            desc = self._UI_THEME_LABELS[theme]['desc']
-            self.ui.ui_theme.addItem(_(label), theme)
-            idx = self.ui.ui_theme.findData(theme)
+        for ui_theme in AVAILABLE_UI_THEMES:
+            label = self._UI_THEME_LABELS[ui_theme]['label']
+            desc = self._UI_THEME_LABELS[ui_theme]['desc']
+            self.ui.ui_theme.addItem(_(label), ui_theme)
+            idx = self.ui.ui_theme.findData(ui_theme)
             self.ui.ui_theme.setItemData(idx, _(desc), QtCore.Qt.ItemDataRole.ToolTipRole)
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
+        self.ui.ui_theme.currentIndexChanged.connect(self._on_theme_changed)
 
         self.ui.ui_language.addItem(_("System default"), '')
         language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
@@ -146,6 +148,15 @@ class InterfaceOptionsPage(OptionsPage):
         self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
         self.ui.vboxlayout1.addWidget(self.reset_tutorial_button)
 
+    def _on_theme_changed(self, index):
+        """Apply the theme immediately when the user selects it."""
+        selected_theme = self.ui.ui_theme.itemData(index)
+        if selected_theme is None:
+            return
+        if selected_theme == UiTheme.DEFAULT:
+            selected_theme = theme.get_system_theme(self.tagger)
+        theme.apply_theme(self.tagger, selected_theme)
+
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
@@ -164,7 +175,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory.setChecked(config.setting['starting_directory'])
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
-        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+        with QtCore.QSignalBlocker(self.ui.ui_theme):
+            self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
 
         # re-enable the multi-selection warning
         self.ui.allow_multi_dirs_selection.blockSignals(False)
@@ -184,7 +196,6 @@ class InterfaceOptionsPage(OptionsPage):
         warnings = []
         notes = []
         if new_theme_setting != config.setting['ui_theme']:
-            warnings.append(_("You have changed the application theme."))
             config.setting['ui_theme'] = new_theme_setting
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language

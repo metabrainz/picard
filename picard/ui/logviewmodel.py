@@ -29,6 +29,7 @@ from PyQt6.QtCore import Qt
 from picard import log
 
 from picard.ui.colors import interface_colors
+from picard.ui.theme import theme
 
 
 LevelRole = Qt.ItemDataRole.UserRole + 1
@@ -50,6 +51,7 @@ class LogItemModel(QtCore.QAbstractListModel):
         self._color_cache = {}
         self._compact_view = False
         self.refresh_colors()
+        theme.colors_changed.connect(self.refresh_colors)
 
     @property
     def compact_view(self):

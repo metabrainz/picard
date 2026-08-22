@@ -181,7 +181,10 @@ from picard.ui.statusindicator import (
     ProgressStatus,
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
-from picard.ui.theme import theme
+from picard.ui.theme import (
+    UiTheme,
+    theme,
+)
 from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
@@ -227,6 +230,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.toolbar = None
         self.player = None
+        self.plugin_updates_button = None
         self.status_indicators = []
         if DesktopStatusIndicator:
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
@@ -328,6 +332,50 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # Initially set the plugin updates available status in the status bar.
         self._update_statusbar_plugin_updates_available()
+
+        theme.theme_changed.connect(self._on_theme_changed)
+        self._setup_debug_shortcuts()
+
+    def _setup_debug_shortcuts(self):
+        """Set up keyboard shortcuts for development/debugging."""
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+Shift+D"), self)
+        shortcut.setContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
+        shortcut.activated.connect(self._toggle_theme)
+
+    def _toggle_theme(self):
+        """Toggle between dark and light theme at runtime (debug helper)."""
+        app = QtWidgets.QApplication.instance()
+        new_theme = UiTheme.LIGHT if theme.is_dark_theme else UiTheme.DARK
+        log.debug("Toggling theme to %s", new_theme.value)
+        theme.apply_theme(app, new_theme)
+
+    def _on_theme_changed(self):
+        """Update theme-dependent icons and stylesheets after a theme switch."""
+        self._update_toolbar_theme()
+        self._update_statusbar_plugin_icon()
+        self.metadata_box.update()
+
+    def _update_toolbar_theme(self):
+        """Refresh toolbar extension button icon and stylesheet for current theme."""
+        if not self.toolbar:
+            return
+        if theme.is_dark_theme:
+            self._apply_toolbar_extension_button_dark_theme_styling(self.toolbar)
+        else:
+            self.toolbar.setStyleSheet("")
+            ext_button = self.toolbar.findChild(QtWidgets.QToolButton, 'qt_toolbar_ext_button')
+            if ext_button:
+                ext_button.setIcon(QtGui.QIcon())
+
+    def _update_statusbar_plugin_icon(self):
+        """Swap the plugin updates icon for the current theme."""
+        if not self.plugin_updates_button:
+            return
+        if theme.is_dark_theme:
+            icon = QtGui.QIcon(":/images/plugin-dark.png")
+        else:
+            icon = QtGui.QIcon(":/images/plugin.png")
+        self.plugin_updates_button.setIcon(icon)
 
     def _setup_player(self):
         # Local import: player depends on QtMultimedia which is an optional runtime dependency

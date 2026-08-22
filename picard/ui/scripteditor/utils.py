@@ -53,6 +53,8 @@ def synchronize_vertical_scrollbars(widgets):
         widgets (list): List of QListView widgets to synchronize
     """
     # Set highlight colors for selected list items
+    # TODO: these colors are baked in at construction time and won't update
+    # on runtime theme switches while this dialog is open.
     example_style = widgets[0].palette()
     highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
     highlight_fg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.HighlightedText)
