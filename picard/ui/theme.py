@@ -274,6 +274,7 @@ class BaseTheme(QtCore.QObject):
         self._applied_theme: UiTheme = UiTheme.DEFAULT
         self._accent_color: QtGui.QColor | None = None
         self._accent_color_is_system: bool = False
+        self._applying_theme: bool = False
         self._dark_mode_strategies: list[Callable[[], bool]] = []
 
     def setup(self, app: QtWidgets.QApplication) -> None:
@@ -327,6 +328,8 @@ class BaseTheme(QtCore.QObject):
             self._log_setup_diagnostics(app)
 
     def _on_color_scheme_changed(self, color_scheme: QtCore.Qt.ColorScheme) -> None:
+        if self._applying_theme:
+            return
         log.debug_if(
             DebugOpt.THEME,
             "Theme: system colorSchemeChanged signal received: %s",
@@ -413,6 +416,7 @@ class BaseTheme(QtCore.QObject):
         """
         if ui_theme == self._applied_theme:
             return
+        self._applying_theme = True
         # setColorScheme tells Qt which color scheme we want. On Linux this
         # is unreliable for native widgets but still needed so that
         # style.standardPalette() returns the correct base palette.
@@ -440,6 +444,7 @@ class BaseTheme(QtCore.QObject):
                 style.polish(widget)
                 QtWidgets.QWidget.update(widget)
         self._applied_theme = ui_theme
+        self._applying_theme = False
         self.theme_changed.emit()
 
     @property
