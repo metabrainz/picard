@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-21 15:12+0000\n"
+"PO-Revision-Date: 2026-08-22 22:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -314,10 +314,8 @@ msgid "Use release relationships"
 msgstr "Kasutatakse väljalasete seoseid"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Kasutatakse väljalasete seoseid"
+msgstr "Kasutata lugude ja väljalasete seoseid"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -393,7 +391,7 @@ msgstr "Sildid"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
-msgstr ""
+msgstr "Ära kirjuta silte"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
@@ -405,7 +403,7 @@ msgstr "Eemaldatakse olemasolevad sildid"
 
 #: picard/profile.py:110 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
-msgstr ""
+msgstr "Siltide eemaldamisel säilita lõimitud pildid"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
@@ -417,7 +415,7 @@ msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr ""
+msgstr "Paranda FLAC-failidest puuduvad otsingupunktid"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
@@ -433,7 +431,7 @@ msgstr "ID3v2 teksti kodeering"
 
 #: picard/profile.py:119
 msgid "ID3v2.3 join character"
-msgstr ""
+msgstr "ID3v2.3 vormingus mitme väärtuste puhul kasutatav eraldaja"
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
@@ -461,7 +459,7 @@ msgstr "AC3-failidest eemaldatakse APEv2-sildid"
 
 #: picard/profile.py:132
 msgid "Write RIFF INFO tags to WAVE files"
-msgstr ""
+msgstr "Kirjuta RIFF INFO sildid WAVE-failidesse"
 
 #: picard/profile.py:133 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
@@ -481,7 +479,7 @@ msgstr "Kaanepildid lisatakse siltidesse"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr ""
+msgstr "Lõimi vaid üks esikaane pilt"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
@@ -737,14 +735,12 @@ msgid "Minimal similarity for file lookups"
 msgstr "Väikseim sarnasus failide tuvastusel"
 
 #: picard/profile.py:253
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Vähim sarnasus rühma päringu jaoks:"
+msgstr "Väikseim sarnasus rühma päringu jaoks"
 
 #: picard/profile.py:254
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
+msgstr "Väikseim sarnasus failide klapitamisel lugudega"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -2206,7 +2202,7 @@ msgstr "Tänuavaldused"
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr "Autoriõigus © %(copyright_years)s %(authors_credits)s ja teised"
+msgstr "Autoriõigused © %(copyright_years)s %(authors_credits)s ja teised"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
@@ -2566,8 +2562,8 @@ msgstr[1] "%i pilti"
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i pilti pole kõikides lugudes"
+msgstr[1] "Eri lugudes on %i erinevat pilti"
 
 #: picard/ui/itemviews.py:160 picard/util/tags.py:123
 msgid "Title"
@@ -3021,9 +3017,8 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow.py:669
-#, fuzzy
 msgid "Search for similar items…"
-msgstr "Otsi sarnaseid albumeid…"
+msgstr "Otsi sarnaseid objekte…"
 
 #: picard/ui/mainwindow.py:670 picard/ui/options/interface_toolbar.py:124
 msgid "Similar items"
@@ -3462,11 +3457,8 @@ msgstr[0] "Kasuta algset väärtust"
 msgstr[1] "Kasuta algseid väärtusi"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Kasuta algset väärtust"
+msgstr "Mesti algsed väärtused"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -3690,9 +3682,8 @@ msgid "File naming script editor"
 msgstr ""
 
 #: picard/ui/scripteditor.py:491
-#, fuzzy
 msgid "Reset"
-msgstr "Lähtestamine:"
+msgstr "Lähtesta"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:496
 msgid "Make It So!"
@@ -3799,10 +3790,8 @@ msgid "Empty / blank script"
 msgstr ""
 
 #: picard/ui/scripteditor.py:673
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Kirjasüsteem"
+msgstr "Uus skript"
 
 #: picard/ui/scripteditor.py:766
 msgid ""
@@ -4038,7 +4027,7 @@ msgstr "Eira lugude kestuse erinevust antud sekundite võrra"
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr "Väljalaske terviklikkuse hindamisel eiratakse järgmisi radu:"
+msgstr "Väljalaske terviklikkuse hindamisel eiratakse järgmisi lugusid"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
@@ -4248,7 +4237,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:123
 msgid "Miscellaneous"
-msgstr "Muud"
+msgstr "Muud objektid"
 
 #: picard/ui/searchdialog/__init__.py:95 picard/ui/ui_options_interface.py:126
 msgid "Use advanced query syntax"
@@ -4336,9 +4325,8 @@ msgid "Minimal similarity for cluster lookups:"
 msgstr "Vähim sarnasus rühma päringu jaoks:"
 
 #: picard/ui/ui_options_metadata.py:130
-#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr "Võimalusel tõlgitakse esitajate nimed sellesse lokaati:"
+msgstr "Võimalusel tõlgi esitajate nimed sellesse lokaati:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
@@ -5041,13 +5029,12 @@ msgid "Theme changed"
 msgstr ""
 
 #: picard/ui/options/interface.py:181
-#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
-"Kasutajaliidese keel on muudetud. Muudatus jõustub Picardi järgmisel "
-"käivitamisel."
+"Oled muutnud rakenduse kujundust. Muudatuste jõustumiseks käivita Picard "
+"uuesti."
 
 #: picard/ui/options/interface.py:183
 msgid ""
