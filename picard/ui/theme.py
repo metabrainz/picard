@@ -117,6 +117,15 @@ class UiTheme(Enum):
     def _missing_(cls, value):
         return cls.DEFAULT
 
+    @classmethod
+    def from_color_scheme(cls, color_scheme: QtCore.Qt.ColorScheme) -> 'UiTheme':
+        """Convert a Qt ColorScheme to a UiTheme."""
+        return cls.DARK if color_scheme == QtCore.Qt.ColorScheme.Dark else cls.LIGHT
+
+    def to_color_scheme(self) -> QtCore.Qt.ColorScheme:
+        """Convert to a Qt ColorScheme."""
+        return QtCore.Qt.ColorScheme.Dark if self == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
+
 
 def get_style_hints() -> QtGui.QStyleHints | None:
     """Get style hints from QGuiApplication, returning None if unavailable."""
@@ -350,7 +359,7 @@ class BaseTheme(QtCore.QObject):
         config = get_config()
         wanted_theme = UiTheme(config.setting['ui_theme'])
         if wanted_theme == UiTheme.DEFAULT:
-            ui_theme = UiTheme.DARK if color_scheme == QtCore.Qt.ColorScheme.Dark else UiTheme.LIGHT
+            ui_theme = UiTheme.from_color_scheme(color_scheme)
             if ui_theme != self._applied_theme:
                 self.apply_theme(self._app, ui_theme)
 
@@ -379,8 +388,7 @@ class BaseTheme(QtCore.QObject):
         # setColorScheme tells Qt which color scheme we want. On Linux this
         # is unreliable for native widgets but still needed so that
         # style.standardPalette() returns the correct base palette.
-        qt_color_scheme = QtCore.Qt.ColorScheme.Dark if ui_theme == UiTheme.DARK else QtCore.Qt.ColorScheme.Light
-        set_color_scheme(qt_color_scheme)
+        set_color_scheme(ui_theme.to_color_scheme())
         # Get a fresh base palette from the style (preferred) or create a new one
         style = app.style()
         palette = style.standardPalette() if style else QtGui.QPalette()
