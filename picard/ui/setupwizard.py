@@ -49,6 +49,7 @@ class WizardCheckbox(QtWidgets.QWidget):
         style = QtWidgets.QApplication.style()
         assert style
 
+        # TODO: hover color baked in at construction, won't update on runtime theme switch.
         palette = self.palette()
         highlight = palette.color(QtGui.QPalette.ColorRole.Highlight)
         hover_bg = QtGui.QColor(

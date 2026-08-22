@@ -200,6 +200,7 @@ class InstallPluginDialog(PicardDialog):
         self.tab_widget.addTab(local_widget, _("Local"))
 
         # Warning label
+        # TODO: color baked in at construction, won't update on runtime theme switch.
         self.warning_label = QtWidgets.QLabel()
         self.warning_label.setStyleSheet("color: %s; font-weight: bold;" % interface_colors.get_color('log_warning'))
         self.warning_label.setWordWrap(True)
