@@ -157,9 +157,11 @@ class InterfaceColors:
 
         Call this after a theme switch to pick up the correct color set
         (dark or light) and any user customizations.
+        Emits colors_changed to notify all consumers.
         """
         self.set_default_colors()
         self.load_from_config()
+        theme.colors_changed.emit()
 
     def set_default_color(self, color_key):
         color_value = self.default_colors[color_key].value
@@ -237,9 +239,7 @@ class InterfaceColors:
 interface_colors = InterfaceColors()
 
 # Reload colors automatically when the theme changes at runtime.
-# After reload, also emit colors_changed to notify color consumers.
 theme.theme_changed.connect(interface_colors.reload)
-theme.theme_changed.connect(theme.colors_changed)
 
 
 # Theme-aware validation indicator colors.
