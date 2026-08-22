@@ -353,6 +353,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Update theme-dependent icons and stylesheets after a theme switch."""
         self._update_toolbar_theme()
         self._update_statusbar_plugin_icon()
+        self.metadata_box.update()
 
     def _update_toolbar_theme(self):
         """Refresh toolbar extension button icon and stylesheet for current theme."""
