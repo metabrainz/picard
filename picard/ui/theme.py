@@ -277,7 +277,6 @@ class BaseTheme(QtCore.QObject):
         self._dark_mode_strategies: list[Callable[[], bool]] = []
 
     def setup(self, app: QtWidgets.QApplication) -> None:
-        self._app = app
         config = get_config()
         wanted_theme = UiTheme(config.setting['ui_theme'])
         self._loaded_config_theme = wanted_theme
@@ -333,7 +332,8 @@ class BaseTheme(QtCore.QObject):
         if wanted_theme == UiTheme.DEFAULT:
             ui_theme = UiTheme.from_color_scheme(color_scheme)
             if ui_theme != self._applied_theme:
-                self.apply_theme(self._app, ui_theme)
+                app = QtWidgets.QApplication.instance()
+                self.apply_theme(app, ui_theme)
 
     def _log_setup_diagnostics(self, app: QtWidgets.QApplication) -> None:
         """Log detailed theme diagnostics at startup."""
