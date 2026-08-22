@@ -385,6 +385,8 @@ class BaseTheme(QtCore.QObject):
         between dark and light themes.  Emits theme_changed after the
         palette has been updated.
         """
+        if ui_theme == self._applied_theme:
+            return
         # setColorScheme tells Qt which color scheme we want. On Linux this
         # is unreliable for native widgets but still needed so that
         # style.standardPalette() returns the correct base palette.
