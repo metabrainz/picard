@@ -327,11 +327,21 @@ class BaseTheme(QtCore.QObject):
             self._log_setup_diagnostics(app)
 
     def _on_color_scheme_changed(self, color_scheme: QtCore.Qt.ColorScheme) -> None:
+        log.debug_if(
+            DebugOpt.THEME,
+            "Theme: system colorSchemeChanged signal received: %s",
+            color_scheme.name,
+        )
         config = get_config()
         wanted_theme = UiTheme(config.setting['ui_theme'])
         if wanted_theme == UiTheme.DEFAULT:
             ui_theme = UiTheme.from_color_scheme(color_scheme)
             if ui_theme != self._applied_theme:
+                log.debug_if(
+                    DebugOpt.THEME,
+                    "Theme: applying system theme change to %s",
+                    ui_theme.value,
+                )
                 app = QtWidgets.QApplication.instance()
                 self.apply_theme(app, ui_theme)
 
