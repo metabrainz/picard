@@ -325,35 +325,7 @@ class BaseTheme(QtCore.QObject):
         )
 
         if DebugOpt.THEME.enabled:
-            palette = app.palette()
-            base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
-            highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
-            window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
-            text_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text)
-            style_hints = get_style_hints()
-            color_scheme_supported = style_hints is not None
-            if color_scheme_supported and hasattr(style_hints, 'colorScheme'):
-                current_scheme = style_hints.colorScheme().name
-            else:
-                current_scheme = "N/A"
-            log.debug(
-                "Theme diagnostics: style=%s platform=%s "
-                "color_scheme_supported=%s current_scheme=%s "
-                "accent_color_is_system=%s",
-                app.style().objectName() if app.style() else "None",
-                QtGui.QGuiApplication.platformName(),
-                color_scheme_supported,
-                current_scheme,
-                self._accent_color_is_system,
-            )
-            log.debug(
-                "Theme palette: base=%s (lightness=%d) window=%s text=%s highlight=%s",
-                base_color.name(),
-                base_color.lightness(),
-                window_color.name(),
-                text_color.name(),
-                highlight_color.name(),
-            )
+            self._log_setup_diagnostics(app)
 
     def _on_color_scheme_changed(self, color_scheme: QtCore.Qt.ColorScheme) -> None:
         config = get_config()
@@ -362,6 +334,50 @@ class BaseTheme(QtCore.QObject):
             ui_theme = UiTheme.from_color_scheme(color_scheme)
             if ui_theme != self._applied_theme:
                 self.apply_theme(self._app, ui_theme)
+
+    def _log_setup_diagnostics(self, app: QtWidgets.QApplication) -> None:
+        """Log detailed theme diagnostics at startup."""
+        palette = app.palette()
+        base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
+        highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
+        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
+        text_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text)
+        style_hints = get_style_hints()
+        color_scheme_supported = style_hints is not None
+        if color_scheme_supported and hasattr(style_hints, 'colorScheme'):
+            current_scheme = style_hints.colorScheme().name
+        else:
+            current_scheme = "N/A"
+        log.debug(
+            "Theme diagnostics: style=%s platform=%s "
+            "color_scheme_supported=%s current_scheme=%s "
+            "accent_color_is_system=%s",
+            app.style().objectName() if app.style() else "None",
+            QtGui.QGuiApplication.platformName(),
+            color_scheme_supported,
+            current_scheme,
+            self._accent_color_is_system,
+        )
+        log.debug(
+            "Theme palette: base=%s (lightness=%d) window=%s text=%s highlight=%s",
+            base_color.name(),
+            base_color.lightness(),
+            window_color.name(),
+            text_color.name(),
+            highlight_color.name(),
+        )
+
+    def _log_apply_theme_diagnostics(self, palette: QtGui.QPalette, ui_theme: UiTheme) -> None:
+        """Log palette info after theme application."""
+        base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
+        highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
+        log.debug(
+            "Theme apply_theme: target=%s base=%s (lightness=%d) highlight=%s",
+            ui_theme.value,
+            base_color.name(),
+            base_color.lightness(),
+            highlight_color.name(),
+        )
 
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
         # Iterate through all registered strategies
@@ -403,15 +419,7 @@ class BaseTheme(QtCore.QObject):
         app.setPalette(palette)
 
         if DebugOpt.THEME.enabled:
-            base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
-            highlight_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
-            log.debug(
-                "Theme apply_theme: target=%s base=%s (lightness=%d) highlight=%s",
-                ui_theme.value,
-                base_color.name(),
-                base_color.lightness(),
-                highlight_color.name(),
-            )
+            self._log_apply_theme_diagnostics(palette, ui_theme)
         # Force all widgets to refresh their style and repaint.
         # Unpolish + polish forces the style to recompute, and update()
         # schedules a repaint. Use QWidget.update() directly to avoid
