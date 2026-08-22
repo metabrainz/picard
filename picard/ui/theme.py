@@ -396,7 +396,7 @@ class BaseTheme(QtCore.QObject):
             apply_dark_theme_to_palette(palette)
         else:
             apply_light_theme_to_palette(palette)
-        if self._accent_color and self._accent_color_is_system:
+        if self._accent_color:
             apply_accent_color_to_palette(palette, self._accent_color)
         app.setPalette(palette)
 
