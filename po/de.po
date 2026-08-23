@@ -31,13 +31,14 @@
 # bababasti <babasti@pm.me>, 2026.
 # Gsam3 <ggg.deluxe2@gmail.com>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# janrieger <jan+musicbrainz.org@mainzelmaennchen.net>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-10 11:12+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-08-23 09:12+0000\n"
+"Last-Translator: janrieger <jan+musicbrainz.org@mainzelmaennchen.net>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -7448,7 +7449,7 @@ msgstr "Ausgewählte Dateien speichern"
 
 #: picard/ui/mainwindow/actions.py:197
 msgid "Move to &trash"
-msgstr "Ein &Papierkorb verschieben"
+msgstr "In den &Papierkorb verschieben"
 
 #: picard/ui/mainwindow/actions.py:199
 msgid "Shift+Del"
