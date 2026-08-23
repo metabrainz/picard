@@ -329,7 +329,7 @@ EXPECTED_DARK_PALETTE_COLORS = {
     (
         QtGui.QPalette.ColorGroup.Inactive,
         QtGui.QPalette.ColorRole.Highlight,
-    ): QtGui.QColor(51, 51, 51),
+    ): QtGui.QColor(235, 116, 59),
     (
         QtGui.QPalette.ColorGroup.Inactive,
         QtGui.QPalette.ColorRole.HighlightedText,
@@ -402,9 +402,11 @@ def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, system_theme,
     config_mock = MagicMock()
     config_mock.setting = {"ui_theme": "default"}
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
+    monkeypatch.setattr(theme_mod, "palette_is_dark", lambda palette: not expect_dark_palette)
     # Patch get_system_theme to return dark_mode
     theme = theme_mod.BaseTheme()
     theme.get_system_theme = lambda app: system_theme
+    theme.get_system_accent_color = lambda: QtGui.QColor(235, 116, 59)
 
     # Mock QGuiApplication.styleHints() to return None to force manual fallback
     monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
@@ -436,6 +438,7 @@ def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_
     monkeypatch.setattr(theme_mod, "IS_WIN", True)
     monkeypatch.setattr(theme_mod, "IS_MACOS", False)
     monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
+    monkeypatch.setattr(theme_mod, "palette_is_dark", lambda palette: not expected_dark)
 
     # Patch winreg
     winreg_mock = types.SimpleNamespace()
@@ -472,6 +475,7 @@ def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
     # Instantiate WindowsTheme and run setup
     theme = theme_mod.WindowsTheme()
+    theme.get_system_accent_color = lambda: QtGui.QColor(235, 116, 59)
     # Force manual fallback for palette changes
     monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
     app = DummyApp()
