@@ -37,6 +37,7 @@ from collections.abc import (
     Callable,
     Iterator,
 )
+from contextlib import contextmanager
 from functools import partial
 from typing import (
     Generic,
@@ -44,6 +45,7 @@ from typing import (
     TypeVar,
 )
 
+from picard import log
 from picard.config import (
     Option,
     get_config,
@@ -150,6 +152,30 @@ class PluginFunctions(Generic[P, R]):
         yield from sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True)
 
     def run(self, *args: P.args, **kwargs: P.kwargs) -> None:
-        """Execute registered functions with passed parameters honouring priority"""
+        """Execute registered functions with passed parameters honouring priority.
+
+        Exceptions in individual functions are logged and do not prevent
+        remaining functions from running.
+        """
         for function in self._get_functions():
-            function(*args, **kwargs)
+            with _log_processor_error(str(self.functions.label), function):
+                function(*args, **kwargs)
+
+
+@contextmanager
+def _log_processor_error(label: str, function: Callable):
+    """Context manager that catches and logs exceptions from a processor function.
+
+    This ensures that a single failing processor does not prevent subsequent
+    processors from running.
+    """
+    try:
+        yield
+    except Exception:
+        log.error(
+            "Error in %s (%s.%s):",
+            label,
+            getattr(function, '__module__', '?'),
+            getattr(function, '__name__', function),
+            exc_info=True,
+        )
