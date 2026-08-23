@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-22 08:12+0000\n"
+"PO-Revision-Date: 2026-08-23 09:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -2950,10 +2950,8 @@ msgid "info from audio file"
 msgstr "teave helifailist"
 
 #: picard/tags/tagvar.py:81
-#, fuzzy
-#| msgid "Use genres from MusicBrainz"
 msgid "not provided from MusicBrainz data"
-msgstr "Kasutatakse MusicBrainzis määratud muusikastiile"
+msgstr "pole MusicBrainzi andmete alusel tagatud"
 
 #: picard/tags/tagvar.py:82
 msgid "not populated by stock Picard"
@@ -3628,10 +3626,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:273
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
-msgstr "Kaanepildid salvestatakse eraldi failidena"
+msgstr "Salvesta kaanepildid eraldi failidena"
 
 #: picard/ui/setupwizard.py:274
 msgid ""
@@ -3644,9 +3640,8 @@ msgid "You can change these later under Options → Options → Cover Art."
 msgstr ""
 
 #: picard/ui/setupwizard.py:300
-#, fuzzy
 msgid "Updates"
-msgstr "Viimati uuendatud"
+msgstr "Uuendused"
 
 #: picard/ui/setupwizard.py:301
 msgid "Choose how Picard should check for updates."
@@ -3674,10 +3669,8 @@ msgid "You can change these later under Options → General → Startup."
 msgstr ""
 
 #: picard/ui/setupwizard.py:376
-#, fuzzy
-#| msgid "Picard Update"
 msgid "Picard Setup"
-msgstr "Picardi uuendus"
+msgstr "Picardi seadistused"
 
 #: picard/ui/itemviews/columns.py:190 picard/ui/tagsfromfilenames.py:129
 #: picard/ui/tagsfromfilenames.py:140
@@ -3773,44 +3766,32 @@ msgid "%s - %s"
 msgstr "%s - %s"
 
 #: picard/ui/util.py:80
-#, fuzzy
-#| msgid "&Set as starting directory"
 msgid "Select a file or a directory"
-msgstr "Määra algkataloogiks"
+msgstr "Vali fail või kaust"
 
 #: picard/ui/util.py:86
-#, fuzzy
 msgid "Select a target file"
-msgstr "V&ali kõik"
+msgstr "Vali sihtfail"
 
 #: picard/ui/util.py:99
-#, fuzzy
 msgid "Select a file"
-msgstr "V&ali kõik"
+msgstr "Vali fail"
 
 #: picard/ui/util.py:112
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select one or more files"
-msgstr "Valitud failide salvestamine"
+msgstr "Vali üks või enam faili"
 
 #: picard/ui/util.py:125
-#, fuzzy
 msgid "Select a directory"
-msgstr "V&ali kõik"
+msgstr "Vali kaust"
 
 #: picard/ui/util.py:141
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "Tühjad kataloogid kustutatakse"
+msgstr "Vali üks või enam kausta"
 
 #: picard/ui/util.py:270
-#, fuzzy
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Kasutajaliidese keel on muudetud. Muudatus jõustub Picardi järgmisel "
-"käivitamisel."
+msgstr "Muudatus jõustub Picardi järgmisel käivitamisel."
 
 #: picard/ui/util.py:271
 msgid "Changes only applied on restart"
@@ -3861,10 +3842,8 @@ msgid "Choose local file…"
 msgstr "Vali kohalik fail…"
 
 #: picard/ui/coverartbox/__init__.py:427
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from URL…"
-msgstr "Lisa &kataloog…"
+msgstr "Lisa võrguaadressilt…"
 
 #: picard/ui/coverartbox/__init__.py:436
 msgid "Replace front cover art"
@@ -3960,10 +3939,8 @@ msgid "Install Plugin"
 msgstr "Lisamooduli paigaldamine"
 
 #: picard/ui/dialogs/installplugin.py:108 picard/ui/options/plugins.py:111
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Search plugins…"
-msgstr "Paigalda plugin…"
+msgstr "Otsi lisamooduleid…"
 
 #: picard/ui/dialogs/installplugin.py:113
 #: picard/ui/dialogs/installplugin.py:336
@@ -4045,16 +4022,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:201 picard/ui/dialogs/plugininfo.py:239
-#, fuzzy
-#| msgid "Local Files"
 msgid "Local"
-msgstr "Kohalikud failid"
+msgstr "Kohalik"
 
 #: picard/ui/dialogs/installplugin.py:221
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install…"
-msgstr "Paigalda plugin…"
+msgstr "Paigalda…"
 
 #: picard/ui/dialogs/installplugin.py:281
 #: picard/ui/dialogs/installplugin.py:580
