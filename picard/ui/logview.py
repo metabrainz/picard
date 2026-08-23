@@ -53,6 +53,7 @@ from picard.ui.logviewmodel import (
     LogItemDelegate,
     LogItemModel,
 )
+from picard.ui.theme import theme
 from picard.ui.util import FileDialog
 
 
@@ -80,6 +81,12 @@ class LogHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, document):
         super().__init__(document)
         self._formats = self._build_formats()
+        theme.colors_changed.connect(self._refresh_colors)
+
+    def _refresh_colors(self):
+        """Rebuild formats with current colors and rehighlight."""
+        self._formats = self._build_formats()
+        self.rehighlight()
 
     def _build_formats(self):
         error_color = interface_colors.get_qcolor('log_error')
