@@ -190,10 +190,7 @@ class TestGetAccentColorFromPalette:
     def test_get_accent_color_from_palette(self):
         palette = QtGui.QPalette()
         accent_color = QtGui.QColor(40, 10, 40)
-        if hasattr(QtGui.QPalette.ColorRole, 'Accent'):
-            palette.setColor(QtGui.QPalette.ColorRole.Accent, accent_color)
-        else:
-            palette.setColor(QtGui.QPalette.ColorRole.Highlight, accent_color)
+        palette.setColor(QtGui.QPalette.ColorRole.Highlight, accent_color)
 
         new_accent_color = theme_mod.get_accent_color_from_palette(palette)
         assert new_accent_color == accent_color

@@ -240,21 +240,20 @@ def apply_light_theme_to_palette(palette: QtGui.QPalette) -> None:
 
 def get_accent_color_from_palette(palette: QtGui.QPalette) -> QtGui.QColor:
     """Returns the accent color from the palette."""
-    if hasattr(QtGui.QPalette.ColorRole, 'Accent'):
-        color_role = QtGui.QPalette.ColorRole.Accent
-    else:
-        color_role = QtGui.QPalette.ColorRole.Highlight
-    return palette.color(QtGui.QPalette.ColorGroup.Active, color_role)
+    return palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
 
 
 def apply_accent_color_to_palette(palette: QtGui.QPalette, accent_color: QtGui.QColor) -> None:
     """Updates the palette to use the accent color."""
     palette.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight, accent_color)
+    palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight, accent_color)
     accent_text_color = QtCore.Qt.GlobalColor.white if accent_color.lightness() < 160 else QtCore.Qt.GlobalColor.black
     palette.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.HighlightedText, accent_text_color)
+    palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText, accent_text_color)
     # Accent is available since Qt 6.6
     if hasattr(QtGui.QPalette.ColorRole, 'Accent'):
         palette.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Accent, accent_color)
+        palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Accent, accent_color)
 
     link_color = QtGui.QColor()
     link_color.setHsl(accent_color.hue(), accent_color.saturation(), 160, accent_color.alpha())
@@ -302,11 +301,6 @@ class BaseTheme(QtCore.QObject):
             self._accent_color = system_accent_color
             self._accent_color_is_system = True
 
-        # Apply dark/light theme based on configuration or system settings
-        if wanted_theme == UiTheme.DEFAULT:
-            wanted_theme = self.get_system_theme(app)
-        self.apply_theme(app, wanted_theme)
-
         # If no system accent color was found, use whatever the palette provides
         if not self._accent_color:
             self._accent_color = get_accent_color_from_palette(app.palette())
@@ -315,6 +309,11 @@ class BaseTheme(QtCore.QObject):
             accent_color_str = self._accent_color.name(QtGui.QColor.NameFormat.HexArgb)
         else:
             accent_color_str = "None"
+
+        # Apply dark/light theme based on configuration or system settings
+        if wanted_theme == UiTheme.DEFAULT:
+            wanted_theme = self.get_system_theme(app)
+        self.apply_theme(app, wanted_theme)
 
         log.debug(
             "Theme (%s): config=%s applied=%s accent_color=%s",
