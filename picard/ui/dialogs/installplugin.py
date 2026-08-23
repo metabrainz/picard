@@ -43,6 +43,7 @@ from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.theme import theme
 from picard.ui.util import font_scaled_size
 
 
@@ -200,12 +201,12 @@ class InstallPluginDialog(PicardDialog):
         self.tab_widget.addTab(local_widget, _("Local"))
 
         # Warning label
-        # TODO: color baked in at construction, won't update on runtime theme switch.
         self.warning_label = QtWidgets.QLabel()
-        self.warning_label.setStyleSheet("color: %s; font-weight: bold;" % interface_colors.get_color('log_warning'))
+        self._apply_warning_style()
         self.warning_label.setWordWrap(True)
         self.warning_label.hide()
         layout.addWidget(self.warning_label)
+        theme.colors_changed.connect(self._apply_warning_style)
 
         # Progress bar
         self.progress_bar = QtWidgets.QProgressBar()
@@ -238,6 +239,10 @@ class InstallPluginDialog(PicardDialog):
         self.tab_widget.currentChanged.connect(self._validate_input)
         self._load_registry_plugins()
         self._validate_input()
+
+    def _apply_warning_style(self):
+        """Apply warning color stylesheet from current interface colors."""
+        self.warning_label.setStyleSheet("color: %s; font-weight: bold;" % interface_colors.get_color('log_warning'))
 
     def _validate_input(self):
         """Validate input and update UI."""
