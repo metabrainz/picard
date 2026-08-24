@@ -186,10 +186,10 @@ class ListenQueue:
         self._timer.timeout.connect(self.submit_batch)
 
     def load(self):
-        cache_file = self.get_cache_file_path()
-        if cache_file.exists():
-            log.debug("Loading listen queue from %s", cache_file)
-            with open(cache_file) as f:
+        queue_file = self.get_listen_queue_file_path()
+        if queue_file.exists():
+            log.debug("Loading listen queue from %s", queue_file)
+            with open(queue_file) as f:
                 try:
                     with self._lock.lock_for_write():
                         self._queue = json.load(f, object_hook=from_json)
@@ -201,9 +201,11 @@ class ListenQueue:
                     self._queue = []
 
     def save(self):
-        cache_file = self.get_cache_file_path()
-        log.debug("Saving listen queue to %s", cache_file)
-        with open(cache_file, 'w') as f:
+        if not self._queue:
+            return
+        queue_file = self.get_listen_queue_file_path()
+        log.debug("Saving listen queue to %s", queue_file)
+        with open(queue_file, 'w') as f:
             with self._lock.lock_for_write():
                 data = [asdict(p) for p in self._queue]
                 json.dump(data, f)
@@ -257,11 +259,11 @@ class ListenQueue:
             log.debug('ListenBrainz batch submission successful: data=%s', data)
             self._remove_from_queue(batch)
             # Check whether there is more data in the queue and directly submit the next
-            # batch. Otherwise suspend the submission timer.
+            # batch. Otherwise stop the submission timer.
             if self._queue:
                 self.submit_batch()
             else:
-                self._suspend_submission()
+                self._on_listen_queue_drained()
 
     def _submit(self, submission: ListenSubmission, callback: ReplyHandler):
         config = get_config()
@@ -293,7 +295,7 @@ class ListenQueue:
                     batch,
                 )
 
-    def get_cache_file_path(self) -> Path:
+    def get_listen_queue_file_path(self) -> Path:
         return Path(cache_folder()) / "listenbrainz-queue.json"
 
     def _schedule_submission(self):
@@ -301,9 +303,18 @@ class ListenQueue:
             log.debug("Batch listen submission scheduled to run in %d seconds", SUBMISSION_INTERVAL_SECONDS)
             self._timer.start(SUBMISSION_INTERVAL_SECONDS * 1000)
 
-    def _suspend_submission(self):
-        log.debug("Batch listen submission suspended")
+    def _on_listen_queue_drained(self):
+        log.debug("All queued listens submitted successfully")
         self._timer.stop()
+        self._clear_listen_queue_file()
+
+    def _clear_listen_queue_file(self):
+        queue_file = self.get_listen_queue_file_path()
+        with self._lock.lock_for_write():
+            try:
+                queue_file.unlink(missing_ok=True)
+            except OSError as e:
+                log.debug("Failed to remove listen queue file %s: %s", queue_file, e)
 
 
 def from_json(obj: dict):
