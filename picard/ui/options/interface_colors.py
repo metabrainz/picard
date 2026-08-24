@@ -36,7 +36,10 @@ from picard.i18n import (
 )
 from picard.util import icontheme
 
-from picard.ui.colors import interface_colors
+from picard.ui.colors import (
+    InterfaceColors,
+    interface_colors,
+)
 from picard.ui.forms.ui_options_interface_colors import (
     Ui_InterfaceColorsOptionsPage,
 )
@@ -112,29 +115,43 @@ class InterfaceColorsOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceColorsOptionsPage()
         self.ui.setupUi(self)
-        self.new_colors = {}
+        # Local working copies — edits here don't affect the global
+        # interface_colors until save() is called.
+        self._colors_light = InterfaceColors(dark_theme=False)
+        self._colors_dark = InterfaceColors(dark_theme=True)
         self.colors_list = QtWidgets.QVBoxLayout()
         self.ui.colors.setLayout(self.colors_list)
+
+    @property
+    def _current_colors(self):
+        """Return the working color set for the active theme."""
+        if theme.is_dark_theme:
+            return self._colors_dark
+        return self._colors_light
 
     def update_color_selectors(self):
         if self.colors_list:
             delete_items_of_layout(self.colors_list)
 
+        colors = self._current_colors
+
         def color_changed(color_key, color_value):
-            interface_colors.set_color(color_key, color_value)
+            colors.set_color(color_key, color_value)
 
         def restore_default_color(color_key, color_button):
-            interface_colors.set_default_color(color_key)
-            color_button.update_color(interface_colors.get_qcolor(color_key))
+            colors.set_default_color(color_key)
+            color_button.update_color(colors.get_qcolor(color_key))
 
-        def colors():
-            for color_key, color_value in interface_colors.get_colors().items():
-                group = interface_colors.get_color_group(color_key)
-                title = interface_colors.get_color_title(color_key)
+        def iter_colors():
+            for color_key, color_value in colors.get_colors().items():
+                group = colors.get_color_group(color_key)
+                title = colors.get_color_title(color_key)
                 yield color_key, color_value, title, group
 
         prev_group = None
-        for color_key, color_value, title, group in sorted(colors(), key=lambda c: (sort_key(c[3]), sort_key(c[2]))):
+        for color_key, color_value, title, group in sorted(
+            iter_colors(), key=lambda c: (sort_key(c[3]), sort_key(c[2]))
+        ):
             if prev_group != group:
                 groupbox = QtWidgets.QGroupBox(group)
                 self.colors_list.addWidget(groupbox)
@@ -169,16 +186,19 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.colors_list.addItem(spacerItem1)
 
     def load(self):
-        interface_colors.load_from_config()
+        self._colors_light.load_from_config()
+        self._colors_dark.load_from_config()
         self.update_color_selectors()
 
     def save(self):
-        if interface_colors.save_to_config():
-            # Emit colors_changed to notify all consumers to refresh
-            theme.colors_changed.emit()
+        light_changed = self._colors_light.save_to_config()
+        dark_changed = self._colors_dark.save_to_config()
+        if light_changed or dark_changed:
+            # Reload the global instance and notify consumers
+            interface_colors.reload()
 
     def restore_defaults(self):
-        interface_colors.set_default_colors()
+        self._current_colors.set_default_colors()
         self.update_color_selectors()
 
 
