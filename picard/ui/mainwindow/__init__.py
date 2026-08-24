@@ -181,10 +181,7 @@ from picard.ui.statusindicator import (
     ProgressStatus,
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
-from picard.ui.theme import (
-    UiTheme,
-    theme,
-)
+from picard.ui.theme import theme
 from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
@@ -334,20 +331,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._update_statusbar_plugin_updates_available()
 
         theme.theme_changed.connect(self._on_theme_changed)
-        self._setup_debug_shortcuts()
-
-    def _setup_debug_shortcuts(self):
-        """Set up keyboard shortcuts for development/debugging."""
-        shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+Shift+D"), self)
-        shortcut.setContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
-        shortcut.activated.connect(self._toggle_theme)
-
-    def _toggle_theme(self):
-        """Toggle between dark and light theme at runtime (debug helper)."""
-        app = QtWidgets.QApplication.instance()
-        new_theme = UiTheme.LIGHT if theme.is_dark_theme else UiTheme.DARK
-        log.debug("Toggling theme to %s", new_theme.value)
-        theme.apply_theme(app, new_theme)
 
     def _on_theme_changed(self):
         """Update theme-dependent icons and stylesheets after a theme switch."""
