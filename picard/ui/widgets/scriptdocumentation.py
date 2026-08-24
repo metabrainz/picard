@@ -19,6 +19,7 @@
 
 
 from collections import namedtuple
+from contextlib import contextmanager
 
 from PyQt6 import (
     QtCore,
@@ -98,7 +99,18 @@ class HtmlBrowser(QtWidgets.QTextBrowser):
         theme.colors_changed.connect(self._apply_html)
 
     def _apply_html(self):
-        self.setHtml(htmldoc(self._html, self._rtl))
+        with self._preserve_scrollbar_position():
+            self.setHtml(htmldoc(self._html, self._rtl))
+
+    @contextmanager
+    def _preserve_scrollbar_position(self):
+        scrollbar = self.verticalScrollBar()
+        if not scrollbar:
+            yield
+            return
+        position = scrollbar.sliderPosition()
+        yield
+        scrollbar.setSliderPosition(position)
 
 
 class DocumentationPage(QtWidgets.QWidget):
