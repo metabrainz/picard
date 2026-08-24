@@ -186,10 +186,10 @@ class ListenQueue:
         self._timer.timeout.connect(self.submit_batch)
 
     def load(self):
-        cache_file = self.get_cache_file_path()
-        if cache_file.exists():
-            log.debug("Loading listen queue from %s", cache_file)
-            with open(cache_file) as f:
+        queue_file = self.get_listen_queue_file_path()
+        if queue_file.exists():
+            log.debug("Loading listen queue from %s", queue_file)
+            with open(queue_file) as f:
                 try:
                     with self._lock.lock_for_write():
                         self._queue = json.load(f, object_hook=from_json)
@@ -201,9 +201,9 @@ class ListenQueue:
                     self._queue = []
 
     def save(self):
-        cache_file = self.get_cache_file_path()
-        log.debug("Saving listen queue to %s", cache_file)
-        with open(cache_file, 'w') as f:
+        queue_file = self.get_listen_queue_file_path()
+        log.debug("Saving listen queue to %s", queue_file)
+        with open(queue_file, 'w') as f:
             with self._lock.lock_for_write():
                 data = [asdict(p) for p in self._queue]
                 json.dump(data, f)
@@ -293,7 +293,7 @@ class ListenQueue:
                     batch,
                 )
 
-    def get_cache_file_path(self) -> Path:
+    def get_listen_queue_file_path(self) -> Path:
         return Path(cache_folder()) / "listenbrainz-queue.json"
 
     def _schedule_submission(self):
