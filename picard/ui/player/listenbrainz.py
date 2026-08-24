@@ -306,6 +306,14 @@ class ListenQueue:
     def _on_listen_queue_drained(self):
         log.debug("All queued listens submitted successfully")
         self._timer.stop()
+        self._clear_listen_queue_file()
+
+    def _clear_listen_queue_file(self):
+        queue_file = self.get_listen_queue_file_path()
+        try:
+            queue_file.unlink(missing_ok=True)
+        except OSError as e:
+            log.debug("Failed to remove listen queue file %s: %s", queue_file, e)
 
 
 def from_json(obj: dict):
