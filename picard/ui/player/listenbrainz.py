@@ -257,11 +257,11 @@ class ListenQueue:
             log.debug('ListenBrainz batch submission successful: data=%s', data)
             self._remove_from_queue(batch)
             # Check whether there is more data in the queue and directly submit the next
-            # batch. Otherwise suspend the submission timer.
+            # batch. Otherwise stop the submission timer.
             if self._queue:
                 self.submit_batch()
             else:
-                self._suspend_submission()
+                self._on_listen_queue_drained()
 
     def _submit(self, submission: ListenSubmission, callback: ReplyHandler):
         config = get_config()
@@ -301,8 +301,8 @@ class ListenQueue:
             log.debug("Batch listen submission scheduled to run in %d seconds", SUBMISSION_INTERVAL_SECONDS)
             self._timer.start(SUBMISSION_INTERVAL_SECONDS * 1000)
 
-    def _suspend_submission(self):
-        log.debug("Batch listen submission suspended")
+    def _on_listen_queue_drained(self):
+        log.debug("All queued listens submitted successfully")
         self._timer.stop()
 
 
