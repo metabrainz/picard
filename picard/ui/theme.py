@@ -155,7 +155,7 @@ else:
 class MacOverrideStyle(QtWidgets.QProxyStyle):
     """Override the default style to fix some platform specific issues"""
 
-    def styleHint(self, hint, option, widget, returnData):
+    def styleHint(self, hint, option=None, widget=None, returnData=None):
         # This is disabled on macOS, but prevents collapsing tree view items easily with
         # left arrow key. Enable this consistently on all platforms.
         # See https://tickets.metabrainz.org/browse/PICARD-2417
@@ -356,6 +356,7 @@ class BaseTheme(QtCore.QObject):
         text_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text)
         style_hints = get_style_hints()
         color_scheme_supported = style_hints is not None
+        app_style = app.style()
         if color_scheme_supported and hasattr(style_hints, 'colorScheme'):
             current_scheme = style_hints.colorScheme().name
         else:
@@ -364,7 +365,7 @@ class BaseTheme(QtCore.QObject):
             "Theme diagnostics: style=%s platform=%s "
             "color_scheme_supported=%s current_scheme=%s "
             "accent_color_is_system=%s",
-            app.style().objectName() if app.style() else "None",
+            app_style.objectName() if app_style else "None",
             QtGui.QGuiApplication.platformName(),
             color_scheme_supported,
             current_scheme,
@@ -468,6 +469,7 @@ class WindowsTheme(BaseTheme):
     """Windows dark mode theme detection."""
 
     def get_system_theme(self, app: QtWidgets.QApplication) -> Literal[UiTheme.DARK, UiTheme.LIGHT]:
+        assert winreg, "winreg is required on Windows"
         try:
             with winreg.OpenKey(
                 winreg.HKEY_CURRENT_USER,
@@ -480,6 +482,7 @@ class WindowsTheme(BaseTheme):
             return UiTheme.LIGHT
 
     def get_system_accent_color(self) -> QtGui.QColor | None:
+        assert winreg, "winreg is required on Windows"
         try:
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
                 accent_color_dword = winreg.QueryValueEx(key, "ColorizationColor")[0]
