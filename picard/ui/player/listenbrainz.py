@@ -201,6 +201,8 @@ class ListenQueue:
                     self._queue = []
 
     def save(self):
+        if not self._queue:
+            return
         queue_file = self.get_listen_queue_file_path()
         log.debug("Saving listen queue to %s", queue_file)
         with open(queue_file, 'w') as f:
