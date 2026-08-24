@@ -121,6 +121,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self._colors_dark = InterfaceColors(dark_theme=True)
         self.colors_list = QtWidgets.QVBoxLayout()
         self.ui.colors.setLayout(self.colors_list)
+        theme.theme_changed.connect(self._on_theme_changed)
 
     @property
     def _current_colors(self):
@@ -128,6 +129,11 @@ class InterfaceColorsOptionsPage(OptionsPage):
         if theme.is_dark_theme:
             return self._colors_dark
         return self._colors_light
+
+    def _on_theme_changed(self):
+        """Switch displayed colors when theme changes at runtime."""
+        if self.loaded:
+            self.update_color_selectors()
 
     def update_color_selectors(self):
         if self.colors_list:
