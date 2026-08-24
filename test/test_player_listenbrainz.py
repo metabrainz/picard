@@ -16,6 +16,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import json
 from unittest.mock import Mock
 
 from PyQt6.QtNetwork import (
@@ -106,23 +107,53 @@ class TestListenQueue(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({"listenbrainz_token": "test_token"})
+        self.lbapi = FakeListenBrainzAPIHelper()
+        self.queue = ListenQueue(self.lbapi)
+        self.queue_file = self.queue.get_listen_queue_file_path()
+        self.queue_file.parent.mkdir(parents=True, exist_ok=True)
+        self.queue_file.unlink(missing_ok=True)
+
+    def _queue_with_pending_listen(self):
+        self.lbapi = FakeListenBrainzAPIHelper(
+            status_code=401, error=QNetworkReply.NetworkError.AuthenticationRequiredError
+        )
+        self.queue = ListenQueue(self.lbapi)
+        payload = ListenPayload(track_metadata=TrackMetadata(artist_name="Test", track_name="Song"))
+        self.queue.add(payload)
+        return payload
 
     def test_add(self):
-        lbapi = FakeListenBrainzAPIHelper()
-        queue = ListenQueue(lbapi)
-        queue._on_submit_listen_response = Mock()
+        self.queue._on_submit_listen_response = Mock()
         payload = ListenPayload(track_metadata=TrackMetadata(artist_name="", track_name=""))
-        queue.add(payload)
-        lbapi.submit_listen.assert_called_once()
-        args = lbapi.submit_listen.call_args.args
+        self.queue.add(payload)
+        self.lbapi.submit_listen.assert_called_once()
+        args = self.lbapi.submit_listen.call_args.args
         self.assertEqual(args[0], "test_token")
         self.assertEqual(args[1], ListenSubmission(ListenType.SINGLE, [payload]))
-        queue._on_submit_listen_response.assert_called_once()
-        self.assertEqual([], queue._queue)
+        self.queue._on_submit_listen_response.assert_called_once()
+        self.assertEqual([], self.queue._queue)
 
     def test_add_failure(self):
-        lbapi = FakeListenBrainzAPIHelper(status_code=401, error=QNetworkReply.NetworkError.AuthenticationRequiredError)
-        queue = ListenQueue(lbapi)
-        payload = ListenPayload(track_metadata=TrackMetadata(artist_name="", track_name=""))
-        queue.add(payload)
-        self.assertEqual([payload], queue._queue)
+        self._queue_with_pending_listen()
+        self.assertEqual(1, len(self.queue._queue))
+
+    def test_save_does_not_create_file_when_queue_empty(self):
+        self.queue.save()
+        self.assertFalse(self.queue_file.exists())
+
+    def test_save_writes_non_empty_queue(self):
+        self._queue_with_pending_listen()
+        self.queue.save()
+        self.assertTrue(self.queue_file.exists())
+        with open(self.queue_file) as f:
+            data = json.load(f)
+        self.assertEqual(len(data), 1)
+
+    def test_queue_file_removed_after_successful_submission(self):
+        self._queue_with_pending_listen()
+        self.queue.save()
+        self.assertTrue(self.queue_file.exists())
+        # Simulate successful submission draining the queue
+        self.queue._queue.clear()
+        self.queue._on_listen_queue_drained()
+        self.assertFalse(self.queue_file.exists())
