@@ -19,6 +19,7 @@
 
 
 from collections import namedtuple
+from contextlib import contextmanager
 
 from PyQt6 import (
     QtCore,
@@ -36,6 +37,7 @@ from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
+from picard.ui.theme import theme
 
 
 DocItem = namedtuple('DocItem', 'name desc')
@@ -85,14 +87,30 @@ def htmldoc(html, rtl):
 class HtmlBrowser(QtWidgets.QTextBrowser):
     def __init__(self, html, rtl, parent=None):
         super().__init__(parent=parent)
-
+        self._html = html
+        self._rtl = rtl
         self.setEnabled(True)
         self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.setObjectName('func_browser')
         self.setOpenLinks(True)
         self.setOpenExternalLinks(True)
-        self.setHtml(htmldoc(html, rtl))
+        self._apply_html()
         self.show()
+        theme.colors_changed.connect(self._apply_html)
+
+    def _apply_html(self):
+        with self._preserve_scrollbar_position():
+            self.setHtml(htmldoc(self._html, self._rtl))
+
+    @contextmanager
+    def _preserve_scrollbar_position(self):
+        scrollbar = self.verticalScrollBar()
+        if not scrollbar:
+            yield
+            return
+        position = scrollbar.sliderPosition()
+        yield
+        scrollbar.setSliderPosition(position)
 
 
 class DocumentationPage(QtWidgets.QWidget):

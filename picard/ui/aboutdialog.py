@@ -63,6 +63,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self.ui.setupUi(self)
         self._apply_styling()
         self._update_content()
+        theme.theme_changed.connect(self._apply_styling)
 
     def _apply_styling(self):
         """Apply accent color and visual styling to the dialog."""

@@ -61,6 +61,7 @@ from picard.tags.docs import display_tag_tooltip
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
+from picard.ui.theme import theme
 from picard.ui.widgets.completion_provider import CompletionChoicesProvider
 from picard.ui.widgets.context_detector import (
     TAG_NAME_FIRST_ARG_FUNCTIONS,
@@ -108,15 +109,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, document):
         super().__init__(document)
 
-        self.textcharformats = {
-            'escape': HighlightFormat(fg_color='syntax_hl_escape'),
-            'func': HighlightFormat(fg_color='syntax_hl_func', bold=True),
-            'noop': HighlightFormat(fg_color='syntax_hl_noop', bold=True, italic=True),
-            'special': HighlightFormat(fg_color='syntax_hl_special'),
-            'unicode': HighlightFormat(fg_color='syntax_hl_unicode'),
-            'unknown_func': HighlightFormat(fg_color='syntax_hl_error', italic=True),
-            'var': HighlightFormat(fg_color='syntax_hl_var'),
-        }
+        self._build_formats()
 
         self.rules = list(self.func_rules())
         self.rules.extend(
@@ -128,6 +121,24 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 HighlightRule('special', r"(?<!\\)[(),]"),
             )
         )
+
+        theme.colors_changed.connect(self._refresh_colors)
+
+    def _build_formats(self):
+        self.textcharformats = {
+            'escape': HighlightFormat(fg_color='syntax_hl_escape'),
+            'func': HighlightFormat(fg_color='syntax_hl_func', bold=True),
+            'noop': HighlightFormat(fg_color='syntax_hl_noop', bold=True, italic=True),
+            'special': HighlightFormat(fg_color='syntax_hl_special'),
+            'unicode': HighlightFormat(fg_color='syntax_hl_unicode'),
+            'unknown_func': HighlightFormat(fg_color='syntax_hl_error', italic=True),
+            'var': HighlightFormat(fg_color='syntax_hl_var'),
+        }
+
+    def _refresh_colors(self):
+        """Rebuild highlight formats with current colors and rehighlight."""
+        self._build_formats()
+        self.rehighlight()
 
     def func_rules(self):
         for func_name in script_function_names():

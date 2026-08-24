@@ -89,6 +89,7 @@ from picard.ui.match_icons import (
     match_pending_icons,
     similarity_to_level,
 )
+from picard.ui.theme import theme
 
 
 def get_match_color(similarity, basecolor):
@@ -100,6 +101,23 @@ def get_match_color(similarity, basecolor):
         int(c2[1] + (c1[1] - c2[1]) * similarity),
         int(c2[2] + (c1[2] - c2[2]) * similarity),
     )
+
+
+def _refresh_item_colors(view):
+    """Recompute foreground and background colors for all items in a view.
+
+    Called after a theme or color change to update baked-in item colors
+    that were set via setBackground()/setForeground().
+    """
+    for i in range(view.topLevelItemCount()):
+        _refresh_item_colors_recursive(view.topLevelItem(i))
+
+
+def _refresh_item_colors_recursive(item):
+    """Recursively refresh theme-dependent visuals for all items."""
+    item.refresh_theme()
+    for i in range(item.childCount()):
+        _refresh_item_colors_recursive(item.child(i))
 
 
 class MainPanel(QtWidgets.QSplitter):
@@ -144,6 +162,12 @@ class MainPanel(QtWidgets.QSplitter):
             view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
+        self._refresh_colors()
+
+        theme.colors_changed.connect(self._refresh_colors)
+
+    def _refresh_colors(self):
+        """Refresh cached color attributes after a theme or color change."""
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TreeItem.text_color_secondary = (
@@ -167,6 +191,9 @@ class MainPanel(QtWidgets.QSplitter):
                 File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
         )
+        for view in self._views:
+            _refresh_item_colors(view)
+            view.viewport().update()
 
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
@@ -387,6 +414,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         # gets implemented by sub classes
         pass
 
+    # Subclasses override this to refresh theme-dependent visuals
+    # (colors, icons, etc.) after a theme or color change.
+    def refresh_theme(self):
+        pass
+
     def setText(self, column, text):
         self._sortkeys[column] = None
         return super().setText(column, text)
@@ -588,8 +620,6 @@ class TrackItem(TreeItem):
         if num_linked_files == 1:
             file = track.files[0]
             file.ui_item = self
-            color = TrackItem.track_colors[file.state]
-            bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon, icon_tooltip = FileItem.decide_file_icon_info(file)
             self.takeChildren()
             self.setExpanded(False)
@@ -603,11 +633,6 @@ class TrackItem(TreeItem):
                 icon_tooltip = ngettext('%i matched file', '%i matched files', num_linked_files) % num_linked_files
             self.setToolTip(fingerprint_column, "")
             self.setIcon(fingerprint_column, QtGui.QIcon())
-            if track.ignored_for_completeness():
-                color = TreeItem.text_color_secondary
-            else:
-                color = TreeItem.text_color
-            bgcolor = get_match_color(1, TreeItem.base_color)
             if track.is_video():
                 icon = TrackItem.icon_video
             elif track.is_data():
@@ -641,11 +666,32 @@ class TrackItem(TreeItem):
         else:
             self.setIcon(self.columns.status_icon_column, icon)
             self.setToolTip(self.columns.status_icon_column, icon_tooltip)
+        color, bgcolor = self._item_colors()
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.panel.update_current_view()
         if update_album:
             self.parent().update(update_tracks=False, update_selection=update_selection)
+
+    def refresh_theme(self):
+        if self.obj:
+            color, bgcolor = self._item_colors()
+            self.update_colums_text(color=color, bgcolor=bgcolor)
+
+    def _item_colors(self):
+        """Return (foreground, background) colors for this track item."""
+        track = self.obj
+        if track.num_linked_files == 1:
+            file = track.files[0]
+            color = TrackItem.track_colors[file.state]
+            bgcolor = get_match_color(file.similarity, TreeItem.base_color)
+        else:
+            if track.ignored_for_completeness():
+                color = TreeItem.text_color_secondary
+            else:
+                color = TreeItem.text_color
+            bgcolor = get_match_color(1, TreeItem.base_color)
+        return color, bgcolor
 
 
 class FileItem(TreeItem):
@@ -660,14 +706,25 @@ class FileItem(TreeItem):
         self.setToolTip(fingerprint_column, fingerprint_tooltip)
         self.setIcon(fingerprint_column, fingerprint_icon)
 
-        color = FileItem.file_colors[file.state]
-        bgcolor = get_match_color(file.similarity, TreeItem.base_color)
+        color, bgcolor = self._item_colors()
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.panel.update_current_view()
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
             parent.update(update_files=False, update_selection=update_selection)
+
+    def refresh_theme(self):
+        if self.obj:
+            color, bgcolor = self._item_colors()
+            self.update_colums_text(color=color, bgcolor=bgcolor)
+
+    def _item_colors(self):
+        """Return (foreground, background) colors for this file item."""
+        file = self.obj
+        color = FileItem.file_colors[file.state]
+        bgcolor = get_match_color(file.similarity, TreeItem.base_color)
+        return color, bgcolor
 
     @staticmethod
     def decide_file_icon_info(file):

@@ -39,6 +39,8 @@ from picard.util import (
 )
 from picard.util.readthedocs import ReadTheDocs
 
+from picard.ui.theme import theme
+
 
 class WizardCheckbox(QtWidgets.QWidget):
     toggled = QtCore.pyqtSignal(bool)
@@ -49,21 +51,9 @@ class WizardCheckbox(QtWidgets.QWidget):
         style = QtWidgets.QApplication.style()
         assert style
 
-        palette = self.palette()
-        highlight = palette.color(QtGui.QPalette.ColorRole.Highlight)
-        hover_bg = QtGui.QColor(
-            highlight.red(),
-            highlight.green(),
-            highlight.blue(),
-            80,
-        )
-
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.setStyleSheet(f"""
-            WizardCheckbox:hover {{
-                background-color: {hover_bg.name(QtGui.QColor.NameFormat.HexArgb)};
-            }}
-        """)
+        self._apply_hover_style()
+        theme.theme_changed.connect(self._apply_hover_style)
 
         layout = QtWidgets.QVBoxLayout(self)
 
@@ -89,6 +79,16 @@ class WizardCheckbox(QtWidgets.QWidget):
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
         self._inner_layout.addWidget(hint)
+
+    def _apply_hover_style(self):
+        """Apply hover background color from the current palette."""
+        highlight = self.palette().color(QtGui.QPalette.ColorRole.Highlight)
+        hover_bg = QtGui.QColor(highlight.red(), highlight.green(), highlight.blue(), 80)
+        self.setStyleSheet(f"""
+            WizardCheckbox:hover {{
+                background-color: {hover_bg.name(QtGui.QColor.NameFormat.HexArgb)};
+            }}
+        """)
 
     def add_extra_widget(self, widget: QtWidgets.QWidget) -> None:
         self._inner_layout.addWidget(widget)

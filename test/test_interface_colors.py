@@ -70,3 +70,44 @@ class InterfaceColorsTest(PicardTestCase):
 
     def test_interface_colors_default(self):
         self.assertIsInstance(interface_colors, InterfaceColors)
+
+    def test_reload_switches_color_set(self):
+        """Test that reload() picks up colors for the current theme."""
+        # Create instance for light theme
+        colors = InterfaceColors(dark_theme=False)
+        colors.load_from_config()
+        light_log_debug = colors.get_color('log_debug')
+
+        # Switch to dark theme and reload
+        colors._dark_theme = True
+        colors.reload()
+        dark_log_debug = colors.get_color('log_debug')
+
+        # Dark and light should differ for log_debug
+        self.assertNotEqual(light_log_debug, dark_log_debug)
+
+    def test_reload_loads_user_config(self):
+        """Test that reload() loads user customizations from config."""
+        # Set a known value in config first
+        config.setting['interface_colors'] = {'entity_error': '#112233'}
+        colors = InterfaceColors(dark_theme=False)
+        colors.reload()
+        self.assertEqual(colors.get_color('entity_error'), '#112233')
+
+    def test_theme_changed_triggers_reload(self):
+        """Test that theme.theme_changed signal triggers interface_colors reload."""
+        from picard.ui.theme import theme
+
+        # Set distinct colors in dark config
+        config.setting['interface_colors_dark'] = {'entity_error': '#aabbcc'}
+        # Simulate a theme switch by emitting theme_changed
+        # (normally apply_theme would set is_dark_theme first, but we can
+        #  just verify the signal connection works by checking reload was called)
+        original_dark = interface_colors._dark_theme
+        interface_colors._dark_theme = True
+        theme.theme_changed.emit()
+        dark_error = interface_colors.get_color('entity_error')
+        self.assertEqual(dark_error, '#aabbcc')
+        # Restore
+        interface_colors._dark_theme = original_dark
+        interface_colors.reload()

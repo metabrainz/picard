@@ -25,6 +25,8 @@ from PyQt6.QtGui import QPalette
 
 from picard.i18n import gettext as _
 
+from picard.ui.theme import theme
+
 
 def confirmation_dialog(parent, message):
     """Displays a confirmation dialog.
@@ -52,28 +54,34 @@ def synchronize_vertical_scrollbars(widgets):
     Args:
         widgets (list): List of QListView widgets to synchronize
     """
+
     # Set highlight colors for selected list items
-    example_style = widgets[0].palette()
-    highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
-    highlight_fg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.HighlightedText)
-    stylesheet = (
-        "QListView::item:selected { color: "
-        + highlight_fg.name()
-        + "; background-color: "
-        + highlight_bg.name()
-        + "; }"
-    )
+    def _apply_highlight_stylesheet():
+        example_style = widgets[0].palette()
+        highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
+        highlight_fg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.HighlightedText)
+        stylesheet = (
+            "QListView::item:selected { color: "
+            + highlight_fg.name()
+            + "; background-color: "
+            + highlight_bg.name()
+            + "; }"
+        )
+        for widget in widgets:
+            widget.setStyleSheet(stylesheet)
+
+    _apply_highlight_stylesheet()
+    theme.theme_changed.connect(_apply_highlight_stylesheet)
 
     def _sync_scrollbar_vert(widget, value):
         widget.blockSignals(True)
         widget.verticalScrollBar().setValue(value)
         widget.blockSignals(False)
 
-    widgets = set(widgets)
-    for widget in widgets:
-        for other in widgets - {widget}:
+    widget_set = set(widgets)
+    for widget in widget_set:
+        for other in widget_set - {widget}:
             widget.verticalScrollBar().valueChanged.connect(partial(_sync_scrollbar_vert, other))
-        widget.setStyleSheet(stylesheet)
 
 
 def populate_script_selection_combo_box(naming_scripts, selected_script_id, combo_box):

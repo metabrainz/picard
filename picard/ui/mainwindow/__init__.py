@@ -227,6 +227,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.toolbar = None
         self.player = None
+        self.plugin_updates_button = None
         self.status_indicators = []
         if DesktopStatusIndicator:
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
@@ -328,6 +329,36 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # Initially set the plugin updates available status in the status bar.
         self._update_statusbar_plugin_updates_available()
+
+        theme.theme_changed.connect(self._on_theme_changed)
+
+    def _on_theme_changed(self):
+        """Update theme-dependent icons and stylesheets after a theme switch."""
+        self._update_toolbar_theme()
+        self._update_statusbar_plugin_icon()
+        self.metadata_box.update()
+
+    def _update_toolbar_theme(self):
+        """Refresh toolbar extension button icon and stylesheet for current theme."""
+        if not self.toolbar:
+            return
+        if theme.is_dark_theme:
+            self._apply_toolbar_extension_button_dark_theme_styling(self.toolbar)
+        else:
+            self.toolbar.setStyleSheet("")
+            ext_button = self.toolbar.findChild(QtWidgets.QToolButton, 'qt_toolbar_ext_button')
+            if ext_button:
+                ext_button.setIcon(QtGui.QIcon())
+
+    def _update_statusbar_plugin_icon(self):
+        """Swap the plugin updates icon for the current theme."""
+        if not self.plugin_updates_button:
+            return
+        if theme.is_dark_theme:
+            icon = QtGui.QIcon(":/images/plugin-dark.png")
+        else:
+            icon = QtGui.QIcon(":/images/plugin.png")
+        self.plugin_updates_button.setIcon(icon)
 
     def _setup_player(self):
         # Local import: player depends on QtMultimedia which is an optional runtime dependency
