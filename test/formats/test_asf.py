@@ -28,11 +28,13 @@ from test.picardtestcase import (
 )
 
 from picard.formats import asf
+from picard.metadata import Metadata
 
 from .common import (
     CommonTests,
     load_metadata,
     load_raw,
+    save_and_load_metadata,
     save_metadata,
     save_raw,
     skipUnlessTestfile,
@@ -53,6 +55,12 @@ class CommonAsfTests:
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
             for tag in self.replaygain_tags.keys():
                 self.assertTrue(fmt.supports_tag(tag))
+
+        @skipUnlessTestfile
+        def test_albumartists(self):
+            metadata = Metadata({'albumartists': ['Artist1', 'Artist2']})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual(loaded_metadata.getall('albumartists'), ['Artist1', 'Artist2'])
 
         @skipUnlessTestfile
         def test_ci_tags_preserve_case(self):

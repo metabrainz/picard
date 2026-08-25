@@ -82,9 +82,24 @@ ALL_TAGS = TagVars(
             'The artists primarily credited on the release. These could be either "standardized" or '
             '"as credited" depending on whether the "Use standardized artist names" metadata option is enabled.'
         ),
+        is_multi_value=True,
+        see_also=('albumartist', '_albumartists'),
+    ),
+    TagVar(
+        'albumartists',
+        shortdesc=N_('Album Artists'),
+        longdesc=N_(
+            'The artists primarily credited on the release. These could be either "standardized" or '
+            '"as credited" depending on whether the "Use standardized artist names" metadata option is enabled.'
+        ),
+        additionaldesc=N_(
+            'This hidden variable is retained for backward compatibility with existing scripts. '
+            'It is never written to files; use the "albumartists" tag instead.'
+        ),
         is_hidden=True,
         is_tag=False,
         is_multi_value=True,
+        see_also=('albumartists',),
     ),
     TagVar(
         'albumartists_countries',

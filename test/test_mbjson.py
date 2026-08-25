@@ -119,6 +119,7 @@ class ReleaseTest(MBJSONTest):
         release_to_metadata(self.json_doc, m, a)
         self.assertEqual(m['album'], 'The Dark Side of the Moon')
         self.assertEqual(m['albumartist'], 'Pink Floyd')
+        self.assertEqual(m['albumartists'], 'Pink Floyd')
         self.assertEqual(m['albumartistsort'], 'Pink Floyd')
         self.assertEqual(m['asin'], 'b123')
         self.assertEqual(m['barcode'], '123')
@@ -172,6 +173,7 @@ class ReleaseTest(MBJSONTest):
         release_to_metadata(self.json_doc, m, a)
         self.assertEqual(m['album'], 'The Dark Side of the Moon')
         self.assertEqual(m['albumartist'], 'Pink Floyd')
+        self.assertEqual(m['albumartists'], 'Pink Floyd')
         self.assertEqual(m['albumartistsort'], 'Pink Floyd')
         self.assertEqual(m['asin'], 'b123')
         self.assertEqual(m['barcode'], '123')
@@ -485,6 +487,7 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         self.assertEqual('Ed Sheeran feat. Meek Mill & A Boogie Wit da Hoodie', m['albumartist'])
         self.assertEqual('Sheeran, Ed feat. Meek Mill & Boogie Wit da Hoodie, A', m['albumartistsort'])
         self.assertEqual(['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'], m.getall('~albumartists'))
+        self.assertEqual(m.getall('~albumartists'), m.getall('albumartists'))
         self.assertEqual(['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'], m.getall('~albumartists_sort'))
         self.assertEqual(['GB', 'US', 'US'], m.getall('~albumartists_countries'))
         self.assertEqual(

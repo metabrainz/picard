@@ -227,6 +227,7 @@ class ID3File(File):
             'ASIN': 'asin',
             'MusicMagic Fingerprint': 'musicip_fingerprint',
             'ARTISTS': 'artists',
+            'ALBUMARTISTS': 'albumartists',
             'DIRECTOR': 'director',
             'WORK': 'work',
             'Writer': 'writer',
