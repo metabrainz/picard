@@ -43,6 +43,7 @@ from picard.const.appdirs import cache_folder
 from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.utils import is_local_path
 from picard.plugin3.manager.clean import PluginCleanupManager
 from picard.plugin3.manager.errors import (  # noqa: F401
     PluginAlreadyInstalledError,
@@ -231,6 +232,21 @@ class PluginManager(QObject):
                     repo_path = plugin.local_path
                     break
 
+        # When reusing an installed plugin's repository whose source is a local
+        # filesystem path, refresh it from its origin before listing refs.
+        # Plugins are installed as single-branch clones, so on its own the
+        # installed copy only knows about the originally installed branch;
+        # branches or tags added to the source repository afterwards would not
+        # appear in the ref selector until the next restart. A fetch from a
+        # local origin is a cheap on-disk operation (no network), so it is safe
+        # to do synchronously here. Remote origins are intentionally skipped:
+        # they are refreshed asynchronously via refresh_all_plugin_refs(), and a
+        # synchronous network fetch on dialog open would be undesirable. Fetch
+        # failures (missing origin, etc.) are non-fatal: we then list whatever
+        # refs the existing clone already has.
+        if repo_path and is_local_path(url):
+            self._refresh_repo_from_origin(repo_path)
+
         remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True, repo_path=repo_path)
         if not remote_refs:
             return None
@@ -274,6 +290,25 @@ class PluginManager(QObject):
         }
 
         return result
+
+    def _refresh_repo_from_origin(self, repo_path):
+        """Fetch all refs (branches and tags) from a repository's origin.
+
+        Best-effort: any failure (no origin remote, unreachable source, etc.)
+        is logged and swallowed so callers can fall back to the refs already
+        present in the repository.
+        """
+
+        def fetch_refs(repo):
+            backend = git_backend()
+            callbacks = backend.create_remote_callbacks()
+            for remote in repo.get_remotes():
+                repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
+
+        try:
+            self._with_plugin_repo(repo_path, fetch_refs)
+        except Exception as e:
+            log.debug("Failed to refresh refs from origin for %s: %s", repo_path, e)
 
     def get_plugin_refs_info(self, identifier):
         """Get plugin refs information from identifier.
