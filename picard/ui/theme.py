@@ -397,8 +397,31 @@ class BaseTheme(QtCore.QObject):
         if any(strategy() for strategy in self._dark_mode_strategies):
             return UiTheme.DARK
 
-        if palette_is_dark(app.palette()):
-            log.debug("No system dark mode detected, but palette is already dark.")
+        # Ask Qt directly for the OS color scheme when available (Qt 6.5+).
+        # Unlike app.palette(), this reflects the operating system setting and
+        # is not affected by any palette Picard applied at runtime.
+        # get_style_hints() only returns non-None when setColorScheme (Qt 6.8+)
+        # is present, which implies colorScheme() (Qt 6.5+) is available too.
+        style_hints = get_style_hints()
+        if style_hints is not None:
+            color_scheme = style_hints.colorScheme()
+            if color_scheme == QtCore.Qt.ColorScheme.Dark:
+                log.debug("System color scheme reported as dark.")
+                return UiTheme.DARK
+            if color_scheme == QtCore.Qt.ColorScheme.Light:
+                log.debug("System color scheme reported as light.")
+                return UiTheme.LIGHT
+            # Unknown/unspecified: fall through to the palette-based heuristic.
+
+        # Fallback for platforms/Qt versions without a usable color scheme hint.
+        # Use the style's standard palette rather than the live application
+        # palette: app.palette() may have been overridden by a runtime theme
+        # switch (e.g. the user selected Dark and then switched back to
+        # Default), which would otherwise make us misdetect the system theme.
+        style = app.style()
+        reference_palette = style.standardPalette() if style else app.palette()
+        if palette_is_dark(reference_palette):
+            log.debug("No system dark mode detected, but standard palette is dark.")
             return UiTheme.DARK
 
         log.debug("No system dark mode detected, defaulting to light mode.")

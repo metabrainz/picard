@@ -384,6 +384,114 @@ def assert_palette_not_dark(palette, expected_colors):
             )
 
 
+def _make_light_standard_palette():
+    """A light palette as a style's standardPalette() would report on a light OS."""
+    palette = QtGui.QPalette()
+    palette.setColor(
+        QtGui.QPalette.ColorGroup.Active,
+        QtGui.QPalette.ColorRole.Base,
+        QtGui.QColor(255, 255, 255),
+    )
+    return palette
+
+
+class _StyleWithStandardPalette:
+    """Minimal style stub exposing a fixed standardPalette()."""
+
+    def __init__(self, standard_palette):
+        self._standard_palette = standard_palette
+
+    def standardPalette(self):
+        return self._standard_palette
+
+
+class _AppWithStyle(DummyApp):
+    """DummyApp variant whose style() returns a style with a standardPalette().
+
+    Models the real runtime state: the live application palette may have been
+    overridden (e.g. dark, after the user picked the Dark theme), while the
+    style's standard palette still reflects the true OS theme.
+    """
+
+    def __init__(self, live_dark, standard_palette):
+        super().__init__(already_dark_theme=live_dark)
+        self._style = _StyleWithStandardPalette(standard_palette)
+
+    def style(self):
+        return self._style
+
+
+def test_get_system_theme_ignores_runtime_applied_dark_palette(monkeypatch):
+    """Regression test for PICARD-2442 dynamic theme switch bug.
+
+    Reproduces the scenario reported by rdswift: on a system whose real theme
+    is light, switching the UI theme option from "Dark" back to "Default" had
+    no effect until restart.
+
+    Root cause: ``get_system_theme()`` used to fall back to
+    ``palette_is_dark(app.palette())`` when no OS dark-mode strategy reported
+    dark. That live palette reflects whatever theme Picard applied at runtime.
+    After the user manually selected the Dark theme, ``app.palette()`` is dark,
+    so the old code wrongly reported the system theme as DARK, and
+    ``apply_theme(DARK)`` then early-returned because dark was already applied,
+    so nothing repainted.
+
+    ``get_system_theme()`` must report the real OS theme (LIGHT here),
+    independent of whatever palette Picard has applied at runtime.
+    """
+    # Force the style-hints path off so we exercise the standard-palette fallback.
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
+
+    theme = theme_mod.GenericTheme()
+    # No OS dark-mode strategy reports dark (system default is light).
+    theme._dark_mode_strategies = [lambda: False]
+
+    # Live palette is dark (Picard applied Dark at runtime), but the style's
+    # standard palette still reflects the true OS theme (light).
+    app = _AppWithStyle(live_dark=True, standard_palette=_make_light_standard_palette())
+    assert theme_mod.palette_is_dark(app.palette())
+    assert not theme_mod.palette_is_dark(app.style().standardPalette())
+
+    detected = theme.get_system_theme(app)
+
+    assert detected == theme_mod.UiTheme.LIGHT, (
+        "get_system_theme must report the real OS theme (light) and not be "
+        "fooled by a dark palette that Picard applied at runtime"
+    )
+
+
+def test_get_system_theme_uses_style_hints_color_scheme(monkeypatch):
+    """When available, get_system_theme should trust the OS color scheme hint.
+
+    Even if the live application palette is dark (runtime override), a light OS
+    color scheme must be reported as LIGHT.
+    """
+
+    class _StyleHints:
+        def __init__(self, scheme):
+            self._scheme = scheme
+
+        def setColorScheme(self, scheme):  # presence gates get_style_hints()
+            self._scheme = scheme
+
+        def colorScheme(self):
+            return self._scheme
+
+    monkeypatch.setattr(
+        QtGui.QGuiApplication,
+        "styleHints",
+        lambda: _StyleHints(QtCore.Qt.ColorScheme.Light),
+    )
+
+    theme = theme_mod.GenericTheme()
+    theme._dark_mode_strategies = [lambda: False]
+
+    # Live palette is dark, but the OS reports a light scheme.
+    app = _AppWithStyle(live_dark=True, standard_palette=_make_light_standard_palette())
+
+    assert theme.get_system_theme(app) == theme_mod.UiTheme.LIGHT
+
+
 @pytest.mark.parametrize(
     ("already_dark_theme", "system_theme", "expect_dark_palette"),
     [
