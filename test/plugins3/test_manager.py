@@ -1030,3 +1030,69 @@ class TestPluginErrors(PicardTestCase):
 
             # Should not be added twice
             self.assertEqual(len(manager._plugin_dirs), initial_count)
+
+
+class TestFetchAllGitRefsLocalSource(PicardTestCase):
+    """Regression tests for listing refs of plugins installed from a local repo.
+
+    Plugins are installed as single-branch clones. fetch_all_git_refs() reuses
+    that clone to list refs. A branch created in the local source repository
+    after installation must still show up in the ref selector, not only after
+    the next restart.
+    """
+
+    def _clone_single_branch(self, source_path, target_path, branch):
+        """Clone source_path into target_path checking out a single branch."""
+        backend = git_backend()
+        repo = backend.clone_repository(source_path.as_uri(), target_path, checkout_branch=branch)
+        repo.free()
+
+    def test_branch_added_to_source_after_install_is_listed(self):
+        """A branch created in the local source after install is listed."""
+        skip_if_no_git_backend()
+
+        from test.plugins3.helpers import (
+            backend_create_branch,
+            create_git_repo_with_backend,
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+
+            # rdswift's local copy of the repo (the install source), on 'main'.
+            source_path = tmp / 'source'
+            create_git_repo_with_backend(source_path, {'MANIFEST.toml': 'name = "Test"\n'})
+
+            # Picard's installed copy: a single-branch clone of the source.
+            clone_path = tmp / 'clone'
+            self._clone_single_branch(source_path, clone_path, 'main')
+
+            # After installation, a new branch is created in the SOURCE repo.
+            backend_create_branch(source_path, 'feature-x')
+
+            # Register an installed plugin pointing at the source URL with the
+            # single-branch clone as its local path.
+            manager = _create_manager()
+            plugin = MockPlugin(uuid='local-src-uuid', local_path=clone_path)
+            manager._plugins = [plugin]
+            manager._save_plugin_metadata(
+                PluginMetadata(
+                    name='Test',
+                    url=str(source_path),
+                    ref='main',
+                    commit='',
+                    uuid='local-src-uuid',
+                )
+            )
+
+            refs = manager.fetch_all_git_refs(str(source_path))
+
+            self.assertIsNotNone(refs)
+            branch_names = {b['name'] for b in refs['branches']}
+            self.assertIn('main', branch_names)
+            self.assertIn(
+                'feature-x',
+                branch_names,
+                "A branch created in the local source repository after install "
+                "must be listed without requiring a restart",
+            )
