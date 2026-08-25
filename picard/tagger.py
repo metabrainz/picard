@@ -381,6 +381,17 @@ class Tagger(QtWidgets.QApplication):
 
         # log interesting environment variables
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
+        desktop_env_vars = (
+            'XDG_CURRENT_DESKTOP',
+            'XDG_SESSION_DESKTOP',
+            'XDG_SESSION_TYPE',
+            'DESKTOP_SESSION',
+            'KDE_FULL_SESSION',
+        )
+        log.debug(
+            "Desktop Env.: %s",
+            " ".join("%s=%r" % (k, os.environ[k]) for k in desktop_env_vars if k in os.environ),
+        )
 
     def _init_gettext(self, config, localedir):
         """Initialize gettext"""
