@@ -431,6 +431,45 @@ class UpdatesPage(SetupWizardPage):
             ReadTheDocs.update_documentation_items()
 
 
+class MetadataPage(SetupWizardPage):
+    """Page for configuring additional metadata options."""
+
+    def __init__(self, parent: QtWidgets.QWizard | None = None):
+        super().__init__(parent)
+        self.setTitle(_("Additional Metadata"))
+        self.setSubTitle(_("Choose whether Picard should fetch extra details about each track."))
+
+        layout = QtWidgets.QVBoxLayout(self)
+
+        self.track_ars_checkbox = WizardCheckbox(
+            _("Fetch detailed track relationships (performers, composers, and more)"),
+            _(
+                "For every track, Picard will also download extra credits such as the "
+                "musicians who performed on it, the composer and lyricist, and related "
+                "works. This gives you much richer tags.\n\n"
+                "It is turned off by default because it downloads more data from the "
+                "MusicBrainz servers, which makes loading albums a little slower and adds "
+                "load to the servers. Enable it if you want the most complete tags and "
+                "don't mind the extra loading time."
+            ),
+        )
+        layout.addWidget(self.track_ars_checkbox)
+
+        layout.addStretch()
+        hint = QtWidgets.QLabel(
+            _("You can change this later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Metadata.")
+        )
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
+
+    def initializePage(self) -> None:
+        config = get_config()
+        self.track_ars_checkbox.set_checked(config.setting['track_ars'])
+
+    def save_settings(self, config: Config) -> None:
+        config.setting['track_ars'] = self.track_ars_checkbox.is_checked()
+
+
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
 
@@ -438,6 +477,7 @@ class SetupWizard(QtWidgets.QWizard):
         WelcomePage,
         FileOrganizationPage,
         CoverArtPage,
+        MetadataPage,
         UpdatesPage,
     )
 
