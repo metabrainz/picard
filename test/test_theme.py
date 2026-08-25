@@ -461,7 +461,7 @@ def test_get_system_theme_ignores_runtime_applied_dark_palette(monkeypatch):
 
 
 def test_get_system_theme_uses_style_hints_color_scheme(monkeypatch):
-    """When available, get_system_theme should trust the OS color scheme hint.
+    """When available, get_system_theme should trust the cached OS color scheme.
 
     Even if the live application palette is dark (runtime override), a light OS
     color scheme must be reported as LIGHT.
@@ -485,11 +485,100 @@ def test_get_system_theme_uses_style_hints_color_scheme(monkeypatch):
 
     theme = theme_mod.GenericTheme()
     theme._dark_mode_strategies = [lambda: False]
+    # setup() would capture this; set it directly for this focused unit test.
+    theme._system_color_scheme = QtCore.Qt.ColorScheme.Light
 
     # Live palette is dark, but the OS reports a light scheme.
     app = _AppWithStyle(live_dark=True, standard_palette=_make_light_standard_palette())
 
     assert theme.get_system_theme(app) == theme_mod.UiTheme.LIGHT
+
+
+def test_get_system_theme_ignores_color_scheme_polluted_by_apply_theme(monkeypatch):
+    """Regression test for PICARD-2442 follow-up (rdswift report).
+
+    Reproduces: on a light system, select the Dark theme, then switch the
+    option back to "Default". The display wrongly stayed dark until restart.
+
+    Root cause: ``apply_theme()`` calls ``setColorScheme()``, which mutates
+    what ``QStyleHints.colorScheme()`` subsequently returns. ``get_system_theme()``
+    then read that polluted live value back and reported DARK, so
+    ``apply_theme(DARK)`` early-returned and nothing switched back to light.
+
+    The fix caches the OS color scheme captured at setup (before any
+    ``setColorScheme()`` call) and refreshes it only on genuine OS changes, so
+    ``get_system_theme()`` keeps reporting the true OS theme (LIGHT here).
+    """
+
+    class _StyleHints:
+        """Models real Qt: setColorScheme() changes what colorScheme() returns."""
+
+        colorSchemeChanged = MagicMock()
+
+        def __init__(self, scheme):
+            self._scheme = scheme
+
+        def setColorScheme(self, scheme):
+            self._scheme = scheme
+
+        def colorScheme(self):
+            return self._scheme
+
+    # OS theme is light.
+    style_hints = _StyleHints(QtCore.Qt.ColorScheme.Light)
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: style_hints)
+
+    theme = theme_mod.GenericTheme()
+    theme._dark_mode_strategies = [lambda: False]
+
+    # Simulate the capture that setup() performs before applying any theme.
+    theme._system_color_scheme = style_hints.colorScheme()
+
+    app = _AppWithStyle(live_dark=False, standard_palette=_make_light_standard_palette())
+
+    # User selects Dark: apply_theme() calls setColorScheme(Dark), polluting
+    # the live colorScheme() value.
+    theme.apply_theme(app, theme_mod.UiTheme.DARK)
+    assert style_hints.colorScheme() == QtCore.Qt.ColorScheme.Dark
+
+    # User switches back to Default: get_system_theme() must still report the
+    # true OS theme (light), not the polluted Dark value.
+    assert theme.get_system_theme(app) == theme_mod.UiTheme.LIGHT
+
+
+def test_on_color_scheme_changed_refreshes_cached_os_scheme(monkeypatch):
+    """A genuine OS color scheme change must update the cached OS scheme.
+
+    Ensures get_system_theme() continues to track the OS after the user
+    changes their desktop theme while Picard is running.
+    """
+
+    class _StyleHints:
+        colorSchemeChanged = MagicMock()
+
+        def __init__(self, scheme):
+            self._scheme = scheme
+
+        def setColorScheme(self, scheme):
+            self._scheme = scheme
+
+        def colorScheme(self):
+            return self._scheme
+
+    style_hints = _StyleHints(QtCore.Qt.ColorScheme.Light)
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: style_hints)
+
+    theme = theme_mod.GenericTheme()
+    theme._dark_mode_strategies = [lambda: False]
+    theme._system_color_scheme = QtCore.Qt.ColorScheme.Light
+    theme._app = _AppWithStyle(live_dark=False, standard_palette=_make_light_standard_palette())
+
+    # OS switches to dark: the signal fires outside of apply_theme().
+    theme._applying_theme = False
+    theme._on_color_scheme_changed(QtCore.Qt.ColorScheme.Dark)
+
+    assert theme._system_color_scheme == QtCore.Qt.ColorScheme.Dark
+    assert theme.get_system_theme(theme._app) == theme_mod.UiTheme.DARK
 
 
 @pytest.mark.parametrize(

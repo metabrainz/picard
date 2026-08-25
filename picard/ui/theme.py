@@ -275,6 +275,13 @@ class BaseTheme(QtCore.QObject):
         self._accent_color_is_system: bool = False
         self._applying_theme: bool = False
         self._dark_mode_strategies: list[Callable[[], bool]] = []
+        # The OS color scheme as reported by Qt's style hints, captured at
+        # setup *before* Picard ever calls setColorScheme(). Calling
+        # setColorScheme() (done by apply_theme) mutates what colorScheme()
+        # subsequently returns, so we must not read it back to detect the OS
+        # theme once a runtime theme switch happened. Refreshed on genuine OS
+        # changes via the colorSchemeChanged signal.
+        self._system_color_scheme: QtCore.Qt.ColorScheme | None = None
 
     def setup(self, app: QtWidgets.QApplication) -> None:
         self._app = app
@@ -293,6 +300,10 @@ class BaseTheme(QtCore.QObject):
         )
 
         if style_hints := get_style_hints():
+            # Capture the OS color scheme now, before apply_theme() calls
+            # setColorScheme() below and thereby overwrites what colorScheme()
+            # reports. This cached value is what get_system_theme() trusts.
+            self._system_color_scheme = style_hints.colorScheme()
             style_hints.colorSchemeChanged.connect(self._on_color_scheme_changed)
 
         # Determine the system accent color before applying the theme,
@@ -330,6 +341,12 @@ class BaseTheme(QtCore.QObject):
     def _on_color_scheme_changed(self, color_scheme: QtCore.Qt.ColorScheme) -> None:
         if self._applying_theme:
             return
+        # This fired outside of our own apply_theme() (Qt delivers the echo
+        # from our setColorScheme() synchronously, while _applying_theme is
+        # still set, so it is filtered above). Treat it as a genuine OS change
+        # and refresh the cached OS scheme so get_system_theme() keeps tracking
+        # the operating system.
+        self._system_color_scheme = color_scheme
         log.debug_if(
             DebugOpt.THEME,
             "Theme: system colorSchemeChanged signal received: %s",
@@ -397,14 +414,15 @@ class BaseTheme(QtCore.QObject):
         if any(strategy() for strategy in self._dark_mode_strategies):
             return UiTheme.DARK
 
-        # Ask Qt directly for the OS color scheme when available (Qt 6.5+).
-        # Unlike app.palette(), this reflects the operating system setting and
-        # is not affected by any palette Picard applied at runtime.
-        # get_style_hints() only returns non-None when setColorScheme (Qt 6.8+)
-        # is present, which implies colorScheme() (Qt 6.5+) is available too.
-        style_hints = get_style_hints()
-        if style_hints is not None:
-            color_scheme = style_hints.colorScheme()
+        # Use the OS color scheme captured at setup (and refreshed on genuine
+        # OS changes via colorSchemeChanged), NOT the live colorScheme().
+        # Picard calls setColorScheme() when applying a theme, which overwrites
+        # what colorScheme() reports; reading it back here would make us detect
+        # the *last applied* theme rather than the operating system's theme.
+        # See PICARD-2442: switching Dark -> Default used to stay dark because
+        # the live colorScheme() still reported the Dark value Picard had set.
+        color_scheme = self._system_color_scheme
+        if color_scheme is not None:
             if color_scheme == QtCore.Qt.ColorScheme.Dark:
                 log.debug("System color scheme reported as dark.")
                 return UiTheme.DARK
