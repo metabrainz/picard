@@ -701,6 +701,7 @@ def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = F
     if release:
         m['musicbrainz_albumartistid'] = ids
         m['albumartist'] = credits.name
+        m['albumartists'] = credits.names
         m['albumartistsort'] = credits.sort_name
         m['~albumartists'] = credits.names
         m['~albumartists_sort'] = credits.sort_names

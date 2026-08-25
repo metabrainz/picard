@@ -103,6 +103,12 @@ class CommonMP4Tests:
             self.assertNotIn('foo', new_metadata)
 
         @skipUnlessTestfile
+        def test_albumartists(self):
+            metadata = Metadata({'albumartists': ['Artist1', 'Artist2']})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual(loaded_metadata.getall('albumartists'), ['Artist1', 'Artist2'])
+
+        @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):
             metadata = Metadata(
                 {

@@ -104,6 +104,12 @@ class CommonVorbisTests:
             self._test_unsupported_tags(tags)
 
         @skipUnlessTestfile
+        def test_albumartists(self):
+            metadata = Metadata({'albumartists': ['Artist1', 'Artist2']})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual(loaded_metadata.getall('albumartists'), ['Artist1', 'Artist2'])
+
+        @skipUnlessTestfile
         def test_invalid_metadata_block_picture_nobase64(self):
             metadata = {'metadata_block_picture': 'notbase64'}
             save_raw(self.filename, metadata)

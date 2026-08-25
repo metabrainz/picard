@@ -349,6 +349,14 @@ class CommonId3Tests:
             self.assertNotIn('TXXX:Work', raw_metadata)
             self.assertIn('TXXX:WORK', raw_metadata)
 
+        @skipUnlessTestfile
+        def test_albumartists_txxx(self):
+            metadata = Metadata({'albumartists': ['Artist1', 'Artist2']})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual(loaded_metadata.getall('albumartists'), ['Artist1', 'Artist2'])
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TXXX:ALBUMARTISTS', raw_metadata)
+
         def test_preserve_unchanged_tags_v23(self):
             config.setting['write_id3v23'] = True
             self.test_preserve_unchanged_tags()
