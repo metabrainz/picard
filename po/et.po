@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-23 09:12+0000\n"
+"PO-Revision-Date: 2026-08-25 22:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -1317,7 +1317,7 @@ msgstr "Valitud failides leiduvad sildid vastuolulise plaaditeabega"
 #: picard/tagger.py:1433
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
-msgstr ""
+msgstr "Plaaditeabe tuvastamine siltidest ei õnnestunud: %s"
 
 #: picard/tagger.py:1442
 msgid "Looking up disc from tags…"
@@ -3611,19 +3611,19 @@ msgstr "Vali sihtkaust"
 
 #: picard/ui/setupwizard.py:262
 msgid "Choose how Picard should handle album cover art."
-msgstr ""
+msgstr "Vali, kuidas Picard peaks kaanepilte käsitlema."
 
 #: picard/ui/setupwizard.py:267
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Kaanepildid lisatakse siltidesse"
+msgstr "Lisa kaanepildid helifailidesse"
 
 #: picard/ui/setupwizard.py:268
 msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
 msgstr ""
+"Kaanepilt salvestatakse helifaili endasse ja on seeläbi nähtav igas "
+"meediapleieris."
 
 #: picard/ui/setupwizard.py:273
 msgid "Save cover art as separate image files"
@@ -3634,6 +3634,7 @@ msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
 msgstr ""
+"Kaanepilt salvestatakse failina (nt. cover.jpg) helifailidega samasse kausta."
 
 #: picard/ui/setupwizard.py:280
 msgid "You can change these later under Options → Options → Cover Art."
@@ -3645,7 +3646,7 @@ msgstr "Uuendused"
 
 #: picard/ui/setupwizard.py:301
 msgid "Choose how Picard should check for updates."
-msgstr ""
+msgstr "Määratle, kuidas Picard peaks kontrollima rakenduse uuendusi."
 
 #: picard/ui/setupwizard.py:313
 msgid ""
@@ -4036,7 +4037,7 @@ msgstr "Valitud asukoht pole kaust."
 
 #: picard/ui/dialogs/installplugin.py:287
 msgid "The directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "Selles kaustas ei leidu MANIFEST.toml faili."
 
 #: picard/ui/dialogs/installplugin.py:300
 msgid ""
