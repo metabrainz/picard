@@ -350,6 +350,25 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _retranslate_ui(self):
         """Retranslate all UI elements after a language change."""
         retranslate_actions(self.action_map)
+        self._retranslate_menus()
+
+    def _retranslate_menus(self):
+        """Retranslate menu titles after a language change.
+
+        Uses the same pattern as retranslate_actions: on first call captures
+        the untranslated source title from each menu's menuAction, then applies
+        _() on every call.
+        """
+        from picard.ui.mainwindow.actions import _retranslate_action_property
+
+        for action in self.menuBar().actions():
+            menu = action.menu()
+            if menu:
+                _retranslate_action_property(action, 'text', action.text, action.setText)
+        # Also retranslate submenus not directly in the menu bar
+        for menu in self._translatable_submenus:
+            action = menu.menuAction()
+            _retranslate_action_property(action, 'text', action.text, action.setText)
 
     def _update_toolbar_theme(self):
         """Refresh toolbar extension button icon and stylesheet for current theme."""
@@ -816,7 +835,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         retranslate_actions(self.action_map)
 
     def _create_cd_lookup_menu(self):
-        menu = QtWidgets.QMenu(_("Lookup &CD…"))
+        menu = QtWidgets.QMenu(N_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
@@ -826,7 +845,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         The menu content is populated from the persisted recent sessions list.
         """
-        self.recent_sessions_menu = QtWidgets.QMenu(_("Recent Sessions"))
+        self.recent_sessions_menu = QtWidgets.QMenu(N_("Recent Sessions"))
         self.recent_sessions_menu.setIcon(icontheme.lookup('document-open-recent'))
         self._populate_recent_sessions_menu()
         return self.recent_sessions_menu
@@ -1002,7 +1021,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             menu_builder(menu, self.action_map, *args)
 
         add_menu(
-            _("&File"),
+            N_("&File"),
             MainAction.ADD_DIRECTORY,
             MainAction.ADD_FILES,
             MainAction.CLOSE_WINDOW if self.show_close_window else None,
@@ -1026,7 +1045,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
 
         add_menu(
-            _("&Edit"),
+            N_("&Edit"),
             MainAction.CUT,
             MainAction.PASTE,
             '-',
@@ -1035,7 +1054,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
 
         add_menu(
-            _("&View"),
+            N_("&View"),
             MainAction.SHOW_FILE_BROWSER,
             MainAction.SHOW_METADATA_VIEW,
             MainAction.SHOW_COVER_ART,
@@ -1046,24 +1065,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
-        self.file_naming_scripts_menu = QtWidgets.QMenu(_("File naming &scripts"))
+        self.file_naming_scripts_menu = QtWidgets.QMenu(N_("File naming &scripts"))
         self.file_naming_scripts_menu.setIcon(icontheme.lookup('document-open'))
         self._script_actions = []
         self._make_script_selector_menu()
         self.file_naming_scripts_menu.addSeparator()
         self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
-        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Profiles"))
+        self.profile_quick_selector_menu = QtWidgets.QMenu(N_("&Profiles"))
         self.profile_quick_selector_menu.setIcon(
             self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
         self._make_profile_selector_menu()
 
-        self.quick_settings_menu = QtWidgets.QMenu(_("&Quick settings"))
+        self.quick_settings_menu = QtWidgets.QMenu(N_("&Quick settings"))
         self.quick_settings_menu.setIcon(icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
-        self.options_menu = self.menuBar().addMenu(_("&Options"))
+        self.options_menu = self.menuBar().addMenu(N_("&Options"))
         menu_builder(
             self.options_menu,
             self.action_map,
@@ -1074,7 +1093,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
 
         add_menu(
-            _("&Tools"),
+            N_("&Tools"),
             MainAction.REFRESH,
             self.cd_lookup_menu,
             MainAction.AUTOTAG,
@@ -1089,14 +1108,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.OPEN_COLLECTION_IN_BROWSER,
         )
 
-        self.plugin_tools_menu = self.menuBar().addMenu(_("&Plugin Tools"))
+        self.plugin_tools_menu = self.menuBar().addMenu(N_("&Plugin Tools"))
         self.plugin_tools_menu.menuAction().setVisible(False)
         self._make_plugin_tools_menu()
 
         self.menuBar().addSeparator()
 
         add_menu(
-            _("&Help"),
+            N_("&Help"),
             MainAction.HELP,
             '-',
             MainAction.VIEW_HISTORY,
@@ -1112,7 +1131,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.ABOUT,
         )
 
+        # Collect submenus that need retranslation (not in the menu bar directly)
+        self._translatable_submenus = [
+            self.file_naming_scripts_menu,
+            self.profile_quick_selector_menu,
+            self.quick_settings_menu,
+            self.cd_lookup_menu,
+            self.recent_sessions_menu,
+        ]
+
         self._menus_created = True
+
+        # Apply initial translation to menu titles
+        self._retranslate_menus()
 
     def update_toolbar_style(self):
         config = get_config()
