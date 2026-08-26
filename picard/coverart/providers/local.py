@@ -139,44 +139,32 @@ class ProviderOptionsLocal(ProviderOptions):
     def _update_test_coverart_filter(self):
         value = self.ui.local_cover_regex_edit.text()
         self.playground.clear_error()
-
-        if self._current_mode == LocalCoverMatchMode.SCRIPT:
-            check_line = self._script_check_line(value)
-        else:
-            check_line = self._regex_check_line(value)
-
+        matcher = self._build_matcher(value)
+        # The compiled regex is anchored for scripts and unanchored for regex
+        # mode; search() works for both.
+        check_line = (lambda line: bool(matcher.search(line))) if matcher is not None else None
         self.playground.update(check_line)
 
-    def _regex_check_line(self, value):
+    def _build_matcher(self, value):
+        """Compile the current field value into a regex for the active mode.
+
+        Returns a compiled pattern, or None if the value is empty or invalid
+        (in which case an error message is shown on the playground).
+        """
+        if not value:
+            return None
+        if self._current_mode == LocalCoverMatchMode.SCRIPT:
+            try:
+                pattern = CoverArtProviderLocal._eval_script(value, CoverArtProviderLocal.example_metadata())
+                return CoverArtProviderLocal._pattern_to_re(pattern)
+            except Exception as e:
+                self.playground.set_error(_("Invalid script: %s") % e)
+                return None
         try:
-            coverart_filter = re.compile(value, re.IGNORECASE) if value else None
+            return re.compile(value, re.IGNORECASE)
         except re.error as e:
             self.playground.set_error(_("Invalid regular expression: %s") % e)
             return None
-
-        if not coverart_filter:
-            return None
-
-        def check_line(line: str) -> bool:
-            return bool(coverart_filter.search(line))
-
-        return check_line
-
-    def _script_check_line(self, value):
-        if not value:
-            return None
-
-        try:
-            pattern = CoverArtProviderLocal._eval_script(value, CoverArtProviderLocal.example_metadata())
-            match_re = CoverArtProviderLocal._pattern_to_re(pattern)
-        except Exception as e:
-            self.playground.set_error(_("Invalid script: %s") % e)
-            return None
-
-        def check_line(line: str) -> bool:
-            return bool(match_re.match(line))
-
-        return check_line
 
 
 class CoverArtProviderLocal(CoverArtProvider):
