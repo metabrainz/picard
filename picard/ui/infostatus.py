@@ -64,8 +64,12 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self.stop_button.setIconSize(self._size)
         self.stop_button.setIcon(self.stop_button.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_BrowserStop))
         self.stop_button.setEnabled(False)
-        self.stop_button.setToolTip(_("Stop all pending network requests"))
         self.stop_button.clicked.connect(self.stop_requested.emit)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._init_tooltips()
+        super().changeEvent(event)
 
     def _create_icons(self):
         self.icon_eta = QtGui.QIcon(":/images/22x22/hourglass.png")
@@ -90,6 +94,7 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self.pending_files_icon.setToolTip(t4)
         self.pending_requests_value.setToolTip(t5)
         self.pending_requests_icon.setToolTip(t5)
+        self.stop_button.setToolTip(_("Stop all pending network requests"))
 
     def update(self, progress_status):
         self.set_files(progress_status.files)

@@ -360,7 +360,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             view._set_header_labels()
         # Propagate LanguageChange event to persistent child widgets
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
-        for widget in (self.metadata_box, self.cover_art_box, self.file_browser):
+        for widget in (self.metadata_box, self.cover_art_box, self.file_browser, self._infostatus):
             QtCore.QCoreApplication.sendEvent(widget, event)
         # Retranslate search toolbar
         self._retranslate_search_toolbar()
@@ -690,6 +690,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Creates a new status bar."""
         self.statusBar().showMessage(N_("Ready"))
         infostatus = InfoStatus(self)
+        self._infostatus = infostatus
         self._progress = infostatus.get_progress
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setStyleSheet("QLabel { margin: 0 4px 0 4px; }")
