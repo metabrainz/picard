@@ -353,6 +353,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         retranslate_actions(self.action_map)
         self._retranslate_menus()
         self._retranslate_window()
+        # Refresh column headers in tree views (columns store untranslated
+        # titles via N_() and _set_header_labels applies _() lazily)
+        for view in self.panel._views:
+            view._set_header_labels()
 
     def _retranslate_window(self):
         """Retranslate window title and statusbar elements."""
