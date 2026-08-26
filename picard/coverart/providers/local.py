@@ -202,12 +202,21 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     def _queue_images_script(self, script):
         filepaths_done = set()
+        walks_done = set()
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
             expected_filename = self._eval_script(script, file.metadata)
-            if expected_filename:
-                for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
-                    self.queue_put(image)
+            if not expected_filename:
+                continue
+            # Tracks of an album usually share metadata, so the evaluated
+            # pattern is often identical across a directory. Walk each
+            # (directory, pattern) pair only once.
+            walk_key = (current_dir, expected_filename)
+            if walk_key in walks_done:
+                continue
+            walks_done.add(walk_key)
+            for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
+                self.queue_put(image)
 
     @staticmethod
     def example_metadata():

@@ -176,6 +176,37 @@ class QueueImagesScriptTest(PicardTestCase):
         self.provider._queue_images_script('%album%')
         self.provider.find_local_images_by_script.assert_called_once()
 
+    @patch.object(CoverArtProviderLocal, '_eval_script')
+    def test_same_dir_and_pattern_walked_once(self, mock_eval):
+        # Several tracks in the same directory yielding the same pattern must
+        # only trigger a single directory walk.
+        mock_eval.return_value = 'cover.*'
+        files = []
+        for i in range(3):
+            f = MagicMock()
+            f.filename = f'/music/track{i}.mp3'
+            f.metadata = Metadata({'album': 'Test'})
+            files.append(f)
+        self.provider.album.iterfiles.return_value = files
+        self.provider.find_local_images_by_script = MagicMock(return_value=[])
+        self.provider._queue_images_script('%album%')
+        self.provider.find_local_images_by_script.assert_called_once()
+
+    @patch.object(CoverArtProviderLocal, '_eval_script')
+    def test_distinct_patterns_walked_separately(self, mock_eval):
+        # Different evaluated patterns in the same directory each get a walk.
+        mock_eval.side_effect = ['a.*', 'b.*']
+        files = []
+        for i in range(2):
+            f = MagicMock()
+            f.filename = f'/music/track{i}.mp3'
+            f.metadata = Metadata()
+            files.append(f)
+        self.provider.album.iterfiles.return_value = files
+        self.provider.find_local_images_by_script = MagicMock(return_value=[])
+        self.provider._queue_images_script('%album%')
+        self.assertEqual(2, self.provider.find_local_images_by_script.call_count)
+
 
 class ScriptToGlobMatchTest(LocalCoverArtTestBase):
     """Integration test: script evaluation → glob matching against real files."""
