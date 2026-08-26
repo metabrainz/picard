@@ -282,6 +282,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._create_toolbar()
         self._create_menus()
         self._retranslate_window()
+        self._retranslate_search_toolbar()
 
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
@@ -361,6 +362,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
         for widget in (self.metadata_box, self.cover_art_box):
             QtCore.QCoreApplication.sendEvent(widget, event)
+        # Retranslate search toolbar
+        self._retranslate_search_toolbar()
+
+    def _retranslate_search_toolbar(self):
+        """Retranslate search toolbar title and combo items."""
+        from picard.ui.mainwindow.actions import _retranslate_action_property
+
+        # Toolbar title (shown in View menu as toggle action)
+        toggle_action = self.search_toolbar.toggleViewAction()
+        _retranslate_action_property(toggle_action, 'text', toggle_action.text, toggle_action.setText)
+        # Combo box items
+        for i in range(self.search_combo.count()):
+            source = self.search_combo.property(f'_source_item_{i}')
+            if source is None:
+                source = self.search_combo.itemText(i)
+                self.search_combo.setProperty(f'_source_item_{i}', source)
+            self.search_combo.setItemText(i, _(source))
 
     def _retranslate_window(self):
         """Retranslate window title and statusbar elements."""
@@ -1272,7 +1290,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_search_toolbar(self):
         config = get_config()
-        self.search_toolbar = toolbar = self.addToolBar(_("Search"))
+        self.search_toolbar = toolbar = self.addToolBar(N_("Search"))
         self.action_map[MainAction.SEARCH_TOOLBAR_TOGGLE] = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName('search_toolbar')
         if self._is_wayland:
@@ -1283,9 +1301,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         search_panel = QtWidgets.QWidget(toolbar)
         hbox = QtWidgets.QHBoxLayout(search_panel)
         self.search_combo = QtWidgets.QComboBox(search_panel)
-        self.search_combo.addItem(_("Album"), 'album')
-        self.search_combo.addItem(_("Artist"), 'artist')
-        self.search_combo.addItem(_("Track"), 'track')
+        self.search_combo.addItem(N_("Album"), 'album')
+        self.search_combo.addItem(N_("Artist"), 'artist')
+        self.search_combo.addItem(N_("Track"), 'track')
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtWidgets.QLineEdit(search_panel)
         self.search_edit.setClearButtonEnabled(True)
