@@ -179,15 +179,17 @@ class CoverArtProviderLocal(CoverArtProvider):
     _known_types = frozenset(t['name'] for t in CAA_TYPES)
     _default_types = ('front',)
 
+    _queue_methods: ClassVar[dict[LocalCoverMatchMode, str]] = {
+        LocalCoverMatchMode.REGEX: '_queue_images_regex',
+        LocalCoverMatchMode.SCRIPT: '_queue_images_script',
+    }
+
     def queue_images(self):
         config = get_config()
         mode = config.setting['local_cover_match_mode']
         value = config.setting[LOCAL_COVER_MODES[mode].setting]
         if value:
-            if mode == LocalCoverMatchMode.SCRIPT:
-                self._queue_images_script(value)
-            else:
-                self._queue_images_regex(value)
+            getattr(self, self._queue_methods[mode])(value)
         return CoverArtProvider.QueueState.FINISHED
 
     def _queue_images_regex(self, regex):
