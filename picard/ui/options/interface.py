@@ -129,6 +129,7 @@ class InterfaceOptionsPage(OptionsPage):
             else:
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
+        self.ui.ui_language.currentIndexChanged.connect(self._on_language_changed)
         self.ui.starting_directory.toggled.connect(self.ui.starting_directory_path.setEnabled)
         self.ui.starting_directory.toggled.connect(self.ui.starting_directory_browse.setEnabled)
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
@@ -156,10 +157,32 @@ class InterfaceOptionsPage(OptionsPage):
             selected_theme = theme.get_system_theme(self.tagger)
         theme.apply_theme(self.tagger, selected_theme)
 
+    def _on_language_changed(self, index):
+        """Apply the language immediately when the user selects it."""
+        selected_language = self.ui.ui_language.itemData(index)
+        if selected_language is None:
+            return
+        switch_language(selected_language or None, log.debug)
+
+    def _revert_language(self):
+        """Revert to the saved language if the dialog is cancelled."""
+        config = get_config()
+        saved_language = config.setting['ui_language']
+        switch_language(saved_language or None, log.debug)
+
+    def _dialog_rejected(self):
+        """Handle dialog cancellation by reverting live-previewed changes."""
+        self._revert_language()
+
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
         self.ui.allow_multi_dirs_selection.blockSignals(True)
+
+        # Revert live-previewed changes if the dialog is cancelled
+        if not hasattr(self, '_reject_connected'):
+            self.dialog.rejected.connect(self._dialog_rejected)
+            self._reject_connected = True
 
         config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
@@ -169,7 +192,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
         current_ui_language = config.setting['ui_language']
-        self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
+        with QtCore.QSignalBlocker(self.ui.ui_language):
+            self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
         self.ui.starting_directory.setChecked(config.setting['starting_directory'])
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
@@ -196,7 +220,6 @@ class InterfaceOptionsPage(OptionsPage):
             config.setting['ui_theme'] = new_theme_setting
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
-            switch_language(new_language or None, log.debug)
             ReadTheDocs.update_documentation_items()
 
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
