@@ -24,6 +24,8 @@ import os
 import re
 from typing import ClassVar
 
+from PyQt6.QtCore import QSignalBlocker
+
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
 from picard.coverart.providers.provider import (
@@ -123,9 +125,8 @@ class ProviderOptionsLocal(ProviderOptions):
         mode = config.setting['local_cover_match_mode']
         # Set the checkbox without triggering the lossless-swap handler, then
         # apply the mode explicitly.
-        self.ui.local_cover_use_script.blockSignals(True)
-        self.ui.local_cover_use_script.setChecked(mode == LocalCoverMatchMode.SCRIPT)
-        self.ui.local_cover_use_script.blockSignals(False)
+        with QSignalBlocker(self.ui.local_cover_use_script):
+            self.ui.local_cover_use_script.setChecked(mode == LocalCoverMatchMode.SCRIPT)
         self._apply_mode(mode)
 
     def save(self):
