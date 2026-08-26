@@ -862,6 +862,31 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             url = 'doc_options'  # key in PICARD_DOCS_URLS
         return url
 
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate()
+        super().changeEvent(event)
+
+    def _retranslate(self):
+        """Retranslate the options dialog after a language change."""
+        # Retranslate the auto-generated form (window title, labels, etc.)
+        self.ui.retranslateUi(self)
+        # Retranslate page titles in the tree
+        for item, PageCls in self.item_to_page.items():
+            item.setText(0, PageCls.display_title())
+        # Retranslate the currently visible page's form if it has retranslateUi
+        current_page = self._get_current_page()
+        if current_page and hasattr(current_page, 'ui') and hasattr(current_page.ui, 'retranslateUi'):
+            current_page.ui.retranslateUi(current_page)
+
+    def _get_current_page(self):
+        """Return the currently visible options page instance, or None."""
+        items = self.ui.pages_tree.selectedItems()
+        if items and items[0] in self.item_to_page:
+            page_cls = self.item_to_page[items[0]]
+            return self._page_instances.get(page_cls.NAME)
+        return None
+
     def accept(self):
         for page in self.loaded_pages:
             try:
