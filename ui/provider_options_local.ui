@@ -25,6 +25,13 @@
     <widget class="QLineEdit" name="local_cover_regex_edit"/>
    </item>
    <item>
+    <widget class="QCheckBox" name="local_cover_use_script">
+     <property name="text">
+      <string>Use a script producing a file name pattern instead of a regular expression</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="note">
      <property name="font">
       <font>

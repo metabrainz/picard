@@ -26,6 +26,9 @@ class Ui_LocalOptions(object):
         self.local_cover_regex_edit = QtWidgets.QLineEdit(parent=LocalOptions)
         self.local_cover_regex_edit.setObjectName("local_cover_regex_edit")
         self.verticalLayout.addWidget(self.local_cover_regex_edit)
+        self.local_cover_use_script = QtWidgets.QCheckBox(parent=LocalOptions)
+        self.local_cover_use_script.setObjectName("local_cover_use_script")
+        self.verticalLayout.addWidget(self.local_cover_use_script)
         self.note = QtWidgets.QLabel(parent=LocalOptions)
         font = QtGui.QFont()
         font.setItalic(True)
@@ -42,4 +45,5 @@ class Ui_LocalOptions(object):
     def retranslateUi(self, LocalOptions):
         LocalOptions.setWindowTitle(_("Form"))
         self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
+        self.local_cover_use_script.setText(_("Use a script producing a file name pattern instead of a regular expression"))
         self.note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))

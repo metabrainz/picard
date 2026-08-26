@@ -23,6 +23,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import namedtuple
 from enum import Enum
 
 from PyQt6 import QtCore
@@ -58,6 +59,7 @@ from picard.const.defaults import (
     DEFAULT_FILTER_COLUMNS,
     DEFAULT_FPCALC_THREADS,
     DEFAULT_LOCAL_COVER_ART_REGEX,
+    DEFAULT_LOCAL_COVER_ART_SCRIPT,
     DEFAULT_LOG_LEVEL,
     DEFAULT_LONG_PATHS,
     DEFAULT_MUSIC_DIR,
@@ -102,6 +104,53 @@ class StandardizeArtistNames(Enum):
     ALL = "all"  # standardize variations and name changes
 
 
+class LocalCoverMatchMode(Enum):
+    REGEX = "regex"  # value is a regular expression (default, legacy behavior)
+    SCRIPT = "script"  # value is a tagger script producing a file name pattern
+
+
+# Descriptor for each local cover art matching mode. This is an internal
+# (non-persisted) table: it maps a mode to the config option holding that
+# mode's value and to the UI strings shown when the mode is active. Each mode
+# stores its value in a separate option so switching modes is lossless and
+# option profiles can override each value independently.
+#
+# The strings are marked for translation with N_() and must be translated with
+# _() at the point of use.
+LocalCoverModeInfo = namedtuple('LocalCoverModeInfo', ('setting', 'title', 'description', 'note', 'example'))
+
+LOCAL_COVER_MODES = {
+    LocalCoverMatchMode.REGEX: LocalCoverModeInfo(
+        setting='local_cover_regex',
+        title=N_("Regular expression"),
+        description=N_("Local cover art files match the following regular expression:"),
+        note=N_(
+            "First group in the regular expression, if any, will be used as type, "
+            "ie. cover-back-spine.jpg will be set as types Back + Spine. "
+            "If no type is found, it will default to Front type."
+        ),
+        # A literal pattern (not translatable) shown as placeholder / example.
+        example=r'^(?:cover|folder)\.(?:jpe?g|png)$',
+    ),
+    LocalCoverMatchMode.SCRIPT: LocalCoverModeInfo(
+        setting='local_cover_script',
+        title=N_("Script"),
+        description=N_("Local cover art files match the file name produced by the following script:"),
+        note=N_(
+            "The script is evaluated for each file's metadata; its result is used as a file name "
+            "pattern. Wildcards are supported: * matches any number of characters, ? matches a "
+            "single character, and {jpg,png} matches any of the comma separated alternatives. "
+            "Matching is against the full file name including extension, and is case-insensitive. "
+            "Sub-directories are searched, so the pattern is a file name, not a path.\n"
+            "Example (matches e.g. \"Alicia Keys - The Diary Of Alicia Keys [2003].jpg\"):\n"
+            "%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}"
+        ),
+        # A literal pattern (not translatable) shown as placeholder / example.
+        example='%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}',
+    ),
+}
+
+
 # picard/coverart/providers/caa.py
 # Cover Art Archive Cover Art Archive: Release
 BoolOption('setting', 'caa_approved_only', False, title=N_("Download only approved images"), in_profile=True)
@@ -122,6 +171,16 @@ BoolOption('setting', 'caa_restrict_image_types', True, title=N_("Restrict cover
 # Local Files
 TextOption(
     'setting', 'local_cover_regex', DEFAULT_LOCAL_COVER_ART_REGEX, title=N_("Local cover art regex"), in_profile=True
+)
+TextOption(
+    'setting', 'local_cover_script', DEFAULT_LOCAL_COVER_ART_SCRIPT, title=N_("Local cover art script"), in_profile=True
+)
+Option(
+    'setting',
+    'local_cover_match_mode',
+    LocalCoverMatchMode.REGEX,
+    title=N_("Local cover art match mode"),
+    in_profile=True,
 )
 
 # picard/ui/cdlookup.py

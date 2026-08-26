@@ -35,6 +35,12 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.metadata import Metadata
+from picard.options import (
+    LOCAL_COVER_MODES,
+    LocalCoverMatchMode,
+)
+from picard.util import wildcards_to_regex_pattern
 
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 from picard.ui.options import PageOptionConfigs
@@ -43,7 +49,17 @@ from picard.ui.playground import Playground
 
 class ProviderOptionsLocal(ProviderOptions):
     """
-    Options for Local Files cover art provider
+    Options for Local Files cover art provider.
+
+    Each matching mode (see ``LocalCoverMatchMode`` / ``LOCAL_COVER_MODES``)
+    stores its value in its own option, so switching modes is lossless and
+    option profiles can override each value independently. Only the value for
+    the currently active mode is shown in the single input field; the
+    description and note labels adapt to the active mode.
+
+    The active mode is stored in ``local_cover_match_mode`` and defaults to
+    ``LocalCoverMatchMode.REGEX``, so existing configurations (and any config
+    without the key) keep the previous regular-expression behavior.
     """
 
     NAME = "provider_local"
@@ -51,12 +67,19 @@ class ProviderOptionsLocal(ProviderOptions):
 
     OPTIONS: ClassVar[PageOptionConfigs] = {
         'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
+        'local_cover_script': {'widgets': ['local_cover_regex_edit']},
+        'local_cover_match_mode': {'widgets': ['local_cover_use_script']},
     }
 
     _options_ui = Ui_LocalOptions
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # In-memory value for each mode, so switching modes in the dialog does
+        # not discard the other mode's value before the page is saved.
+        self._mode_values = dict.fromkeys(LocalCoverMatchMode, "")
+        self._current_mode = LocalCoverMatchMode.REGEX
 
         self.playground = Playground(_("Test file name matching:"), parent=self)
         self.playground.set_description(
@@ -67,33 +90,93 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self.playground)
 
         self.ui.local_cover_regex_edit.textChanged.connect(self._update_test_coverart_filter)
+        self.ui.local_cover_use_script.toggled.connect(self._on_mode_toggled)
         self.playground.textChanged.connect(self._update_test_coverart_filter)
+
+    @staticmethod
+    def _mode_from_checkbox(checked):
+        return LocalCoverMatchMode.SCRIPT if checked else LocalCoverMatchMode.REGEX
+
+    def _apply_mode(self, mode):
+        """Show the value and labels for the given mode in the single field."""
+        self._current_mode = mode
+        info = LOCAL_COVER_MODES[mode]
+        self.ui.local_cover_regex_label.setText(_(info.description))
+        self.ui.note.setText(_(info.note))
+        # The example is a literal pattern; show it as placeholder (greyed hint
+        # visible when the field is empty), and also as the field tooltip.
+        self.ui.local_cover_regex_edit.setPlaceholderText(info.example)
+        self.ui.local_cover_regex_edit.setToolTip(_("Example: %s") % info.example)
+        self.ui.local_cover_regex_edit.setText(self._mode_values[mode])
+        self._update_test_coverart_filter()
+
+    def _on_mode_toggled(self, checked):
+        # Stash the current field into the outgoing mode before switching, so
+        # the switch is lossless within the dialog.
+        self._mode_values[self._current_mode] = self.ui.local_cover_regex_edit.text()
+        self._apply_mode(self._mode_from_checkbox(checked))
 
     def load(self):
         config = get_config()
-        self.ui.local_cover_regex_edit.setText(config.setting['local_cover_regex'])
+        for mode, info in LOCAL_COVER_MODES.items():
+            self._mode_values[mode] = config.setting[info.setting]
+        mode = config.setting['local_cover_match_mode']
+        # Set the checkbox without triggering the lossless-swap handler, then
+        # apply the mode explicitly.
+        self.ui.local_cover_use_script.blockSignals(True)
+        self.ui.local_cover_use_script.setChecked(mode == LocalCoverMatchMode.SCRIPT)
+        self.ui.local_cover_use_script.blockSignals(False)
+        self._apply_mode(mode)
 
     def save(self):
         config = get_config()
-        config.setting['local_cover_regex'] = self.ui.local_cover_regex_edit.text()
+        # Capture the visible field into the active mode before persisting.
+        self._mode_values[self._current_mode] = self.ui.local_cover_regex_edit.text()
+        for mode, info in LOCAL_COVER_MODES.items():
+            config.setting[info.setting] = self._mode_values[mode]
+        config.setting['local_cover_match_mode'] = self._current_mode
 
     def _update_test_coverart_filter(self):
-        regex_text = self.ui.local_cover_regex_edit.text()
-        try:
-            coverart_filter = re.compile(regex_text, re.IGNORECASE) if regex_text else None
-            self.playground.clear_error()
-        except re.error as e:
-            coverart_filter = None
-            self.playground.set_error(_("Invalid regular expression: %s") % e)
+        value = self.ui.local_cover_regex_edit.text()
+        self.playground.clear_error()
 
-        if coverart_filter:
-
-            def check_line(line: str) -> bool:
-                return bool(coverart_filter.search(line))
-
-            self.playground.update(check_line)
+        if self._current_mode == LocalCoverMatchMode.SCRIPT:
+            check_line = self._script_check_line(value)
         else:
-            self.playground.update(None)
+            check_line = self._regex_check_line(value)
+
+        self.playground.update(check_line)
+
+    def _regex_check_line(self, value):
+        try:
+            coverart_filter = re.compile(value, re.IGNORECASE) if value else None
+        except re.error as e:
+            self.playground.set_error(_("Invalid regular expression: %s") % e)
+            return None
+
+        if not coverart_filter:
+            return None
+
+        def check_line(line: str) -> bool:
+            return bool(coverart_filter.search(line))
+
+        return check_line
+
+    def _script_check_line(self, value):
+        if not value:
+            return None
+
+        try:
+            pattern = CoverArtProviderLocal._eval_script(value, CoverArtProviderLocal.example_metadata())
+            match_re = CoverArtProviderLocal._pattern_to_re(pattern)
+        except Exception as e:
+            self.playground.set_error(_("Invalid script: %s") % e)
+            return None
+
+        def check_line(line: str) -> bool:
+            return bool(match_re.match(line))
+
+        return check_line
 
 
 class CoverArtProviderLocal(CoverArtProvider):
@@ -105,23 +188,92 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = frozenset(t['name'] for t in CAA_TYPES)
-    _default_types = tuple('front')
+    _default_types = ('front',)
 
     def queue_images(self):
         config = get_config()
-        regex = config.setting['local_cover_regex']
-        if regex:
-            _match_re = re.compile(regex, re.IGNORECASE)
-            dirs_done = set()
-
-            for file in self.album.iterfiles():
-                current_dir = os.path.dirname(file.filename)
-                if current_dir in dirs_done:
-                    continue
-                dirs_done.add(current_dir)
-                for image in self.find_local_images(current_dir, _match_re):
-                    self.queue_put(image)
+        mode = config.setting['local_cover_match_mode']
+        value = config.setting[LOCAL_COVER_MODES[mode].setting]
+        if value:
+            if mode == LocalCoverMatchMode.SCRIPT:
+                self._queue_images_script(value)
+            else:
+                self._queue_images_regex(value)
         return CoverArtProvider.QueueState.FINISHED
+
+    def _queue_images_regex(self, regex):
+        match_re = re.compile(regex, re.IGNORECASE)
+        dirs_done = set()
+        for file in self.album.iterfiles():
+            current_dir = os.path.dirname(file.filename)
+            if current_dir in dirs_done:
+                continue
+            dirs_done.add(current_dir)
+            for image in self.find_local_images(current_dir, match_re):
+                self.queue_put(image)
+
+    def _queue_images_script(self, script):
+        filepaths_done = set()
+        for file in self.album.iterfiles():
+            current_dir = os.path.dirname(file.filename)
+            expected_filename = self._eval_script(script, file.metadata)
+            if expected_filename:
+                for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
+                    self.queue_put(image)
+
+    @staticmethod
+    def example_metadata():
+        """Create sample metadata for the options playground preview."""
+        metadata = Metadata()
+        metadata['album'] = 'Abbey Road'
+        metadata['albumartist'] = 'The Beatles'
+        metadata['artist'] = 'The Beatles'
+        metadata['title'] = 'Come Together'
+        metadata['date'] = '1969'
+        return metadata
+
+    @staticmethod
+    def _eval_script(script, metadata):
+        """Evaluate a script for use as a filename matching pattern.
+
+        Unlike script_to_filename(), this does not strip glob wildcard
+        characters (*, ?, {, |, }) from the result. Only path separators
+        in metadata values are replaced to ensure safe matching.
+        """
+        from picard.script import ScriptParser
+
+        new_metadata = Metadata()
+        for name in metadata:
+            new_metadata[name] = [str(v).replace(os.sep, '_') for v in metadata.getall(name)]
+        script = script.replace('\t', '').replace('\n', '')
+        result = ScriptParser().eval(script, new_metadata)
+        return result.replace('\x00', '')
+
+    @staticmethod
+    def _pattern_to_re(pattern):
+        """Compile a file name pattern to a regex.
+
+        Reuses picard.util.wildcards_to_regex_pattern. The pattern is a file
+        name produced by a user's script, so:
+
+        - ``[`` and ``]`` are matched literally (``allow_char_class=False``):
+          file names commonly contain brackets, e.g. "Album [2007].jpg", and
+          users do not expect ``[...]`` to be a character class here.
+        - ``{a,b,c}`` alternation is enabled (``allow_alternation=True``) so
+          common cases like matching several extensions are easy, e.g.
+          ``%album%.{jpg,png,gif}``.
+        - ``*`` and ``?`` remain wildcards.
+
+        The result is anchored to the full file name and matched
+        case-insensitively.
+        """
+        regex = wildcards_to_regex_pattern(
+            pattern,
+            allow_char_class=False,
+            allow_alternation=True,
+            anchored=True,
+        )
+        return re.compile(regex, re.IGNORECASE)
 
     def get_types(self, string):
         found = {x.lower() for x in self._types_split_re.split(string) if x}
@@ -133,7 +285,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                 m = match_re.search(filename)
                 if not m:
                     continue
-                filepath = os.path.join(current_dir, root, filename)
+                filepath = os.path.join(root, filename)
                 if not os.path.exists(filepath):
                     continue
                 try:
@@ -146,3 +298,21 @@ class CoverArtProviderLocal(CoverArtProvider):
                     support_types=True,
                     support_multi_types=True,
                 )
+
+    def find_local_images_by_script(self, current_dir, expected_filename, filepaths_done):
+        match_re = self._pattern_to_re(expected_filename)
+        for root, _dirs, files in os.walk(current_dir):
+            for filename in files:
+                if match_re.match(filename):
+                    filepath = os.path.join(root, filename)
+                    if filepath in filepaths_done:
+                        continue
+                    filepaths_done.add(filepath)
+                    if os.path.exists(filepath):
+                        types = self.get_types(filename) or self._default_types
+                        yield LocalFileCoverArtImage(
+                            filepath,
+                            types=types,
+                            support_types=True,
+                            support_multi_types=True,
+                        )
