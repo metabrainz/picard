@@ -123,6 +123,8 @@ class ProviderOptionsLocal(ProviderOptions):
         for mode, info in LOCAL_COVER_MODES.items():
             self._mode_values[mode] = config.setting[info.setting]
         mode = config.setting['local_cover_match_mode']
+        if mode not in LOCAL_COVER_MODES:
+            mode = LocalCoverMatchMode.REGEX
         # Set the checkbox without triggering the lossless-swap handler, then
         # apply the mode explicitly.
         with QSignalBlocker(self.ui.local_cover_use_script):
