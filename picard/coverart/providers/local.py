@@ -234,11 +234,12 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     @staticmethod
     def _eval_script(script, metadata):
-        """Evaluate a script for use as a filename matching pattern.
+        """Evaluate a script and return its result for use as a file name pattern.
 
-        Unlike script_to_filename(), this does not strip glob wildcard
-        characters (*, ?, {, |, }) from the result. Only path separators
-        in metadata values are replaced to ensure safe matching.
+        Unlike script_to_filename(), the result is not sanitized as a file name:
+        wildcard characters (``*``, ``?``, ``{``, ``}``, ``,``) are preserved so
+        they can be interpreted by _pattern_to_re(). Only path separators in
+        metadata values are replaced, to keep matching limited to file names.
         """
         from picard.script import ScriptParser
 
