@@ -357,6 +357,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # titles via N_() and _set_header_labels applies _() lazily)
         for view in self.panel._views:
             view._set_header_labels()
+        # Propagate LanguageChange event to persistent child widgets
+        event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
+        for widget in (self.metadata_box, self.cover_art_box):
+            QtCore.QCoreApplication.sendEvent(widget, event)
 
     def _retranslate_window(self):
         """Retranslate window title and statusbar elements."""

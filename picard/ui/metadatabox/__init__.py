@@ -310,10 +310,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             plugin_manager.plugin_state_changed.connect(self._on_plugin_changed)
 
         # Table widget configuration
-        self.setAccessibleName(_("metadata view"))
-        self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
+        self.setAccessibleName(N_("metadata view"))
+        self.setAccessibleDescription(N_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
-        self.setHorizontalHeaderLabels((_("Tag"), _("Original Value"), _("New Value")))
+        self._source_header_labels = (N_("Tag"), N_("Original Value"), N_("New Value"))
+        self.setHorizontalHeaderLabels(self._source_header_labels)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionsClickable(False)
@@ -337,9 +338,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.editing = None  # the QTableWidgetItem being edited
 
         # Actions and shortcuts
-        self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
+        self.add_tag_action = QtGui.QAction(N_("Add New Tag…"), self)
         self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
-        self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
+        self.changes_first_action = QtGui.QAction(N_("Show Changes First"), self)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
         self.changes_first_action.toggled.connect(self._toggle_changes_first)
@@ -377,6 +378,36 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.MIMETYPE_TEXT,
             encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
             decode_func=lambda target, mimedata: target._paste_from_text(mimedata),
+        )
+        # Apply initial translation for N_() strings
+        self._retranslate()
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate()
+        super().changeEvent(event)
+
+    def _retranslate(self):
+        """Retranslate static UI strings after a language change.
+
+        Uses the same capture-on-first-call pattern: the source is the
+        untranslated N_() string initially set on the widget. It gets
+        captured into a property, then _() is applied on every call.
+        """
+        from picard.ui.mainwindow.actions import _retranslate_action_property
+
+        # Header labels
+        for i, label in enumerate(self._source_header_labels):
+            self.horizontalHeaderItem(i).setText(_(label))
+        # Accessible name/description
+        _retranslate_action_property(self, 'accessibleName', self.accessibleName, self.setAccessibleName)
+        _retranslate_action_property(
+            self, 'accessibleDescription', self.accessibleDescription, self.setAccessibleDescription
+        )
+        # Actions
+        _retranslate_action_property(self.add_tag_action, 'text', self.add_tag_action.text, self.add_tag_action.setText)
+        _retranslate_action_property(
+            self.changes_first_action, 'text', self.changes_first_action.text, self.changes_first_action.setText
         )
 
     def _on_setting_changed(self, name, old_value, new_value):
