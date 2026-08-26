@@ -360,7 +360,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             view._set_header_labels()
         # Propagate LanguageChange event to persistent child widgets
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
-        for widget in (self.metadata_box, self.cover_art_box):
+        for widget in (self.metadata_box, self.cover_art_box, self.file_browser):
             QtCore.QCoreApplication.sendEvent(widget, event)
         # Retranslate search toolbar
         self._retranslate_search_toolbar()
