@@ -161,7 +161,10 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
-from picard.ui.mainwindow.actions import create_actions
+from picard.ui.mainwindow.actions import (
+    create_actions,
+    retranslate_actions,
+)
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog
@@ -337,6 +340,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._update_toolbar_theme()
         self._update_statusbar_plugin_icon()
         self.metadata_box.update()
+
+    def changeEvent(self, event):
+        """Handle change events, particularly LanguageChange for dynamic translation."""
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate all UI elements after a language change."""
+        retranslate_actions(self.action_map)
 
     def _update_toolbar_theme(self):
         """Refresh toolbar extension button icon and stylesheet for current theme."""
@@ -800,6 +813,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
+        retranslate_actions(self.action_map)
 
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
