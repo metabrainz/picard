@@ -34,10 +34,12 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
     gettext_countries,
+    language_changed,
     ngettext,
     pgettext_attributes,
     setup_i18n,
     sort_key,
+    switch_language,
 )
 from picard.i18n.gettext import (
     _bcp47_to_locale,
@@ -190,3 +192,47 @@ class TestBcp47ToLocale(PicardTestCase):
     def test_numeric_region(self):
         # UN M.49 numeric region codes (3 digits)
         self.assertEqual('es_419', _bcp47_to_locale('es-419'))
+
+
+class TestSwitchLanguage(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        setup_i18n(localedir, 'en')
+
+    def tearDown(self):
+        setup_i18n(None, 'C')
+
+    @unittest.skipUnless(
+        os.path.exists(os.path.join(localedir, 'de')),
+        'Test requires locales to be built with "python setup.py build_locales"',
+    )
+    def test_switch_language_changes_translations(self):
+        self.assertEqual('Country', _('Country'))
+        switch_language('de')
+        self.assertEqual('Land', _('Country'))
+
+    @unittest.skipUnless(
+        os.path.exists(os.path.join(localedir, 'fr')),
+        'Test requires locales to be built with "python setup.py build_locales"',
+    )
+    def test_switch_language_emits_signal(self):
+        received = []
+        language_changed.connect(lambda: received.append(True))
+        switch_language('fr')
+        self.assertEqual([True], received)
+
+    def test_switch_language_empty_string_uses_system(self):
+        # Switching to empty string should not raise
+        switch_language('')
+        # _() should still work (returns untranslated or system-translated)
+        self.assertIsInstance(_('Country'), str)
+
+    @unittest.skipUnless(
+        os.path.exists(os.path.join(localedir, 'de')),
+        'Test requires locales to be built with "python setup.py build_locales"',
+    )
+    def test_switch_language_multiple_times(self):
+        switch_language('de')
+        self.assertEqual('Land', _('Country'))
+        switch_language('en')
+        self.assertEqual('Country', _('Country'))
