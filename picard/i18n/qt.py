@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING
 from PyQt6 import QtCore
 
 from picard import log
+from picard.i18n import language_changed
 
 
 if TYPE_CHECKING:
@@ -58,6 +59,7 @@ class Translators:
     def __init__(self, tagger: 'Tagger'):
         self.tagger = tagger
         self.tagger._qt_translators_updated.connect(self.reinstall)
+        language_changed.connect(self.reload_default_translators)
         self._translators = []
         self._changed = False
         self.add_default_translators()
@@ -73,6 +75,27 @@ class Translators:
             self._changed = True
         else:
             log.debug("Qt locale %s not available", locale.name())
+
+    def reload_default_translators(self) -> None:
+        """Reload the Qt base translators for the current QLocale.
+
+        Called when the UI language changes at runtime.  Removes the old
+        Qt base translator(s) and loads a new one matching the new locale,
+        then triggers a reinstall of all translators.
+        """
+        # Remove existing Qt base translators
+        for t in self._translators[:]:
+            if t.sort_index == TRANSLATOR_PRIORITY_QT_BASE:
+                if t.installed:
+                    self.tagger.removeTranslator(t.instance)
+                self._translators.remove(t)
+
+        # Load new Qt base translator for current locale
+        self.add_default_translators()
+
+        # Force reinstall even if add_default_translators didn't find a translation
+        self._changed = True
+        self.reinstall()
 
     def add_translator(self, translator: QtCore.QTranslator) -> None:
         plugin_id = getattr(translator, 'plugin_id', '')
