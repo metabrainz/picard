@@ -273,7 +273,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 func.on_exit()
 
     def setupUi(self):
-        self.setWindowTitle(_("MusicBrainz Picard"))
+        self.setWindowTitle(N_("MusicBrainz Picard"))
 
         self.show_close_window = IS_MACOS
 
@@ -281,6 +281,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._create_statusbar()
         self._create_toolbar()
         self._create_menus()
+        self._retranslate_window()
 
         if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
@@ -351,6 +352,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Retranslate all UI elements after a language change."""
         retranslate_actions(self.action_map)
         self._retranslate_menus()
+        self._retranslate_window()
+
+    def _retranslate_window(self):
+        """Retranslate window title and statusbar elements."""
+        # Window title
+        source = self.property('_source_windowTitle')
+        if source is None:
+            source = self.windowTitle()
+            self.setProperty('_source_windowTitle', source)
+        self.setWindowTitle(_(source))
+
+        # Statusbar tooltips
+        for widget in (self.listening_label, self.plugin_updates_button):
+            source = widget.property('_source_toolTip')
+            if source is None:
+                source = widget.toolTip()
+                if not source:
+                    continue
+                widget.setProperty('_source_toolTip', source)
+            widget.setToolTip(_(source))
 
     def _retranslate_menus(self):
         """Retranslate menu titles after a language change.
@@ -641,7 +662,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_statusbar(self):
         """Creates a new status bar."""
-        self.statusBar().showMessage(_("Ready"))
+        self.statusBar().showMessage(N_("Ready"))
         infostatus = InfoStatus(self)
         self._progress = infostatus.get_progress
         self.listening_label = QtWidgets.QLabel()
@@ -649,7 +670,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip(
             "<qt/>"
-            + _(
+            + N_(
                 "Picard listens on this port to integrate with your browser. When "
                 "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
                 "\"Tagger\" button on the web page loads the release into Picard."
@@ -668,7 +689,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.plugin_updates_button.setStyleSheet("QToolButton { border: none; }")
         self.plugin_updates_button.setVisible(False)
         self.plugin_updates_button.setToolTip(
-            _("There are updates available for installed plugins. Click to open the plugin manager.")
+            N_("There are updates available for installed plugins. Click to open the plugin manager.")
         )
         self.plugin_updates_button.clicked.connect(partial(self.show_options, page='plugins'))
 
