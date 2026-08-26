@@ -1055,14 +1055,13 @@ class AttachedProfilesDialog(PicardDialog):
     def _on_selection_changed(self) -> None:
         if not self.ui.profile_list.selectedItems():
             # Never allow empty selection
-            self.ui.profile_list.blockSignals(True)
-            if len(self._last_selection) == 1:
-                self._last_selection[0].setSelected(True)
-            else:
-                first = self.ui.profile_list.topLevelItem(0)
-                first.setSelected(True)
-                self._last_selection = [first]
-            self.ui.profile_list.blockSignals(False)
+            with QtCore.QSignalBlocker(self.ui.profile_list):
+                if len(self._last_selection) == 1:
+                    self._last_selection[0].setSelected(True)
+                else:
+                    first = self.ui.profile_list.topLevelItem(0)
+                    first.setSelected(True)
+                    self._last_selection = [first]
             return
         self._last_selection = list(self.ui.profile_list.selectedItems())
         self._populate_settings_tree()
@@ -1156,9 +1155,8 @@ class AttachedProfilesDialog(PicardDialog):
         correct_state = self._compute_check_state(pkey, selected_ids)
         self._check_states[pkey] = correct_state
         if item.checkState(0) != correct_state:
-            self.ui.settings_tree.blockSignals(True)
-            item.setCheckState(0, correct_state)
-            self.ui.settings_tree.blockSignals(False)
+            with QtCore.QSignalBlocker(self.ui.settings_tree):
+                item.setCheckState(0, correct_state)
         item.setToolTip(0, self._build_tooltip(pkey))
         self._update_profile_markers(pkey)
         self.profile_page.update_config_overrides()

@@ -296,9 +296,8 @@ class InstallPluginDialog(PicardDialog):
             self.local_ref_edit.clear()
             self.no_git_checkbox.setEnabled(False)
             # Block signals to avoid re-triggering _validate_local_path
-            self.no_git_checkbox.blockSignals(True)
-            self.no_git_checkbox.setChecked(False)
-            self.no_git_checkbox.blockSignals(False)
+            with QtCore.QSignalBlocker(self.no_git_checkbox):
+                self.no_git_checkbox.setChecked(False)
             self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_warning'))
             self.local_status_label.setText(
                 _(

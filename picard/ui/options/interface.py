@@ -160,26 +160,22 @@ class InterfaceOptionsPage(OptionsPage):
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
-        self.ui.allow_multi_dirs_selection.blockSignals(True)
-
-        config = get_config()
-        self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
-        self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
-        self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-        self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
-        self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
-        self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
-        current_ui_language = config.setting['ui_language']
-        self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
-        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
-        self.ui.starting_directory.setChecked(config.setting['starting_directory'])
-        self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
-        current_theme = UiTheme(config.setting['ui_theme'])
-        with QtCore.QSignalBlocker(self.ui.ui_theme):
-            self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
-
-        # re-enable the multi-selection warning
-        self.ui.allow_multi_dirs_selection.blockSignals(False)
+        with QtCore.QSignalBlocker(self.ui.allow_multi_dirs_selection):
+            config = get_config()
+            self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
+            self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
+            self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
+            self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
+            self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
+            self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
+            current_ui_language = config.setting['ui_language']
+            self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
+            self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
+            self.ui.starting_directory.setChecked(config.setting['starting_directory'])
+            self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
+            current_theme = UiTheme(config.setting['ui_theme'])
+            with QtCore.QSignalBlocker(self.ui.ui_theme):
+                self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
 
     def save(self):
         config = get_config()

@@ -609,9 +609,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             idx (int): New index position
         """
         widget = self.ui.preset_naming_scripts
-        widget.blockSignals(True)
-        widget.setCurrentIndex(idx)
-        widget.blockSignals(False)
+        with QtCore.QSignalBlocker(widget):
+            widget.setCurrentIndex(idx)
         self.selected_script_index = idx
         self.signal_index_changed.emit()
 
@@ -838,9 +837,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         if confirmation_dialog(self, _("Are you sure that you want to delete the script?")):
             widget = self.ui.preset_naming_scripts
             idx = widget.currentIndex()
-            widget.blockSignals(True)
-            widget.removeItem(idx)
-            widget.blockSignals(False)
+            with QtCore.QSignalBlocker(widget):
+                widget.removeItem(idx)
             if idx >= widget.count():
                 idx = widget.count() - 1
             self._set_combobox_index(idx)
