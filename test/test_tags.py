@@ -446,6 +446,10 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(parse_lang_desc_tag('lyrics:XXX'), ('XXX', ''))
         self.assertEqual(parse_lang_desc_tag('lyrics::foo', default_language='eng'), ('eng', 'foo'))
 
+    def test_parse_lang_desc_tag_invalid_language(self):
+        self.assertEqual(parse_lang_desc_tag('lyrics:de', default_language='eng'), ('eng', 'de'))
+        self.assertEqual(parse_lang_desc_tag('lyrics:toolong:foo', default_language='eng'), ('eng', 'toolong:foo'))
+
     def test_create_lang_desc_tag(self):
         self.assertEqual('comment', create_lang_desc_tag('comment'))
         self.assertEqual('comment:eng', create_lang_desc_tag('comment', language='eng'))

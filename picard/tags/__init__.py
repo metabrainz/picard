@@ -52,7 +52,11 @@ def parse_lang_desc_tag(name: str, default_language: str = 'xxx') -> tuple[str, 
     else:
         lang = default_language
 
-    if len(split) > 2:
+    if len(lang) != 3:
+        # If language is not 3 chars, assume default and use remaining parts as description
+        lang = default_language
+        desc = ':'.join(split[1:])
+    elif len(split) > 2:
         desc = split[2]
     else:
         desc = ''
