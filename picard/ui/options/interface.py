@@ -34,6 +34,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import get_config
 from picard.const.languages import UI_LANGUAGES
 from picard.extension_points.options_pages import register_options_page
@@ -42,6 +43,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
     sort_key,
+    switch_language,
 )
 from picard.util.readthedocs import ReadTheDocs
 
@@ -56,10 +58,7 @@ from picard.ui.theme import (
     UiTheme,
     theme,
 )
-from picard.ui.util import (
-    FileDialog,
-    changes_require_restart_warning,
-)
+from picard.ui.util import FileDialog
 
 
 class InterfaceOptionsPage(OptionsPage):
@@ -193,15 +192,12 @@ class InterfaceOptionsPage(OptionsPage):
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        warnings = []
-        notes = []
         if new_theme_setting != config.setting['ui_theme']:
             config.setting['ui_theme'] = new_theme_setting
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
-            warnings.append(_("You have changed the interface language."))
+            switch_language(new_language or None, log.debug)
             ReadTheDocs.update_documentation_items()
-        changes_require_restart_warning(self, warnings=warnings, notes=notes)
 
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
