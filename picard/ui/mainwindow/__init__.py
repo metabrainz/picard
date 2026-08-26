@@ -399,6 +399,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 widget.setProperty('_source_toolTip', source)
             widget.setToolTip(_(source))
 
+        # Listening label text (if port is active)
+        listen_port = getattr(self, '_listen_port', None)
+        if listen_port:
+            self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
+
     def _retranslate_menus(self):
         """Retranslate menu titles after a language change.
 
@@ -743,6 +748,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             indicator.update(progress_status)
 
     def _update_statusbar_listen_port(self, listen_port):
+        self._listen_port = listen_port
         if listen_port:
             self.listening_label.setVisible(True)
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
