@@ -131,7 +131,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
             QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
         )
         self.orig_cover_art_info_label.setWordWrap(True)
-        self.show_details_button = QtWidgets.QPushButton(N_('Show more details'), self)
+        self._source_show_details_text = N_('Show more details')
+        self.show_details_button = QtWidgets.QPushButton(_(self._source_show_details_text), self)
         self.show_details_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info
         )
@@ -159,14 +160,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
     def _retranslate(self):
         """Retranslate static UI strings after a language change."""
-        from picard.ui.mainwindow.actions import _retranslate_action_property
-
-        _retranslate_action_property(
-            self.show_details_button,
-            'text',
-            self.show_details_button.text,
-            self.show_details_button.setText,
-        )
+        self.show_details_button.setText(_(self._source_show_details_text))
 
     def _on_setting_changed(self, name, old_value, new_value):
         if name in self._REMOVAL_SETTINGS:
