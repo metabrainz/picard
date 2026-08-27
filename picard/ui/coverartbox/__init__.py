@@ -151,14 +151,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
         config = get_config()
         config.setting.setting_changed.connect(self._on_setting_changed)
         # Apply initial translation
-        self._retranslate()
+        self._retranslate_ui()
 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.Type.LanguageChange:
-            self._retranslate()
+            self._retranslate_ui()
         super().changeEvent(event)
 
-    def _retranslate(self):
+    def _retranslate_ui(self):
         """Retranslate static UI strings after a language change."""
         self.show_details_button.setText(_(self._source_show_details_text))
 
