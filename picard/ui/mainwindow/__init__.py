@@ -185,6 +185,7 @@ from picard.ui.statusindicator import (
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.theme import theme
+from picard.ui.translatable import TranslatableMenu
 from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
@@ -273,7 +274,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 func.on_exit()
 
     def setupUi(self):
-        self.setWindowTitle(N_("MusicBrainz Picard"))
+        self._source_window_title = N_("MusicBrainz Picard")
+        self.setWindowTitle(self._source_window_title)
 
         self.show_close_window = IS_MACOS
 
@@ -367,37 +369,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _retranslate_search_toolbar(self):
         """Retranslate search toolbar title and combo items."""
-        from picard.ui.mainwindow.actions import _retranslate_action_property
-
-        # Toolbar title (shown in View menu as toggle action)
-        toggle_action = self.search_toolbar.toggleViewAction()
-        _retranslate_action_property(toggle_action, 'text', toggle_action.text, toggle_action.setText)
-        # Combo box items
-        for i in range(self.search_combo.count()):
-            source = self.search_combo.property(f'_source_item_{i}')
-            if source is None:
-                source = self.search_combo.itemText(i)
-                self.search_combo.setProperty(f'_source_item_{i}', source)
+        self.search_toolbar.setWindowTitle(_(self._search_toolbar_title))
+        for i, source in enumerate(self._search_combo_sources):
             self.search_combo.setItemText(i, _(source))
 
     def _retranslate_window(self):
         """Retranslate window title and statusbar elements."""
-        # Window title
-        source = self.property('_source_windowTitle')
-        if source is None:
-            source = self.windowTitle()
-            self.setProperty('_source_windowTitle', source)
-        self.setWindowTitle(_(source))
-
-        # Statusbar tooltips
-        for widget in (self.listening_label, self.plugin_updates_button):
-            source = widget.property('_source_toolTip')
-            if source is None:
-                source = widget.toolTip()
-                if not source:
-                    continue
-                widget.setProperty('_source_toolTip', source)
-            widget.setToolTip(_(source))
+        self.setWindowTitle(_(self._source_window_title))
+        self.listening_label.setToolTip("<qt/>" + _(self._source_listening_tooltip))
+        self.plugin_updates_button.setToolTip(_(self._source_plugin_updates_tooltip))
 
         # Listening label text (if port is active)
         listen_port = getattr(self, '_listen_port', None)
@@ -405,22 +385,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
 
     def _retranslate_menus(self):
-        """Retranslate menu titles after a language change.
-
-        Uses the same pattern as retranslate_actions: on first call captures
-        the untranslated source title from each menu's menuAction, then applies
-        _() on every call.
-        """
-        from picard.ui.mainwindow.actions import _retranslate_action_property
-
+        """Retranslate menu titles after a language change."""
         for action in self.menuBar().actions():
             menu = action.menu()
-            if menu:
-                _retranslate_action_property(action, 'text', action.text, action.setText)
-        # Also retranslate submenus not directly in the menu bar
+            if menu and hasattr(menu, 'retranslateUi'):
+                menu.retranslateUi()
         for menu in self._translatable_submenus:
-            action = menu.menuAction()
-            _retranslate_action_property(action, 'text', action.text, action.setText)
+            menu.retranslateUi()
 
     def _update_toolbar_theme(self):
         """Refresh toolbar extension button icon and stylesheet for current theme."""
@@ -700,13 +671,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setStyleSheet("QLabel { margin: 0 4px 0 4px; }")
         self.listening_label.setVisible(False)
-        self.listening_label.setToolTip(
-            "<qt/>"
-            + N_(
-                "Picard listens on this port to integrate with your browser. When "
-                "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
-                "\"Tagger\" button on the web page loads the release into Picard."
-            )
+        self._source_listening_tooltip = N_(
+            "Picard listens on this port to integrate with your browser. When "
+            "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
+            "\"Tagger\" button on the web page loads the release into Picard."
         )
 
         if theme.is_dark_theme:
@@ -720,8 +688,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.plugin_updates_button.setIconSize(QtCore.QSize(16, 16))
         self.plugin_updates_button.setStyleSheet("QToolButton { border: none; }")
         self.plugin_updates_button.setVisible(False)
-        self.plugin_updates_button.setToolTip(
-            N_("There are updates available for installed plugins. Click to open the plugin manager.")
+        self._source_plugin_updates_tooltip = N_(
+            "There are updates available for installed plugins. Click to open the plugin manager."
         )
         self.plugin_updates_button.clicked.connect(partial(self.show_options, page='plugins'))
 
@@ -888,7 +856,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = dict(create_actions(self))
 
     def _create_cd_lookup_menu(self):
-        menu = QtWidgets.QMenu(N_("Lookup &CD…"))
+        menu = TranslatableMenu(N_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
@@ -898,7 +866,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         The menu content is populated from the persisted recent sessions list.
         """
-        self.recent_sessions_menu = QtWidgets.QMenu(N_("Recent Sessions"))
+        self.recent_sessions_menu = TranslatableMenu(N_("Recent Sessions"))
         self.recent_sessions_menu.setIcon(icontheme.lookup('document-open-recent'))
         self._populate_recent_sessions_menu()
         return self.recent_sessions_menu
@@ -1069,7 +1037,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_menus(self):
         def add_menu(menu_title, *args):
-            menu = self.menuBar().addMenu(menu_title)
+            menu = TranslatableMenu(menu_title)
+            self.menuBar().addMenu(menu)
             menu.setSeparatorsCollapsible(True)
             menu_builder(menu, self.action_map, *args)
 
@@ -1118,24 +1087,25 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
-        self.file_naming_scripts_menu = QtWidgets.QMenu(N_("File naming &scripts"))
+        self.file_naming_scripts_menu = TranslatableMenu(N_("File naming &scripts"))
         self.file_naming_scripts_menu.setIcon(icontheme.lookup('document-open'))
         self._script_actions = []
         self._make_script_selector_menu()
         self.file_naming_scripts_menu.addSeparator()
         self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
-        self.profile_quick_selector_menu = QtWidgets.QMenu(N_("&Profiles"))
+        self.profile_quick_selector_menu = TranslatableMenu(N_("&Profiles"))
         self.profile_quick_selector_menu.setIcon(
             self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
         self._make_profile_selector_menu()
 
-        self.quick_settings_menu = QtWidgets.QMenu(N_("&Quick settings"))
+        self.quick_settings_menu = TranslatableMenu(N_("&Quick settings"))
         self.quick_settings_menu.setIcon(icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
-        self.options_menu = self.menuBar().addMenu(N_("&Options"))
+        self.options_menu = TranslatableMenu(N_("&Options"))
+        self.menuBar().addMenu(self.options_menu)
         menu_builder(
             self.options_menu,
             self.action_map,
@@ -1161,7 +1131,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.OPEN_COLLECTION_IN_BROWSER,
         )
 
-        self.plugin_tools_menu = self.menuBar().addMenu(N_("&Plugin Tools"))
+        self.plugin_tools_menu = TranslatableMenu(N_("&Plugin Tools"))
+        self.menuBar().addMenu(self.plugin_tools_menu)
         self.plugin_tools_menu.menuAction().setVisible(False)
         self._make_plugin_tools_menu()
 
@@ -1296,7 +1267,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_search_toolbar(self):
         config = get_config()
-        self.search_toolbar = toolbar = self.addToolBar(N_("Search"))
+        self._search_toolbar_title = N_("Search")
+        self.search_toolbar = toolbar = self.addToolBar(self._search_toolbar_title)
         self.action_map[MainAction.SEARCH_TOOLBAR_TOGGLE] = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName('search_toolbar')
         if self._is_wayland:
@@ -1307,9 +1279,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         search_panel = QtWidgets.QWidget(toolbar)
         hbox = QtWidgets.QHBoxLayout(search_panel)
         self.search_combo = QtWidgets.QComboBox(search_panel)
-        self.search_combo.addItem(N_("Album"), 'album')
-        self.search_combo.addItem(N_("Artist"), 'artist')
-        self.search_combo.addItem(N_("Track"), 'track')
+        self._search_combo_sources = [N_("Album"), N_("Artist"), N_("Track")]
+        self.search_combo.addItem(self._search_combo_sources[0], 'album')
+        self.search_combo.addItem(self._search_combo_sources[1], 'artist')
+        self.search_combo.addItem(self._search_combo_sources[2], 'track')
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtWidgets.QLineEdit(search_panel)
         self.search_edit.setClearButtonEnabled(True)

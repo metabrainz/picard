@@ -62,7 +62,7 @@ from picard.i18n import (
 from picard.util import icontheme
 
 from picard.ui.enums import MainAction
-from picard.ui.translatable_action import TranslatableAction
+from picard.ui.translatable import TranslatableAction
 
 
 _actions_functions = {}

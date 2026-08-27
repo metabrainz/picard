@@ -17,6 +17,7 @@
 
 
 from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QMenu
 
 from picard.i18n import gettext as _
 
@@ -69,3 +70,29 @@ class TranslatableAction(QAction):
             super().setStatusTip(_(self._source_status_tip))
         if self._source_icon_text:
             super().setIconText(_(self._source_icon_text))
+
+
+class TranslatableMenu(QMenu):
+    """QMenu subclass that supports dynamic retranslation of its title.
+
+    The title passed to the constructor or setTitle() is treated as an
+    untranslated source string (as marked with N_() at the call site).
+    The source is stored and _() is applied immediately.
+
+    Call retranslateUi() after a language change to re-apply _().
+    """
+
+    def __init__(self, title='', parent=None):
+        super().__init__(title, parent)
+        self._source_title = self.title()
+        if self._source_title:
+            super().setTitle(_(self._source_title))
+
+    def setTitle(self, title):
+        self._source_title = title
+        super().setTitle(_(title) if title else '')
+
+    def retranslateUi(self):
+        """Re-apply _() to the stored source title."""
+        if self._source_title:
+            super().setTitle(_(self._source_title))
