@@ -44,6 +44,7 @@ from .player import (
     Player,
 )
 
+from picard.ui.translatable import TranslatableAction
 from picard.ui.util import get_text_width
 from picard.ui.widgets import (
     ClickableSlider,
@@ -54,7 +55,8 @@ from picard.ui.widgets import (
 
 class PlayerToolbar(QtWidgets.QToolBar):
     def __init__(self, player: Player, parent=None):
-        super().__init__(_("Player"), parent=parent)
+        self._source_toolbar_title = N_("Player")
+        super().__init__(self._source_toolbar_title, parent=parent)
         self.setObjectName('player_toolbar')
         self.setAllowedAreas(
             QtCore.Qt.ToolBarArea.TopToolBarArea
@@ -65,18 +67,16 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.player = player
         self.player.playback_state_changed.connect(self.playback_state_changed)
 
-        self.play_action = QtGui.QAction(icontheme.lookup('play'), _("Play"), self)
-        play_tip = _("Play selected files")
-        self.play_action.setToolTip(play_tip)
-        self.play_action.setStatusTip(play_tip)
+        self.play_action = TranslatableAction(icontheme.lookup('play'), N_("Play"), self)
+        self.play_action.setToolTip(N_("Play selected files"))
+        self.play_action.setStatusTip(N_("Play selected files"))
         self.play_action.setEnabled(False)
         self.play_action.triggered.connect(self.play)
         self.player.playback_available.connect(self.play_action.setEnabled)
 
-        self.pause_action = QtGui.QAction(icontheme.lookup('pause'), _("Pause"), self)
-        pause_tip = _("Pause or resume current playback")
-        self.pause_action.setToolTip(pause_tip)
-        self.pause_action.setStatusTip(pause_tip)
+        self.pause_action = TranslatableAction(icontheme.lookup('pause'), N_("Pause"), self)
+        self.pause_action.setToolTip(N_("Pause or resume current playback"))
+        self.pause_action.setStatusTip(N_("Pause or resume current playback"))
         self.pause_action.setCheckable(True)
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
@@ -125,6 +125,19 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def play(self):
         self.player.play()
         self.pause_action.setChecked(False)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate toolbar elements after a language change."""
+        self.setWindowTitle(_(self._source_toolbar_title))
+        self.play_action.retranslateUi()
+        self.pause_action.retranslateUi()
+        self.volume_button._retranslate_ui()
+        self.playback_rate_button._retranslate_ui()
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
@@ -236,6 +249,8 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         self._is_updating = IgnoreUpdatesContext()
         self.popover_position = 'bottom'
         self._rate_fmt = N_("%1.1f ×")
+        self._source_tooltip = N_("Change playback speed")
+        self._source_popover_title = N_("Playback speed")
         style = self.style()
         assert style is not None
         button_margin = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
@@ -243,13 +258,18 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
         self.clicked.connect(self.show_popover)
-        tooltip = _("Change playback speed")
-        self.setToolTip(tooltip)
-        self.setStatusTip(tooltip)
+        self.setToolTip(_(self._source_tooltip))
+        self.setStatusTip(_(self._source_tooltip))
+
+    def _retranslate_ui(self):
+        """Retranslate tooltip and update displayed rate text."""
+        self.setToolTip(_(self._source_tooltip))
+        self.setStatusTip(_(self._source_tooltip))
+        self.set_playback_rate(self._playback_rate)
 
     def show_popover(self):
         slider_value = self._playback_rate * self.multiplier
-        popover = SliderPopover(self, self.popover_position, _("Playback speed"), slider_value)
+        popover = SliderPopover(self, self.popover_position, _(self._source_popover_title), slider_value)
         # In 0.1 steps from 0.5 to 1.5
         popover.slider.setMinimum(int(MIN_PLAYBACK_RATE * self.multiplier))
         popover.slider.setMaximum(int(MAX_PLAYBACK_RATE * self.multiplier))
@@ -298,6 +318,8 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.popover_position = 'bottom'
         self._step = 3
         self._volume_fmt = N_("%d%%")
+        self._source_tooltip = N_("Change audio volume")
+        self._source_popover_title = N_("Audio volume")
         self.set_volume(volume)
         style = self.style()
         assert style is not None
@@ -305,33 +327,38 @@ class VolumeControlButton(QtWidgets.QToolButton):
         min_width = get_text_width(self.font(), _(self._volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)
-        tooltip = _("Change audio volume")
-        self.setToolTip(tooltip)
-        self.setStatusTip(tooltip)
+        self.setToolTip(_(self._source_tooltip))
+        self.setStatusTip(_(self._source_tooltip))
 
         # Register global volume up / down keyboard shortcuts
-        self.volume_up_action = QtGui.QAction(_('Volume up'), self)
-        volume_up_tip = _("Increase audio volume")
-        self.volume_up_action.setToolTip(volume_up_tip)
-        self.volume_up_action.setStatusTip(volume_up_tip)
+        self.volume_up_action = TranslatableAction(N_('Volume up'), self)
+        self.volume_up_action.setToolTip(N_("Increase audio volume"))
+        self.volume_up_action.setStatusTip(N_("Increase audio volume"))
         self.volume_up_action.setEnabled(True)
         self.volume_up_action.setShortcutContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
         self.volume_up_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift++")))
         self.volume_up_action.triggered.connect(self.volume_up)
         self.addAction(self.volume_up_action)
 
-        self.volume_down_action = QtGui.QAction(_('Volume down'), self)
-        volume_down_tip = _("Decrease audio volume")
-        self.volume_down_action.setToolTip(volume_down_tip)
-        self.volume_down_action.setStatusTip(volume_down_tip)
+        self.volume_down_action = TranslatableAction(N_('Volume down'), self)
+        self.volume_down_action.setToolTip(N_("Decrease audio volume"))
+        self.volume_down_action.setStatusTip(N_("Decrease audio volume"))
         self.volume_up_action.setEnabled(True)
         self.volume_down_action.setShortcutContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
         self.volume_down_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+-")))
         self.volume_down_action.triggered.connect(self.volume_down)
         self.addAction(self.volume_down_action)
 
+    def _retranslate_ui(self):
+        """Retranslate tooltip and volume actions."""
+        self.setToolTip(_(self._source_tooltip))
+        self.setStatusTip(_(self._source_tooltip))
+        self.volume_up_action.retranslateUi()
+        self.volume_down_action.retranslateUi()
+        self._set_volume(self._volume, signal=False)
+
     def show_popover(self):
-        popover = SliderPopover(self, self.popover_position, _("Audio volume"), self._volume)
+        popover = SliderPopover(self, self.popover_position, _(self._source_popover_title), self._volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
         popover.slider.setPageStep(self._step)
