@@ -117,7 +117,9 @@ class LocalCoverMatchMode(Enum):
 #
 # The strings are marked for translation with N_() and must be translated with
 # _() at the point of use.
-LocalCoverModeInfo = namedtuple('LocalCoverModeInfo', ('setting', 'title', 'description', 'note', 'example'))
+LocalCoverModeInfo = namedtuple(
+    'LocalCoverModeInfo', ('setting', 'title', 'description', 'note', 'example', 'playground')
+)
 
 LOCAL_COVER_MODES = {
     LocalCoverMatchMode.REGEX: LocalCoverModeInfo(
@@ -131,6 +133,7 @@ LOCAL_COVER_MODES = {
         ),
         # A literal pattern (not translatable) shown as placeholder / example.
         example=r'^(?:cover|folder)\.(?:jpe?g|png)$',
+        playground=True,
     ),
     LocalCoverMatchMode.SCRIPT: LocalCoverModeInfo(
         setting='local_cover_script',
@@ -147,6 +150,7 @@ LOCAL_COVER_MODES = {
         ),
         # A literal pattern (not translatable) shown as placeholder / example.
         example='%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}',
+        playground=False,
     ),
 }
 

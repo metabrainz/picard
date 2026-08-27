@@ -110,6 +110,7 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.local_cover_regex_edit.setPlaceholderText(info.example)
         self.ui.local_cover_regex_edit.setToolTip(_("Example: %s") % info.example)
         self.ui.local_cover_regex_edit.setText(self._mode_values[mode])
+        self.playground.setVisible(info.playground)
         self._update_test_coverart_filter()
 
     def _on_mode_toggled(self, checked):
@@ -140,29 +141,22 @@ class ProviderOptionsLocal(ProviderOptions):
         config.setting['local_cover_match_mode'] = self._current_mode
 
     def _update_test_coverart_filter(self):
+        if not self.playground.isVisible():
+            return
         value = self.ui.local_cover_regex_edit.text()
         self.playground.clear_error()
-        matcher = self._build_matcher(value)
-        # The compiled regex is anchored for scripts and unanchored for regex
-        # mode; search() works for both.
+        matcher = self._build_regex_matcher(value)
         check_line = (lambda line: bool(matcher.search(line))) if matcher is not None else None
         self.playground.update(check_line)
 
-    def _build_matcher(self, value):
-        """Compile the current field value into a regex for the active mode.
+    def _build_regex_matcher(self, value):
+        """Compile the field value as a regex for the playground.
 
         Returns a compiled pattern, or None if the value is empty or invalid
         (in which case an error message is shown on the playground).
         """
         if not value:
             return None
-        if self._current_mode == LocalCoverMatchMode.SCRIPT:
-            try:
-                pattern = CoverArtProviderLocal._eval_script(value, CoverArtProviderLocal.example_metadata())
-                return CoverArtProviderLocal._pattern_to_re(pattern)
-            except Exception as e:
-                self.playground.set_error(_("Invalid script: %s") % e)
-                return None
         try:
             return re.compile(value, re.IGNORECASE)
         except re.error as e:
@@ -222,17 +216,6 @@ class CoverArtProviderLocal(CoverArtProvider):
             walks_done.add(walk_key)
             for image in self.find_local_images_by_script(current_dir, expected_filename, filepaths_done):
                 self.queue_put(image)
-
-    @staticmethod
-    def example_metadata():
-        """Create sample metadata for the options playground preview."""
-        metadata = Metadata()
-        metadata['album'] = 'Abbey Road'
-        metadata['albumartist'] = 'The Beatles'
-        metadata['artist'] = 'The Beatles'
-        metadata['title'] = 'Come Together'
-        metadata['date'] = '1969'
-        return metadata
 
     @staticmethod
     def _eval_script(script, metadata):
