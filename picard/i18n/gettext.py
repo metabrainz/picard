@@ -287,3 +287,68 @@ def gettext_countries(message: str) -> str:
 
 def gettext_constants(message: str) -> str:
     return _translation['constants'].gettext(message)
+
+
+# Dev utility: trace all gettext calls to a file.
+# Usage: from picard.i18n.gettext import enable_trace; enable_trace()
+# Zero overhead when not enabled (functions remain unwrapped).
+_trace_file = None
+
+
+def _make_traced(fn, domain):
+    """Wrap a gettext function to log source → result to the trace file."""
+
+    def traced(*args, **kwargs):
+        result = fn(*args, **kwargs)
+        source = args[0] if args else ''
+        locale_name = QLocale().name()
+        _trace_file.write(f"{locale_name} [{domain}]: {source!r} → {result!r}\n")
+        _trace_file.flush()
+        return result
+
+    traced.__wrapped__ = fn
+    return traced
+
+
+def enable_trace(path):
+    """Enable tracing of all gettext calls to a file.
+
+    Patches the module-level gettext functions to log every call.
+    """
+    global _trace_file, gettext, ngettext, gettext_attributes, pgettext_attributes
+    global gettext_countries, gettext_constants, _
+    _trace_file = open(path, 'w', encoding='utf-8')
+    gettext = _make_traced(gettext, 'main')
+    _ = gettext
+    ngettext = _make_traced(ngettext, 'main')
+    gettext_attributes = _make_traced(gettext_attributes, 'attributes')
+    pgettext_attributes = _make_traced(pgettext_attributes, 'attributes')
+    gettext_countries = _make_traced(gettext_countries, 'countries')
+    gettext_constants = _make_traced(gettext_constants, 'constants')
+
+
+def disable_trace():
+    """Disable tracing and restore original functions."""
+    global _trace_file, gettext, ngettext, gettext_attributes, pgettext_attributes
+    global gettext_countries, gettext_constants, _
+    if _trace_file:
+        _trace_file.close()
+        _trace_file = None
+    for name in (
+        'gettext',
+        'ngettext',
+        'gettext_attributes',
+        'pgettext_attributes',
+        'gettext_countries',
+        'gettext_constants',
+    ):
+        fn = globals()[name]
+        if hasattr(fn, '__wrapped__'):
+            globals()[name] = fn.__wrapped__
+    _ = gettext
+
+
+# Enable trace via env var: PICARD_I18N_TRACE=/path/to/trace.log
+_trace_path = os.environ.get('PICARD_I18N_TRACE')
+if _trace_path:
+    enable_trace(_trace_path)
