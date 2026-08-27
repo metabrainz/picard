@@ -360,6 +360,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # titles via N_() and _set_header_labels applies _() lazily)
         for view in self.panel._views:
             view._set_header_labels()
+            view.viewport().update()
         # Propagate LanguageChange event to persistent child widgets
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
         for widget in (self.metadata_box, self.cover_art_box, self.file_browser, self._infostatus):

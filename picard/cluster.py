@@ -349,7 +349,10 @@ class Cluster(FileList):
 
     def column(self, column: str) -> str:
         if column == 'title':
-            return '%s (%d)' % (self.metadata['album'], len(self.files))
+            name = self.metadata['album']
+            if self.special:
+                name = _(name)
+            return '%s (%d)' % (name, len(self.files))
         elif self.special and column in {'~length', 'album', 'covercount'}:
             return ''
         elif column == '~length':
@@ -513,7 +516,7 @@ class UnclusteredFiles(Cluster):
     """Special cluster for 'Unmatched Files' which have not been clustered."""
 
     def __init__(self):
-        super().__init__(_("Unclustered Files"), special=True)
+        super().__init__(N_("Unclustered Files"), special=True)
 
     def add_files(self, files, new_album=True):
         super().add_files(files, new_album=new_album)
@@ -552,7 +555,7 @@ class ClusterList(list, Item):
 
     def __init__(self, name=None):
         if not name:
-            self._name = _('Clusters')
+            self._name = N_('Clusters')
         else:
             self._name = name
         super().__init__()
@@ -567,7 +570,7 @@ class ClusterList(list, Item):
 
     def column(self, column: str) -> str:
         if column == 'title':
-            return '%s (%d)' % (self._name, len(self))
+            return '%s (%d)' % (_(self._name), len(self))
         else:
             return ''
 

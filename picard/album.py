@@ -206,7 +206,7 @@ class Album(MetadataItem):
         if discid:
             self._discids.add(discid)
         self._after_load_callbacks: list[tuple[Callable[[], Any], bool]] = []
-        self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.unmatched_files = Cluster(N_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = AlbumStatus.NONE
         self._album_artists = []

@@ -289,49 +289,165 @@ def gettext_constants(message: str) -> str:
     return _translation['constants'].gettext(message)
 
 
-# Dev utility: trace all gettext calls to a file.
-# Usage: from picard.i18n.gettext import enable_trace; enable_trace()
+# Dev utility: trace all gettext calls to a file with caller location.
+# Purpose: detect strings that are translated at startup but NOT re-translated
+# after a language switch (i.e., missing dynamic retranslation code).
+#
+# Usage: PICARD_I18N_TRACE=/path/to/trace.log picard
+#
+# Log format: PREFIX CALLER_FILE:LINE SOURCE_STRING
+#   - "n:" prefix means N_() was called (string marked for extraction only)
+#   - "LANG:" prefix means _() was called (actual translation lookup)
+#
+# On exit, a report is appended listing strings that were translated in one
+# locale phase but not in the subsequent phase (missing retranslation).
+# Strings without an available translation (untranslated) are excluded from
+# the report since those are a Weblate issue, not a code issue.
+#
 # Zero overhead when not enabled (functions remain unwrapped).
+
 _trace_file = None
+_trace_phases = []  # list of (locale, set_of_strings)
+_trace_current_locale = None
+_trace_current_strings = None
+_trace_has_translation = set()  # strings that have a known translation (source != result)
 
 
-def _make_traced(fn, domain):
-    """Wrap a gettext function to log source → result to the trace file."""
+def _trace_switch_phase(locale):
+    """Track locale phases for the exit report."""
+    global _trace_current_locale, _trace_current_strings
+    if locale != _trace_current_locale:
+        if _trace_current_locale is not None and _trace_current_strings:
+            _trace_phases.append((_trace_current_locale, _trace_current_strings))
+        _trace_current_locale = locale
+        _trace_current_strings = set()
+
+
+def _make_traced(fn, domain, prefix_fn):
+    """Wrap a gettext function to log every call with caller location."""
+    import traceback
 
     def traced(*args, **kwargs):
         result = fn(*args, **kwargs)
         source = args[0] if args else ''
-        locale_name = QLocale().name()
-        _trace_file.write(f"{locale_name} [{domain}]: {source!r} → {result!r}\n")
-        _trace_file.flush()
+        if source:
+            locale = QLocale().name()
+            prefix = prefix_fn()
+            stack = traceback.extract_stack(limit=3)
+            if stack:
+                frame = stack[0]
+                caller = f"{frame.filename}:{frame.lineno}"
+            else:
+                caller = "??:0"
+            _trace_file.write(f"{prefix} {caller} {source!r}\n")
+            _trace_file.flush()
+            # Track for exit report
+            _trace_switch_phase(locale)
+            if _trace_current_strings is not None:
+                _trace_current_strings.add(source)
+            # Track if this string actually has a translation
+            if source != result:
+                _trace_has_translation.add(source)
         return result
 
     traced.__wrapped__ = fn
     return traced
 
 
+def _make_traced_n(fn):
+    """Wrap N_() to log with 'n:' prefix."""
+    import traceback
+
+    def traced(message):
+        result = fn(message)
+        if message:
+            stack = traceback.extract_stack(limit=3)
+            if stack:
+                frame = stack[0]
+                caller = f"{frame.filename}:{frame.lineno}"
+            else:
+                caller = "??:0"
+            _trace_file.write(f"n: {caller} {message!r}\n")
+            _trace_file.flush()
+        return result
+
+    traced.__wrapped__ = fn
+    return traced
+
+
+def _trace_exit_report():
+    """Write exit report: strings missing retranslation after locale switch."""
+    global _trace_current_locale, _trace_current_strings
+    if not _trace_file:
+        return
+    # Flush the last phase
+    if _trace_current_locale and _trace_current_strings:
+        _trace_phases.append((_trace_current_locale, _trace_current_strings))
+
+    if len(_trace_phases) < 2:
+        _trace_file.write("\n=== NO LANGUAGE SWITCH DETECTED ===\n")
+        _trace_file.flush()
+        return
+
+    _trace_file.write("\n=== EXIT REPORT: MISSING RETRANSLATION ===\n")
+    _trace_file.write("(Only strings with known translations are shown.\n")
+    _trace_file.write(" Untranslated strings are a Weblate issue, not a code issue.)\n\n")
+
+    for i in range(len(_trace_phases) - 1):
+        prev_locale, prev_strings = _trace_phases[i]
+        next_locale, next_strings = _trace_phases[i + 1]
+        # Strings in prev phase but not in next phase
+        missing = prev_strings - next_strings
+        # Only report strings that have a known translation (source != result at some point)
+        missing_with_translation = missing & _trace_has_translation
+        if missing_with_translation:
+            _trace_file.write(
+                f"--- Strings translated in {prev_locale} but NOT re-translated in {next_locale} "
+                f"({len(missing_with_translation)} strings) ---\n"
+            )
+            for s in sorted(missing_with_translation):
+                _trace_file.write(f"  {s!r}\n")
+            _trace_file.write("\n")
+
+    _trace_file.flush()
+
+
 def enable_trace(path):
     """Enable tracing of all gettext calls to a file.
 
-    Patches the module-level gettext functions to log every call.
+    Patches the module-level gettext functions to log every call with
+    the caller's file and line number. N_() calls are prefixed with "n:",
+    _() calls with the current locale (e.g. "fr_FR:").
+
+    On exit, appends a report of strings missing retranslation.
     """
     global _trace_file, gettext, ngettext, gettext_attributes, pgettext_attributes
-    global gettext_countries, gettext_constants, _
+    global gettext_countries, gettext_constants, _, N_
+
+    import atexit
+
     _trace_file = open(path, 'w', encoding='utf-8')
-    gettext = _make_traced(gettext, 'main')
+    atexit.register(_trace_exit_report)
+
+    def _locale_prefix():
+        return QLocale().name() + ':'
+
+    gettext = _make_traced(gettext, 'main', _locale_prefix)
     _ = gettext
-    ngettext = _make_traced(ngettext, 'main')
-    gettext_attributes = _make_traced(gettext_attributes, 'attributes')
-    pgettext_attributes = _make_traced(pgettext_attributes, 'attributes')
-    gettext_countries = _make_traced(gettext_countries, 'countries')
-    gettext_constants = _make_traced(gettext_constants, 'constants')
+    ngettext = _make_traced(ngettext, 'main', _locale_prefix)
+    gettext_attributes = _make_traced(gettext_attributes, 'attributes', _locale_prefix)
+    pgettext_attributes = _make_traced(pgettext_attributes, 'attributes', _locale_prefix)
+    gettext_countries = _make_traced(gettext_countries, 'countries', _locale_prefix)
+    gettext_constants = _make_traced(gettext_constants, 'constants', _locale_prefix)
+    N_ = _make_traced_n(N_)
 
 
 def disable_trace():
     """Disable tracing and restore original functions."""
     global _trace_file, gettext, ngettext, gettext_attributes, pgettext_attributes
-    global gettext_countries, gettext_constants, _
+    global gettext_countries, gettext_constants, _, N_
     if _trace_file:
+        _trace_exit_report()
         _trace_file.close()
         _trace_file = None
     for name in (
@@ -341,6 +457,7 @@ def disable_trace():
         'pgettext_attributes',
         'gettext_countries',
         'gettext_constants',
+        'N_',
     ):
         fn = globals()[name]
         if hasattr(fn, '__wrapped__'):
