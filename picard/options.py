@@ -127,6 +127,7 @@ class LocalCoverModeInfo:
     example: str
     playground: bool = True
     show_doc: Callable | None = None
+    doc_tooltip: str = ""
 
 
 LOCAL_COVER_MODES = {
@@ -158,6 +159,7 @@ LOCAL_COVER_MODES = {
         example='%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}',
         playground=False,
         show_doc=lambda parent: _show_scripting_documentation(parent),
+        doc_tooltip=N_("Show scripting documentation"),
     ),
 }
 

@@ -25,7 +25,11 @@ import re
 from typing import ClassVar
 
 from PyQt6.QtCore import QSignalBlocker
-from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import (
+    QHBoxLayout,
+    QStyle,
+    QToolButton,
+)
 
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
@@ -84,6 +88,18 @@ class ProviderOptionsLocal(ProviderOptions):
         self._mode_values = dict.fromkeys(LocalCoverMatchMode, "")
         self._current_mode = LocalCoverMatchMode.REGEX
 
+        # Place a documentation icon button next to the input field.
+        self._doc_button = QToolButton(self)
+        self._doc_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MessageBoxQuestion))
+        self._doc_button.setVisible(False)
+        # Insert the button into the field's layout row.
+        field_index = self.ui.verticalLayout.indexOf(self.ui.local_cover_regex_edit)
+        self.ui.verticalLayout.removeWidget(self.ui.local_cover_regex_edit)
+        field_row = QHBoxLayout()
+        field_row.addWidget(self.ui.local_cover_regex_edit)
+        field_row.addWidget(self._doc_button)
+        self.ui.verticalLayout.insertLayout(field_index, field_row)
+
         self.playground = Playground(_("Test file name matching:"), parent=self)
         self.playground.set_description(
             description=_("Enter file names to test, one per line."),
@@ -91,12 +107,6 @@ class ProviderOptionsLocal(ProviderOptions):
             skip_meaning=_("the file name does not match"),
         )
         self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self.playground)
-
-        self._doc_button = QPushButton("?", self)
-        self._doc_button.setToolTip(_("Show documentation"))
-        self._doc_button.setFixedWidth(self._doc_button.fontMetrics().horizontalAdvance("?") * 3)
-        self._doc_button.setVisible(False)
-        self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self._doc_button)
 
         self.ui.local_cover_regex_edit.textChanged.connect(self._update_test_coverart_filter)
         self.ui.local_cover_use_script.toggled.connect(self._on_mode_toggled)
@@ -124,6 +134,9 @@ class ProviderOptionsLocal(ProviderOptions):
         except TypeError:
             pass  # No previous connection
         if info.show_doc:
+            tooltip = _(info.doc_tooltip) if info.doc_tooltip else _("Show documentation")
+            self._doc_button.setToolTip(tooltip)
+            self._doc_button.setAccessibleName(tooltip)
             self._doc_button.clicked.connect(lambda: info.show_doc(self))
             self._doc_button.setVisible(True)
         else:
