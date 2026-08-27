@@ -19,6 +19,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from io import BytesIO
 from unittest.mock import (
     MagicMock,
     Mock,
@@ -32,7 +33,11 @@ from urllib.parse import (
 from test.picardtestcase import PicardTestCase
 
 from picard.browser.filelookup import FileLookup
-from picard.browser.server import clean_header
+from picard.browser.server import (
+    RequestHandler,
+    clean_header,
+)
+from picard.oauth import OAuthInvalidStateError
 from picard.util import webbrowser2
 
 
@@ -256,3 +261,92 @@ class BrowserIntegrationTest(PicardTestCase):
     def test_clean_header(self):
         bad_header = "foo\nSome-Header: bar"
         self.assertEqual("fooSome-Header bar", clean_header(bad_header))
+
+
+class RequestHandlerAuthTest(PicardTestCase):
+    """Tests for PICARD-3398: Pending request stuck if authentication gets cancelled."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'server_host': 'musicbrainz.org'})
+        self.callback = MagicMock()
+        self.oauth_manager = MagicMock()
+        self.oauth_manager.verify_state.return_value = self.callback
+        self.tagger.webservice.oauth_manager = self.oauth_manager
+        self.patch_tagger_instance('picard.browser.server')
+
+    def _make_handler(self, path):
+        """Create a RequestHandler instance without starting a real HTTP server."""
+        handler = RequestHandler.__new__(RequestHandler)
+        handler.server_version = 'Test'
+        handler.sys_version = ''
+        handler.path = path
+        handler.headers = {'origin': None}
+        handler.wfile = BytesIO()
+        handler.requestline = f'GET {path} HTTP/1.1'
+        handler.command = 'GET'
+        handler.request_version = 'HTTP/1.1'
+        handler.responses = {}
+        handler.client_address = ('127.0.0.1', 0)
+        return handler
+
+    @patch('picard.browser.server.to_main')
+    def test_auth_cancelled_calls_callback(self, mock_to_main):
+        """When auth is cancelled (error=access_denied), the callback should be
+        called with successful=False so pending requests are released."""
+        handler = self._make_handler('/auth?error=access_denied&state=valid_state')
+
+        handler._handle_get()
+
+        self.oauth_manager.verify_state.assert_called_once_with('valid_state')
+        mock_to_main.assert_called_once_with(self.callback, successful=False, error_msg='access_denied')
+
+    @patch('picard.browser.server.to_main')
+    def test_auth_cancelled_with_error_description(self, mock_to_main):
+        """When auth error includes error_description, it should be in the callback."""
+        handler = self._make_handler(
+            '/auth?error=access_denied&error_description=The+user+denied+the+request&state=valid_state'
+        )
+
+        handler._handle_get()
+
+        mock_to_main.assert_called_once_with(self.callback, successful=False, error_msg='The user denied the request')
+
+    @patch('picard.browser.server.to_main')
+    def test_auth_success_still_works(self, mock_to_main):
+        """Ensure normal auth success flow is not broken."""
+        handler = self._make_handler('/auth?code=auth_code_123&state=valid_state')
+
+        handler._handle_get()
+
+        self.oauth_manager.verify_state.assert_called_once_with('valid_state')
+        mock_to_main.assert_called_once()
+        self.callback.assert_not_called()
+
+    def test_auth_invalid_state(self):
+        """An invalid state should return 400 regardless of code or error."""
+        self.oauth_manager.verify_state.side_effect = OAuthInvalidStateError()
+        for path in (
+            '/auth?code=auth_code_123&state=bad',
+            '/auth?error=access_denied&state=bad',
+        ):
+            with self.subTest(path=path):
+                self.oauth_manager.verify_state.reset_mock()
+                handler = self._make_handler(path)
+
+                handler._handle_get()
+
+                self.oauth_manager.verify_state.assert_called_once_with('bad')
+                self.callback.assert_not_called()
+                response = handler.wfile.getvalue()
+                self.assertIn(b'400', response)
+
+    def test_auth_no_code_no_error(self):
+        """When auth has neither code nor error, return 400."""
+        handler = self._make_handler('/auth?state=valid_state')
+
+        handler._handle_get()
+
+        response = handler.wfile.getvalue()
+        self.assertIn(b'400', response)
+        self.assertIn(b'Invalid OAuth callback', response)
