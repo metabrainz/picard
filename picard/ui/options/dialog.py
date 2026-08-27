@@ -872,10 +872,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         """Retranslate the options dialog after a language change."""
         # Retranslate the auto-generated form (window title, labels, etc.)
         self.ui.retranslateUi(self)
-        # Retranslate dialog buttons
-        self._ok_button.retranslateUi()
-        self.ui.reset_all_button.retranslateUi()
-        self.ui.reset_button.retranslateUi()
         # Retranslate page titles in the tree
         for item, PageCls in self.item_to_page.items():
             item.setText(0, PageCls.display_title())

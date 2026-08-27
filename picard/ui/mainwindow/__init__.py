@@ -163,7 +163,6 @@ from picard.ui.logview import (
 )
 from picard.ui.mainwindow.actions import (
     create_actions,
-    retranslate_actions,
 )
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.newuserdialog import NewUserDialog
@@ -353,9 +352,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _retranslate_ui(self):
         """Retranslate all UI elements after a language change."""
-        retranslate_actions(self.action_map)
-        self._retranslate_menus()
+        from picard.ui.translatable import retranslate_all
+
+        # Retranslate all Translatable* instances (actions, menus, buttons)
+        retranslate_all()
         self._retranslate_window()
+        self._retranslate_search_toolbar()
         # Create event once for propagation to child widgets
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
         # Refresh column headers in tree views and propagate event
@@ -369,8 +371,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtCore.QCoreApplication.sendEvent(widget, event)
         if hasattr(self, 'player_toolbar'):
             QtCore.QCoreApplication.sendEvent(self.player_toolbar, event)
-        # Retranslate search toolbar
-        self._retranslate_search_toolbar()
 
     def _retranslate_search_toolbar(self):
         """Retranslate search toolbar title and combo items."""
@@ -388,15 +388,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         listen_port = getattr(self, '_listen_port', None)
         if listen_port:
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
-
-    def _retranslate_menus(self):
-        """Retranslate menu titles after a language change."""
-        for action in self.menuBar().actions():
-            menu = action.menu()
-            if menu and hasattr(menu, 'retranslateUi'):
-                menu.retranslateUi()
-        for menu in self._translatable_submenus:
-            menu.retranslateUi()
 
     def _update_toolbar_theme(self):
         """Refresh toolbar extension button icon and stylesheet for current theme."""
@@ -1161,18 +1152,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
 
         # Collect submenus that need retranslation (not in the menu bar directly)
-        self._translatable_submenus = [
-            self.file_naming_scripts_menu,
-            self.profile_quick_selector_menu,
-            self.quick_settings_menu,
-            self.cd_lookup_menu,
-            self.recent_sessions_menu,
-        ]
-
         self._menus_created = True
-
-        # Apply initial translation to menu titles
-        self._retranslate_menus()
 
     def update_toolbar_style(self):
         config = get_config()

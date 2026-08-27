@@ -25,6 +25,24 @@ from PyQt6.QtWidgets import (
 from picard.i18n import gettext as _
 
 
+# Global registry of all translatable widget instances.
+# Uses destroyed signal for cleanup instead of weakrefs (Qt objects
+# may have their C++ side deleted while Python reference is alive).
+_registry = set()
+
+
+def _register(widget):
+    """Register a translatable widget and connect cleanup on destroy."""
+    _registry.add(widget)
+    widget.destroyed.connect(lambda: _registry.discard(widget))
+
+
+def retranslate_all():
+    """Retranslate all live Translatable* instances in the registry."""
+    for widget in list(_registry):
+        widget.retranslateUi()
+
+
 class TranslatableAction(QAction):
     """QAction subclass that supports dynamic retranslation.
 
@@ -32,8 +50,7 @@ class TranslatableAction(QAction):
     as untranslated source text (as marked with N_() at the call site).
     The source is stored and _() is applied immediately.
 
-    Call retranslateUi() after a language change to re-apply _() to all
-    stored source strings.
+    Instances are auto-registered and retranslated by retranslate_all().
     """
 
     def __init__(self, *args, **kwargs):
@@ -46,6 +63,7 @@ class TranslatableAction(QAction):
         self._source_icon_text = ''
         if self._source_text:
             super().setText(_(self._source_text))
+        _register(self)
 
     def setText(self, text):
         self._source_text = text
@@ -82,7 +100,7 @@ class TranslatableMenu(QMenu):
     untranslated source string (as marked with N_() at the call site).
     The source is stored and _() is applied immediately.
 
-    Call retranslateUi() after a language change to re-apply _().
+    Instances are auto-registered and retranslated by retranslate_all().
     """
 
     def __init__(self, title='', parent=None):
@@ -90,6 +108,7 @@ class TranslatableMenu(QMenu):
         self._source_title = self.title()
         if self._source_title:
             super().setTitle(_(self._source_title))
+        _register(self)
 
     def setTitle(self, title):
         self._source_title = title
@@ -108,7 +127,7 @@ class TranslatablePushButton(QPushButton):
     untranslated source string (as marked with N_() at the call site).
     The source is stored and _() is applied immediately.
 
-    Call retranslateUi() after a language change to re-apply _().
+    Instances are auto-registered and retranslated by retranslate_all().
     """
 
     def __init__(self, *args, **kwargs):
@@ -117,6 +136,7 @@ class TranslatablePushButton(QPushButton):
         self._source_tool_tip = ''
         if self._source_text:
             super().setText(_(self._source_text))
+        _register(self)
 
     def setText(self, text):
         self._source_text = text
