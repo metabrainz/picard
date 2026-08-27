@@ -57,6 +57,7 @@ from picard.ui.logviewmodel import (
     LogItemModel,
 )
 from picard.ui.theme import theme
+from picard.ui.translatable import TranslatableAction
 from picard.ui.util import FileDialog
 
 
@@ -171,18 +172,20 @@ class LogViewDialog(PicardDialog):
         self.list_view.activated.connect(self._show_detail)
         self.vbox.addWidget(self.list_view)
 
-        view_detail_action = QtGui.QAction(
-            QtGui.QIcon.fromTheme("document-properties"), _("&View detail…"), self.list_view
+        view_detail_action = TranslatableAction(
+            QtGui.QIcon.fromTheme("document-properties"), N_("&View detail…"), self.list_view
         )
         view_detail_action.triggered.connect(self._show_detail)
         self.list_view.addAction(view_detail_action)
 
-        copy_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-copy"), _("&Copy"), self.list_view)
+        copy_action = TranslatableAction(QtGui.QIcon.fromTheme("edit-copy"), N_("&Copy"), self.list_view)
         copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
         copy_action.triggered.connect(self._copy_selection)
         self.list_view.addAction(copy_action)
 
-        select_all_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-select-all"), _("Select &all"), self.list_view)
+        select_all_action = TranslatableAction(
+            QtGui.QIcon.fromTheme("edit-select-all"), N_("Select &all"), self.list_view
+        )
         select_all_action.setShortcut(QtGui.QKeySequence.StandardKey.SelectAll)
         select_all_action.triggered.connect(self._select_all)
         self.list_view.addAction(select_all_action)
@@ -195,6 +198,10 @@ class LogViewDialog(PicardDialog):
     def _retranslate_ui(self):
         """Retranslate window title after a language change."""
         self.set_window_title(_(self._source_title))
+        # Retranslate context menu actions
+        for action in self.list_view.actions():
+            if hasattr(action, 'retranslateUi'):
+                action.retranslateUi()
 
     def _show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self.list_view)
@@ -364,16 +371,18 @@ class LogView(LogViewCommon):
         self._delegate = LogItemDelegate(parent=self.list_view)
         self.list_view.setItemDelegate(self._delegate)
 
-        clear_log_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-clear"), _("Clear &log…"), self.list_view)
-        clear_log_action.triggered.connect(self._clear_log_do)
-        self.list_view.addAction(clear_log_action)
+        self._clear_log_action = TranslatableAction(
+            QtGui.QIcon.fromTheme("edit-clear"), N_("Clear &log…"), self.list_view
+        )
+        self._clear_log_action.triggered.connect(self._clear_log_do)
+        self.list_view.addAction(self._clear_log_action)
 
-        self._regex_action = QtGui.QAction(_("&Regex filter"), self.list_view)
+        self._regex_action = TranslatableAction(N_("&Regex filter"), self.list_view)
         self._regex_action.setCheckable(True)
         self._regex_action.toggled.connect(self._on_regex_toggled)
         self.list_view.addAction(self._regex_action)
 
-        self._compact_view_action = QtGui.QAction(_("&Compact view"), self.list_view)
+        self._compact_view_action = TranslatableAction(N_("&Compact view"), self.list_view)
         self._compact_view_action.setCheckable(True)
         self._compact_view_action.setChecked(False)
         self._compact_view_action.toggled.connect(self._on_compact_view_toggled)
@@ -382,29 +391,31 @@ class LogView(LogViewCommon):
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
-        self.help_button = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("help-contents"), _("Help"))
+        self._source_help_text = N_("Help")
+        self.help_button = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("help-contents"), _(self._source_help_text))
         self.help_button.setAutoDefault(False)
         self.help_button.clicked.connect(self.show_help)
         self.hbox.addWidget(self.help_button)
 
         self.verbosity_menu_button = QtWidgets.QPushButton()
         self.verbosity_menu_button.setAutoDefault(False)
-        self.verbosity_menu_button.setAccessibleName(_("Verbosity"))
-        self.verbosity_menu_button.setToolTip(
-            _(
-                "Changes the logging verbosity level for the current session. "
-                "The default level configured in Options will be restored on next startup."
-            )
+        self._source_verbosity_accessible = N_("Verbosity")
+        self.verbosity_menu_button.setAccessibleName(_(self._source_verbosity_accessible))
+        self._source_verbosity_tooltip = N_(
+            "Changes the logging verbosity level for the current session. "
+            "The default level configured in Options will be restored on next startup."
         )
+        self.verbosity_menu_button.setToolTip(_(self._source_verbosity_tooltip))
         self.hbox.addWidget(self.verbosity_menu_button)
 
         self.verbosity_menu = VerbosityMenu()
         self.verbosity_menu.verbosity_changed.connect(self._verbosity_changed)
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
 
-        self.debug_opts_menu_button = QtWidgets.QPushButton(_("Debug Options"))
+        self._source_debug_opts_text = N_("Debug Options")
+        self.debug_opts_menu_button = QtWidgets.QPushButton(_(self._source_debug_opts_text))
         self.debug_opts_menu_button.setAutoDefault(False)
-        self.debug_opts_menu_button.setAccessibleName(_("Debug Options"))
+        self.debug_opts_menu_button.setAccessibleName(_(self._source_debug_opts_text))
         self.hbox.addWidget(self.debug_opts_menu_button)
 
         self.debug_opts_menu = DebugOptsMenu()
@@ -414,7 +425,8 @@ class LogView(LogViewCommon):
 
         # filter input with embedded clear button
         self.filter_input = QtWidgets.QLineEdit()
-        self.filter_input.setPlaceholderText(_("Filter"))
+        self._source_filter_text = N_("Filter")
+        self.filter_input.setPlaceholderText(_(self._source_filter_text))
         self.filter_input.setClearButtonEnabled(True)
         self.filter_input.textChanged.connect(self._on_filter_changed)
         self.filter_input.returnPressed.connect(self._on_filter_return)
@@ -422,14 +434,15 @@ class LogView(LogViewCommon):
 
         # filter toggle button
         self.filter_button = QtWidgets.QToolButton()
-        self.filter_button.setText(_("Filter"))
+        self.filter_button.setText(_(self._source_filter_text))
         self.filter_button.setCheckable(True)
         self.filter_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
         self.filter_button.toggled.connect(self._on_filter_toggled)
         self.hbox.addWidget(self.filter_button)
 
         # save as
-        self.save_log_as_button = QtWidgets.QPushButton(_("Save As…"))
+        self._source_save_as_text = N_("Save As…")
+        self.save_log_as_button = QtWidgets.QPushButton(_(self._source_save_as_text))
         self.save_log_as_button.setAutoDefault(False)
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
@@ -441,6 +454,25 @@ class LogView(LogViewCommon):
         self._model.rowsInserted.connect(self._update_status)
         self._model.modelReset.connect(self._update_status)
         self._update_status()
+
+    def _retranslate_ui(self):
+        """Retranslate LogView-specific UI elements."""
+        super()._retranslate_ui()
+        # Actions
+        self._clear_log_action.retranslateUi()
+        self._regex_action.retranslateUi()
+        self._compact_view_action.retranslateUi()
+        # Buttons
+        self.help_button.setText(_(self._source_help_text))
+        self.verbosity_menu_button.setAccessibleName(_(self._source_verbosity_accessible))
+        self.verbosity_menu_button.setToolTip(_(self._source_verbosity_tooltip))
+        self.debug_opts_menu_button.setText(_(self._source_debug_opts_text))
+        self.debug_opts_menu_button.setAccessibleName(_(self._source_debug_opts_text))
+        self.filter_input.setPlaceholderText(_(self._source_filter_text))
+        self.filter_button.setText(_(self._source_filter_text))
+        self.save_log_as_button.setText(_(self._source_save_as_text))
+        # Refresh verbosity button text
+        self._set_verbosity(self.verbosity)
 
     def _update_status(self):
         if self._status_label is None:
