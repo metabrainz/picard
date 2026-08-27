@@ -280,6 +280,7 @@ class PluginApi:
     _instances: ClassVar[dict[str, 'PluginApi']] = {}  # Maps module name -> PluginApi instance
     _module_cache: ClassVar[dict[str, 'PluginApi']] = {}  # Maps module name -> PluginApi instance (for faster lookup)
     _deprecation_warnings_emitted: ClassVar[set[tuple[str, str, int]]] = set()  # Track emitted deprecation warnings
+    _language_changed_connected: ClassVar[bool] = False
 
     def __init__(self, manifest: PluginManifest, tagger: 'Tagger', module: types.ModuleType, plugin_dir: Path) -> None:
         self._tagger: Tagger = tagger
@@ -296,6 +297,12 @@ class PluginApi:
         self._plugin_dir: Path = plugin_dir
         self._qt_translator: PluginTranslator | None = None
         self._mb_api: MBAPIHelper | None = None
+
+        if not PluginApi._language_changed_connected:
+            from picard.i18n import language_changed
+
+            language_changed.connect(PluginApi._on_language_changed)
+            PluginApi._language_changed_connected = True
 
     @staticmethod
     def _get_caller_info(frame_depth=2):
@@ -508,6 +515,17 @@ class PluginApi:
                 )
                 return True
         return False
+
+    @classmethod
+    def _on_language_changed(cls) -> None:
+        """Reload translations for all active plugins when UI language changes."""
+        for api in cls._instances.values():
+            # Reload translation files for the new locale
+            api._translations.clear()
+            api._load_translations()
+            # Update Qt translator locale
+            if api._qt_translator:
+                api._qt_translator._current_locale = api.get_locale()
 
     @property
     def tagger(self) -> 'Tagger':
