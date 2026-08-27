@@ -886,7 +886,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_actions(self):
         self.action_map = dict(create_actions(self))
-        retranslate_actions(self.action_map)
 
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(N_("Lookup &CD…"))

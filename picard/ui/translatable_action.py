@@ -34,9 +34,14 @@ class TranslatableAction(QAction):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._source_text = ''
+        # Capture any text set via the constructor (PyQt6 sets it at C++ level,
+        # bypassing our setText override). Store source and apply _().
+        self._source_text = self.text()
         self._source_tool_tip = ''
         self._source_status_tip = ''
+        self._source_icon_text = ''
+        if self._source_text:
+            super().setText(_(self._source_text))
 
     def setText(self, text):
         self._source_text = text
@@ -50,6 +55,10 @@ class TranslatableAction(QAction):
         self._source_status_tip = text
         super().setStatusTip(_(text) if text else '')
 
+    def setIconText(self, text):
+        self._source_icon_text = text
+        super().setIconText(_(text) if text else '')
+
     def retranslateUi(self):
         """Re-apply _() to all stored source strings."""
         if self._source_text:
@@ -58,3 +67,5 @@ class TranslatableAction(QAction):
             super().setToolTip(_(self._source_tool_tip))
         if self._source_status_tip:
             super().setStatusTip(_(self._source_status_tip))
+        if self._source_icon_text:
+            super().setIconText(_(self._source_icon_text))
