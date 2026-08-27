@@ -245,25 +245,38 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self._response(400, 'Missing parameter "token".')
 
+    _OAUTH_CALLBACK_PARAMS = frozenset(('code', 'error'))
+
     def _auth(self, args):
-        if 'code' in args and args['code']:
-            tagger = tagger_instance()
-            oauth_manager = tagger.webservice.oauth_manager
-            try:
-                state = args.get('state', [''])[0]
-                callback = oauth_manager.verify_state(state)
-            except OAuthInvalidStateError:
-                self._response(400, 'Invalid "state" parameter.')
-                return
+        if not args.keys() & self._OAUTH_CALLBACK_PARAMS:
+            self._response(400, 'Invalid OAuth callback parameters.')
+            return
+
+        def qs_value(key):
+            return args.get(key, [''])[0]
+
+        tagger = tagger_instance()
+        oauth_manager = tagger.webservice.oauth_manager
+        try:
+            callback = oauth_manager.verify_state(qs_value('state'))
+        except OAuthInvalidStateError:
+            self._response(400, 'Invalid "state" parameter.')
+            return
+
+        code = qs_value('code')
+        if code:
             to_main(
                 oauth_manager.exchange_authorization_code,
-                authorization_code=args['code'][0],
+                authorization_code=code,
                 scopes='profile tag rating collection submit_isrc submit_barcode',
                 callback=callback,
             )
             self._response(200, "Authentication successful, you can close this window now.", 'text/html')
         else:
-            self._response(400, 'Missing parameter "code".')
+            error_msg = qs_value('error_description') or qs_value('error')
+            log.info("%s: Authorization denied: %s", LOG_PREFIX, error_msg)
+            to_main(callback, successful=False, error_msg=error_msg)
+            self._response(200, "Authentication cancelled, you can close this window now.", 'text/html')
 
     def _response(self, code, content='', content_type='text/plain'):
         self.server_version = SERVER_VERSION
