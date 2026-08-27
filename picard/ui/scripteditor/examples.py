@@ -22,6 +22,8 @@ from html import escape
 import os.path
 import random
 
+from PyQt6.QtCore import QSignalBlocker
+
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import gettext as _
@@ -169,9 +171,8 @@ class ScriptEditorExamples:
         """
         if source.currentRow() != current_row:
             current_row = source.currentRow()
-            target.blockSignals(True)
-            target.setCurrentRow(current_row)
-            target.blockSignals(False)
+            with QSignalBlocker(target):
+                target.setCurrentRow(current_row)
 
     @classmethod
     def get_notes_text(cls):

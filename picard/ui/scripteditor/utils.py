@@ -21,6 +21,7 @@
 from functools import partial
 
 from PyQt6 import QtWidgets
+from PyQt6.QtCore import QSignalBlocker
 from PyQt6.QtGui import QPalette
 
 from picard.i18n import gettext as _
@@ -74,9 +75,8 @@ def synchronize_vertical_scrollbars(widgets):
     theme.theme_changed.connect(_apply_highlight_stylesheet)
 
     def _sync_scrollbar_vert(widget, value):
-        widget.blockSignals(True)
-        widget.verticalScrollBar().setValue(value)
-        widget.blockSignals(False)
+        with QSignalBlocker(widget):
+            widget.verticalScrollBar().setValue(value)
 
     widget_set = set(widgets)
     for widget in widget_set:
@@ -95,20 +95,19 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     Returns:
         int: The index of the currently selected script
     """
-    combo_box.blockSignals(True)
-    combo_box.clear()
+    with QSignalBlocker(combo_box):
+        combo_box.clear()
 
-    def _add_and_check(idx, count, title, item):
-        combo_box.addItem(title, item)
-        if item['id'] == selected_script_id:
-            idx = count
-        return idx
+        def _add_and_check(idx, count, title, item):
+            combo_box.addItem(title, item)
+            if item['id'] == selected_script_id:
+                idx = count
+            return idx
 
-    idx = 0
-    count = -1
-    for count, (_id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
-        idx = _add_and_check(idx, count, naming_script['title'], naming_script)
+        idx = 0
+        count = -1
+        for count, (_id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
+            idx = _add_and_check(idx, count, naming_script['title'], naming_script)
 
-    combo_box.setCurrentIndex(idx)
-    combo_box.blockSignals(False)
+        combo_box.setCurrentIndex(idx)
     return idx

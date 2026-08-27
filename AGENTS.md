@@ -303,6 +303,25 @@ class MyWidget(QWidget):
         self.value_changed.emit("new value")
 ```
 
+Use the `QSignalBlocker` context manager to suppress signals temporarily,
+rather than manual `blockSignals(True)`/`blockSignals(False)` calls. It is
+exception-safe (signals are always unblocked, even if an exception is raised)
+and more concise.
+
+```python
+from PyQt6.QtCore import QSignalBlocker
+
+
+# ❌ Manual, not exception-safe
+widget.blockSignals(True)
+widget.setChecked(True)
+widget.blockSignals(False)
+
+# ✅ Context manager
+with QSignalBlocker(widget):
+    widget.setChecked(True)
+```
+
 ### Readability
 - Use descriptive names
 - Comment complex logic
