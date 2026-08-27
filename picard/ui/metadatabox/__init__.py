@@ -88,6 +88,7 @@ from picard.ui.metadatabox.tagdiffhtml import (
     compute_diff,
     highlight_full,
 )
+from picard.ui.translatable import TranslatableAction
 
 
 # Custom data role for storing diff HTML on table items
@@ -310,11 +311,13 @@ class MetadataBox(QtWidgets.QTableWidget):
             plugin_manager.plugin_state_changed.connect(self._on_plugin_changed)
 
         # Table widget configuration
-        self.setAccessibleName(N_("metadata view"))
-        self.setAccessibleDescription(N_("Displays original and new tags for the selected files"))
+        self._source_accessible_name = N_("metadata view")
+        self._source_accessible_description = N_("Displays original and new tags for the selected files")
+        self.setAccessibleName(_(self._source_accessible_name))
+        self.setAccessibleDescription(_(self._source_accessible_description))
         self.setColumnCount(3)
         self._source_header_labels = (N_("Tag"), N_("Original Value"), N_("New Value"))
-        self.setHorizontalHeaderLabels(self._source_header_labels)
+        self.setHorizontalHeaderLabels([_(label) for label in self._source_header_labels])
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionsClickable(False)
@@ -338,9 +341,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.editing = None  # the QTableWidgetItem being edited
 
         # Actions and shortcuts
-        self.add_tag_action = QtGui.QAction(N_("Add New Tag…"), self)
+        self.add_tag_action = TranslatableAction(N_("Add New Tag…"), self)
         self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
-        self.changes_first_action = QtGui.QAction(N_("Show Changes First"), self)
+        self.changes_first_action = TranslatableAction(N_("Show Changes First"), self)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
         self.changes_first_action.toggled.connect(self._toggle_changes_first)
@@ -388,27 +391,16 @@ class MetadataBox(QtWidgets.QTableWidget):
         super().changeEvent(event)
 
     def _retranslate(self):
-        """Retranslate static UI strings after a language change.
-
-        Uses the same capture-on-first-call pattern: the source is the
-        untranslated N_() string initially set on the widget. It gets
-        captured into a property, then _() is applied on every call.
-        """
-        from picard.ui.mainwindow.actions import _retranslate_action_property
-
+        """Retranslate static UI strings after a language change."""
         # Header labels
         for i, label in enumerate(self._source_header_labels):
             self.horizontalHeaderItem(i).setText(_(label))
         # Accessible name/description
-        _retranslate_action_property(self, 'accessibleName', self.accessibleName, self.setAccessibleName)
-        _retranslate_action_property(
-            self, 'accessibleDescription', self.accessibleDescription, self.setAccessibleDescription
-        )
+        self.setAccessibleName(_(self._source_accessible_name))
+        self.setAccessibleDescription(_(self._source_accessible_description))
         # Actions
-        _retranslate_action_property(self.add_tag_action, 'text', self.add_tag_action.text, self.add_tag_action.setText)
-        _retranslate_action_property(
-            self.changes_first_action, 'text', self.changes_first_action.text, self.changes_first_action.setText
-        )
+        self.add_tag_action.retranslateUi()
+        self.changes_first_action.retranslateUi()
 
     def _on_setting_changed(self, name, old_value, new_value):
         settings_to_watch = {
