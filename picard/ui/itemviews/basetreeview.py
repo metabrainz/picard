@@ -78,7 +78,10 @@ from picard.extension_points.item_actions import (
     ext_point_track_actions,
 )
 from picard.file import File
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.script import iter_tagging_scripts_from_tuples
 from picard.track import (
     NonAlbumTrack,
@@ -103,6 +106,7 @@ from picard.ui.itemviews.custom_columns.shared import get_recognized_view_column
 from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
+from picard.ui.translatable import TranslatableAction
 from picard.ui.util import menu_builder
 from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
 
@@ -199,17 +203,30 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         self.setSortingEnabled(True)
 
-        self.expand_all_action = QtGui.QAction(_("&Expand all"), self)
+        self.expand_all_action = TranslatableAction(N_("&Expand all"), self)
         self.expand_all_action.triggered.connect(self.expandAll)
-        self.collapse_all_action = QtGui.QAction(_("&Collapse all"), self)
+        self.collapse_all_action = TranslatableAction(N_("&Collapse all"), self)
         self.collapse_all_action.triggered.connect(self.collapseAll)
-        self.select_all_action = QtGui.QAction(_("Select &all"), self)
+        self.select_all_action = TranslatableAction(N_("Select &all"), self)
         self.select_all_action.triggered.connect(self.selectAll)
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
 
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate tree view actions and accessible properties."""
+        self.setAccessibleName(_(self.NAME))
+        self.setAccessibleDescription(_(self.DESCRIPTION))
+        self.expand_all_action.retranslateUi()
+        self.collapse_all_action.retranslateUi()
+        self.select_all_action.retranslateUi()
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())

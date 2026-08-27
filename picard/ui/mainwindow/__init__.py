@@ -356,17 +356,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         retranslate_actions(self.action_map)
         self._retranslate_menus()
         self._retranslate_window()
-        # Refresh column headers in tree views (columns store untranslated
-        # titles via N_() and _set_header_labels applies _() lazily)
+        # Create event once for propagation to child widgets
+        event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
+        # Refresh column headers in tree views and propagate event
         for view in self.panel._views:
             view._set_header_labels()
             view.viewport().update()
-        # Propagate LanguageChange event to persistent child widgets
-        event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
+            QtCore.QCoreApplication.sendEvent(view, event)
+            QtCore.QCoreApplication.sendEvent(view.filter_box, event)
+        # Propagate LanguageChange event to other persistent child widgets
         for widget in (self.metadata_box, self.cover_art_box, self.file_browser, self._infostatus):
             QtCore.QCoreApplication.sendEvent(widget, event)
-        for view in self.panel._views:
-            QtCore.QCoreApplication.sendEvent(view.filter_box, event)
         if hasattr(self, 'player_toolbar'):
             QtCore.QCoreApplication.sendEvent(self.player_toolbar, event)
         # Retranslate search toolbar
