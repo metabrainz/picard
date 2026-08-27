@@ -117,18 +117,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(UiTheme.DEFAULT))
         self.ui.ui_theme.currentIndexChanged.connect(self._on_theme_changed)
 
-        self.ui.ui_language.addItem(_("System default"), '')
-        language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
-
-        def fcmp(x):
-            return sort_key(x[2])
-
-        for lang_code, native, translation in sorted(language_list, key=fcmp):
-            if native and native != translation:
-                name = '%s (%s)' % (translation, native)
-            else:
-                name = translation
-            self.ui.ui_language.addItem(name, lang_code)
+        self._populate_language_combo()
         self.ui.ui_language.currentIndexChanged.connect(self._on_language_changed)
         self.ui.starting_directory.toggled.connect(self.ui.starting_directory_path.setEnabled)
         self.ui.starting_directory.toggled.connect(self.ui.starting_directory_browse.setEnabled)
@@ -173,6 +162,33 @@ class InterfaceOptionsPage(OptionsPage):
     def _dialog_rejected(self):
         """Handle dialog cancellation by reverting live-previewed changes."""
         self._revert_language()
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate the language combo items."""
+        current_data = self.ui.ui_language.currentData()
+        with QtCore.QSignalBlocker(self.ui.ui_language):
+            self._populate_language_combo()
+            idx = self.ui.ui_language.findData(current_data)
+            if idx >= 0:
+                self.ui.ui_language.setCurrentIndex(idx)
+
+    def _populate_language_combo(self):
+        """Populate the language combo with translated names."""
+        self.ui.ui_language.clear()
+        self.ui.ui_language.addItem(_("System default"), '')
+        language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
+
+        for lang_code, native, translation in sorted(language_list, key=lambda x: sort_key(x[2])):
+            if native and native != translation:
+                name = '%s (%s)' % (translation, native)
+            else:
+                name = translation
+            self.ui.ui_language.addItem(name, lang_code)
 
     def load(self):
         # Don't display the multi-selection warning when loading values.
