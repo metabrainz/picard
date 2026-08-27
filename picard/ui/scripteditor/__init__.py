@@ -77,6 +77,10 @@ from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
 )
+from picard.ui.translatable import (
+    TranslatableAction,
+    TranslatableMenu,
+)
 from picard.ui.util import set_widget_fixed_width_for_text
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
@@ -238,76 +242,79 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         main_menu = QtWidgets.QMenuBar()
 
         # File menu settings
-        file_menu = main_menu.addMenu(_("&File"))
+        file_menu = TranslatableMenu(N_("&File"))
+        main_menu.addMenu(file_menu)
         file_menu.setToolTipsVisible(True)
 
-        self.import_action = QtGui.QAction(_("&Import a script file"), self)
-        self.import_action.setToolTip(_("Import a file as a new script"))
+        self.import_action = TranslatableAction(N_("&Import a script file"), self)
+        self.import_action.setToolTip(N_("Import a file as a new script"))
         self.import_action.setIcon(icontheme.lookup('document-open'))
         self.import_action.triggered.connect(self.import_script)
         file_menu.addAction(self.import_action)
 
-        self.export_action = QtGui.QAction(_("&Export a script file"), self)
-        self.export_action.setToolTip(_("Export the script to a file"))
+        self.export_action = TranslatableAction(N_("&Export a script file"), self)
+        self.export_action.setToolTip(N_("Export the script to a file"))
         self.export_action.setIcon(icontheme.lookup('document-save'))
         self.export_action.triggered.connect(self.export_script)
         file_menu.addAction(self.export_action)
 
-        self.reset_action = QtGui.QAction(_("&Reset all scripts"), self)
-        self.reset_action.setToolTip(_("Reset all scripts to the saved values"))
+        self.reset_action = TranslatableAction(N_("&Reset all scripts"), self)
+        self.reset_action.setToolTip(N_("Reset all scripts to the saved values"))
         self.reset_action.setIcon(icontheme.lookup('view-refresh'))
         self.reset_action.triggered.connect(self.reload_from_config)
         file_menu.addAction(self.reset_action)
 
-        self.save_action = QtGui.QAction(_("&Save and exit"), self)
-        self.save_action.setToolTip(_("Save changes to the script settings and exit"))
+        self.save_action = TranslatableAction(N_("&Save and exit"), self)
+        self.save_action.setToolTip(N_("Save changes to the script settings and exit"))
         self.save_action.setIcon(icontheme.lookup('document-save'))
         self.save_action.triggered.connect(self.make_it_so)
         file_menu.addAction(self.save_action)
 
-        self.close_action = QtGui.QAction(_("E&xit without saving"), self)
-        self.close_action.setToolTip(_("Close the script editor without saving changes"))
+        self.close_action = TranslatableAction(N_("E&xit without saving"), self)
+        self.close_action.setToolTip(N_("Close the script editor without saving changes"))
         self.close_action.triggered.connect(self.close)
         file_menu.addAction(self.close_action)
 
         # Script menu settings
-        script_menu = main_menu.addMenu(_("&Script"))
+        script_menu = TranslatableMenu(N_("&Script"))
+        main_menu.addMenu(script_menu)
         script_menu.setToolTipsVisible(True)
 
-        self.details_action = QtGui.QAction(_("View/Edit Script &Metadata"), self)
-        self.details_action.setToolTip(_("Display the details for the script"))
+        self.details_action = TranslatableAction(N_("View/Edit Script &Metadata"), self)
+        self.details_action.setToolTip(N_("Display the details for the script"))
         self.details_action.triggered.connect(self.view_script_details)
         self.details_action.setShortcut(QtGui.QKeySequence(_("Ctrl+M")))
         script_menu.addAction(self.details_action)
 
-        self.add_action = QtWidgets.QMenu(_("Add a &new script"))
+        self.add_action = TranslatableMenu(N_("Add a &new script"))
         self.add_action.setIcon(icontheme.lookup('add-item'))
         self.make_script_template_selector_menu()
         script_menu.addMenu(self.add_action)
 
-        self.copy_action = QtGui.QAction(_("&Copy the current script"), self)
-        self.copy_action.setToolTip(_("Save a copy of the script as a new script"))
+        self.copy_action = TranslatableAction(N_("&Copy the current script"), self)
+        self.copy_action.setToolTip(N_("Save a copy of the script as a new script"))
         self.copy_action.setIcon(icontheme.lookup('edit-copy'))
         self.copy_action.triggered.connect(self.copy_script)
         script_menu.addAction(self.copy_action)
 
-        self.delete_action = QtGui.QAction(_("&Delete the current script"), self)
-        self.delete_action.setToolTip(_("Delete the script"))
+        self.delete_action = TranslatableAction(N_("&Delete the current script"), self)
+        self.delete_action.setToolTip(N_("Delete the script"))
         self.delete_action.setIcon(icontheme.lookup('list-remove'))
         self.delete_action.triggered.connect(self.delete_script)
         script_menu.addAction(self.delete_action)
 
-        self.reset_current_script_action = QtGui.QAction(_("Rese&t current script"), self)
-        self.reset_current_script_action.setToolTip(_("Discard changes and reset to the last saved version"))
+        self.reset_current_script_action = TranslatableAction(N_("Rese&t current script"), self)
+        self.reset_current_script_action.setToolTip(N_("Discard changes and reset to the last saved version"))
         self.reset_current_script_action.setIcon(icontheme.lookup('view-refresh'))
         self.reset_current_script_action.triggered.connect(self.revert_script)
         script_menu.addAction(self.reset_current_script_action)
 
         # Display menu settings
-        display_menu = main_menu.addMenu(_("&View"))
+        display_menu = TranslatableMenu(N_("&View"))
+        main_menu.addMenu(display_menu)
         display_menu.setToolTipsVisible(True)
 
-        self.examples_action = QtGui.QAction(_("&Reload random example files"), self)
+        self.examples_action = TranslatableAction(N_("&Reload random example files"), self)
         self.examples_action.setToolTip(self.examples.get_tooltip_text())
         self.examples_action.setIcon(icontheme.lookup('view-refresh'))
         self.examples_action.triggered.connect(self.update_example_files)
@@ -316,8 +323,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         display_menu.addAction(self.ui.file_naming_format.wordwrap_action)
         display_menu.addAction(self.ui.file_naming_format.show_tooltips_action)
 
-        self.docs_action = QtGui.QAction(_("&Show documentation"), self)
-        self.docs_action.setToolTip(_("View the scripting documentation in a sidebar"))
+        self.docs_action = TranslatableAction(N_("&Show documentation"), self)
+        self.docs_action.setToolTip(N_("View the scripting documentation in a sidebar"))
         self.docs_action.triggered.connect(self.toggle_documentation)
         self.docs_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
         self.docs_action.setCheckable(True)
@@ -325,20 +332,57 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         display_menu.addAction(self.docs_action)
 
         # Help menu settings
-        help_menu = main_menu.addMenu(_("&Help"))
+        help_menu = TranslatableMenu(N_("&Help"))
+        main_menu.addMenu(help_menu)
         help_menu.setToolTipsVisible(True)
 
-        self.help_action = QtGui.QAction(_("&Help…"), self)
+        self.help_action = TranslatableAction(N_("&Help…"), self)
         self.help_action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
         self.help_action.triggered.connect(self.show_help)
         help_menu.addAction(self.help_action)
 
-        self.scripting_docs_action = QtGui.QAction(_("&Scripting documentation…"), self)
-        self.scripting_docs_action.setToolTip(_("Open the scripting documentation in your browser"))
+        self.scripting_docs_action = TranslatableAction(N_("&Scripting documentation…"), self)
+        self.scripting_docs_action.setToolTip(N_("Open the scripting documentation in your browser"))
         self.scripting_docs_action.triggered.connect(self.docs_browser)
         help_menu.addAction(self.scripting_docs_action)
 
+        self._translatable_menus = [file_menu, script_menu, display_menu, help_menu]
+        self._translatable_actions = [
+            self.import_action,
+            self.export_action,
+            self.reset_action,
+            self.save_action,
+            self.close_action,
+            self.details_action,
+            self.copy_action,
+            self.delete_action,
+            self.reset_current_script_action,
+            self.examples_action,
+            self.docs_action,
+            self.help_action,
+            self.scripting_docs_action,
+        ]
         self.ui.layout_for_menubar.addWidget(main_menu)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self.ui.retranslateUi(self)
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate programmatic UI elements after a language change."""
+        # Menus
+        for menu in self._translatable_menus:
+            menu.retranslateUi()
+        self.add_action.retranslateUi()
+        # Actions
+        for action in self._translatable_actions:
+            action.retranslateUi()
+        # Rebuild template selector (uses live _() calls)
+        self.make_script_template_selector_menu()
+        # Window title
+        self.set_window_title(self.display_title())
 
     def make_script_template_selector_menu(self):
         """Update the sub-menu of available file naming script templates."""
