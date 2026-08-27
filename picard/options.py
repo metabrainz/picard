@@ -23,7 +23,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections import namedtuple
+from collections.abc import Callable
+from dataclasses import dataclass
 from enum import Enum
 
 from PyQt6 import QtCore
@@ -117,9 +118,16 @@ class LocalCoverMatchMode(Enum):
 #
 # The strings are marked for translation with N_() and must be translated with
 # _() at the point of use.
-LocalCoverModeInfo = namedtuple(
-    'LocalCoverModeInfo', ('setting', 'title', 'description', 'note', 'example', 'playground')
-)
+@dataclass(frozen=True)
+class LocalCoverModeInfo:
+    setting: str
+    title: str
+    description: str
+    note: str
+    example: str
+    playground: bool = True
+    show_doc: Callable | None = None
+
 
 LOCAL_COVER_MODES = {
     LocalCoverMatchMode.REGEX: LocalCoverModeInfo(
@@ -131,7 +139,6 @@ LOCAL_COVER_MODES = {
             "ie. cover-back-spine.jpg will be set as types Back + Spine. "
             "If no type is found, it will default to Front type."
         ),
-        # A literal pattern (not translatable) shown as placeholder / example.
         example=r'^(?:cover|folder)\.(?:jpe?g|png)$',
         playground=True,
     ),
@@ -148,11 +155,17 @@ LOCAL_COVER_MODES = {
             "Example (matches e.g. \"Alicia Keys - The Diary Of Alicia Keys [2003].jpg\"):\n"
             "%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}"
         ),
-        # A literal pattern (not translatable) shown as placeholder / example.
         example='%albumartist% - %album%$if(%date%, [%date%],).{jpg,png}',
         playground=False,
+        show_doc=lambda parent: _show_scripting_documentation(parent),
     ),
 }
+
+
+def _show_scripting_documentation(parent):
+    from picard.ui.options.scripting import ScriptingDocumentationDialog
+
+    ScriptingDocumentationDialog.show_instance(parent=parent)
 
 
 # picard/coverart/providers/caa.py

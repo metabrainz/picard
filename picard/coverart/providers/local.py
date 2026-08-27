@@ -25,6 +25,7 @@ import re
 from typing import ClassVar
 
 from PyQt6.QtCore import QSignalBlocker
+from PyQt6.QtWidgets import QPushButton
 
 from picard.config import get_config
 from picard.coverart.image import LocalFileCoverArtImage
@@ -91,6 +92,12 @@ class ProviderOptionsLocal(ProviderOptions):
         )
         self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self.playground)
 
+        self._doc_button = QPushButton("?", self)
+        self._doc_button.setToolTip(_("Show documentation"))
+        self._doc_button.setFixedWidth(self._doc_button.fontMetrics().horizontalAdvance("?") * 3)
+        self._doc_button.setVisible(False)
+        self.ui.verticalLayout.insertWidget(self.ui.verticalLayout.count() - 1, self._doc_button)
+
         self.ui.local_cover_regex_edit.textChanged.connect(self._update_test_coverart_filter)
         self.ui.local_cover_use_script.toggled.connect(self._on_mode_toggled)
         self.playground.textChanged.connect(self._update_test_coverart_filter)
@@ -111,6 +118,16 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.local_cover_regex_edit.setToolTip(_("Example: %s") % info.example)
         self.ui.local_cover_regex_edit.setText(self._mode_values[mode])
         self.playground.setVisible(info.playground)
+        # Show the documentation button if the mode provides a show_doc callable.
+        try:
+            self._doc_button.clicked.disconnect()
+        except TypeError:
+            pass  # No previous connection
+        if info.show_doc:
+            self._doc_button.clicked.connect(lambda: info.show_doc(self))
+            self._doc_button.setVisible(True)
+        else:
+            self._doc_button.setVisible(False)
         self._update_test_coverart_filter()
 
     def _on_mode_toggled(self, checked):
