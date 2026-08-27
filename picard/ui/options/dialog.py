@@ -876,8 +876,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             item.setText(0, PageCls.display_title())
         # Retranslate the currently visible page's form if it has retranslateUi
         current_page = self._get_current_page()
-        if current_page and hasattr(current_page, 'ui') and hasattr(current_page.ui, 'retranslateUi'):
-            current_page.ui.retranslateUi(current_page)
+        if current_page:
+            if hasattr(current_page, 'ui') and hasattr(current_page.ui, 'retranslateUi'):
+                current_page.ui.retranslateUi(current_page)
+            # Propagate LanguageChange to custom child widgets within the page
+            event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
+            QtCore.QCoreApplication.sendEvent(current_page, event)
 
     def _get_current_page(self):
         """Return the currently visible options page instance, or None."""
