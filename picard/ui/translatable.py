@@ -17,7 +17,10 @@
 
 
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QMenu
+from PyQt6.QtWidgets import (
+    QMenu,
+    QPushButton,
+)
 
 from picard.i18n import gettext as _
 
@@ -96,3 +99,36 @@ class TranslatableMenu(QMenu):
         """Re-apply _() to the stored source title."""
         if self._source_title:
             super().setTitle(_(self._source_title))
+
+
+class TranslatablePushButton(QPushButton):
+    """QPushButton subclass that supports dynamic retranslation.
+
+    The text passed to the constructor or setText() is treated as an
+    untranslated source string (as marked with N_() at the call site).
+    The source is stored and _() is applied immediately.
+
+    Call retranslateUi() after a language change to re-apply _().
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._source_text = self.text()
+        self._source_tool_tip = ''
+        if self._source_text:
+            super().setText(_(self._source_text))
+
+    def setText(self, text):
+        self._source_text = text
+        super().setText(_(text) if text else '')
+
+    def setToolTip(self, text):
+        self._source_tool_tip = text
+        super().setToolTip(_(text) if text else '')
+
+    def retranslateUi(self):
+        """Re-apply _() to stored source strings."""
+        if self._source_text:
+            super().setText(_(self._source_text))
+        if self._source_tool_tip:
+            super().setToolTip(_(self._source_tool_tip))

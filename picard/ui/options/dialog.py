@@ -114,6 +114,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_wave,
 )
 from picard.ui.theme import theme as _theme
+from picard.ui.translatable import TranslatablePushButton
 
 
 if TYPE_CHECKING:
@@ -306,14 +307,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_help_button.clicked.connect(self._show_profile_help)
         profile_layout.addWidget(profile_help_button)
 
-        self.ui.reset_all_button = QtWidgets.QPushButton(_("&Restore all Defaults"))
-        self.ui.reset_all_button.setToolTip(_("Reset all of Picard's settings"))
-        self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
-        self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
+        self.ui.reset_all_button = TranslatablePushButton(N_("&Restore all Defaults"))
+        self.ui.reset_all_button.setToolTip(N_("Reset all of Picard's settings"))
+        self.ui.reset_button = TranslatablePushButton(N_("Restore &Defaults"))
+        self.ui.reset_button.setToolTip(N_("Reset all settings for current option page"))
 
         # Buttons
-        ok = QtWidgets.QPushButton(_("Make It So!"))
-        self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self._ok_button = TranslatablePushButton(N_("Make It So!"))
+        self.ui.buttonbox.addButton(self._ok_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
@@ -871,6 +872,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         """Retranslate the options dialog after a language change."""
         # Retranslate the auto-generated form (window title, labels, etc.)
         self.ui.retranslateUi(self)
+        # Retranslate dialog buttons
+        self._ok_button.retranslateUi()
+        self.ui.reset_all_button.retranslateUi()
+        self.ui.reset_button.retranslateUi()
         # Retranslate page titles in the tree
         for item, PageCls in self.item_to_page.items():
             item.setText(0, PageCls.display_title())
