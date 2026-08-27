@@ -32,7 +32,10 @@ from picard import (
     tagger_instance,
 )
 from picard.config import get_config
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.metadata import (
     album_metadata_processors,
     track_metadata_processors,
@@ -144,7 +147,8 @@ class PluginListWidget(QtWidgets.QWidget):
 
         # Create tree widget
         self.tree_widget = QtWidgets.QTreeWidget()
-        self.tree_widget.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("New Version")])
+        self._source_header_labels = [N_("Enabled"), N_("Plugin"), N_("Version"), N_("New Version")]
+        self.tree_widget.setHeaderLabels([_(h) for h in self._source_header_labels])
         self.tree_widget.setRootIsDecorated(False)
         self.tree_widget.setAlternatingRowColors(True)
         self.tree_widget.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
@@ -195,6 +199,12 @@ class PluginListWidget(QtWidgets.QWidget):
 
         # Don't load cached update status during initialization to avoid any network activity
         # It will be loaded when actually needed during populate_plugins()
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            for i, label in enumerate(self._source_header_labels):
+                self.tree_widget.headerItem().setText(i, _(label))
+        super().changeEvent(event)
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""

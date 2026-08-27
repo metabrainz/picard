@@ -84,19 +84,28 @@ class PreferenceListWidget(QtWidgets.QWidget):
 
         buttons_layout.addStretch()
         if self._ordered:
-            self._up_btn = self._make_button(buttons_layout, ":/images/16x16/go-up.png", _("Move up"))
-            self._down_btn = self._make_button(buttons_layout, ":/images/16x16/go-down.png", _("Move down"))
-        self._remove_btn = self._make_button(buttons_layout, ":/images/16x16/list-remove.png", _("Remove"))
+            self._up_btn = self._make_button(buttons_layout, ":/images/16x16/go-up.png", N_("Move up"))
+            self._down_btn = self._make_button(buttons_layout, ":/images/16x16/go-down.png", N_("Move down"))
+        self._remove_btn = self._make_button(buttons_layout, ":/images/16x16/list-remove.png", N_("Remove"))
 
         layout.addLayout(buttons_layout)
 
     def _make_button(self, layout, icon_path, tooltip) -> QtWidgets.QToolButton:
         btn = QtWidgets.QToolButton(self)
         btn.setIcon(QtGui.QIcon(icon_path))
-        btn.setToolTip(tooltip)
-        btn.setAccessibleDescription(tooltip)
+        btn._source_tooltip = tooltip
+        btn.setToolTip(_(tooltip))
+        btn.setAccessibleDescription(_(tooltip))
         layout.addWidget(btn)
         return btn
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            for btn in (self._remove_btn, getattr(self, '_up_btn', None), getattr(self, '_down_btn', None)):
+                if btn and hasattr(btn, '_source_tooltip'):
+                    btn.setToolTip(_(btn._source_tooltip))
+                    btn.setAccessibleDescription(_(btn._source_tooltip))
+        super().changeEvent(event)
 
     def _connect_signals(self) -> None:
         self._add_combo.activated.connect(self._on_combo_activated)
