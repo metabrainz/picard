@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-19 17:49+0200\n"
-"PO-Revision-Date: 2026-08-15 12:12+0000\n"
+"PO-Revision-Date: 2026-08-27 12:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -251,14 +251,14 @@ msgid "Log ISRC processing, submission, and lookup details"
 msgstr "Registra els detalls de processament, enviament i cerca d'ISRC"
 
 #: picard/debug_opts.py:174
-#, fuzzy
-#| msgid "Release Country"
 msgid "Rate Control"
-msgstr "País de publicació"
+msgstr "Control de freqüència"
 
 #: picard/debug_opts.py:174
 msgid "Log request throttling, congestion window, and backoff details"
 msgstr ""
+"Registra les limitacions de sol·licituds, la finestra de congestió i els "
+"detalls d'endarreriment"
 
 #: picard/file.py:329
 msgid "Cannot save file: the file no longer exists."
@@ -1480,28 +1480,21 @@ msgid "Test file name matching:"
 msgstr "Prova de la coincidència del nom dels fitxers:"
 
 #: picard/coverart/providers/local.py:65
-#, fuzzy
-#| msgid "Enter file names to test, one per line"
 msgid "Enter file names to test, one per line."
-msgstr "Introduïu els noms dels fitxers que voleu provar, un per línia"
+msgstr "Introduïu els noms dels fitxers que voleu provar, un per línia."
 
 #: picard/coverart/providers/local.py:66
-#, fuzzy
-#| msgid "Test file name matching:"
 msgid "the file name matches"
-msgstr "Prova de la coincidència del nom dels fitxers:"
+msgstr "el nom del fitxer coincideix"
 
 #: picard/coverart/providers/local.py:67
-#, fuzzy
-#| msgid "Test file name matching:"
 msgid "the file name does not match"
-msgstr "Prova de la coincidència del nom dels fitxers:"
+msgstr "el nom del fitxer no coincideix"
 
 #: picard/coverart/providers/local.py:89 picard/ui/options/advanced.py:92
-#, fuzzy, python-format
-#| msgid "Ignore file paths (regular expression)"
+#, python-format
 msgid "Invalid regular expression: %s"
-msgstr "Ignora els camins de fitxers (expressió regular)"
+msgstr "L'expressió regular no és vàlida: %s"
 
 #: picard/coverart/providers/local.py:105
 msgid "Local Files"
@@ -1973,10 +1966,8 @@ msgid "Returns the variable `name` (equivalent to `%name%`)."
 msgstr "Retorna la variable `nom` (equivalent a `%nom%`)."
 
 #: picard/script/functions.py:399
-#, fuzzy
-#| msgid "$get(name)"
 msgid "$get_new(name)"
-msgstr "$get(nom)"
+msgstr "$get_new(nom)"
 
 #: picard/script/functions.py:401
 msgid ""
@@ -2004,12 +1995,34 @@ msgid ""
 "\n"
 "_Since Picard 3.0_"
 msgstr ""
+"Retorna el valor de la variable `nom` només a partir de les metadades noves\n"
+"(de MusicBrainz o d'un script) i ignora els valors que només existeixen a "
+"les\n"
+"etiquetes originals del fitxer.\n"
+"\n"
+"Això és útil per a comprovar si MusicBrainz ha proporcionat realment una "
+"etiqueta específica.\n"
+"Quan un fitxer coincideix amb una pista, `%nom%` pot retornar un valor de "
+"les etiquetes\n"
+"existents del fitxer fins i tot si MusicBrainz no s'ha proporcionat cap. "
+"`$get_new` només retorna\n"
+"el valor si l'ha definit MusicBrainz o un script.\n"
+"\n"
+"Exemple:\n"
+"\n"
+"    $if($get_new(composer),,$set(composer,$if2"
+"(%lyricist%,%writer%,%arranger%)))\n"
+"\n"
+"Això defineix el compositor a partir d'altres camps només si MusicBrainz no "
+"n'ha proporcionat un,\n"
+"independentment de l'etiqueta de compositor que tingués el fitxer "
+"originalment.\n"
+"\n"
+"_A partir de Picard 3.0_"
 
 #: picard/script/functions.py:426
-#, fuzzy
-#| msgid "$get(name)"
 msgid "$get_original(name)"
-msgstr "$get(nom)"
+msgstr "$get_original(nom)"
 
 #: picard/script/functions.py:428
 msgid ""
@@ -2025,6 +2038,17 @@ msgid ""
 "\n"
 "_Since Picard 3.0_"
 msgstr ""
+"Retorna el valor de la variable `nom` només a partir de les metadades\n"
+"originals del fitxer i ignora els valors de MusicBrainz o els scripts.\n"
+"\n"
+"Això és útil per a accedir als valors de les etiquetes existents del fitxer\n"
+"independent del que proporcioni MusicBrainz.\n"
+"\n"
+"Exemple:\n"
+"\n"
+"    $set(comment,Artista original: $get_original(artist))\n"
+"\n"
+"_A partir de Picard 3.0_"
 
 #: picard/script/functions.py:447
 msgid "$copy(new,old)"
@@ -3660,10 +3684,8 @@ msgid "Log view text (warning)"
 msgstr "Text de la visualització de registre (avís)"
 
 #: picard/ui/colors.py:55
-#, fuzzy
-#| msgid "Profile highlight background"
 msgid "Low match similarity background"
-msgstr "Fons per a ressaltar els perfils"
+msgstr "Fons de baixa similitud de coincidència"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight background"
@@ -3978,17 +4000,17 @@ msgstr ""
 
 #: picard/ui/playground.py:103
 msgid "This playground will not be preserved on exit."
-msgstr ""
+msgstr "Aquest espai de proves no es conservarà quan sortiu."
 
 #: picard/ui/playground.py:106
 #, python-format
 msgid "Red: %s."
-msgstr ""
+msgstr "Vermell: %s."
 
 #: picard/ui/playground.py:107
 #, python-format
 msgid "Green: %s."
-msgstr ""
+msgstr "Verd: %s."
 
 #: picard/ui/ratingwidget.py:101
 #, python-format
@@ -7918,26 +7940,20 @@ msgid "Advanced"
 msgstr "Avançat"
 
 #: picard/ui/options/advanced.py:62
-#, fuzzy
-#| msgid "Test file name matching:"
 msgid "Test file path matching:"
-msgstr "Prova de la coincidència del nom dels fitxers:"
+msgstr "Prova de la coincidència del camí dels fitxers:"
 
 #: picard/ui/options/advanced.py:64
-#, fuzzy
-#| msgid "Enter file names to test, one per line"
 msgid "Enter file paths to test, one per line."
-msgstr "Introduïu els noms dels fitxers que voleu provar, un per línia"
+msgstr "Introduïu els camins dels fitxers que voleu provar, un per línia."
 
 #: picard/ui/options/advanced.py:65
-#, fuzzy
-#| msgid "Test file name matching:"
 msgid "the file path matches"
-msgstr "Prova de la coincidència del nom dels fitxers:"
+msgstr "el camí del fitxer coincideix"
 
 #: picard/ui/options/advanced.py:66
 msgid "the file path does not match"
-msgstr ""
+msgstr "el camí del fitxer no coincideix"
 
 #: picard/ui/options/cdlookup.py:75
 msgid "ISRC extraction is not supported on this platform."
@@ -8185,26 +8201,22 @@ msgid "Genres"
 msgstr "Gèneres"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
-#| msgid "&Regex filter"
 msgid "Test genres filter:"
-msgstr "Filtre d'expressions &regulars"
+msgstr "Prova del filtre de gèneres:"
 
 #: picard/ui/options/genres.py:100
-#, fuzzy
-#| msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgid "Enter genres or folksonomy tags to test, one per line."
 msgstr ""
-"Gèneres o etiquetes de folcsonomia que s'han d'incloure o excloure, un per "
-"línia:"
+"Introduïu els gèneres o etiquetes de folcsonomia que voleu provar, un per "
+"línia."
 
 #: picard/ui/options/genres.py:101
 msgid "the tag will be kept"
-msgstr ""
+msgstr "l'etiqueta es conservarà"
 
 #: picard/ui/options/genres.py:102
 msgid "the tag will be skipped"
-msgstr ""
+msgstr "l'etiqueta s'ometrà"
 
 #: picard/ui/options/interface.py:68
 msgid "User Interface"
