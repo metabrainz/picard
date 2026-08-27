@@ -39,7 +39,10 @@ from PyQt6 import (
 
 from picard import log
 from picard.debug_opts import DebugOpt
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import reconnect
 
 from picard.ui import (
@@ -153,7 +156,8 @@ class LogViewDialog(PicardDialog):
     def __init__(self, title, parent=None):
         super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
-        self.set_window_title(title)
+        self._source_title = title
+        self.set_window_title(_(title))
         self.vbox = QtWidgets.QVBoxLayout()
         self.setLayout(self.vbox)
         self.list_view = QtWidgets.QListView()
@@ -182,6 +186,15 @@ class LogViewDialog(PicardDialog):
         select_all_action.setShortcut(QtGui.QKeySequence.StandardKey.SelectAll)
         select_all_action.triggered.connect(self._select_all)
         self.list_view.addAction(select_all_action)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self._retranslate_ui()
+        super().changeEvent(event)
+
+    def _retranslate_ui(self):
+        """Retranslate window title after a language change."""
+        self.set_window_title(_(self._source_title))
 
     def _show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self.list_view)
@@ -337,7 +350,7 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.main_tail, _("Log View"), parent=parent)
+        super().__init__(log.main_tail, N_("Log View"), parent=parent)
         self.verbosity = log.get_effective_level()
         self._status_label = None
         self.help_url = '/appendices/log_viewer.html'
@@ -552,4 +565,4 @@ class LogView(LogViewCommon):
 
 class HistoryView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.history_tail, _("Activity History"), parent=parent)
+        super().__init__(log.history_tail, N_("Activity History"), parent=parent)
