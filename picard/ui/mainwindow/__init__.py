@@ -1041,7 +1041,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_menus(self):
         def add_menu(menu_title, *args):
-            menu = TranslatableMenu(menu_title)
+            menu = TranslatableMenu(menu_title, self.menuBar())
             self.menuBar().addMenu(menu)
             menu.setSeparatorsCollapsible(True)
             menu_builder(menu, self.action_map, *args)
