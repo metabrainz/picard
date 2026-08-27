@@ -31,7 +31,6 @@ from PyQt6 import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import (
-    QAction,
     QCursor,
     QKeySequence,
     QTextCursor,
@@ -44,7 +43,10 @@ from PyQt6.QtWidgets import (
 
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.script import (
     ScriptFunctionDocError,
     ScriptFunctionDocUnknownFunctionError,
@@ -62,6 +64,7 @@ from picard.tags.docs import display_tag_tooltip
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
 from picard.ui.theme import theme
+from picard.ui.translatable import TranslatableAction
 from picard.ui.widgets.completion_provider import CompletionChoicesProvider
 from picard.ui.widgets.context_detector import (
     TAG_NAME_FIRST_ARG_FUNCTIONS,
@@ -425,8 +428,8 @@ class ScriptTextEdit(QTextEdit):
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
         self.setAcceptRichText(False)
-        self.wordwrap_action = QAction(_("&Word wrap script"), self)
-        self.wordwrap_action.setToolTip(_("Word wrap long lines in the editor"))
+        self.wordwrap_action = TranslatableAction(N_("&Word wrap script"), self)
+        self.wordwrap_action.setToolTip(N_("Word wrap long lines in the editor"))
         self.wordwrap_action.triggered.connect(self.update_wordwrap)
         self.wordwrap_action.setShortcut(QKeySequence(_("Ctrl+Shift+W")))
         self.wordwrap_action.setCheckable(True)
@@ -434,8 +437,8 @@ class ScriptTextEdit(QTextEdit):
         self.update_wordwrap()
         self.addAction(self.wordwrap_action)
         self._show_tooltips = config.persist['script_editor_tooltips']
-        self.show_tooltips_action = QAction(_("Show help &tooltips"), self)
-        self.show_tooltips_action.setToolTip(_("Show tooltips for script elements"))
+        self.show_tooltips_action = TranslatableAction(N_("Show help &tooltips"), self)
+        self.show_tooltips_action.setToolTip(N_("Show tooltips for script elements"))
         self.show_tooltips_action.triggered.connect(self.update_show_tooltips)
         self.show_tooltips_action.setShortcut(QKeySequence(_("Ctrl+Shift+T")))
         self.show_tooltips_action.setCheckable(True)

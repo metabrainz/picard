@@ -364,6 +364,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         event = QtCore.QEvent(QtCore.QEvent.Type.LanguageChange)
         for widget in (self.metadata_box, self.cover_art_box, self.file_browser, self._infostatus):
             QtCore.QCoreApplication.sendEvent(widget, event)
+        for view in self.panel._views:
+            QtCore.QCoreApplication.sendEvent(view.filter_box, event)
         if hasattr(self, 'player_toolbar'):
             QtCore.QCoreApplication.sendEvent(self.player_toolbar, event)
         # Retranslate search toolbar

@@ -379,6 +379,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         # Actions
         for action in self._translatable_actions:
             action.retranslateUi()
+        # Script text edit actions
+        self.ui.file_naming_format.wordwrap_action.retranslateUi()
+        self.ui.file_naming_format.show_tooltips_action.retranslateUi()
         # Rebuild template selector (uses live _() calls)
         self.make_script_template_selector_menu()
         # Window title

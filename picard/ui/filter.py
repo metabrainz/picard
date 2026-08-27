@@ -74,12 +74,18 @@ class Filter(QtWidgets.QWidget):
 
         # filter input
         self.filter_query_box = QtWidgets.QLineEdit(self)
-        self.filter_query_box.setPlaceholderText(_("Type to filter…"))
+        self._source_placeholder = N_("Type to filter…")
+        self.filter_query_box.setPlaceholderText(_(self._source_placeholder))
         self.filter_query_box.setClearButtonEnabled(True)
         self.filter_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.filter_query_box)
 
         self.initializing = False
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.Type.LanguageChange:
+            self.filter_query_box.setPlaceholderText(_(self._source_placeholder))
+        super().changeEvent(event)
 
     def _get_saved_selected_filters(self):
         config = get_config()
