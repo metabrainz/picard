@@ -88,23 +88,6 @@ def retranslate_actions(action_map):
             action.retranslateUi()
 
 
-def _retranslate_action_property(action, prop_name, getter, setter):
-    """Retranslate a single property of an action.
-
-    On first call, saves the current (untranslated) value as the source.
-    On every call, translates the source and applies it.
-    """
-    source_prop = f'_source_{prop_name}'
-    source = action.property(source_prop)
-    if source is None:
-        # First call: capture the untranslated source string
-        source = getter()
-        if not source:
-            return
-        action.setProperty(source_prop, source)
-    setter(_(source))
-
-
 @add_action(MainAction.OPTIONS)
 def _create_options_action(parent):
     action = TranslatableAction(icontheme.lookup('preferences-desktop'), N_("&Options…"), parent)
