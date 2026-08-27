@@ -331,6 +331,10 @@ class VerbosityMenu(QtWidgets.QMenu):
     def set_verbosity(self, level):
         self.action_map[level].setChecked(True)
 
+    def retranslateUi(self):
+        for level, feat in log.levels_features.items():
+            self.action_map[level].setText(_(feat.name))
+
 
 class DebugOptsMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
@@ -343,6 +347,11 @@ class DebugOptsMenu(QtWidgets.QMenu):
             action.triggered.connect(partial(self.debug_opt_changed, debug_opt))
             self.addAction(action)
             self.action_map[debug_opt] = action
+
+    def retranslateUi(self):
+        for debug_opt, action in self.action_map.items():
+            action.setText(_(debug_opt.title))
+            action.setToolTip(_(debug_opt.description))
 
     def debug_opt_changed(self, debug_opt, checked):
         debug_opt.enabled = checked
@@ -471,6 +480,9 @@ class LogView(LogViewCommon):
         self.filter_input.setPlaceholderText(_(self._source_filter_text))
         self.filter_button.setText(_(self._source_filter_text))
         self.save_log_as_button.setText(_(self._source_save_as_text))
+        # Menus
+        self.verbosity_menu.retranslateUi()
+        self.debug_opts_menu.retranslateUi()
         # Refresh verbosity button text
         self._set_verbosity(self.verbosity)
 
