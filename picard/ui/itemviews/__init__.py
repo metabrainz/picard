@@ -333,6 +333,11 @@ class FileTreeView(BaseTreeView):
     def default_drop_target(self):
         return self.tagger.unclustered_files
 
+    def _retranslate_ui(self):
+        super()._retranslate_ui()
+        self.unmatched_files.update()
+        self.clusters.update()
+
 
 class AlbumTreeView(BaseTreeView):
     NAME = N_("Album view")
