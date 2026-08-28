@@ -17,7 +17,10 @@
 
 
 import json
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from PyQt6.QtNetwork import (
     QNetworkReply,
@@ -35,8 +38,10 @@ from picard.webservice.api_helpers.listenbrainz import (
 )
 
 from picard.ui.player.listenbrainz import (
+    ListenBrainzSubmissionService,
     ListenQueue,
     PreparedSubmission,
+    _is_temporary_submission_error,
 )
 
 
@@ -157,3 +162,102 @@ class TestListenQueue(PicardTestCase):
         self.queue._queue.clear()
         self.queue._on_listen_queue_drained()
         self.assertFalse(self.queue_file.exists())
+
+    def test_single_listen_permanent_error_keeps_listen_without_scheduling(self):
+        # A 401 must not drop the listen; it stays queued, but the retry timer
+        # is not scheduled (retrying cannot succeed until the token is fixed).
+        self.lbapi = FakeListenBrainzAPIHelper(
+            status_code=401, error=QNetworkReply.NetworkError.AuthenticationRequiredError
+        )
+        self.queue = ListenQueue(self.lbapi)
+        self.queue.add(ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B")))
+        self.assertEqual(1, len(self.queue._queue))
+        self.assertFalse(self.queue._timer.isActive())
+
+    def test_single_listen_temporary_error_keeps_listen_and_schedules(self):
+        self.lbapi = FakeListenBrainzAPIHelper(
+            status_code=503, error=QNetworkReply.NetworkError.ServiceUnavailableError
+        )
+        self.queue = ListenQueue(self.lbapi)
+        self.queue.add(ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B")))
+        self.assertEqual(1, len(self.queue._queue))
+        self.assertTrue(self.queue._timer.isActive())
+
+    def test_batch_permanent_error_keeps_queue_and_suspends_timer(self):
+        self.lbapi = FakeListenBrainzAPIHelper(
+            status_code=401, error=QNetworkReply.NetworkError.AuthenticationRequiredError
+        )
+        self.queue = ListenQueue(self.lbapi)
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+        self.queue._timer.start(1000)
+
+        self.queue.submit_batch()
+
+        self.assertEqual(1, len(self.queue._queue))  # not dropped
+        self.assertFalse(self.queue._timer.isActive())  # suspended
+
+    def test_batch_temporary_error_keeps_queue_and_timer(self):
+        self.lbapi = FakeListenBrainzAPIHelper(
+            status_code=503, error=QNetworkReply.NetworkError.ServiceUnavailableError
+        )
+        self.queue = ListenQueue(self.lbapi)
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+        self.queue._timer.start(1000)
+
+        self.queue.submit_batch()
+
+        self.assertEqual(1, len(self.queue._queue))
+        self.assertTrue(self.queue._timer.isActive())
+
+    def test_schedule_submission_starts_only_with_queued_listens(self):
+        self.assertFalse(self.queue._timer.isActive())
+        self.queue.schedule_submission()
+        self.assertFalse(self.queue._timer.isActive())  # empty queue: no timer
+
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+        self.queue.schedule_submission()
+        self.assertTrue(self.queue._timer.isActive())
+
+
+class TestIsTemporarySubmissionError(PicardTestCase):
+    def test_transient_errors(self):
+        self.assertTrue(_is_temporary_submission_error(429))
+        self.assertTrue(_is_temporary_submission_error(500))
+        self.assertTrue(_is_temporary_submission_error(503))
+
+    def test_permanent_errors(self):
+        self.assertFalse(_is_temporary_submission_error(401))
+        self.assertFalse(_is_temporary_submission_error(400))
+        self.assertFalse(_is_temporary_submission_error(404))
+
+    def test_missing_status_is_permanent(self):
+        self.assertFalse(_is_temporary_submission_error(None))
+        self.assertFalse(_is_temporary_submission_error(0))
+
+
+class TestSubmissionServiceTokenRearm(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({"listenbrainz_token": "test_token"})
+        self.player = Mock()
+        self.webservice = Mock()
+        self.tagger = Mock()
+
+    def _make_service(self):
+        # The service connects to config.setting.setting_changed in __init__;
+        # provide a config whose setting exposes that signal.
+        fake_config = Mock()
+        with patch('picard.ui.player.listenbrainz.get_config', return_value=fake_config):
+            service = ListenBrainzSubmissionService(self.player, self.webservice, self.tagger)
+        service._queue = Mock()
+        return service
+
+    def test_token_change_reschedules_submission(self):
+        service = self._make_service()
+        service._on_setting_changed('listenbrainz_token', 'old', 'new')
+        service._queue.schedule_submission.assert_called_once()
+
+    def test_other_setting_change_does_not_reschedule(self):
+        service = self._make_service()
+        service._on_setting_changed('some_other_setting', 'old', 'new')
+        service._queue.schedule_submission.assert_not_called()
