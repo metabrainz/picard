@@ -222,6 +222,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._add_release(args)
         elif action == '/auth':
             self._auth(args)
+        elif action == '/favicon.ico':
+            self._response(200, auth_responses.logo_svg(), 'image/svg+xml')
         else:
             self._response(404, 'Unknown action.')
 

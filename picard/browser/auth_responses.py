@@ -75,6 +75,7 @@ _PAGE_TEMPLATE = '''<!doctype html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/favicon.ico">
 <title>{title}</title>
 <style>
 * {{ box-sizing: border-box; }}
@@ -135,6 +136,11 @@ def _render(*, title, status, detail, icon, status_class, hint, close_delay_ms=1
         hint=escape(hint),
         close_delay_ms=int(close_delay_ms),
     )
+
+
+def logo_svg():
+    """Return the inline Picard logo SVG (e.g. for use as a favicon)."""
+    return _PICARD_LOGO_SVG
 
 
 def success_page():

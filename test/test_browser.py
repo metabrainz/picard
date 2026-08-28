@@ -365,3 +365,14 @@ class RequestHandlerAuthTest(PicardTestCase):
         self.assertIn(b'400', response)
         self.assertIn(b'<!doctype html>', response)
         self.assertIn(b'Authentication error', response)
+
+    def test_favicon_serves_svg_logo(self):
+        """The browser's implicit /favicon.ico request is served the Picard logo."""
+        handler = self._make_handler('/favicon.ico')
+
+        handler._handle_get()
+
+        response = handler.wfile.getvalue()
+        self.assertIn(b'200', response)
+        self.assertIn(b'image/svg+xml', response)
+        self.assertIn(b'<svg', response)

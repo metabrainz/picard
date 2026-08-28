@@ -67,6 +67,11 @@ class AuthResponsePagesTest(PicardTestCase):
                 self.assertIn('aria-label="MusicBrainz Picard"', page)
                 self.assertIn(fake_logo, page)
 
+    def test_logo_svg_accessor(self):
+        svg = auth_responses.logo_svg()
+        self.assertTrue(svg.startswith('<svg'))
+        self.assertIn('</svg>', svg)
+
     def test_success_status_line_separate_from_detail(self):
         page = auth_responses.success_page()
         # The short status (with its icon) must stand alone on its own line,
