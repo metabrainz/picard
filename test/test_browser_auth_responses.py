@@ -37,18 +37,14 @@ class AuthResponsePagesTest(PicardTestCase):
         self.assertIn(auth_responses.COLORS.ok, page)
         self.assertIn(auth_responses.COLORS.failed, page)
 
-    def test_success_page_auto_close_script(self):
+    def test_success_page_shows_close_hint(self):
         page = auth_responses.success_page()
-        self.assertIn('window.close()', page)
-        # Fallback hint must be present so the user knows what to do if the
-        # browser refuses to close the tab.
         self.assertIn('close this window', page.lower())
 
     def test_cancelled_page_is_html(self):
         page = auth_responses.cancelled_page()
         self.assertIn('<!doctype html>', page)
         self.assertIn('Authentication cancelled', page)
-        self.assertIn('window.close()', page)
 
     def test_cancelled_page_distinct_from_success(self):
         success = auth_responses.success_page()
@@ -115,7 +111,6 @@ class AuthResponsePagesTest(PicardTestCase):
         page = auth_responses.error_page()
         self.assertIn('<!doctype html>', page)
         self.assertIn('Authentication error', page)
-        self.assertIn('window.close()', page)
         self.assertIn('\u2717', page)  # cross mark
 
     def test_error_page_custom_detail(self):

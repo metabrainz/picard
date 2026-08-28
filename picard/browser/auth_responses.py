@@ -112,19 +112,12 @@ body {{
 <p class="detail">{detail}</p>
 <p class="hint">{hint}</p>
 </main>
-<script>
-// Best-effort: try to close the tab. Browsers only allow this for windows
-// opened by a script (e.g. Firefox refuses to close a tab reached by a
-// redirect), so the page always shows an explicit "you can close this
-// window" message rather than promising automatic closing.
-setTimeout(function () {{ window.close(); }}, {close_delay_ms});
-</script>
 </body>
 </html>
 '''
 
 
-def _render(*, title, status, detail, icon, status_class, hint, close_delay_ms=1000):
+def _render(*, title, status, detail, icon, status_class, hint):
     return _PAGE_TEMPLATE.format(
         title=escape(title),
         status=escape(status),
@@ -134,7 +127,6 @@ def _render(*, title, status, detail, icon, status_class, hint, close_delay_ms=1
         colors=COLORS,
         logo=_PICARD_LOGO_SVG,
         hint=escape(hint),
-        close_delay_ms=int(close_delay_ms),
     )
 
 
