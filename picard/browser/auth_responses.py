@@ -123,7 +123,7 @@ def _render(*, title, status, detail, icon, status_class, hint):
         status=escape(status),
         detail=escape(detail),
         icon=escape(icon),
-        status_class=status_class,
+        status_class=escape(status_class),
         colors=COLORS,
         logo=_PICARD_LOGO_SVG,
         hint=escape(hint),
