@@ -845,3 +845,45 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         settings = {'browser_integration_port': 8021}
         hooks.clamp_browser_integration_port(settings)
         self.assertEqual(8020, settings['browser_integration_port'])
+
+    def test_upgrade_scripts_lyrics_comments(self):
+        settings = {
+            'list_of_scripts': [
+                (0, 's1', True, ''),
+                (1, 's2', True, '%lyrics:somedescription%'),
+                (2, 's3', True, '%lyrics:some:description%'),
+                (3, 's4', False, '$set(lyrics:foo,bar)'),
+                (4, 's5', False, '%comment:fra:description%'),
+                (5, 's6', False, '%comment:fra%'),
+                (6, 's7', False, '%comment:description%'),
+                (7, 's8', True, '%comment:ab%'),
+                (8, 's9', True, '%comment:ab:moredescription%'),
+                (9, 's10', True, '$set(comment:fra:description,'),
+                (10, 's11', False, '$copy(comment:fra,'),
+                (11, 's12', False, '$unset(comment:description)'),
+                (12, 's13', True, '$setmulti(comment:ab,'),
+                (13, 's14', True, '$delete(comment:ab:moredescription)'),
+                (14, 's15', True, '$copy(comment:lyrics,lyrics:foo)'),
+                (15, 's16', True, '$copymerge(lyrics:foo,comment:lyrics)'),
+            ]
+        }
+        hooks.upgrade_scripts_lyrics_comments(settings)
+        expected_settings = [
+            (0, 's1', True, ''),
+            (1, 's2', True, '%lyrics::somedescription%'),
+            (2, 's3', True, '%lyrics::some:description%'),
+            (3, 's4', False, '$set(lyrics::foo,bar)'),
+            (4, 's5', False, '%comment:fra:description%'),
+            (5, 's6', False, '%comment:fra%'),
+            (6, 's7', False, '%comment::description%'),
+            (7, 's8', True, '%comment::ab%'),
+            (8, 's9', True, '%comment::ab:moredescription%'),
+            (9, 's10', True, '$set(comment:fra:description,'),
+            (10, 's11', False, '$copy(comment:fra,'),
+            (11, 's12', False, '$unset(comment::description)'),
+            (12, 's13', True, '$setmulti(comment::ab,'),
+            (13, 's14', True, '$delete(comment::ab:moredescription)'),
+            (14, 's15', True, '$copy(comment::lyrics,lyrics::foo)'),
+            (15, 's16', True, '$copymerge(lyrics::foo,comment::lyrics)'),
+        ]
+        self.assertEqual(expected_settings, settings['list_of_scripts'])
