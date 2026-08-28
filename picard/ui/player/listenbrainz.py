@@ -98,6 +98,10 @@ class ListenBrainzSubmissionService:
         self._current: PreparedSubmission | None = None
         self._lbapi = ListenBrainzAPIHelper(webservice)
         self._queue = ListenQueue(self._lbapi)
+        # Load any persisted queue so listens are not lost, but do not start
+        # submitting: submission is only scheduled once the service is enabled
+        # (see enable()). Otherwise queued listens would be submitted even when
+        # ListenBrainz submission is disabled in the settings.
         self._queue.load()
         tagger.register_cleanup(self._queue.save)
 
@@ -111,9 +115,15 @@ class ListenBrainzSubmissionService:
         self._player.playback_state_changed.connect(self.on_playback_state_changed)
         self._player.position_changed.connect(self.on_position_changed)
 
+        # Flush any listens queued from a previous session.
+        self._queue.start()
+
     def disable(self):
         if not self._enabled:
             return
+
+        # Stop submitting queued listens while disabled.
+        self._queue.stop()
 
         self._player.media_changed.disconnect(self.on_media_changed)
         self._player.playback_state_changed.disconnect(self.on_playback_state_changed)
@@ -195,10 +205,19 @@ class ListenQueue:
                         self._queue = json.load(f, object_hook=from_json)
                         if count := len(self._queue):
                             log.debug("Loaded %d listens from queue", count)
-                            self._schedule_submission()
                 except json.JSONDecodeError as e:
                     log.error("Failed to load listen queue: %s", e)
                     self._queue = []
+
+    def start(self):
+        """Start submitting queued listens (schedules a submission if the queue
+        is not empty). Called when ListenBrainz submission is enabled."""
+        self._schedule_submission()
+
+    def stop(self):
+        """Stop submitting queued listens. Called when ListenBrainz submission
+        is disabled; the queue itself is kept (and persisted) for later."""
+        self._timer.stop()
 
     def save(self):
         if not self._queue:

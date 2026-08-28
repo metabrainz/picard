@@ -35,6 +35,7 @@ from picard.webservice.api_helpers.listenbrainz import (
 )
 
 from picard.ui.player.listenbrainz import (
+    ListenBrainzSubmissionService,
     ListenQueue,
     PreparedSubmission,
 )
@@ -157,3 +158,72 @@ class TestListenQueue(PicardTestCase):
         self.queue._queue.clear()
         self.queue._on_listen_queue_drained()
         self.assertFalse(self.queue_file.exists())
+
+    def test_load_does_not_start_submission(self):
+        # A persisted, non-empty queue must be loaded but not submitted until
+        # the service is enabled; otherwise listens are submitted even when
+        # ListenBrainz submission is disabled in the settings.
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+        self.queue.save()
+
+        fresh = ListenQueue(self.lbapi)
+        fresh.load()
+
+        self.assertEqual(1, len(fresh._queue))
+        self.assertFalse(fresh._timer.isActive())
+
+    def test_start_submits_pending_queue(self):
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+
+        self.queue.start()
+
+        self.assertTrue(self.queue._timer.isActive())
+
+    def test_start_does_not_schedule_when_empty(self):
+        self.queue.start()
+        self.assertFalse(self.queue._timer.isActive())
+
+    def test_stop_halts_submission(self):
+        self.queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+        self.queue.start()
+        self.assertTrue(self.queue._timer.isActive())
+
+        self.queue.stop()
+
+        self.assertFalse(self.queue._timer.isActive())
+
+
+class TestSubmissionServiceGating(PicardTestCase):
+    """Regression tests: queued listens must not be submitted while ListenBrainz
+    submission is disabled (submission is gated by enable()/disable())."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({"listenbrainz_token": "test_token"})
+        self.player = Mock()
+        self.webservice = Mock()
+        self.tagger = Mock()
+
+    def _make_service(self):
+        service = ListenBrainzSubmissionService(self.player, self.webservice, self.tagger)
+        service._lbapi = FakeListenBrainzAPIHelper()
+        service._queue._lbapi = service._lbapi
+        return service
+
+    def test_disabled_by_default_does_not_submit_pending_queue(self):
+        service = self._make_service()
+        # Simulate a queue restored from a previous session.
+        service._queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+
+        # Without enabling, nothing should be scheduled or submitted.
+        self.assertFalse(service._queue._timer.isActive())
+
+    def test_enable_starts_submission_disable_stops_it(self):
+        service = self._make_service()
+        service._queue._queue = [ListenPayload(track_metadata=TrackMetadata(artist_name="A", track_name="B"))]
+
+        service.enable()
+        self.assertTrue(service._queue._timer.isActive())
+
+        service.disable()
+        self.assertFalse(service._queue._timer.isActive())
