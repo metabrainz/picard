@@ -42,6 +42,7 @@ from picard.i18n import (
 )
 from picard.i18n.gettext import (
     _bcp47_to_locale,
+    _locale_to_bcp47,
     _try_encodings,
     _try_locales,
 )
@@ -194,27 +195,24 @@ class TestBcp47ToLocale(PicardTestCase):
 
 
 class GetLocaleBcp47Test(PicardTestCase):
-    @patch('picard.i18n.gettext.locale.getlocale')
-    def test_language_and_region(self, getlocale_mock):
+    def test_language_and_region(self):
+        self.assertEqual('fr-FR', _locale_to_bcp47('fr_FR'))
+        self.assertEqual('pt-BR', _locale_to_bcp47('pt_BR'))
+
+    def test_language_only(self):
+        self.assertEqual('de', _locale_to_bcp47('de'))
+
+    def test_c_locale_is_empty(self):
+        self.assertEqual('', _locale_to_bcp47('C'))
+
+    def test_posix_locale_is_empty(self):
+        self.assertEqual('', _locale_to_bcp47('POSIX'))
+
+    def test_none_or_empty_is_empty(self):
+        self.assertEqual('', _locale_to_bcp47(None))
+        self.assertEqual('', _locale_to_bcp47(''))
+
+    @patch('locale.getlocale', autospec=True)
+    def test_reads_current_locale(self, getlocale_mock):
         getlocale_mock.return_value = ('fr_FR', 'UTF-8')
         self.assertEqual('fr-FR', get_locale_bcp47())
-
-    @patch('picard.i18n.gettext.locale.getlocale')
-    def test_language_only(self, getlocale_mock):
-        getlocale_mock.return_value = ('de', None)
-        self.assertEqual('de', get_locale_bcp47())
-
-    @patch('picard.i18n.gettext.locale.getlocale')
-    def test_c_locale_is_empty(self, getlocale_mock):
-        getlocale_mock.return_value = ('C', None)
-        self.assertEqual('', get_locale_bcp47())
-
-    @patch('picard.i18n.gettext.locale.getlocale')
-    def test_posix_locale_is_empty(self, getlocale_mock):
-        getlocale_mock.return_value = ('POSIX', None)
-        self.assertEqual('', get_locale_bcp47())
-
-    @patch('picard.i18n.gettext.locale.getlocale')
-    def test_none_is_empty(self, getlocale_mock):
-        getlocale_mock.return_value = (None, None)
-        self.assertEqual('', get_locale_bcp47())
