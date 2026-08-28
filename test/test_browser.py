@@ -301,6 +301,9 @@ class RequestHandlerAuthTest(PicardTestCase):
 
         self.oauth_manager.verify_state.assert_called_once_with('valid_state')
         mock_to_main.assert_called_once_with(self.callback, successful=False, error_msg='access_denied')
+        response = handler.wfile.getvalue()
+        self.assertIn(b'Authentication cancelled', response)
+        self.assertIn(b'<!doctype html>', response)
 
     @patch('picard.browser.server.to_main')
     def test_auth_cancelled_with_error_description(self, mock_to_main):
@@ -328,6 +331,9 @@ class RequestHandlerAuthTest(PicardTestCase):
         # expected permissions (e.g. collection access fails with 401).
         self.assertEqual(mock_to_main.call_args.kwargs['scopes'], METABRAINZ_OAUTH_SCOPES)
         self.assertIn('musicbrainz:collection', mock_to_main.call_args.kwargs['scopes'])
+        response = handler.wfile.getvalue()
+        self.assertIn(b'Authentication successful', response)
+        self.assertIn(b'<!doctype html>', response)
 
     def test_auth_invalid_state(self):
         """An invalid state should return 400 regardless of code or error."""
@@ -346,13 +352,16 @@ class RequestHandlerAuthTest(PicardTestCase):
                 self.callback.assert_not_called()
                 response = handler.wfile.getvalue()
                 self.assertIn(b'400', response)
+                self.assertIn(b'<!doctype html>', response)
+                self.assertIn(b'Authentication error', response)
 
     def test_auth_no_code_no_error(self):
-        """When auth has neither code nor error, return 400."""
+        """When auth has neither code nor error, return 400 with a styled page."""
         handler = self._make_handler('/auth?state=valid_state')
 
         handler._handle_get()
 
         response = handler.wfile.getvalue()
         self.assertIn(b'400', response)
-        self.assertIn(b'Invalid OAuth callback', response)
+        self.assertIn(b'<!doctype html>', response)
+        self.assertIn(b'Authentication error', response)
