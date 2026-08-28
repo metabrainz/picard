@@ -100,6 +100,14 @@ class ListenBrainzSubmissionService:
         self._queue = ListenQueue(self._lbapi)
         self._queue.load()
         tagger.register_cleanup(self._queue.save)
+        # Resume submitting queued listens when the token changes: a permanent
+        # auth failure (e.g. 401) suspends the retry timer, so fixing the token
+        # should give the queued listens another chance.
+        get_config().setting.setting_changed.connect(self._on_setting_changed)
+
+    def _on_setting_changed(self, name, old_value, new_value):
+        if name == 'listenbrainz_token':
+            self._queue.schedule_submission()
 
     def enable(self):
         if self._enabled:
@@ -195,7 +203,7 @@ class ListenQueue:
                         self._queue = json.load(f, object_hook=from_json)
                         if count := len(self._queue):
                             log.debug("Loaded %d listens from queue", count)
-                            self._schedule_submission()
+                            self.schedule_submission()
                 except json.JSONDecodeError as e:
                     log.error("Failed to load listen queue: %s", e)
                     self._queue = []
@@ -224,14 +232,18 @@ class ListenQueue:
     ):
         if error:
             status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
-            if not status_code or int(status_code) in {401, 429} or int(status_code) >= 500:
+            # Keep the listen queued regardless of the error, so it is not lost
+            # (e.g. a wrong token can be fixed later). Only schedule a retry for
+            # transient errors; for permanent ones the timer stays suspended
+            # until submission is retriggered (e.g. on a token change).
+            self._append(payload)
+            if _is_temporary_submission_error(status_code):
                 log.warning(
                     'Temporary ListenBrainz submission error (queued for retry): data=%s, error=%s', data, error
                 )
-                self._append(payload)
-                self._schedule_submission()
+                self.schedule_submission()
             else:
-                log.error('ListenBrainz submission failed: data=%s, error=%s', data, error)
+                log.error('ListenBrainz submission failed (queued, retry suspended): data=%s, error=%s', data, error)
         else:
             log.debug('ListenBrainz submission successful: data=%s', data)
 
@@ -254,7 +266,18 @@ class ListenQueue:
     ):
         self._submitting = False
         if error:
-            log.error('ListenBrainz batch submission failed: data=%s, error=%s', data, error)
+            status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
+            # The batch stays in the queue (it is only removed on success). For
+            # transient errors keep the timer running to retry; for permanent
+            # errors (e.g. an invalid token) suspend it to avoid an endless
+            # retry loop until submission is retriggered.
+            if _is_temporary_submission_error(status_code):
+                log.warning(
+                    'Temporary ListenBrainz batch submission error (will retry): data=%s, error=%s', data, error
+                )
+            else:
+                log.error('ListenBrainz batch submission failed, retry suspended: data=%s, error=%s', data, error)
+                self._timer.stop()
         else:
             log.debug('ListenBrainz batch submission successful: data=%s', data)
             self._remove_from_queue(batch)
@@ -298,7 +321,12 @@ class ListenQueue:
     def get_listen_queue_file_path(self) -> Path:
         return Path(cache_folder()) / "listenbrainz-queue.json"
 
-    def _schedule_submission(self):
+    def schedule_submission(self):
+        """Start the retry timer if there are queued listens to submit.
+
+        Safe to call at any time (e.g. after the user fixes their token) to
+        resume submitting listens that were queued after a failed attempt.
+        """
         if len(self._queue) > 0:
             log.debug("Batch listen submission scheduled to run in %d seconds", SUBMISSION_INTERVAL_SECONDS)
             self._timer.start(SUBMISSION_INTERVAL_SECONDS * 1000)
@@ -315,6 +343,20 @@ class ListenQueue:
                 queue_file.unlink(missing_ok=True)
             except OSError as e:
                 log.debug("Failed to remove listen queue file %s: %s", queue_file, e)
+
+
+def _is_temporary_submission_error(status_code) -> bool:
+    """Return True if a failed submission is worth retrying automatically.
+
+    Only rate limiting (429) and server errors (5xx) are treated as transient.
+    Everything else, notably 401 (an invalid user token), is permanent: an
+    automatic retry cannot succeed until the user fixes their configuration, so
+    the retry timer is suspended for those instead of looping.
+    """
+    if not status_code:
+        return False
+    status_code = int(status_code)
+    return status_code == 429 or status_code >= 500
 
 
 def from_json(obj: dict):
