@@ -17,10 +17,13 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from unittest.mock import patch
+
 from test.picardtestcase import PicardTestCase
 
 from picard.oauth import (
     OAuthManager,
+    _get_ui_locales,
     base64url_encode,
     s256_encode,
 )
@@ -81,3 +84,44 @@ class OAuthManagerTest(PicardTestCase):
         )
         encoded = base64url_encode(b)
         self.assertEqual(b'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk', encoded)
+
+
+class GetUiLocalesTest(PicardTestCase):
+    def test_uses_configured_ui_language(self):
+        self.set_config_values({'ui_language': 'fr'})
+        self.assertEqual('fr', _get_ui_locales())
+
+    def test_converts_posix_to_bcp47(self):
+        self.set_config_values({'ui_language': 'pt_BR'})
+        self.assertEqual('pt-BR', _get_ui_locales())
+
+    def test_falls_back_to_system_locale(self):
+        self.set_config_values({'ui_language': ''})
+        with patch('picard.oauth.QLocale') as mock_qlocale:
+            mock_qlocale.system.return_value.name.return_value = 'de_DE'
+            self.assertEqual('de-DE', _get_ui_locales())
+
+    def test_empty_for_c_locale(self):
+        self.set_config_values({'ui_language': ''})
+        with patch('picard.oauth.QLocale') as mock_qlocale:
+            mock_qlocale.system.return_value.name.return_value = 'C'
+            self.assertEqual('', _get_ui_locales())
+
+
+class AuthorizationUrlTest(PicardTestCase):
+    def _manager(self):
+        manager = OAuthManager(webservice=None)
+        manager.redirect_uri = 'http://127.0.0.1:8000/auth'
+        return manager
+
+    def test_url_includes_ui_locales(self):
+        self.set_config_values({'ui_language': 'fr'})
+        url = self._manager().get_authorization_url('profile', callback=lambda **k: None)
+        self.assertIn('ui_locales=fr', url)
+
+    def test_url_omits_ui_locales_when_unavailable(self):
+        self.set_config_values({'ui_language': ''})
+        with patch('picard.oauth.QLocale') as mock_qlocale:
+            mock_qlocale.system.return_value.name.return_value = 'C'
+            url = self._manager().get_authorization_url('profile', callback=lambda **k: None)
+        self.assertNotIn('ui_locales', url)
