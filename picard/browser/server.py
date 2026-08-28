@@ -49,6 +49,7 @@ from picard.config import get_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALIP,
     BROWSER_INTEGRATION_MAX_PORT,
+    METABRAINZ_OAUTH_SCOPES,
 )
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
@@ -268,7 +269,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             to_main(
                 oauth_manager.exchange_authorization_code,
                 authorization_code=code,
-                scopes='profile tag rating collection submit_isrc submit_barcode',
+                scopes=METABRAINZ_OAUTH_SCOPES,
                 callback=callback,
             )
             self._response(200, "Authentication successful, you can close this window now.", 'text/html')

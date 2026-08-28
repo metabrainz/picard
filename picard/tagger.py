@@ -104,6 +104,7 @@ from picard.config import (
 from picard.config_upgrade import run_config_upgrades
 from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
+    METABRAINZ_OAUTH_SCOPES,
     USER_DIR,
 )
 from picard.const.appdirs import (
@@ -665,7 +666,7 @@ class Tagger(QtWidgets.QApplication):
 
     def mb_login(self, callback, parent=None):
         oauth_manager = self.webservice.oauth_manager
-        scopes = 'profile musicbrainz:tag musicbrainz:rating musicbrainz:collection musicbrainz:submit_isrc musicbrainz:submit_barcode'
+        scopes = METABRAINZ_OAUTH_SCOPES
         authorization_url = oauth_manager.get_authorization_url(
             scopes, partial(self.on_mb_authorization_finished, callback)
         )

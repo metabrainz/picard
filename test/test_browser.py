@@ -37,6 +37,7 @@ from picard.browser.server import (
     RequestHandler,
     clean_header,
 )
+from picard.const import METABRAINZ_OAUTH_SCOPES
 from picard.oauth import OAuthInvalidStateError
 from picard.util import webbrowser2
 
@@ -322,6 +323,11 @@ class RequestHandlerAuthTest(PicardTestCase):
         self.oauth_manager.verify_state.assert_called_once_with('valid_state')
         mock_to_main.assert_called_once()
         self.callback.assert_not_called()
+        # The code exchange must request the same prefixed scopes as the
+        # authorization request; a mismatch yields a token without the
+        # expected permissions (e.g. collection access fails with 401).
+        self.assertEqual(mock_to_main.call_args.kwargs['scopes'], METABRAINZ_OAUTH_SCOPES)
+        self.assertIn('musicbrainz:collection', mock_to_main.call_args.kwargs['scopes'])
 
     def test_auth_invalid_state(self):
         """An invalid state should return 400 regardless of code or error."""
