@@ -203,7 +203,7 @@ class TagVar:
 TagInfo = namedtuple('TagInfo', ('name', 'tagdesc', 'search_name', 'item'))
 
 
-class TagVars(MutableSequence):
+class TagVars(MutableSequence[TagVar]):
     """Mutable sequence for TagVar items
     It maintains an internal dict object for display names.
     Also it doesn't allow to add a TagVar of the same name more than once.
