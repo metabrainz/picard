@@ -255,6 +255,9 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def _auth(self, args):
         if not args.keys() & self._OAUTH_CALLBACK_PARAMS:
+            # Neither 'code' nor 'error' present: the endpoint was likely called
+            # by something other than the MusicBrainz OAuth redirect.
+            log.warning("%s: Invalid OAuth callback parameters", LOG_PREFIX)
             self._response(400, auth_responses.error_page(), 'text/html')
             return
 
@@ -266,6 +269,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             callback = oauth_manager.verify_state(qs_value('state'))
         except OAuthInvalidStateError:
+            # An invalid state often means a different Picard instance is
+            # responding (e.g. Picard was restarted during the auth flow).
+            log.warning("%s: Invalid OAuth state parameter", LOG_PREFIX)
             self._response(400, auth_responses.error_page(), 'text/html')
             return
 
