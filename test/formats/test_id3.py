@@ -429,6 +429,13 @@ class CommonId3Tests:
             self.assertEqual(metadata['lyrics:fra:foo'], loaded_metadata['lyrics:fra:foo'])
 
         @skipUnlessTestfile
+        def test_lyrics_with_description_containing_colon(self):
+            metadata = Metadata({'lyrics:eng:foo:bar': 'baz'})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('lyrics:eng:foo:bar', loaded_metadata)
+            self.assertEqual(metadata['lyrics:eng:foo:bar'], loaded_metadata['lyrics:eng:foo:bar'])
+
+        @skipUnlessTestfile
         def test_syncedlyrics_preserve_language_and_description(self):
             metadata = Metadata({'syncedlyrics': '[00:00.000]<00:00.000>foo1'})
             metadata.add('syncedlyrics:deu:desc', '[00:00.000]<00:00.000>foo2')

@@ -450,6 +450,12 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(parse_lang_desc_tag('lyrics:de', default_language='eng'), ('eng', 'de'))
         self.assertEqual(parse_lang_desc_tag('lyrics:toolong:foo', default_language='eng'), ('eng', 'toolong:foo'))
 
+    def test_parse_lang_desc_tag_description_with_colon(self):
+        # The description may itself contain colons and must be preserved in full.
+        self.assertEqual(parse_lang_desc_tag('lyrics:eng:a:b'), ('eng', 'a:b'))
+        self.assertEqual(parse_lang_desc_tag('lyrics::a:b', default_language='eng'), ('eng', 'a:b'))
+        self.assertEqual(parse_lang_desc_tag('comment:deu:foo:bar:baz'), ('deu', 'foo:bar:baz'))
+
     def test_create_lang_desc_tag(self):
         self.assertEqual('comment', create_lang_desc_tag('comment'))
         self.assertEqual('comment:eng', create_lang_desc_tag('comment', language='eng'))
