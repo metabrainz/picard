@@ -31,6 +31,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.i18n import (
     N_,
+    get_locale_bcp47,
     gettext as _,
     gettext_constants,
     gettext_countries,
@@ -190,3 +191,30 @@ class TestBcp47ToLocale(PicardTestCase):
     def test_numeric_region(self):
         # UN M.49 numeric region codes (3 digits)
         self.assertEqual('es_419', _bcp47_to_locale('es-419'))
+
+
+class GetLocaleBcp47Test(PicardTestCase):
+    @patch('picard.i18n.gettext.locale.getlocale')
+    def test_language_and_region(self, getlocale_mock):
+        getlocale_mock.return_value = ('fr_FR', 'UTF-8')
+        self.assertEqual('fr-FR', get_locale_bcp47())
+
+    @patch('picard.i18n.gettext.locale.getlocale')
+    def test_language_only(self, getlocale_mock):
+        getlocale_mock.return_value = ('de', None)
+        self.assertEqual('de', get_locale_bcp47())
+
+    @patch('picard.i18n.gettext.locale.getlocale')
+    def test_c_locale_is_empty(self, getlocale_mock):
+        getlocale_mock.return_value = ('C', None)
+        self.assertEqual('', get_locale_bcp47())
+
+    @patch('picard.i18n.gettext.locale.getlocale')
+    def test_posix_locale_is_empty(self, getlocale_mock):
+        getlocale_mock.return_value = ('POSIX', None)
+        self.assertEqual('', get_locale_bcp47())
+
+    @patch('picard.i18n.gettext.locale.getlocale')
+    def test_none_is_empty(self, getlocale_mock):
+        getlocale_mock.return_value = (None, None)
+        self.assertEqual('', get_locale_bcp47())

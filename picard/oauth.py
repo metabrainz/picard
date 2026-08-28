@@ -33,7 +33,6 @@ import time
 import urllib.parse
 
 from PyQt6.QtCore import (
-    QLocale,
     QObject,
     pyqtSignal,
 )
@@ -45,7 +44,10 @@ from picard.const import (
     METABRAINZ_OAUTH_CLIENT_SECRET,
     METABRAINZ_OAUTH_HOST,
 )
-from picard.i18n import gettext as _
+from picard.i18n import (
+    get_locale_bcp47,
+    gettext as _,
+)
 from picard.util import (
     build_qurl,
     load_json,
@@ -53,22 +55,6 @@ from picard.util import (
 
 
 OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
-
-
-def _get_ui_locales():
-    """Return Picard's UI language as a BCP 47 tag for OAuth `ui_locales`.
-
-    Uses the configured UI language when set, otherwise the system locale.
-    Returns an empty string when no meaningful locale can be determined
-    (e.g. the "C" locale), so the caller can omit the parameter.
-    """
-    config = get_config()
-    language = config.setting['ui_language'] or QLocale.system().name()
-    if not language or language == 'C':
-        return ''
-    # Config/system locales use POSIX form (e.g. 'fr_FR'); ui_locales expects
-    # BCP 47 tags (e.g. 'fr-FR').
-    return language.replace('_', '-')
 
 
 class OAuthInvalidStateError(Exception):
@@ -286,7 +272,7 @@ class OAuthManager(QObject):
         # space-separated list of BCP 47 tags). Honored by the MetaBrainz
         # server (MEB-190); ignored gracefully by servers that do not support
         # it, as required by the spec.
-        ui_locales = _get_ui_locales()
+        ui_locales = get_locale_bcp47()
         if ui_locales:
             params['ui_locales'] = ui_locales
         if not self.is_oob:

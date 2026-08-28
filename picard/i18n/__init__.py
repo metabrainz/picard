@@ -28,6 +28,7 @@ from picard.i18n.collate import (
 from picard.i18n.gettext import (
     N_,
     _,
+    get_locale_bcp47,
     gettext,
     gettext_attributes,
     gettext_constants,
@@ -45,6 +46,7 @@ __all__ = [
     'gettext_attributes',
     'gettext_constants',
     'gettext_countries',
+    'get_locale_bcp47',
     'ngettext',
     'pgettext_attributes',
     'setup_i18n',
