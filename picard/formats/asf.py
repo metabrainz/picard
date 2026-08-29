@@ -242,8 +242,16 @@ class ASFFile(File):
 
                 continue
             elif name == 'WM/SharedUserRating':
-                # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
-                values[0] = int(round(int(str(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
+                # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5.
+                # The result is converted to str because the values below are
+                # filtered on truthiness, which would drop a rating of 0.
+                rating_steps = config.setting['rating_steps']
+                try:
+                    rating = int(values[0])
+                except ValueError:
+                    log.warning('Invalid rating value in %r: %s', filename, values[0])
+                else:
+                    values[0] = str(round(rating / 99 * (rating_steps - 1)))
             elif name == 'WM/PartOfSet':
                 disc = str(values[0]).split("/")
                 if len(disc) > 1:
