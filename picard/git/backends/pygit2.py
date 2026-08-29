@@ -89,9 +89,9 @@ class Pygit2Repository(GitRepository):
         status = self._repo.status()
         result = {}
         for filepath, flags in status.items():
-            if flags == pygit2.GIT_STATUS_CURRENT:
+            if flags == pygit2.enums.FileStatus.CURRENT:
                 result[filepath] = GitStatusFlag.CURRENT
-            elif flags == pygit2.GIT_STATUS_IGNORED:
+            elif flags == pygit2.enums.FileStatus.IGNORED:
                 result[filepath] = GitStatusFlag.IGNORED
             else:
                 # Any other status means the file is modified/added/deleted/untracked
@@ -117,7 +117,7 @@ class Pygit2Repository(GitRepository):
     def revparse_single(self, ref: str) -> GitObject:
         try:
             obj = self._repo.revparse_single(ref)
-            obj_type = GitObjectType.COMMIT if obj.type == pygit2.GIT_OBJECT_COMMIT else GitObjectType.TAG
+            obj_type = GitObjectType.COMMIT if obj.type == pygit2.enums.ObjectType.COMMIT else GitObjectType.TAG
             ret = GitObject(str(obj.id), obj_type)
             _log_git_call("revparse_single", ref, retval=ret)
             return ret
@@ -130,8 +130,8 @@ class Pygit2Repository(GitRepository):
 
     def peel_to_commit(self, obj: GitObject) -> GitObject:
         pygit_obj = self._repo.get(obj.id)
-        if pygit_obj.type == pygit2.GIT_OBJECT_TAG:
-            commit = pygit_obj.peel(pygit2.GIT_OBJECT_COMMIT)
+        if pygit_obj.type == pygit2.enums.ObjectType.TAG:
+            commit = pygit_obj.peel(pygit2.enums.ObjectType.COMMIT)
             ret = GitObject(str(commit.id), GitObjectType.COMMIT)
         else:
             ret = obj
@@ -268,11 +268,11 @@ class Pygit2Repository(GitRepository):
                     else:
                         # Remote reference
                         obj = repo.get(ref.oid)
-                    is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
+                    is_annotated = obj.type == pygit2.enums.ObjectType.TAG
 
                     # For annotated tags, dereference to get the commit ID
                     if is_annotated:
-                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                        commit = obj.peel(pygit2.enums.ObjectType.COMMIT)
                         target = str(commit.id)
                     # For lightweight tags, target is already the commit ID
                 except Exception:
@@ -400,7 +400,7 @@ class Pygit2Backend(GitBackend):
         _log_git_call("create_tag", tag_name, commit_id, message)
         pygit_repo = self._raw(repo)
         author = pygit2.Signature(author_name, author_email)
-        pygit_repo.create_tag(tag_name, commit_id, pygit2.GIT_OBJECT_COMMIT, author, message)
+        pygit_repo.create_tag(tag_name, commit_id, pygit2.enums.ObjectType.COMMIT, author, message)
 
     def create_branch(self, repo: GitRepository, branch_name: str, commit_id: str):
         _log_git_call("create_branch", branch_name, commit_id)
