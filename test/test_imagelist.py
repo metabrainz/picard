@@ -52,6 +52,19 @@ def create_test_files():
     return (test_images, test_files)
 
 
+def create_front_image(name, width, height):
+    """Create a front CoverArtImage with explicit dimensions."""
+    image = CoverArtImage(
+        url='file://' + name,
+        data=create_fake_png(name.encode('utf-8')),
+        types=['front'],
+        support_types=True,
+    )
+    image.width = width
+    image.height = height
+    return image
+
+
 class UpdateMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -443,40 +456,45 @@ class ImageListTest(PicardTestCase):
         exported to disk instead of being lost, unless a same-or-better
         replacement is already being exported (see PICARD-3380)."""
 
-        def front_image(name, width, height):
-            image = CoverArtImage(
-                url='file://' + name,
-                data=create_fake_png(name.encode('utf-8')),
-                types=['front'],
-                support_types=True,
-            )
-            image.width = width
-            image.height = height
-            return image
-
         settings = {
             "remove_images_from_tags": True,
             "save_images_to_files": True,
             "save_only_one_front_image": False,
         }
-        previous_front = front_image('previous', 1000, 1000)
+        previous_front = create_front_image('previous', 1000, 1000)
         previous_images = ImageList([previous_front])
 
         # no new image at all: the previous (tagged) image is preserved
         self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [previous_front])
 
         # new replacement is smaller: the previous, bigger image is used instead
-        smaller_front = front_image('smaller', 500, 500)
+        smaller_front = create_front_image('smaller', 500, 500)
         self.imagelist.append(smaller_front)
         self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [previous_front])
 
         # new replacement is bigger: it is exported, the previous one is not duplicated
-        bigger_front = front_image('bigger', 2000, 2000)
+        bigger_front = create_front_image('bigger', 2000, 2000)
         self.imagelist = ImageList([bigger_front])
         self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings, previous_images)), [bigger_front])
 
         # without previous_images, nothing extra is added
         self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings)), [bigger_front])
+
+    def test_get_types_dict_keeps_biggest_image_per_type(self):
+        """The biggest image of each type must win.
+
+        `is_bigger_image_filter()` compares a downloaded image against this
+        mapping to avoid replacing embedded art with something smaller, so the
+        mapping has to hold the biggest image already present for a type, not
+        the smallest. The result must not depend on insertion order.
+        """
+        big = create_front_image('big', 1000, 1000)
+        small = create_front_image('small', 200, 200)
+
+        for images in ([big, small], [small, big]):
+            with self.subTest(order=[(image.width, image.height) for image in images]):
+                types_dict = ImageList(images).get_types_dict()
+                self.assertEqual(types_dict[big.normalized_types()], big)
 
     def test_strip_front_images(self):
         self.imagelist.append(self.images['a'])
