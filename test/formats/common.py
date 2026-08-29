@@ -498,13 +498,15 @@ class CommonTests:
             if not self.supports_ratings:
                 raise unittest.SkipTest("Ratings not supported")
             for rating in range(6):
-                rating = 1
-                metadata = Metadata()
-                metadata['~rating'] = rating
-                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertEqual(
-                    int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating)
-                )
+                with self.subTest(rating=rating):
+                    metadata = Metadata()
+                    metadata['~rating'] = rating
+                    loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertEqual(
+                        int(loaded_metadata['~rating']),
+                        rating,
+                        '~rating: %r != %r' % (loaded_metadata['~rating'], rating),
+                    )
 
         @skipUnlessTestfile
         def test_invalid_rating_email(self):

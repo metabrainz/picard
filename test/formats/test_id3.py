@@ -612,14 +612,16 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_rating_email_non_latin1(self):
+            config.setting['rating_user_email'] = 'foo€'
             for rating in range(6):
-                config.setting['rating_user_email'] = 'foo€'
-                rating = '3'
-                metadata = Metadata({'~rating': rating})
-                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertEqual(
-                    loaded_metadata['~rating'], rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating)
-                )
+                with self.subTest(rating=rating):
+                    metadata = Metadata({'~rating': str(rating)})
+                    loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertEqual(
+                        loaded_metadata['~rating'],
+                        str(rating),
+                        '~rating: %r != %r' % (loaded_metadata['~rating'], rating),
+                    )
 
         @skipUnlessTestfile
         def test_unchanged_metadata(self):
