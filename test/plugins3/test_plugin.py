@@ -151,6 +151,34 @@ class TestGitRemoteCallbacks(PicardTestCase):
             callbacks._transfer_progress(mock_stats)
             mock_print.assert_not_called()
 
+    def test_git_remote_callbacks_credentials_credential_types(self):
+        """Regression test for PICARD-3403.
+
+        _credentials() must resolve credentials using the
+        pygit2.enums.CredentialType flag enum. The legacy pygit2.GIT_CREDENTIAL_*
+        module constants were removed in pygit2 1.20.0, so referencing them
+        raised AttributeError whenever git authentication was required.
+        """
+        if not has_git_backend():
+            self.skipTest('git backend not available')
+
+        # Inline import: pygit2 is an optional dependency and may be absent.
+        import pygit2
+        from pygit2.enums import CredentialType
+
+        backend = git_backend()
+
+        # SSH key credentials requested.
+        callbacks = backend.create_remote_callbacks()
+        result = callbacks._credentials('url', 'git', CredentialType.SSH_KEY)
+        self.assertIsInstance(result, pygit2.Keypair)
+
+        # Username/password credentials requested. Use fresh callbacks because
+        # the first attempt is remembered to avoid authentication loops.
+        callbacks = backend.create_remote_callbacks()
+        result = callbacks._credentials('url', 'git', CredentialType.USERPASS_PLAINTEXT)
+        self.assertIsInstance(result, pygit2.Username)
+
 
 class TestPluginSourceGitUpdate(PicardTestCase):
     def test_update_without_ref_uses_head(self):

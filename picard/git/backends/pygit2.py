@@ -68,12 +68,12 @@ class Pygit2RemoteCallbacks(GitRemoteCallbacks):
             return None
         self._attempted = True
 
-        if allowed_types & pygit2.GIT_CREDENTIAL_SSH_KEY:
+        if allowed_types & pygit2.enums.CredentialType.SSH_KEY:
             try:
                 return pygit2.Keypair('git', None, None, '')
             except (pygit2.GitError, OSError):
                 return None
-        elif allowed_types & pygit2.GIT_CREDENTIAL_USERPASS_PLAINTEXT:
+        elif allowed_types & pygit2.enums.CredentialType.USERPASS_PLAINTEXT:
             try:
                 return pygit2.Username('git')
             except (pygit2.GitError, OSError):
