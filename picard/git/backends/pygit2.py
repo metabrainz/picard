@@ -350,6 +350,16 @@ class Pygit2Backend(GitBackend):
         if not HAS_PYGIT2:
             raise ImportError("pygit2 not available")
 
+    @staticmethod
+    def _raw(repo: GitRepository):
+        """Return the underlying pygit2 repository for a Pygit2Repository.
+
+        All repositories created by this backend are Pygit2Repository instances;
+        the assertion documents and enforces that invariant for the type checker.
+        """
+        assert isinstance(repo, Pygit2Repository)
+        return repo._repo
+
     def create_repository(self, path: Path) -> GitRepository:
         _log_git_call("create_repository", str(path))
         try:
@@ -366,7 +376,7 @@ class Pygit2Backend(GitBackend):
     def create_commit(
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         index = pygit_repo.index
         index.add_all()
         index.write()
@@ -388,13 +398,13 @@ class Pygit2Backend(GitBackend):
         author_email: str = "test@example.com",
     ):
         _log_git_call("create_tag", tag_name, commit_id, message)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         author = pygit2.Signature(author_name, author_email)
         pygit_repo.create_tag(tag_name, commit_id, pygit2.GIT_OBJECT_COMMIT, author, message)
 
     def create_branch(self, repo: GitRepository, branch_name: str, commit_id: str):
         _log_git_call("create_branch", branch_name, commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         # Create branch reference pointing to the commit
         pygit_repo.create_reference(f'refs/heads/{branch_name}', commit_id)
 
@@ -402,7 +412,7 @@ class Pygit2Backend(GitBackend):
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
         try:
-            pygit_repo = repo._repo
+            pygit_repo = self._raw(repo)
             index = pygit_repo.index
             index.add_all()
             index.write()
@@ -426,17 +436,17 @@ class Pygit2Backend(GitBackend):
 
     def reset_hard(self, repo: GitRepository, commit_id: str):
         _log_git_call("reset_hard", commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         pygit_repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
 
     def create_reference(self, repo: GitRepository, ref_name: str, commit_id: str):
         _log_git_call("create_reference", ref_name, commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         pygit_repo.create_reference(ref_name, commit_id)
 
     def set_head_detached(self, repo: GitRepository, commit_id: str):
         _log_git_call("set_head_detached", commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
 
         # To create a true detached HEAD, we need to make HEAD point directly to a commit
         # rather than to a branch reference
