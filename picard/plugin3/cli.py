@@ -153,6 +153,10 @@ Option('persist', 'cli_plugins_init', {})
 class PluginCLI(BaseCLI):
     """Command line interface for managing plugins."""
 
+    # PluginCLI always uses PluginCliOutput, which extends CliOutput with
+    # plugin/git-specific display methods (d_commit_old, d_commit_new, ...).
+    _out: PluginCliOutput
+
     def __init__(self, manager, args, output=None):
         super().__init__(args, output or PluginCliOutput())
         self._manager = manager
@@ -176,6 +180,8 @@ class PluginCLI(BaseCLI):
         self._manager._registry.fetch_registry(callback=callback)
 
         app = QtCore.QCoreApplication.instance()
+        if app is None:
+            raise RuntimeError('No QCoreApplication instance available')
         while not result['done']:
             app.processEvents()
 
@@ -454,7 +460,7 @@ class PluginCLI(BaseCLI):
                     self._out.info(f'  State: {plugin.state.value}')
 
                     # Version with git info
-                    metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
+                    metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
                     if metadata:
                         git_ref = metadata.get_git_ref()
                         if git_ref.shortname and git_ref.target:
@@ -513,7 +519,7 @@ class PluginCLI(BaseCLI):
             return error
 
         is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
-        metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
+        metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
         is_local = is_local_plugin(metadata)
 
         local_marker = self._local_marker(metadata)
@@ -1768,6 +1774,8 @@ class PluginCLI(BaseCLI):
 
             # Process events until callback is called
             app = QtCore.QCoreApplication.instance()
+            if app is None:
+                raise RuntimeError('No QCoreApplication instance available')
             while not result['done']:
                 app.processEvents()
 
