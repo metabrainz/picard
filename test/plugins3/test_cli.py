@@ -31,7 +31,10 @@ from unittest.mock import (
 
 from PyQt6.QtCore import QSettings
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 from test.plugins3.helpers import (
     MockCliArgs,
     MockPlugin,
@@ -675,58 +678,27 @@ class TestPluginCLIErrors(PicardTestCase):
 
 
 class TestPluginCLIHelpers(PicardTestCase):
+    def _format_git_info(self, metadata):
+        return PluginCLI(MockPluginManager(), MockCliArgs())._format_git_info(metadata)
+
     def test_format_git_info_no_metadata(self):
         """Test _format_git_info with no metadata."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        cli = PluginCLI(manager, args)
+        self.assertEqual(self._format_git_info(None), '')
+        self.assertEqual(self._format_git_info({}), '')
 
-        result = cli._format_git_info(None)
-        self.assertEqual(result, '')
-
-        result = cli._format_git_info({})
-        self.assertEqual(result, '')
-
-    def test_format_git_info_no_commit(self):
-        """Test _format_git_info with no commit."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        cli = PluginCLI(manager, args)
-
-        metadata = PluginMetadata(url='http://test.com', ref='main', commit='')
-        result = cli._format_git_info(metadata)
-        self.assertEqual(result, '')
-
-    def test_format_git_info_with_ref_and_commit(self):
-        """Test _format_git_info with ref and commit."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        cli = PluginCLI(manager, args)
-
-        metadata = PluginMetadata(url='http://test.com', ref='main', commit='abc123def456')
-        result = cli._format_git_info(metadata)
-        self.assertEqual(result, ' (main @abc123d)')
-
-    def test_format_git_info_commit_only(self):
-        """Test _format_git_info with commit only."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        cli = PluginCLI(manager, args)
-
-        metadata = PluginMetadata(url='http://test.com', ref='', commit='abc123def456')
-        result = cli._format_git_info(metadata)
-        self.assertEqual(result, ' (@abc123d)')
-
-    def test_format_git_info_ref_is_commit(self):
-        """Test _format_git_info when ref is the commit hash."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        cli = PluginCLI(manager, args)
-
-        # When ref starts with commit short ID, skip ref
-        metadata = PluginMetadata(url='http://test.com', ref='abc123d', commit='abc123def456')
-        result = cli._format_git_info(metadata)
-        self.assertEqual(result, ' (@abc123d)')
+    @subtest_cases(
+        "ref,commit,expected",
+        {
+            'no commit': ('main', '', ''),
+            'ref and commit': ('main', 'abc123def456', ' (main @abc123d)'),
+            'commit only': ('', 'abc123def456', ' (@abc123d)'),
+            # When ref starts with the commit short ID, the ref is skipped
+            'ref is the commit hash': ('abc123d', 'abc123def456', ' (@abc123d)'),
+        },
+    )
+    def test_format_git_info(self, ref, commit, expected):
+        metadata = PluginMetadata(url='http://test.com', ref=ref, commit=commit)
+        self.assertEqual(self._format_git_info(metadata), expected)
 
 
 class TestPluginCLIFindPlugin(PicardTestCase):
