@@ -145,7 +145,8 @@ class TestPaletteIsDark:
         ("base_color", "is_dark"),
         [
             (QtGui.QColor(QtCore.Qt.GlobalColor.black), True),
-            (QtGui.QColor(QtCore.Qt.GlobalColor.black), True),
+            (QtGui.QColor(QtCore.Qt.GlobalColor.white), False),
+            # The threshold sits between 127 and 128
             (QtGui.QColor(128, 128, 128), False),
             (QtGui.QColor(127, 127, 127), True),
         ],
