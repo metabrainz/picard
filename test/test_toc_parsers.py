@@ -18,7 +18,10 @@
 
 import unittest
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.util.toc import (
     parse_toc_itunes_cddb,
@@ -26,87 +29,37 @@ from picard.util.toc import (
 
 
 class ITunesCDDB1ParserTest(PicardTestCase):
-    def test_parse_valid_itunes_cddb1_tag(self):
-        tag = '5023F08C+100000+4+150+30000+50000+90000'
+    @subtest_cases(
+        "tag,expected",
+        [
+            ('5023F08C+100000+4+150+30000+50000+90000', (4, 100000, [150, 30000, 50000, 90000])),
+            ('F001F000+4096+1+0', (1, 4096, [0])),
+        ],
+    )
+    def test_parse_valid_itunes_cddb1_tags(self, tag, expected):
         num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(tag)
+        self.assertEqual((num_tracks, leadout_lba, track_lbas), expected)
 
-        self.assertEqual(num_tracks, 4)
-        self.assertEqual(leadout_lba, 100000)
-        self.assertEqual(track_lbas, [150, 30000, 50000, 90000])
-
-    def test_parse_itunes_cddb1_single_track(self):
-        tag = 'F001F000+4096+1+0'
-        num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(tag)
-
-        self.assertEqual(num_tracks, 1)
-        self.assertEqual(leadout_lba, 4096)
-        self.assertEqual(track_lbas, [0])
-
-    def test_parse_itunes_cddb1_missing_cddb_id(self):
-        tag = '+54950+7+150+44942+61305+72755'
+    @subtest_cases(
+        "tag,expected_message",
+        {
+            'missing cddb id': ('+54950+7+150+44942+61305+72755', "CDDB ID is absent"),
+            'too few parts': ('5023F08C+54950+7', "unexpected format"),
+            'invalid leadout': ('5023F08C+INVALID+7+150+44942+61305+72755', "not a valid integer"),
+            'negative leadout': ('5023F08C+-100+7+150+44942+61305+72755', "must be positive"),
+            'invalid track count': ('5023F08C+54950+ABC+150+44942+61305+72755', "not a valid integer"),
+            'zero track count': ('5023F08C+54950+0+150+44942+61305+72755', "must be positive"),
+            'mismatched offset count': ('5023F08C+54950+7+150+44942', "Expected 7 track offsets, got 2"),
+            'negative offset': ('5023F08C+54950+2+-150+44942', "must be non-negative"),
+            'non monotonic offsets': ('5023F08C+54950+3+150+44942+30000', "strictly increasing"),
+            'duplicate offsets': ('5023F08C+100+2+150+150', "strictly increasing"),
+            'invalid offset': ('5023F08C+54950+2+150+INVALID', "not valid integers"),
+        },
+    )
+    def test_parse_invalid_itunes_cddb1_tags(self, tag, expected_message):
         with self.assertRaises(ValueError) as cm:
             parse_toc_itunes_cddb(tag)
-        self.assertIn("CDDB ID is absent", str(cm.exception))
-
-    def test_parse_itunes_cddb1_too_few_parts(self):
-        tag = '5023F08C+54950+7'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("unexpected format", str(cm.exception))
-
-    def test_parse_itunes_cddb1_invalid_leadout(self):
-        tag = '5023F08C+INVALID+7+150+44942+61305+72755'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("not a valid integer", str(cm.exception))
-
-    def test_parse_itunes_cddb1_negative_leadout(self):
-        tag = '5023F08C+-100+7+150+44942+61305+72755'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("must be positive", str(cm.exception))
-
-    def test_parse_itunes_cddb1_invalid_track_count(self):
-        tag = '5023F08C+54950+ABC+150+44942+61305+72755'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("not a valid integer", str(cm.exception))
-
-    def test_parse_itunes_cddb1_zero_track_count(self):
-        tag = '5023F08C+54950+0+150+44942+61305+72755'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("must be positive", str(cm.exception))
-
-    def test_parse_itunes_cddb1_mismatched_offset_count(self):
-        tag = '5023F08C+54950+7+150+44942'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("Expected 7 track offsets, got 2", str(cm.exception))
-
-    def test_parse_itunes_cddb1_negative_offset(self):
-        tag = '5023F08C+54950+2+-150+44942'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("must be non-negative", str(cm.exception))
-
-    def test_parse_itunes_cddb1_non_monotonic_offsets(self):
-        tag = '5023F08C+54950+3+150+44942+30000'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("strictly increasing", str(cm.exception))
-
-    def test_parse_itunes_cddb1_duplicate_offsets(self):
-        tag = '5023F08C+100+2+150+150'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("strictly increasing", str(cm.exception))
-
-    def test_parse_itunes_cddb1_invalid_offset(self):
-        tag = '5023F08C+54950+2+150+INVALID'
-        with self.assertRaises(ValueError) as cm:
-            parse_toc_itunes_cddb(tag)
-        self.assertIn("not valid integers", str(cm.exception))
+        self.assertIn(expected_message, str(cm.exception))
 
 
 if __name__ == '__main__':
