@@ -18,7 +18,10 @@
 
 from unittest.mock import Mock
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.coverart import CoverArt
 
@@ -51,68 +54,33 @@ class CoverArtAllImagesSatisfiedTest(PicardTestCase):
         config = self._make_config()
         self.assertFalse(self.coverart._all_images_satisfied(config))
 
-    def test_satisfied_tags_only_front_no_files(self):
-        """Original case: only embedding one front, no external files."""
-        self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=True,
-            embed_only_front=True,
-            save_to_files=False,
-            save_only_front_file=False,
-        )
-        self.assertTrue(self.coverart._all_images_satisfied(config))
+    @subtest_cases(
+        "config_overrides,expected",
+        {
+            'tags want only the front, no external files': ({'save_to_files': False}, True),
+            'tags want all images': ({'embed_only_front': False, 'save_to_files': False}, False),
+            'files want all images': ({}, False),
+            'both want only the front': ({'save_only_front_file': True}, True),
+            'files want only the front, tags disabled': (
+                {'save_to_tags': False, 'embed_only_front': False, 'save_only_front_file': True},
+                True,
+            ),
+            'both destinations disabled': (
+                {'save_to_tags': False, 'embed_only_front': False, 'save_to_files': False},
+                True,
+            ),
+        },
+    )
+    def test_all_images_satisfied(self, config_overrides, expected):
+        """A front image has been found; check each combination of destinations.
 
-    def test_not_satisfied_tags_wants_all(self):
-        """Tags wants all images (embed_only_one_front_image=False)."""
+        Each case lists only the settings that differ from `_make_config()`'s
+        defaults (save_to_tags=True, embed_only_front=True, save_to_files=True,
+        save_only_front_file=False).
+        """
         self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=True,
-            embed_only_front=False,
-            save_to_files=False,
-            save_only_front_file=False,
-        )
-        self.assertFalse(self.coverart._all_images_satisfied(config))
-
-    def test_not_satisfied_files_wants_all(self):
-        """Files wants all images (save_only_one_front_image=False)."""
-        self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=True,
-            embed_only_front=True,
-            save_to_files=True,
-            save_only_front_file=False,
-        )
-        self.assertFalse(self.coverart._all_images_satisfied(config))
-
-    def test_satisfied_both_want_only_front(self):
-        """Both tags and files want only the front image."""
-        self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=True,
-            embed_only_front=True,
-            save_to_files=True,
-            save_only_front_file=True,
-        )
-        self.assertTrue(self.coverart._all_images_satisfied(config))
-
-    def test_satisfied_files_only_front_no_tags(self):
-        """Only saving files with only front, tags disabled."""
-        self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=False,
-            embed_only_front=False,
-            save_to_files=True,
-            save_only_front_file=True,
-        )
-        self.assertTrue(self.coverart._all_images_satisfied(config))
-
-    def test_not_satisfied_both_disabled(self):
-        """Both disabled — technically satisfied (nothing needed)."""
-        self.coverart.front_image_found = True
-        config = self._make_config(
-            save_to_tags=False,
-            embed_only_front=False,
-            save_to_files=False,
-            save_only_front_file=False,
-        )
-        self.assertTrue(self.coverart._all_images_satisfied(config))
+        config = self._make_config(**config_overrides)
+        # assertTrue/assertFalse rather than assertEqual, to keep the original
+        # truthiness checks rather than requiring exactly True/False
+        check = self.assertTrue if expected else self.assertFalse
+        check(self.coverart._all_images_satisfied(config))
