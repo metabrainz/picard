@@ -362,7 +362,7 @@ class PluginSourceGit(PluginSource):
         # Determine ref type for the resolved ref (non-relative refs only)
         if self.resolved_ref and not self._is_relative_ref(self.ref):
             git_ref = find_git_ref(repo, self.resolved_ref)
-            if git_ref:
+            if git_ref and git_ref.ref_type:
                 self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
             else:
                 # If not found as branch or tag, assume it's a commit
@@ -693,6 +693,8 @@ class Plugin:
 
         module_file = self.local_path.joinpath('__init__.py')
         spec = importlib.util.spec_from_file_location(self.module_name, module_file)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"Could not create import spec for plugin {self.plugin_id!r} at {module_file}")
         module = importlib.util.module_from_spec(spec)
         sys.modules[self.module_name] = module
         spec.loader.exec_module(module)
@@ -773,10 +775,11 @@ class Plugin:
     def name(self):
         """Returns translated plugin name if possible, else plugin_id"""
         try:
-            return self.manifest.name_i18n()
+            if self.manifest is not None:
+                return self.manifest.name_i18n()
         except Exception as e:
             log.error("Failed to get plugin %s's name: %s", self, e)
-            return str(self)
+        return str(self)
 
     def __str__(self):
         """Returns plugin id"""
