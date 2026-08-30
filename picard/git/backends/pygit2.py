@@ -306,10 +306,16 @@ class Pygit2Repository(GitRepository):
         self._repo.remotes.set_url(name, url)
         _log_git_call("set_remote_url", name, url)
 
-    def get_branches(self) -> Any:
-        ret = self._repo.branches
-        _log_git_call("get_branches", retval=ret)
+    def local_branches(self) -> list[str]:
+        ret = list(self._repo.branches.local)
+        _log_git_call("local_branches", retval=ret)
         return ret
+
+    def create_tracking_branch(self, name: str, commit_id: str, upstream: str) -> None:
+        _log_git_call("create_tracking_branch", name, commit_id, upstream)
+        commit = self._repo.get(commit_id)
+        branch = self._repo.branches.local.create(name, commit, force=True)
+        branch.upstream = self._repo.branches.remote[upstream]
 
     def get_commit_date(self, commit_id: str) -> int:
         commit = self._repo.get(commit_id)

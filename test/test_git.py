@@ -98,8 +98,11 @@ class MockGitRepository(GitRepository):
     def set_remote_url(self, name, url):
         pass
 
-    def get_branches(self):
-        return Mock()
+    def local_branches(self):
+        return ['main']
+
+    def create_tracking_branch(self, name, commit_id, upstream):
+        pass
 
     def get_commit_date(self, commit_id):
         return 1234567890  # Mock timestamp

@@ -346,10 +346,7 @@ class GitOperations:
         if is_remote_branch:
             # Create local tracking branch
             repo.set_head(commit.id)
-            branches = repo.get_branches()
-            pygit_commit = repo._repo.get(commit.id)
-            branch = branches.local.create(local_ref, pygit_commit, force=True)
-            branch.upstream = branches.remote[f'origin/{local_ref}']
+            repo.create_tracking_branch(local_ref, commit.id, f'origin/{local_ref}')
             repo.set_head(f'refs/heads/{local_ref}')
         else:
             # Switch to existing local branch

@@ -328,7 +328,7 @@ class PluginSourceGit(PluginSource):
                     self.resolved_ref = 'main'
                 except (KeyError, GitBackendError):
                     # Find first available branch
-                    branches = list(repo.branches.local)
+                    branches = repo.local_branches()
                     if branches:
                         branch_name = branches[0]
                         commit = repo.revparse_to_commit(branch_name)

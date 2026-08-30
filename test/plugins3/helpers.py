@@ -327,6 +327,24 @@ def backend_create_branch(repo_path, branch_name, commit_id=None):
     repo.free()
 
 
+def backend_orphan_head_and_drop_main(repo_path):
+    """Arrange the PluginSourceGit.sync() branch-resolution fallback state.
+
+    Points HEAD at a non-existent branch and deletes ``main`` so that neither
+    ``HEAD`` nor ``main`` resolves, forcing sync() into the "first available
+    branch" fallback that iterates the repository's local branches.
+
+    The public git backend has no branch-delete/orphan-HEAD operation, so this
+    reaches into the underlying pygit2 repository directly. It is test-only
+    scaffolding for the sync() regression test.
+    """
+    backend = git_backend()
+    with backend.create_repository(repo_path) as repo:
+        pygit2_repo = repo._repo
+        pygit2_repo.set_head('refs/heads/__nonexistent__')
+        pygit2_repo.branches.local.delete('main')
+
+
 def backend_add_and_commit(repo_path, message="Commit", author_name="Test", author_email="test@example.com"):
     """Add all files and commit using backend."""
     backend = git_backend()
