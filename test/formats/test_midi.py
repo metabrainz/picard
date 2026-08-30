@@ -41,4 +41,5 @@ class MIDITest(CommonTests.SimpleFormatsTestCase):
 
     def test_supports_tag(self):
         for tag in TAGS:
-            self.assertFalse(midi.MIDIFile.supports_tag(tag))
+            with self.subTest(tag=tag):
+                self.assertFalse(midi.MIDIFile.supports_tag(tag))
