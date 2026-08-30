@@ -20,6 +20,7 @@
 
 
 from copy import copy
+from types import MappingProxyType
 from unittest.mock import (
     Mock,
     patch,
@@ -28,7 +29,10 @@ from unittest.mock import (
 from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard import config
 from picard.album import Album
@@ -37,10 +41,18 @@ from picard.const.cover_processing import (
     ImageFormat,
     ResizeModes,
 )
-from picard.coverart.image import CoverArtImage
-from picard.coverart.processing import CoverArtImageProcessing
+from picard.coverart.image import (
+    CoverArtImage,
+    CoverArtImageIOError,
+)
+from picard.coverart.processing import (
+    CoverArtImageProcessing,
+    run_image_filters,
+    run_image_metadata_filters,
+)
 from picard.coverart.processing.filters import (
     bigger_previous_image_filter,
+    filter_image_for_file,
     image_types_filter,
     size_filter,
     size_metadata_filter,
@@ -128,6 +140,64 @@ class ImageFiltersTest(PicardTestCase):
         coverartimage.width = 500
         coverartimage.height = 500
         self.assertTrue(bigger_previous_image_filter(coverartimage, previous_images))
+
+    def test_filter_by_size_disabled(self):
+        """With the option off, no image is rejected for its size."""
+        self.set_config_values({'filter_cover_by_size': False})
+        image, info = create_fake_image(1, 1, 'png')
+        self.assertTrue(size_filter(image, info, None, None))
+        self.assertTrue(size_metadata_filter({'width': 1, 'height': 1}))
+
+    def test_filter_by_size_metadata_without_dimensions(self):
+        """Metadata that does not report both dimensions cannot be filtered."""
+        self.assertTrue(size_metadata_filter({}))
+        self.assertTrue(size_metadata_filter({'width': 400}))
+        self.assertTrue(size_metadata_filter({'height': 400}))
+
+    def test_filter_by_size_metadata_unknown_dimension(self):
+        """A dimension of -1 is unknown and must not be considered."""
+        self.assertTrue(size_metadata_filter({'width': -1, 'height': -1}))
+        self.assertTrue(size_metadata_filter({'width': -1, 'height': 600}))
+        # The known dimension is still checked
+        self.assertFalse(size_metadata_filter({'width': -1, 'height': 400}))
+
+    @subtest_cases(
+        "types,width,height,expected",
+        {
+            'smaller image of a protected type': (['front'], 500, 500, False),
+            'bigger image of a protected type': (['front'], 2000, 2000, False),
+            'image of an unprotected type': (['spine'], 2000, 2000, True),
+        },
+    )
+    def test_filter_image_for_file(self, types, width, height, expected):
+        """Previously embedded art is a front image of 1000x1000.
+
+        `dont_replace_included_types` protects 'front' and 'booklet'.
+        """
+        previous_images = self._create_fake_album().orig_metadata.images
+        coverartimage = CoverArtImage(types=types, support_types=True)
+        coverartimage.width = width
+        coverartimage.height = height
+        self.assertEqual(filter_image_for_file(coverartimage, previous_images), expected)
+
+    def test_run_image_filters(self):
+        """The registered cover art filters are applied to the image data."""
+        rejected, rejected_info = create_fake_image(400, 600, 'png')
+        accepted, accepted_info = create_fake_image(600, 600, 'png')
+        self.assertFalse(run_image_filters(rejected, rejected_info, None, None))
+        self.assertTrue(run_image_filters(accepted, accepted_info, None, None))
+
+        # With every filter satisfied, even a tiny image is accepted
+        self.set_config_values({'filter_cover_by_size': False})
+        tiny, tiny_info = create_fake_image(1, 1, 'png')
+        self.assertTrue(run_image_filters(tiny, tiny_info, None, None))
+
+    def test_run_image_metadata_filters(self):
+        """The registered metadata filters are applied to provider metadata."""
+        self.assertFalse(run_image_metadata_filters({'width': 400, 'height': 600}))
+        self.assertTrue(run_image_metadata_filters({'width': 600, 'height': 600}))
+        # Metadata without dimensions cannot be filtered
+        self.assertTrue(run_image_metadata_filters({}))
 
     def test_filter_by_image_type(self):
         album = self._create_fake_album()
@@ -338,6 +408,34 @@ class ImageProcessorsTest(PicardTestCase):
         for error in album.errors:
             self.assertIsInstance(error, CoverArtProcessingError)
 
+    def test_image_that_cannot_be_processed_is_passed_through(self):
+        """An image flagged as unprocessable keeps its original data."""
+        image, _info = create_fake_image(400, 400, 'png')
+        coverartimage = CoverArtImage()
+        coverartimage.can_be_processed = False
+        album = Album(None)
+        image_processing = CoverArtImageProcessing(album)
+        callback = Mock()
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, image, None, callback)
+            self.assertFalse(image_processing.wait_for_processing())
+        callback.assert_called_once_with(coverartimage, None)
+        self.assertEqual(coverartimage.data, image)
+        self.assertEqual(album.errors, [])
+
+    def test_wait_for_processing_reports_io_errors(self):
+        """An I/O error is reported to the album and flagged to the caller."""
+        album = Album(None)
+        image_processing = CoverArtImageProcessing(album)
+        image_processing.errors.put(CoverArtImageIOError('failed to write'))
+        self.assertTrue(image_processing.wait_for_processing())
+        self.assertEqual(len(album.errors), 1)
+
+        # Other processing errors are reported but are not I/O errors
+        image_processing.errors.put(CoverArtProcessingError('other'))
+        self.assertFalse(image_processing.wait_for_processing())
+        self.assertEqual(len(album.errors), 2)
+
     def test_identification_error(self):
         image, info = create_fake_image(0, 0, "jpg")
         self._check_processing_error(image, info)
@@ -346,6 +444,80 @@ class ImageProcessorsTest(PicardTestCase):
         image, info = create_fake_image(500, 500, "jpg")
         info.format_info = ImageFormat.PDF
         self._check_processing_error(image, info)
+
+
+class ImageProcessorTargetTest(PicardTestCase):
+    """Test how the processors decide which targets they apply to.
+
+    The baseline treats tags and files identically, so each case only states
+    what it changes.
+    """
+
+    BASELINE = MappingProxyType(
+        {
+            'cover_tags_resize': True,
+            'cover_tags_enlarge': True,
+            'cover_tags_resize_target_width': 500,
+            'cover_tags_resize_target_height': 500,
+            'cover_tags_resize_mode': ResizeModes.MAINTAIN_ASPECT_RATIO,
+            'cover_file_resize': True,
+            'cover_file_enlarge': True,
+            'cover_file_resize_target_width': 500,
+            'cover_file_resize_target_height': 500,
+            'cover_file_resize_mode': ResizeModes.MAINTAIN_ASPECT_RATIO,
+            'cover_tags_convert_images': True,
+            'cover_tags_convert_to_format': ImageFormat.JPEG,
+            'cover_file_convert_images': True,
+            'cover_file_convert_to_format': ImageFormat.JPEG,
+        }
+    )
+
+    def _assert_target(self, processor, overrides, expected):
+        self.set_config_values({**self.BASELINE, **overrides})
+        self.assertEqual(processor().target(), expected)
+
+    @subtest_cases(
+        "overrides,expected",
+        {
+            'both, identical parameters': ({}, ImageProcessor.Target.SAME),
+            'both, differing width': (
+                {'cover_file_resize_target_width': 750},
+                ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE,
+            ),
+            'both, differing enlarge': (
+                {'cover_file_enlarge': False},
+                ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE,
+            ),
+            'both, differing resize mode': (
+                {'cover_file_resize_mode': ResizeModes.SCALE_TO_WIDTH},
+                ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE,
+            ),
+            'tags only': ({'cover_file_resize': False}, ImageProcessor.Target.TAGS),
+            'file only': ({'cover_tags_resize': False}, ImageProcessor.Target.FILE),
+            'neither': ({'cover_tags_resize': False, 'cover_file_resize': False}, ImageProcessor.Target.NONE),
+        },
+    )
+    def test_resize_image_target(self, overrides, expected):
+        self._assert_target(ResizeImage, overrides, expected)
+
+    @subtest_cases(
+        "overrides,expected",
+        {
+            'both, same format': ({}, ImageProcessor.Target.SAME),
+            'both, differing format': (
+                {'cover_file_convert_to_format': ImageFormat.PNG},
+                ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE,
+            ),
+            'tags only': ({'cover_file_convert_images': False}, ImageProcessor.Target.TAGS),
+            'file only': ({'cover_tags_convert_images': False}, ImageProcessor.Target.FILE),
+            'neither': (
+                {'cover_tags_convert_images': False, 'cover_file_convert_images': False},
+                ImageProcessor.Target.NONE,
+            ),
+        },
+    )
+    def test_convert_image_target(self, overrides, expected):
+        self._assert_target(ConvertImage, overrides, expected)
 
 
 class ProcessingImageTest(PicardTestCase):
