@@ -33,7 +33,7 @@ from picard.plugin3.cli import PluginCLI
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.manifest import PluginManifest
-from picard.plugin3.output import PluginOutput
+from picard.plugin3.output import PluginCliOutput
 from picard.plugin3.plugin import (
     Plugin,
     PluginState,
@@ -145,8 +145,8 @@ def create_test_registry():
 
 
 def create_cli_output():
-    """Create PluginOutput with StringIO streams."""
-    return PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
+    """Create PluginCliOutput with StringIO streams."""
+    return PluginCliOutput(stdout=StringIO(), stderr=StringIO(), color=False)
 
 
 class MockCliArgs(Mock):
