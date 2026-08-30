@@ -55,30 +55,6 @@ def mock_parser() -> Mock:
     return parser
 
 
-@pytest.fixture
-def sample_script_content() -> dict[str, str]:
-    """Sample script content for testing various scenarios."""
-    return {
-        'simple_set': '$set(myvar, "value")',
-        'multiple_sets': '$set(var1, "a")\n$set(var2, "b")\n$set(var3, "c")',
-        'nested_functions': '$set(outer, $if(1, "inner", "else"))',
-        'complex_script': '''$set(artist, %artist%)
-$set(album, %album%)
-$set(combined, $if(%artist%, %artist% - %album%, %album%))''',
-        'malformed_syntax': '$set(incomplete',
-        'empty_lines': '\n\n$set(var1, "test")\n\n$set(var2, "test2")\n\n',
-        'whitespace_variations': '$set(  spaced_var  , "value")\n$set(tabbed_var\t, "value")',
-        'special_characters': '$set(var_with_underscore, "test")\n$set(var123, "test")',
-        'empty_script': '',
-        'no_sets': '%artist% - %album%',
-        'commented_sets': '// $set(commented, "ignored")\n$set(active, "value")',
-        'multiline_set': '''$set(
-    multiline_var,
-    "value"
-)''',
-    }
-
-
 class TestScriptCompleterInitialization:
     """Test ScriptCompleter initialization and basic properties."""
 
