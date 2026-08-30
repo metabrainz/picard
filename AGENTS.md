@@ -409,45 +409,21 @@ register_track_metadata_processor(my_processor)
 
 ## Testing
 
-```bash
-# All tests
-pytest test/
+How to run the suite and how to write tests — the two coexisting test styles, the
+`subtest_cases` decorator for table-driven tests, and the shared `qapp` fixture for
+Qt widgets — is documented in [test/README.md](test/README.md). That document is the
+source of truth; follow it rather than relying on a copy here.
 
-# Specific file
-pytest test/test_metadata.py
+Points worth repeating because they are easy to get wrong:
 
-# With coverage
-pytest --cov=picard test/
-```
-
-### Test Structure
-```python
-from test.picardtestcase import PicardTestCase
-
-
-class TestMyFeature(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-
-    def test_something(self):
-        self.assertEqual(expected, actual)
-```
-
-### Qt Widget Tests
-A session-scoped `qapp` fixture in `test/conftest.py` provides a shared
-`QApplication` for the entire test run. Always use it for widget tests:
-
-```python
-@pytest.fixture()
-def my_widget(qapp):
-    from picard.ui.widgets.mywidget import MyWidget
-
-    return MyWidget()
-```
-
-**Never** create a local `QApplication` or `QCoreApplication` in tests — it causes
-crashes with random test ordering. For unittest-based tests that need an event loop,
-use `QCoreApplication.instance()` and only create one if it returns `None`.
+- Match the test style of the file you are editing. Do not convert a
+  `PicardTestCase` class to plain pytest (or the reverse) as a side effect of an
+  unrelated change.
+- `@pytest.mark.parametrize` does not work on `PicardTestCase` subclasses; the test
+  errors with a missing-argument `TypeError`. Use the `subtest_cases` decorator (or
+  `self.subTest()`) there.
+- Never create a local `QApplication`/`QCoreApplication`; it crashes under
+  `pytest-randomly` ordering.
 
 ---
 
