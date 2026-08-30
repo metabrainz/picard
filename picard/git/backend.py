@@ -265,8 +265,19 @@ class GitRepository(ABC):
         return False
 
     @abstractmethod
-    def get_branches(self) -> Any:
-        """Get branches object"""
+    def local_branches(self) -> list[str]:
+        """Return the names of local branches."""
+
+    @abstractmethod
+    def create_tracking_branch(self, name: str, commit_id: str, upstream: str) -> None:
+        """Create a local branch at ``commit_id`` tracking ``upstream``.
+
+        Args:
+            name: Local branch name to create (overwritten if it exists).
+            commit_id: Commit the new branch should point at.
+            upstream: Remote-tracking branch name to set as upstream
+                (e.g. ``'origin/main'``).
+        """
 
     @abstractmethod
     def get_commit_date(self, commit_id: str) -> int:

@@ -31,6 +31,7 @@ from test.plugins3.helpers import (
     backend_create_lightweight_tag,
     backend_create_tag,
     backend_init_and_commit,
+    backend_orphan_head_and_drop_main,
     backend_set_detached_head,
     create_git_repo_with_backend,
 )
@@ -70,6 +71,56 @@ class TestCheckRefType(PicardTestCase):
         ref_type, ref_name = GitOperations.check_ref_type(Path('/nonexistent'), 'main')
         self.assertIsNone(ref_type)
         self.assertEqual(ref_name, 'main')
+
+
+@pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
+class TestGitRepositoryBranches(PicardTestCase):
+    """Regression tests for PluginSourceGit.sync() branch resolution.
+
+    PluginSourceGit.sync() previously accessed ``repo.branches.local``, but the
+    GitRepository abstraction had no ``branches`` attribute (it exposed an
+    ``Any``-typed ``get_branches()`` passthrough to pygit2), so that path
+    raised AttributeError. The abstraction now exposes a typed
+    ``local_branches()`` method.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.tmpdir = tempfile.mkdtemp()
+        # Register cleanup immediately so the temp dir is removed even if the
+        # rest of setUp() fails.
+        self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        self.repo_dir = Path(self.tmpdir) / "test-repo"
+        backend_init_and_commit(self.repo_dir, {'file.txt': 'content'}, 'Initial commit')
+        backend_create_branch(self.repo_dir, 'feature')
+
+    def test_sync_resolves_ref_without_error(self):
+        """sync() must resolve a branch via local_branches() in the fallback.
+
+        Regression guard for the ``repo.branches.local`` bug. Arranges the
+        error-recovery state sync() hits when HEAD is unset and there is no
+        'main' branch (only 'feature' remains), then syncs against the existing
+        target so sync() runs the branch-listing fallback. Before the fix this
+        raised ``AttributeError: 'Pygit2Repository' object has no attribute
+        'branches'``.
+        """
+        backend_orphan_head_and_drop_main(self.repo_dir)
+        source = PluginSourceGit(str(self.repo_dir))
+        commit_id = source.sync(self.repo_dir)
+        self.assertEqual(source.resolved_ref, 'feature')
+        self.assertEqual(len(commit_id), 40)  # SHA-1 hash
+
+    def test_local_branches_lists_branch_names(self):
+        """local_branches() returns local branch names as a list of str.
+
+        Documents the GitRepository contract that the sync() fallback relies
+        on, independent of sync() itself.
+        """
+        backend = git_backend()
+        with backend.create_repository(self.repo_dir) as repo:
+            branches = repo.local_branches()
+            self.assertIn('main', branches)
+            self.assertIn('feature', branches)
 
 
 @pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
