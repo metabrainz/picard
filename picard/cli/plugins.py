@@ -217,7 +217,7 @@ def _run_plugins(args):
     from picard.git.factory import has_git_backend
     from picard.plugin3.cli import PluginCLI
     from picard.plugin3.manager import PluginManager
-    from picard.plugin3.output import PluginOutput
+    from picard.plugin3.output import PluginCliOutput
     from picard.util import cli
 
     # Check git backend
@@ -235,6 +235,6 @@ def _run_plugins(args):
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
     # Create output
-    output = PluginOutput(color=False if is_color_disabled(args) else None)
+    output = PluginCliOutput(color=False if is_color_disabled(args) else None)
 
     return PluginCLI(manager, args, output=output).run()

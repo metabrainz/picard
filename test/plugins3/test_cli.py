@@ -58,7 +58,7 @@ from picard.plugin3.manager import (
     PluginMetadata,
 )
 from picard.plugin3.manager.update import UpdateResult
-from picard.plugin3.output import PluginOutput
+from picard.plugin3.output import PluginCliOutput
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
     RegistryFetchError,
@@ -104,7 +104,7 @@ def create_mock_registry_plugin(data):
 def _make_cli(manager, args, **kwargs):
     """Create a PluginCLI with captured stderr output."""
     stderr = StringIO()
-    output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+    output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
     cli = PluginCLI(manager, args, output=output, **kwargs)
     return cli, stderr
 
@@ -216,13 +216,13 @@ class TestPluginCLI(PicardTestCase):
         """Test that color mode works correctly."""
         # Test with color enabled
         stdout_color = StringIO()
-        output_color = PluginOutput(stdout=stdout_color, stderr=StringIO(), color=True)
+        output_color = PluginCliOutput(stdout=stdout_color, stderr=StringIO(), color=True)
         output_color.success('test')
         self.assertIn('\033[32m', stdout_color.getvalue())
 
         # Test with color disabled
         stdout_no_color = StringIO()
-        output_no_color = PluginOutput(stdout=stdout_no_color, stderr=StringIO(), color=False)
+        output_no_color = PluginCliOutput(stdout=stdout_no_color, stderr=StringIO(), color=False)
         output_no_color.success('test')
         self.assertNotIn('\033[', stdout_no_color.getvalue())
 
@@ -888,7 +888,7 @@ class TestPluginCLIValidate(PicardTestCase):
             git_dir.mkdir()
 
             stderr = StringIO()
-            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
 
             result = cli._cmd_validate(tmpdir)
@@ -911,7 +911,7 @@ class TestPluginCLIValidate(PicardTestCase):
             manifest_path.write_text('name = "Test"\n')  # Missing required fields
 
             stderr = StringIO()
-            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
 
             result = cli._cmd_validate(tmpdir)
@@ -929,7 +929,7 @@ class TestPluginCLIValidate(PicardTestCase):
             plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', add_git=True)
 
             stdout = StringIO()
-            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
             result = cli._cmd_validate(str(plugin_dir))
@@ -961,7 +961,7 @@ class TestPluginCLIValidate(PicardTestCase):
             plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', manifest_content, add_git=True)
 
             stdout = StringIO()
-            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
             result = cli._cmd_validate(str(plugin_dir))
@@ -983,7 +983,7 @@ class TestPluginCLIManifest(PicardTestCase):
         args = MockCliArgs()
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(manager, args, output=output)
 
         result = cli._cmd_manifest(None)
@@ -1014,7 +1014,7 @@ class TestPluginCLIManifest(PicardTestCase):
             mock_plugin.local_path = plugin_dir
 
             stdout = StringIO()
-            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=mock_plugin)
 
@@ -1037,7 +1037,7 @@ class TestPluginCLIManifest(PicardTestCase):
             mock_plugin.local_path = plugin_dir
 
             stderr = StringIO()
-            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=mock_plugin)
 
@@ -1062,7 +1062,7 @@ class TestPluginCLIManifest(PicardTestCase):
             manifest_path.write_text(manifest_content)
 
             stdout = StringIO()
-            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=None)
 
@@ -1082,7 +1082,7 @@ class TestPluginCLIManifest(PicardTestCase):
             git_dir.mkdir()
 
             stderr = StringIO()
-            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=None)
 
@@ -1117,7 +1117,7 @@ class TestPluginCLIColorOption(PicardTestCase):
 
         # Create output with no_color flag
         color = not getattr(args, 'no_color', False)
-        output = PluginOutput(color=color)
+        output = PluginCliOutput(color=color)
 
         self.assertFalse(output.color)
 

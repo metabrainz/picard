@@ -53,7 +53,7 @@ from picard.plugin3.manager.update import (
     UpdateAllResult,
     UpdateResult,
 )
-from picard.plugin3.output import PluginOutput
+from picard.plugin3.output import PluginCliOutput
 from picard.plugin3.plugin import Plugin, PluginState
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.validator import generate_uuid
@@ -413,7 +413,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='install', source=['https://example.com/plugin.git'], yes=True)
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -438,7 +438,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='install', source=['https://example.com/plugin.git'])
 
         stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        output = PluginCliOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -460,7 +460,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='remove', plugin=['test-plugin'], yes=True)
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -488,7 +488,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='update', plugin=['test-plugin'])
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -516,7 +516,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='update', plugin=['test-plugin'])
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -555,7 +555,7 @@ class TestPluginInstall(PicardTestCase):
         args = MockCliArgs(verb='update', update_all=True)
 
         stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(mock_tagger._pluginmanager3, args, output)
 
         result = cli.run()
@@ -576,7 +576,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         stderr = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=stderr, color=False)
+        output = PluginCliOutput(stdout=stdout, stderr=stderr, color=False)
         # Mock yesno to return False (cancel)
         output.yesno = Mock(return_value=False)
         cli = PluginCLI(mock_manager, args, output)

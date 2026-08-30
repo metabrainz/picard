@@ -71,7 +71,7 @@ from picard.plugin3.manager import (
     PluginRefSwitchError,
 )
 from picard.plugin3.manifest import generate_manifest_template
-from picard.plugin3.output import PluginOutput
+from picard.plugin3.output import PluginCliOutput
 from picard.plugin3.plugin import (
     PluginAlreadyDisabledError,
     PluginAlreadyEnabledError,
@@ -154,7 +154,7 @@ class PluginCLI(BaseCLI):
     """Command line interface for managing plugins."""
 
     def __init__(self, manager, args, output=None):
-        super().__init__(args, output or PluginOutput())
+        super().__init__(args, output or PluginCliOutput())
         self._manager = manager
 
     def _ensure_registry(self):

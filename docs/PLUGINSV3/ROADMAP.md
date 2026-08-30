@@ -194,10 +194,10 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - ✅ Add `--yes` flag to skip confirmations
 - ✅ Return proper exit codes (ExitCode enum: SUCCESS, ERROR, NOT_FOUND, CANCELLED)
 - ✅ Add clear messages that changes require Picard restart
-- ✅ Create PluginOutput wrapper with color support
+- ✅ Create PluginCliOutput wrapper with color support
 
 **Files modified:**
-- `picard/plugin3/cli.py` - enhanced all methods with PluginOutput
+- `picard/plugin3/cli.py` - enhanced all methods with PluginCliOutput
 - `picard/plugin3/output.py` - created output wrapper with colors
 - `picard/tagger.py` - added --info argument
 

@@ -22,7 +22,7 @@
 from picard.cli.output import CliOutput
 
 
-class PluginOutput(CliOutput):
+class PluginCliOutput(CliOutput):
     """Output wrapper for plugin CLI commands.
 
     Extends CliOutput with display methods specific to plugin management
