@@ -127,12 +127,6 @@ def setter_append(mock_image: Mock, mock_obj: Mock) -> CoverArtSetter:
     return CoverArtSetter(CoverArtSetterMode.APPEND, mock_image, mock_obj)
 
 
-@pytest.fixture
-def setter_replace(mock_image: Mock, mock_obj: Mock) -> CoverArtSetter:
-    """Create a CoverArtSetter in REPLACE mode."""
-    return CoverArtSetter(CoverArtSetterMode.REPLACE, mock_image, mock_obj)
-
-
 class TestCoverArtSetter:
     """Test cases for the CoverArtSetter class using single dispatch pattern."""
 
