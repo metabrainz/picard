@@ -68,6 +68,7 @@ class GeneralOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
+        self.apply_option_bounds(self.ui.server_port, 'server_port')
         self.ui.server_host.addItems(MUSICBRAINZ_SERVERS)
         self.ui.server_host.currentTextChanged.connect(self.update_server_host)
         self.ui.login.clicked.connect(self.login)
