@@ -826,3 +826,42 @@ def clamp_browser_integration_port(settings):
         return max(BROWSER_INTEGRATION_MIN_PORT, min(BROWSER_INTEGRATION_MAX_PORT, int(value)))
 
     upgrade_option_value(settings, 'browser_integration_port', _clamp_port)
+
+
+@upgrade_settings('3.0.0b10')
+def upgrade_scripts_lyrics_comments(settings):
+    ASSIGNMENT_FUNCS = 'set|setmulti|copy|copymerge'
+    REMOVAL_FUNCS = 'unset|delete'
+    COPY_FUNCS = 'copy|copymerge'
+    RE_LYRICS_VAR = re.compile(r'%lyrics:([a-zA-Z0-9_:]+)%')
+    RE_LYRICS_ASSIGNMENT_FUNC = re.compile(rf'\$({ASSIGNMENT_FUNCS})\(lyrics:([a-zA-Z0-9_:]+),')
+    RE_LYRICS_REMOVAL_FUNC = re.compile(rf'\$({REMOVAL_FUNCS})\(lyrics:([a-zA-Z0-9_:]+)\)')
+    RE_LYRICS_COPY_FUNC = re.compile(rf'\$({COPY_FUNCS})\(([^,]*),lyrics:([a-zA-Z0-9_:]+)\)')
+    # Comments can already contain the language optionally, but need to be converted
+    # to the new double-colon syntax.
+    RE_COMMENTS_VAR = re.compile(r'%comment(?!:[a-zA-Z0-9_]{3}[^a-zA-Z0-9_]):([a-zA-Z0-9_:]+)%')
+    RE_COMMENTS_ASSIGNMENT_FUNC = re.compile(
+        rf'\$({ASSIGNMENT_FUNCS})\(comment(?!:[a-zA-Z0-9_]{{3}}[^a-zA-Z0-9_]):([a-zA-Z0-9_:]+),'
+    )
+    RE_COMMENTS_REMOVAL_FUNC = re.compile(
+        rf'\$({REMOVAL_FUNCS})\(comment(?!:[a-zA-Z0-9_]{{3}}[^a-zA-Z0-9_]):([a-zA-Z0-9_:]+)\)'
+    )
+    RE_COMMENTS_COPY_FUNC = re.compile(
+        rf'\$({COPY_FUNCS})\(([^,]*),comment(?!:[a-zA-Z0-9_]{{3}}[^a-zA-Z0-9_]):([a-zA-Z0-9_:]+)\)'
+    )
+
+    def convert_script(script):
+        script = RE_LYRICS_VAR.sub(r'%lyrics::\1%', script)
+        script = RE_LYRICS_ASSIGNMENT_FUNC.sub(r'$\1(lyrics::\2,', script)
+        script = RE_LYRICS_REMOVAL_FUNC.sub(r'$\1(lyrics::\2)', script)
+        script = RE_LYRICS_COPY_FUNC.sub(r'$\1(\2,lyrics::\3)', script)
+        script = RE_COMMENTS_VAR.sub(r'%comment::\1%', script)
+        script = RE_COMMENTS_ASSIGNMENT_FUNC.sub(r'$\1(comment::\2,', script)
+        script = RE_COMMENTS_REMOVAL_FUNC.sub(r'$\1(comment::\2)', script)
+        script = RE_COMMENTS_COPY_FUNC.sub(r'$\1(\2,comment::\3)', script)
+        return script
+
+    def convert_list_of_scripts(scripts):
+        return [(pos, name, enabled, convert_script(content)) for pos, name, enabled, content in scripts]
+
+    upgrade_option_value(settings, 'list_of_scripts', convert_list_of_scripts)

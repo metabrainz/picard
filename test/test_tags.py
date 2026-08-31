@@ -32,10 +32,10 @@ from picard.options import (
 )
 from picard.profile import profile_groups_add_setting
 from picard.tags import (
+    create_lang_desc_tag,
     display_tag_name,
     filterable_tag_names,
-    parse_comment_tag,
-    parse_subtag,
+    parse_lang_desc_tag,
     preserved_tag_names,
     script_variable_tag_names,
     tag_names,
@@ -440,17 +440,30 @@ class UtilTagsTest(PicardTestCase):
         # Empty tag
         self.assertEqual(display_tag_name(''), '')
 
-    def test_parse_comment_tag(self):
-        self.assertEqual(parse_comment_tag('comment:XXX:foo'), ('XXX', 'foo'))
-        self.assertEqual(parse_comment_tag('comment:foo'), ('eng', 'foo'))
-        self.assertEqual(parse_comment_tag('comment:XXX'), ('XXX', ''))
-        self.assertEqual(parse_comment_tag('comment'), ('eng', ''))
+    def test_parse_lang_desc_tag(self):
+        self.assertEqual(parse_lang_desc_tag('lyrics:eng'), ('eng', ''))
+        self.assertEqual(parse_lang_desc_tag('lyrics:XXX:foo'), ('XXX', 'foo'))
+        self.assertEqual(parse_lang_desc_tag('lyrics:XXX'), ('XXX', ''))
+        self.assertEqual(parse_lang_desc_tag('lyrics::foo', default_language='eng'), ('eng', 'foo'))
 
-    def test_parse_lyrics_tag(self):
-        self.assertEqual(parse_subtag('lyrics'), ('eng', ''))
-        self.assertEqual(parse_subtag('lyrics:XXX:foo'), ('XXX', 'foo'))
-        self.assertEqual(parse_subtag('lyrics:XXX'), ('XXX', ''))
-        self.assertEqual(parse_subtag('lyrics::foo'), ('eng', 'foo'))
+    def test_parse_lang_desc_tag_invalid_language(self):
+        self.assertEqual(parse_lang_desc_tag('lyrics:de', default_language='eng'), ('eng', 'de'))
+        self.assertEqual(parse_lang_desc_tag('lyrics:toolong:foo', default_language='eng'), ('eng', 'toolong:foo'))
+
+    def test_parse_lang_desc_tag_description_with_colon(self):
+        # The description may itself contain colons and must be preserved in full.
+        self.assertEqual(parse_lang_desc_tag('lyrics:eng:a:b'), ('eng', 'a:b'))
+        self.assertEqual(parse_lang_desc_tag('lyrics::a:b', default_language='eng'), ('eng', 'a:b'))
+        self.assertEqual(parse_lang_desc_tag('comment:deu:foo:bar:baz'), ('deu', 'foo:bar:baz'))
+
+    def test_create_lang_desc_tag(self):
+        self.assertEqual('comment', create_lang_desc_tag('comment'))
+        self.assertEqual('comment:eng', create_lang_desc_tag('comment', language='eng'))
+        self.assertEqual('comment::foo', create_lang_desc_tag('comment', description='foo'))
+        self.assertEqual('lyrics:jpn:foo', create_lang_desc_tag('lyrics', language='jpn', description='foo'))
+        self.assertEqual(
+            'lyrics::foo', create_lang_desc_tag('lyrics', language='jpn', description='foo', default_language='jpn')
+        )
 
     def test_display_tag_tooltip(self):
         # Unknown tag

@@ -40,51 +40,54 @@ from picard.tags.tagvar import TagVar
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
 
 
-def parse_comment_tag(name):
+def parse_lang_desc_tag(name: str, default_language: str = 'xxx') -> tuple[str, str]:
+    """Parse a tag name of the form ``name:lang:desc`` into ``(lang, desc)``.
+
+    Both the language and description are optional, and the description may
+    itself contain colons::
+
+        name            -> (default_language, '')
+        name:eng        -> ('eng', '')
+        name:eng:desc   -> ('eng', 'desc')
+        name::desc      -> (default_language, 'desc')
+        name:desc       -> (default_language, 'desc')
+
+    The language must be a 3-character code (an ID3 requirement). Anything else
+    in that position (e.g. a 2-character code, or a description that uses a
+    single colon) is treated as part of the description and ``default_language``
+    is used instead.
     """
-    Parses a tag name like "comment:XXX:desc", where XXX is the language.
-    If language is not set ("comment:desc") "eng" is assumed as default.
-    Returns a (lang, desc) tuple.
-    """
-    lang = 'eng'
-    desc = ''
+    # str.partition(sep) returns (before, sep, after) and never raises: when the
+    # separator is absent, `after` is ''. Partition twice to peel off the two
+    # optional ":"-separated parts after the tag name, leaving any further colons
+    # in the description untouched. E.g. for "lyrics:eng:some:desc":
+    #
+    #   "lyrics:eng:some:desc".partition(':') -> ("lyrics", ":", "eng:some:desc")
+    #   "eng:some:desc".partition(':')        -> ("eng", ":", "some:desc")
+    _tag, _colon, lang_and_desc = name.partition(':')
+    language, _colon, description = lang_and_desc.partition(':')
 
-    split = name.split(':', 1)
-    if len(split) > 1:
-        desc = split[1]
-
-    match_ = RE_COMMENT_LANG.match(desc)
-    if match_:
-        lang = match_.group(1)
-        desc = desc[4:]
-        return lang, desc
-
-    # Special case for unspecified language + empty description
-    if desc == 'XXX':
-        lang = 'XXX'
-        desc = ''
-
-    return lang, desc
+    if len(language) == 3:
+        # Valid language code followed by an optional description.
+        return language, description
+    if language:
+        # A non-empty but invalid code (e.g. "de"): treat the whole thing after
+        # the tag name, including its single colon, as the description.
+        return default_language, lang_and_desc
+    # Empty language ("name::desc"): the description is what follows.
+    return default_language, description
 
 
-def parse_subtag(name):
-    """
-    Parses a tag name like "lyrics:XXX:desc", where XXX is the language.
-    If language is not set, the colons are still mandatory, and "eng" is
-    assumed by default.
-    """
-    split = name.split(':')
-    if len(split) > 1 and split[1]:
-        lang = split[1]
-    else:
-        lang = 'eng'
-
-    if len(split) > 2:
-        desc = split[2]
-    else:
-        desc = ''
-
-    return lang, desc
+def create_lang_desc_tag(name: str, language: str = 'xxx', description: str = '', default_language: str = 'xxx') -> str:
+    name_parts = [name]
+    if language and language.lower() != default_language:
+        name_parts.append(language)
+    elif description:
+        # Add empty language part if description is also set
+        name_parts.append('')
+    if description:
+        name_parts.append(description)
+    return ':'.join(name_parts)
 
 
 def all_tag_vars() -> Iterator[TagVar]:

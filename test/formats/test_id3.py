@@ -200,18 +200,18 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_comment_delete(self):
             metadata = Metadata(self.tags)
-            metadata['comment:bar'] = 'Foo'
+            metadata['comment::bar'] = 'Foo'
             metadata['comment:XXX:withlang'] = 'Foo'
             original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            del metadata['comment:bar']
+            del metadata['comment::bar']
             del metadata['comment:XXX:withlang']
             new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
 
-            self.assertIn('comment:foo', original_metadata)
-            self.assertIn('comment:bar', original_metadata)
+            self.assertIn('comment', original_metadata)
+            self.assertIn('comment::bar', original_metadata)
             self.assertIn('comment:XXX:withlang', original_metadata)
-            self.assertIn('comment:foo', new_metadata)
-            self.assertNotIn('comment:bar', new_metadata)
+            self.assertIn('comment', new_metadata)
+            self.assertNotIn('comment::bar', new_metadata)
             self.assertNotIn('comment:XXX:withlang', new_metadata)
 
         @skipUnlessTestfile
@@ -280,25 +280,25 @@ class CommonId3Tests:
             config.setting['clear_existing_tags'] = True
             iTunNORM = '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
             metadata = Metadata()
-            metadata['comment:iTunNORM'] = iTunNORM
+            metadata['comment::iTunNORM'] = iTunNORM
             new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertEqual(new_metadata['comment:iTunNORM'], iTunNORM)
+            self.assertEqual(new_metadata['comment::iTunNORM'], iTunNORM)
 
         @skipUnlessTestfile
         def test_delete_itun_tags(self):
             metadata = Metadata()
-            metadata['comment:iTunNORM'] = (
+            metadata['comment::iTunNORM'] = (
                 '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
             )
-            metadata['comment:iTunPGAP'] = '1'
+            metadata['comment::iTunPGAP'] = '1'
             new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertIn('comment:iTunNORM', new_metadata)
-            self.assertIn('comment:iTunPGAP', new_metadata)
-            del metadata['comment:iTunNORM']
-            del metadata['comment:iTunPGAP']
+            self.assertIn('comment::iTunNORM', new_metadata)
+            self.assertIn('comment::iTunPGAP', new_metadata)
+            del metadata['comment::iTunNORM']
+            del metadata['comment::iTunPGAP']
             new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertNotIn('comment:iTunNORM', new_metadata)
-            self.assertNotIn('comment:iTunPGAP', new_metadata)
+            self.assertNotIn('comment::iTunNORM', new_metadata)
+            self.assertNotIn('comment::iTunPGAP', new_metadata)
 
         @skipUnlessTestfile
         def test_itunes_cddb_1_comm_frame(self):
@@ -318,7 +318,7 @@ class CommonId3Tests:
             self.assertEqual(loaded_metadata['itunes_cddb_1'], cddb_value)
 
             # Ensure it's not loaded as a comment tag
-            self.assertNotIn('comment:iTunes_CDDB_1', loaded_metadata)
+            self.assertNotIn('comment::iTunes_CDDB_1', loaded_metadata)
 
             # Now verify that saving the tag keeps it in COMM frame
             new_metadata = save_and_load_metadata(self.format_registry, self.filename, loaded_metadata)
@@ -408,10 +408,32 @@ class CommonId3Tests:
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
         @skipUnlessTestfile
-        def test_lyrics_with_description(self):
-            metadata = Metadata({'lyrics:foo': 'bar'})
+        def test_lyrics_with_language(self):
+            metadata = Metadata({'lyrics:jpn': 'bar'})
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
+            self.assertIn('lyrics:jpn', loaded_metadata)
+            self.assertEqual(metadata['lyrics:jpn'], loaded_metadata['lyrics:jpn'])
+
+        @skipUnlessTestfile
+        def test_lyrics_with_description(self):
+            metadata = Metadata({'lyrics::foo': 'bar'})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('lyrics::foo', loaded_metadata)
+            self.assertEqual(metadata['lyrics::foo'], loaded_metadata['lyrics::foo'])
+
+        @skipUnlessTestfile
+        def test_lyrics_with_language_and_description(self):
+            metadata = Metadata({'lyrics:fra:foo': 'bar'})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('lyrics:fra:foo', loaded_metadata)
+            self.assertEqual(metadata['lyrics:fra:foo'], loaded_metadata['lyrics:fra:foo'])
+
+        @skipUnlessTestfile
+        def test_lyrics_with_description_containing_colon(self):
+            metadata = Metadata({'lyrics:eng:foo:bar': 'baz'})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('lyrics:eng:foo:bar', loaded_metadata)
+            self.assertEqual(metadata['lyrics:eng:foo:bar'], loaded_metadata['lyrics:eng:foo:bar'])
 
         @skipUnlessTestfile
         def test_syncedlyrics_preserve_language_and_description(self):
@@ -420,10 +442,10 @@ class CommonId3Tests:
             metadata.add('syncedlyrics:ita', '[00:00.000]<00:00.000>foo3')
             metadata.add('syncedlyrics::desc', '[00:00.000]<00:00.000>foo4')
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            self.assertEqual(metadata['syncedlyrics'], loaded_metadata['syncedlyrics:eng'])
+            self.assertEqual(metadata['syncedlyrics'], loaded_metadata['syncedlyrics'])
             self.assertEqual(metadata['syncedlyrics:deu:desc'], loaded_metadata['syncedlyrics:deu:desc'])
             self.assertEqual(metadata['syncedlyrics:ita'], loaded_metadata['syncedlyrics:ita'])
-            self.assertEqual(metadata['syncedlyrics::desc'], loaded_metadata['syncedlyrics:eng:desc'])
+            self.assertEqual(metadata['syncedlyrics::desc'], loaded_metadata['syncedlyrics::desc'])
 
         @skipUnlessTestfile
         def test_syncedlyrics_delete(self):
