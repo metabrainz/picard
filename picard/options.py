@@ -478,10 +478,19 @@ TextOption(
 
 # picard/ui/options/matching.py
 # Matching
-FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"), in_profile=True)
-FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"), in_profile=True)
+# These are similarity fractions in the range 0.0..1.0, compared directly
+# against computed match scores (see picard/file.py, picard/cluster.py). The UI
+# presents them as 0..100 percent. A stored value outside 0.0..1.0 would make
+# matching always or never succeed, so clamp to that range.
+FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"), in_profile=True, bounds=(0.0, 1.0))
+FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"), in_profile=True, bounds=(0.0, 1.0))
 FloatOption(
-    'setting', 'track_matching_threshold', 0.4, title=N_("Similarity for matching files to tracks"), in_profile=True
+    'setting',
+    'track_matching_threshold',
+    0.4,
+    title=N_("Similarity for matching files to tracks"),
+    in_profile=True,
+    bounds=(0.0, 1.0),
 )
 
 # picard/ui/options/metadata.py
