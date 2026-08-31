@@ -23,6 +23,8 @@ from types import MappingProxyType
 
 import mutagen
 
+from test.picardtestcase import subtest_cases
+
 from picard.metadata import Metadata
 
 from .common import (
@@ -139,12 +141,19 @@ class CommonMP4Tests:
             self.assertEqual('', loaded_metadata['totaltracks'])
 
         @skipUnlessTestfile
-        def test_invalid_int_tag(self):
-            for tag in ('bpm', 'movementnumber', 'movementtotal', 'showmovement'):
-                with self.subTest(tag=tag):
-                    metadata = Metadata({tag: 'notanumber'})
-                    loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                    self.assertNotIn(tag, loaded_metadata)
+        @subtest_cases(
+            "tag",
+            [
+                'bpm',
+                'movementnumber',
+                'movementtotal',
+                'showmovement',
+            ],
+        )
+        def test_invalid_int_tag(self, tag):
+            metadata = Metadata({tag: 'notanumber'})
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertNotIn(tag, loaded_metadata)
 
 
 class M4ATest(CommonMP4Tests.MP4TestCase):

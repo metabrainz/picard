@@ -30,7 +30,10 @@ from urllib.parse import (
     urlparse,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.browser.filelookup import FileLookup
 from picard.browser.server import (
@@ -335,25 +338,27 @@ class RequestHandlerAuthTest(PicardTestCase):
         self.assertIn(b'Authentication successful', response)
         self.assertIn(b'<!doctype html>', response)
 
-    def test_auth_invalid_state(self):
-        """An invalid state should return 400 regardless of code or error."""
-        self.oauth_manager.verify_state.side_effect = OAuthInvalidStateError()
-        for path in (
+    @subtest_cases(
+        "path",
+        [
             '/auth?code=auth_code_123&state=bad',
             '/auth?error=access_denied&state=bad',
-        ):
-            with self.subTest(path=path):
-                self.oauth_manager.verify_state.reset_mock()
-                handler = self._make_handler(path)
+        ],
+    )
+    def test_auth_invalid_state(self, path):
+        """An invalid state should return 400 regardless of code or error."""
+        self.oauth_manager.verify_state.side_effect = OAuthInvalidStateError()
+        self.oauth_manager.verify_state.reset_mock()
+        handler = self._make_handler(path)
 
-                handler._handle_get()
+        handler._handle_get()
 
-                self.oauth_manager.verify_state.assert_called_once_with('bad')
-                self.callback.assert_not_called()
-                response = handler.wfile.getvalue()
-                self.assertIn(b'400', response)
-                self.assertIn(b'<!doctype html>', response)
-                self.assertIn(b'Authentication error', response)
+        self.oauth_manager.verify_state.assert_called_once_with('bad')
+        self.callback.assert_not_called()
+        response = handler.wfile.getvalue()
+        self.assertIn(b'400', response)
+        self.assertIn(b'<!doctype html>', response)
+        self.assertIn(b'Authentication error', response)
 
     def test_auth_no_code_no_error(self):
         """When auth has neither code nor error, return 400 with a styled page."""
