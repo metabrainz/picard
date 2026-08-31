@@ -41,6 +41,7 @@ from picard.config import (
     ListOption,
     Option,
     OptionError,
+    OutOfBoundsError,
     TextOption,
     get_quick_menu_items,
     register_quick_menu_item,
@@ -543,10 +544,12 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         try:
             with self.assertLogs('main', level='WARNING') as cm:
                 self.assertEqual(opt.convert(1), 2)
-            self.assertIn('below the minimum', ''.join(cm.output))
+            self.assertIn('out of bounds', ''.join(cm.output))
+            self.assertIn('clamping to 2', ''.join(cm.output))
             with self.assertLogs('main', level='WARNING') as cm:
                 self.assertEqual(opt.convert(99), 10)
-            self.assertIn('above the maximum', ''.join(cm.output))
+            self.assertIn('out of bounds', ''.join(cm.output))
+            self.assertIn('clamping to 10', ''.join(cm.output))
         finally:
             logging.disable(logging.ERROR)
 
@@ -597,6 +600,44 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         # A stored value that is not a valid member falls back to the default.
         self.config.setValue('setting/int_option', 99)
         self.assertEqual(self.config.setting["int_option"], TestIntEnum.A)
+
+    def test_int_opt_checked_convert_raises_out_of_bounds(self):
+        opt = IntOption("setting", "int_option", 5, bounds=(2, 10))
+        # In range: returns the value unchanged, no raise.
+        self.assertEqual(opt.checked_convert(5), 5)
+        with self.assertRaises(OutOfBoundsError) as ctx:
+            opt.checked_convert(99)
+        self.assertEqual(ctx.exception.value, 99)
+        self.assertEqual(ctx.exception.corrected, 10)
+        self.assertIs(ctx.exception.option, opt)
+        # OutOfBoundsError is a ValueError so existing handlers keep working.
+        self.assertIsInstance(ctx.exception, ValueError)
+        with self.assertRaises(OutOfBoundsError) as ctx:
+            opt.checked_convert(0)
+        self.assertEqual(ctx.exception.corrected, 2)
+
+    def test_int_opt_checked_convert_does_not_log(self):
+        opt = IntOption("setting", "int_option", 5, bounds=(2, 10))
+        logging.disable(logging.NOTSET)
+        try:
+            # Pure detection: checked_convert must not log; only convert() does.
+            with self.assertNoLogs('main', level='WARNING'):
+                with self.assertRaises(OutOfBoundsError):
+                    opt.checked_convert(99)
+        finally:
+            logging.disable(logging.ERROR)
+
+    def test_int_opt_checked_convert_invalid_intenum_raises(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        opt = IntOption("setting", "int_option", TestIntEnum.A)
+        self.assertEqual(opt.checked_convert(2), TestIntEnum.B)
+        with self.assertRaises(OutOfBoundsError) as ctx:
+            opt.checked_convert(99)
+        self.assertEqual(ctx.exception.value, 99)
+        self.assertEqual(ctx.exception.corrected, TestIntEnum.A)
 
     @subtest_cases(
         "bounds,exception",
@@ -689,10 +730,12 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
         try:
             with self.assertLogs('main', level='WARNING') as cm:
                 self.assertEqual(opt.convert(-1.0), 0.0)
-            self.assertIn('below the minimum', ''.join(cm.output))
+            self.assertIn('out of bounds', ''.join(cm.output))
+            self.assertIn('clamping to 0.0', ''.join(cm.output))
             with self.assertLogs('main', level='WARNING') as cm:
                 self.assertEqual(opt.convert(2.0), 1.0)
-            self.assertIn('above the maximum', ''.join(cm.output))
+            self.assertIn('out of bounds', ''.join(cm.output))
+            self.assertIn('clamping to 1.0', ''.join(cm.output))
         finally:
             logging.disable(logging.ERROR)
 
@@ -700,6 +743,14 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
         FloatOption("setting", "float_option", 0.5, bounds=(0.0, 1.0))
         self.config.setValue('setting/float_option', 2.5)
         self.assertEqual(self.config.setting["float_option"], 1.0)
+
+    def test_float_opt_checked_convert_raises_out_of_bounds(self):
+        opt = FloatOption("setting", "float_option", 0.5, bounds=(0.0, 1.0))
+        self.assertEqual(opt.checked_convert(0.5), 0.5)
+        with self.assertRaises(OutOfBoundsError) as ctx:
+            opt.checked_convert(2.5)
+        self.assertEqual(ctx.exception.corrected, 1.0)
+        self.assertIsInstance(ctx.exception, ValueError)
 
     def test_float_opt_bounds_accepts_int(self):
         # int bounds are accepted for a float option and coerced to float.

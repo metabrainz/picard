@@ -167,13 +167,35 @@ class BoolOption(Option):
     qtype = bool
 
 
+class OutOfBoundsError(ValueError):
+    """Raised when an option value falls outside its declared bounds.
+
+    Carries the offending ``value`` and the ``corrected`` value (the nearest
+    bound for a numeric option, or the option default for an invalid enum
+    member) so a caller can choose its own policy: clamp to ``corrected``, keep
+    the original, reject it, etc. Subclasses :class:`ValueError` so existing
+    ``except ValueError`` handlers keep working.
+    """
+
+    def __init__(self, option: 'Option', value: Any, corrected: Any):
+        self.option = option
+        self.value = value
+        self.corrected = corrected
+        super().__init__(
+            f"Option '{option.section}/{option.name}': value {value!r} is out of bounds, corrected to {corrected!r}"
+        )
+
+
 class OptionBounds:
     """Inclusive numeric bounds for an option.
 
-    A bound of ``None`` means unbounded on that side. Values outside the range
-    are clamped to the nearest bound by :meth:`clamp`. Because an out-of-range
-    stored value is unexpected (e.g. from a hand-edited configuration file),
-    clamping is reported with a warning so it can be diagnosed.
+    A bound of ``None`` means unbounded on that side. :meth:`check` detects a
+    value outside the range and raises :class:`OutOfBoundsError` carrying the
+    nearest bound; :meth:`clamp` applies the default "auto-correct" policy on
+    top of :meth:`check`, returning the nearest bound and logging a warning.
+    Because an out-of-range stored value is unexpected (e.g. from a hand-edited
+    configuration file), clamping is reported with a warning so it can be
+    diagnosed.
 
     Subclasses define ``value_type`` to enforce and normalize the bound type.
     """
@@ -194,27 +216,39 @@ class OptionBounds:
             raise TypeError(f"Bound {value!r} is not of type {self.value_type.__name__}")
         return self.value_type(value)
 
-    def clamp(self, value, option):
-        """Clamp value to the bounds, warning (via option context) if out of range."""
+    def check(self, value, option):
+        """Return value unchanged, or raise OutOfBoundsError if out of range.
+
+        Pure detection with no side effects. The raised error carries the
+        nearest bound as its ``corrected`` value so a caller can decide what to
+        do about the violation.
+        """
         if self.minimum is not None and value < self.minimum:
-            log.warning(
-                "Option '%s/%s': value %r is below the minimum %r, clamping",
-                option.section,
-                option.name,
-                value,
-                self.minimum,
-            )
-            return self.minimum
+            raise OutOfBoundsError(option, value, self.minimum)
         if self.maximum is not None and value > self.maximum:
+            raise OutOfBoundsError(option, value, self.maximum)
+        return value
+
+    def clamp(self, value, option):
+        """Clamp value to the bounds, warning (via option context) if out of range.
+
+        This is the default "auto-correct" policy used when reading an option:
+        an out-of-range value is corrected to the nearest bound and a warning is
+        logged.
+        """
+        try:
+            return self.check(value, option)
+        except OutOfBoundsError as e:
             log.warning(
-                "Option '%s/%s': value %r is above the maximum %r, clamping",
+                "Option '%s/%s': value %r is out of bounds [%r, %r], clamping to %r",
                 option.section,
                 option.name,
-                value,
+                e.value,
+                self.minimum,
                 self.maximum,
+                e.corrected,
             )
-            return self.maximum
-        return value
+            return e.corrected
 
 
 class OptionBoundsInt(OptionBounds):
@@ -261,34 +295,70 @@ class BoundedNumberOption(Option):
 class IntOption(BoundedNumberOption):
     bounds_type = OptionBoundsInt
 
-    def convert(self, value):
+    def checked_convert(self, value):
+        """Convert value, raising OutOfBoundsError if it violates the bounds.
+
+        For an IntEnum option the value must be a valid member; an invalid
+        member raises OutOfBoundsError whose ``corrected`` value is the option
+        default. For a plain int the numeric bounds are enforced via
+        :meth:`OptionBounds.check`. Callers that want the default auto-correct
+        policy should use :meth:`convert` instead.
+        """
         value = int(value)
-        # If the default is an IntEnum, return an IntEnum. Bounds do not apply
-        # to enum options; instead the value must be a valid member. An invalid
-        # value (e.g. from a hand-edited config or an outdated profile) falls
-        # back to the default, reported with a warning, mirroring how bounds
-        # report clamping.
+        # Bounds do not apply to enum options (an enum is a set of members, not
+        # an ordered range); the value must instead be a valid member.
         if isinstance(self.default, IntEnum):
             enum_type = type(self.default)
             try:
                 return enum_type(value)
             except ValueError:
+                raise OutOfBoundsError(self, value, self.default) from None
+        return self.bounds.check(value, self)
+
+    def convert(self, value):
+        # Default policy: an out-of-range value (or an invalid enum member) is
+        # corrected to the nearest bound / the option default and reported with
+        # a warning, mirroring OptionBounds.clamp. This keeps a stale value
+        # (e.g. from a hand-edited config or an outdated profile) usable on read.
+        try:
+            return self.checked_convert(value)
+        except OutOfBoundsError as e:
+            if isinstance(self.default, IntEnum):
                 log.warning(
                     "Option '%s/%s': %r is not a valid %s, using default %r",
                     self.section,
                     self.name,
-                    value,
-                    enum_type.__name__,
-                    self.default,
+                    e.value,
+                    type(self.default).__name__,
+                    e.corrected,
                 )
-                return self.default
-        return self.bounds.clamp(value, self)
+            else:
+                log.warning(
+                    "Option '%s/%s': value %r is out of bounds [%r, %r], clamping to %r",
+                    self.section,
+                    self.name,
+                    e.value,
+                    self.bounds.minimum,
+                    self.bounds.maximum,
+                    e.corrected,
+                )
+            return e.corrected
 
 
 class FloatOption(BoundedNumberOption):
     bounds_type = OptionBoundsFloat
 
+    def checked_convert(self, value):
+        """Convert value, raising OutOfBoundsError if it violates the bounds.
+
+        Callers that want the default auto-correct policy should use
+        :meth:`convert` instead.
+        """
+        return self.bounds.check(float(value), self)
+
     def convert(self, value):
+        # Default policy: clamp to the nearest bound and warn (see
+        # OptionBounds.clamp).
         return self.bounds.clamp(float(value), self)
 
 
