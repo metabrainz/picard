@@ -698,7 +698,8 @@ IntOption('persist', 'last_update_check', 0)
 BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"), in_profile=True)
 BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"), in_profile=True)
 BoolOption('setting', 'check_for_updates', False, title=N_("Check for program updates"), in_profile=True)
-IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), in_profile=True)
+# Days between update checks; must be at least 1 (the UI spinbox enforces this).
+IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), in_profile=True, bounds=(1, None))
 IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"), in_profile=True)
 IntOption('setting', 'log_verbosity', DEFAULT_LOG_LEVEL, title=N_("Log verbosity level"), in_profile=True)
 
