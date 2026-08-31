@@ -1104,7 +1104,14 @@ def parse_date(dt: str) -> datetime | None:
     return None
 
 
-def pattern_as_regex(pattern: str, allow_wildcards: bool = False, flags: int = 0) -> re.Pattern[str]:
+def pattern_as_regex(
+    pattern: str,
+    allow_wildcards: bool = False,
+    flags: int = 0,
+    *,
+    allow_char_class: bool = True,
+    allow_alternation: bool = False,
+) -> re.Pattern[str]:
     """Parses a string and interprets it as a matching pattern.
 
     - If pattern is of the form /pattern/flags it is interpreted as a regular expression (e.g. `/foo.*/`).
@@ -1124,6 +1131,8 @@ def pattern_as_regex(pattern: str, allow_wildcards: bool = False, flags: int = 0
         pattern: The pattern as a string
         allow_wildcards: If true and if the pattern is not interpreted as a regex wildcard matching is allowed.
         flags: Additional regex flags to set (e.g. `re.I`)
+        allow_char_class: Passed to wildcards_to_regex_pattern (see there). Defaults to True.
+        allow_alternation: Passed to wildcards_to_regex_pattern (see there). Defaults to False.
 
     Returns: An re.Pattern instance
 
@@ -1138,28 +1147,50 @@ def pattern_as_regex(pattern: str, allow_wildcards: bool = False, flags: int = 0
             flags |= re.MULTILINE
         regex = plain_pattern[1:-1]
     elif allow_wildcards:
-        regex = '^' + wildcards_to_regex_pattern(pattern) + '$'
+        regex = wildcards_to_regex_pattern(
+            pattern,
+            allow_char_class=allow_char_class,
+            allow_alternation=allow_alternation,
+            anchored=True,
+        )
     else:
         regex = re.escape(pattern)
     return re.compile(regex, flags)
 
 
-def wildcards_to_regex_pattern(pattern: str) -> str:
+def wildcards_to_regex_pattern(
+    pattern: str,
+    *,
+    allow_char_class: bool = True,
+    allow_alternation: bool = False,
+    anchored: bool = False,
+) -> str:
     """Converts a pattern with shell like wildcards into a regular expression string.
 
     The following syntax is supported:
     - `*`: Matches an arbitrary number of characters or none, e.g. `fo*` matches "foo" or "foot".
     - `?`: Matches exactly one character, e.g. `fo?` matches "foo" or "for".
-    - `[...]`
+    - `[...]`: Matches any character in the set (only when `allow_char_class` is True).
+    - `{a,b,c}`: Matches any of the comma separated alternatives (only when `allow_alternation`
+      is True), e.g. `*.{jpg,png}` matches "cover.jpg" or "cover.png".
     - `?`, `*` and `\\` can be escaped with a backslash \\ to match the literal character, e.g. `fo\\?` matches "fo?".
+      When the corresponding feature is enabled, `[`, `]`, `{`, `}` and `,` can be escaped too.
 
     Args:
         pattern: The pattern as a string
+        allow_char_class: If True (default), `[...]` is interpreted as a character class.
+            If False, `[` and `]` are matched literally (useful for file names that commonly
+            contain brackets, e.g. "Album [2007].jpg").
+        allow_alternation: If True, `{a,b,c}` is interpreted as an alternation. Defaults to False,
+            in which case `{`, `}` and `,` are matched literally.
+        anchored: If True, the returned expression is wrapped in `^...$` so it matches the whole
+            string. Defaults to False (returns a fragment).
 
     Returns: A string with a valid regular expression.
     """
     regex = []
-    group = None
+    group = None  # accumulates a [...] character class when allow_char_class
+    brace = None  # accumulates a {...} alternation when allow_alternation
     escape = False
     for c in pattern:
         if group is not None:
@@ -1179,8 +1210,23 @@ def wildcards_to_regex_pattern(pattern: str) -> str:
             else:
                 group.append(c)
                 continue
+        elif brace is not None:
+            if escape:
+                brace.append(c)
+                escape = False
+                continue
+            if c == '}':
+                alternatives = ''.join(brace[1:]).split(',')
+                part = '(?:' + '|'.join(re.escape(a) for a in alternatives) + ')'
+                brace = None
+            elif c == '\\':
+                escape = True
+                continue
+            else:
+                brace.append(c)
+                continue
         elif escape:
-            if c in {'*', '?', '\\', '[', ']'}:
+            if c in {'*', '?', '\\', '[', ']', '{', '}', ','}:
                 part = '\\' + c
             else:
                 part = re.escape('\\' + c)
@@ -1188,8 +1234,11 @@ def wildcards_to_regex_pattern(pattern: str) -> str:
         elif c == '\\':
             escape = True
             continue
-        elif c == '[':
+        elif allow_char_class and c == '[':
             group = ['[']
+            continue
+        elif allow_alternation and c == '{':
+            brace = ['{']
             continue
         elif c == '*':
             part = '.*'
@@ -1199,12 +1248,30 @@ def wildcards_to_regex_pattern(pattern: str) -> str:
             part = re.escape(c)
         regex.append(part)
 
-    # There might be an unclosed character group. Interpret the starting
-    # bracket of the group as a literal bracket and re-evaluate the rest.
+    # There might be an unclosed character group or alternation. Interpret the
+    # starting bracket/brace as a literal character and re-evaluate the rest.
     if group is not None:
         regex.append('\\[')
-        regex.append(wildcards_to_regex_pattern(''.join(group[1:])))
-    return ''.join(regex)
+        regex.append(
+            wildcards_to_regex_pattern(
+                ''.join(group[1:]),
+                allow_char_class=allow_char_class,
+                allow_alternation=allow_alternation,
+            )
+        )
+    elif brace is not None:
+        regex.append('\\{')
+        regex.append(
+            wildcards_to_regex_pattern(
+                ''.join(brace[1:]),
+                allow_char_class=allow_char_class,
+                allow_alternation=allow_alternation,
+            )
+        )
+    result = ''.join(regex)
+    if anchored:
+        result = '^' + result + '$'
+    return result
 
 
 def _regex_numbered_title_fmt(fmt: str, title_repl: str, count_repl: str) -> str:

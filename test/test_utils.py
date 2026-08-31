@@ -702,6 +702,75 @@ class WildcardsToRegexPatternTest(PicardTestCase):
         self._assert_regex_pattern(pattern, re.escape(pattern))
 
 
+class WildcardsToRegexPatternFlagsTest(PicardTestCase):
+    def test_anchored(self):
+        regex = wildcards_to_regex_pattern('fo*', anchored=True)
+        self.assertEqual('^fo.*$', regex)
+        self.assertTrue(re.match(regex, 'foo'))
+        self.assertFalse(re.match(regex, 'xfoo'))
+
+    def test_char_class_disabled_brackets_literal(self):
+        regex = wildcards_to_regex_pattern('Album [2007].*', allow_char_class=False)
+        pattern = re.compile('^' + regex + '$')
+        self.assertTrue(pattern.match('Album [2007].jpg'))
+        self.assertFalse(pattern.match('Album 2.jpg'))
+
+    def test_char_class_enabled_by_default(self):
+        self.assertEqual('[abc]', wildcards_to_regex_pattern('[abc]'))
+
+    def test_alternation_enabled(self):
+        regex = wildcards_to_regex_pattern('cover.{jpg,png,gif}', allow_alternation=True)
+        pattern = re.compile('^' + regex + '$')
+        self.assertTrue(pattern.match('cover.jpg'))
+        self.assertTrue(pattern.match('cover.png'))
+        self.assertTrue(pattern.match('cover.gif'))
+        self.assertFalse(pattern.match('cover.txt'))
+
+    def test_alternation_disabled_by_default(self):
+        self.assertEqual(re.escape('a{b,c}d'), wildcards_to_regex_pattern('a{b,c}d'))
+
+    def test_alternation_open_brace_literal(self):
+        regex = wildcards_to_regex_pattern('a{b,c', allow_alternation=True)
+        pattern = re.compile('^' + regex + '$')
+        self.assertTrue(pattern.match('a{b,c'))
+
+    def test_alternation_escaped(self):
+        regex = wildcards_to_regex_pattern('a\\{b,c\\}', allow_alternation=True)
+        pattern = re.compile('^' + regex + '$')
+        self.assertTrue(pattern.match('a{b,c}'))
+
+    def test_char_class_and_alternation_combined(self):
+        regex = wildcards_to_regex_pattern(
+            'Artist - Album [2007].{jpg,png}',
+            allow_char_class=False,
+            allow_alternation=True,
+            anchored=True,
+        )
+        pattern = re.compile(regex, re.IGNORECASE)
+        self.assertTrue(pattern.match('Artist - Album [2007].jpg'))
+        self.assertTrue(pattern.match('Artist - Album [2007].PNG'))
+        self.assertFalse(pattern.match('Artist - Album [2007].txt'))
+
+
+class PatternAsRegexFlagsTest(PicardTestCase):
+    def test_passes_flags_through(self):
+        regex = pattern_as_regex(
+            'Album [2007].{jpg,png}',
+            allow_wildcards=True,
+            flags=re.IGNORECASE,
+            allow_char_class=False,
+            allow_alternation=True,
+        )
+        self.assertTrue(regex.match('Album [2007].jpg'))
+        self.assertTrue(regex.match('Album [2007].PNG'))
+        self.assertFalse(regex.match('Album [2007].txt'))
+
+    def test_regex_form_ignores_wildcard_flags(self):
+        regex = pattern_as_regex('/a{2}/', allow_wildcards=True, allow_alternation=True)
+        self.assertTrue(regex.search('aa'))
+        self.assertFalse(regex.search('a'))
+
+
 class BuildQUrlTest(PicardTestCase):
     def test_path_and_querystring(self):
         query = {'foo': 'x', 'bar': 'y'}
