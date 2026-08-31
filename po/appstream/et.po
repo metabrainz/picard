@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2026-08-17 14:12+0000\n"
+"PO-Revision-Date: 2026-08-31 19:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -38,6 +38,9 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
+"Kas soovid oma muusikakogu korrastada? Picard on MusicBrainzi poolt "
+"arendatud avatud lähtekoodiga platvormiülene muusika sildistaja. See suudab "
+"tuvastada helifaile isegi siis, kui neil puuduvad metaandmed."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
@@ -47,20 +50,27 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
+"Picard aitab sul oma muusikakogu korrastada, nimetades muusikafaile ümber ja "
+"jagades need kaustade struktuuri täpselt nii, nagu sa soovid. Saadaval on "
+"mitmesuguseid lisamooduleid ning saad isegi ise neid lisaks koostada. Picard "
+"toetab laia valikut helivorminguid ja suudab sinu eest läbi vaadata ka terve "
+"CD-plaadi."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
-msgstr ""
+msgstr "Helifailide sildistamine pole iialgi olnud lihtsam."
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
-msgstr ""
+msgstr "Funktsionaalsused:"
 
 #: org.musicbrainz.Picard.appdata.xml.in:27
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
+"Palju vorminguid: Picard oskab kasutada mitmeid populaarseid muusikafailide "
+"vorminguid, sealhulgas MP3, FLAC, OGG, M4A, WMA, WAV ning paljusid veel."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""

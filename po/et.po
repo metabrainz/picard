@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-22 22:12+0000\n"
+"PO-Revision-Date: 2026-08-31 19:12+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -897,11 +897,11 @@ msgstr ""
 
 #: picard/browser/addrelease.py:155
 msgid "Add file as release"
-msgstr ""
+msgstr "Lisa fail väljaandena"
 
 #: picard/browser/addrelease.py:157
 msgid "Add file as release…"
-msgstr ""
+msgstr "Lisa fail väljaandena…"
 
 #: picard/browser/addrelease.py:165
 msgid "Add file as recording"
@@ -952,11 +952,11 @@ msgstr "Kaanepildiarhiiv"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Kaanepiltide arhiiv: väljaanne"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Kaanepiltide arhiiv: väljaandegrupp"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -3481,7 +3481,7 @@ msgstr "Näita Picardi järgmisel käivitamisel seda teadet uuesti."
 
 #: picard/ui/newuserdialog.py:54
 msgid "New User Warning"
-msgstr ""
+msgstr "Uue kasutaja hoiatus"
 
 #: picard/ui/passworddialog.py:43
 #, python-format
@@ -3940,7 +3940,7 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
-msgstr ""
+msgstr "Valitud skriptid"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
@@ -3948,23 +3948,23 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected language script up"
-msgstr ""
+msgstr "Tõsta valitud keeleskript ülespoole"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
-msgstr ""
+msgstr "Lisa valitud keeleskriptide sekka"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected language script"
-msgstr ""
+msgstr "Eemalda valitud keeleskript"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
-msgstr ""
+msgstr "Tõsta valitud keeleskript allapoole"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Language Scripts"
-msgstr ""
+msgstr "Saadaval keeleskriptid"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
@@ -4109,7 +4109,7 @@ msgstr "Eira olemasolevaid AcoustID sõrmejälgi"
 
 #: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
-msgstr ""
+msgstr "Salvesta AcoustID sõrmejäljed failis leiduvatesse siltidesse"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
@@ -4364,11 +4364,11 @@ msgstr "Puhverserver"
 
 #: picard/ui/ui_options_network.py:132
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: picard/ui/ui_options_network.py:133
 msgid "SOCKS"
-msgstr ""
+msgstr "SOCKS"
 
 #: picard/ui/ui_options_network.py:134 picard/ui/ui_passworddialog.py:63
 msgid "Username:"
@@ -4380,7 +4380,7 @@ msgstr "Salasõna:"
 
 #: picard/ui/ui_options_network.py:138
 msgid "Request timeout in seconds:"
-msgstr ""
+msgstr "Päringu aegumine sekundites:"
 
 #: picard/ui/ui_options_network.py:139
 msgid "Browser Integration"
