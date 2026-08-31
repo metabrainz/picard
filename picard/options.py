@@ -563,7 +563,11 @@ ListOption('persist', 'profile_settings_tree_expanded_list', [])
 # picard/ui/options/ratings.py
 # Ratings
 BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings"), in_profile=True)
-IntOption('setting', 'rating_steps', 6)
+# The rating scale has N steps; ratings map onto the range 0..(rating_steps - 1),
+# and that divisor is used when reading and writing ratings in every tag format
+# (asf, id3, vorbis) and by the rating widget. A value below 2 would make the
+# range collapse or divide by zero, so clamp it to a minimum of 2.
+IntOption('setting', 'rating_steps', 6, bounds=(2, None))
 TextOption(
     'setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email for saving ratings"), in_profile=True
 )
