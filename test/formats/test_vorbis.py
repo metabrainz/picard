@@ -36,6 +36,7 @@ from mutagen.flac import (
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
+    subtest_cases,
 )
 
 from picard import config
@@ -479,20 +480,22 @@ class VorbisUtilTest(PicardTestCase):
 class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.flac'
 
-    def test_set_picture_dimensions(self):
-        tests = [
-            CoverArtImage(data=self.jpegdata),
-            CoverArtImage(data=self.pngdata),
-        ]
-        for test in tests:
-            with self.subTest(image=test.mimetype):
-                file_save_image(self.format_registry, self.filename, test)
-                raw_metadata = load_raw(self.filename)
-                pic = raw_metadata.pictures[0]
-                self.assertNotEqual(pic.width, 0)
-                self.assertEqual(pic.width, test.width)
-                self.assertNotEqual(pic.height, 0)
-                self.assertEqual(pic.height, test.height)
+    @subtest_cases(
+        "image_data_attr",
+        [
+            'jpegdata',
+            'pngdata',
+        ],
+    )
+    def test_set_picture_dimensions(self, image_data_attr):
+        test = CoverArtImage(data=getattr(self, image_data_attr))
+        file_save_image(self.format_registry, self.filename, test)
+        raw_metadata = load_raw(self.filename)
+        pic = raw_metadata.pictures[0]
+        self.assertNotEqual(pic.width, 0)
+        self.assertEqual(pic.width, test.width)
+        self.assertNotEqual(pic.height, 0)
+        self.assertEqual(pic.height, test.height)
 
     def test_save_large_pics(self):
         # 16 MB image
