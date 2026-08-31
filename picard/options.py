@@ -581,7 +581,17 @@ IntOption(
     title=N_("Network cache size (bytes)"),
     in_profile=True,
 )
-IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout (seconds)"), in_profile=True)
+# Request timeout in seconds, passed to QNetworkAccessManager.setTransferTimeout
+# (which treats 0 as "no timeout"). A negative value is invalid; the UI caps it
+# at 900. Clamp to 0..900.
+IntOption(
+    'setting',
+    'network_transfer_timeout_seconds',
+    30,
+    title=N_("Request timeout (seconds)"),
+    in_profile=True,
+    bounds=(0, 900),
+)
 TextOption('setting', 'proxy_password', '', title=N_("Proxy password"), in_profile=True, shareable=False)
 TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"), in_profile=True, shareable=False)
 IntOption(
