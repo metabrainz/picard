@@ -17,7 +17,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.plugin3.validator import (
     PLACEHOLDER_UUIDS,
@@ -148,25 +151,28 @@ class TestManifestValidator(PicardTestCase):
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
-    def test_validate_source_locale(self):
-        """Test validation of source_locale field."""
+    @subtest_cases(
+        "locale",
+        ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN'],
+    )
+    def test_validate_source_locale_valid(self, locale):
         manifest = _valid_manifest()
+        manifest['source_locale'] = locale
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
 
-        # Valid locales
-        for locale in ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN']:
-            with self.subTest(locale=locale):
-                manifest['source_locale'] = locale
-                errors = validate_manifest_dict(manifest)
-                self.assertEqual(errors, [])
+    @subtest_cases(
+        "locale",
+        ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123'],
+    )
+    def test_validate_source_locale_invalid_format(self, locale):
+        manifest = _valid_manifest()
+        manifest['source_locale'] = locale
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('source_locale' in e for e in errors))
 
-        # Invalid formats
-        for locale in ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123']:
-            with self.subTest(locale=locale):
-                manifest['source_locale'] = locale
-                errors = validate_manifest_dict(manifest)
-                self.assertTrue(any('source_locale' in e for e in errors))
-
-        # Wrong type
+    def test_validate_source_locale_wrong_type(self):
+        manifest = _valid_manifest()
         manifest['source_locale'] = 123
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'source_locale' must be a string", errors)
@@ -356,32 +362,29 @@ code block
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [], "Valid complex markdown should not produce errors")
 
-    def test_validate_placeholder_uuids(self):
+    @subtest_cases("uuid", PLACEHOLDER_UUIDS)
+    def test_validate_placeholder_uuids(self, uuid):
         """Test validation catches various placeholder/test UUIDs."""
-        for uuid in PLACEHOLDER_UUIDS:
-            with self.subTest(uuid=uuid):
-                manifest = _valid_manifest(uuid=uuid)
-                errors = validate_manifest_dict(manifest)
-                self.assertTrue(any('placeholder/test UUID' in e for e in errors))
+        manifest = _valid_manifest(uuid=uuid)
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('placeholder/test UUID' in e for e in errors))
 
-    def test_validate_all_known_placeholders_fail_entropy(self):
+    @subtest_cases("uuid", PLACEHOLDER_UUIDS)
+    def test_validate_all_known_placeholders_fail_entropy(self, uuid):
         """Test that all UUIDs in PLACEHOLDER_UUIDS fail Shannon entropy check."""
-        for placeholder_uuid in PLACEHOLDER_UUIDS:
-            with self.subTest(uuid=placeholder_uuid):
-                self.assertTrue(
-                    _is_placeholder_uuid(placeholder_uuid), f"UUID {placeholder_uuid} should be detected as placeholder"
-                )
+        self.assertTrue(_is_placeholder_uuid(uuid), f"UUID {uuid} should be detected as placeholder")
 
-    def test_validate_real_uuids(self):
-        """Test that real UUIDs are not flagged as placeholders."""
-        real_uuids = [
+    @subtest_cases(
+        "uuid",
+        [
             '74807b76-c451-419f-bbd4-42a78e2444a6',  # ReplayGain plugin
             '550e8400-e29b-41d4-a716-446655440000',
             'f47ac10b-58cc-4372-a567-0e02b2c3d479',
             '3d6f0e4a-8c9b-4f2e-a1d7-5b8c9e0f1a2b',
-        ]
-        for uuid in real_uuids:
-            with self.subTest(uuid=uuid):
-                manifest = _valid_manifest(uuid=uuid)
-                errors = validate_manifest_dict(manifest)
-                self.assertEqual(errors, [])
+        ],
+    )
+    def test_validate_real_uuids(self, uuid):
+        """Test that real UUIDs are not flagged as placeholders."""
+        manifest = _valid_manifest(uuid=uuid)
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
