@@ -279,13 +279,21 @@ class BoundedNumberOption(Option):
         violation to the caller so it can apply its own policy. Callers that want the
         default auto-correct policy should use :meth:`convert` instead.
         """
-        value = self.bounds.check(value, self)
-        return self._base_type(value)
+        # Coerce to the numeric base type first: a value read from an INI config
+        # is a string, and the bounds comparison requires a number.
+        value = self._base_type(value)
+        try:
+            return self._base_type(self.bounds.check(value, self))
+        except OutOfBoundsError as e:
+            # Bounds may be declared as int or float on any option; make the
+            # corrected value match the option type (e.g. int option, float
+            # bound) so callers never see a value of the wrong type.
+            raise OutOfBoundsError(self, e.value, self._base_type(e.corrected)) from None
 
     def convert(self, value):
         # Default policy: clamp to the nearest bound and warn (see
-        # OptionBounds.clamp).
-        return self._base_type(self.bounds.clamp(value, self))
+        # NumericOptionBounds.clamp).
+        return self._base_type(self.bounds.clamp(self._base_type(value), self))
 
 
 class IntOption(BoundedNumberOption):
@@ -297,8 +305,8 @@ class IntOption(BoundedNumberOption):
         For an IntEnum option the value must be a valid member; an invalid
         member raises OutOfBoundsError whose ``corrected`` value is the option
         default. For a plain int the numeric bounds are enforced via
-        :meth:`OptionBounds.check`. Callers that want the default auto-correct
-        policy should use :meth:`convert` instead.
+        :meth:`NumericOptionBounds.check`. Callers that want the default
+        auto-correct policy should use :meth:`convert` instead.
         """
         value = int(value)
         # Bounds do not apply to enum options (an enum is a set of members, not
@@ -314,7 +322,7 @@ class IntOption(BoundedNumberOption):
     def convert(self, value):
         # Default policy: an out-of-range value (or an invalid enum member) is
         # corrected to the nearest bound / the option default and reported with
-        # a warning, mirroring OptionBounds.clamp. This keeps a stale value
+        # a warning, mirroring NumericOptionBounds.clamp. This keeps a stale value
         # (e.g. from a hand-edited config or an outdated profile) usable on read.
         if isinstance(self.default, IntEnum):
             try:

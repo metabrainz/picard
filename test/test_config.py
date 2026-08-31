@@ -650,14 +650,29 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         with self.assertRaises(exception):
             IntOption("setting", "int_option", 5, bounds=bounds)
 
-    def test_int_opt_bounds_accepts_float(self):
-        # float bounds are accepted for an int option, but convert returns int
-        # for clamped values.
-        opt = IntOption("setting", "float_option", 1, bounds=(0.0, 2.0))
-        self.assertIsInstance(opt.bounds.minimum, float)
-        self.assertIsInstance(opt.bounds.maximum, float)
-        self.assertEqual(opt.convert(-1), 0)
-        self.assertEqual(opt.convert(3), 2)
+    def test_int_opt_float_bounds_yield_int_values(self):
+        # A float bound literal may be declared for an int option. The bound is
+        # kept as declared for the comparison, but the converted/clamped value
+        # (and the reported corrected value) is always int.
+        opt = IntOption("setting", "int_option", 1, bounds=(0, 2.5))
+        self.assertEqual(opt.bounds.maximum, 2.5)  # bound kept as declared
+        self.assertEqual(opt.convert(2), 2)
+        self.assertEqual(opt.convert(3), 2)  # clamped to 2.5, coerced to int 2
+        self.assertIsInstance(opt.convert(3), int)
+        with self.assertRaises(OutOfBoundsError) as ctx:
+            opt.checked_convert(3)
+        self.assertEqual(ctx.exception.corrected, 2)
+        self.assertIsInstance(ctx.exception.corrected, int)
+
+    def test_int_opt_bounds_convert_string(self):
+        # Values read from an INI config arrive as strings; a bounded option
+        # must coerce before comparing against its bounds (regression test).
+        opt = IntOption("setting", "int_option", 5, bounds=(2, 10))
+        self.assertEqual(opt.convert("5"), 5)
+        self.assertEqual(opt.convert("99"), 10)
+        self.assertEqual(opt.checked_convert("7"), 7)
+        with self.assertRaises(OutOfBoundsError):
+            opt.checked_convert("99")
 
 
 class TestPicardConfigFloatOption(TestPicardConfigCommon):
@@ -761,13 +776,14 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
         self.assertIsInstance(ctx.exception, ValueError)
 
     def test_float_opt_bounds_accepts_int(self):
-        # int bounds are accepted for an float option, but convert returns float
-        # for clamped values.
+        # int bound literals are accepted for a float option and kept as
+        # declared for the comparison, but convert returns float values.
         opt = FloatOption("setting", "float_option", 0.5, bounds=(0, 1))
         self.assertIsInstance(opt.bounds.minimum, int)
         self.assertIsInstance(opt.bounds.maximum, int)
         self.assertEqual(opt.convert(-1.0), 0.0)
         self.assertEqual(opt.convert(2.0), 1.0)
+        self.assertIsInstance(opt.convert(2.0), float)
 
     @subtest_cases(
         "bounds,exception",
@@ -779,6 +795,16 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
     def test_float_opt_bounds_rejected(self, bounds, exception):
         with self.assertRaises(exception):
             FloatOption("setting", "float_option", 0.5, bounds=bounds)
+
+    def test_float_opt_bounds_convert_string(self):
+        # Values read from an INI config arrive as strings; a bounded option
+        # must coerce before comparing against its bounds (regression test).
+        opt = FloatOption("setting", "float_option", 0.5, bounds=(0.0, 1.0))
+        self.assertEqual(opt.convert("0.5"), 0.5)
+        self.assertEqual(opt.convert("2.5"), 1.0)
+        self.assertEqual(opt.checked_convert("0.5"), 0.5)
+        with self.assertRaises(OutOfBoundsError):
+            opt.checked_convert("2.5")
 
 
 class TestPicardConfigListOption(TestPicardConfigCommon):
