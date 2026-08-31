@@ -105,6 +105,7 @@ class APEv2File(File):
     __translate = MappingProxyType(
         {
             'albumartist': 'Album Artist',
+            'albumartists': 'ALBUMARTISTS',
             'remixer': 'MixArtist',
             'director': 'Director',
             'website': 'Weblink',
@@ -291,7 +292,8 @@ class APEv2File(File):
         elif name in self.__translate:
             return self.__translate[name]
         else:
-            return name.title()
+            # Default to upper case
+            return name.upper()
 
     @staticmethod
     def _iter_cover_art_tags(tags):
