@@ -36,6 +36,7 @@ from picard.config import (
     TextOption,
 )
 from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
     BROWSER_INTEGRATION_MIN_PORT,
     MUSICBRAINZ_SERVERS,
 )
@@ -544,6 +545,7 @@ IntOption(
     BROWSER_INTEGRATION_MIN_PORT,
     title=N_("Default listening port"),
     in_profile=True,
+    bounds=(BROWSER_INTEGRATION_MIN_PORT, BROWSER_INTEGRATION_MAX_PORT),
 )
 IntOption(
     'setting',
