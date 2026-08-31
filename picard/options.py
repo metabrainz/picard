@@ -147,8 +147,11 @@ BoolOption('persist', 'file_view_header_locked', False)
 # picard/ui/mainwindow.py
 #
 TextOption('persist', 'current_directory', "")
-FloatOption('persist', 'mediaplayer_playback_rate', 1.0)
-IntOption('persist', 'mediaplayer_volume', 50)
+# Playback rate is constrained to 0.5..1.5 by the player controls
+# (MIN/MAX_PLAYBACK_RATE in picard/ui/player/player.py); volume is a 0..100
+# percentage (stored as int, divided by 100 on load). Clamp both.
+FloatOption('persist', 'mediaplayer_playback_rate', 1.0, bounds=(0.5, 1.5))
+IntOption('persist', 'mediaplayer_volume', 50, bounds=(0, 100))
 BoolOption('persist', 'view_cover_art', True)
 BoolOption('persist', 'view_file_browser', False)
 BoolOption('persist', 'view_metadata_view', True)
