@@ -769,6 +769,9 @@ IntOption(
     0,
     title=N_("Auto-save interval"),
     in_profile=True,
+    # Interval in minutes; 0 disables autosave (see Tagger.run). A negative
+    # value is meaningless and the UI spinbox caps it at 1440 (24 hours).
+    bounds=(0, 1440),
 )
 BoolOption(
     'setting',
