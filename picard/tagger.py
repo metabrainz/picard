@@ -95,7 +95,10 @@ from picard.config import (
     setup_config,
 )
 from picard.config_upgrade import upgrade_config
-from picard.const import USER_DIR
+from picard.const import (
+    METABRAINZ_OAUTH_SCOPES,
+    USER_DIR,
+)
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -665,7 +668,7 @@ class Tagger(QtWidgets.QApplication):
 
     def mb_login(self, callback, parent=None):
         oauth_manager = self.webservice.oauth_manager
-        scopes = 'profile musicbrainz:tag musicbrainz:rating musicbrainz:collection musicbrainz:submit_isrc musicbrainz:submit_barcode'
+        scopes = METABRAINZ_OAUTH_SCOPES
         authorization_url = oauth_manager.get_authorization_url(
             scopes, partial(self.on_mb_authorization_finished, callback))
         webbrowser2.open(authorization_url)

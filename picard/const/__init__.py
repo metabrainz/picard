@@ -61,6 +61,17 @@ DEFAULT_FPCALC_THREADS = 2
 METABRAINZ_OAUTH_HOST = 'metabrainz.org'
 METABRAINZ_OAUTH_CLIENT_ID = 'CF9xgQn5Rmwx125oGjx19NE9'
 METABRAINZ_OAUTH_CLIENT_SECRET = 'mebs_7qJdRZp5LQx63NNo3S3du1ghwIie7XtLl5esNoyUDlObmnWk'
+# OAuth scopes Picard requests. Must be the same for both the authorization
+# request and the authorization-code exchange, otherwise the resulting token
+# will not carry the expected permissions.
+METABRAINZ_OAUTH_SCOPES = (
+    'profile'
+    ' musicbrainz:tag'
+    ' musicbrainz:rating'
+    ' musicbrainz:collection'
+    ' musicbrainz:submit_isrc'
+    ' musicbrainz:submit_barcode'
+)
 
 # Cover art archive URL
 CAA_URL = 'https://coverartarchive.org'
