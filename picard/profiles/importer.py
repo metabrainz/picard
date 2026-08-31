@@ -33,6 +33,7 @@ else:
 
 from picard import log
 from picard.config import (
+    BoundedNumberOption,
     Config,
     Option,
 )
@@ -234,6 +235,14 @@ def _import_value(value, opt: Option):
         if opt.default and isinstance(opt.default[0] if opt.default else None, tuple):
             return [tuple(item) if isinstance(item, list) else item for item in value]
         return value
+    # Normalize numeric values against their bounds at import time, so an
+    # out-of-range value is corrected (and warned about) when the profile is
+    # imported rather than silently clamped on every later read.
+    if isinstance(opt, BoundedNumberOption):
+        try:
+            return opt.convert(value)
+        except (ValueError, TypeError):
+            return value
     return value
 
 

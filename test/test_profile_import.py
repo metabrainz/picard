@@ -20,6 +20,7 @@ from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
     BoolOption,
+    IntOption,
     ListOption,
     Option,
     TextOption,
@@ -45,6 +46,15 @@ picard_version = "3.0.0"
 [settings]
 standardize_artists = true
 write_id3v23 = false
+"""
+
+PROFILE_WITH_OUT_OF_RANGE_SETTING = """\
+[profile]
+title = "Out Of Range"
+picard_version = "3.0.0"
+
+[settings]
+bounded_int = 999
 """
 
 PROFILE_WITH_SCRIPTS = """\
@@ -123,6 +133,15 @@ class TestProfileImport(TestPicardConfigCommon):
         settings = self.config.profiles['user_profile_settings'][result.profile_id]
         self.assertTrue(settings['standardize_artists'])
         self.assertFalse(settings['write_id3v23'])
+
+    def test_import_clamps_out_of_range_numeric_setting(self):
+        IntOption('setting', 'bounded_int', 5, title="Bounded", in_profile=True, bounds=(0, 10))
+
+        result = import_profile(self.config, PROFILE_WITH_OUT_OF_RANGE_SETTING)
+
+        # The stored profile value is normalized to the option's maximum.
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertEqual(settings['bounded_int'], 10)
 
     def test_import_unknown_options_skipped(self):
         BoolOption('setting', 'standardize_artists', False, title="Standardize", in_profile=True)
