@@ -71,6 +71,7 @@ class StartupOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_StartupOptionsPage()
         self.ui.setupUi(self)
+        self.apply_option_bounds(self.ui.update_check_days, 'update_check_days')
 
         # Populate log verbosity selector
         for level, feat in log.levels_features.items():

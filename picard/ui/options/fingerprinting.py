@@ -87,6 +87,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self._fpcalc_checking = False
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
+        self.apply_option_bounds(self.ui.fpcalc_threads, 'fpcalc_threads')
 
         # Set open directory icon on folder browse button
         icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)

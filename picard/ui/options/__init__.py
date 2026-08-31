@@ -22,6 +22,7 @@
 
 
 from collections import defaultdict
+import math
 import re
 from typing import (
     ClassVar,
@@ -36,6 +37,7 @@ from picard import (
     tagger_instance,
 )
 from picard.config import (
+    BoundedNumberOption,
     Option,
     ProfileConfigSection,
     get_config,
@@ -121,6 +123,34 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         if api:
             return api.plugin_config
         return ProfileConfigSection(config, self.OPTION_SECTION)
+
+    def apply_option_bounds(self, widget, option_name, scale=1):
+        """Apply a numeric option's bounds to a spinbox-like widget.
+
+        Reads the minimum/maximum declared on the option so the option
+        definition is the single source of truth for the valid range, keeping
+        the UI in sync with the value clamping done on read.
+
+        Args:
+            widget: A spinbox-like widget with setMinimum/setMaximum.
+            option_name: Name of the option in this page's section.
+            scale: Multiplier applied to each bound before setting it on the
+                widget, for spinboxes that display a scaled value (e.g. a
+                0.0..1.0 option shown as a 0..100 percentage uses scale=100).
+
+        Bounds left as None are not applied. Does nothing if the option is
+        unregistered or not a bounded numeric option.
+        """
+        option = Option.get(self.OPTION_SECTION, option_name)
+        if not isinstance(option, BoundedNumberOption):
+            return
+        # Round the minimum up and the maximum down so the widget range can
+        # never exceed the option's true bounds (a value the spinbox allows is
+        # therefore never clamped afterwards on read).
+        if option.bounds.minimum is not None:
+            widget.setMinimum(math.ceil(option.bounds.minimum * scale))
+        if option.bounds.maximum is not None:
+            widget.setMaximum(math.floor(option.bounds.maximum * scale))
 
     def restore_defaults(self):
         config = get_config()

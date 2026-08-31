@@ -20,6 +20,7 @@ from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
     BoolOption,
+    IntOption,
     ListOption,
     Option,
     TextOption,
@@ -45,6 +46,24 @@ picard_version = "3.0.0"
 [settings]
 standardize_artists = true
 write_id3v23 = false
+"""
+
+PROFILE_WITH_OUT_OF_RANGE_SETTING = """\
+[profile]
+title = "Out Of Range"
+picard_version = "3.0.0"
+
+[settings]
+bounded_int = 999
+"""
+
+PROFILE_WITH_IN_RANGE_SETTING = """\
+[profile]
+title = "In Range"
+picard_version = "3.0.0"
+
+[settings]
+bounded_int = 7
 """
 
 PROFILE_WITH_SCRIPTS = """\
@@ -123,6 +142,38 @@ class TestProfileImport(TestPicardConfigCommon):
         settings = self.config.profiles['user_profile_settings'][result.profile_id]
         self.assertTrue(settings['standardize_artists'])
         self.assertFalse(settings['write_id3v23'])
+
+    def test_import_clamps_out_of_range_numeric_setting(self):
+        IntOption('setting', 'bounded_int', 5, title="Bounded", in_profile=True, bounds=(0, 10))
+
+        result = import_profile(self.config, PROFILE_WITH_OUT_OF_RANGE_SETTING)
+
+        # The stored profile value is normalized to the option's maximum.
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertEqual(settings['bounded_int'], 10)
+
+    def test_import_records_out_of_bounds_setting(self):
+        IntOption('setting', 'bounded_int', 5, title="Bounded", in_profile=True, bounds=(0, 10))
+
+        result = import_profile(self.config, PROFILE_WITH_OUT_OF_RANGE_SETTING)
+
+        # The out-of-range value is reported so the user can be informed.
+        self.assertEqual(len(result.out_of_bounds), 1)
+        oob = result.out_of_bounds[0]
+        self.assertEqual(oob.name, 'bounded_int')
+        self.assertEqual(oob.value, 999)
+        self.assertEqual(oob.corrected, 10)
+        # A human-readable warning is emitted for the import summary.
+        self.assertTrue(any('out-of-range' in w for w in result.warnings))
+
+    def test_import_in_range_numeric_setting_not_reported(self):
+        IntOption('setting', 'bounded_int', 5, title="Bounded", in_profile=True, bounds=(0, 10))
+
+        result = import_profile(self.config, PROFILE_WITH_IN_RANGE_SETTING)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertEqual(settings['bounded_int'], 7)
+        self.assertEqual(result.out_of_bounds, [])
 
     def test_import_unknown_options_skipped(self):
         BoolOption('setting', 'standardize_artists', False, title="Standardize", in_profile=True)

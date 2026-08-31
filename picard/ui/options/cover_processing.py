@@ -80,6 +80,14 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui = Ui_CoverProcessingOptionsPage()
         self.ui.setupUi(self)
 
+        self.apply_option_bounds(self.ui.filtering_width_value, 'cover_minimum_width')
+        self.apply_option_bounds(self.ui.filtering_height_value, 'cover_minimum_height')
+        self.apply_option_bounds(self.ui.tags_resize_width_value, 'cover_tags_resize_target_width')
+        self.apply_option_bounds(self.ui.tags_resize_height_value, 'cover_tags_resize_target_height')
+        self.apply_option_bounds(self.ui.file_resize_width_value, 'cover_file_resize_target_width')
+        self.apply_option_bounds(self.ui.file_resize_height_value, 'cover_file_resize_target_height')
+        self.apply_option_bounds(self.ui.cover_image_quality_value, 'cover_image_quality')
+
         for resize_mode in COVER_RESIZE_MODES:
             self.ui.tags_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)
             self.ui.file_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)

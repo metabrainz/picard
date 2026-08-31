@@ -57,6 +57,13 @@ class MatchingOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_MatchingOptionsPage()
         self.ui.setupUi(self)
+        # Similarity values are stored as 0.0..1.0 but shown as 0..100 percent.
+        self.apply_option_bounds(self.ui.match_min_similarity, 'match_min_similarity', scale=100)
+        self.apply_option_bounds(self.ui.match_min_margin, 'match_min_margin', scale=100)
+        self.apply_option_bounds(self.ui.track_matching_threshold, 'track_matching_threshold', scale=100)
+        self.apply_option_bounds(
+            self.ui.ignore_track_duration_difference_under, 'ignore_track_duration_difference_under'
+        )
 
     def load(self):
         config = get_config()

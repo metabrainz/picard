@@ -89,6 +89,8 @@ class GenresOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_GenresOptionsPage()
         self.ui.setupUi(self)
+        self.apply_option_bounds(self.ui.min_genre_usage, 'min_genre_usage')
+        self.apply_option_bounds(self.ui.max_genres, 'max_genres')
 
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)

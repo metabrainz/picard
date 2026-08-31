@@ -329,6 +329,35 @@ def enable(api):
 
 When a profile is active and overrides the option, reads from `api.plugin_config['greeting']` automatically return the profile value. Writes go to the profile's storage. The base (non-profile) value is preserved.
 
+#### Numeric bounds
+
+Numeric options (int or float defaults) can declare a valid range with
+`bounds=(minimum, maximum)`. A value read from the configuration that falls
+outside the range is clamped to the nearest bound, and a warning is logged.
+Either element may be `None` to leave that side unbounded.
+
+```python
+def enable(api):
+    # Threads must be at least 1, at most 8
+    api.plugin_config.register_option('threads', 4, bounds=(1, 8))
+
+    # A ratio in the range 0.0..1.0
+    api.plugin_config.register_option('ratio', 0.5, bounds=(0.0, 1.0))
+
+    # Only a lower bound; no upper limit
+    api.plugin_config.register_option('retries', 3, bounds=(0, None))
+```
+
+- `bounds` is only valid for int or float options; passing it for any other
+  type raises `TypeError`.
+- `int` options require `int` bounds; `float` options accept `int` or `float`
+  bounds (coerced to `float`). `bool` bounds are rejected.
+- Declaring `minimum` greater than `maximum` raises `ValueError`.
+
+Clamping happens on read, so an out-of-range value stored by an older version
+of the plugin (or a hand-edited config) is corrected automatically the next
+time the option is read.
+
 **Options page with profile highlighting:**
 
 Declare widgets in the page's `OPTIONS` dict to enable visual highlighting when a profile overrides the option:

@@ -63,6 +63,8 @@ class SessionsOptionsPage(OptionsPage):
         self.ui = Ui_SessionsOptionsPage()
         self.ui.setupUi(self)
 
+        self.apply_option_bounds(self.ui.autosave_spin, 'session_autosave_interval_min')
+
         # Set open directory icon on folder browse button
         style = self.style()
         assert style is not None

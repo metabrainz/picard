@@ -33,8 +33,10 @@ else:
 
 from picard import log
 from picard.config import (
+    BoundedNumberOption,
     Config,
     Option,
+    OutOfBoundsError,
 )
 from picard.config_upgrade import apply_settings_upgrades_for_import
 from picard.i18n import (
@@ -48,6 +50,22 @@ class ProfileImportError(Exception):
     """Raised when profile import fails due to invalid data."""
 
 
+class OutOfBoundsSetting:
+    """An imported setting whose value was outside the option's declared bounds.
+
+    Attributes:
+        name: The option name.
+        value: The out-of-range value found in the imported profile.
+        corrected: The value it would be corrected to (the nearest bound, or
+            the option default for an invalid enum member).
+    """
+
+    def __init__(self, name: str, value, corrected):
+        self.name = name
+        self.value = value
+        self.corrected = corrected
+
+
 class ProfileImportResult:
     """Result of a profile import operation.
 
@@ -56,6 +74,8 @@ class ProfileImportResult:
         title: Title of the imported profile.
         skipped_options: List of option names that were not recognized.
         upgraded_settings: List of descriptions of settings upgrades applied.
+        out_of_bounds: List of OutOfBoundsSetting for imported values that were
+            outside their option's declared bounds.
         warnings: List of warning messages for the user.
     """
 
@@ -64,6 +84,7 @@ class ProfileImportResult:
         self.title = title
         self.skipped_options: list[str] = []
         self.upgraded_settings: list[str] = []
+        self.out_of_bounds: list[OutOfBoundsSetting] = []
         self.warnings: list[str] = []
 
 
@@ -170,7 +191,14 @@ def import_profile(
         if not opt.in_profile:
             result.skipped_options.append(key)
             continue
-        profile_settings[key] = _import_value(value, opt)
+        try:
+            profile_settings[key] = _import_value(value, opt)
+        except OutOfBoundsError as e:
+            # The imported value is outside the option's declared bounds. Record
+            # it so the user can be told, and store the corrected value as the
+            # default policy (callers/UI may override this decision).
+            result.out_of_bounds.append(OutOfBoundsSetting(key, e.value, e.corrected))
+            profile_settings[key] = e.corrected
 
     # Process [scripts.naming] section
     scripts_section = data.get('scripts', {})
@@ -200,6 +228,19 @@ def import_profile(
             % (count, ', '.join(result.skipped_options))
         )
 
+    # Report out-of-bounds options (corrected to the nearest valid value)
+    if result.out_of_bounds:
+        count = len(result.out_of_bounds)
+        details = ', '.join(f"{s.name} ({s.value!r} -> {s.corrected!r})" for s in result.out_of_bounds)
+        result.warnings.append(
+            ngettext(
+                "%d setting had an out-of-range value and was corrected: %s",
+                "%d settings had out-of-range values and were corrected: %s",
+                count,
+            )
+            % (count, details)
+        )
+
     # Report upgraded settings
     if result.upgraded_settings:
         count = len(result.upgraded_settings)
@@ -227,13 +268,32 @@ def _make_unique_title(config: Config, title: str) -> str:
 
 
 def _import_value(value, opt: Option):
-    """Convert a TOML value back to the internal representation expected by an option."""
+    """Convert a TOML value back to the internal representation expected by an option.
+
+    For a bounded numeric option this validates the value against the option's
+    bounds and raises OutOfBoundsError (carrying the corrected value) if it is
+    out of range, so the caller can decide what to do about it. Other option
+    types are returned as-is (with TOML list/tuple normalization).
+    """
     # TOML arrays become lists; if the option default is a list of tuples,
     # convert inner lists to tuples
     if isinstance(value, list) and isinstance(opt.default, (list, tuple)):
         if opt.default and isinstance(opt.default[0] if opt.default else None, tuple):
             return [tuple(item) if isinstance(item, list) else item for item in value]
         return value
+    # Validate numeric values against their bounds at import time. An
+    # out-of-range value raises OutOfBoundsError so the import can report it to
+    # the user instead of silently clamping it on every later read. A value
+    # that cannot even be converted to the option type (TypeError/ValueError
+    # that is not an OutOfBoundsError) is left untouched here and handled by the
+    # normal read path later.
+    if isinstance(opt, BoundedNumberOption):
+        try:
+            return opt.checked_convert(value)
+        except OutOfBoundsError:
+            raise
+        except (ValueError, TypeError):
+            return value
     return value
 
 

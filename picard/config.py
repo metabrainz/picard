@@ -167,17 +167,182 @@ class BoolOption(Option):
     qtype = bool
 
 
-class IntOption(Option):
-    def convert(self, value):
-        value = int(value)
-        # If the default is an IntEnum, return an IntEnum
-        if isinstance(self.default, IntEnum):
-            return type(self.default)(value)
+class OutOfBoundsError(ValueError):
+    """Raised when an option value falls outside its declared bounds.
+
+    Carries the offending ``value`` and the ``corrected`` value (the nearest
+    bound for a numeric option, or the option default for an invalid enum
+    member) so a caller can choose its own policy: clamp to ``corrected``, keep
+    the original, reject it, etc. Subclasses :class:`ValueError` so existing
+    ``except ValueError`` handlers keep working.
+    """
+
+    def __init__(self, option: 'Option', value: Any, corrected: Any):
+        self.option = option
+        self.value = value
+        self.corrected = corrected
+        super().__init__(
+            f"Option '{option.section}/{option.name}': value {value!r} is out of bounds, corrected to {corrected!r}"
+        )
+
+
+class NumericOptionBounds:
+    """Inclusive numeric bounds for an option.
+
+    A bound of ``None`` means unbounded on that side. :meth:`check` detects a
+    value outside the range and raises :class:`OutOfBoundsError` carrying the
+    nearest bound; :meth:`clamp` applies the default "auto-correct" policy on
+    top of :meth:`check`, returning the nearest bound and logging a warning.
+    Because an out-of-range stored value is unexpected (e.g. from a hand-edited
+    configuration file), clamping is reported with a warning so it can be
+    diagnosed.
+    """
+
+    def __init__(self, minimum: float | None = None, maximum: float | None = None):
+        self.minimum = self._check(minimum)
+        self.maximum = self._check(maximum)
+        if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
+            raise ValueError(f"minimum {self.minimum!r} is greater than maximum {self.maximum!r}")
+
+    def _check(self, value):
+        if value is None:
+            return None
+        # bool is a subclass of int but is never a valid numeric bound.
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise TypeError(f"Bound {value!r} is not a numeric value")
         return value
 
+    def check(self, value, option):
+        """Return value unchanged, or raise OutOfBoundsError if out of range.
 
-class FloatOption(Option):
-    convert = float  # type: ignore[assignment]
+        Pure detection with no side effects. The raised error carries the
+        nearest bound as its ``corrected`` value so a caller can decide what to
+        do about the violation.
+        """
+        if self.minimum is not None and value < self.minimum:
+            raise OutOfBoundsError(option, value, self.minimum)
+        if self.maximum is not None and value > self.maximum:
+            raise OutOfBoundsError(option, value, self.maximum)
+        return value
+
+    def clamp(self, value, option):
+        """Clamp value to the bounds, warning (via option context) if out of range.
+
+        This is the default "auto-correct" policy used when reading an option:
+        an out-of-range value is corrected to the nearest bound and a warning is
+        logged.
+        """
+        try:
+            return self.check(value, option)
+        except OutOfBoundsError as e:
+            log.warning(
+                "Option '%s/%s': value %r is out of bounds [%r, %r], clamping to %r",
+                option.section,
+                option.name,
+                e.value,
+                self.minimum,
+                self.maximum,
+                e.corrected,
+            )
+            return e.corrected
+
+
+class BoundedNumberOption(Option):
+    """Base for numeric options that can be constrained to a range.
+
+    Pass ``bounds=(minimum, maximum)`` to constrain the value; either element
+    may be ``None`` to leave that side unbounded. A stored value outside the
+    range is clamped to the nearest bound on read.
+    """
+
+    # Subclasses should set this to int or float
+    _base_type: ClassVar[type[float | int]]
+
+    def __init__(
+        self,
+        section: str,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+        shareable: bool = True,
+        bounds: tuple[float | None, float | None] = (None, None),
+    ):
+        minimum, maximum = bounds
+        self.bounds = NumericOptionBounds(minimum, maximum)
+        super().__init__(section, name, default, title, in_profile, shareable)
+
+    def checked_convert(self, value):
+        """Convert value, raising OutOfBoundsError if it violates the bounds.
+
+        Unlike :meth:`convert` (which auto-corrects and warns), this reports a
+        violation to the caller so it can apply its own policy. Callers that want the
+        default auto-correct policy should use :meth:`convert` instead.
+        """
+        # Coerce to the numeric base type first: a value read from an INI config
+        # is a string, and the bounds comparison requires a number.
+        value = self._base_type(value)
+        try:
+            return self._base_type(self.bounds.check(value, self))
+        except OutOfBoundsError as e:
+            # Bounds may be declared as int or float on any option; make the
+            # corrected value match the option type (e.g. int option, float
+            # bound) so callers never see a value of the wrong type.
+            raise OutOfBoundsError(self, e.value, self._base_type(e.corrected)) from None
+
+    def convert(self, value):
+        # Default policy: clamp to the nearest bound and warn (see
+        # NumericOptionBounds.clamp).
+        return self._base_type(self.bounds.clamp(self._base_type(value), self))
+
+
+class IntOption(BoundedNumberOption):
+    _base_type = int
+
+    def checked_convert(self, value):
+        """Convert value, raising OutOfBoundsError if it violates the bounds.
+
+        For an IntEnum option the value must be a valid member; an invalid
+        member raises OutOfBoundsError whose ``corrected`` value is the option
+        default. For a plain int the numeric bounds are enforced via
+        :meth:`NumericOptionBounds.check`. Callers that want the default
+        auto-correct policy should use :meth:`convert` instead.
+        """
+        value = int(value)
+        # Bounds do not apply to enum options (an enum is a set of members, not
+        # an ordered range); the value must instead be a valid member.
+        if isinstance(self.default, IntEnum):
+            enum_type = type(self.default)
+            try:
+                return enum_type(value)
+            except ValueError:
+                raise OutOfBoundsError(self, value, self.default) from None
+        return super().checked_convert(value)
+
+    def convert(self, value):
+        # Default policy: an out-of-range value (or an invalid enum member) is
+        # corrected to the nearest bound / the option default and reported with
+        # a warning, mirroring NumericOptionBounds.clamp. This keeps a stale value
+        # (e.g. from a hand-edited config or an outdated profile) usable on read.
+        if isinstance(self.default, IntEnum):
+            try:
+                return self.checked_convert(value)
+            except OutOfBoundsError as e:
+                log.warning(
+                    "Option '%s/%s': %r is not a valid %s, using default %r",
+                    self.section,
+                    self.name,
+                    e.value,
+                    type(self.default).__name__,
+                    e.corrected,
+                )
+                return e.corrected
+        else:
+            return super().convert(value)
+
+
+class FloatOption(BoundedNumberOption):
+    _base_type = float
 
 
 class ListOption(Option):
@@ -299,6 +464,7 @@ class ConfigSection(QtCore.QObject):
         default: ConfigValueType,
         title: str | None = None,
         in_profile: bool = False,
+        bounds: tuple[float | None, float | None] | None = None,
     ) -> 'Option':
         """Register an option in this config section.
 
@@ -310,12 +476,17 @@ class ConfigSection(QtCore.QObject):
             title: Human-readable title (used by ProfileConfigSection for profiles UI).
             in_profile: If True, the option can be overridden by user profiles
                 (only effective in ProfileConfigSection).
+            bounds: Optional ``(minimum, maximum)`` range for numeric options.
+                Only valid for int or float defaults; either element may be
+                None to leave that side unbounded. A stored value outside the
+                range is clamped on read.
 
         Returns:
             The registered Option instance.
 
         Raises:
-            TypeError: If default is None.
+            TypeError: If default is None, or if bounds is given for a
+                non-numeric option.
         """
         if default is None:
             raise TypeError('Option default value must not be None')
@@ -333,7 +504,13 @@ class ConfigSection(QtCore.QObject):
         else:
             option_type = Option  # type: ignore[assignment]
 
-        return option_type(self.section_name, name, default, title=title, in_profile=in_profile)
+        kwargs: dict[str, Any] = {'title': title, 'in_profile': in_profile}
+        if bounds is not None:
+            if not issubclass(option_type, BoundedNumberOption):
+                raise TypeError('bounds are only valid for int or float options')
+            kwargs['bounds'] = bounds
+
+        return option_type(self.section_name, name, default, **kwargs)
 
 
 class ProfileConfigSection(ConfigSection):
@@ -450,7 +627,12 @@ class ProfileConfigSection(ConfigSection):
         self.__qt_config.profiles._memoization[key].dirty = True
 
     def register_option(
-        self, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+        self,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+        bounds: tuple[float | None, float | None] | None = None,
     ) -> Option:
         """Register an option in this config section.
 
@@ -462,14 +644,17 @@ class ProfileConfigSection(ConfigSection):
             title: Human-readable title for display in profiles and quick menu.
                 Falls back to name if not provided (with a warning for in_profile options).
             in_profile: If True, the option can be overridden by user profiles.
+            bounds: Optional ``(minimum, maximum)`` range for numeric options.
+                See :meth:`ConfigSection.register_option`.
 
         Returns:
             The registered Option instance.
 
         Raises:
-            TypeError: If default is None.
+            TypeError: If default is None, or if bounds is given for a
+                non-numeric option.
         """
-        opt = super().register_option(name, default, title=title, in_profile=in_profile)
+        opt = super().register_option(name, default, title=title, in_profile=in_profile, bounds=bounds)
         if in_profile:
             group_name = self.section_name
             group_title = self.display_name or self.section_name

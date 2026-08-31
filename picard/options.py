@@ -36,6 +36,7 @@ from picard.config import (
     TextOption,
 )
 from picard.const import (
+    BROWSER_INTEGRATION_MAX_PORT,
     BROWSER_INTEGRATION_MIN_PORT,
     MUSICBRAINZ_SERVERS,
 )
@@ -146,8 +147,11 @@ BoolOption('persist', 'file_view_header_locked', False)
 # picard/ui/mainwindow.py
 #
 TextOption('persist', 'current_directory', "")
-FloatOption('persist', 'mediaplayer_playback_rate', 1.0)
-IntOption('persist', 'mediaplayer_volume', 50)
+# Playback rate is constrained to 0.5..1.5 by the player controls
+# (MIN/MAX_PLAYBACK_RATE in picard/ui/player/player.py); volume is a 0..100
+# percentage (stored as int, divided by 100 on load). Clamp both.
+FloatOption('persist', 'mediaplayer_playback_rate', 1.0, bounds=(0.5, 1.5))
+IntOption('persist', 'mediaplayer_volume', 50, bounds=(0, 100))
 BoolOption('persist', 'view_cover_art', True)
 BoolOption('persist', 'view_file_browser', False)
 BoolOption('persist', 'view_metadata_view', True)
@@ -191,6 +195,7 @@ IntOption(
     2,
     title=N_("Allowed track difference (seconds)"),
     in_profile=True,
+    bounds=(1, 7200),
 )
 IntOption(
     'setting',
@@ -198,6 +203,10 @@ IntOption(
     DEFAULT_QUERY_LIMIT,
     title=N_("Maximum MusicBrainz query items"),
     in_profile=True,
+    # Sent as the MusicBrainz API "limit" parameter, which accepts at most 100
+    # items per request; a value below 1 would request nothing. The options
+    # page offers 25/50/75/100 via a combobox, so clamp to 1..100.
+    bounds=(1, 100),
 )
 BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files"), in_profile=True)
 
@@ -250,8 +259,25 @@ BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show co
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
 BoolOption('setting', 'filter_cover_by_size', False, title=N_("Discard small images"), in_profile=True)
-IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image width"), in_profile=True)
-IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image height"), in_profile=True)
+# Cover image dimensions are pixel counts; a negative or absurd value is
+# meaningless. The UI spinboxes use 0..9999 (minimum size) and 1..9999
+# (resize targets); mirror those ranges here.
+IntOption(
+    'setting',
+    'cover_minimum_width',
+    DEFAULT_COVER_MIN_SIZE,
+    title=N_("Minimum image width"),
+    in_profile=True,
+    bounds=(0, 9999),
+)
+IntOption(
+    'setting',
+    'cover_minimum_height',
+    DEFAULT_COVER_MIN_SIZE,
+    title=N_("Minimum image height"),
+    in_profile=True,
+    bounds=(0, 9999),
+)
 BoolOption('setting', 'cover_tags_enlarge', False, title=N_("Allow enlarging tag images"), in_profile=True)
 BoolOption('setting', 'cover_tags_resize', False, title=N_("Allow resizing tag images"), in_profile=True)
 IntOption(
@@ -260,6 +286,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized tag image width"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting',
@@ -267,6 +294,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized tag image height"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting', 'cover_tags_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("Tag image resize mode"), in_profile=True
@@ -287,6 +315,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized file image width"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting',
@@ -294,6 +323,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized file image height"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("File image resize mode"), in_profile=True
@@ -312,6 +342,7 @@ IntOption(
     DEFAULT_COVER_IMAGE_QUALITY,
     title=N_("Format conversion quality"),
     in_profile=True,
+    bounds=(0, 100),
 )
 
 # picard/ui/options/dialog.py
@@ -324,7 +355,9 @@ ListOption('persist', 'options_pages_tree_state', [])
 TextOption('setting', 'acoustid_apikey', '')
 TextOption('setting', 'acoustid_fpcalc', '')
 TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID fingerprinting'), in_profile=True)
-IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS)
+# Number of threads fpcalc uses; must be at least 1. The UI spinbox caps it at
+# 9, so use the same range.
+IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS, bounds=(1, 9))
 BoolOption(
     'setting',
     'ignore_existing_acoustid_fingerprints',
@@ -345,7 +378,7 @@ BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan a
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"), in_profile=True)
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"), in_profile=True)
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"), in_profile=True)
-IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True)
+IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True, bounds=(1, 65535))
 BoolOption('setting', 'use_server_for_submission', False, title=N_("Submit to configured server"), in_profile=True)
 BoolOption('setting', 'read_isrcs_from_disc', has_isrc_support(), title=N_("Read ISRCs from CD"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
@@ -369,8 +402,10 @@ TextOption(
     in_profile=True,
 )
 TextOption('setting', 'join_genres', '', title=N_("Join multiple genres with"), in_profile=True)
-IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"), in_profile=True)
-IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"), in_profile=True)
+# max_genres is a count and min_genre_usage is a percentage; the UI caps both
+# at 100. A negative value would be meaningless, so clamp to 0..100.
+IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"), in_profile=True, bounds=(0, 100))
+IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"), in_profile=True, bounds=(0, 100))
 BoolOption('setting', 'only_my_genres', False, title=N_("Use only my genres"), in_profile=True)
 BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz"), in_profile=True)
 
@@ -478,10 +513,19 @@ TextOption(
 
 # picard/ui/options/matching.py
 # Matching
-FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"), in_profile=True)
-FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"), in_profile=True)
+# These are similarity fractions in the range 0.0..1.0, compared directly
+# against computed match scores (see picard/file.py, picard/cluster.py). The UI
+# presents them as 0..100 percent. A stored value outside 0.0..1.0 would make
+# matching always or never succeed, so clamp to that range.
+FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"), in_profile=True, bounds=(0.0, 1.0))
+FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"), in_profile=True, bounds=(0.0, 1.0))
 FloatOption(
-    'setting', 'track_matching_threshold', 0.4, title=N_("Similarity for matching files to tracks"), in_profile=True
+    'setting',
+    'track_matching_threshold',
+    0.4,
+    title=N_("Similarity for matching files to tracks"),
+    in_profile=True,
+    bounds=(0.0, 1.0),
 )
 
 # picard/ui/options/metadata.py
@@ -535,6 +579,7 @@ IntOption(
     BROWSER_INTEGRATION_MIN_PORT,
     title=N_("Default listening port"),
     in_profile=True,
+    bounds=(BROWSER_INTEGRATION_MIN_PORT, BROWSER_INTEGRATION_MAX_PORT),
 )
 IntOption(
     'setting',
@@ -543,10 +588,28 @@ IntOption(
     title=N_("Network cache size (bytes)"),
     in_profile=True,
 )
-IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout (seconds)"), in_profile=True)
+# Request timeout in seconds, passed to QNetworkAccessManager.setTransferTimeout
+# (which treats 0 as "no timeout"). A negative value is invalid; the UI caps it
+# at 900. Clamp to 0..900.
+IntOption(
+    'setting',
+    'network_transfer_timeout_seconds',
+    30,
+    title=N_("Request timeout (seconds)"),
+    in_profile=True,
+    bounds=(0, 900),
+)
 TextOption('setting', 'proxy_password', '', title=N_("Proxy password"), in_profile=True, shareable=False)
 TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"), in_profile=True, shareable=False)
-IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port"), in_profile=True, shareable=False)
+IntOption(
+    'setting',
+    'proxy_server_port',
+    80,
+    title=N_("Proxy server port"),
+    in_profile=True,
+    shareable=False,
+    bounds=(1, 65535),
+)
 TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server"), in_profile=True)
 TextOption('setting', 'proxy_username', '', title=N_("Proxy username"), in_profile=True, shareable=False)
 BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server"), in_profile=True)
@@ -563,7 +626,11 @@ ListOption('persist', 'profile_settings_tree_expanded_list', [])
 # picard/ui/options/ratings.py
 # Ratings
 BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings"), in_profile=True)
-IntOption('setting', 'rating_steps', 6)
+# The rating scale has N steps; ratings map onto the range 0..(rating_steps - 1),
+# and that divisor is used when reading and writing ratings in every tag format
+# (asf, id3, vorbis) and by the rating widget. A value below 2 would make the
+# range collapse or divide by zero, so clamp it to a minimum of 2.
+IntOption('setting', 'rating_steps', 6, bounds=(2, None))
 TextOption(
     'setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email for saving ratings"), in_profile=True
 )
@@ -635,7 +702,8 @@ IntOption('persist', 'last_update_check', 0)
 BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"), in_profile=True)
 BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"), in_profile=True)
 BoolOption('setting', 'check_for_updates', False, title=N_("Check for program updates"), in_profile=True)
-IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), in_profile=True)
+# Days between update checks; must be at least 1 (the UI spinbox enforces this).
+IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), in_profile=True, bounds=(1, None))
 IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"), in_profile=True)
 IntOption('setting', 'log_verbosity', DEFAULT_LOG_LEVEL, title=N_("Log verbosity level"), in_profile=True)
 
@@ -705,6 +773,9 @@ IntOption(
     0,
     title=N_("Auto-save interval"),
     in_profile=True,
+    # Interval in minutes; 0 disables autosave (see Tagger.run). A negative
+    # value is meaningless and the UI spinbox caps it at 1440 (24 hours).
+    bounds=(0, 1440),
 )
 BoolOption(
     'setting',
