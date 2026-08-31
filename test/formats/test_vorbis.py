@@ -90,9 +90,11 @@ class CommonVorbisTests:
         def test_supports_tags(self):
             supports_tag = self.format.supports_tag
             for key in VALID_KEYS + list(TAGS.keys()):
-                self.assertTrue(supports_tag(key), '%r should be supported' % key)
+                with self.subTest(key=key):
+                    self.assertTrue(supports_tag(key), '%r should be supported' % key)
             for key in INVALID_KEYS:
-                self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
+                with self.subTest(key=key):
+                    self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
         @skipUnlessTestfile
         def test_r128_replaygain_tags(self):
@@ -440,9 +442,11 @@ class VorbisUtilTest(PicardTestCase):
 
     def test_is_valid_key(self):
         for key in VALID_KEYS:
-            self.assertTrue(vorbis.is_valid_key(key), '%r is valid' % key)
+            with self.subTest(key=key):
+                self.assertTrue(vorbis.is_valid_key(key), '%r is valid' % key)
         for key in INVALID_KEYS:
-            self.assertFalse(vorbis.is_valid_key(key), '%r is invalid' % key)
+            with self.subTest(key=key):
+                self.assertFalse(vorbis.is_valid_key(key), '%r is invalid' % key)
 
     def test_flac_sort_pics_after_tags(self):
         pic1 = Picture()
@@ -481,13 +485,14 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
             CoverArtImage(data=self.pngdata),
         ]
         for test in tests:
-            file_save_image(self.format_registry, self.filename, test)
-            raw_metadata = load_raw(self.filename)
-            pic = raw_metadata.pictures[0]
-            self.assertNotEqual(pic.width, 0)
-            self.assertEqual(pic.width, test.width)
-            self.assertNotEqual(pic.height, 0)
-            self.assertEqual(pic.height, test.height)
+            with self.subTest(image=test.mimetype):
+                file_save_image(self.format_registry, self.filename, test)
+                raw_metadata = load_raw(self.filename)
+                pic = raw_metadata.pictures[0]
+                self.assertNotEqual(pic.width, 0)
+                self.assertEqual(pic.width, test.width)
+                self.assertNotEqual(pic.height, 0)
+                self.assertEqual(pic.height, test.height)
 
     def test_save_large_pics(self):
         # 16 MB image

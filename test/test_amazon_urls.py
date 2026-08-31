@@ -19,50 +19,32 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.util import parse_amazon_url
 
 
 class ParseAmazonUrlTest(PicardTestCase):
-    def test_1(self):
-        url = 'http://www.amazon.com/dp/020530902X'
-        expected = {'asin': '020530902X', 'host': 'amazon.com'}
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_2(self):
-        url = 'http://ec1.amazon.co.jp/gp/product/020530902X'
-        expected = {'asin': '020530902X', 'host': 'ec1.amazon.co.jp'}
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_3(self):
-        url = 'http://amazon.com/Dark-Side-Moon-Pink-Floyd/dp/B004ZN9RWK/ref=sr_1_1?s=music&ie=UTF8&qid=1372605047&sr=1-1&keywords=pink+floyd+dark+side+of+the+moon'
-        expected = {'asin': 'B004ZN9RWK', 'host': 'amazon.com'}
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_4(self):
-        url = 'https://www.amazon.co.jp/gp/product/B00005FMYV'
-        expected = {'asin': 'B00005FMYV', 'host': 'amazon.co.jp'}
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_incorrect_asin_1(self):
-        url = 'http://www.amazon.com/dp/A20530902X'
-        expected = None
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_incorrect_asin_2(self):
-        url = 'http://www.amazon.com/dp/020530902x'
-        expected = None
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_incorrect_url_scheme(self):
-        url = 'httpsa://www.amazon.co.jp/gp/product/B00005FMYV'
-        expected = None
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
+    @subtest_cases(
+        "url,expected",
+        [
+            ('http://www.amazon.com/dp/020530902X', {'asin': '020530902X', 'host': 'amazon.com'}),
+            ('http://ec1.amazon.co.jp/gp/product/020530902X', {'asin': '020530902X', 'host': 'ec1.amazon.co.jp'}),
+            (
+                'http://amazon.com/Dark-Side-Moon-Pink-Floyd/dp/B004ZN9RWK/ref=sr_1_1?s=music&ie=UTF8&qid=1372605047&sr=1-1&keywords=pink+floyd+dark+side+of+the+moon',
+                {'asin': 'B004ZN9RWK', 'host': 'amazon.com'},
+            ),
+            ('https://www.amazon.co.jp/gp/product/B00005FMYV', {'asin': 'B00005FMYV', 'host': 'amazon.co.jp'}),
+            # An ASIN starting with a letter other than B is not valid
+            ('http://www.amazon.com/dp/A20530902X', None),
+            # An ASIN must be upper case
+            ('http://www.amazon.com/dp/020530902x', None),
+            # Unknown url scheme
+            ('httpsa://www.amazon.co.jp/gp/product/B00005FMYV', None),
+        ],
+    )
+    def test_parse_amazon_url(self, url, expected):
+        self.assertEqual(parse_amazon_url(url), expected)

@@ -54,7 +54,8 @@ class CommonAsfTests:
             self.assertTrue(fmt.supports_tag('discnumber'))
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
             for tag in self.replaygain_tags.keys():
-                self.assertTrue(fmt.supports_tag(tag))
+                with self.subTest(tag=tag):
+                    self.assertTrue(fmt.supports_tag(tag))
 
         @skipUnlessTestfile
         def test_albumartists(self):

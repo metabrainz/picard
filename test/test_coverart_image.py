@@ -27,6 +27,7 @@ import unittest
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
+    subtest_cases,
 )
 
 from picard.const.defaults import DEFAULT_COVER_IMAGE_FILENAME
@@ -375,8 +376,11 @@ class DataHashTest(PicardTestCase):
         self.assertEqual(h.shorthash, "333fcb4ee1aa7c11")
 
     def test_eq(self):
+        # DataHash interns by content, so equal data yields the very same instance
         self.assertIs(DataHash(b'a'), DataHash(b'a'))
         self.assertIs(DataHash(b''), DataHash(b''))
+        # Equality itself, rather than the identity that interning guarantees
+        self.assertEqual(DataHash(b'a'), DataHash(b'a'))
         self.assertNotEqual(DataHash(b'a'), DataHash(b'b'))
         self.assertNotEqual(DataHash(b'a'), DataHash(b''))
         self.assertNotEqual(DataHash(b'a'), None)
@@ -417,46 +421,39 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
             os.path.normpath(path2),
         )
 
-    def test_make_image_filename(self):
+    @subtest_cases(
+        "tags,name,dirpath,expected",
+        {
+            'plain name': ({}, 'AlbumArt', '/music/albumart', '/music/albumart/AlbumArt'),
+            'script producing nothing falls back to the default name': (
+                {},
+                '$noop()',
+                '/music/albumart',
+                os.path.join('/music/albumart/', DEFAULT_COVER_IMAGE_FILENAME),
+            ),
+            'relative path with a variable': (
+                {'album': 'TheAlbum'},
+                "../covers/%album%",
+                "/music/album",
+                '/music/covers/TheAlbum',
+            ),
+            'absolute path ignores the directory': (
+                {},
+                '/foo/bar/AlbumArt',
+                '/music/albumart',
+                '/foo/bar/AlbumArt',
+            ),
+        },
+    )
+    def test_make_image_filename(self, tags, name, dirpath, expected):
         filename = self.image._make_image_filename(
-            'AlbumArt',
-            '/music/albumart',
-            self.metadata,
+            name,
+            dirpath,
+            Metadata(tags),
             win_compat=False,
             win_shorten_path=False,
         )
-        self.compare_paths('/music/albumart/AlbumArt', filename)
-
-    def test_make_image_filename_default(self):
-        filename = self.image._make_image_filename(
-            '$noop()',
-            '/music/albumart',
-            self.metadata,
-            win_compat=False,
-            win_shorten_path=False,
-        )
-        self.compare_paths(os.path.join('/music/albumart/', DEFAULT_COVER_IMAGE_FILENAME), filename)
-
-    def test_make_image_filename_relative_path(self):
-        self.metadata['album'] = 'TheAlbum'
-        filename = self.image._make_image_filename(
-            "../covers/%album%",
-            "/music/album",
-            self.metadata,
-            win_compat=False,
-            win_shorten_path=False,
-        )
-        self.compare_paths('/music/covers/TheAlbum', filename)
-
-    def test_make_image_filename_absolute_path(self):
-        filename = self.image._make_image_filename(
-            '/foo/bar/AlbumArt',
-            '/music/albumart',
-            self.metadata,
-            win_compat=False,
-            win_shorten_path=False,
-        )
-        self.compare_paths('/foo/bar/AlbumArt', filename)
+        self.compare_paths(expected, filename)
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_make_image_filename_absolute_path_no_common_base(self):

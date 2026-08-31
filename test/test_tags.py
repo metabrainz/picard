@@ -606,11 +606,13 @@ class UtilTagsOptionsTest(PicardTestCase):
             if tv.related_options is None:
                 continue
             for opt in tv.related_options:
-                title = get_option_title(opt)
-                self.assertIsNotNone(title, f"Missing related option setting '{opt}' in '{str(tv)}'")
-            self.assertFalse(
-                title.startswith('No title for setting'), f"Missing title for option setting '{opt}' in '{str(tv)}'"
-            )
+                with self.subTest(tag=str(tv), option=opt):
+                    title = get_option_title(opt)
+                    self.assertIsNotNone(title, f"Missing related option setting '{opt}' in '{str(tv)}'")
+                    self.assertFalse(
+                        title.startswith('No title for setting'),
+                        f"Missing title for option setting '{opt}' in '{str(tv)}'",
+                    )
 
 
 class UtilTagsSeeAlsoTest(PicardTestCase):
@@ -622,9 +624,10 @@ class UtilTagsSeeAlsoTest(PicardTestCase):
             if tv.see_also is None:
                 continue
             for also in tv.see_also:
-                name = ALL_TAGS.script_name_from_name(also)
-                self.assertIsNotNone(name, f"Invalid see_also '{also}' in '{str(tv)}' tag")
-                self.assertNotEqual(name, str(tv), f"Circular see_also reference in '{str(tv)}' tag")
+                with self.subTest(tag=str(tv), see_also=also):
+                    name = ALL_TAGS.script_name_from_name(also)
+                    self.assertIsNotNone(name, f"Invalid see_also '{also}' in '{str(tv)}' tag")
+                    self.assertNotEqual(name, str(tv), f"Circular see_also reference in '{str(tv)}' tag")
 
 
 class UtilTagsLinksTest(PicardTestCase):
@@ -634,10 +637,11 @@ class UtilTagsLinksTest(PicardTestCase):
             if tv.doc_links is None:
                 continue
             for doc_link in tv.doc_links:
-                title = doc_link.title.strip()
-                link = doc_link.link.strip()
-                self.assertNotEqual(title, '', f"Invalid link (missing title) in '{str(tv)}' tag")
-                self.assertNotEqual(link, '', f"Invalid link (missing URL) in '{str(tv)}' tag")
+                with self.subTest(tag=str(tv), link=doc_link.link):
+                    title = doc_link.title.strip()
+                    link = doc_link.link.strip()
+                    self.assertNotEqual(title, '', f"Invalid link (missing title) in '{str(tv)}' tag")
+                    self.assertNotEqual(link, '', f"Invalid link (missing URL) in '{str(tv)}' tag")
 
 
 class TagsGeneratorTest(PicardTestCase):
@@ -646,16 +650,22 @@ class TagsGeneratorTest(PicardTestCase):
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_tag)
+            with self.subTest(tag=tag):
+                self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_tag)
 
     def test_all_preserved_tags(self):
         tags = list(preserved_tag_names())
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_preserved)
+            with self.subTest(tag=tag):
+                self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_preserved)
 
     def test_all_filterable_tags(self):
         tags = list(filterable_tag_names())
+        # Guard against the loop below passing vacuously, as the sibling tests do
+        self.assertTrue(len(tags) > 0)
+
         for tag in tags:
-            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_filterable)
+            with self.subTest(tag=tag):
+                self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_filterable)

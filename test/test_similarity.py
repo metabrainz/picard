@@ -19,7 +19,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.similarity import (
     similarity,
@@ -35,61 +38,30 @@ class SimilarityTest(PicardTestCase):
 
 
 class Similarity2Test(PicardTestCase):
-    def test_full_match(self):
-        a = b = "a b c"
-        self.assertEqual(similarity2(a, b), 1.0)
+    @subtest_cases(
+        "a,b,expected",
+        {
+            'full match': ("a b c", "a b c", 1.0),
+            'various separators': ("a b c", "A,B•C", 1.0),
+            'various separators with padding': ("a b c", ",A, B •C•", 1.0),
+            'same words in different order': ("a b c", "c a b", 1.0),
+            'totally different': ("abc", "def", 0.0),
+            'empty a': ("", "def", 0.0),
+            'empty b': ("abc", "", 0.0),
+            'both empty': ("", "", 0.0),
+            'whitespace only': (" ", "  ", 0.0),
+        },
+    )
+    def test_similarity2_exact(self, a, b, expected):
+        self.assertEqual(similarity2(a, b), expected)
 
-    def test_match_various_separators_1(self):
-        a = "a b c"
-        b = "A,B•C"
-        self.assertEqual(similarity2(a, b), 1.0)
-
-    def test_match_various_separators_2(self):
-        a = "a b c"
-        b = ",A, B •C•"
-        self.assertEqual(similarity2(a, b), 1.0)
-
-    def test_a_b_order(self):
-        a = "a b c"
-        b = "c a b"
-        self.assertEqual(similarity2(a, b), 1.0)
-
-    def test_a_similar_b_1(self):
-        a = "a b c"
-        b = "a b d"
-        self.assertAlmostEqual(similarity2(a, b), 0.6, 1)
-
-    def test_a_similar_b_2(self):
-        a = "a b c"
-        b = "a f d"
-        self.assertAlmostEqual(similarity2(a, b), 0.3, 1)
-
-    def test_a_b_totally_different(self):
-        a = "abc"
-        b = "def"
-        self.assertEqual(similarity2(a, b), 0.0)
-
-    def test_not_a(self):
-        a = ""
-        b = "def"
-        self.assertEqual(similarity2(a, b), 0.0)
-
-    def test_not_b(self):
-        a = "abc"
-        b = ""
-        self.assertEqual(similarity2(a, b), 0.0)
-
-    def test_not_a_and_not_b(self):
-        a = ""
-        b = ""
-        self.assertEqual(similarity2(a, b), 0.0)
-
-    def test_empty_lists(self):
-        a = " "
-        b = "  "
-        self.assertEqual(similarity2(a, b), 0.0)
-
-    def test_a_longer_than_b(self):
-        a = "a b c d"
-        b = "a d c"
-        self.assertAlmostEqual(similarity2(a, b), 0.88, 1)
+    @subtest_cases(
+        "a,b,expected",
+        {
+            'one word differs': ("a b c", "a b d", 0.6),
+            'two words differ': ("a b c", "a f d", 0.3),
+            'a longer than b': ("a b c d", "a d c", 0.88),
+        },
+    )
+    def test_similarity2_approximate(self, a, b, expected):
+        self.assertAlmostEqual(similarity2(a, b), expected, 1)

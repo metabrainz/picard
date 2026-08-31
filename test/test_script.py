@@ -38,7 +38,10 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.cluster import Cluster
 from picard.const.defaults import DEFAULT_FILE_NAMING_FORMAT
@@ -653,361 +656,325 @@ class ScriptParserTest(PicardTestCase):
     def test_arguments(self):
         self.assertTrue(self.parser.eval(r"$set(bleh,$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\)))) $set(wer,1)"))
 
-    def test_cmd_gt(self):
-        # Test with default processing
-        self.assertScriptResultEquals("$gt(10,4)", "1")
-        self.assertScriptResultEquals("$gt(6,6)", "")
-        self.assertScriptResultEquals("$gt(6,7)", "")
-        self.assertScriptResultEquals("$gt(6.5,4)", "1")
-        self.assertScriptResultEquals("$gt(6.5,4.5)", "1")
-        self.assertScriptResultEquals("$gt(6.5,6.5)", "")
-        self.assertScriptResultEquals("$gt(a,b)", "")
-        self.assertScriptResultEquals("$gt(b,a)", "1")
-        self.assertScriptResultEquals("$gt(a,6)", "1")
-        self.assertScriptResultEquals("$gt(a,6.5)", "1")
-        self.assertScriptResultEquals("$gt(6,a)", "")
-        self.assertScriptResultEquals("$gt(6.5,a)", "")
+    def _assert_arg_count_errors(self, func, expected, scripts):
+        """Check that ``func`` rejects each script with a wrong-argument-count error.
 
-        # Test with "int" processing
-        self.assertScriptResultEquals("$gt(10,4,int)", "1")
-        self.assertScriptResultEquals("$gt(6,4,int)", "1")
-        self.assertScriptResultEquals("$gt(6.5,4,int)", "")
-        self.assertScriptResultEquals("$gt(6,7,int)", "")
-        self.assertScriptResultEquals("$gt(6,6,int)", "")
-        self.assertScriptResultEquals("$gt(a,b,int)", "")
+        ``expected`` is the count phrase used in the message, e.g. 'exactly 2' or
+        'between 2 and 3'. Each script is checked as its own subtest.
+        """
+        areg = rf"^\d+:\d+:\${func}: Wrong number of arguments for \${func}: Expected {expected}, "
+        for script in scripts:
+            with self.subTest(script=script):
+                with self.assertRaisesRegex(ScriptError, areg):
+                    self.parser.eval(script)
 
-        # Test with "float" processing
-        self.assertScriptResultEquals("$gt(1.2,1,float)", "1")
-        self.assertScriptResultEquals("$gt(1.2,1.1,float)", "1")
-        self.assertScriptResultEquals("$gt(1.2,1.3,float)", "")
-        self.assertScriptResultEquals("$gt(1.2,1.2,float)", "")
-        self.assertScriptResultEquals("$gt(a,b,float)", "")
+    def _assert_comparison_arg_count_errors(self, func):
+        """Check that comparison function ``func`` rejects wrong argument counts."""
+        self._assert_arg_count_errors(func, 'between 2 and 3', (f"${func}()", f"${func}(1)", f"${func}(foo,bar,text,)"))
 
-        # Test date type arguments with "text" processing
-        self.assertScriptResultEquals("$gt(2020-01-01,2020-01-02,text)", "")
-        self.assertScriptResultEquals("$gt(2020-01-02,2020-01-01,text)", "1")
-        self.assertScriptResultEquals("$gt(2020-01-01,2020-02,text)", "")
-        self.assertScriptResultEquals("$gt(2020-02,2020-01-01,text)", "1")
-        self.assertScriptResultEquals("$gt(2020-01-01,2020-01-01,text)", "")
+    @subtest_cases(
+        "expression,expected",
+        [
+            # Default processing
+            ("$gt(10,4)", "1"),
+            ("$gt(6,6)", ""),
+            ("$gt(6,7)", ""),
+            ("$gt(6.5,4)", "1"),
+            ("$gt(6.5,4.5)", "1"),
+            ("$gt(6.5,6.5)", ""),
+            ("$gt(a,b)", ""),
+            ("$gt(b,a)", "1"),
+            ("$gt(a,6)", "1"),
+            ("$gt(a,6.5)", "1"),
+            ("$gt(6,a)", ""),
+            ("$gt(6.5,a)", ""),
+            # "int" processing
+            ("$gt(10,4,int)", "1"),
+            ("$gt(6,4,int)", "1"),
+            ("$gt(6.5,4,int)", ""),
+            ("$gt(6,7,int)", ""),
+            ("$gt(6,6,int)", ""),
+            ("$gt(a,b,int)", ""),
+            # "float" processing
+            ("$gt(1.2,1,float)", "1"),
+            ("$gt(1.2,1.1,float)", "1"),
+            ("$gt(1.2,1.3,float)", ""),
+            ("$gt(1.2,1.2,float)", ""),
+            ("$gt(a,b,float)", ""),
+            # Date type arguments with "text" processing
+            ("$gt(2020-01-01,2020-01-02,text)", ""),
+            ("$gt(2020-01-02,2020-01-01,text)", "1"),
+            ("$gt(2020-01-01,2020-02,text)", ""),
+            ("$gt(2020-02,2020-01-01,text)", "1"),
+            ("$gt(2020-01-01,2020-01-01,text)", ""),
+            # Text type arguments with "text" processing
+            ("$gt(abc,abcd,text)", ""),
+            ("$gt(abcd,abc,text)", "1"),
+            ("$gt(abc,ac,text)", ""),
+            ("$gt(ac,abc,text)", "1"),
+            ("$gt(abc,abc,text)", ""),
+            # Empty arguments (default processing)
+            ("$gt(,1)", ""),
+            ("$gt(1,)", "1"),
+            ("$gt(,)", ""),
+            # Empty arguments ("int" processing)
+            ("$gt(,1,int)", ""),
+            ("$gt(1,,int)", ""),
+            ("$gt(,,int)", ""),
+            # Empty arguments ("float" processing)
+            ("$gt(,1.1,float)", ""),
+            ("$gt(1.1,,float)", ""),
+            ("$gt(,,float)", ""),
+            # Empty arguments ("text" processing)
+            ("$gt(,a,text)", ""),
+            ("$gt(a,,text)", "1"),
+            ("$gt(,,text)", ""),
+            # Case sensitive arguments ("text" processing)
+            ("$gt(A,a,text)", ""),
+            ("$gt(a,A,text)", "1"),
+            # Case insensitive arguments ("nocase" processing)
+            ("$gt(a,B,nocase)", ""),
+            ("$gt(A,b,nocase)", ""),
+            ("$gt(B,a,nocase)", "1"),
+            ("$gt(b,A,nocase)", "1"),
+            # Unknown processing type
+            ("$gt(2,1,unknown)", ""),
+        ],
+    )
+    def test_cmd_gt(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected)
 
-        # Test text type arguments with "text" processing
-        self.assertScriptResultEquals("$gt(abc,abcd,text)", "")
-        self.assertScriptResultEquals("$gt(abcd,abc,text)", "1")
-        self.assertScriptResultEquals("$gt(abc,ac,text)", "")
-        self.assertScriptResultEquals("$gt(ac,abc,text)", "1")
-        self.assertScriptResultEquals("$gt(abc,abc,text)", "")
+    @subtest_cases(
+        "expression,expected",
+        [
+            # Default processing
+            ("$gte(10,9)", "1"),
+            ("$gte(10,10)", "1"),
+            ("$gte(10,11)", ""),
+            ("$gte(10.1,10)", "1"),
+            ("$gte(10.1,10.1)", "1"),
+            ("$gte(10.1,10.2)", ""),
+            ("$gte(a,b)", ""),
+            ("$gte(b,a)", "1"),
+            ("$gte(a,a)", "1"),
+            ("$gte(a,6)", "1"),
+            ("$gte(a,6.5)", "1"),
+            ("$gte(6,a)", ""),
+            ("$gte(6.5,a)", ""),
+            # "int" processing
+            ("$gte(10,10.1,int)", ""),
+            ("$gte(10,10,int)", "1"),
+            ("$gte(10,4,int)", "1"),
+            ("$gte(6,4,int)", "1"),
+            ("$gte(6,7,int)", ""),
+            ("$gte(a,b,int)", ""),
+            # "float" processing
+            ("$gte(10.2,10.1,float)", "1"),
+            ("$gte(10.2,10.2,float)", "1"),
+            ("$gte(6,4,float)", "1"),
+            ("$gte(10,10.1,float)", ""),
+            ("$gte(10.2,10.3,float)", ""),
+            ("$gte(6,7,float)", ""),
+            ("$gte(a,b,float)", ""),
+            # Date type arguments ("text" processing)
+            ("$gte(2020-01-01,2020-01-02,text)", ""),
+            ("$gte(2020-01-02,2020-01-01,text)", "1"),
+            ("$gte(2020-01-01,2020-02,text)", ""),
+            ("$gte(2020-02,2020-01-01,text)", "1"),
+            ("$gte(2020-01-01,2020-01-01,text)", "1"),
+            # Text type arguments ("text" processing)
+            ("$gte(abc,abcd,text)", ""),
+            ("$gte(abcd,abc,text)", "1"),
+            ("$gte(abc,ac,text)", ""),
+            ("$gte(ac,abc,text)", "1"),
+            ("$gte(abc,abc,text)", "1"),
+            # Empty arguments (default processing)
+            ("$gte(,1)", ""),
+            ("$gte(1,)", "1"),
+            ("$gte(,)", "1"),
+            # Empty arguments ("int" processing)
+            ("$gte(,1,int)", ""),
+            ("$gte(1,,int)", ""),
+            ("$gte(,,int)", ""),
+            # Empty arguments ("float" processing)
+            ("$gte(,1,float)", ""),
+            ("$gte(1,,float)", ""),
+            ("$gte(,,float)", ""),
+            # Empty arguments ("text" processing)
+            ("$gte(,a,text)", ""),
+            ("$gte(a,,text)", "1"),
+            ("$gte(,,text)", "1"),
+            # Case sensitive arguments ("text" processing)
+            ("$gte(A,a,text)", ""),
+            ("$gte(a,A,text)", "1"),
+            # Case insensitive arguments ("nocase" processing)
+            ("$gte(a,B,nocase)", ""),
+            ("$gte(A,b,nocase)", ""),
+            ("$gte(B,a,nocase)", "1"),
+            ("$gte(b,A,nocase)", "1"),
+            ("$gte(a,A,nocase)", "1"),
+            ("$gte(A,a,nocase)", "1"),
+            # Unknown processing type
+            ("$gte(2,1,unknown)", ""),
+        ],
+    )
+    def test_cmd_gte(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected)
 
-        # Test with empty arguments (default processing)
-        self.assertScriptResultEquals("$gt(,1)", "")
-        self.assertScriptResultEquals("$gt(1,)", "1")
-        self.assertScriptResultEquals("$gt(,)", "")
+    @subtest_cases(
+        "expression,expected",
+        [
+            # Default processing
+            ("$lt(10,4)", ""),
+            ("$lt(6,6)", ""),
+            ("$lt(6,7)", "1"),
+            ("$lt(6.5,4)", ""),
+            ("$lt(6.5,4.5)", ""),
+            ("$lt(6.5,6.5)", ""),
+            ("$lt(6.5,6.6)", "1"),
+            ("$lt(a,b)", "1"),
+            ("$lt(b,a)", ""),
+            ("$lt(a,6)", ""),
+            ("$lt(a,6.5)", ""),
+            ("$lt(6,a)", "1"),
+            ("$lt(6.5,a)", "1"),
+            # "int" processing
+            ("$lt(4,6,int)", "1"),
+            ("$lt(4,6.1,int)", ""),
+            ("$lt(4,3,int)", ""),
+            ("$lt(4,4.1,int)", ""),
+            ("$lt(4.1,4.2,int)", ""),
+            ("$lt(4,4,int)", ""),
+            ("$lt(a,b,int)", ""),
+            # "float" processing
+            ("$lt(4,4.1,float)", "1"),
+            ("$lt(4.1,4.2,float)", "1"),
+            ("$lt(4,6,float)", "1"),
+            ("$lt(4.2,4.1,float)", ""),
+            ("$lt(4.1,4.1,float)", ""),
+            ("$lt(a,b,float)", ""),
+            # Date type arguments ("text" processing)
+            ("$lt(2020-01-01,2020-01-02,text)", "1"),
+            ("$lt(2020-01-02,2020-01-01,text)", ""),
+            ("$lt(2020-01-01,2020-02,text)", "1"),
+            ("$lt(2020-02,2020-01-01,text)", ""),
+            ("$lt(2020-01-01,2020-01-01,text)", ""),
+            # Text type arguments ("text" processing)
+            ("$lt(abc,abcd,text)", "1"),
+            ("$lt(abcd,abc,text)", ""),
+            ("$lt(abc,ac,text)", "1"),
+            ("$lt(ac,abc,text)", ""),
+            ("$lt(abc,abc,text)", ""),
+            # Empty arguments (default processing)
+            ("$lt(,1)", "1"),
+            ("$lt(1,)", ""),
+            ("$lt(,)", ""),
+            # Empty arguments ("int" processing)
+            ("$lt(,1,int)", ""),
+            ("$lt(1,,int)", ""),
+            ("$lt(,,int)", ""),
+            # Empty arguments ("float" processing)
+            ("$lt(,1,float)", ""),
+            ("$lt(1,,float)", ""),
+            ("$lt(,,float)", ""),
+            # Empty arguments ("text" processing)
+            ("$lt(,a,text)", "1"),
+            ("$lt(a,,text)", ""),
+            ("$lt(,,text)", ""),
+            # Case sensitive arguments ("text" processing)
+            ("$lt(A,a,text)", "1"),
+            ("$lt(a,A,text)", ""),
+            # Case insensitive arguments ("nocase" processing)
+            ("$lt(a,B,nocase)", "1"),
+            ("$lt(A,b,nocase)", "1"),
+            ("$lt(B,a,nocase)", ""),
+            ("$lt(b,A,nocase)", ""),
+            # Unknown processing type
+            ("$lt(1,2,unknown)", ""),
+        ],
+    )
+    def test_cmd_lt(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected)
 
-        # Test with empty arguments ("int" processing)
-        self.assertScriptResultEquals("$gt(,1,int)", "")
-        self.assertScriptResultEquals("$gt(1,,int)", "")
-        self.assertScriptResultEquals("$gt(,,int)", "")
+    @subtest_cases(
+        "expression,expected",
+        [
+            # Default processing
+            ("$lte(10,4)", ""),
+            ("$lte(6,6)", "1"),
+            ("$lte(6,7)", "1"),
+            ("$lte(6.5,4)", ""),
+            ("$lte(6.5,4.5)", ""),
+            ("$lte(6.5,6.5)", "1"),
+            ("$lte(6.5,6.6)", "1"),
+            ("$lte(a,b)", "1"),
+            ("$lte(a,a)", "1"),
+            ("$lte(b,a)", ""),
+            ("$lte(a,6)", ""),
+            ("$lte(a,6.5)", ""),
+            ("$lte(6,a)", "1"),
+            ("$lte(6.5,a)", "1"),
+            # "int" processing
+            ("$lte(10,10,int)", "1"),
+            ("$lte(10.1,10.2,int)", ""),
+            ("$lte(4,10,int)", "1"),
+            ("$lte(4,3,int)", ""),
+            ("$lte(a,b,int)", ""),
+            # "float" processing
+            ("$lte(10,10,float)", "1"),
+            ("$lte(10.1,10.1,float)", "1"),
+            ("$lte(10.1,10.2,float)", "1"),
+            ("$lte(10.2,10.1,float)", ""),
+            ("$lte(4,3,float)", ""),
+            ("$lte(a,b,float)", ""),
+            # Date type arguments ("text" processing)
+            ("$lte(2020-01-01,2020-01-02,text)", "1"),
+            ("$lte(2020-01-02,2020-01-01,text)", ""),
+            ("$lte(2020-01-01,2020-02,text)", "1"),
+            ("$lte(2020-02,2020-01-01,text)", ""),
+            ("$lte(2020-01-01,2020-01-01,text)", "1"),
+            # Text type arguments ("text" processing)
+            ("$lte(abc,abcd,text)", "1"),
+            ("$lte(abcd,abc,text)", ""),
+            ("$lte(abc,ac,text)", "1"),
+            ("$lte(ac,abc,text)", ""),
+            ("$lte(abc,abc,text)", "1"),
+            # Empty arguments (default processing)
+            ("$lte(,1)", "1"),
+            ("$lte(1,)", ""),
+            ("$lte(,)", "1"),
+            # Empty arguments ("int" processing)
+            ("$lte(,1,int)", ""),
+            ("$lte(1,,int)", ""),
+            ("$lte(,,int)", ""),
+            # Empty arguments ("float" processing)
+            ("$lte(,1,float)", ""),
+            ("$lte(1,,float)", ""),
+            ("$lte(,,float)", ""),
+            # Empty arguments ("text" processing)
+            ("$lte(,a,text)", "1"),
+            ("$lte(a,,text)", ""),
+            ("$lte(,,text)", "1"),
+            # Case sensitive arguments ("text" processing)
+            ("$lte(A,a,text)", "1"),
+            ("$lte(a,A,text)", ""),
+            # Case insensitive arguments ("nocase" processing)
+            ("$lte(a,B,nocase)", "1"),
+            ("$lte(A,b,nocase)", "1"),
+            ("$lte(B,a,nocase)", ""),
+            ("$lte(b,A,nocase)", ""),
+            ("$lte(a,A,nocase)", "1"),
+            ("$lte(A,a,nocase)", "1"),
+            # Unknown processing type
+            ("$lte(1,2,unknown)", ""),
+        ],
+    )
+    def test_cmd_lte(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected)
 
-        # Test with empty arguments ("float" processing)
-        self.assertScriptResultEquals("$gt(,1.1,float)", "")
-        self.assertScriptResultEquals("$gt(1.1,float)", "")
-        self.assertScriptResultEquals("$gt(,,float)", "")
-
-        # Test with empty arguments ("text" processing)
-        self.assertScriptResultEquals("$gt(,a,text)", "")
-        self.assertScriptResultEquals("$gt(a,,text)", "1")
-        self.assertScriptResultEquals("$gt(,,text)", "")
-
-        # Test case sensitive arguments ("text" processing)
-        self.assertScriptResultEquals("$gt(A,a,text)", "")
-        self.assertScriptResultEquals("$gt(a,A,text)", "1")
-
-        # Test case insensitive arguments ("nocase" processing)
-        self.assertScriptResultEquals("$gt(a,B,nocase)", "")
-        self.assertScriptResultEquals("$gt(A,b,nocase)", "")
-        self.assertScriptResultEquals("$gt(B,a,nocase)", "1")
-        self.assertScriptResultEquals("$gt(b,A,nocase)", "1")
-
-        # Test unknown processing type
-        self.assertScriptResultEquals("$gt(2,1,unknown)", "")
-
-        # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$gt: Wrong number of arguments for \$gt: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gt()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gt(1)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gt(foo,bar,text,)")
-
-    def test_cmd_gte(self):
-        # Test with default processing
-        self.assertScriptResultEquals("$gte(10,9)", "1")
-        self.assertScriptResultEquals("$gte(10,10)", "1")
-        self.assertScriptResultEquals("$gte(10,11)", "")
-        self.assertScriptResultEquals("$gte(10.1,10)", "1")
-        self.assertScriptResultEquals("$gte(10.1,10.1)", "1")
-        self.assertScriptResultEquals("$gte(10.1,10.2)", "")
-        self.assertScriptResultEquals("$gte(a,b)", "")
-        self.assertScriptResultEquals("$gte(b,a)", "1")
-        self.assertScriptResultEquals("$gte(a,a)", "1")
-        self.assertScriptResultEquals("$gte(a,6)", "1")
-        self.assertScriptResultEquals("$gte(a,6.5)", "1")
-        self.assertScriptResultEquals("$gte(6,a)", "")
-        self.assertScriptResultEquals("$gte(6.5,a)", "")
-
-        # Test with "int" processing
-        self.assertScriptResultEquals("$gte(10,10.1,int)", "")
-        self.assertScriptResultEquals("$gte(10,10,int)", "1")
-        self.assertScriptResultEquals("$gte(10,4,int)", "1")
-        self.assertScriptResultEquals("$gte(6,4,int)", "1")
-        self.assertScriptResultEquals("$gte(6,7,int)", "")
-        self.assertScriptResultEquals("$gte(a,b,int)", "")
-
-        # Test with "float" processing
-        self.assertScriptResultEquals("$gte(10.2,10.1,float)", "1")
-        self.assertScriptResultEquals("$gte(10.2,10.2,float)", "1")
-        self.assertScriptResultEquals("$gte(6,4,float)", "1")
-        self.assertScriptResultEquals("$gte(10,10.1,float)", "")
-        self.assertScriptResultEquals("$gte(10.2,10.3,float)", "")
-        self.assertScriptResultEquals("$gte(6,7,float)", "")
-        self.assertScriptResultEquals("$gte(a,b,float)", "")
-
-        # Test date type arguments ("text" processing)
-        self.assertScriptResultEquals("$gte(2020-01-01,2020-01-02,text)", "")
-        self.assertScriptResultEquals("$gte(2020-01-02,2020-01-01,text)", "1")
-        self.assertScriptResultEquals("$gte(2020-01-01,2020-02,text)", "")
-        self.assertScriptResultEquals("$gte(2020-02,2020-01-01,text)", "1")
-        self.assertScriptResultEquals("$gte(2020-01-01,2020-01-01,text)", "1")
-
-        # Test text type arguments ("text" processing)
-        self.assertScriptResultEquals("$gte(abc,abcd,text)", "")
-        self.assertScriptResultEquals("$gte(abcd,abc,text)", "1")
-        self.assertScriptResultEquals("$gte(abc,ac,text)", "")
-        self.assertScriptResultEquals("$gte(ac,abc,text)", "1")
-        self.assertScriptResultEquals("$gte(abc,abc,text)", "1")
-
-        # Test with empty arguments (default processing)
-        self.assertScriptResultEquals("$gte(,1)", "")
-        self.assertScriptResultEquals("$gte(1,)", "1")
-        self.assertScriptResultEquals("$gte(,)", "1")
-
-        # Test with empty arguments ("int" processing)
-        self.assertScriptResultEquals("$gte(,1,int)", "")
-        self.assertScriptResultEquals("$gte(1,,int)", "")
-        self.assertScriptResultEquals("$gte(,,int)", "")
-
-        # Test with empty arguments ("float" processing)
-        self.assertScriptResultEquals("$gte(,1,float)", "")
-        self.assertScriptResultEquals("$gte(1,float)", "")
-        self.assertScriptResultEquals("$gte(,,float)", "")
-
-        # Test with empty arguments ("text" processing)
-        self.assertScriptResultEquals("$gte(,a,text)", "")
-        self.assertScriptResultEquals("$gte(a,,text)", "1")
-        self.assertScriptResultEquals("$gte(,,text)", "1")
-
-        # Test case sensitive arguments ("text" processing)
-        self.assertScriptResultEquals("$gte(A,a,text)", "")
-        self.assertScriptResultEquals("$gte(a,A,text)", "1")
-
-        # Test case insensitive arguments ("nocase" processing)
-        self.assertScriptResultEquals("$gte(a,B,nocase)", "")
-        self.assertScriptResultEquals("$gte(A,b,nocase)", "")
-        self.assertScriptResultEquals("$gte(B,a,nocase)", "1")
-        self.assertScriptResultEquals("$gte(b,A,nocase)", "1")
-        self.assertScriptResultEquals("$gte(a,A,nocase)", "1")
-        self.assertScriptResultEquals("$gte(A,a,nocase)", "1")
-
-        # Test unknown processing type
-        self.assertScriptResultEquals("$gte(2,1,unknown)", "")
-
-        # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$gte: Wrong number of arguments for \$gte: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gte()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gte(1)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$gte(foo,bar,text,)")
-
-    def test_cmd_lt(self):
-        # Test with default processing
-        self.assertScriptResultEquals("$lt(10,4)", "")
-        self.assertScriptResultEquals("$lt(6,6)", "")
-        self.assertScriptResultEquals("$lt(6,7)", "1")
-        self.assertScriptResultEquals("$lt(6.5,4)", "")
-        self.assertScriptResultEquals("$lt(6.5,4.5)", "")
-        self.assertScriptResultEquals("$lt(6.5,6.5)", "")
-        self.assertScriptResultEquals("$lt(6.5,6.6)", "1")
-        self.assertScriptResultEquals("$lt(a,b)", "1")
-        self.assertScriptResultEquals("$lt(b,a)", "")
-        self.assertScriptResultEquals("$lt(a,6)", "")
-        self.assertScriptResultEquals("$lt(a,6.5)", "")
-        self.assertScriptResultEquals("$lt(6,a)", "1")
-        self.assertScriptResultEquals("$lt(6.5,a)", "1")
-
-        # Test with "int" processing
-        self.assertScriptResultEquals("$lt(4,6,int)", "1")
-        self.assertScriptResultEquals("$lt(4,6.1,int)", "")
-        self.assertScriptResultEquals("$lt(4,3,int)", "")
-        self.assertScriptResultEquals("$lt(4,4.1,int)", "")
-        self.assertScriptResultEquals("$lt(4.1,4.2,int)", "")
-        self.assertScriptResultEquals("$lt(4,4,int)", "")
-        self.assertScriptResultEquals("$lt(a,b,int)", "")
-
-        # Test with "float" processing
-        self.assertScriptResultEquals("$lt(4,4.1,float)", "1")
-        self.assertScriptResultEquals("$lt(4.1,4.2,float)", "1")
-        self.assertScriptResultEquals("$lt(4,6,float)", "1")
-        self.assertScriptResultEquals("$lt(4.2,4.1,float)", "")
-        self.assertScriptResultEquals("$lt(4.1,4.1,float)", "")
-        self.assertScriptResultEquals("$lt(a,b,float)", "")
-
-        # Test date type arguments ("text" processing)
-        self.assertScriptResultEquals("$lt(2020-01-01,2020-01-02,text)", "1")
-        self.assertScriptResultEquals("$lt(2020-01-02,2020-01-01,text)", "")
-        self.assertScriptResultEquals("$lt(2020-01-01,2020-02,text)", "1")
-        self.assertScriptResultEquals("$lt(2020-02,2020-01-01,text)", "")
-        self.assertScriptResultEquals("$lt(2020-01-01,2020-01-01,text)", "")
-
-        # Test text type arguments ("text" processing)
-        self.assertScriptResultEquals("$lt(abc,abcd,text)", "1")
-        self.assertScriptResultEquals("$lt(abcd,abc,text)", "")
-        self.assertScriptResultEquals("$lt(abc,ac,text)", "1")
-        self.assertScriptResultEquals("$lt(ac,abc,text)", "")
-        self.assertScriptResultEquals("$lt(abc,abc,text)", "")
-
-        # Test with empty arguments (default processing)
-        self.assertScriptResultEquals("$lt(,1)", "1")
-        self.assertScriptResultEquals("$lt(1,)", "")
-        self.assertScriptResultEquals("$lt(,)", "")
-
-        # Test with empty arguments ("int" processing)
-        self.assertScriptResultEquals("$lt(,1,int)", "")
-        self.assertScriptResultEquals("$lt(1,,int)", "")
-        self.assertScriptResultEquals("$lt(,,int)", "")
-
-        # Test with empty arguments ("float" processing)
-        self.assertScriptResultEquals("$lt(,1,float)", "")
-        self.assertScriptResultEquals("$lt(1,,float)", "")
-        self.assertScriptResultEquals("$lt(,,float)", "")
-
-        # Test with empty arguments ("text" processing)
-        self.assertScriptResultEquals("$lt(,a,text)", "1")
-        self.assertScriptResultEquals("$lt(a,,text)", "")
-        self.assertScriptResultEquals("$lt(,,text)", "")
-
-        # Test case sensitive arguments ("text" processing)
-        self.assertScriptResultEquals("$lt(A,a,text)", "1")
-        self.assertScriptResultEquals("$lt(a,A,text)", "")
-
-        # Test case insensitive arguments ("nocase" processing)
-        self.assertScriptResultEquals("$lt(a,B,nocase)", "1")
-        self.assertScriptResultEquals("$lt(A,b,nocase)", "1")
-        self.assertScriptResultEquals("$lt(B,a,nocase)", "")
-        self.assertScriptResultEquals("$lt(b,A,nocase)", "")
-
-        # Test unknown processing type
-        self.assertScriptResultEquals("$lt(1,2,unknown)", "")
-
-        # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$lt: Wrong number of arguments for \$lt: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lt()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lt(1)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lt(foo,bar,text,)")
-
-    def test_cmd_lte(self):
-        # Test with default processing
-        self.assertScriptResultEquals("$lte(10,4)", "")
-        self.assertScriptResultEquals("$lte(6,6)", "1")
-        self.assertScriptResultEquals("$lte(6,7)", "1")
-        self.assertScriptResultEquals("$lte(6.5,4)", "")
-        self.assertScriptResultEquals("$lte(6.5,4.5)", "")
-        self.assertScriptResultEquals("$lte(6.5,6.5)", "1")
-        self.assertScriptResultEquals("$lte(6.5,6.6)", "1")
-        self.assertScriptResultEquals("$lte(a,b)", "1")
-        self.assertScriptResultEquals("$lte(a,a)", "1")
-        self.assertScriptResultEquals("$lte(b,a)", "")
-        self.assertScriptResultEquals("$lte(a,6)", "")
-        self.assertScriptResultEquals("$lte(a,6.5)", "")
-        self.assertScriptResultEquals("$lte(6,a)", "1")
-        self.assertScriptResultEquals("$lte(6.5,a)", "1")
-
-        # Test with "int" processing
-        self.assertScriptResultEquals("$lte(10,10,int)", "1")
-        self.assertScriptResultEquals("$lte(10.1,10.2,int)", "")
-        self.assertScriptResultEquals("$lte(4,10,int)", "1")
-        self.assertScriptResultEquals("$lte(4,3,int)", "")
-        self.assertScriptResultEquals("$lte(a,b,int)", "")
-
-        # Test with "float" processing
-        self.assertScriptResultEquals("$lte(10,10,float)", "1")
-        self.assertScriptResultEquals("$lte(10.1,10.1,float)", "1")
-        self.assertScriptResultEquals("$lte(10.1,10.2,float)", "1")
-        self.assertScriptResultEquals("$lte(10.2,10.1,float)", "")
-        self.assertScriptResultEquals("$lte(4,3,float)", "")
-        self.assertScriptResultEquals("$lte(a,b,float)", "")
-
-        # Test date type arguments ("text" processing)
-        self.assertScriptResultEquals("$lte(2020-01-01,2020-01-02,text)", "1")
-        self.assertScriptResultEquals("$lte(2020-01-02,2020-01-01,text)", "")
-        self.assertScriptResultEquals("$lte(2020-01-01,2020-02,text)", "1")
-        self.assertScriptResultEquals("$lte(2020-02,2020-01-01,text)", "")
-        self.assertScriptResultEquals("$lte(2020-01-01,2020-01-01,text)", "1")
-
-        # Test text type arguments ("text" processing)
-        self.assertScriptResultEquals("$lte(abc,abcd,text)", "1")
-        self.assertScriptResultEquals("$lte(abcd,abc,text)", "")
-        self.assertScriptResultEquals("$lte(abc,ac,text)", "1")
-        self.assertScriptResultEquals("$lte(ac,abc,text)", "")
-        self.assertScriptResultEquals("$lte(abc,abc,text)", "1")
-
-        # Test with empty arguments (default processing)
-        self.assertScriptResultEquals("$lte(,1)", "1")
-        self.assertScriptResultEquals("$lte(1,)", "")
-        self.assertScriptResultEquals("$lte(,)", "1")
-
-        # Test with empty arguments ("int" processing)
-        self.assertScriptResultEquals("$lte(,1,int)", "")
-        self.assertScriptResultEquals("$lte(1,,int)", "")
-        self.assertScriptResultEquals("$lte(,,int)", "")
-
-        # Test with empty arguments ("float" processing)
-        self.assertScriptResultEquals("$lte(,1,float)", "")
-        self.assertScriptResultEquals("$lte(1,,float)", "")
-        self.assertScriptResultEquals("$lte(,,float)", "")
-
-        # Test with empty arguments ("text" processing)
-        self.assertScriptResultEquals("$lte(,a,text)", "1")
-        self.assertScriptResultEquals("$lte(a,,text)", "")
-        self.assertScriptResultEquals("$lte(,,text)", "1")
-
-        # Test case sensitive arguments ("text" processing)
-        self.assertScriptResultEquals("$lte(A,a,text)", "1")
-        self.assertScriptResultEquals("$lte(a,A,text)", "")
-
-        # Test case insensitive arguments ("nocase" processing)
-        self.assertScriptResultEquals("$lte(a,B,nocase)", "1")
-        self.assertScriptResultEquals("$lte(A,b,nocase)", "1")
-        self.assertScriptResultEquals("$lte(B,a,nocase)", "")
-        self.assertScriptResultEquals("$lte(b,A,nocase)", "")
-        self.assertScriptResultEquals("$lte(a,A,nocase)", "1")
-        self.assertScriptResultEquals("$lte(A,a,nocase)", "1")
-
-        # Test unknown processing type
-        self.assertScriptResultEquals("$lte(1,2,unknown)", "")
-
-        # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$lte: Wrong number of arguments for \$lte: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lte()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lte(1)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$lte(foo,bar,text,)")
+    @subtest_cases("func", ['gt', 'gte', 'lt', 'lte'])
+    def test_cmd_comparison_arg_count_errors(self, func):
+        self._assert_comparison_arg_count_errors(func)
 
     def test_cmd_len(self):
         self.assertScriptResultEquals("$len(abcdefg)", "7")
@@ -1153,9 +1120,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(2'a)", "2'A")
         self.assertScriptResultEquals(r"$title(%empty%)", "")
         # Tests wrong number of arguments
-        areg = r"^\d+:\d+:\$title: Wrong number of arguments for \$title: Expected exactly 1, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$title()")
+        self._assert_arg_count_errors('title', 'exactly 1', ("$title()",))
 
     def test_cmd_swapprefix(self):
         self.assertScriptResultEquals("$swapprefix(A stitch in time)", "stitch in time, A")
@@ -1209,25 +1174,15 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_with_wrong_argcount_or(self):
         # $or() requires at least 2 arguments
-        areg = r"^\d+:\d+:\$or: Wrong number of arguments for \$or: Expected at least 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval('$or(0)')
+        self._assert_arg_count_errors('or', 'at least 2', ('$or(0)',))
 
     def test_cmd_with_wrong_argcount_eq(self):
         # $eq() requires exactly 2 arguments
-        areg = r"^\d+:\d+:\$eq: Wrong number of arguments for \$eq: Expected exactly 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval('$eq(0)')
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval('$eq(0,0,0)')
+        self._assert_arg_count_errors('eq', 'exactly 2', ('$eq(0)', '$eq(0,0,0)'))
 
     def test_cmd_with_wrong_argcount_if(self):
-        areg = r"^\d+:\d+:\$if: Wrong number of arguments for \$if: Expected between 2 and 3, "
         # $if() requires 2 or 3 arguments
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval('$if(1)')
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval('$if(1,a,b,c)')
+        self._assert_arg_count_errors('if', 'between 2 and 3', ('$if(1)', '$if(1,a,b,c)'))
 
     def test_cmd_unset_simple(self):
         context = Metadata()
@@ -1522,9 +1477,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$find(,c)", "", context)
         self.assertScriptResultEquals("$find(abcdef,)", "0", context)
         # Tests wrong number of arguments
-        areg = r"^\d+:\d+:\$find: Wrong number of arguments for \$find: Expected exactly 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$find(abcdef)")
+        self._assert_arg_count_errors('find', 'exactly 2', ("$find(abcdef)",))
 
     def test_cmd_reverse(self):
         context = Metadata()
@@ -1536,9 +1489,7 @@ class ScriptParserTest(PicardTestCase):
         # Tests with static input
         self.assertScriptResultEquals("$reverse(One; Two; Three)", "eerhT ;owT ;enO", context)
         # Tests with missing input
-        areg = r"^\d+:\d+:\$reverse: Wrong number of arguments for \$reverse: Expected exactly 1, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$reverse()")
+        self._assert_arg_count_errors('reverse', 'exactly 1', ("$reverse()",))
 
     def test_cmd_substr(self):
         context = Metadata()
@@ -1580,13 +1531,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$substr(One; Two; Three,)", "One; Two; Three", context)
         self.assertScriptResultEquals("$substr(One; Two; Three,,)", "One; Two; Three", context)
         # Tests with missing input
-        areg = r"^\d+:\d+:\$substr: Wrong number of arguments for \$substr: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$substr()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$substr(abc)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$substr(abc,0,,)")
+        self._assert_arg_count_errors('substr', 'between 2 and 3', ("$substr()", "$substr(abc)", "$substr(abc,0,,)"))
 
     def test_cmd_getmulti(self):
         context = Metadata()
@@ -1616,13 +1561,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$getmulti(,0)", "", context)
         self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,)", "", context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$getmulti: Wrong number of arguments for \$getmulti: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$getmulti()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$getmulti(abc)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$getmulti(abc,0,; ,extra)")
+        self._assert_arg_count_errors(
+            'getmulti', 'between 2 and 3', ("$getmulti()", "$getmulti(abc)", "$getmulti(abc,0,; ,extra)")
+        )
 
     def test_cmd_foreach(self):
         context = Metadata()
@@ -1672,13 +1613,9 @@ class ScriptParserTest(PicardTestCase):
             context,
         )
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$foreach: Wrong number of arguments for \$foreach: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$foreach()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$foreach(abc;def)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$foreach(abc:def,$noop(),:,extra)")
+        self._assert_arg_count_errors(
+            'foreach', 'between 2 and 3', ("$foreach()", "$foreach(abc;def)", "$foreach(abc:def,$noop(),:,extra)")
+        )
 
     def test_cmd_while(self):
         context = Metadata()
@@ -1732,13 +1669,7 @@ class ScriptParserTest(PicardTestCase):
             context,
         )
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$while: Wrong number of arguments for \$while: Expected exactly 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$while()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$while(a)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$while(a,$noop(),extra)")
+        self._assert_arg_count_errors('while', 'exactly 2', ("$while()", "$while(a)", "$while(a,$noop(),extra)"))
 
     def test_cmd_map(self):
         context = Metadata()
@@ -1811,13 +1742,9 @@ class ScriptParserTest(PicardTestCase):
             context,
         )
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$map: Wrong number of arguments for \$map: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$map()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$map(abc; def)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$map(abc:def,$noop(),:,extra)")
+        self._assert_arg_count_errors(
+            'map', 'between 2 and 3', ("$map()", "$map(abc; def)", "$map(abc:def,$noop(),:,extra)")
+        )
 
     def test_cmd_joinmulti(self):
         context = Metadata()
@@ -1862,13 +1789,9 @@ class ScriptParserTest(PicardTestCase):
             context,
         )
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$join: Wrong number of arguments for \$join: Expected between 2 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$join()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$join(abc; def)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$join(abc:def, ==> ,:,extra)")
+        self._assert_arg_count_errors(
+            'join', 'between 2 and 3', ("$join()", "$join(abc; def)", "$join(abc:def, ==> ,:,extra)")
+        )
 
     def test_cmd_slice(self):
         context = Metadata()
@@ -1915,13 +1838,9 @@ class ScriptParserTest(PicardTestCase):
         # Tests with separator override
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,3,:)", alternate_output, context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$slice: Wrong number of arguments for \$slice: Expected between 2 and 4, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$slice()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$slice(abc; def)")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$slice(abc; def),0,1,:,extra")
+        self._assert_arg_count_errors(
+            'slice', 'between 2 and 4', ("$slice()", "$slice(abc; def)", "$slice(abc; def),0,1,:,extra")
+        )
 
     def test_cmd_datetime(self):
         with patch('datetime.datetime', _DateTime):
@@ -1939,9 +1858,7 @@ class ScriptParserTest(PicardTestCase):
             # Tests with invalid format
             self.assertScriptResultEquals("$datetime(xxx)", "xxx", context)
             # Tests with invalid number of arguments
-            areg = r"^\d+:\d+:\$datetime: Wrong number of arguments for \$datetime: Expected between 0 and 1, "
-            with self.assertRaisesRegex(ScriptError, areg):
-                self.parser.eval("$datetime(abc,def)")
+            self._assert_arg_count_errors('datetime', 'between 0 and 1', ("$datetime(abc,def)",))
 
     def test_cmd_datetime_platform_dependent(self):
         # Platform dependent testing because different platforms (both os and Python version)
@@ -2081,11 +1998,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$sortmulti(,)", "", context)
         self.assertScriptResultEquals("$sortmulti(,:)", "", context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$sortmulti: Wrong number of arguments for \$sortmulti: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$sortmulti()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$sortmulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+        self._assert_arg_count_errors(
+            'sortmulti', 'between 1 and 2', ("$sortmulti()", "$sortmulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+        )
 
     def test_cmd_reversemulti(self):
         context = Metadata()
@@ -2105,11 +2020,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$reversemulti(,)", "", context)
         self.assertScriptResultEquals("$reversemulti(,:)", "", context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$reversemulti: Wrong number of arguments for \$reversemulti: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$reversemulti()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+        self._assert_arg_count_errors(
+            'reversemulti', 'between 1 and 2', ("$reversemulti()", "$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+        )
 
     def test_cmd_unique(self):
         context = Metadata()
@@ -2129,11 +2042,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$unique(,,)", "", context)
         self.assertScriptResultEquals("$unique(,:)", "", context)
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$unique: Wrong number of arguments for \$unique: Expected between 1 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$unique()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
+        self._assert_arg_count_errors(
+            'unique', 'between 1 and 3', ("$unique()", "$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
+        )
 
     def test_cmd_countryname(self):
         context = Metadata()
@@ -2171,11 +2082,7 @@ class ScriptParserTest(PicardTestCase):
             self.assertScriptResultEquals("$countryname(INVALID)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$countryname: Wrong number of arguments for \$countryname: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$countryname()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$countryname(CA,,Extra)")
+        self._assert_arg_count_errors('countryname', 'between 1 and 2', ("$countryname()", "$countryname(CA,,Extra)"))
 
     def test_cmd_year(self):
         context = Metadata()
@@ -2200,11 +2107,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$year(21-07,dmy)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$year: Wrong number of arguments for \$year: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$year()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$year(2021-07-21,,)")
+        self._assert_arg_count_errors('year', 'between 1 and 2', ("$year()", "$year(2021-07-21,,)"))
 
     def test_cmd_month(self):
         context = Metadata()
@@ -2228,11 +2131,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$month(-21-2021,mdy)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$month: Wrong number of arguments for \$month: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$month()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$month(2021-07-21,,)")
+        self._assert_arg_count_errors('month', 'between 1 and 2', ("$month()", "$month(2021-07-21,,)"))
 
     def test_cmd_day(self):
         context = Metadata()
@@ -2256,11 +2155,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$day(-07-2021,dmy)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$day: Wrong number of arguments for \$day: Expected between 1 and 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$day()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$day(2021-07-21,,)")
+        self._assert_arg_count_errors('day', 'between 1 and 2', ("$day()", "$day(2021-07-21,,)"))
 
     def test_cmd_dateformat(self):
         context = Metadata()
@@ -2289,11 +2184,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$dateformat(,)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$dateformat: Wrong number of arguments for \$dateformat: Expected between 1 and 3, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$dateformat(2021-07-21,,,)")
+        self._assert_arg_count_errors('dateformat', 'between 1 and 3', ("$dateformat()", "$dateformat(2021-07-21,,,)"))
 
     def test_cmd_is_multi(self):
         context = Metadata()
@@ -2308,11 +2199,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$is_multi(a)", "", context)
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$is_multi: Wrong number of arguments for \$is_multi: Expected exactly 1, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$is_multi()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$is_multi(a,)")
+        self._assert_arg_count_errors('is_multi', 'exactly 1', ("$is_multi()", "$is_multi(a,)"))
 
     def test_cmd_cleanmulti(self):
         context = Metadata()
@@ -2373,11 +2260,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "", context)
 
     def test_cmd_cleanmulti_invalid_number_of_arguments(self):
-        areg = r"^\d+:\d+:\$cleanmulti: Wrong number of arguments for \$cleanmulti: Expected exactly 1, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$cleanmulti()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$cleanmulti(foo,)")
+        self._assert_arg_count_errors('cleanmulti', 'exactly 1', ("$cleanmulti()", "$cleanmulti(foo,)"))
 
     def test_cmd_min(self):
         # Test "text" processing
@@ -2450,11 +2333,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$min(unknown,a,B)", "")
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$min: Wrong number of arguments for \$min: Expected at least 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$min()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$min(text)")
+        self._assert_arg_count_errors('min', 'at least 2', ("$min()", "$min(text)"))
 
     def test_cmd_max(self):
         # Test "text" processing
@@ -2527,8 +2406,4 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$max(unknown,a,B)", "")
 
         # Tests with invalid number of arguments
-        areg = r"^\d+:\d+:\$max: Wrong number of arguments for \$max: Expected at least 2, "
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$max()")
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$max(text)")
+        self._assert_arg_count_errors('max', 'at least 2', ("$max()", "$max(text)"))

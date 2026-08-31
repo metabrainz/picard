@@ -22,6 +22,7 @@
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
+    subtest_cases,
 )
 
 from picard.const.cover_processing import ImageFormat
@@ -29,121 +30,26 @@ from picard.util import imageinfo
 
 
 class IdentifyTest(PicardTestCase):
-    def test_gif(self):
-        file = get_test_data_path('mb.gif')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=5806,
-                    format_info=ImageFormat.GIF,
-                ),
-            )
-
-    def test_png(self):
-        file = get_test_data_path('mb.png')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=11137,
-                    format_info=ImageFormat.PNG,
-                ),
-            )
-
-    def test_jpeg(self):
-        file = get_test_data_path('mb.jpg')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=8550,
-                    format_info=ImageFormat.JPEG,
-                ),
-            )
-
-    def test_webp_vp8(self):
-        file = get_test_data_path('mb-vp8.webp')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=6178,
-                    format_info=ImageFormat.WEBP,
-                ),
-            )
-
-    def test_webp_vp8l(self):
-        file = get_test_data_path('mb-vp8l.webp')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=9432,
-                    format_info=ImageFormat.WEBP,
-                ),
-            )
-
-    def test_webp_vp8x(self):
-        file = get_test_data_path('mb-vp8x.webp')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=6858,
-                    format_info=ImageFormat.WEBP,
-                ),
-            )
+    @subtest_cases(
+        "filename,expected",
+        [
+            ('mb.gif', imageinfo.ImageInfo(width=140, height=96, datalen=5806, format_info=ImageFormat.GIF)),
+            ('mb.png', imageinfo.ImageInfo(width=140, height=96, datalen=11137, format_info=ImageFormat.PNG)),
+            ('mb.jpg', imageinfo.ImageInfo(width=140, height=96, datalen=8550, format_info=ImageFormat.JPEG)),
+            ('mb-vp8.webp', imageinfo.ImageInfo(width=140, height=96, datalen=6178, format_info=ImageFormat.WEBP)),
+            ('mb-vp8l.webp', imageinfo.ImageInfo(width=140, height=96, datalen=9432, format_info=ImageFormat.WEBP)),
+            ('mb-vp8x.webp', imageinfo.ImageInfo(width=140, height=96, datalen=6858, format_info=ImageFormat.WEBP)),
+            ('mb.tiff', imageinfo.ImageInfo(width=140, height=96, datalen=12509, format_info=ImageFormat.TIFF)),
+            ('mb.pdf', imageinfo.ImageInfo(width=0, height=0, datalen=10362, format_info=ImageFormat.PDF)),
+        ],
+    )
+    def test_identify_supported_formats(self, filename, expected):
+        with open(get_test_data_path(filename), 'rb') as f:
+            self.assertEqual(imageinfo.identify(f.read()), expected)
 
     def test_webp_insufficient_data(self):
         self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, b'RIFF\x00\x00\x00\x00WEBPVP8L')
         self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, b'RIFF\x00\x00\x00\x00WEBPVP8X')
-
-    def test_tiff(self):
-        file = get_test_data_path('mb.tiff')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=140,
-                    height=96,
-                    datalen=12509,
-                    format_info=ImageFormat.TIFF,
-                ),
-            )
-
-    def test_pdf(self):
-        file = get_test_data_path('mb.pdf')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                imageinfo.ImageInfo(
-                    width=0,
-                    height=0,
-                    datalen=10362,
-                    format_info=ImageFormat.PDF,
-                ),
-            )
 
     def test_not_enough_data(self):
         self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, "x")

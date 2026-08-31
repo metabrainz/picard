@@ -129,20 +129,21 @@ class CommonId3Tests:
             ]
 
             for tag_in_test in tag_name_variants:
-                tags = mutagen.id3.ID3Tags()
-                for tag in tag_name_variants:
-                    tags.add(mutagen.id3.TXXX(desc=tag, text='foo'))
-                save_raw(self.filename, tags)
-                raw_metadata = load_raw(self.filename)
-                for tag in tag_name_variants:
-                    self.assertIn('TXXX:' + tag, raw_metadata)
+                with self.subTest(deleted_tag=tag_in_test):
+                    tags = mutagen.id3.ID3Tags()
+                    for tag in tag_name_variants:
+                        tags.add(mutagen.id3.TXXX(desc=tag, text='foo'))
+                    save_raw(self.filename, tags)
+                    raw_metadata = load_raw(self.filename)
+                    for tag in tag_name_variants:
+                        self.assertIn('TXXX:' + tag, raw_metadata)
 
-                metadata = Metadata()
-                metadata.delete(tag_in_test)
-                save_metadata(self.format_registry, self.filename, metadata)
-                raw_metadata = load_raw(self.filename)
-                for tag in tag_name_variants:
-                    self.assertNotIn('TXXX:' + tag, raw_metadata)
+                    metadata = Metadata()
+                    metadata.delete(tag_in_test)
+                    save_metadata(self.format_registry, self.filename, metadata)
+                    raw_metadata = load_raw(self.filename)
+                    for tag in tag_name_variants:
+                        self.assertNotIn('TXXX:' + tag, raw_metadata)
 
         @skipUnlessTestfile
         def test_id3_metadata_tofn(self):
@@ -220,7 +221,8 @@ class CommonId3Tests:
             metadata = Metadata(self.tags)
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             for key, value in self.tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @property
         def itunes_grouping_metadata(self):
@@ -374,7 +376,8 @@ class CommonId3Tests:
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.format_registry, self.filename)
             for key, value in self.replaygain_tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_ci_tags_save(self):
@@ -385,9 +388,10 @@ class CommonId3Tests:
             ]
 
             for tag in tag_name_variants:
-                metadata = Metadata({tag: 'foo'})
-                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertEqual('foo', loaded_metadata['replaygain_album_gain'])
+                with self.subTest(tag=tag):
+                    metadata = Metadata({tag: 'foo'})
+                    loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertEqual('foo', loaded_metadata['replaygain_album_gain'])
 
         @skipUnlessTestfile
         def test_ci_tags_preserve_case(self):
@@ -841,7 +845,8 @@ class ID3FileTest(PicardTestCase):
     def test_format_specific_metadata_v24(self):
         metadata = self.file.metadata
         for name, values in metadata.rawitems():
-            self.assertEqual(values, self.file.format_specific_metadata(metadata, name))
+            with self.subTest(tag=name):
+                self.assertEqual(values, self.file.format_specific_metadata(metadata, name))
 
     def test_format_specific_metadata_v23(self):
         config.setting['write_id3v23'] = True
@@ -884,8 +889,9 @@ class ID3FileTest(PicardTestCase):
             "",
         )
         for sylt, correct_lrc in zip(sylts, correct_lrcs, strict=True):
-            lrc = self.file._parse_sylt_text(sylt, 2)
-            self.assertEqual(lrc, correct_lrc)
+            with self.subTest(sylt=sylt):
+                lrc = self.file._parse_sylt_text(sylt, 2)
+                self.assertEqual(lrc, correct_lrc)
 
     def test_syncedlyrics_converting_to_sylt(self):
         lrcs = (
@@ -913,5 +919,6 @@ class ID3FileTest(PicardTestCase):
             [],
         )
         for lrc, correct_sylt in zip(lrcs, correct_sylts, strict=True):
-            sylt = self.file._parse_lrc_text(lrc)
-            self.assertEqual(sylt, correct_sylt)
+            with self.subTest(lrc=lrc):
+                sylt = self.file._parse_lrc_text(lrc)
+                self.assertEqual(sylt, correct_sylt)

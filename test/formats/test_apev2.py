@@ -83,9 +83,11 @@ class CommonApeTests:
         def test_supports_tags(self):
             supports_tag = self.format.supports_tag
             for key in VALID_KEYS | SUPPORTED_TAGS:
-                self.assertTrue(supports_tag(key), '%r should be supported' % key)
+                with self.subTest(key=key):
+                    self.assertTrue(supports_tag(key), '%r should be supported' % key)
             for key in INVALID_KEYS | apev2.UNSUPPORTED_TAGS:
-                self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
+                with self.subTest(key=key):
+                    self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
         @skipUnlessTestfile
         def test_invalid_coverart(self):
@@ -340,6 +342,8 @@ class ApeCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 class Apev2UtilTest(PicardTestCase):
     def test_is_valid_key(self):
         for key in VALID_KEYS:
-            self.assertTrue(apev2.is_valid_key(key), '%r is valid' % key)
+            with self.subTest(key=key):
+                self.assertTrue(apev2.is_valid_key(key), '%r is valid' % key)
         for key in INVALID_KEYS:
-            self.assertFalse(apev2.is_valid_key(key), '%r is invalid' % key)
+            with self.subTest(key=key):
+                self.assertFalse(apev2.is_valid_key(key), '%r is invalid' % key)

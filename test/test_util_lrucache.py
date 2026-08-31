@@ -76,3 +76,9 @@ class LRUCacheTest(PicardTestCase):
         lrucache = LRUCache(3)
         with self.assertRaises(KeyError):
             del lrucache['notakey']
+
+    def test_len_iter_and_repr(self):
+        lrucache = LRUCache(3, [('test1', 1), ('test2', 2)])
+        self.assertEqual(len(lrucache), 2)
+        self.assertEqual(list(lrucache), ['test1', 'test2'])
+        self.assertEqual(repr(lrucache), repr({'test1': 1, 'test2': 2}))

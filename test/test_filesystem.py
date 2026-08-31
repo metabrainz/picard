@@ -24,7 +24,10 @@ import os.path
 import shutil
 from types import MappingProxyType
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard import config
 
@@ -164,41 +167,21 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         }
         self.assertEqual(moves, expected)
 
-    def test_all_jpg_no_hidden(self):
+    @subtest_cases(
+        "pattern,expected_names",
+        [
+            ('*.j?g *.jpg', ('cover1.jpg', 'cover2.JPG')),
+            ('.*.j?g .*.jpg', ('.hidden1.jpg', '.hidden2.JPG')),
+            ('.*1.j?g *1.jpg', ('.hidden1.jpg', 'cover1.jpg')),
+        ],
+    )
+    def test_additional_files_moves(self, pattern, expected_names):
         src, dst = self._prepare_files()
         f = self.format_registry.open(src['test.mp3'])
-        patterns = f._compile_move_additional_files_pattern('*.j?g *.jpg')
+        patterns = f._compile_move_additional_files_pattern(pattern)
 
         moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
-        expected = {
-            (src['cover1.jpg'], dst['cover1.jpg']),
-            (src['cover2.JPG'], dst['cover2.JPG']),
-        }
-        self.assertEqual(moves, expected)
-
-    def test_all_hidden_jpg(self):
-        src, dst = self._prepare_files()
-        f = self.format_registry.open(src['test.mp3'])
-        patterns = f._compile_move_additional_files_pattern('.*.j?g .*.jpg')
-
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
-        expected = {
-            (src['.hidden1.jpg'], dst['.hidden1.jpg']),
-            (src['.hidden2.JPG'], dst['.hidden2.JPG']),
-        }
-        self.assertEqual(moves, expected)
-
-    def test_one_only_jpg(self):
-        src, dst = self._prepare_files()
-        f = self.format_registry.open(src['test.mp3'])
-        patterns = f._compile_move_additional_files_pattern('.*1.j?g *1.jpg')
-
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
-        expected = {
-            (src['.hidden1.jpg'], dst['.hidden1.jpg']),
-            (src['cover1.jpg'], dst['cover1.jpg']),
-        }
-        self.assertEqual(moves, expected)
+        self.assertEqual(moves, {(src[name], dst[name]) for name in expected_names})
 
 
 class TestFileSystem(SampleFileSystem):

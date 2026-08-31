@@ -28,7 +28,10 @@ from pathlib import (
 import unittest
 from unittest.mock import patch
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.const.sys import IS_WIN
 from picard.debug_opts import DebugOpt
@@ -131,284 +134,225 @@ class FakeRecord:
     name: str
 
 
-@unittest.skipIf(IS_WIN, "Posix test")
-@patch('picard.log.picard_module_path', PurePath('/path1/path2'))
-@patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins'))
-class NameFilterTestRel(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='/path1/path2/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module/file')
+class NameFilterTestCase(PicardTestCase):
+    """Shared helpers for `name_filter` tests.
 
-    def test_2(self):
-        record = FakeRecord(name=None, pathname='/path1/path2/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module')
+    `DebugOpt` keeps enabled options in a registry shared by the whole
+    process. Each test gets a fresh one so that setting `PLUGIN_FULLPATH`
+    cannot leak into tests that do not set it themselves.
+    """
 
-    def test_3(self):
-        record = FakeRecord(name=None, pathname='/path1/path2/module/subpath/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module/subpath/file')
+    def setUp(self):
+        super().setUp()
+        original_registry = DebugOpt.get_registry()
+        DebugOpt.set_registry(set())
+        self.addCleanup(DebugOpt.set_registry, original_registry)
 
-    def test_4(self):
+    def assert_record_name(self, pathname, expected_name):
+        record = FakeRecord(name=None, pathname=pathname)
+        self.assertTrue(name_filter(record))
+        self.assertEqual(record.name, expected_name)
+
+    def assert_empty_pathname_raises(self):
         record = FakeRecord(name=None, pathname='')
         with self.assertRaises(ValueError):
             name_filter(record)
 
-    def test_5(self):
-        record = FakeRecord(name=None, pathname='/path1/path2/__init__/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '__init__/module')
 
-    def test_plugin_path_long_1(self):
+@unittest.skipIf(IS_WIN, "Posix test")
+@patch('picard.log.picard_module_path', PurePath('/path1/path2'))
+@patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins'))
+class NameFilterTestRel(NameFilterTestCase):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/path1/path2/module/file.py', 'module/file'),
+            ('/path1/path2/module/__init__.py', 'module'),
+            ('/path1/path2/module/subpath/file.py', 'module/subpath/file'),
+            ('/path1/path2/__init__/module/__init__.py', '__init__/module'),
+        ],
+    )
+    def test_module_paths(self, pathname, expected_name):
+        self.assert_record_name(pathname, expected_name)
+
+    def test_empty_pathname(self):
+        self.assert_empty_pathname_raises()
+
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/user/picard/plugins/plugin.zip', '/user/picard/plugins/plugin'),
+            ('/user/picard/plugins/plugin.zip/xxx.py', '/user/picard/plugins/plugin.zip/xxx'),
+        ],
+    )
+    def test_plugin_paths_fullpath(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/user/picard/plugins/plugin')
+        self.assert_record_name(pathname, expected_name)
 
-    def test_plugin_path_long_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/user/picard/plugins/plugin.zip/xxx')
-
-    def test_plugin_path_short_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/user/picard/plugins/plugin.zip', 'plugins/plugin'),
+            ('/user/picard/plugins/plugin.zip/xxx.py', 'plugins/plugin.zip/xxx'),
+            ('/user/picard/plugins/myplugin.zip/myplugin.py', 'plugins/myplugin.zip'),
+            ('/user/picard/plugins/myplugin.zip/__init__.py', 'plugins/myplugin.zip'),
+        ],
+    )
+    def test_plugin_paths_short(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins/plugin')
-
-    def test_plugin_path_short_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins/plugin.zip/xxx')
-
-    def test_plugin_path_short_3(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/myplugin.zip/myplugin.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins/myplugin.zip')
-
-    def test_plugin_path_short_4(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/user/picard/plugins/myplugin.zip/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins/myplugin.zip')
+        self.assert_record_name(pathname, expected_name)
 
 
 @unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePath('/picard'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins/'))
-class NameFilterTestAbs(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='/path/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path/module/file')
+class NameFilterTestAbs(NameFilterTestCase):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/path/module/file.py', '/path/module/file'),
+            ('/path/module/__init__.py', '/path/module'),
+            ('/path/module/subpath/file.py', '/path/module/subpath/file'),
+        ],
+    )
+    def test_module_paths(self, pathname, expected_name):
+        self.assert_record_name(pathname, expected_name)
 
-    def test_2(self):
-        record = FakeRecord(name=None, pathname='/path/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path/module')
+    def test_empty_pathname(self):
+        self.assert_empty_pathname_raises()
 
-    def test_3(self):
-        record = FakeRecord(name=None, pathname='/path/module/subpath/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path/module/subpath/file')
-
-    def test_4(self):
-        record = FakeRecord(name=None, pathname='')
-        with self.assertRaises(ValueError):
-            name_filter(record)
-
-    def test_plugin_path_long_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/path1/path2/plugins/plugin.zip', '/path1/path2/plugins/plugin'),
+            ('/path1/path2/plugins/plugin.zip/xxx.py', '/path1/path2/plugins/plugin.zip/xxx'),
+            ('/path1/path2/plugins/plugin.zip/__init__.py', '/path1/path2/plugins/plugin.zip'),
+        ],
+    )
+    def test_plugin_paths_fullpath(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/plugin')
+        self.assert_record_name(pathname, expected_name)
 
-    def test_plugin_path_long_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/plugin.zip/xxx')
-
-    def test_plugin_path_long_3(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/plugin.zip/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/plugin.zip')
-
-    def test_plugin_path_short_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('/path1/path2/plugins/plugin.zip', '/path1/path2/plugins/plugin'),
+            ('/path1/path2/plugins/plugin.zip/xxx.py', '/path1/path2/plugins/plugin.zip/xxx'),
+            ('/path1/path2/plugins/myplugin.zip/myplugin.py', '/path1/path2/plugins/myplugin.zip'),
+            ('/path1/path2/plugins/myplugin.zip/__init__.py', '/path1/path2/plugins/myplugin.zip'),
+        ],
+    )
+    def test_plugin_paths_short(self, pathname, expected_name):
+        # These paths are outside USER_PLUGIN_DIR, so PLUGIN_FULLPATH has no effect
         DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/plugin')
-
-    def test_plugin_path_short_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/plugin.zip/xxx')
-
-    def test_plugin_path_short_3(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/myplugin.zip/myplugin.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/myplugin.zip')
-
-    def test_plugin_path_short_4(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='/path1/path2/plugins/myplugin.zip/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path1/path2/plugins/myplugin.zip')
+        self.assert_record_name(pathname, expected_name)
 
 
 @unittest.skipIf(IS_WIN, "Posix test")
 @patch('picard.log.picard_module_path', PurePath('/path1/path2/'))  # incorrect, but testing anyway
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins'))
-class NameFilterTestEndingSlash(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='/path3/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '/path3/module/file')
+class NameFilterTestEndingSlash(NameFilterTestCase):
+    def test_module_path(self):
+        self.assert_record_name('/path3/module/file.py', '/path3/module/file')
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\path1\\path2'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
-class NameFilterTestRelWin(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='C:/path1/path2/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module\\file')
+class NameFilterTestRelWin(NameFilterTestCase):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/path1/path2/module/file.py', 'module\\file'),
+            ('C:/path1/path2/module/__init__.py', 'module'),
+            ('C:/path1/path2/module/subpath/file.py', 'module\\subpath\\file'),
+            ('C:/path1/path2/__init__/module/__init__.py', '__init__\\module'),
+        ],
+    )
+    def test_module_paths(self, pathname, expected_name):
+        self.assert_record_name(pathname, expected_name)
 
-    def test_2(self):
-        record = FakeRecord(name=None, pathname='C:/path1/path2/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module')
+    def test_empty_pathname(self):
+        self.assert_empty_pathname_raises()
 
-    def test_3(self):
-        record = FakeRecord(name=None, pathname='C:/path1/path2/module/subpath/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'module\\subpath\\file')
-
-    def test_4(self):
-        record = FakeRecord(name=None, pathname='')
-        with self.assertRaises(ValueError):
-            name_filter(record)
-
-    def test_5(self):
-        record = FakeRecord(name=None, pathname='C:/path1/path2/__init__/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '__init__\\module')
-
-    def test_plugin_path_long_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/user/picard/plugins/path3/plugins/plugin.zip', '\\user\\picard\\plugins\\path3\\plugins\\plugin'),
+            (
+                'C:/user/picard/plugins/path3/plugins/plugin.zip/xxx.py',
+                '\\user\\picard\\plugins\\path3\\plugins\\plugin.zip\\xxx',
+            ),
+        ],
+    )
+    def test_plugin_paths_fullpath(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\user\\picard\\plugins\\path3\\plugins\\plugin')
+        self.assert_record_name(pathname, expected_name)
 
-    def test_plugin_path_long_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\user\\picard\\plugins\\path3\\plugins\\plugin.zip\\xxx')
-
-    def test_plugin_path_short_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/user/picard/plugins/path3/plugins/plugin.zip', 'plugins\\path3\\plugins\\plugin'),
+            ('C:/user/picard/plugins/path3/plugins/plugin.zip/xxx.py', 'plugins\\path3\\plugins\\plugin.zip\\xxx'),
+            ('C:/user/picard/plugins/path3/plugins/myplugin.zip/myplugin.py', 'plugins\\path3\\plugins\\myplugin.zip'),
+            ('C:/user/picard/plugins/path3/plugins/myplugin.zip/__init__.py', 'plugins\\path3\\plugins\\myplugin.zip'),
+        ],
+    )
+    def test_plugin_paths_short(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins\\path3\\plugins\\plugin')
-
-    def test_plugin_path_short_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins\\path3\\plugins\\plugin.zip\\xxx')
-
-    def test_plugin_path_short_3(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/myplugin.zip/myplugin.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins\\path3\\plugins\\myplugin.zip')
-
-    def test_plugin_path_short_4(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/user/picard/plugins/path3/plugins/myplugin.zip/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, 'plugins\\path3\\plugins\\myplugin.zip')
+        self.assert_record_name(pathname, expected_name)
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\picard'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
-class NameFilterTestAbsWin(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='C:/path/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path\\module\\file')
+class NameFilterTestAbsWin(NameFilterTestCase):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/path/module/file.py', '\\path\\module\\file'),
+            ('C:/path/module/__init__.py', '\\path\\module'),
+            ('C:/path/module/subpath/file.py', '\\path\\module\\subpath\\file'),
+        ],
+    )
+    def test_module_paths(self, pathname, expected_name):
+        self.assert_record_name(pathname, expected_name)
 
-    def test_2(self):
-        record = FakeRecord(name=None, pathname='C:/path/module/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path\\module')
+    def test_empty_pathname(self):
+        self.assert_empty_pathname_raises()
 
-    def test_3(self):
-        record = FakeRecord(name=None, pathname='C:/path/module/subpath/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path\\module\\subpath\\file')
-
-    def test_4(self):
-        record = FakeRecord(name=None, pathname='')
-        with self.assertRaises(ValueError):
-            name_filter(record)
-
-    def test_plugin_path_long_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/path1/path2/plugins/plugin.zip', '\\path1\\path2\\plugins\\plugin'),
+            ('C:/path1/path2/plugins/plugin.zip/xxx.py', '\\path1\\path2\\plugins\\plugin.zip\\xxx'),
+        ],
+    )
+    def test_plugin_paths_fullpath(self, pathname, expected_name):
         DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\plugin')
+        self.assert_record_name(pathname, expected_name)
 
-    def test_plugin_path_long_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = True
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\plugin.zip\\xxx')
-
-    def test_plugin_path_short_1(self):
+    @subtest_cases(
+        "pathname,expected_name",
+        [
+            ('C:/path1/path2/plugins/plugin.zip', '\\path1\\path2\\plugins\\plugin'),
+            ('C:/path1/path2/plugins/plugin.zip/xxx.py', '\\path1\\path2\\plugins\\plugin.zip\\xxx'),
+            ('C:/path1/path2/plugins/myplugin.zip/myplugin.py', '\\path1\\path2\\plugins\\myplugin.zip'),
+            ('C:/path1/path2/plugins/myplugin.zip/__init__.py', '\\path1\\path2\\plugins\\myplugin.zip'),
+        ],
+    )
+    def test_plugin_paths_short(self, pathname, expected_name):
+        # These paths are outside USER_PLUGIN_DIR, so PLUGIN_FULLPATH has no effect
         DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/plugin.zip')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\plugin')
-
-    def test_plugin_path_short_2(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/plugin.zip/xxx.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\plugin.zip\\xxx')
-
-    def test_plugin_path_short_3(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/myplugin.zip/myplugin.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\myplugin.zip')
-
-    def test_plugin_path_short_4(self):
-        DebugOpt.PLUGIN_FULLPATH.enabled = False
-        record = FakeRecord(name=None, pathname='C:/path1/path2/plugins/myplugin.zip/__init__.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path1\\path2\\plugins\\myplugin.zip')
+        self.assert_record_name(pathname, expected_name)
 
 
 @unittest.skipUnless(IS_WIN, "Windows test")
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\path1\\path2\\'))  # incorrect, but testing anyway
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
-class NameFilterTestEndingSlashWin(PicardTestCase):
-    def test_1(self):
-        record = FakeRecord(name=None, pathname='C:/path3/module/file.py')
-        self.assertTrue(name_filter(record))
-        self.assertEqual(record.name, '\\path3\\module\\file')
+class NameFilterTestEndingSlashWin(NameFilterTestCase):
+    def test_module_path(self):
+        self.assert_record_name('C:/path3/module/file.py', '\\path3\\module\\file')
 
 
 class StateChangeLoggerTest(PicardTestCase):

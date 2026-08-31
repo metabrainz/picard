@@ -201,12 +201,6 @@ class TestASTTraversal:
         variable_extractor._collect_from_ast(mock_expression, variables)
         # Should not add anything since we can't easily mock the traversal
 
-    def test_extract_static_name_success(self, variable_extractor: VariableExtractor) -> None:
-        """Test successful static name extraction."""
-        # This test is complex to mock properly, so we'll test the integration instead
-        # The actual functionality is tested through the integration tests
-        pass
-
     def test_extract_static_name_failure(self, variable_extractor: VariableExtractor) -> None:
         """Test static name extraction failure."""
         # Mock a node that doesn't represent a static name

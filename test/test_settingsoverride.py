@@ -56,6 +56,28 @@ class SettingsOverrideTest(PicardTestCase):
         with self.assertRaises(KeyError):
             x = config.setting['key3']  # noqa: F841
 
+    def test_len_and_iter_cover_only_overrides(self):
+        """`len()` and iteration only see the overridden keys.
+
+        This disagrees with `__getitem__`, which falls back to the original
+        settings, and with `__repr__`, which reports the merged view. Anything
+        doing `dict(override)` or iterating it therefore sees only the
+        overrides.
+        """
+        override = SettingsOverride(config.setting, self.new_settings)
+        self.assertEqual(len(override), 1)
+        self.assertEqual(set(override), {'key1'})
+        # Readable through __getitem__ but neither counted nor iterated
+        self.assertEqual(override['key2'], 'origval2')
+
+        override['key3'] = 'newval5'
+        self.assertEqual(len(override), 2)
+        self.assertEqual(set(override), {'key1', 'key3'})
+
+    def test_repr_reports_merged_settings(self):
+        override = SettingsOverride(config.setting, self.new_settings)
+        self.assertEqual(repr(override), repr({'key1': 'newval2', 'key2': 'origval2'}))
+
     def test_del_orig_settings(self):
         override = SettingsOverride(config.setting, self.new_settings)
 

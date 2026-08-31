@@ -170,16 +170,3 @@ class TestPluginState(PicardTestCase):
             plugin.load_module()
 
         self.assertIn('already enabled', str(context.exception))
-
-    def test_plugin_enable_already_enabled(self):
-        """Test Plugin.enable() raises when already enabled."""
-        mock_tagger = MockTagger()
-        plugin = Plugin(Path('/tmp'), 'test-plugin')
-        plugin.state = PluginState.ENABLED
-        plugin._module = Mock()
-        plugin.manifest = Mock()
-
-        with self.assertRaises(PluginAlreadyEnabledError) as context:
-            plugin.enable(mock_tagger)
-
-        self.assertIn('already enabled', str(context.exception))

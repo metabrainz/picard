@@ -146,9 +146,6 @@ class CompatibilityTest(PicardTestCase):
     def test_pathsave(self):
         self.assertEqual(unicode_simplify_compatibility('\uff0f', pathsave=True), '_')
 
-    def test_incorrect(self):
-        pass
-
 
 class PunctuationTest(PicardTestCase):
     def test_correct(self):
@@ -178,9 +175,6 @@ class PunctuationTest(PicardTestCase):
             '/\\__',
         )
 
-    def test_incorrect(self):
-        pass
-
 
 class CombinationsTest(PicardTestCase):
     def test_correct(self):
@@ -194,9 +188,6 @@ class CombinationsTest(PicardTestCase):
         self.assertEqual(unicode_simplify_combinations('8½', True), '8 1_2')
         self.assertEqual(unicode_simplify_combinations('8/\\½', True), '8/\\ 1_2')
 
-    def test_incorrect(self):
-        pass
-
 
 class AsciiPunctTest(PicardTestCase):
     def test_correct(self):
@@ -206,9 +197,6 @@ class AsciiPunctTest(PicardTestCase):
         self.assertEqual(asciipunct("…"), "...")  # Ellipses
         self.assertEqual(asciipunct("\u2024"), ".")  # ONE DOT LEADER
         self.assertEqual(asciipunct("\u2025"), "..")  # TWO DOT LEADER
-
-    def test_incorrect(self):
-        pass
 
 
 class UnaccentTest(PicardTestCase):

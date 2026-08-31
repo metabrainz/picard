@@ -33,6 +33,7 @@ import pytest
 
 from picard.ui.widgets.completion_provider import CompletionChoicesProvider
 from picard.ui.widgets.context_detector import (
+    CompletionContext,
     CompletionMode,
     ContextDetector,
 )
@@ -134,16 +135,6 @@ class TestScriptCompleterDependencyInjection:
         assert isinstance(completer._context_detector, ContextDetector)
         assert isinstance(completer._choices_provider, CompletionChoicesProvider)
 
-    def test_variable_extractor_uses_injected_parser(
-        self,
-        script_completer_with_injections: ScriptCompleter,
-        mock_parser: Mock,
-    ) -> None:
-        """Test that variable extractor is initialized with injected parser."""
-        # The variable extractor should be initialized with the parser
-        # This is tested indirectly by checking that the parser is used
-        assert script_completer_with_injections._parser is mock_parser
-
 
 class TestScriptCompleterModelReuse:
     """Test that model object is reused while contents update."""
@@ -241,18 +232,18 @@ class TestScriptCompleterContextChanges:
         mock_choices_provider: Mock,
     ) -> None:
         """Test that context changes affect the choices returned."""
-        # Set different contexts manually
-        script_completer_with_injections._set_context({'mode': CompletionMode.VARIABLE})
-        choices1 = list(script_completer_with_injections.choices)
 
-        script_completer_with_injections._set_context({'mode': CompletionMode.TAG_NAME_ARG})
-        choices2 = list(script_completer_with_injections.choices)
+        # Set different contexts manually. Setting a context also refreshes the
+        # model, so scope the recorded calls to each context separately.
+        def modes_used_for(context: CompletionContext) -> set:
+            mock_choices_provider.build_choices.reset_mock()
+            script_completer_with_injections._set_context(context)
+            list(script_completer_with_injections.choices)
+            return {call.args[0] for call in mock_choices_provider.build_choices.call_args_list}
 
-        # Should get different choices for different contexts
-        assert isinstance(choices1, list)
-        assert isinstance(choices2, list)
-        # The choices provider should be called
-        mock_choices_provider.build_choices.assert_called()
+        # Every request for choices must use the mode of the current context
+        assert modes_used_for({'mode': CompletionMode.VARIABLE}) == {CompletionMode.VARIABLE}
+        assert modes_used_for({'mode': CompletionMode.TAG_NAME_ARG}) == {CompletionMode.TAG_NAME_ARG}
 
     def test_smoke_test_with_small_inputs(
         self,
@@ -265,7 +256,6 @@ class TestScriptCompleterContextChanges:
         choices = list(script_completer_with_injections.choices)
 
         # Should get choices
-        assert isinstance(choices, list)
         assert len(choices) > 0
         # The choices provider should be called
         mock_choices_provider.build_choices.assert_called()
@@ -315,6 +305,7 @@ class TestScriptCompleterIntegration:
     def test_context_detection_integration(
         self,
         script_completer_with_injections: ScriptCompleter,
+        mock_choices_provider: Mock,
     ) -> None:
         """Test integration between completer and context detector."""
         # Set context manually
@@ -326,21 +317,11 @@ class TestScriptCompleterIntegration:
             }
         )
 
-        # Generate choices
-        choices = list(script_completer_with_injections.choices)
+        mock_choices_provider.build_choices.reset_mock()
+        list(script_completer_with_injections.choices)
 
-        # Should get choices for the context
-        assert isinstance(choices, list)
-
-    def test_plugin_provider_integration(self, script_completer_with_injections: ScriptCompleter) -> None:
-        """Test integration between completer and plugin provider."""
-        # Generate choices
-        choices = list(script_completer_with_injections.choices)
-
-        # Should get choices that include plugin variables
-        assert isinstance(choices, list)
-        # The plugin provider is called internally by the choices provider
-        # We can't easily test the call count without more complex mocking
+        # A detailed context is honoured: its mode reaches the choices provider
+        assert mock_choices_provider.build_choices.call_args.args[0] == CompletionMode.TAG_NAME_ARG
 
     def test_choices_provider_integration(
         self,
@@ -385,20 +366,9 @@ class TestScriptCompleterEdgeCases:
         """Test handling of empty script content."""
         script_completer_with_injections.update_dynamic_variables("")
 
-        # Should not raise exception
-        choices = list(script_completer_with_injections.choices)
-        assert isinstance(choices, list)
-
-    def test_handles_context_detector_exception(
-        self,
-        script_completer_with_injections: ScriptCompleter,
-    ) -> None:
-        """Test handling of context detector exceptions."""
-        # Since context detector is not called during choices generation,
-        # this test is not applicable to the current implementation
-        # The context is set via _set_context method, not during choices generation
-        choices = list(script_completer_with_injections.choices)
-        assert isinstance(choices, list)
+        # Choices are still produced, with no user-defined variables
+        assert script_completer_with_injections._user_defined_variables == set()
+        assert list(script_completer_with_injections.choices) == ['%test_var%', '%plugin_var1%']
 
     def test_handles_choices_provider_exception(
         self,

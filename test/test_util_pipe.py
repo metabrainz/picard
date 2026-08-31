@@ -66,5 +66,11 @@ class TestPipe(PicardTestCase):
             self.assertEqual(res, message, "Data is sent and read correctly")
         finally:
             time.sleep(0.2)
+            # `stop()` writes a sentinel to unblock a listener, but this test's
+            # listener has already returned, so nothing will ever read it: the
+            # write is guaranteed to hit its timeout, after which `send_to_pipe`
+            # unblocks the stuck sender itself. Only the length of that dead
+            # wait is shortened here (1.5s by default), not the behaviour.
+            pipe_handler.TIMEOUT_SECS_WRITE = 0.1
             pipe_handler.stop()
             __pool.shutdown()

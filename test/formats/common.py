@@ -236,23 +236,27 @@ class CommonTests:
                 raise unittest.SkipTest("Ratings not supported for %s" % self.format.NAME)
             metadata = load_metadata(self.format_registry, self.filename)
             for key, expected_value in self.expected_info.items():
-                value = metadata.length if key == 'length' else metadata[key]
-                self.assertEqual(expected_value, value, '%s: %r != %r' % (key, expected_value, value))
+                with self.subTest(info=key):
+                    value = metadata.length if key == 'length' else metadata[key]
+                    self.assertEqual(expected_value, value, '%s: %r != %r' % (key, expected_value, value))
             for key in self.unexpected_info:
-                self.assertNotIn(key, metadata)
+                with self.subTest(unexpected_info=key):
+                    self.assertNotIn(key, metadata)
 
         def _test_supported_tags(self, tags):
             metadata = Metadata(tags)
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             for key, value in tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         def _test_unsupported_tags(self, tags):
             metadata = Metadata(tags)
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             for tag in tags:
-                self.assertFalse(self.format.supports_tag(tag))
-                self.assertNotIn(tag, loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
+                with self.subTest(tag=tag):
+                    self.assertFalse(self.format.supports_tag(tag))
+                    self.assertNotIn(tag, loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
     class TagFormatsTestCase(SimpleFormatsTestCase):
         def setUp(self):
@@ -299,7 +303,8 @@ class CommonTests:
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.format_registry, self.filename)
             for key, value in self.replaygain_tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_save_does_not_modify_metadata(self):
@@ -309,7 +314,8 @@ class CommonTests:
             metadata = Metadata(tags)
             save_metadata(self.format_registry, self.filename, metadata)
             for key, value in tags.items():
-                self.assertEqual(metadata[key], value, '%s: %r != %r' % (key, metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(metadata[key], value, '%s: %r != %r' % (key, metadata[key], value))
 
         @skipUnlessTestfile
         def test_unsupported_tags(self):
@@ -318,7 +324,8 @@ class CommonTests:
         @skipUnlessTestfile
         def test_unsupported_tags_info_tags(self):
             for tag in file_info_tag_names():
-                self.assertFalse(self.format.supports_tag(tag), 'Tag "%s" must not be supported' % tag)
+                with self.subTest(tag=tag):
+                    self.assertFalse(self.format.supports_tag(tag), 'Tag "%s" must not be supported' % tag)
 
         @skipUnlessTestfile
         def test_preserve_unchanged_tags(self):
@@ -326,7 +333,8 @@ class CommonTests:
             save_metadata(self.format_registry, self.filename, metadata)
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             for key, value in self.tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_delete_simple_tags(self):
@@ -352,13 +360,14 @@ class CommonTests:
             for name in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
                 if not self.format.supports_tag(name):
                     continue
-                metadata = Metadata()
-                metadata[name] = 'bar'
-                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertIn(name, original_metadata)
-                del metadata[name]
-                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertNotIn(name, new_metadata)
+                with self.subTest(tag=name):
+                    metadata = Metadata()
+                    metadata[name] = 'bar'
+                    original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertIn(name, original_metadata)
+                    del metadata[name]
+                    new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertNotIn(name, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_tags_with_empty_description_keep_other(self):
@@ -366,17 +375,18 @@ class CommonTests:
                 name_with_description = name.rstrip(':') + ':foo'
                 if not self.format.supports_tag(name):
                     continue
-                metadata = Metadata()
-                metadata[name] = 'bar'
-                metadata[name_with_description] = 'other'
-                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertIn(name, original_metadata)
-                del metadata[name]
-                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertNotIn(name, new_metadata)
-                # Ensure the names with description did not get deleted
-                if name_with_description in original_metadata:
-                    self.assertIn(name_with_description, new_metadata)
+                with self.subTest(tag=name):
+                    metadata = Metadata()
+                    metadata[name] = 'bar'
+                    metadata[name_with_description] = 'other'
+                    original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertIn(name, original_metadata)
+                    del metadata[name]
+                    new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertNotIn(name, new_metadata)
+                    # Ensure the names with description did not get deleted
+                    if name_with_description in original_metadata:
+                        self.assertIn(name_with_description, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_tags_with_description(self):
@@ -392,18 +402,19 @@ class CommonTests:
             ):
                 if not self.format.supports_tag(key):
                     continue
-                prefix = key.split(':')[0]
-                metadata = Metadata()
-                metadata[key] = 'bar'
-                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                if key not in original_metadata and prefix in original_metadata:
-                    continue  # Skip if the type did not support saving this kind of tag
-                self.assertEqual('bar', original_metadata[key], original_metadata)
-                metadata[prefix] = '(foo) bar'
-                del metadata[key]
-                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertNotIn(key, new_metadata)
-                self.assertEqual('(foo) bar', new_metadata[prefix])
+                with self.subTest(tag=key):
+                    prefix = key.split(':')[0]
+                    metadata = Metadata()
+                    metadata[key] = 'bar'
+                    original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    if key not in original_metadata and prefix in original_metadata:
+                        continue  # Skip if the type did not support saving this kind of tag
+                    self.assertEqual('bar', original_metadata[key], original_metadata)
+                    metadata[prefix] = '(foo) bar'
+                    del metadata[key]
+                    new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertNotIn(key, new_metadata)
+                    self.assertEqual('(foo) bar', new_metadata[prefix])
 
         @skipUnlessTestfile
         def test_delete_nonexistant_tags(self):
@@ -418,11 +429,12 @@ class CommonTests:
             ):
                 if not self.format.supports_tag(key):
                     continue
-                metadata = Metadata()
-                save_metadata(self.format_registry, self.filename, metadata)
-                del metadata[key]
-                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertNotIn(key, new_metadata)
+                with self.subTest(tag=key):
+                    metadata = Metadata()
+                    save_metadata(self.format_registry, self.filename, metadata)
+                    del metadata[key]
+                    new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertNotIn(key, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_totaldiscs(self):

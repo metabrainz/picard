@@ -50,6 +50,7 @@ from unittest.mock import (
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
+    subtest_cases,
 )
 
 from picard import util
@@ -678,41 +679,27 @@ class PatternAsRegexTest(PicardTestCase):
 
 
 class WildcardsToRegexPatternTest(PicardTestCase):
-    def test_wildcard_pattern(self):
-        pattern = 'fo?o*'
+    def _assert_regex_pattern(self, pattern, expected):
         regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('fo.o.*', regex)
-        re.compile(regex)
+        self.assertEqual(expected, regex)
+        re.compile(regex)  # the result must always be a compilable regex
 
-    def test_escape(self):
-        pattern = 'f\\?o\\*o?o*\\[o'
-        regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('f\\?o\\*o.o.*\\[o', regex)
-        re.compile(regex)
-
-    def test_character_group(self):
-        pattern = '[abc*?xyz]]'
-        regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('[abc*?xyz]\\]', regex)
-        re.compile(regex)
-
-    def test_character_group_escape_square_brackets(self):
-        pattern = '[a[b\\]c]'
-        regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('[a[b\\]c]', regex)
-        re.compile(regex)
-
-    def test_open_character_group(self):
-        pattern = '[abc*?xyz['
-        regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual('\\[abc.*.xyz\\[', regex)
-        re.compile(regex)
+    @subtest_cases(
+        "pattern,expected",
+        {
+            'wildcards': ('fo?o*', 'fo.o.*'),
+            'escaped wildcards': ('f\\?o\\*o?o*\\[o', 'f\\?o\\*o.o.*\\[o'),
+            'character group': ('[abc*?xyz]]', '[abc*?xyz]\\]'),
+            'escaped square brackets inside a group': ('[a[b\\]c]', '[a[b\\]c]'),
+            'unclosed character group': ('[abc*?xyz[', '\\[abc.*.xyz\\['),
+        },
+    )
+    def test_wildcards_to_regex_pattern(self, pattern, expected):
+        self._assert_regex_pattern(pattern, expected)
 
     def test_special_chars(self):
         pattern = ']()\\^$|'
-        regex = wildcards_to_regex_pattern(pattern)
-        self.assertEqual(re.escape(pattern), regex)
-        re.compile(regex)
+        self._assert_regex_pattern(pattern, re.escape(pattern))
 
 
 class BuildQUrlTest(PicardTestCase):

@@ -52,7 +52,8 @@ class CommonMP4Tests:
             self.assertTrue(fmt.supports_tag('äöüéß\0'))  # Latin 1 is supported
             self.assertFalse(fmt.supports_tag('Б'))  # Unsupported custom tags
             for tag in self.replaygain_tags.keys():
-                self.assertTrue(fmt.supports_tag(tag))
+                with self.subTest(tag=tag):
+                    self.assertTrue(fmt.supports_tag(tag))
 
         def test_format(self):
             metadata = load_metadata(self.format_registry, self.filename)
@@ -71,7 +72,8 @@ class CommonMP4Tests:
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.format_registry, self.filename)
             for key, value in self.replaygain_tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+                with self.subTest(tag=key):
+                    self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_ci_tags_preserve_case(self):
@@ -139,9 +141,10 @@ class CommonMP4Tests:
         @skipUnlessTestfile
         def test_invalid_int_tag(self):
             for tag in ('bpm', 'movementnumber', 'movementtotal', 'showmovement'):
-                metadata = Metadata({tag: 'notanumber'})
-                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-                self.assertNotIn(tag, loaded_metadata)
+                with self.subTest(tag=tag):
+                    metadata = Metadata({tag: 'notanumber'})
+                    loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+                    self.assertNotIn(tag, loaded_metadata)
 
 
 class M4ATest(CommonMP4Tests.MP4TestCase):

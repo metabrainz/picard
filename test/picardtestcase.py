@@ -19,6 +19,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Mapping
+import functools
 import json
 import logging
 import os
@@ -49,6 +51,61 @@ from picard.formats.registry import FormatRegistry
 from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
 from picard.tagger import Tagger
+
+
+def subtest_cases(argnames, argvalues):
+    """Run a test method once per case, each in its own ``subTest``.
+
+    A stand-in for ``@pytest.mark.parametrize`` on ``unittest.TestCase``
+    subclasses, where it cannot be used: pytest is unable to inject the
+    parameters, so the test errors with a missing-argument ``TypeError``. This
+    decorator injects them itself.
+
+    ``argnames`` is a comma-separated string or a sequence of names.
+    ``argvalues`` is either
+
+    * an iterable of argument tuples (or plain values for a single argument),
+      as with ``parametrize``. Each case is labelled with its arguments::
+
+          @subtest_cases("expression,expected", [
+              ("$gt(10,4)", "1"),
+              ("$gt(6,6)", ""),
+          ])
+          def test_gt(self, expression, expected):
+              self.assertScriptResultEquals(expression, expected)
+
+    * or a mapping of ``label -> args``, for cases whose arguments do not
+      describe themselves::
+
+          @subtest_cases("overrides,expected", {
+              'tags want all images': ({'embed_only_front': False}, False),
+              'both want only the front': ({}, True),
+          })
+
+    Every case is reported separately and a failing case does not stop the
+    rest. Unlike ``parametrize`` this stays a single test as far as pytest is
+    concerned, so individual cases cannot be selected with ``-k``.
+    """
+    names = [n.strip() for n in argnames.split(',')] if isinstance(argnames, str) else list(argnames)
+    # Materialised, not a generator: a decorated method may run more than once
+    # (for instance when inherited by several test classes), and an exhausted
+    # generator would make later runs pass without checking anything.
+    items = list(argvalues.items()) if isinstance(argvalues, Mapping) else [(None, case) for case in argvalues]
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self):
+            for label, case in items:
+                args = case if isinstance(case, tuple) else (case,)
+                if len(args) != len(names):
+                    raise ValueError(f"{func.__name__}: case {case!r} does not match argnames {names}")
+                context = {'case': label} if label is not None else dict(zip(names, args, strict=True))
+                with self.subTest(**context):
+                    func(self, *args)
+
+        return wrapper
+
+    return decorator
 
 
 class FakeThreadPool(QtCore.QObject):

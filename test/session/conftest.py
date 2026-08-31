@@ -31,16 +31,11 @@ from picard.album import (
 )
 from picard.cluster import (
     Cluster,
-    UnclusteredFiles,
 )
 import picard.config as picard_config
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.location_detector import LocationDetector
-from picard.session.session_data import (
-    AlbumItems,
-    SessionItemLocation,
-)
 from picard.session.session_exporter import SessionExporter
 from picard.session.session_loader import SessionLoader
 from picard.session.track_mover import TrackMover
@@ -184,28 +179,12 @@ def mock_album() -> Mock:
 
 
 @pytest.fixture
-def mock_nat_album() -> Mock:
-    """Provide a mock NAT album instance."""
-    nat_album_mock = Mock(spec=NatAlbum)
-    nat_album_mock.id = "nat-album-123"
-    return nat_album_mock
-
-
-@pytest.fixture
 def mock_cluster() -> Mock:
     """Provide a mock cluster instance."""
     cluster_mock = Mock(spec=Cluster)
     cluster_mock.album = None
     cluster_mock.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     return cluster_mock
-
-
-@pytest.fixture
-def mock_unclustered_files() -> Mock:
-    """Provide a mock UnclusteredFiles instance."""
-    unclustered_mock = Mock(spec=UnclusteredFiles)
-    unclustered_mock.album = None
-    return unclustered_mock
 
 
 @pytest.fixture
@@ -250,62 +229,6 @@ def track_mover() -> TrackMover:
 
 
 # =============================================================================
-# Test Data Fixtures
-# =============================================================================
-
-
-@pytest.fixture
-def sample_metadata() -> Metadata:
-    """Provide sample metadata for testing."""
-    metadata = Metadata()
-    metadata['title'] = "Test Song"
-    metadata['artist'] = "Test Artist"
-    metadata['album'] = "Test Album"
-    metadata['~internal'] = "internal_value"
-    metadata['length'] = "123456"
-    return metadata
-
-
-@pytest.fixture
-def sample_session_item_location() -> SessionItemLocation:
-    """Provide a sample SessionItemLocation for testing."""
-    return SessionItemLocation(type="track", album_id="album-123", recording_id="recording-456")
-
-
-@pytest.fixture
-def sample_album_items() -> AlbumItems:
-    """Provide sample AlbumItems for testing."""
-    return AlbumItems(unmatched=[Path("/test/unmatched.mp3")], tracks=[(Path("/test/track.mp3"), "recording-456")])
-
-
-@pytest.fixture
-def sample_session_data() -> dict[str, Any]:
-    """Provide sample session data for testing."""
-    return {
-        'version': 1,
-        'options': {
-            'rename_files': True,
-            'move_files': False,
-            'enable_tag_saving': True,
-        },
-        'items': [
-            {
-                'file_path': str(Path("/test/file1.mp3")),
-                'location': {'type': "unclustered"},
-            },
-            {
-                'file_path': str(Path("/test/file2.mp3")),
-                'location': {'type': "track", 'album_id': "album-123", 'recording_id': "recording-456"},
-                'metadata': {'tags': {'title': ["Test Song"]}},
-            },
-        ],
-        'album_track_overrides': {'album-123': {'track-456': {'title': ["New Title"]}}},
-        'album_overrides': {'album-123': {'albumartist': ["New Artist"]}},
-        'unmatched_albums': ["album-789"],
-        'expanded_albums': ["album-123"],
-    }
-
-
 # =============================================================================
 # Utility Functions
 # =============================================================================
