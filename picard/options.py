@@ -348,7 +348,9 @@ ListOption('persist', 'options_pages_tree_state', [])
 TextOption('setting', 'acoustid_apikey', '')
 TextOption('setting', 'acoustid_fpcalc', '')
 TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID fingerprinting'), in_profile=True)
-IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS)
+# Number of threads fpcalc uses; must be at least 1. The UI spinbox caps it at
+# 9, so use the same range.
+IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS, bounds=(1, 9))
 BoolOption(
     'setting',
     'ignore_existing_acoustid_fingerprints',
