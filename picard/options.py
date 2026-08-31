@@ -203,6 +203,10 @@ IntOption(
     DEFAULT_QUERY_LIMIT,
     title=N_("Maximum MusicBrainz query items"),
     in_profile=True,
+    # Sent as the MusicBrainz API "limit" parameter, which accepts at most 100
+    # items per request; a value below 1 would request nothing. The options
+    # page offers 25/50/75/100 via a combobox, so clamp to 1..100.
+    bounds=(1, 100),
 )
 BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files"), in_profile=True)
 
