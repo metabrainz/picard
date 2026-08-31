@@ -186,7 +186,7 @@ class OutOfBoundsError(ValueError):
         )
 
 
-class OptionBounds:
+class NumericOptionBounds:
     """Inclusive numeric bounds for an option.
 
     A bound of ``None`` means unbounded on that side. :meth:`check` detects a
@@ -196,13 +196,9 @@ class OptionBounds:
     Because an out-of-range stored value is unexpected (e.g. from a hand-edited
     configuration file), clamping is reported with a warning so it can be
     diagnosed.
-
-    Subclasses define ``value_type`` to enforce and normalize the bound type.
     """
 
-    value_type: ClassVar[type] = object
-
-    def __init__(self, minimum=None, maximum=None):
+    def __init__(self, minimum: float | None = None, maximum: float | None = None):
         self.minimum = self._check(minimum)
         self.maximum = self._check(maximum)
         if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
@@ -212,9 +208,9 @@ class OptionBounds:
         if value is None:
             return None
         # bool is a subclass of int but is never a valid numeric bound.
-        if isinstance(value, bool) or not isinstance(value, self.value_type):
-            raise TypeError(f"Bound {value!r} is not of type {self.value_type.__name__}")
-        return self.value_type(value)
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise TypeError(f"Bound {value!r} is not a numeric value")
+        return value
 
     def check(self, value, option):
         """Return value unchanged, or raise OutOfBoundsError if out of range.
@@ -251,22 +247,6 @@ class OptionBounds:
             return e.corrected
 
 
-class OptionBoundsInt(OptionBounds):
-    value_type = int
-
-
-class OptionBoundsFloat(OptionBounds):
-    # int is accepted and coerced to float; float bounds are the natural type.
-    value_type = float
-
-    def _check(self, value):
-        if value is None:
-            return None
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise TypeError(f"Bound {value!r} is not a real number")
-        return float(value)
-
-
 class BoundedNumberOption(Option):
     """Base for numeric options that can be constrained to a range.
 
@@ -275,7 +255,8 @@ class BoundedNumberOption(Option):
     range is clamped to the nearest bound on read.
     """
 
-    bounds_type: ClassVar[type[OptionBounds]] = OptionBounds
+    # Subclasses should set this to int or float
+    _base_type: ClassVar[type[float | int]]
 
     def __init__(
         self,
@@ -285,24 +266,30 @@ class BoundedNumberOption(Option):
         title: str | None = None,
         in_profile: bool = False,
         shareable: bool = True,
-        bounds: tuple = (None, None),
+        bounds: tuple[float | None, float | None] = (None, None),
     ):
         minimum, maximum = bounds
-        self.bounds = self.bounds_type(minimum, maximum)
+        self.bounds = NumericOptionBounds(minimum, maximum)
         super().__init__(section, name, default, title, in_profile, shareable)
 
     def checked_convert(self, value):
         """Convert value, raising OutOfBoundsError if it violates the bounds.
 
         Unlike :meth:`convert` (which auto-corrects and warns), this reports a
-        violation to the caller so it can apply its own policy. Implemented by
-        the concrete numeric subclasses.
+        violation to the caller so it can apply its own policy. Callers that want the
+        default auto-correct policy should use :meth:`convert` instead.
         """
-        raise NotImplementedError
+        value = self.bounds.check(value, self)
+        return self._base_type(value)
+
+    def convert(self, value):
+        # Default policy: clamp to the nearest bound and warn (see
+        # OptionBounds.clamp).
+        return self._base_type(self.bounds.clamp(value, self))
 
 
 class IntOption(BoundedNumberOption):
-    bounds_type = OptionBoundsInt
+    _base_type = int
 
     def checked_convert(self, value):
         """Convert value, raising OutOfBoundsError if it violates the bounds.
@@ -322,17 +309,17 @@ class IntOption(BoundedNumberOption):
                 return enum_type(value)
             except ValueError:
                 raise OutOfBoundsError(self, value, self.default) from None
-        return self.bounds.check(value, self)
+        return super().checked_convert(value)
 
     def convert(self, value):
         # Default policy: an out-of-range value (or an invalid enum member) is
         # corrected to the nearest bound / the option default and reported with
         # a warning, mirroring OptionBounds.clamp. This keeps a stale value
         # (e.g. from a hand-edited config or an outdated profile) usable on read.
-        try:
-            return self.checked_convert(value)
-        except OutOfBoundsError as e:
-            if isinstance(self.default, IntEnum):
+        if isinstance(self.default, IntEnum):
+            try:
+                return self.checked_convert(value)
+            except OutOfBoundsError as e:
                 log.warning(
                     "Option '%s/%s': %r is not a valid %s, using default %r",
                     self.section,
@@ -341,34 +328,13 @@ class IntOption(BoundedNumberOption):
                     type(self.default).__name__,
                     e.corrected,
                 )
-            else:
-                log.warning(
-                    "Option '%s/%s': value %r is out of bounds [%r, %r], clamping to %r",
-                    self.section,
-                    self.name,
-                    e.value,
-                    self.bounds.minimum,
-                    self.bounds.maximum,
-                    e.corrected,
-                )
-            return e.corrected
+                return e.corrected
+        else:
+            return super().convert(value)
 
 
 class FloatOption(BoundedNumberOption):
-    bounds_type = OptionBoundsFloat
-
-    def checked_convert(self, value):
-        """Convert value, raising OutOfBoundsError if it violates the bounds.
-
-        Callers that want the default auto-correct policy should use
-        :meth:`convert` instead.
-        """
-        return self.bounds.check(float(value), self)
-
-    def convert(self, value):
-        # Default policy: clamp to the nearest bound and warn (see
-        # OptionBounds.clamp).
-        return self.bounds.clamp(float(value), self)
+    _base_type = float
 
 
 class ListOption(Option):
@@ -490,7 +456,7 @@ class ConfigSection(QtCore.QObject):
         default: ConfigValueType,
         title: str | None = None,
         in_profile: bool = False,
-        bounds: tuple | None = None,
+        bounds: tuple[float | None, float | None] | None = None,
     ) -> 'Option':
         """Register an option in this config section.
 
@@ -658,7 +624,7 @@ class ProfileConfigSection(ConfigSection):
         default: ConfigValueType,
         title: str | None = None,
         in_profile: bool = False,
-        bounds: tuple | None = None,
+        bounds: tuple[float | None, float | None] | None = None,
     ) -> Option:
         """Register an option in this config section.
 

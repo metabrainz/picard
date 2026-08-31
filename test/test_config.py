@@ -642,7 +642,6 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
     @subtest_cases(
         "bounds,exception",
         {
-            'float bound': ((2.5, None), TypeError),
             'bool bound': ((True, None), TypeError),
             'minimum greater than maximum': ((10, 2), ValueError),
         },
@@ -650,6 +649,15 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
     def test_int_opt_bounds_rejected(self, bounds, exception):
         with self.assertRaises(exception):
             IntOption("setting", "int_option", 5, bounds=bounds)
+
+    def test_int_opt_bounds_accepts_float(self):
+        # float bounds are accepted for an int option, but convert returns int
+        # for clamped values.
+        opt = IntOption("setting", "float_option", 1, bounds=(0.0, 2.0))
+        self.assertIsInstance(opt.bounds.minimum, float)
+        self.assertIsInstance(opt.bounds.maximum, float)
+        self.assertEqual(opt.convert(-1), 0)
+        self.assertEqual(opt.convert(3), 2)
 
 
 class TestPicardConfigFloatOption(TestPicardConfigCommon):
@@ -753,10 +761,11 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
         self.assertIsInstance(ctx.exception, ValueError)
 
     def test_float_opt_bounds_accepts_int(self):
-        # int bounds are accepted for a float option and coerced to float.
+        # int bounds are accepted for an float option, but convert returns float
+        # for clamped values.
         opt = FloatOption("setting", "float_option", 0.5, bounds=(0, 1))
-        self.assertIsInstance(opt.bounds.minimum, float)
-        self.assertIsInstance(opt.bounds.maximum, float)
+        self.assertIsInstance(opt.bounds.minimum, int)
+        self.assertIsInstance(opt.bounds.maximum, int)
         self.assertEqual(opt.convert(-1.0), 0.0)
         self.assertEqual(opt.convert(2.0), 1.0)
 
