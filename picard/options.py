@@ -392,8 +392,10 @@ TextOption(
     in_profile=True,
 )
 TextOption('setting', 'join_genres', '', title=N_("Join multiple genres with"), in_profile=True)
-IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"), in_profile=True)
-IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"), in_profile=True)
+# max_genres is a count and min_genre_usage is a percentage; the UI caps both
+# at 100. A negative value would be meaningless, so clamp to 0..100.
+IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"), in_profile=True, bounds=(0, 100))
+IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"), in_profile=True, bounds=(0, 100))
 BoolOption('setting', 'only_my_genres', False, title=N_("Use only my genres"), in_profile=True)
 BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz"), in_profile=True)
 
