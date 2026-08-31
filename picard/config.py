@@ -167,17 +167,114 @@ class BoolOption(Option):
     qtype = bool
 
 
-class IntOption(Option):
-    def convert(self, value):
-        value = int(value)
-        # If the default is an IntEnum, return an IntEnum
-        if isinstance(self.default, IntEnum):
-            return type(self.default)(value)
+class OptionBounds:
+    """Inclusive numeric bounds for an option.
+
+    A bound of ``None`` means unbounded on that side. Values outside the range
+    are clamped to the nearest bound by :meth:`clamp`. Because an out-of-range
+    stored value is unexpected (e.g. from a hand-edited configuration file),
+    clamping is reported with a warning so it can be diagnosed.
+
+    Subclasses define ``value_type`` to enforce and normalize the bound type.
+    """
+
+    value_type: ClassVar[type] = object
+
+    def __init__(self, minimum=None, maximum=None):
+        self.minimum = self._check(minimum)
+        self.maximum = self._check(maximum)
+        if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
+            raise ValueError(f"minimum {self.minimum!r} is greater than maximum {self.maximum!r}")
+
+    def _check(self, value):
+        if value is None:
+            return None
+        # bool is a subclass of int but is never a valid numeric bound.
+        if isinstance(value, bool) or not isinstance(value, self.value_type):
+            raise TypeError(f"Bound {value!r} is not of type {self.value_type.__name__}")
+        return self.value_type(value)
+
+    def clamp(self, value, option):
+        """Clamp value to the bounds, warning (via option context) if out of range."""
+        if self.minimum is not None and value < self.minimum:
+            log.warning(
+                "Option '%s/%s': value %r is below the minimum %r, clamping",
+                option.section,
+                option.name,
+                value,
+                self.minimum,
+            )
+            return self.minimum
+        if self.maximum is not None and value > self.maximum:
+            log.warning(
+                "Option '%s/%s': value %r is above the maximum %r, clamping",
+                option.section,
+                option.name,
+                value,
+                self.maximum,
+            )
+            return self.maximum
         return value
 
 
-class FloatOption(Option):
-    convert = float  # type: ignore[assignment]
+class OptionBoundsInt(OptionBounds):
+    value_type = int
+
+
+class OptionBoundsFloat(OptionBounds):
+    # int is accepted and coerced to float; float bounds are the natural type.
+    value_type = float
+
+    def _check(self, value):
+        if value is None:
+            return None
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise TypeError(f"Bound {value!r} is not a real number")
+        return float(value)
+
+
+class BoundedNumberOption(Option):
+    """Base for numeric options that can be constrained to a range.
+
+    Pass ``bounds=(minimum, maximum)`` to constrain the value; either element
+    may be ``None`` to leave that side unbounded. A stored value outside the
+    range is clamped to the nearest bound on read.
+    """
+
+    bounds_type: ClassVar[type[OptionBounds]] = OptionBounds
+
+    def __init__(
+        self,
+        section: str,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+        shareable: bool = True,
+        bounds: tuple = (None, None),
+    ):
+        minimum, maximum = bounds
+        self.bounds = self.bounds_type(minimum, maximum)
+        super().__init__(section, name, default, title, in_profile, shareable)
+
+
+class IntOption(BoundedNumberOption):
+    bounds_type = OptionBoundsInt
+
+    def convert(self, value):
+        value = int(value)
+        # If the default is an IntEnum, return an IntEnum. Bounds do not apply
+        # to enum options.
+        if isinstance(self.default, IntEnum):
+            return type(self.default)(value)
+        return self.bounds.clamp(value, self)
+
+
+class FloatOption(BoundedNumberOption):
+    bounds_type = OptionBoundsFloat
+
+    def convert(self, value):
+        return self.bounds.clamp(float(value), self)
 
 
 class ListOption(Option):

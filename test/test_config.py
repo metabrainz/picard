@@ -27,7 +27,10 @@ import os
 import shutil
 from typing import ClassVar
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard import config
 from picard.config import (
@@ -465,6 +468,73 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         self.config.setValue('setting/int_option', '333')
         self.assertEqual(self.config.setting["int_option"], 333)
 
+    def test_int_opt_no_bounds_by_default(self):
+        opt = IntOption("setting", "int_option", 5)
+        self.assertIsNone(opt.bounds.minimum)
+        self.assertIsNone(opt.bounds.maximum)
+        # Without bounds any value passes through unchanged.
+        self.assertEqual(opt.convert(-1000), -1000)
+        self.assertEqual(opt.convert(1000), 1000)
+
+    @subtest_cases(
+        "bounds,value,expected",
+        [
+            # In range: unchanged.
+            ((2, 10), 2, 2),
+            ((2, 10), 5, 5),
+            ((2, 10), 10, 10),
+            # Below minimum: clamped up.
+            ((2, None), 1, 2),
+            ((2, None), -100, 2),
+            # Above maximum: clamped down.
+            ((None, 10), 11, 10),
+            ((None, 10), 100, 10),
+        ],
+    )
+    def test_int_opt_clamp(self, bounds, value, expected):
+        opt = IntOption("setting", "int_option", 5, bounds=bounds)
+        self.assertEqual(opt.convert(value), expected)
+
+    def test_int_opt_clamp_warns(self):
+        opt = IntOption("setting", "int_option", 5, bounds=(2, 10))
+        logging.disable(logging.NOTSET)
+        try:
+            with self.assertLogs('main', level='WARNING') as cm:
+                self.assertEqual(opt.convert(1), 2)
+            self.assertIn('below the minimum', ''.join(cm.output))
+            with self.assertLogs('main', level='WARNING') as cm:
+                self.assertEqual(opt.convert(99), 10)
+            self.assertIn('above the maximum', ''.join(cm.output))
+        finally:
+            logging.disable(logging.ERROR)
+
+    def test_int_opt_bounds_via_stored_value(self):
+        IntOption("setting", "int_option", 5, bounds=(2, 10))
+        # A stored value outside the range is clamped on read.
+        self.config.setValue('setting/int_option', 1)
+        self.assertEqual(self.config.setting["int_option"], 2)
+
+    def test_int_opt_bounds_ignored_for_intenum(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        # bounds are accepted but do not apply to enum options.
+        opt = IntOption("setting", "int_option", TestIntEnum.A, bounds=(5, 6))
+        self.assertEqual(opt.convert(2), TestIntEnum.B)
+
+    @subtest_cases(
+        "bounds,exception",
+        {
+            'float bound': ((2.5, None), TypeError),
+            'bool bound': ((True, None), TypeError),
+            'minimum greater than maximum': ((10, 2), ValueError),
+        },
+    )
+    def test_int_opt_bounds_rejected(self, bounds, exception):
+        with self.assertRaises(exception):
+            IntOption("setting", "int_option", 5, bounds=bounds)
+
 
 class TestPicardConfigFloatOption(TestPicardConfigCommon):
     # FloatOption
@@ -514,6 +584,66 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
         # store float as string directly, it should be ok, due to conversion
         self.config.setValue('setting/float_option', '333.3')
         self.assertEqual(self.config.setting["float_option"], 333.3)
+
+    def test_float_opt_no_bounds_by_default(self):
+        opt = FloatOption("setting", "float_option", 0.5)
+        self.assertIsNone(opt.bounds.minimum)
+        self.assertIsNone(opt.bounds.maximum)
+        self.assertEqual(opt.convert(-10.0), -10.0)
+        self.assertEqual(opt.convert(10.0), 10.0)
+
+    @subtest_cases(
+        "bounds,value,expected",
+        [
+            # In range: unchanged.
+            ((0.0, 1.0), 0.0, 0.0),
+            ((0.0, 1.0), 0.5, 0.5),
+            ((0.0, 1.0), 1.0, 1.0),
+            # Below minimum / above maximum: clamped.
+            ((0.0, None), -0.5, 0.0),
+            ((None, 1.0), 1.5, 1.0),
+        ],
+    )
+    def test_float_opt_clamp(self, bounds, value, expected):
+        opt = FloatOption("setting", "float_option", 0.5, bounds=bounds)
+        self.assertEqual(opt.convert(value), expected)
+
+    def test_float_opt_clamp_warns(self):
+        opt = FloatOption("setting", "float_option", 0.5, bounds=(0.0, 1.0))
+        logging.disable(logging.NOTSET)
+        try:
+            with self.assertLogs('main', level='WARNING') as cm:
+                self.assertEqual(opt.convert(-1.0), 0.0)
+            self.assertIn('below the minimum', ''.join(cm.output))
+            with self.assertLogs('main', level='WARNING') as cm:
+                self.assertEqual(opt.convert(2.0), 1.0)
+            self.assertIn('above the maximum', ''.join(cm.output))
+        finally:
+            logging.disable(logging.ERROR)
+
+    def test_float_opt_bounds_via_stored_value(self):
+        FloatOption("setting", "float_option", 0.5, bounds=(0.0, 1.0))
+        self.config.setValue('setting/float_option', 2.5)
+        self.assertEqual(self.config.setting["float_option"], 1.0)
+
+    def test_float_opt_bounds_accepts_int(self):
+        # int bounds are accepted for a float option and coerced to float.
+        opt = FloatOption("setting", "float_option", 0.5, bounds=(0, 1))
+        self.assertIsInstance(opt.bounds.minimum, float)
+        self.assertIsInstance(opt.bounds.maximum, float)
+        self.assertEqual(opt.convert(-1.0), 0.0)
+        self.assertEqual(opt.convert(2.0), 1.0)
+
+    @subtest_cases(
+        "bounds,exception",
+        {
+            'bool bound': ((True, None), TypeError),
+            'minimum greater than maximum': ((1.0, 0.0), ValueError),
+        },
+    )
+    def test_float_opt_bounds_rejected(self, bounds, exception):
+        with self.assertRaises(exception):
+            FloatOption("setting", "float_option", 0.5, bounds=bounds)
 
 
 class TestPicardConfigListOption(TestPicardConfigCommon):
