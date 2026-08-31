@@ -213,6 +213,48 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):
             self.config.setting.register_option("invalid_option", None)
 
+    def test_register_option_int_bounds(self):
+        opt = self.config.setting.register_option("int_option", 5, bounds=(2, 10))
+        self.assertIsInstance(opt, IntOption)
+        self.assertEqual(opt.bounds.minimum, 2)
+        self.assertEqual(opt.bounds.maximum, 10)
+        # Clamping applies to a stored out-of-range value.
+        self.config.setting["int_option"] = 100
+        self.assertEqual(self.config.setting["int_option"], 10)
+
+    def test_register_option_float_bounds(self):
+        opt = self.config.setting.register_option("float_option", 0.5, bounds=(0.0, 1.0))
+        self.assertIsInstance(opt, FloatOption)
+        self.assertEqual(opt.bounds.minimum, 0.0)
+        self.assertEqual(opt.bounds.maximum, 1.0)
+        self.config.setting["float_option"] = 2.0
+        self.assertEqual(self.config.setting["float_option"], 1.0)
+
+    @subtest_cases(
+        "name,default",
+        {
+            'text option': ("text_option", "x"),
+            'bool option': ("bool_option", True),
+            'list option': ("list_option", [1]),
+        },
+    )
+    def test_register_option_bounds_rejected_for_non_numeric(self, name, default):
+        with self.assertRaises(TypeError):
+            self.config.setting.register_option(name, default, bounds=(0, 1))
+
+    def test_register_option_bounds_forwarded_in_profile_section(self):
+        from picard.config import ProfileConfigSection
+
+        section = ProfileConfigSection(self.config, 'test_plugin')
+        opt = section.register_option('threads', 4, bounds=(1, 9))
+        self.assertIsInstance(opt, IntOption)
+        self.assertEqual(opt.bounds.minimum, 1)
+        self.assertEqual(opt.bounds.maximum, 9)
+        # A stored out-of-range value is clamped when read back through the
+        # plugin config section.
+        section['threads'] = 100
+        self.assertEqual(section['threads'], 9)
+
     def test_profile_override_on_config_section(self):
         from picard.config import (
             ProfileConfigSection,

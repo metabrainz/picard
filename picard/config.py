@@ -396,6 +396,7 @@ class ConfigSection(QtCore.QObject):
         default: ConfigValueType,
         title: str | None = None,
         in_profile: bool = False,
+        bounds: tuple | None = None,
     ) -> 'Option':
         """Register an option in this config section.
 
@@ -407,12 +408,17 @@ class ConfigSection(QtCore.QObject):
             title: Human-readable title (used by ProfileConfigSection for profiles UI).
             in_profile: If True, the option can be overridden by user profiles
                 (only effective in ProfileConfigSection).
+            bounds: Optional ``(minimum, maximum)`` range for numeric options.
+                Only valid for int or float defaults; either element may be
+                None to leave that side unbounded. A stored value outside the
+                range is clamped on read.
 
         Returns:
             The registered Option instance.
 
         Raises:
-            TypeError: If default is None.
+            TypeError: If default is None, or if bounds is given for a
+                non-numeric option.
         """
         if default is None:
             raise TypeError('Option default value must not be None')
@@ -430,7 +436,13 @@ class ConfigSection(QtCore.QObject):
         else:
             option_type = Option  # type: ignore[assignment]
 
-        return option_type(self.section_name, name, default, title=title, in_profile=in_profile)
+        kwargs: dict[str, Any] = {'title': title, 'in_profile': in_profile}
+        if bounds is not None:
+            if not issubclass(option_type, BoundedNumberOption):
+                raise TypeError('bounds are only valid for int or float options')
+            kwargs['bounds'] = bounds
+
+        return option_type(self.section_name, name, default, **kwargs)
 
 
 class ProfileConfigSection(ConfigSection):
@@ -547,7 +559,12 @@ class ProfileConfigSection(ConfigSection):
         self.__qt_config.profiles._memoization[key].dirty = True
 
     def register_option(
-        self, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+        self,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+        bounds: tuple | None = None,
     ) -> Option:
         """Register an option in this config section.
 
@@ -559,14 +576,17 @@ class ProfileConfigSection(ConfigSection):
             title: Human-readable title for display in profiles and quick menu.
                 Falls back to name if not provided (with a warning for in_profile options).
             in_profile: If True, the option can be overridden by user profiles.
+            bounds: Optional ``(minimum, maximum)`` range for numeric options.
+                See :meth:`ConfigSection.register_option`.
 
         Returns:
             The registered Option instance.
 
         Raises:
-            TypeError: If default is None.
+            TypeError: If default is None, or if bounds is given for a
+                non-numeric option.
         """
-        opt = super().register_option(name, default, title=title, in_profile=in_profile)
+        opt = super().register_option(name, default, title=title, in_profile=in_profile, bounds=bounds)
         if in_profile:
             group_name = self.section_name
             group_title = self.display_name or self.section_name
