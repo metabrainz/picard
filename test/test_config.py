@@ -464,8 +464,8 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         opt = IntOption("setting", "int_option", TestIntEnum.A)
         self.assertEqual(opt.convert(2), TestIntEnum.B)
         self.assertIsInstance(opt.convert("2"), TestIntEnum)
-        with self.assertRaises(ValueError):
-            opt.convert(3)
+        # An invalid enum member falls back to the default rather than raising.
+        self.assertEqual(opt.convert(3), TestIntEnum.A)
 
     def test_int_opt_no_config(self):
         IntOption("setting", "int_option", 666)
@@ -564,6 +564,39 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
         # bounds are accepted but do not apply to enum options.
         opt = IntOption("setting", "int_option", TestIntEnum.A, bounds=(5, 6))
         self.assertEqual(opt.convert(2), TestIntEnum.B)
+
+    def test_int_opt_invalid_intenum_falls_back_to_default(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        opt = IntOption("setting", "int_option", TestIntEnum.B)
+        # An invalid enum member falls back to the default instead of raising.
+        self.assertEqual(opt.convert(99), TestIntEnum.B)
+
+    def test_int_opt_invalid_intenum_warns(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        opt = IntOption("setting", "int_option", TestIntEnum.A)
+        logging.disable(logging.NOTSET)
+        try:
+            with self.assertLogs('main', level='WARNING') as cm:
+                self.assertEqual(opt.convert(99), TestIntEnum.A)
+            self.assertIn('not a valid TestIntEnum', ''.join(cm.output))
+        finally:
+            logging.disable(logging.ERROR)
+
+    def test_int_opt_invalid_intenum_via_stored_value(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        IntOption("setting", "int_option", TestIntEnum.A)
+        # A stored value that is not a valid member falls back to the default.
+        self.config.setValue('setting/int_option', 99)
+        self.assertEqual(self.config.setting["int_option"], TestIntEnum.A)
 
     @subtest_cases(
         "bounds,exception",

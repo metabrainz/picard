@@ -264,9 +264,24 @@ class IntOption(BoundedNumberOption):
     def convert(self, value):
         value = int(value)
         # If the default is an IntEnum, return an IntEnum. Bounds do not apply
-        # to enum options.
+        # to enum options; instead the value must be a valid member. An invalid
+        # value (e.g. from a hand-edited config or an outdated profile) falls
+        # back to the default, reported with a warning, mirroring how bounds
+        # report clamping.
         if isinstance(self.default, IntEnum):
-            return type(self.default)(value)
+            enum_type = type(self.default)
+            try:
+                return enum_type(value)
+            except ValueError:
+                log.warning(
+                    "Option '%s/%s': %r is not a valid %s, using default %r",
+                    self.section,
+                    self.name,
+                    value,
+                    enum_type.__name__,
+                    self.default,
+                )
+                return self.default
         return self.bounds.clamp(value, self)
 
 
