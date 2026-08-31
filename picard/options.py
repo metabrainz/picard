@@ -251,8 +251,25 @@ BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show co
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
 BoolOption('setting', 'filter_cover_by_size', False, title=N_("Discard small images"), in_profile=True)
-IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image width"), in_profile=True)
-IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image height"), in_profile=True)
+# Cover image dimensions are pixel counts; a negative or absurd value is
+# meaningless. The UI spinboxes use 0..9999 (minimum size) and 1..9999
+# (resize targets); mirror those ranges here.
+IntOption(
+    'setting',
+    'cover_minimum_width',
+    DEFAULT_COVER_MIN_SIZE,
+    title=N_("Minimum image width"),
+    in_profile=True,
+    bounds=(0, 9999),
+)
+IntOption(
+    'setting',
+    'cover_minimum_height',
+    DEFAULT_COVER_MIN_SIZE,
+    title=N_("Minimum image height"),
+    in_profile=True,
+    bounds=(0, 9999),
+)
 BoolOption('setting', 'cover_tags_enlarge', False, title=N_("Allow enlarging tag images"), in_profile=True)
 BoolOption('setting', 'cover_tags_resize', False, title=N_("Allow resizing tag images"), in_profile=True)
 IntOption(
@@ -261,6 +278,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized tag image width"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting',
@@ -268,6 +286,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized tag image height"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting', 'cover_tags_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("Tag image resize mode"), in_profile=True
@@ -288,6 +307,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized file image width"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting',
@@ -295,6 +315,7 @@ IntOption(
     DEFAULT_COVER_MAX_SIZE,
     title=N_("Resized file image height"),
     in_profile=True,
+    bounds=(1, 9999),
 )
 IntOption(
     'setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("File image resize mode"), in_profile=True
@@ -313,6 +334,7 @@ IntOption(
     DEFAULT_COVER_IMAGE_QUALITY,
     title=N_("Format conversion quality"),
     in_profile=True,
+    bounds=(0, 100),
 )
 
 # picard/ui/options/dialog.py
