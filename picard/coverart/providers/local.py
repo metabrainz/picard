@@ -105,7 +105,7 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = frozenset(t['name'] for t in CAA_TYPES)
-    _default_types = tuple('front')
+    _default_types = ('front',)
 
     def queue_images(self):
         config = get_config()
@@ -133,7 +133,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                 m = match_re.search(filename)
                 if not m:
                     continue
-                filepath = os.path.join(current_dir, root, filename)
+                filepath = os.path.join(root, filename)
                 if not os.path.exists(filepath):
                     continue
                 try:
