@@ -292,8 +292,7 @@ class APEv2File(File):
         elif name in self.__translate:
             return self.__translate[name]
         else:
-            # Default to upper case
-            return name.upper()
+            return name.title()
 
     @staticmethod
     def _iter_cover_art_tags(tags):
