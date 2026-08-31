@@ -44,7 +44,10 @@ from picard.const import (
     METABRAINZ_OAUTH_CLIENT_SECRET,
     METABRAINZ_OAUTH_HOST,
 )
-from picard.i18n import gettext as _
+from picard.i18n import (
+    get_locale_bcp47,
+    gettext as _,
+)
 from picard.util import (
     build_qurl,
     load_json,
@@ -264,6 +267,14 @@ class OAuthManager(QObject):
             'scope': scopes,
             'access_type': 'offline',
         }
+        # Ask the authorization server to render its pages in Picard's UI
+        # language, using the OpenID Connect `ui_locales` parameter (a
+        # space-separated list of BCP 47 tags). Honored by the MetaBrainz
+        # server (MEB-190); ignored gracefully by servers that do not support
+        # it, as required by the spec.
+        ui_locales = get_locale_bcp47()
+        if ui_locales:
+            params['ui_locales'] = ui_locales
         if not self.is_oob:
             params['state'] = self._create_auth_state(callback)
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()

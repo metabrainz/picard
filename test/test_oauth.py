@@ -17,6 +17,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from unittest.mock import patch
+
 from test.picardtestcase import PicardTestCase
 
 from picard.oauth import (
@@ -81,3 +83,20 @@ class OAuthManagerTest(PicardTestCase):
         )
         encoded = base64url_encode(b)
         self.assertEqual(b'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk', encoded)
+
+
+class AuthorizationUrlTest(PicardTestCase):
+    def _manager(self):
+        manager = OAuthManager(webservice=None)
+        manager.redirect_uri = 'http://127.0.0.1:8000/auth'
+        return manager
+
+    def test_url_includes_ui_locales(self):
+        with patch('picard.oauth.get_locale_bcp47', return_value='fr-FR'):
+            url = self._manager().get_authorization_url('profile', callback=lambda **k: None)
+        self.assertIn('ui_locales=fr-FR', url)
+
+    def test_url_omits_ui_locales_when_unavailable(self):
+        with patch('picard.oauth.get_locale_bcp47', return_value=''):
+            url = self._manager().get_authorization_url('profile', callback=lambda **k: None)
+        self.assertNotIn('ui_locales', url)

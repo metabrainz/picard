@@ -44,7 +44,10 @@ from picard import (
     log,
     tagger_instance,
 )
-from picard.browser import addrelease
+from picard.browser import (
+    addrelease,
+    auth_responses,
+)
 from picard.config import get_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALIP,
@@ -219,6 +222,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._add_release(args)
         elif action == '/auth':
             self._auth(args)
+        elif action == '/favicon.ico':
+            self._response(200, auth_responses.logo_svg(), 'image/svg+xml')
         else:
             self._response(404, 'Unknown action.')
 
@@ -250,7 +255,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def _auth(self, args):
         if not args.keys() & self._OAUTH_CALLBACK_PARAMS:
-            self._response(400, 'Invalid OAuth callback parameters.')
+            # Neither 'code' nor 'error' present: the endpoint was likely called
+            # by something other than the MusicBrainz OAuth redirect.
+            log.warning("%s: Invalid OAuth callback parameters", LOG_PREFIX)
+            self._response(400, auth_responses.error_page(), 'text/html')
             return
 
         def qs_value(key):
@@ -261,7 +269,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             callback = oauth_manager.verify_state(qs_value('state'))
         except OAuthInvalidStateError:
-            self._response(400, 'Invalid "state" parameter.')
+            # An invalid state often means a different Picard instance is
+            # responding (e.g. Picard was restarted during the auth flow).
+            log.warning("%s: Invalid OAuth state parameter", LOG_PREFIX)
+            self._response(400, auth_responses.error_page(), 'text/html')
             return
 
         code = qs_value('code')
@@ -272,12 +283,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 scopes=METABRAINZ_OAUTH_SCOPES,
                 callback=callback,
             )
-            self._response(200, "Authentication successful, you can close this window now.", 'text/html')
+            self._response(200, auth_responses.success_page(), 'text/html')
         else:
-            error_msg = qs_value('error_description') or qs_value('error')
+            error_code = qs_value('error')
+            error_description = qs_value('error_description')
+            error_msg = error_description or error_code
             log.info("%s: Authorization denied: %s", LOG_PREFIX, error_msg)
             to_main(callback, successful=False, error_msg=error_msg)
-            self._response(200, "Authentication cancelled, you can close this window now.", 'text/html')
+            self._response(200, auth_responses.cancelled_page(error_code, error_description), 'text/html')
 
     def _response(self, code, content='', content_type='text/plain'):
         self.server_version = SERVER_VERSION

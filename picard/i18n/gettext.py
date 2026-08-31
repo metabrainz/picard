@@ -51,6 +51,29 @@ def get_current_locale():
     return f"{lang}.{encoding}"
 
 
+def _locale_to_bcp47(lang):
+    """Convert a POSIX locale language (e.g. ``fr_FR``) to a BCP 47 tag.
+
+    Returns an empty string for empty input or the ``C``/``POSIX`` locale.
+    """
+    if not lang or lang in {'C', 'POSIX'}:
+        return ''
+    # POSIX locales use '_' between language and region; BCP 47 uses '-'.
+    return lang.replace('_', '-')
+
+
+def get_locale_bcp47():
+    """Return the current UI locale as a BCP 47 language tag, or ''.
+
+    Derived from the active locale (the Python ``locale`` package, which is
+    Picard's primary locale mechanism). The POSIX form (e.g. ``fr_FR.UTF-8``)
+    is reduced to a BCP 47 tag (``fr-FR``). Returns an empty string when no
+    meaningful locale is set (e.g. the ``C``/``POSIX`` locale).
+    """
+    lang, _encoding = locale.getlocale()
+    return _locale_to_bcp47(lang)
+
+
 def set_locale_from_env():
     """
     Depending on environment, locale.setlocale(locale.LC_ALL, '') can fail.
