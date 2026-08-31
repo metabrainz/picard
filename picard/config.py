@@ -291,6 +291,15 @@ class BoundedNumberOption(Option):
         self.bounds = self.bounds_type(minimum, maximum)
         super().__init__(section, name, default, title, in_profile, shareable)
 
+    def checked_convert(self, value):
+        """Convert value, raising OutOfBoundsError if it violates the bounds.
+
+        Unlike :meth:`convert` (which auto-corrects and warns), this reports a
+        violation to the caller so it can apply its own policy. Implemented by
+        the concrete numeric subclasses.
+        """
+        raise NotImplementedError
+
 
 class IntOption(BoundedNumberOption):
     bounds_type = OptionBoundsInt
