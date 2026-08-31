@@ -105,6 +105,7 @@ class APEv2File(File):
     __translate = MappingProxyType(
         {
             'albumartist': 'Album Artist',
+            'albumartists': 'ALBUMARTISTS',
             'remixer': 'MixArtist',
             'director': 'Director',
             'website': 'Weblink',
