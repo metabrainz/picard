@@ -153,7 +153,7 @@ class TestManifestValidator(PicardTestCase):
 
     @subtest_cases(
         "locale",
-        ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN'],
+        ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN', 'haw', 'haw_US'],
     )
     def test_validate_source_locale_valid(self, locale):
         manifest = _valid_manifest()
@@ -163,7 +163,18 @@ class TestManifestValidator(PicardTestCase):
 
     @subtest_cases(
         "locale",
-        ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123'],
+        {
+            'empty': ('',),
+            'single letter': ('e',),
+            'full word': ('english',),
+            'hyphen separator': ('en-US',),
+            'lowercase region': ('en_us',),
+            'uppercase language': ('EN',),
+            'three-letter region': ('en_USA',),
+            'digits': ('123',),
+            'trailing space': ('en ',),
+            'one-letter region': ('en_U',),
+        },
     )
     def test_validate_source_locale_invalid_format(self, locale):
         manifest = _valid_manifest()
