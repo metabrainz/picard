@@ -43,7 +43,7 @@ jobs:
       run: |
         pip install flake8 "isort>=5"
         flake8 picard test --count --show-source --statistics
-        isort --check-only --diff --recursive picard test
+        isort --check-only --diff picard test
     - name: Test with pytest
       if: always()
       timeout-minutes: 30
