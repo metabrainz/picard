@@ -345,7 +345,7 @@ BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan a
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"), in_profile=True)
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"), in_profile=True)
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"), in_profile=True)
-IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True)
+IntOption('setting', 'server_port', 443, title=N_("Port"), in_profile=True, bounds=(1, 65535))
 BoolOption('setting', 'use_server_for_submission', False, title=N_("Submit to configured server"), in_profile=True)
 BoolOption('setting', 'read_isrcs_from_disc', has_isrc_support(), title=N_("Read ISRCs from CD"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
@@ -555,7 +555,15 @@ IntOption(
 IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout (seconds)"), in_profile=True)
 TextOption('setting', 'proxy_password', '', title=N_("Proxy password"), in_profile=True, shareable=False)
 TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"), in_profile=True, shareable=False)
-IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port"), in_profile=True, shareable=False)
+IntOption(
+    'setting',
+    'proxy_server_port',
+    80,
+    title=N_("Proxy server port"),
+    in_profile=True,
+    shareable=False,
+    bounds=(1, 65535),
+)
 TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server"), in_profile=True)
 TextOption('setting', 'proxy_username', '', title=N_("Proxy username"), in_profile=True, shareable=False)
 BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server"), in_profile=True)
