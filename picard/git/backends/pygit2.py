@@ -68,12 +68,12 @@ class Pygit2RemoteCallbacks(GitRemoteCallbacks):
             return None
         self._attempted = True
 
-        if allowed_types & pygit2.GIT_CREDENTIAL_SSH_KEY:
+        if allowed_types & pygit2.enums.CredentialType.SSH_KEY:
             try:
                 return pygit2.Keypair('git', None, None, '')
             except (pygit2.GitError, OSError):
                 return None
-        elif allowed_types & pygit2.GIT_CREDENTIAL_USERPASS_PLAINTEXT:
+        elif allowed_types & pygit2.enums.CredentialType.USERPASS_PLAINTEXT:
             try:
                 return pygit2.Username('git')
             except (pygit2.GitError, OSError):
@@ -89,9 +89,9 @@ class Pygit2Repository(GitRepository):
         status = self._repo.status()
         result = {}
         for filepath, flags in status.items():
-            if flags == pygit2.GIT_STATUS_CURRENT:
+            if flags == pygit2.enums.FileStatus.CURRENT:
                 result[filepath] = GitStatusFlag.CURRENT
-            elif flags == pygit2.GIT_STATUS_IGNORED:
+            elif flags == pygit2.enums.FileStatus.IGNORED:
                 result[filepath] = GitStatusFlag.IGNORED
             else:
                 # Any other status means the file is modified/added/deleted/untracked
@@ -117,7 +117,7 @@ class Pygit2Repository(GitRepository):
     def revparse_single(self, ref: str) -> GitObject:
         try:
             obj = self._repo.revparse_single(ref)
-            obj_type = GitObjectType.COMMIT if obj.type == pygit2.GIT_OBJECT_COMMIT else GitObjectType.TAG
+            obj_type = GitObjectType.COMMIT if obj.type == pygit2.enums.ObjectType.COMMIT else GitObjectType.TAG
             ret = GitObject(str(obj.id), obj_type)
             _log_git_call("revparse_single", ref, retval=ret)
             return ret
@@ -130,8 +130,8 @@ class Pygit2Repository(GitRepository):
 
     def peel_to_commit(self, obj: GitObject) -> GitObject:
         pygit_obj = self._repo.get(obj.id)
-        if pygit_obj.type == pygit2.GIT_OBJECT_TAG:
-            commit = pygit_obj.peel(pygit2.GIT_OBJECT_COMMIT)
+        if pygit_obj.type == pygit2.enums.ObjectType.TAG:
+            commit = pygit_obj.peel(pygit2.enums.ObjectType.COMMIT)
             ret = GitObject(str(commit.id), GitObjectType.COMMIT)
         else:
             ret = obj
@@ -268,11 +268,11 @@ class Pygit2Repository(GitRepository):
                     else:
                         # Remote reference
                         obj = repo.get(ref.oid)
-                    is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
+                    is_annotated = obj.type == pygit2.enums.ObjectType.TAG
 
                     # For annotated tags, dereference to get the commit ID
                     if is_annotated:
-                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                        commit = obj.peel(pygit2.enums.ObjectType.COMMIT)
                         target = str(commit.id)
                     # For lightweight tags, target is already the commit ID
                 except Exception:
@@ -350,6 +350,16 @@ class Pygit2Backend(GitBackend):
         if not HAS_PYGIT2:
             raise ImportError("pygit2 not available")
 
+    @staticmethod
+    def _raw(repo: GitRepository):
+        """Return the underlying pygit2 repository for a Pygit2Repository.
+
+        All repositories created by this backend are Pygit2Repository instances;
+        the assertion documents and enforces that invariant for the type checker.
+        """
+        assert isinstance(repo, Pygit2Repository)
+        return repo._repo
+
     def create_repository(self, path: Path) -> GitRepository:
         _log_git_call("create_repository", str(path))
         try:
@@ -366,7 +376,7 @@ class Pygit2Backend(GitBackend):
     def create_commit(
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         index = pygit_repo.index
         index.add_all()
         index.write()
@@ -388,13 +398,13 @@ class Pygit2Backend(GitBackend):
         author_email: str = "test@example.com",
     ):
         _log_git_call("create_tag", tag_name, commit_id, message)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         author = pygit2.Signature(author_name, author_email)
-        pygit_repo.create_tag(tag_name, commit_id, pygit2.GIT_OBJECT_COMMIT, author, message)
+        pygit_repo.create_tag(tag_name, commit_id, pygit2.enums.ObjectType.COMMIT, author, message)
 
     def create_branch(self, repo: GitRepository, branch_name: str, commit_id: str):
         _log_git_call("create_branch", branch_name, commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         # Create branch reference pointing to the commit
         pygit_repo.create_reference(f'refs/heads/{branch_name}', commit_id)
 
@@ -402,7 +412,7 @@ class Pygit2Backend(GitBackend):
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
         try:
-            pygit_repo = repo._repo
+            pygit_repo = self._raw(repo)
             index = pygit_repo.index
             index.add_all()
             index.write()
@@ -426,17 +436,17 @@ class Pygit2Backend(GitBackend):
 
     def reset_hard(self, repo: GitRepository, commit_id: str):
         _log_git_call("reset_hard", commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         pygit_repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
 
     def create_reference(self, repo: GitRepository, ref_name: str, commit_id: str):
         _log_git_call("create_reference", ref_name, commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
         pygit_repo.create_reference(ref_name, commit_id)
 
     def set_head_detached(self, repo: GitRepository, commit_id: str):
         _log_git_call("set_head_detached", commit_id)
-        pygit_repo = repo._repo
+        pygit_repo = self._raw(repo)
 
         # To create a true detached HEAD, we need to make HEAD point directly to a commit
         # rather than to a branch reference

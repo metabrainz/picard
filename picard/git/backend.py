@@ -157,7 +157,14 @@ class GitObject:
 
 
 class GitRemoteCallbacks:
-    """Abstract remote callbacks for authentication"""
+    """Abstract remote callbacks for authentication.
+
+    Concrete backends store their native callbacks object in ``_callbacks``
+    (e.g. a ``pygit2.RemoteCallbacks`` instance).
+    """
+
+    #: Backend-specific native callbacks handle, populated by subclasses.
+    _callbacks: Any = None
 
 
 def _log_git_call(method_name: str, *args, **kwargs):
