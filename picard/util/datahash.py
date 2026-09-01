@@ -55,7 +55,12 @@ class DataHash:
     __datahashes: WeakValueDictionary[str, 'DataHash'] = WeakValueDictionary()
     __datafile_mutex = QMutex()
 
-    def __new__(cls, data: bytes, prefix: str = 'picard', suffix: str = ''):
+    # Set during construction in _write_data(); annotated here so the types are
+    # visible without reading that method.
+    _hash: str
+    _filename: str
+
+    def __new__(cls, data: bytes, prefix: str = 'picard', suffix: str = '') -> 'DataHash':
         """Creates a new instance of DataHash for data.
 
         If there is already an existing instance with the same data then this
@@ -81,24 +86,24 @@ class DataHash:
             DataHash.__datafile_mutex.unlock()
             gc.enable()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if other is None:
             return False
         return self._hash == getattr(other, '_hash', None)
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'DataHash') -> bool:
         return self._hash < other._hash
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<DataHash {self.shorthash}>'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._hash
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self._hash)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self._delete_file()
 
     @property
@@ -124,10 +129,10 @@ class DataHash:
         """The filename of the temporary file."""
         return self._filename
 
-    def _write_data(self, hash, data, prefix, suffix):
-        self._hash: str = hash
+    def _write_data(self, hash: str, data: bytes, prefix: str, suffix: str) -> None:
+        self._hash = hash
         (fd, filepath) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-        self._filename: str = filepath
+        self._filename = filepath
         # On some systems (notably macOS) temporary files are removed after
         # a certain period of time without access.
         periodictouch.register_file(filepath)
@@ -135,7 +140,7 @@ class DataHash:
             datafile.write(data)
         log.debug("Saving data %s to %r", self.shorthash, filepath)
 
-    def _delete_file(self):
+    def _delete_file(self) -> None:
         if not self._filename:
             return
 
@@ -149,7 +154,7 @@ class DataHash:
             DataHash.__datafile_mutex.unlock()
 
     @staticmethod
-    def remove_all_files():
+    def remove_all_files() -> None:
         """Remove all temporary DataHash files stored on disk.
 
         Warning: This will leave all existing DataHash instances without file
