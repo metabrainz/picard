@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-31 08:59+0200\n"
-"PO-Revision-Date: 2026-08-21 07:12+0000\n"
+"PO-Revision-Date: 2026-09-01 07:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -264,12 +264,14 @@ msgstr "Aanvraagbeperkingen, congestievenster en uitsteldetails registreren"
 
 #: picard/debug_opts.py:174
 msgid "Theme"
-msgstr ""
+msgstr "Thema"
 
 #: picard/debug_opts.py:174
 msgid ""
 "Log theme switching diagnostics, palette colors, and color scheme details"
 msgstr ""
+"Diagnostische informatie over het wisselen van thema, paletkleuren en "
+"details over het kleurschema registreren"
 
 #: picard/file.py:334
 msgid "Cannot save file: the file no longer exists."
@@ -493,10 +495,8 @@ msgid "Embed images into tags"
 msgstr "Afbeeldingen in tags opslaan"
 
 #: picard/options.py:242
-#, fuzzy
-#| msgid "Embed images into tags"
 msgid "Remove images from tags"
-msgstr "Afbeeldingen in tags opslaan"
+msgstr "Verwijder afbeeldingen uit tags"
 
 #: picard/options.py:243
 msgid "Save only one front image"
@@ -1448,61 +1448,54 @@ msgid "Add file as recording…"
 msgstr "Bestand als opname toevoegen …"
 
 #: picard/browser/auth_responses.py:141
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication successful — %s"
-msgstr "Aanmelden mislukt"
+msgstr "Aanmelden gelukt: %s"
 
 #: picard/browser/auth_responses.py:142
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication successful."
-msgstr "Aanmelden mislukt"
+msgstr "Aanmelden gelukt."
 
 #: picard/browser/auth_responses.py:143
 msgid "Picard has been authorized."
-msgstr ""
+msgstr "Picard is aangemeld."
 
 #: picard/browser/auth_responses.py:146 picard/browser/auth_responses.py:199
 #: picard/browser/auth_responses.py:215
 msgid "You can close this window."
-msgstr ""
+msgstr "Je kan dit venster nu sluiten."
 
 #: picard/browser/auth_responses.py:163
-#, fuzzy
-#| msgid "Authorization code:"
 msgid "Authorization was declined."
-msgstr "Machtigingscode:"
+msgstr "De aanmelding is afgewezen."
 
 #: picard/browser/auth_responses.py:164
 msgid "The authorization request was invalid."
-msgstr ""
+msgstr "Het aanmeldingsverzoek was ongeldig."
 
 #: picard/browser/auth_responses.py:165
 msgid "This application is not allowed to request authorization."
-msgstr ""
+msgstr "Deze applicatie mag geen aanmelding verzoeken."
 
 #: picard/browser/auth_responses.py:166
 msgid "The authorization request is not supported."
-msgstr ""
+msgstr "Het aanmeldingsverzoek wordt niet ondersteund."
 
 #: picard/browser/auth_responses.py:167
 msgid "The requested permissions are invalid."
-msgstr ""
+msgstr "De aangevraagde machtigingen zijn ongeldig."
 
 #: picard/browser/auth_responses.py:168
 msgid "The server encountered an error. Please try again later."
-msgstr ""
+msgstr "Op de server is iets fout gegaan. Probeer het later opnieuw."
 
 #: picard/browser/auth_responses.py:169
 msgid "The service is temporarily unavailable. Please try again later."
-msgstr ""
+msgstr "De dienst is tijdelijk niet beschikbaar. Probeer het later opnieuw."
 
 #: picard/browser/auth_responses.py:170
-#, fuzzy
-#| msgid "Enable track ratings (requires login)"
 msgid "Additional interaction is required to sign in."
-msgstr "Schakel nummerwaarderingen in (aanmelding vereist)"
+msgstr "Het aanmelden vereist extra handelingen."
 
 #: picard/browser/auth_responses.py:171
 msgid "You need to sign in to continue."
@@ -4249,7 +4242,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:273
 msgid "Save cover art as separate image files"
-msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
+msgstr "Sla hoesafbeeldingen op als aparte bestanden"
 
 #: picard/ui/setupwizard.py:274
 msgid ""
@@ -5374,7 +5367,7 @@ msgstr "Types selecteren …"
 
 #: picard/ui/forms/ui_options_cover.py:132
 msgid "Save cover images as separate files"
-msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
+msgstr "Sla hoesafbeeldingen op als aparte bestanden"
 
 #: picard/ui/forms/ui_options_cover.py:133
 msgid "Use the following file name for images:"
