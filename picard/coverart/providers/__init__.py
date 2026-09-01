@@ -31,7 +31,10 @@ from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.caa_release_group import (
     CoverArtProviderCaaReleaseGroup,
 )
-from picard.coverart.providers.local import CoverArtProviderLocal
+from picard.coverart.providers.local import (
+    CoverArtProviderLocal,
+    register_builtin_local_cover_art_modes,
+)
 from picard.coverart.providers.provider import (  # noqa: F401 # pylint: disable=unused-import
     CoverArtProvider,
     ProviderOptions,
@@ -71,3 +74,7 @@ __providers = [
 
 for provider in __providers:
     register_cover_art_provider(provider)
+
+# Register the local cover art matching modes provided by Picard core (plugins
+# register further modes from their enable() function).
+register_builtin_local_cover_art_modes()

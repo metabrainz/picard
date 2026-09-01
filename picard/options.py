@@ -124,6 +124,17 @@ BoolOption('setting', 'caa_restrict_image_types', True, title=N_("Restrict cover
 TextOption(
     'setting', 'local_cover_regex', DEFAULT_LOCAL_COVER_ART_REGEX, title=N_("Local cover art regex"), in_profile=True
 )
+# The value of local_cover_match_mode is the id of a registered local cover art
+# matching mode (see picard.extension_points.local_cover_art_modes). It defaults
+# to the built-in regular-expression mode; the default is a literal here to
+# avoid importing the provider module from the options definitions.
+TextOption(
+    'setting',
+    'local_cover_match_mode',
+    'regex',
+    title=N_("Local cover art match mode"),
+    in_profile=True,
+)
 
 # picard/ui/cdlookup.py
 #

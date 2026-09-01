@@ -85,6 +85,10 @@ from picard.extension_points.item_actions import (
     register_file_action,
     register_track_action,
 )
+from picard.extension_points.local_cover_art_modes import (
+    LocalCoverArtMode,
+    register_local_cover_art_mode,
+)
 from picard.extension_points.metadata import (
     register_album_metadata_processor,
     register_track_metadata_processor,
@@ -1145,6 +1149,77 @@ class PluginApi:
             provider_class.OPTIONS.api = self  # type: ignore[attr-defined]
             provider_class.OPTIONS.OPTION_SECTION = self._api_config.section_name
         return register_cover_art_provider(provider_class)
+
+    def register_local_cover_art_mode(self, mode: LocalCoverArtMode) -> None:
+        """Register a matching mode for the Local Files cover art provider.
+
+        A matching mode is a way of selecting which local files are used as
+        cover art for an album (for example matching file names against a
+        regular expression). The mode appears in the Local Files provider's
+        options page and is used when it is the active mode.
+
+        The mode owns its stored value through its ``get_value`` / ``set_value``
+        callables; back them with :attr:`plugin_config` to keep the value
+        private to the plugin. Provide ``make_matcher`` to enable the options
+        page's live "test matching" playground, and ``show_doc`` to add a
+        documentation button.
+
+        The mode's ``queue_images`` callable is invoked as
+        ``queue_images(provider, value)`` where ``provider`` is the Local Files
+        provider instance and ``value`` is the mode's stored value. It queues
+        cover art by iterating the album's files and, for each directory,
+        yielding matching images via ``provider.find_local_images(dir,
+        match_re)`` (which returns :class:`CoverArtImage` objects) and passing
+        them to ``provider.queue_put(image)``.
+
+        Args:
+            mode: A :class:`~picard.plugin3.api.LocalCoverArtMode` describing
+                the mode.
+
+        Example:
+            import os
+            import re
+
+            from picard.plugin3.api import LocalCoverArtMode
+
+
+            def queue_images(provider, pattern):
+                # ``pattern`` is this mode's stored value. Here we treat it as a
+                # case-insensitive regular expression and queue every matching
+                # file, walking each of the album's directories only once.
+                match_re = re.compile(pattern, re.IGNORECASE)
+                dirs_done = set()
+                for file in provider.album.iterfiles():
+                    current_dir = os.path.dirname(file.filename)
+                    if current_dir in dirs_done:
+                        continue
+                    dirs_done.add(current_dir)
+                    for image in provider.find_local_images(current_dir, match_re):
+                        provider.queue_put(image)
+
+
+            def enable(api):
+                api.plugin_config.register_option('pattern', '')
+
+                def get_pattern():
+                    return api.plugin_config['pattern']
+
+                def set_pattern(value):
+                    api.plugin_config['pattern'] = value
+
+                api.register_local_cover_art_mode(
+                    LocalCoverArtMode(
+                        id='my-plugin.my-mode',
+                        title='My mode',
+                        description='Match local cover art files using my rule:',
+                        note='Explain how the value is interpreted.',
+                        queue_images=queue_images,
+                        get_value=get_pattern,
+                        set_value=set_pattern,
+                    )
+                )
+        """
+        return register_local_cover_art_mode(mode)
 
     def register_cover_art_filter(
         self, filter: Callable[['PluginApi', bytes, ImageInfo, Album, CoverArtImage], bool]
