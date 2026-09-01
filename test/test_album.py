@@ -17,11 +17,16 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import gzip
+import json
 from unittest.mock import (
     Mock,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    load_test_json,
+)
 
 from picard.album import (
     Album,
@@ -98,3 +103,39 @@ class TrackTest(PicardTestCase):
         self.album.metadata.images.append(image)
         self.assertEqual(self.album.column('covercount'), '1')
         self.assertEqual(self.album.column('coverdimensions'), '100x100')
+
+    def test_release_node_cache_roundtrip(self):
+        # The property stores the node compressed but returns an equal dict.
+        node = {
+            'id': 'abc',
+            'media': [{'tracks': [{'title': f'T{i}'} for i in range(12)]}],
+            'artist-credit': [{'name': 'X', 'joinphrase': ''}],
+        }
+        self.album._release_node_cache = node
+        self.assertEqual(self.album._release_node_cache, node)
+
+    def test_release_node_cache_none(self):
+        self.album._release_node_cache = None
+        self.assertIsNone(self.album._release_node_cache)
+        self.assertIsNone(self.album._release_node_cache_blob)
+
+    def test_release_node_cache_is_compressed(self):
+        # Stored blob must be smaller than the raw JSON for repetitive data.
+        node = {'media': [{'tracks': [{'title': 'Song', 'length': 210000} for _ in range(30)]}]}
+        self.album._release_node_cache = node
+        blob = self.album._release_node_cache_blob
+        self.assertIsInstance(blob, bytes)
+        raw = json.dumps(node).encode('utf-8')
+        self.assertLess(len(blob), len(raw))
+        # And it round-trips.
+        self.assertEqual(json.loads(gzip.decompress(blob).decode('utf-8')), node)
+
+    def test_release_node_cache_roundtrip_real_release(self):
+        # Round-trip must be exact for a real MB release node (nested
+        # structure, Unicode, artist-credits, relations, etc.) and the stored
+        # blob must be much smaller than the live JSON.
+        node = load_test_json('release.json')
+        self.album._release_node_cache = node
+        self.assertEqual(self.album._release_node_cache, node)
+        raw = json.dumps(node).encode('utf-8')
+        self.assertLess(len(self.album._release_node_cache_blob), len(raw))
