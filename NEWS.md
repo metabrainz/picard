@@ -1,5 +1,43 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0rc1 - 2026-09-01
+
+### Bugfixes
+
+- [PICARD-1877](https://tickets.metabrainz.org/browse/PICARD-1877) - The language field of a lyrics (USLT) tag is not preserved
+- [PICARD-3377](https://tickets.metabrainz.org/browse/PICARD-3377) - `picard-cli plugins compile-ui` fails when called on a .ui file inside a directory
+- [PICARD-3381](https://tickets.metabrainz.org/browse/PICARD-3381) - Alternative Qt6 rcc path missing for RHEL
+- [PICARD-3383](https://tickets.metabrainz.org/browse/PICARD-3383) - `picard-cli plugins install .` gives an error about the plugin not being in the registry
+- [PICARD-3393](https://tickets.metabrainz.org/browse/PICARD-3393) - A single failing metadata processor prevents all subsequent processors from running
+- [PICARD-3398](https://tickets.metabrainz.org/browse/PICARD-3398) - Pending request stuck if authentication gets cancelled
+- [PICARD-3400](https://tickets.metabrainz.org/browse/PICARD-3400) - OAuth: browser-integration login exchanges code with wrong (unprefixed) scopes, breaking collections
+- [PICARD-3402](https://tickets.metabrainz.org/browse/PICARD-3402) - ListenBrainz batch submission retries forever on permanent errors (e.g. 401)
+- [PICARD-3403](https://tickets.metabrainz.org/browse/PICARD-3403) - Plugin git authentication crashes with AttributeError on pygit2 1.20+ (removed `GIT_CREDENTIAL_*` constants)
+- [PICARD-3404](https://tickets.metabrainz.org/browse/PICARD-3404) - A rating of 0 is discarded when loading ASF/WMA/WMV files
+- [PICARD-3405](https://tickets.metabrainz.org/browse/PICARD-3405) - `ImageList.get_types_dict()` keeps the smallest image per type instead of the biggest, defeating "Never replace cover images with smaller ones"
+- [PICARD-3406](https://tickets.metabrainz.org/browse/PICARD-3406) - AttributeError: 'Pygit2Repository' object has no attribute 'branches'
+
+### New Features
+
+- [PICARD-700](https://tickets.metabrainz.org/browse/PICARD-700) - Add a new tag "albumartists"
+- [PICARD-3378](https://tickets.metabrainz.org/browse/PICARD-3378) - Add tagger script functions `$get_new()` and `$get_original()` to allow direct access to new or original file tags
+- [PICARD-3379](https://tickets.metabrainz.org/browse/PICARD-3379) - Add a regex testing playground to the Advanced options screen
+- [PICARD-3380](https://tickets.metabrainz.org/browse/PICARD-3380) - Option to remove all cover images from tags
+
+### Improvements
+
+- [PICARD-2109](https://tickets.metabrainz.org/browse/PICARD-2109) - Set cover art default to CAA Release Group
+- [PICARD-2442](https://tickets.metabrainz.org/browse/PICARD-2442) - Allow runtime theme changes
+- [PICARD-2844](https://tickets.metabrainz.org/browse/PICARD-2844) - Make language required for both comment and lyrics tags
+- [PICARD-3117](https://tickets.metabrainz.org/browse/PICARD-3117) - Write "Performer [instruments]" without specific instrument as `performer:instruments`
+- [PICARD-3374](https://tickets.metabrainz.org/browse/PICARD-3374) - Disc log readers registered by plugins should have access to the PluginApi
+- [PICARD-3382](https://tickets.metabrainz.org/browse/PICARD-3382) - `debug_if()` and `DebugOpt` should be exposed through Plugin V3 API
+- [PICARD-3387](https://tickets.metabrainz.org/browse/PICARD-3387) - Use tags added with `api.register_script_variable` for auto-completion
+- [PICARD-3394](https://tickets.metabrainz.org/browse/PICARD-3394) - ListenQueue: Avoid unnecessary file writes and clean up queue file after successful submission
+- [PICARD-3396](https://tickets.metabrainz.org/browse/PICARD-3396) - Offer "Use track relationships" as an opt-in in the first-run setup wizard
+- [PICARD-3399](https://tickets.metabrainz.org/browse/PICARD-3399) - Improve browser integration auth response pages
+
+
 ## Version 3.0.0b9 - 2026-08-11
 
 ### Bugfixes
