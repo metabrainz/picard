@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-20 08:12+0000\n"
+"PO-Revision-Date: 2026-09-01 07:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -496,7 +496,7 @@ msgstr "Slechts één afbeelding van de voorkant inbedden"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
-msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
+msgstr "Sla hoesafbeeldingen op als aparte bestanden"
 
 #: picard/profile.py:144
 msgid "File name for images"
