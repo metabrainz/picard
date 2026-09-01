@@ -66,3 +66,51 @@ class DataHashTest(PicardTestCase):
         self.assertTrue(os.path.exists(filename))
         del b
         self.assertFalse(os.path.exists(filename))
+
+    def test_ordering(self):
+        # __lt__ orders by content hash (used e.g. to sort cover-art images).
+        a = DataHash(b'a')
+        b = DataHash(b'b')
+        ordered = sorted([b, a])
+        self.assertEqual(ordered, sorted([a, b], key=lambda h: h.hash))
+        # Consistent, antisymmetric.
+        self.assertEqual(a < b, not (b < a))
+
+    def test_repr(self):
+        h = DataHash(b'a')
+        self.assertEqual(repr(h), f"<DataHash {h.shorthash}>")
+
+    def test_hashable(self):
+        # __hash__ is based on the content hash, so equal-content instances
+        # (which are also identical due to interning) collapse in a set.
+        h1 = DataHash(b'abc')
+        h2 = DataHash(b'abc')
+        h3 = DataHash(b'def')
+        self.assertEqual(hash(h1), hash(h2))
+        self.assertEqual(len({h1, h2, h3}), 2)
+
+    def test_remove_all_files(self):
+        a = DataHash(b'remove-all-1')
+        b = DataHash(b'remove-all-2')
+        self.assertTrue(os.path.exists(a.filename))
+        self.assertTrue(os.path.exists(b.filename))
+        DataHash.remove_all_files()
+        self.assertFalse(os.path.exists(a.filename))
+        self.assertFalse(os.path.exists(b.filename))
+
+    def test_delete_missing_file_is_safe(self):
+        # Deleting an already-removed file must not raise (the error path is
+        # swallowed and logged). remove_all_files() drives _delete_file, which
+        # is deterministic (unlike relying on __del__ timing).
+        h = DataHash(b'delete-twice')
+        filename = h.filename
+        os.unlink(filename)
+        self.assertFalse(os.path.exists(filename))
+        # Must not raise even though the file is already gone.
+        DataHash.remove_all_files()
+
+    def test_data_missing_file_raises_oserror(self):
+        h = DataHash(b'read-after-delete')
+        os.unlink(h.filename)
+        with self.assertRaises(OSError):
+            h.data()
