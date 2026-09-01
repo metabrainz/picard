@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2007, 2014, 2016 Lukáš Lalinský
 # Copyright (C) 2014, 2019-2022, 2024-2026 Philipp Wolfer
-# Copyright (C) 2014-2016, 2018-2021, 2023-2025 Laurent Monin
+# Copyright (C) 2014-2016, 2018-2021, 2023-2026 Laurent Monin
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Wieland Hoffmann

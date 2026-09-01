@@ -10,8 +10,8 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2024 Giorgio Fontanive
-# Copyright (C) 2025 Bob Swift
 # Copyright (C) 2025 Khoa Nguyen
+# Copyright (C) 2025-2026 Bob Swift
 # Copyright (C) 2026 Bryan Roessler
 #
 # This program is free software; you can redistribute it and/or

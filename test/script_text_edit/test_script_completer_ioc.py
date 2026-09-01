@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2025 Khoa Nguyen
 # Copyright (C) 2025 The MusicBrainz Team
+# Copyright (C) 2026 Laurent Monin
 # Copyright (C) 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or

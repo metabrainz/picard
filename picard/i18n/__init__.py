@@ -1,7 +1,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2012 Frederik “Freso” S. Olesen
-# Copyright (C) 2013-2014, 2018-2024 Laurent Monin
+# Copyright (C) 2013-2014, 2018-2024, 2026 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017-2024, 2026 Philipp Wolfer
 #

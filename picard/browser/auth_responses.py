@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+
 """Styled HTML response pages for the browser integration OAuth callback.
 
 These pages replace the previous plain-text responses shown to the user in
