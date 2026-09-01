@@ -53,6 +53,21 @@ class TestDebugOpt(PicardTestCase):
     def test_opt_names(self):
         self.assertEqual(DebugOptTestCase.opt_names(), 'a,b')
 
+    def test_any_enabled(self):
+        self.assertFalse(DebugOptTestCase.any_enabled())
+        DebugOptTestCase.A.enabled = True
+        self.assertTrue(DebugOptTestCase.any_enabled())
+        DebugOptTestCase.A.enabled = False
+        self.assertFalse(DebugOptTestCase.any_enabled())
+
+    def test_any_enabled_after_invalid_from_string(self):
+        # An unknown option string enables nothing, so debug logging must not
+        # be forced on.
+        DebugOptTestCase.from_string('bogus')
+        self.assertFalse(DebugOptTestCase.any_enabled())
+        DebugOptTestCase.from_string('a')
+        self.assertTrue(DebugOptTestCase.any_enabled())
+
     def test_from_string_simple(self):
         DebugOptTestCase.from_string('a')
         self.assertTrue(DebugOptTestCase.A.enabled)

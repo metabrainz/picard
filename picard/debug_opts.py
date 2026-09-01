@@ -157,6 +157,16 @@ class DebugOptEnum(int, Enum):
         """Returns current storage for enabled debug options"""
         return cls.__registry__
 
+    @classmethod
+    def any_enabled(cls):
+        """Returns True if at least one debug option is currently enabled.
+
+        Useful to decide whether debug-level logging should be forced on, so
+        that the log.debug() output guarded by these options is actually
+        emitted.
+        """
+        return bool(cls.__registry__)
+
 
 class DebugOpt(DebugOptEnum):
     PLUGIN_FULLPATH = 1, N_('Plugin Fullpath'), N_('Log plugin full paths')
