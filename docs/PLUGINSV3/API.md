@@ -800,7 +800,7 @@ def enable(api):
 
 ---
 
-#### `register_script_variable(name, documentation=None, title=None, is_multi_value=False)`
+#### `register_script_variable(name, documentation=None, title=None, is_multi_value=False, is_from_mb=False)`
 
 Register a variable name for script autocomplete and tag dropdowns.
 
@@ -847,6 +847,8 @@ def enable(api):
   the UI.
 - `is_multi_value`: Whether this variable can hold multiple values
   (default: `False`).
+- `is_from_mb`: Whether the tag information is provided from the MusicBrainz
+  database (default: `False`).
 
 **Raises**: `ValueError` if:
 - The variable name is invalid (must use only letters, digits, underscores).
