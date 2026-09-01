@@ -2,18 +2,21 @@
 # Translators:
 # Mihkel Tõnnov <email address hidden>, 2008-2009,2011-2014
 # Mihkel Tõnnov <email address hidden>, 2015,2017-2018,2020
+# Priit Jõerüüt <jmmbrz@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017-2018,2020\n"
-"Language-Team: Estonian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/et/)\n"
+"PO-Revision-Date: 2026-08-17 03:12+0000\n"
+"Last-Translator: Priit Jõerüüt "
+"<jmmbrz@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Estonian <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/et/>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -39,7 +42,7 @@ msgstr ""
 #: DB:medium_format/name:205
 msgctxt "medium_format"
 msgid "10\" Acetate"
-msgstr ""
+msgstr "10″ atsetaat"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -54,12 +57,12 @@ msgstr "10″ vinüül"
 #: DB:medium_format/name:206
 msgctxt "medium_format"
 msgid "12\" Acetate"
-msgstr ""
+msgstr "12″ atsetaat"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12″ LaserDisc"
+msgstr "12″ laserplaat"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -72,12 +75,9 @@ msgid "12\" Vinyl"
 msgstr "12″ vinüül"
 
 #: DB:medium_format/name:207
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "7\" Vinyl"
 msgctxt "medium_format"
 msgid "3\" Vinyl"
-msgstr "7″ vinüül"
+msgstr "3″ vinüül"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -87,12 +87,12 @@ msgstr "3,5″ diskett"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr ""
+msgstr "5,25″ diskett"
 
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr ""
+msgstr "7″ atsetaat"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -685,7 +685,8 @@ msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
 msgstr ""
-"Kool, ülikool vmt haridusasutus (eriti selline, kus õpetatakse muusikat)."
+"Kool, ülikool või muu sarnane haridusasutus (eriti selline, kus õpetatakse "
+"muusikat, aga mitte ainult)"
 
 #. name:Artist award
 #: DB:series_type/description:14
@@ -5994,12 +5995,9 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste"
-msgstr "Murabba Beste "
+msgstr "Murabba Beste"
 
 #: DB:work_type/name:29
 msgctxt "work_type"

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-04-26 11:11+0000\n"
+"PO-Revision-Date: 2026-08-19 12:12+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -579,6 +579,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
+"Een logo dat alleen voor een bepaald evenement wordt gebruikt, niet het logo "
+"van een serie evenementen (zoals een festivallogo dat meerdere jaren wordt "
+"gebruikt)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -798,6 +801,9 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
+"Een beschermende hoes (meestal in de verpakking) om het medium heen (meestal "
+"een vinylplaat, maar soms een cd). De voering is vaak bedrukt met informatie "
+"over de muziek of afbeeldingen."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -945,23 +951,18 @@ msgstr "Een serie uitgaven."
 
 #. name:Series award
 #: DB:series_type/description:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of recordings honoured by the same award."
 msgctxt "series_type"
 msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
-msgstr "Een serie van opnamen geëerd met dezelfde prijs."
+msgstr ""
+"Een serie van series (zoals podcasts of festivals) geëerd met dezelfde prijs."
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Een serie evenementen."
+msgstr "Een serie van series."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5770,7 +5771,7 @@ msgstr "Live"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -7940,12 +7941,9 @@ msgid "Serbest"
 msgstr "Serbest"
 
 #: DB:series_type/name:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist award"
 msgctxt "series_type"
 msgid "Series award"
-msgstr "Artiestenprijs"
+msgstr "Serieprijs"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
@@ -7958,12 +7956,9 @@ msgid "Series name"
 msgstr "Serienaam"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist series"
 msgctxt "series_type"
 msgid "Series series"
-msgstr "Serie artiesten"
+msgstr "Serie van series"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"

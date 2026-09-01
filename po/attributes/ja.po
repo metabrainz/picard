@@ -30,11 +30,12 @@
 # TefWw <came.from.the.north7239@gmail.com>, 2025.
 # zatto13 <zatto0524@gmail.com>, 2026.
 # julian45 <julian45@users.noreply.translations.metabrainz.org>, 2026.
+# Life4649 <metabrainz@fujinraijin.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-07-08 19:12+0000\n"
-"Last-Translator: zatto13 <zatto0524@gmail.com>\n"
+"PO-Revision-Date: 2026-08-23 02:12+0000\n"
+"Last-Translator: Life4649 <metabrainz@fujinraijin.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
 "Language: ja\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.7\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -270,31 +271,34 @@ msgid ""
 "songs by two different artists are released on the one disc, typically vinyl."
 "</p>"
 msgstr ""
-"<p>シングルはリリースされる市場によって定義が異なる。</p>\n"
+"<p>シングルは、リリースされる市場によって定義が異なる。</p>\n"
 "\n"
 "<ul>\n"
-"<li>米国でシングルは、1曲のメイン曲と、場合によってはさらに追加トラックやリ"
-"ミックスで構成されることが一般的である。名前はメイン曲にちなんだ命名がされ"
-"る。主にラジオでプレイされ、メイン曲の売り上げを伸ばす目的でリリースされる。"
-"</li>\n"
-"<li>英国（オーストラリアやヨーロッパでも同様）でのシングルは米国と似ています"
-"が、2枚組でリリースされ、それぞれ別々で販売されることが一般的である。また、"
-"「マキシ・シングル」と呼ばれる、より長いバージョンのシングル（2枚組バージョン"
-"のトラックを組み合わせたもの）が用意されることもあり、これは米国のシングルに"
-"よく似ている。（マキシ・シングルは通常版のシングルよりの長い期間販売される場"
-"合もある。）</li>\n"
-"<li>日本はよりその長さと販売価格からよりシングル主導である。かつてはシングル"
-"はミニCDでリリースされるのが一般的であったが、1995年頃にミニCDが廃止され、現"
-"在では一般的な12cm CDでのリリースが一般的である。1995年以前のミニCDでリリース"
-"されたシングルであっても再リリースされる際には12cm CDでリリースされる。日本の"
-"シングルはインストゥルメンタル・バージョンを含むことが多いが、イギリスのよう"
-"にリミックス・バージョンを含むことも多い。マキシシングルはEPよりは曲数が多い"
-"が、2~3曲の同じ曲の別バージョンから構成されていることからシングルに分類され"
-"る。</li>\n"
+"<li>米国市場では、シングルは通常、1曲のメイン曲と、場合によってはそのメイン曲"
+"の追加トラックやリミックスを数曲収録する。シングルは通常、メイン曲のタイトル"
+"が付けられ、主にラジオでのオンエアやリリースの販売促進を目的としてリリースさ"
+"れる。</li>\n"
+"<li>英国市場（オーストラリアやヨーロッパも同様）は米国市場と似ているが、"
+"シングルが2枚組でリリースされ、それぞれのディスクが別々に販売されることが多い"
+"。また、2枚組の各ディスクに収録されたトラックを組み合わせた、より長い"
+"バージョンのシングルがリリースされることもある。これは米国市場のシングルに非"
+"常によく似ており、「マキシシングル」と呼ばれる。（場合によっては、"
+"マキシシングルのほうが、そのシングルの元となったリリースよりも長いこともある"
+"！）</li>\n"
+"<li>日本市場では、シングルの比重がより大きい。シングルを定義する主な要素は、"
+"通常、シングルの長さと販売価格である。1995年頃までは、こうしたシングルにミニ"
+"CDフォーマットを使用するのが一般的だった。これは基本的に、直径8cm程度のかなり"
+"小型のCDである。1995年頃に8cmシングルは廃止され、現在では標準的な12cm CD"
+"シングルが一般的になっている。1995年以前に8cmフォーマットでリリースされた"
+"シングルも、再リリース時には12cmフォーマットでリリースされるのが一般的である"
+"。日本のシングルには、インストゥルメンタル・バージョンが収録されることが多く"
+"、英国と同様に、リミックス・バージョンを収録したマキシシングルもある。"
+"マキシシングルにはEPより多くのトラックが収録されることもあるが、同じ2～3曲の"
+"別バージョンだけで構成されている場合は、シングルに分類される。</li>\n"
 "</ul>\n"
 "\n"
-"<p>2人の異なるアーティストの曲が1枚のCDでリリースする、スプリットシングルと呼"
-"ばれる種類のシングルもある。</p>"
+"<p>シングルには、「スプリットシングル」と呼ばれる別の形態もあり、通常は"
+"レコード1枚に2組の異なるアーティストの曲が収録される。</p>"
 
 #. name:KiT Album
 #: DB:medium_format/description:95
@@ -941,12 +945,9 @@ msgstr "同一賞を受賞した一連の物事（ポッドキャストやフェ
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "イベントのシリーズ。"
+msgstr "シリーズのシリーズ。"
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -973,6 +974,9 @@ msgid ""
 "A small venue (such as a jazz club, nightclub or pub) that hosts concerts "
 "and social events. May or may not have a dedicated stage or seating."
 msgstr ""
+"コンサートや交流イベントを開催する小規模な会場（ジャズクラブ、ナイトクラブ、"
+"パブなど）。専用のステージや座席が設けられている場合もあれば、設けられていな"
+"い場合もある。"
 
 #. name:Song-cycle
 #: DB:work_type/description:15
@@ -983,8 +987,8 @@ msgid ""
 "often use words from the same poet or lyricist."
 msgstr ""
 "連作歌曲は、単一のエンティティとしてシーケンスで実行されるように設計された曲"
-"のグループでである。 大半の場合、すべての曲は同じ作曲家によるものであり、同じ"
-"詩人や作詞家の言葉を使用することが少なくない。"
+"のグループである。 大半の場合、すべての曲は同じ作曲家によるものであり、同じ詩"
+"人や作詞家の言葉を使用することが少なくない。"
 
 #. name:Song
 #: DB:work_type/description:17
@@ -1019,6 +1023,10 @@ msgid ""
 "as soundtracks because the musical properties of the CDs are more "
 "interesting to MusicBrainz than their data properties."
 msgstr ""
+"サウンドトラックとは、映画、テレビシリーズ、舞台作品、ビデオゲーム、その他の"
+"メディア作品のための音楽作品を指す。音声トラックを含むビデオゲームCDは、"
+"データとしての性質よりも音楽としての性質のほうがMusicBrainzにとって重要である"
+"ため、サウンドトラックとして分類する。"
 
 #. name:Ensemble
 #: DB:instrument_type/description:6
@@ -1035,6 +1043,8 @@ msgid ""
 "A standard size CD with the playing/data area of a 8cm CD; the remaining "
 "area is empty clear/translucent plastic, sometimes printed."
 msgstr ""
+"8cm CDと同じサイズの再生／データ領域を持つ、標準サイズのCD。残りの部分は透明"
+"または半透明のプラスチックで空いており、場合によっては印刷されている。"
 
 #. name:Minimax DVD
 #: DB:medium_format/description:167
@@ -1043,6 +1053,8 @@ msgid ""
 "A standard size DVD with the playing/data area of a 8cm MiniDVD; the "
 "remaining area is empty clear/translucent plastic, sometimes printed."
 msgstr ""
+"8cm MiniDVDと同じサイズの再生／データ領域を持つ標準サイズのDVD。残りの部分は"
+"透明または半透明の空いたプラスチックで、場合によっては印刷されている。"
 
 #. name:Suite
 #: DB:work_type/description:6
@@ -1502,6 +1514,10 @@ msgid ""
 "more than one art type applies (for example, if a poster is sold as "
 "merchandise) use “merchandise” alongside any other appropriate types."
 msgstr ""
+"イベントの宣伝やイベント期間中に販売（または無償配布）される、Tシャツ、"
+"キャップ、ステッカーなど、イベントに関連するあらゆるグッズの画像。複数の"
+"アートタイプに該当する場合（例えば、ポスターがグッズとして販売される場合）は"
+"、「merchandise」を他の適切なタイプと併用する。"
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
@@ -1511,6 +1527,9 @@ msgid ""
 "event. Can be a standalone image, but also a poster, a banner or a page from "
 "a program (in which case all applicable types should be set)."
 msgstr ""
+"イベントでの公演の順番や時間を示す画像。単独の画像の場合もあれば、ポスター、"
+"バナー、プログラムの一部である場合もある（その場合は該当するすべてのタイプを"
+"設定する）。"
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1529,6 +1548,8 @@ msgid ""
 "An indoor performance facility with fixed seating, whether for music "
 "(usually, but not always, classical music) or theatre."
 msgstr ""
+"固定席を備えた屋内の公演施設。音楽（通常はクラシック音楽だが、必ずしもそうと"
+"は限らない）や演劇などに使用される。"
 
 #. name:Map
 #: DB:event_art_archive.art_type/description:8
@@ -1538,12 +1559,17 @@ msgid ""
 "created for the event, for example showing the recommended ways to access "
 "the venue, or the location of specific stages and stands inside of it."
 msgstr ""
+"イベント会場の内部見取り図、またはイベントのために作成された会場への"
+"アクセスマップ。例えば、会場への推奨アクセス方法や、会場内の特定のステージや"
+"ブースの位置などを示したもの。"
 
 #. name:Interview
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr ""
+"インタビュー・リリースには、通常はアーティストへのインタビューが収録されてい"
+"る。"
 
 #. name:Withdrawn
 #: DB:release_status/description:5
@@ -1555,12 +1581,16 @@ msgid ""
 "releases that have reached the end of their “natural” life cycle, such as "
 "being sold out and out of print."
 msgstr ""
+"リリース後、アーティストやレコード会社によって流通から意図的に回収された公式"
+"リリース。新しいバージョンに置き換えるための場合も、完全に廃盤にするための場"
+"合も含む。「自然な」流通期間を終えたリリース、例えば完売して絶版になったもの"
+"は含まない。"
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
 msgid "An often decorated metal tin containing one or more CDs."
-msgstr ""
+msgstr "1枚以上のCDを収録した、装飾が施されていることの多い金属製の缶。"
 
 #. name:Opera
 #: DB:work_type/description:10
@@ -1773,10 +1803,7 @@ msgstr "<i>Asāvēri</i>"
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
-"どこから書きはじめればいいかわからないくらい多くの労力をCAcertに注ぎました。"
-"彼は Christian がドラフト状態までにした CPS をなんとか仕上げ、数えきれない時"
-"間を使って、人々を保証したり、"
+msgstr "参加"
 
 #: DB:release_group_secondary_type/name:11
 msgctxt "release_group_secondary_type"
@@ -5669,7 +5696,7 @@ msgstr "レーザーディスク"
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
 msgid "LatinNet ID"
-msgstr "LatinNet ID"
+msgstr "<i>LatinNet ID</i>"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -5714,7 +5741,7 @@ msgstr "ライブ"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "ロゴ"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -7035,7 +7062,7 @@ msgstr "プレイテープ"
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
-msgstr "PLAYBUTTON"
+msgstr "プレイボタン"
 
 #: DB:series_type/name:80
 msgctxt "series_type"
@@ -9243,7 +9270,7 @@ msgstr "<i>Yürüksofyan</i>"
 #: DB:work_attribute_type/name:30
 msgctxt "work_attribute_type"
 msgid "ZAiKS ID"
-msgstr "ZAiKS ID"
+msgstr "<i>ZAiKS ID</i>"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"

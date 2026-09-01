@@ -1,9 +1,9 @@
 # Languages add-on <noreply-addon-languages@weblate.org>, 2025.
-# vacuousVersifier <olive@vacuous.me>, 2025.
+# vacuousVersifier <olive@vacuous.me>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2025-10-06 22:02+0000\n"
+"PO-Revision-Date: 2026-08-14 17:12+0000\n"
 "Last-Translator: vacuousVersifier <olive@vacuous.me>\n"
 "Language-Team: Toki Pona <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/tok/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -32,7 +32,7 @@ msgstr "ma Sasali"
 #. iso.code:AS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:4
 msgid "American Samoa"
-msgstr ""
+msgstr "ma Amewika Samo"
 
 #. iso.code:AD
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:5
@@ -47,17 +47,17 @@ msgstr "ma Ankola"
 #. iso.code:AI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:7
 msgid "Anguilla"
-msgstr ""
+msgstr "ma Ankila"
 
 #. iso.code:AQ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:8
 msgid "Antarctica"
-msgstr ""
+msgstr "ma Antasika"
 
 #. iso.code:AG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:9
 msgid "Antigua and Barbuda"
-msgstr ""
+msgstr "ma Antika en ma Papusa"
 
 #. iso.code:AR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:10
@@ -72,7 +72,7 @@ msgstr "ma Aja"
 #. iso.code:AW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:12
 msgid "Aruba"
-msgstr ""
+msgstr "ma Ajupa"
 
 #. iso.code:AU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:13
@@ -122,7 +122,7 @@ msgstr "ma Pesije"
 #. iso.code:BZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:22
 msgid "Belize"
-msgstr ""
+msgstr "ma Pali"
 
 #. iso.code:BJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:23
@@ -137,7 +137,7 @@ msgstr "ma Pemuta"
 #. iso.code:BT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:25
 msgid "Bhutan"
-msgstr ""
+msgstr "ma Tu"
 
 #. iso.code:BO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:26
@@ -147,7 +147,7 @@ msgstr "ma Polipija"
 #. iso.code:BQ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:258
 msgid "Bonaire, Sint Eustatius and Saba"
-msgstr ""
+msgstr "ma Ponewa en ma Si Jutasi en ma Sapa"
 
 #. iso.code:BA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:27
@@ -162,7 +162,7 @@ msgstr "ma Posuwana"
 #. iso.code:BV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:29
 msgid "Bouvet Island"
-msgstr ""
+msgstr "nena Puwe"
 
 #. iso.code:BR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:30
@@ -172,17 +172,17 @@ msgstr "ma Pasiju"
 #. iso.code:IO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:31
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "ma Piten Inta Osen Tewetowe"
 
 #. iso.code:VG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:230
 msgid "British Virgin Islands"
-msgstr ""
+msgstr "nena Piken pi ma Juke"
 
 #. iso.code:BN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:32
 msgid "Brunei"
-msgstr ""
+msgstr "ma Puna"
 
 #. iso.code:BG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:33
@@ -197,7 +197,7 @@ msgstr "ma Pukinapaso"
 #. iso.code:BI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:35
 msgid "Burundi"
-msgstr ""
+msgstr "ma Pujunte"
 
 #. iso.code:KH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:36
@@ -217,12 +217,12 @@ msgstr "ma Kanata"
 #. iso.code:CV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:39
 msgid "Cape Verde"
-msgstr ""
+msgstr "ma Kapu Wesi"
 
 #. iso.code:KY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:40
 msgid "Cayman Islands"
-msgstr ""
+msgstr "nena Kaman"
 
 #. iso.code:CF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:41
@@ -247,12 +247,12 @@ msgstr "ma Sonko"
 #. iso.code:CX
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:45
 msgid "Christmas Island"
-msgstr ""
+msgstr "nena Kima"
 
 #. iso.code:CC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:46
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "nena Koko"
 
 #. iso.code:CO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:47
@@ -272,7 +272,7 @@ msgstr "ma Konko pi ma tomo Pasawi"
 #. iso.code:CK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:50
 msgid "Cook Islands"
-msgstr ""
+msgstr "nena Kuki Awani"
 
 #. iso.code:CR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:51
@@ -292,7 +292,7 @@ msgstr "ma Kupa"
 #. iso.code:CW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:259
 msgid "Curaçao"
-msgstr ""
+msgstr "ma Kiwasa"
 
 #. iso.code:CY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:55
@@ -307,7 +307,7 @@ msgstr "ma Seki"
 #. iso.code:XC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:245
 msgid "Czechoslovakia"
-msgstr ""
+msgstr "ma Sekosowaki"
 
 #. iso.code:CI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:52
@@ -332,7 +332,7 @@ msgstr "ma Sipusi"
 #. iso.code:DM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:59
 msgid "Dominica"
-msgstr ""
+msgstr "ma Tominika"
 
 #. iso.code:DO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:60
@@ -342,7 +342,7 @@ msgstr "ma Tominika"
 #. iso.code:XG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:244
 msgid "East Germany"
-msgstr ""
+msgstr "ma Otosi"
 
 #. iso.code:EC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:62
@@ -357,7 +357,7 @@ msgstr "ma Masu"
 #. iso.code:SV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:64
 msgid "El Salvador"
-msgstr ""
+msgstr "ma Esawato"
 
 #. iso.code:GQ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:65
@@ -387,22 +387,22 @@ msgstr "ma Isijopija"
 #. iso.code:XE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:241
 msgid "Europe"
-msgstr ""
+msgstr "ma Elopa"
 
 #. iso.code:FK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:69
 msgid "Falkland Islands"
-msgstr ""
+msgstr "nena Palan"
 
 #. iso.code:FO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:70
 msgid "Faroe Islands"
-msgstr ""
+msgstr "nena Fajo"
 
 #. iso.code:FM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:139
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "ma Pesewate Ta O Makonisa"
 
 #. iso.code:FJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:71
@@ -422,17 +422,17 @@ msgstr "ma Kanse"
 #. iso.code:GF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:75
 msgid "French Guiana"
-msgstr ""
+msgstr "ma Kijan"
 
 #. iso.code:PF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:76
 msgid "French Polynesia"
-msgstr ""
+msgstr "ma Palinesi Fansa"
 
 #. iso.code:TF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:77
 msgid "French Southern Territories"
-msgstr ""
+msgstr "ma Te Ota"
 
 #. iso.code:GA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:78
@@ -462,7 +462,7 @@ msgstr "ma Kana"
 #. iso.code:GI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:83
 msgid "Gibraltar"
-msgstr ""
+msgstr "ma Kipata"
 
 #. iso.code:GR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:84
@@ -482,12 +482,12 @@ msgstr "ma Kenata"
 #. iso.code:GP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:87
 msgid "Guadeloupe"
-msgstr ""
+msgstr "ma Kalu"
 
 #. iso.code:GU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:88
 msgid "Guam"
-msgstr ""
+msgstr "ma Kan"
 
 #. iso.code:GT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:89
@@ -497,7 +497,7 @@ msgstr "ma Watemala"
 #. iso.code:GG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:251
 msgid "Guernsey"
-msgstr ""
+msgstr "ma Kansi"
 
 #. iso.code:GN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:90
@@ -512,7 +512,7 @@ msgstr "ma Kinepisa"
 #. iso.code:GY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:92
 msgid "Guyana"
-msgstr ""
+msgstr "ma Kujana"
 
 #. iso.code:HT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:93
@@ -522,7 +522,7 @@ msgstr "ma Awisi"
 #. iso.code:HM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:94
 msgid "Heard Island and McDonald Islands"
-msgstr ""
+msgstr "nena E en nena Mitona"
 
 #. iso.code:HN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:95
@@ -532,7 +532,7 @@ msgstr "ma Ontula"
 #. iso.code:HK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:96
 msgid "Hong Kong"
-msgstr ""
+msgstr "ma An Kan"
 
 #. iso.code:HU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:97
@@ -572,7 +572,7 @@ msgstr "ma Ele"
 #. iso.code:IM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:252
 msgid "Isle of Man"
-msgstr ""
+msgstr "ma Man"
 
 #. iso.code:IL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:104
@@ -597,7 +597,7 @@ msgstr "ma Nijon"
 #. iso.code:JE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:253
 msgid "Jersey"
-msgstr ""
+msgstr "ma Sese"
 
 #. iso.code:JO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:108
@@ -632,12 +632,12 @@ msgstr "ma Kuwasi"
 #. iso.code:KG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:115
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "ma Kujusan"
 
 #. iso.code:LA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:116
 msgid "Laos"
-msgstr ""
+msgstr "ma La"
 
 #. iso.code:LV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:117
@@ -682,7 +682,7 @@ msgstr "ma Lusepu"
 #. iso.code:MO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:125
 msgid "Macao"
-msgstr ""
+msgstr "ma Umun"
 
 #. iso.code:MG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:127
@@ -702,7 +702,7 @@ msgstr "ma Malasija"
 #. iso.code:MV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:130
 msgid "Maldives"
-msgstr ""
+msgstr "ma Tiwejiwase"
 
 #. iso.code:ML
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:131
@@ -717,12 +717,12 @@ msgstr "ma Mata"
 #. iso.code:MH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:133
 msgid "Marshall Islands"
-msgstr ""
+msgstr "nena Mase"
 
 #. iso.code:MQ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:134
 msgid "Martinique"
-msgstr ""
+msgstr "ma Matini"
 
 #. iso.code:MR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:135
@@ -737,7 +737,7 @@ msgstr "ma Mowisi"
 #. iso.code:YT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:137
 msgid "Mayotte"
-msgstr ""
+msgstr "ma Majo"
 
 #. iso.code:MX
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:138
@@ -767,7 +767,7 @@ msgstr "ma Sinakola"
 #. iso.code:MS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:143
 msgid "Montserrat"
-msgstr ""
+msgstr "ma Monsewa"
 
 #. iso.code:MA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:144
@@ -792,12 +792,12 @@ msgstr "ma Namipija"
 #. iso.code:NR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:148
 msgid "Nauru"
-msgstr ""
+msgstr "toki Towewin Nawo"
 
 #. iso.code:NP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:149
 msgid "Nepal"
-msgstr ""
+msgstr "ma Nepa"
 
 #. iso.code:NL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:150
@@ -807,12 +807,12 @@ msgstr "ma Netelan"
 #. iso.code:AN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "ma Netelan Antilen"
 
 #. iso.code:NC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:152
 msgid "New Caledonia"
-msgstr ""
+msgstr "ma Nuwel Kaletani"
 
 #. iso.code:NZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:153
@@ -822,7 +822,7 @@ msgstr "ma Nusilan"
 #. iso.code:NI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:154
 msgid "Nicaragua"
-msgstr ""
+msgstr "ma Nikawawa"
 
 #. iso.code:NE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:155
@@ -837,12 +837,12 @@ msgstr "ma Naselija"
 #. iso.code:NU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:157
 msgid "Niue"
-msgstr ""
+msgstr "ma Nu"
 
 #. iso.code:NF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:158
 msgid "Norfolk Island"
-msgstr ""
+msgstr "nena Nopo"
 
 #. iso.code:KP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:112
@@ -852,12 +852,12 @@ msgstr "ma Soson"
 #. iso.code:MK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:126
 msgid "North Macedonia"
-msgstr ""
+msgstr "ma Sewena Maketanija"
 
 #. iso.code:MP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:159
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "ma pi nasin lete Mawina"
 
 #. iso.code:NO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:160
@@ -877,7 +877,7 @@ msgstr "ma Pakisan"
 #. iso.code:PW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:163
 msgid "Palau"
-msgstr ""
+msgstr "ma Pala"
 
 #. iso.code:PS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:249
@@ -912,7 +912,7 @@ msgstr "ma Pilipina"
 #. iso.code:PN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:169
 msgid "Pitcairn"
-msgstr ""
+msgstr "nena Pika"
 
 #. iso.code:PL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:170
@@ -927,12 +927,12 @@ msgstr "ma Potuke"
 #. iso.code:PR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:172
 msgid "Puerto Rico"
-msgstr ""
+msgstr "ma Peto Weko"
 
 #. iso.code:QA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:173
 msgid "Qatar"
-msgstr ""
+msgstr "ma Kata"
 
 #. iso.code:RO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:175
@@ -952,42 +952,42 @@ msgstr "ma Luwanta"
 #. iso.code:RE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:174
 msgid "Réunion"
-msgstr ""
+msgstr "ma La Wejuna"
 
 #. iso.code:BL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:255
 msgid "Saint Barthélemy"
-msgstr ""
+msgstr "ma Sen Patelemi"
 
 #. iso.code:SH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:196
 msgid "Saint Helena, Ascension and Tristan da Cunha"
-msgstr ""
+msgstr "nena San Elena en nena Asensen en nena Tisan Ta Kuna"
 
 #. iso.code:KN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:178
 msgid "Saint Kitts and Nevis"
-msgstr ""
+msgstr "nena San Ki en nena Nepi"
 
 #. iso.code:LC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:179
 msgid "Saint Lucia"
-msgstr ""
+msgstr "nena San Lusi"
 
 #. iso.code:MF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:256
 msgid "Saint Martin (French part)"
-msgstr ""
+msgstr "nena San Maten pi ma Kanse"
 
 #. iso.code:PM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:197
 msgid "Saint Pierre and Miquelon"
-msgstr ""
+msgstr "nena Sepewemika"
 
 #. iso.code:VC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:180
 msgid "Saint Vincent and The Grenadines"
-msgstr ""
+msgstr "nena San Pisen"
 
 #. iso.code:WS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:181
@@ -1002,7 +1002,7 @@ msgstr "ma Samalino"
 #. iso.code:ST
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:183
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "nena Sa Tome en nena Pisipi"
 
 #. iso.code:SA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:184
@@ -1022,12 +1022,12 @@ msgstr "ma Sopisi"
 #. iso.code:CS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "ma Sepija en ma Tena Kowa"
 
 #. iso.code:SC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:186
 msgid "Seychelles"
-msgstr ""
+msgstr "ma Sasa"
 
 #. iso.code:SL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:187
@@ -1037,12 +1037,12 @@ msgstr "ma Sijelalijon"
 #. iso.code:SG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:188
 msgid "Singapore"
-msgstr ""
+msgstr "ma Sinapuwa"
 
 #. iso.code:SX
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:260
 msgid "Sint Maarten (Dutch part)"
-msgstr ""
+msgstr "nena Sin Maten pi ma Netelan"
 
 #. iso.code:SK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:189
@@ -1057,7 +1057,7 @@ msgstr "ma Lowensina"
 #. iso.code:SB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:191
 msgid "Solomon Islands"
-msgstr ""
+msgstr "nena Salaman"
 
 #. iso.code:SO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:192
@@ -1072,7 +1072,7 @@ msgstr "ma Setapika"
 #. iso.code:GS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:248
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "nena So Sosa en nena So Sanwe"
 
 #. iso.code:KR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:113
@@ -1082,12 +1082,12 @@ msgstr "ma Anku"
 #. iso.code:SS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:257
 msgid "South Sudan"
-msgstr ""
+msgstr "ma So Sutan"
 
 #. iso.code:SU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:243
 msgid "Soviet Union"
-msgstr ""
+msgstr "ma Sapeki Saju"
 
 #. iso.code:ES
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:194
@@ -1107,12 +1107,12 @@ msgstr "ma Sutan"
 #. iso.code:SR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:199
 msgid "Suriname"
-msgstr ""
+msgstr "ma Siwename"
 
 #. iso.code:SJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:200
 msgid "Svalbard and Jan Mayen"
-msgstr ""
+msgstr "nena Sapa en nena Jan Man"
 
 #. iso.code:SE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:202
@@ -1137,7 +1137,7 @@ msgstr "ma Tawan"
 #. iso.code:TJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:206
 msgid "Tajikistan"
-msgstr "ma Tansanija"
+msgstr "ma Tasikitan"
 
 #. iso.code:TZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:207
@@ -1152,7 +1152,7 @@ msgstr "ma Tawi"
 #. iso.code:TL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:61
 msgid "Timor-Leste"
-msgstr ""
+msgstr "nena Simo Lesi"
 
 #. iso.code:TG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:209
@@ -1162,7 +1162,7 @@ msgstr "ma Toko"
 #. iso.code:TK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:210
 msgid "Tokelau"
-msgstr ""
+msgstr "toki Kakana Tokela"
 
 #. iso.code:TO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:211
@@ -1182,17 +1182,17 @@ msgstr "ma Tunisi"
 #. iso.code:TM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:215
 msgid "Turkmenistan"
-msgstr ""
+msgstr "ma Timenitan"
 
 #. iso.code:TC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:216
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "nena Tu en nena Kako"
 
 #. iso.code:TV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:217
 msgid "Tuvalu"
-msgstr "ma Tuwalu"
+msgstr "toki Te Kana Tuwalu"
 
 #. iso.code:TR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
@@ -1202,7 +1202,7 @@ msgstr "ma Tuki"
 #. iso.code:VI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:231
 msgid "U.S. Virgin Islands"
-msgstr ""
+msgstr "nena Piken pi ma Mewika"
 
 #. iso.code:UG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:218
@@ -1217,7 +1217,7 @@ msgstr "ma Ukawina"
 #. iso.code:AE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:220
 msgid "United Arab Emirates"
-msgstr ""
+msgstr "ma Ajemawa Ajawapija Mutajeta"
 
 #. iso.code:GB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:221
@@ -1232,7 +1232,7 @@ msgstr "ma Mewika"
 #. iso.code:UM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:223
 msgid "United States Minor Outlying Islands"
-msgstr ""
+msgstr "nena lili weka pi ma Mewika"
 
 #. iso.code:UY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:224
@@ -1242,7 +1242,7 @@ msgstr "ma Ulukawi"
 #. iso.code:UZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:225
 msgid "Uzbekistan"
-msgstr ""
+msgstr "ma Opekitan"
 
 #. iso.code:VU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:226
@@ -1267,12 +1267,12 @@ msgstr "ma Wije"
 #. iso.code:WF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:232
 msgid "Wallis and Futuna"
-msgstr ""
+msgstr "nena Wali en nena Putuna"
 
 #. iso.code:EH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:233
 msgid "Western Sahara"
-msgstr ""
+msgstr "ma Asawa Ajapija"
 
 #. iso.code:YE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:234
@@ -1282,7 +1282,7 @@ msgstr "ma Jamanija"
 #. iso.code:YU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:235
 msgid "Yugoslavia"
-msgstr ""
+msgstr "ma Jukosaweja"
 
 #. iso.code:ZM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:237
@@ -1302,4 +1302,4 @@ msgstr "[ma ale]"
 #. iso.code:AX
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:250
 msgid "Åland Islands"
-msgstr ""
+msgstr "nena Alan"

@@ -1,9 +1,9 @@
 # Languages add-on <noreply-addon-languages@weblate.org>, 2025.
-# NorwayFun <temuri.doghonadze@gmail.com>, 2025.
+# NorwayFun <temuri.doghonadze@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2025-12-25 19:11+0000\n"
+"PO-Revision-Date: 2026-08-20 11:12+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ka/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1121,12 +1121,9 @@ msgid "Album"
 msgstr "ალბომი"
 
 #: DB:work_attribute_type/name:216
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Track"
 msgctxt "work_attribute_type"
 msgid "AllTrack ID"
-msgstr "ტრეკი"
+msgstr "AllTrack ID"
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -2066,12 +2063,9 @@ msgid "Broadcast"
 msgstr "ფართოზოლოვანი"
 
 #: DB:label_type/name:12
-#, fuzzy
-#| msgctxt "release_group_primary_type"
-#| msgid "Broadcast"
 msgctxt "label_type"
 msgid "Broadcaster"
-msgstr "ფართოზოლოვანი"
+msgstr "მაუწყებელი"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"

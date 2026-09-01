@@ -28,11 +28,13 @@
 # liilliil <liilliil@liilliil.net>, 2024, 2026.
 # EmO686 <eiswuste@gmail.com>, 2025.
 # AndrejsD1718 <rbox893@gmail.com>, 2026.
+# Covium <jidiyping@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-08-03 13:12+0000\n"
-"Last-Translator: liilliil <liilliil@liilliil.net>\n"
+"PO-Revision-Date: 2026-08-16 18:12+0000\n"
+"Last-Translator: wileyfoxyx "
+"<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ru/>\n"
 "Language: ru\n"
@@ -42,7 +44,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1393,7 +1395,7 @@ msgstr "Альбом"
 #: DB:work_attribute_type/name:216
 msgctxt "work_attribute_type"
 msgid "AllTrack ID"
-msgstr "ВсеТреки ID"
+msgstr "AllTrack ID"
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -2291,67 +2293,67 @@ msgstr "Бхаваприя"
 #: DB:work_attribute_type_allowed_value/value:873
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāṭiyār"
-msgstr ""
+msgstr "Бхатияр"
 
 #: DB:work_attribute_type_allowed_value/value:875
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīm"
-msgstr ""
+msgstr "Бхим"
 
 #: DB:work_attribute_type_allowed_value/value:55
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīmpalāsi"
-msgstr ""
+msgstr "Бхимпаласи"
 
 #: DB:work_attribute_type_allowed_value/value:56
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōga sāvēri"
-msgstr ""
+msgstr "Бхога савери"
 
 #: DB:work_attribute_type_allowed_value/value:878
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōpālī tōḍī"
-msgstr ""
+msgstr "Бхопал тоди"
 
 #: DB:work_attribute_type_allowed_value/value:879
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūp"
-msgstr ""
+msgstr "Бхуп"
 
 #: DB:work_attribute_type_allowed_value/value:57
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūpāḷaṁ"
-msgstr ""
+msgstr "Бхупалам"
 
 #: DB:work_attribute_type_allowed_value/value:58
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūṣāvaḷi"
-msgstr ""
+msgstr "Бхушавали"
 
 #: DB:work_attribute_type_allowed_value/value:880
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bibhās"
-msgstr ""
+msgstr "Бибхас"
 
 #: DB:work_attribute_type_allowed_value/value:882
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bihāg"
-msgstr ""
+msgstr "Бихаг"
 
 #: DB:work_attribute_type_allowed_value/value:883
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bihāgdā"
-msgstr ""
+msgstr "Бихагда"
 
 #: DB:work_attribute_type_allowed_value/value:59
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bilahari"
-msgstr ""
+msgstr "Билахари"
 
 #: DB:work_attribute_type_allowed_value/value:884
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bilāsakhānī tōḍī"
-msgstr ""
+msgstr "Биласахани тоди"
 
 #: DB:medium_format/name:20
 msgctxt "medium_format"
@@ -2401,7 +2403,7 @@ msgstr "Коробка"
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
-msgstr ""
+msgstr "Бозлак"
 
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
@@ -2421,88 +2423,88 @@ msgstr "Вещатель"
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
 msgid "Br̥ndāvanī sāraṅg"
-msgstr ""
+msgstr "Бриндавани саранг"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
 msgid "Budamanōhari"
-msgstr ""
+msgstr "Будаманохари"
 
 #: DB:work_attribute_type_allowed_value/value:703
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bulgar Darbı"
-msgstr ""
+msgstr "Булгар Дарбы"
 
 #: DB:work_attribute_type_allowed_value/value:336
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselik"
-msgstr ""
+msgstr "Буселик"
 
 #: DB:work_attribute_type_allowed_value/value:337
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselikaşiran"
-msgstr ""
+msgstr "Буселикаширан"
 
 #: DB:work_attribute_type_allowed_value/value:338
 msgctxt "work_attribute_type_allowed_value"
 msgid "Büzürk"
-msgstr ""
+msgstr "Бузурк"
 
 #: DB:work_attribute_type_allowed_value/value:46
 #: DB:work_attribute_type_allowed_value/value:861
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bāgēśrī"
-msgstr ""
+msgstr "Багешри"
 
 #: DB:work_attribute_type_allowed_value/value:865
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bārvā"
-msgstr ""
+msgstr "Барва"
 
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bēgaḍa"
-msgstr ""
+msgstr "Бегада"
 
 #: DB:work_attribute_type_allowed_value/value:881
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bīhād bhairav"
-msgstr ""
+msgstr "Бихад Бхайрав"
 
 #: DB:work_attribute_type_allowed_value/value:60
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvana sāranga"
-msgstr ""
+msgstr "Бриндавана саранг"
 
 #: DB:work_attribute_type_allowed_value/value:61
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvani"
-msgstr ""
+msgstr "Бриндавани"
 
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "До Дорийский"
 
 #: DB:work_attribute_type_allowed_value/value:1065
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "До Локриан"
+msgstr "До Локрийский"
 
 #: DB:work_attribute_type_allowed_value/value:1058
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "До Лидийское"
+msgstr "До Лидийский"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "До Миксолидийский"
 
 #: DB:work_attribute_type_allowed_value/value:1051
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Phrygian"
-msgstr ""
+msgstr "До Фригийский"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2587,7 +2589,7 @@ msgstr "COSCAP ID"
 #: DB:work_attribute_type/name:65
 msgctxt "work_attribute_type"
 msgid "COTT ID"
-msgstr ""
+msgstr "COTT ID"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"

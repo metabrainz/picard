@@ -53,7 +53,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-02-16 04:11+0000\n"
+"PO-Revision-Date: 2026-08-12 05:12+0000\n"
 "Last-Translator: syntariavoxmortem <voxmortemsyntaria@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
@@ -63,7 +63,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -631,6 +631,9 @@ msgid ""
 "than being the logo for a series (such as a festival logo reused over "
 "multiple years)."
 msgstr ""
+"Un logotipo que es específico de un evento en particular y que solo se "
+"utiliza para él, en lugar de ser el logotipo de una serie (como el logotipo "
+"de un festival que se reutiliza durante varios años)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -854,6 +857,9 @@ msgid ""
 "(usually a vinyl record, but sometimes a CD), often printed with notes or "
 "images."
 msgstr ""
+"Una funda protectora (generalmente una 'funda interior') que envuelve un "
+"soporte (generalmente un disco de vinilo, pero a veces un CD), a menudo "
+"impresa con notas o imágenes."
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -1004,23 +1010,19 @@ msgstr "Una serie de publicaciones."
 
 #. name:Series award
 #: DB:series_type/description:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of recordings honoured by the same award."
 msgctxt "series_type"
 msgid ""
 "A series of series (such as podcasts or festivals) honoured by the same "
 "award."
-msgstr "Una serie de grabaciones galardonadas con el mismo premio."
+msgstr ""
+"Una serie de series (como podcasts o festivales) galardonadas con el mismo "
+"premio."
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "Una serie de eventos."
+msgstr "Una serie de series."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5834,7 +5836,7 @@ msgstr "En vivo"
 #: DB:event_art_archive.art_type/name:12
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr ""
+msgstr "Logotipo"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -8008,12 +8010,9 @@ msgid "Serbest"
 msgstr "Serbest"
 
 #: DB:series_type/name:17
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist award"
 msgctxt "series_type"
 msgid "Series award"
-msgstr "Premio al artista"
+msgstr "Premio a la serie"
 
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
@@ -8026,12 +8025,9 @@ msgid "Series name"
 msgstr "Nombre de la serie"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist series"
 msgctxt "series_type"
 msgid "Series series"
-msgstr "Serie de artistas"
+msgstr "Serie de series"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
