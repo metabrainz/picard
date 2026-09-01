@@ -1373,6 +1373,7 @@ class PluginApi:
         documentation: str | None = None,
         title: str | None = None,
         is_multi_value: bool = False,
+        is_from_mb: bool = False,
     ) -> None:
         """Register a variable name for script autocomplete.
 
@@ -1387,6 +1388,8 @@ class PluginApi:
                 instead of the raw name.
             is_multi_value: Whether this variable can hold multiple
                 values. Default: False.
+            is_from_mb: Whether the tag information is provided from the
+                MusicBrainz database. Default: False.
 
         Example:
             def enable(api):
@@ -1408,6 +1411,7 @@ class PluginApi:
             self,
             title=title,
             is_multi_value=is_multi_value,
+            is_from_mb=is_from_mb,
         )
 
     def unregister_script_variable(self, name: str) -> None:

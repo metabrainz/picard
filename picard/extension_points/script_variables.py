@@ -67,6 +67,7 @@ def register_script_variable(
     api: 'PluginApi | None' = None,
     title: str | None = None,
     is_multi_value: bool = False,
+    is_from_mb: bool = False,
 ) -> None:
     """Register a variable that plugins can provide for script completion.
 
@@ -88,6 +89,8 @@ def register_script_variable(
         If provided, the tag will show this title instead of the raw name.
     is_multi_value : bool, optional
         Whether this variable can hold multiple values. Default: False.
+    is_from_mb : bool, optional
+        Whether the tag information is provided from the MusicBrainz database. Default: False.
 
     Examples
     --------
@@ -140,13 +143,13 @@ def register_script_variable(
             longdesc=documentation,
             is_hidden=is_hidden,
             is_multi_value=is_multi_value,
+            is_from_mb=is_from_mb,
             # Locked attributes for plugin-registered variables
             is_preserved=False,
             is_script_variable=True,
             is_tag=not is_hidden,
             is_calculated=False,
             is_file_info=False,
-            is_from_mb=False,
             is_populated_by_picard=False,
             plugin_id=plugin_id,
             plugin_name=plugin_name,

@@ -253,6 +253,7 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         self.assertTrue(var.is_tag)
         self.assertFalse(var.is_hidden)
         self.assertFalse(var.is_multi_value)
+        self.assertFalse(var.is_from_mb)
 
     def test_register_script_variable_no_docs(self):
         register_script_variable('my_var1')
@@ -325,6 +326,12 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         register_script_variable('multi_var', 'docs', is_multi_value=True)
         var = self._get_tagvar_by_name('multi_var')
         self.assertTrue(var.is_multi_value)
+
+    def test_register_script_variable_is_from_mb(self):
+        """is_from_mb parameter should be passed through to the TagVar."""
+        register_script_variable('from_mb', 'docs', is_from_mb=True)
+        var = self._get_tagvar_by_name('from_mb')
+        self.assertTrue(var.is_from_mb)
 
     def test_register_script_variable_deduplication(self):
         """Registering the same variable twice from the same plugin should update, not duplicate."""
