@@ -134,7 +134,12 @@ class CommonTests:
             self.assertEqual([], self.metadata.getall("nonexistent"))
             self.assertRaises(KeyError, self.metadata.getraw, "nonexistent")
 
-            self.assertEqual(self.metadata._store.items(), self.metadata.rawitems())
+            # rawitems() always presents values as lists (its documented
+            # contract), regardless of the internal single-value storage.
+            raw = dict(self.metadata.rawitems())
+            self.assertEqual(raw, {name: self.metadata.getall(name) for name in self.metadata})
+            for _name, values in self.metadata.rawitems():
+                self.assertIsInstance(values, list)
             metadata_items = [(x, z) for (x, y) in self.metadata.rawitems() for z in y]
             self.assertEqual(metadata_items, list(self.metadata.items()))
 
@@ -143,6 +148,41 @@ class CommonTests:
             self.assertNotIn("single1", self.metadata)
             self.assertNotIn("single1", self.metadata.deleted_tags)
             self.metadata.unset('unknown_tag')
+
+        def test_single_value_no_char_join(self):
+            # A multi-character single value must not be split/joined per char.
+            self.metadata['solo'] = 'HelloWorld'
+            self.assertEqual('HelloWorld', self.metadata['solo'])
+            self.assertEqual('HelloWorld', self.metadata.get('solo'))
+            self.assertEqual(['HelloWorld'], self.metadata.getall('solo'))
+            self.assertEqual(['HelloWorld'], self.metadata.getraw('solo'))
+            solo_items = [(k, v) for k, v in self.metadata.items() if k == 'solo']
+            self.assertEqual([('solo', 'HelloWorld')], solo_items)
+
+        def test_add_promotes_single_to_multi(self):
+            self.metadata['g'] = 'Rock'
+            self.assertEqual(['Rock'], self.metadata.getall('g'))
+            self.metadata.add('g', 'Jazz')
+            self.assertEqual(['Rock', 'Jazz'], self.metadata.getall('g'))
+            self.metadata.add('g', 'Blues')
+            self.assertEqual(['Rock', 'Jazz', 'Blues'], self.metadata.getall('g'))
+
+        def test_add_first_value(self):
+            self.metadata.add('newtag', 'OnlyValue')
+            self.assertEqual(['OnlyValue'], self.metadata.getall('newtag'))
+            self.assertEqual('OnlyValue', self.metadata['newtag'])
+
+        def test_copy_preserves_single_and_multi(self):
+            self.metadata['solo'] = 'JustOne'
+            self.metadata['multi'] = ['A', 'B', 'C']
+            other = self.get_metadata_object()
+            other.copy(self.metadata)
+            self.assertEqual('JustOne', other['solo'])
+            self.assertEqual(['JustOne'], other.getall('solo'))
+            self.assertEqual(['A', 'B', 'C'], other.getall('multi'))
+            # Mutating the source multi-value must not affect the copy.
+            self.metadata.add('multi', 'D')
+            self.assertEqual(['A', 'B', 'C'], other.getall('multi'))
 
         def test_metadata_pop(self):
             self.metadata.pop("single1")

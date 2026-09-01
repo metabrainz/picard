@@ -85,7 +85,11 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         **kwargs,
     ):
         self._lock = ReadWriteLockContext()
-        self._store: dict[str, list[str]] = dict()
+        # Values are stored either as a bare ``str`` (single value) or a
+        # ``list[str]`` (multiple values) to save memory on the common
+        # single-valued case. Use the accessors (getall/getraw/rawitems), which
+        # always present values as lists.
+        self._store: dict[str, str | list[str]] = dict()
         self.deleted_tags: set[str] = set()
         self.images: ImageList = ImageList()
         self.has_common_images = True
@@ -186,8 +190,22 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             return m
 
     def _update_from_metadata(self, other, copy_images=True):
-        for k, v in other.rawitems():
-            self._set(k, v[:])
+        other_store = getattr(other, '_store', None)
+        if other_store is not None and type(other) is type(self):
+            # Fast path for Metadata->Metadata: copy the internal store
+            # directly. Bare str values are immutable so can be shared; only
+            # multi-value lists need a shallow copy. This avoids the
+            # list-normalization allocations of rawitems()/_set().
+            store = self._store
+            for k, v in other_store.items():
+                store[k] = v[:] if type(v) is list else v
+            # The tags we just copied are now set, so drop them from the list
+            # of deleted tags (mirrors the deleted_tags.discard() that _set()
+            # does on the slow path below).
+            self.deleted_tags.difference_update(other_store.keys())
+        else:
+            for k, v in other.rawitems():
+                self._set(k, v[:])
 
         for tag in other.deleted_tags:
             self._del(tag)
@@ -211,20 +229,35 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
     def normalize_tag(name: str):
         return name.rstrip(':')
 
+    @staticmethod
+    def _as_list(stored) -> list[str]:
+        """Present a stored entry (bare str or list) as a list of strings.
+
+        For the bare-str case a new 1-element list is returned. For the
+        multi-value case the stored list is returned as-is (not copied),
+        matching the prior behavior of getall()/getraw(); no caller mutates
+        the returned list in place.
+        """
+        if type(stored) is str:
+            return [stored]
+        return stored
+
     def getall(self, name: str) -> list[str]:
         """Return all values for a tag as a list.
 
-        Metadata is always stored internally as a list of strings.
+        Values are presented as a list regardless of the internal storage
+        (a single value is stored as a bare str, multiple as a list).
         Use this method when you need the individual values (e.g., multiple
         artists or labels). Returns an empty list if the tag is not set.
         """
         with self._lock.lock_for_read():
-            return self._store.get(self.normalize_tag(name), [])
+            stored = self._store.get(self.normalize_tag(name))
+            return [] if stored is None else self._as_list(stored)
 
     def getraw(self, name: str):
         """Return the raw stored list for a tag, raising KeyError if missing."""
         with self._lock.lock_for_read():
-            return self._store[self.normalize_tag(name)]
+            return self._as_list(self._store[self.normalize_tag(name)])
 
     def get(self, name: str, default=None) -> str | None:
         """Return all values joined into a single string.
@@ -234,11 +267,15 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         Returns `default` if the tag is not set.
         """
         with self._lock.lock_for_read():
-            values = self._store.get(self.normalize_tag(name), None)
-            if values:
-                return self.multi_valued_joiner.join(values)
-            else:
+            stored = self._store.get(self.normalize_tag(name), None)
+            if stored is None:
                 return default
+            if type(stored) is str:
+                # Single value stored bare; return as-is (do not char-join).
+                return stored or default
+            if stored:
+                return self.multi_valued_joiner.join(stored)
+            return default
 
     def __getitem__(self, name: str) -> str:
         """Return all values joined as a string, or empty string if unset.
@@ -251,17 +288,22 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
     def _set(self, name, values):
         """Store values for a tag.
 
-        Values are always stored as a list internally. A single string is
-        wrapped in a list. To store multiple values, pass a list of strings
-        (do NOT join them with MULTI_VALUED_JOINER).
+        A single value is stored internally as a bare ``str`` and multiple
+        values as a ``list[str]``. This avoids a one-element list wrapper for
+        the common single-valued case, which is a significant per-object memory
+        saving across large collections. All public accessors
+        (:meth:`getall`, :meth:`getraw`, :meth:`rawitems`, :meth:`items`) still
+        present values as lists, so the external contract is unchanged.
         """
         name = self.normalize_tag(name)
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
         values = [str(value) for value in values if value or value == 0 or value == '']
         # Remove if there is only a single empty or blank element.
-        if values and (len(values) > 1 or values[0]):
-            self._store[name] = values
+        count = len(values)
+        if count and (count > 1 or values[0]):
+            # Store a bare str for the single-value case to save memory.
+            self._store[name] = values if count > 1 else values[0]
             self.deleted_tags.discard(name)
         elif name in self._store:
             self._del(name)
@@ -316,7 +358,15 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         if value or value == 0:
             with self._lock.lock_for_write():
                 name = self.normalize_tag(name)
-                self._store.setdefault(name, []).append(str(value))
+                stored = self._store.get(name)
+                if stored is None:
+                    # First value: store bare str.
+                    self._store[name] = str(value)
+                elif isinstance(stored, str):
+                    # Promote single bare str to a list on second value.
+                    self._store[name] = [stored, str(value)]
+                else:
+                    stored.append(str(value))
                 self.deleted_tags.discard(name)
 
     def add_unique(self, name: str, value: str):
@@ -343,9 +393,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
     def items(self):
         with self._lock.lock_for_read():
-            for name, values in self._store.items():
-                for value in values:
-                    yield name, value
+            for name, stored in self._store.items():
+                if isinstance(stored, str):
+                    yield name, stored
+                else:
+                    for value in stored:
+                        yield name, value
 
     def rawitems(self):
         """Returns the metadata items.
@@ -353,7 +406,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         >>> m.rawitems()
         [("key1", ["value1", "value2"]), ("key2", ["value3"])]
         """
-        return self._store.items()
+        return [(name, self._as_list(stored)) for name, stored in self._store.items()]
 
     def apply_func(self, func: Callable[[str], str]):
         with self._lock.lock_for_write():
