@@ -51,6 +51,8 @@ from collections.abc import (
     Iterable,
 )
 from enum import IntEnum
+import gzip
+import json
 import time
 import traceback
 from typing import Any
@@ -100,6 +102,7 @@ from picard.util import (
     format_time,
     mbid_validate,
 )
+from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
 from picard.webservice import PendingRequest
@@ -203,6 +206,12 @@ class Album(MetadataItem):
         self._discids = set()
         self._disc_isrcs: dict[int, str] = disc_isrcs or {}
         self._recordings_map = {}
+        # The raw MB release node is retained only for session export. Rather
+        # than keep the large live dict tree (or even a compressed blob) in RAM
+        # for the whole session, it is stored in a temporary file via DataHash
+        # and read back on demand. Access through the _release_node_cache
+        # property. See PICARD-2172.
+        self._release_node_cache_datahash: DataHash | None = None
         if discid:
             self._discids.add(discid)
         self._after_load_callbacks: list[tuple[Callable[[], Any], bool]] = []
@@ -215,6 +224,33 @@ class Album(MetadataItem):
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
+
+    @property
+    def _release_node_cache(self) -> dict[str, Any] | None:
+        """The raw MB release node retained for session export.
+
+        Backed by a temporary file on disk (via DataHash), so it does not stay
+        resident in memory for the whole session. Deserialized on access, which
+        only happens when a session is exported. Returns None if nothing is
+        cached or the backing file is no longer available.
+        """
+        datahash = self._release_node_cache_datahash
+        if datahash is None:
+            return None
+        try:
+            raw = datahash.data()
+        except OSError:
+            # Backing temp file gone (e.g. cleaned up); treat as no cache.
+            return None
+        return json.loads(gzip.decompress(raw).decode('utf-8'))
+
+    @_release_node_cache.setter
+    def _release_node_cache(self, node: dict[str, Any] | None):
+        if node is None:
+            self._release_node_cache_datahash = None
+        else:
+            blob = gzip.compress(json.dumps(node).encode('utf-8'), compresslevel=6)
+            self._release_node_cache_datahash = DataHash(blob, prefix='picard-release-', suffix='.json.gz')
 
     def add_task(
         self,
