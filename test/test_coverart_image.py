@@ -34,7 +34,6 @@ from picard.const.defaults import DEFAULT_COVER_IMAGE_FILENAME
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
-    DataHash,
     LocalFileCoverArtImage,
     TagCoverArtImage,
 )
@@ -44,6 +43,7 @@ from picard.coverart.utils import (
 )
 from picard.file import File
 from picard.metadata import Metadata
+from picard.util.datahash import DataHash
 from picard.util.filenaming import WinPathTooLong
 
 

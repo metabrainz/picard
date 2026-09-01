@@ -118,7 +118,6 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.coverart.image import DataHash
 from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
@@ -183,6 +182,7 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.checkupdate import UpdateCheckManager
+from picard.util.datahash import DataHash
 from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,

@@ -27,17 +27,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-import gc
-from hashlib import blake2b
 import os
 import shutil
-import tempfile
-from weakref import WeakValueDictionary
 
-from PyQt6.QtCore import (
-    QMutex,
-    QUrl,
-)
+from PyQt6.QtCore import QUrl
 
 from picard import log
 from picard.config import get_config
@@ -56,133 +49,15 @@ from picard.metadata import Metadata
 from picard.util import (
     imageinfo,
     is_absolute_path,
-    periodictouch,
     sanitize_filename,
 )
+from picard.util.datahash import DataHash
 from picard.util.filenaming import (
     make_save_path,
     make_short_filename,
 )
 from picard.util.imageinfo import ImageInfo
 from picard.util.scripttofilename import script_to_filename
-
-
-class DataHash:
-    """Allows to hold binary data backed by temporary files on the file system.
-
-    This class can efficiently handle large binary data. Instead of holding the data
-    in memory it is stored in temporary files. Identical binary data results in the
-    same DataHash instance and hence the same temporary files.
-
-    Temporary files are automatically cleared once the last reference to a DataHash
-    instance gets deleted.
-    """
-
-    __datahashes: WeakValueDictionary[str, 'DataHash'] = WeakValueDictionary()
-    __datafile_mutex = QMutex()
-
-    def __new__(cls, data: bytes, prefix: str = 'picard', suffix: str = ''):
-        """Creates a new instance of DataHash for data.
-
-        If there is already an existing instance with the same data then this instance
-        will be returned. Otherwise a new instance will be created together with a
-        temporary file to hold the data.
-        """
-        if not isinstance(data, bytes):
-            raise TypeError('data must be bytes')
-
-        hash = blake2b(data).hexdigest()
-
-        # prevent garbage collection while lock is acquired
-        gc.disable()
-        DataHash.__datafile_mutex.lock()
-        try:
-            if instance := DataHash.__datahashes.get(hash, None):
-                return instance
-            instance = super().__new__(cls)
-            instance._write_data(hash, data, prefix, suffix)
-            DataHash.__datahashes[hash] = instance
-            return instance
-        finally:
-            DataHash.__datafile_mutex.unlock()
-            gc.enable()
-
-    def __eq__(self, other):
-        if other is None:
-            return False
-        return self._hash == getattr(other, '_hash', None)
-
-    def __lt__(self, other):
-        return self._hash < other._hash
-
-    def __repr__(self):
-        return f'<DataHash {self.shorthash}>'
-
-    def __str__(self):
-        return self._hash
-
-    def __hash__(self):
-        return hash(self._hash)
-
-    def __del__(self):
-        self._delete_file()
-
-    @property
-    def hash(self) -> str:
-        """The hash value of the data."""
-        return self._hash
-
-    @property
-    def shorthash(self) -> str:
-        """A shortened version of the hash for display purposes."""
-        return self._hash[:16]
-
-    def data(self) -> bytes:
-        """Returns the stored data.
-
-        The data is read from the file system. Might raise OSError.
-        """
-        with open(self._filename, 'rb') as imagefile:
-            return imagefile.read()
-
-    @property
-    def filename(self) -> str | None:
-        """The filename of the temporary file."""
-        return self._filename
-
-    def _write_data(self, hash, data, prefix, suffix):
-        self._hash: str = hash
-        (fd, filepath) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-        self._filename: str = filepath
-        # On some systems (notably macOS) temporary files are removed after
-        # a certain period of time without access.
-        periodictouch.register_file(filepath)
-        with os.fdopen(fd, 'wb') as imagefile:
-            imagefile.write(data)
-        log.debug("Saving image data %s to %r", self.shorthash, filepath)
-
-    def _delete_file(self):
-        if not self._filename:
-            return
-
-        DataHash.__datafile_mutex.lock()
-        try:
-            os.unlink(self._filename)
-            periodictouch.unregister_file(self._filename)
-        except BaseException as e:
-            log.debug("Failed to delete file %r: %s", self._filename, e)
-        finally:
-            DataHash.__datafile_mutex.unlock()
-
-    @staticmethod
-    def remove_all_files():
-        """This removes all temporary DataHash files stored on disk.
-        Warning: This will leave all existing DataHash instance without file data.
-        This method is not meant to be called during normal operation, but might be
-        called as part of the cleanup routine during application shutdown.
-        """
-        for hash in DataHash.__datahashes.values():
-            hash._delete_file()
 
 
 class CoverArtImageError(Exception):
