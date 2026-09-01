@@ -302,12 +302,15 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_logging(self, config):
         """Initialize logging & audit"""
-        log.set_verbosity(logging.DEBUG if self._debug else config.setting['log_verbosity'])
-
-        setup_audit(self._audit)
-
+        # Enabling any debug option implies debug-level logging, otherwise its
+        # log.debug() output would be silently discarded at the default
+        # verbosity. This mirrors the CLI behaviour (see picard/cli/_bootstrap.py).
         if self._debug_opts:
             DebugOpt.from_string(self._debug_opts)
+        debug = self._debug or DebugOpt.any_enabled()
+        log.set_verbosity(logging.DEBUG if debug else config.setting['log_verbosity'])
+
+        setup_audit(self._audit)
 
     def _init_threads(self):
         """Initialize threads"""

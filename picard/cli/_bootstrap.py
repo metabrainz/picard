@@ -84,13 +84,15 @@ def init_logging(args):
     debug = getattr(args, 'debug', False)
     debug_opts = getattr(args, 'debug_opts', None)
 
-    if not debug and not debug_opts:
-        log.set_verbosity(logging.WARNING)
-    else:
-        log.set_verbosity(logging.DEBUG)
-
     if debug_opts:
         DebugOpt.from_string(debug_opts)
+
+    # Enabling any debug option implies debug-level logging, otherwise its
+    # log.debug() output would be silently discarded.
+    if debug or DebugOpt.any_enabled():
+        log.set_verbosity(logging.DEBUG)
+    else:
+        log.set_verbosity(logging.WARNING)
 
 
 def is_color_disabled(args):
