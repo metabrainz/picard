@@ -46,6 +46,7 @@ from picard.util import (
     countries_shortlist,
     uniqify,
 )
+from picard.webservice import PendingRequest
 
 
 VERSIONS_MAX_TRACKS = 10
@@ -113,9 +114,9 @@ class ReleaseGroup(MetadataItem):
         self.refcount = 0
         self.versions_count: int | None = None
 
-    def load_versions(self, callback: Callable) -> None:
+    def load_versions(self, callback: Callable) -> PendingRequest:
         kwargs = {'release-group': self.id, 'limit': 100}
-        self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
+        return self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
     def _parse_versions(self, document: dict) -> None:
         """Parse document and return a list of releases"""
