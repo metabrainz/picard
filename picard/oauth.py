@@ -332,6 +332,15 @@ class OAuthManager(QObject):
                     log.warning("OAuth: refresh token is no longer valid, logging out")
                     self.forget_refresh_token()
             else:
+                # The authorization server may rotate the refresh token on
+                # every use (single-use refresh tokens). When it returns a new
+                # refresh_token we must persist it, otherwise the next refresh
+                # will send an already-revoked token and the user gets logged
+                # out. A refresh does not change the granted scopes, so keep
+                # the existing ones.
+                new_refresh_token = data.get('refresh_token')
+                if new_refresh_token and new_refresh_token != self.refresh_token:
+                    self.set_refresh_token(new_refresh_token, self.refresh_token_scopes)
                 access_token = data['access_token']
                 self.set_access_token(access_token, data['expires_in'])
         except Exception as e:
