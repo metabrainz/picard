@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from unittest.mock import Mock
+
 from test.picardtestcase import PicardTestCase
 
 from picard.oauth import (
@@ -52,3 +54,52 @@ class OAuthManagerTest(PicardTestCase):
             132, 141, 121])
         encoded = base64url_encode(b)
         self.assertEqual(b'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk', encoded)
+
+
+class RefreshAccessTokenTest(PicardTestCase):
+    def _manager(self):
+        self.set_config_values(
+            persist={
+                'oauth_refresh_token': 'old-refresh-token',
+                'oauth_refresh_token_scopes': 'profile tag',
+                'oauth_access_token': '',
+                'oauth_access_token_expires': 0,
+            }
+        )
+        manager = OAuthManager(webservice=None)
+        # on_refresh_access_token_finished expects a pending refresh state
+        manager._refreshing = True
+        manager._refresh_callbacks = []
+        return manager
+
+    def test_refresh_persists_rotated_refresh_token(self):
+        # The authorization server rotates the refresh token on every use.
+        # Picard must persist the new token, otherwise the next refresh will
+        # send an already-revoked token and the user gets logged out.
+        manager = self._manager()
+        data = {
+            'access_token': 'new-access-token',
+            'expires_in': 3600,
+            'refresh_token': 'new-refresh-token',
+        }
+        callback = Mock()
+        manager.on_refresh_access_token_finished(callback, data, http=None, error=None)
+        self.assertEqual('new-refresh-token', manager.refresh_token)
+        # Scopes must be preserved across a refresh.
+        self.assertEqual('profile tag', manager.refresh_token_scopes)
+        self.assertEqual('new-access-token', manager.access_token)
+        callback.assert_called_once_with(access_token='new-access-token')
+
+    def test_refresh_keeps_existing_token_when_none_returned(self):
+        # A server that does not rotate refresh tokens omits refresh_token in
+        # the response; the existing token must be kept.
+        manager = self._manager()
+        data = {
+            'access_token': 'new-access-token',
+            'expires_in': 3600,
+        }
+        callback = Mock()
+        manager.on_refresh_access_token_finished(callback, data, http=None, error=None)
+        self.assertEqual('old-refresh-token', manager.refresh_token)
+        self.assertEqual('new-access-token', manager.access_token)
+        callback.assert_called_once_with(access_token='new-access-token')
