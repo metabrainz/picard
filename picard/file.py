@@ -554,10 +554,15 @@ class File(MetadataItem):
         if config.setting['enable_tag_saving']:
             # Detect source changes before saving (debug only)
             current = FileIdentity(old_filename)
-            if current and current != self._file_identity:
-                log.warning("File externally modified.")
-            elif not current:
-                log.warning("File missing!")
+            try:
+                if current and current != self._file_identity:
+                    log.warning("File externally modified: %r", old_filename)
+                elif not current:
+                    log.warning("File missing: %r", old_filename)
+            except FileIdentityError:
+                # Comparing identities may fail if the file became unreadable.
+                # This is only a diagnostic check and must never abort the save.
+                log.warning("Could not verify whether file was externally modified: %r", old_filename, exc_info=True)
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
