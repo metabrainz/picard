@@ -17,11 +17,15 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 from unittest.mock import (
     Mock,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    load_test_json,
+)
 
 from picard.album import (
     Album,
@@ -98,3 +102,39 @@ class TrackTest(PicardTestCase):
         self.album.metadata.images.append(image)
         self.assertEqual(self.album.column('covercount'), '1')
         self.assertEqual(self.album.column('coverdimensions'), '100x100')
+
+    def test_release_node_cache_none(self):
+        self.assertIsNone(self.album._release_node_cache)
+        self.album._release_node_cache = None
+        self.assertIsNone(self.album._release_node_cache)
+        self.assertIsNone(self.album._release_node_cache_datahash)
+
+    def test_release_node_cache_roundtrip(self):
+        node = {
+            'id': 'abc',
+            'media': [{'tracks': [{'title': f'T{i}'} for i in range(12)]}],
+            'artist-credit': [{'name': 'X', 'joinphrase': ''}],
+        }
+        self.album._release_node_cache = node
+        self.assertEqual(self.album._release_node_cache, node)
+
+    def test_release_node_cache_roundtrip_real_release(self):
+        # Exact round-trip for a real MB release node (nested, Unicode, etc.).
+        node = load_test_json('release.json')
+        self.album._release_node_cache = node
+        self.assertEqual(self.album._release_node_cache, node)
+
+    def test_release_node_cache_is_backed_by_tempfile(self):
+        node = {'media': [{'tracks': [{'title': 'Song'} for _ in range(30)]}]}
+        self.album._release_node_cache = node
+        datahash = self.album._release_node_cache_datahash
+        self.assertIsNotNone(datahash)
+        self.assertTrue(os.path.exists(datahash.filename))
+
+    def test_release_node_cache_missing_file_returns_none(self):
+        # If the backing temp file disappears, the getter degrades to None
+        # rather than raising.
+        node = {'id': 'abc', 'media': []}
+        self.album._release_node_cache = node
+        os.unlink(self.album._release_node_cache_datahash.filename)
+        self.assertIsNone(self.album._release_node_cache)
