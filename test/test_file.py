@@ -38,7 +38,11 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.file import File
+from picard.file import (
+    File,
+    FileIdentity,
+    FileIdentityError,
+)
 from picard.metadata import Metadata
 from picard.tags import (
     calculated_tag_names,
@@ -1108,3 +1112,93 @@ class RetryOnPermissionErrorTest(PicardTestCase):
         ):
             self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
         mock_remove.assert_not_called()
+
+
+class FileIdentityLifecycleTest(PicardTestCase):
+    """Regression tests ensuring File._file_identity is always set and that a
+    failing identity comparison never aborts a save.
+
+    Motivated by the fix moving the _file_identity assignment out of the
+    success-only branches of load and save (so it is set even on error) and
+    initializing it in __init__ so the save-time comparison never raises
+    AttributeError.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.tagger.acoustidmanager = MagicMock()
+        self.file = FakeMp3File('somepath/somefile.mp3')
+        self.tagger.files[self.file.filename] = self.file
+        self.set_config_values(
+            {
+                'ignore_existing_acoustid_fingerprints': True,
+                'guess_tracknumber_and_title': False,
+                'enable_tag_saving': True,
+                'preserve_timestamps': False,
+                'rename_files': False,
+                'move_files': False,
+                'delete_empty_dirs': False,
+                'save_images_to_files': False,
+                'enabled_plugins': [],
+            }
+        )
+
+    def test_file_identity_none_on_construction(self):
+        """A freshly constructed File has _file_identity set to None."""
+        self.assertIsNone(self.file._file_identity)
+
+    @patch('picard.file.Filter.apply_filters')
+    @patch('picard.file.run_file_post_load_processors')
+    def test_file_identity_set_after_failed_load(self, mock_post_load, mock_filters):
+        """After a failed load, _file_identity must be set (not None) so a
+        later save does not raise AttributeError."""
+        # Prevent the format-guessing retry path from doing anything.
+        self.tagger.format_registry = MagicMock()
+        self.tagger.format_registry.guess_format.return_value = None
+        self.tagger.format_registry.supported_extensions.return_value = ('.mp3',)
+        callback = Mock()
+
+        self.file._loading_finished(callback, error=OSError("boom"))
+
+        self.assertEqual(File.State.ERROR, self.file.state)
+        self.assertIsNotNone(self.file._file_identity)
+        self.assertIsInstance(self.file._file_identity, FileIdentity)
+
+    @patch('picard.file.run_file_post_save_processors')
+    def test_file_identity_set_after_failed_save(self, mock_post_save):
+        """After a failed save, _file_identity must still be updated."""
+        self.file._file_identity = None
+        self.file.update = Mock()
+
+        self.file._saving_finished(error=OSError("boom"))
+
+        self.assertEqual(File.State.ERROR, self.file.state)
+        self.assertIsNotNone(self.file._file_identity)
+        self.assertIsInstance(self.file._file_identity, FileIdentity)
+
+    @patch('picard.file.log')
+    @patch('picard.file.FileIdentity')
+    def test_save_does_not_raise_when_identity_comparison_fails(self, mock_identity_cls, mock_log):
+        """A FileIdentityError raised while comparing identities is a
+        diagnostic-only failure and must never abort the save."""
+        # Make the freshly built "current" identity truthy but raise on compare.
+        current = MagicMock()
+        current.__bool__.return_value = True
+        current.__eq__.side_effect = FileIdentityError("unreadable")
+        current.__ne__.side_effect = FileIdentityError("unreadable")
+        mock_identity_cls.return_value = current
+
+        # Neutralize the actual save/rename/move side effects.
+        self.file._save = Mock()
+        self.file._rename = Mock(return_value=self.file.filename)
+        self.file._move_additional_files = Mock()
+        self.file._retry_on_permission_error = Mock(side_effect=lambda func: func())
+
+        # Must not raise.
+        result = self.file._save_and_rename(self.file.filename, self.file.metadata)
+
+        self.assertEqual(self.file.filename, result)
+        self.file._save.assert_called_once()
+        # The diagnostic warning was logged instead of propagating the error.
+        self.assertTrue(mock_log.warning.called)

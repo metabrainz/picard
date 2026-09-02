@@ -267,6 +267,7 @@ class File(MetadataItem):
         super().__init__()
         self.filename: str = filename
         self.base_filename: str = os.path.basename(filename)
+        self._file_identity: FileIdentity | None = None
         self._state = File.State.UNDEFINED
         self.state = File.State.PENDING
         self.error_type: File.ErrorType = File.ErrorType.UNKNOWN
@@ -400,11 +401,12 @@ class File(MetadataItem):
         else:
             self.clear_errors()
             self.state = self.State.NORMAL
-            self._loaded_identity = FileIdentity(self.filename)
             postprocessors = []
             if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
             self._copy_loaded_metadata(result, postprocessors)
+
+        self._file_identity = FileIdentity(self.filename)
         # use cached fingerprint from file metadata
         if not config.setting['ignore_existing_acoustid_fingerprints']:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
@@ -552,10 +554,15 @@ class File(MetadataItem):
         if config.setting['enable_tag_saving']:
             # Detect source changes before saving (debug only)
             current = FileIdentity(old_filename)
-            if current and current != self._loaded_identity:
-                log.warning("File externally modified.")
-            elif not current:
-                log.warning("File missing!")
+            try:
+                if current and current != self._file_identity:
+                    log.warning("File externally modified: %r", old_filename)
+                elif not current:
+                    log.warning("File missing: %r", old_filename)
+            except FileIdentityError:
+                # Comparing identities may fail if the file became unreadable.
+                # This is only a diagnostic check and must never abort the save.
+                log.warning("Could not verify whether file was externally modified: %r", old_filename, exc_info=True)
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -644,10 +651,10 @@ class File(MetadataItem):
             self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
-            self._loaded_identity = FileIdentity(self.filename)
             # run post save hook
             run_file_post_save_processors(self)
 
+        self._file_identity = FileIdentity(self.filename)
         # Force update to ensure file status icon changes immediately after save
         self.update()
 
