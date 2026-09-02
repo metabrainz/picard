@@ -89,25 +89,28 @@ class DataHashTest(PicardTestCase):
         self.assertEqual(hash(h1), hash(h2))
         self.assertEqual(len({h1, h2, h3}), 2)
 
-    def test_remove_all_files(self):
-        a = DataHash(b'remove-all-1')
-        b = DataHash(b'remove-all-2')
-        self.assertTrue(os.path.exists(a.filename))
-        self.assertTrue(os.path.exists(b.filename))
-        DataHash.remove_all_files()
-        self.assertFalse(os.path.exists(a.filename))
-        self.assertFalse(os.path.exists(b.filename))
+    def test_delete_file_on_last_reference(self):
+        # Dropping the last reference removes the backing file. This exercises
+        # the same _delete_file() path that remove_all_files() fans out to, but
+        # per-instance and deterministically -- without touching the
+        # process-global registry, which would delete temp files belonging to
+        # unrelated live DataHash instances (e.g. cover art) in other tests.
+        h = DataHash(b'per-instance-delete')
+        filename = h.filename
+        self.assertTrue(os.path.exists(filename))
+        del h
+        self.assertFalse(os.path.exists(filename))
 
     def test_delete_missing_file_is_safe(self):
         # Deleting an already-removed file must not raise (the error path is
-        # swallowed and logged). remove_all_files() drives _delete_file, which
-        # is deterministic (unlike relying on __del__ timing).
+        # swallowed and logged). Triggered per-instance by dropping the last
+        # reference after the backing file was removed out from under it.
         h = DataHash(b'delete-twice')
         filename = h.filename
         os.unlink(filename)
         self.assertFalse(os.path.exists(filename))
         # Must not raise even though the file is already gone.
-        DataHash.remove_all_files()
+        del h
 
     def test_data_missing_file_raises_oserror(self):
         h = DataHash(b'read-after-delete')
