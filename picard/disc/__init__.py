@@ -53,6 +53,7 @@ from picard.util.isrc import (
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
+from picard.ui.util import busy_cursor_stop
 
 
 class Disc:
@@ -188,7 +189,7 @@ class Disc:
         self.tagger.mb_api.lookup_toc(toc_string, self._toc_lookup_finished)
 
     def _lookup_finished(self, document, http, error):
-        self.tagger.restore_cursor()
+        busy_cursor_stop()
         releases = []
         if error:
             log.error("%r", http.errorString())
@@ -203,7 +204,7 @@ class Disc:
 
     def _toc_lookup_finished(self, document, http, error):
         """Handle the result of a TOC lookup."""
-        self.tagger.restore_cursor()
+        busy_cursor_stop()
         releases = []
         if error:
             log.error("TOC lookup error: %r", http.errorString())

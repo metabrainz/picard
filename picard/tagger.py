@@ -205,6 +205,9 @@ from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.util import (
     FileDialog,
+    busy_cursor_start,
+    busy_cursor_stop,
+    flash_busy_cursor,
     show_session_not_found_dialog,
 )
 
@@ -1108,11 +1111,19 @@ class Tagger(QtWidgets.QApplication):
         lookup = self.get_file_lookup()
         config = get_config()
         if config.setting["builtin_search"] and not force_browser:
-            if not lookup.mbid_lookup(text, search['entity'], mbid_matched_callback=mbid_matched_callback):
+            # mbid_lookup dispatches an async load only when the text is a
+            # known MBID/URL (it returns True in that case). Flash only then;
+            # the fallback below opens a modal dialog, which is its own
+            # immediate feedback and needs no cursor flash.
+            if lookup.mbid_lookup(text, search['entity'], mbid_matched_callback=mbid_matched_callback):
+                flash_busy_cursor()
+            else:
                 dialog = search['dialog'](self.window)
                 dialog.search(text)
                 dialog.exec()
         else:
+            # Opens the browser / dispatches an entity search asynchronously.
+            flash_busy_cursor()
             lookup.search_entity(
                 search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback, force_browser=force_browser
             )
@@ -1121,12 +1132,17 @@ class Tagger(QtWidgets.QApplication):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         config = get_config()
+        # Result appears asynchronously; acknowledge the action immediately.
+        flash_busy_cursor()
         lookup.collection_lookup(config.persist['oauth_username'])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         metadata = item.metadata
+        # Result appears asynchronously (browser opens / network lookup);
+        # acknowledge the action immediately.
+        flash_busy_cursor()
         # Only lookup via MB IDs if matched to a Track or Album;
         # otherwise ignore and search by metadata details
         is_track = isinstance(item, Track)
@@ -1324,7 +1340,7 @@ class Tagger(QtWidgets.QApplication):
             self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
     def _lookup_disc(self, disc, result=None, error=None):
-        self.restore_cursor()
+        busy_cursor_stop()
         if error is not None:
             QtWidgets.QMessageBox.critical(
                 self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
@@ -1346,7 +1362,7 @@ class Tagger(QtWidgets.QApplication):
 
     def run_lookup_cd(self, device):
         disc = Disc()
-        self.set_wait_cursor()
+        busy_cursor_start()
         thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
@@ -1367,7 +1383,7 @@ class Tagger(QtWidgets.QApplication):
 
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
-        self.set_wait_cursor()
+        busy_cursor_start()
         thread.run_task(
             partial(self._parse_disc_ripping_log, disc, filepath),
             partial(self._lookup_disc, disc),
@@ -1454,7 +1470,7 @@ class Tagger(QtWidgets.QApplication):
             toc_string += f"+{offset}"
 
         self.window.set_statusbar_message(N_('Looking up disc from tags…'))
-        self.set_wait_cursor()
+        busy_cursor_start()
 
         # Skip dialog if exactly one match, and match files to album
         disc = Disc()
@@ -1469,8 +1485,13 @@ class Tagger(QtWidgets.QApplication):
         """Analyze the file(s)."""
         if not self.use_acoustid:
             return
+        flashed = False
         for file in iter_files_from_objects(objs):
             if file.can_analyze:
+                if not flashed:
+                    # Result appears asynchronously; acknowledge the action once.
+                    flash_busy_cursor()
+                    flashed = True
                 file.set_pending()
                 self._acoustid.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
 
@@ -1491,8 +1512,13 @@ class Tagger(QtWidgets.QApplication):
     # =======================================================================
 
     def autotag(self, objects):
+        flashed = False
         for obj in objects:
             if obj.can_autotag:
+                if not flashed:
+                    # Result appears asynchronously; acknowledge the action once.
+                    flash_busy_cursor()
+                    flashed = True
                 obj.lookup_metadata()
 
     # =======================================================================
@@ -1502,6 +1528,9 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         files = tuple(iter_files_from_objects(objs))
+        if files:
+            # Clustering runs on a background thread; acknowledge the action.
+            flash_busy_cursor()
         if log.is_debug():
             limit = 5
             count = len(files)
@@ -1552,14 +1581,6 @@ class Tagger(QtWidgets.QApplication):
     # =======================================================================
     #  Utils
     # =======================================================================
-
-    def set_wait_cursor(self):
-        """Sets the waiting cursor."""
-        super().setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-
-    def restore_cursor(self):
-        """Restores the cursor set by ``set_wait_cursor``."""
-        super().restoreOverrideCursor()
 
     def refresh(self, objs):
         for obj in objs:

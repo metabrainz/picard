@@ -36,8 +36,10 @@ from PyQt6 import (
 from picard import (
     PICARD_DISPLAY_NAME,
     log,
+    tagger_instance,
 )
 from picard.config import get_config
+from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.const.sys import IS_LINUX
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
@@ -322,3 +324,49 @@ def menu_builder(menu, main_actions, *args):
             menu.addAction(arg)
         else:
             log.error('Invalid menu action: %r', arg)
+
+
+def busy_cursor_start() -> None:
+    """Show the application-wide busy (wait) cursor.
+
+    Pushes a wait cursor onto Qt's override-cursor stack. Must be paired with a
+    matching :func:`busy_cursor_stop`. Use this for operations that have a clear
+    completion point (typically an async callback) where the cursor should stay
+    busy for the whole duration; for fire-and-forget actions whose completion is
+    not tracked, use :func:`flash_busy_cursor` instead.
+
+    Qt's override cursor behaves consistently across Linux, macOS and Windows.
+    """
+    tagger = tagger_instance()
+    tagger.setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
+
+
+def busy_cursor_stop() -> None:
+    """Restore the cursor after a :func:`busy_cursor_start`.
+
+    Pops the wait cursor previously pushed by :func:`busy_cursor_start`.
+    """
+    tagger = tagger_instance()
+    tagger.restoreOverrideCursor()
+
+
+def flash_busy_cursor(msecs: int | None = None) -> None:
+    """Briefly show the busy cursor to acknowledge an asynchronous action.
+
+    Shows the application busy cursor immediately and schedules its automatic
+    restoration after ``msecs`` milliseconds. This is meant for background
+    operations (e.g. a MusicBrainz lookup) whose completion time is unknown and
+    where the user is still expected to interact: it gives immediate "something
+    happened" feedback without trapping the user under a busy cursor.
+
+    Args:
+        msecs: How long to keep the busy cursor, in milliseconds. Defaults to
+            :data:`picard.const.BUSY_CURSOR_FLASH_DELAY_MS`. This is currently a
+            constant but is read here (rather than at call sites) so it can be
+            promoted to a user-configurable option later without touching
+            callers.
+    """
+    if msecs is None:
+        msecs = BUSY_CURSOR_FLASH_DELAY_MS
+    busy_cursor_start()
+    QtCore.QTimer.singleShot(msecs, busy_cursor_stop)

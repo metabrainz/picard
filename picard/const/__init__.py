@@ -154,6 +154,15 @@ PLUGINS_API = {
 
 PLUGINS_BACKGROUND_CHECK_DELAY = 10  # seconds
 
+# Duration of the short "busy" cursor flash used to acknowledge an async
+# action (e.g. a MusicBrainz lookup) whose result is not immediately visible.
+# Kept intentionally short: most such operations run in the background and the
+# user is still expected to interact, so the cursor must restore itself.
+# This is a constant for now; it is read through the flash_busy_cursor() helper
+# in picard.ui.util so it can later be promoted to a user-configurable option
+# without touching call sites.
+BUSY_CURSOR_FLASH_DELAY_MS = 500  # milliseconds
+
 # Maximum number of covers to draw in a stack in CoverArtThumbnail
 MAX_COVERS_TO_STACK = 4
 
