@@ -132,6 +132,42 @@ WIN_LONGPATH_PREFIX = '\\\\?\\'
 WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
+# Recognized string values for boolean environment variables.
+_ENV_TRUTHY_VALUES = frozenset({'1', 'true', 'yes', 'on'})
+_ENV_FALSY_VALUES = frozenset({'0', 'false', 'no', 'off', ''})
+
+
+def parse_bool_env(name: str, default: bool = False) -> bool:
+    """Parse a boolean environment variable.
+
+    Interprets common truthy/falsy string values case-insensitively and
+    ignoring surrounding whitespace:
+
+    - Truthy: ``1``, ``true``, ``yes``, ``on``
+    - Falsy: ``0``, ``false``, ``no``, ``off``, empty string
+
+    If the variable is unset or holds an unrecognized value, ``default`` is
+    returned. This provides a single, predictable convention for all
+    Picard-owned boolean environment variables.
+
+    Args:
+        name: Name of the environment variable to read.
+        default: Value returned when the variable is unset or unrecognized.
+
+    Returns:
+        The parsed boolean value.
+    """
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    value = value.strip().lower()
+    if value in _ENV_TRUTHY_VALUES:
+        return True
+    if value in _ENV_FALSY_VALUES:
+        return False
+    return default
+
+
 class ReadWriteLockContext:
     """Context manager wrapping a `QReadWriteLock`.
 

@@ -38,12 +38,26 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.debug_opts import DebugOpt
+from picard.util import parse_bool_env
 
 from picard.ui.theme_detect import get_linux_dark_mode_strategies
 
 
 # DRY: Common dark background color
 DARK_BG_COLOR = QtGui.QColor(51, 51, 51)
+
+
+def _should_use_fusion_style() -> bool:
+    """Whether the Qt "Fusion" style should be applied.
+
+    Fusion is used on all platforms except macOS and Haiku, which keep their
+    native style. Setting the ``PICARD_FORCE_FUSION`` environment variable to a
+    truthy value forces Fusion everywhere (notably useful on macOS).
+    """
+    if parse_bool_env('PICARD_FORCE_FUSION'):
+        return True
+    return not IS_MACOS and not IS_HAIKU
+
 
 # Centralized dark mode palette for Windows and Linux
 DARK_PALETTE_COLORS = {
@@ -290,7 +304,12 @@ class BaseTheme(QtCore.QObject):
         self._loaded_config_theme = wanted_theme
         # Use the new fusion style from PyQt6 for a modern and consistent look
         # across all OSes, except for macOS and Haiku.
-        if not IS_MACOS and not IS_HAIKU:
+        #
+        # The PICARD_FORCE_FUSION environment variable forces the Fusion style
+        # on every platform, including macOS and Haiku. This is mainly useful on
+        # macOS, where Fusion is otherwise not used; it has no visible effect on
+        # platforms that already default to Fusion.
+        if _should_use_fusion_style():
             app.setStyle('Fusion')
         elif IS_MACOS:
             app.setStyle(MacOverrideStyle(app.style()))
