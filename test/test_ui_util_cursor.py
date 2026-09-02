@@ -25,7 +25,25 @@ from test.picardtestcase import PicardTestCase
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.tagger import Tagger
 
-from picard.ui.util import flash_busy_cursor
+from picard.ui.util import (
+    busy_cursor_start,
+    busy_cursor_stop,
+    flash_busy_cursor,
+)
+
+
+class BusyCursorPrimitivesTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.ui.util')
+
+    def test_start_pushes_wait_cursor(self):
+        busy_cursor_start()
+        self.tagger.setOverrideCursor.assert_called_once()
+
+    def test_stop_restores_cursor(self):
+        busy_cursor_stop()
+        self.tagger.restoreOverrideCursor.assert_called_once_with()
 
 
 class FlashBusyCursorTest(PicardTestCase):
@@ -33,18 +51,18 @@ class FlashBusyCursorTest(PicardTestCase):
         super().setUp()
         self.patch_tagger_instance('picard.ui.util')
 
-    def test_shows_cursor_and_schedules_restore_with_default_delay(self):
+    def test_shows_cursor_and_schedules_stop_with_default_delay(self):
         with patch('picard.ui.util.QtCore.QTimer.singleShot') as mock_single_shot:
             flash_busy_cursor()
-        self.tagger.set_wait_cursor.assert_called_once_with()
-        # Restore is scheduled, not called synchronously.
-        self.tagger.restore_cursor.assert_not_called()
-        mock_single_shot.assert_called_once_with(BUSY_CURSOR_FLASH_DELAY_MS, self.tagger.restore_cursor)
+        # The busy cursor is shown immediately (start), and stop is scheduled.
+        self.tagger.setOverrideCursor.assert_called_once()
+        self.tagger.restoreOverrideCursor.assert_not_called()
+        mock_single_shot.assert_called_once_with(BUSY_CURSOR_FLASH_DELAY_MS, busy_cursor_stop)
 
     def test_custom_delay_is_used(self):
         with patch('picard.ui.util.QtCore.QTimer.singleShot') as mock_single_shot:
             flash_busy_cursor(123)
-        mock_single_shot.assert_called_once_with(123, self.tagger.restore_cursor)
+        mock_single_shot.assert_called_once_with(123, busy_cursor_stop)
 
     def test_scheduled_callback_restores_cursor(self):
         # Verify the callback handed to the timer actually restores the cursor.
@@ -56,9 +74,9 @@ class FlashBusyCursorTest(PicardTestCase):
         with patch('picard.ui.util.QtCore.QTimer.singleShot', side_effect=fake_single_shot):
             flash_busy_cursor()
 
-        self.tagger.restore_cursor.assert_not_called()
+        self.tagger.restoreOverrideCursor.assert_not_called()
         captured['callback']()
-        self.tagger.restore_cursor.assert_called_once_with()
+        self.tagger.restoreOverrideCursor.assert_called_once_with()
 
 
 class TaggerClusterActionsFlashTest(PicardTestCase):

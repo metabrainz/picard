@@ -205,6 +205,8 @@ from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.util import (
     FileDialog,
+    busy_cursor_start,
+    busy_cursor_stop,
     flash_busy_cursor,
     show_session_not_found_dialog,
 )
@@ -1338,7 +1340,7 @@ class Tagger(QtWidgets.QApplication):
             self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
     def _lookup_disc(self, disc, result=None, error=None):
-        self.restore_cursor()
+        busy_cursor_stop()
         if error is not None:
             QtWidgets.QMessageBox.critical(
                 self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
@@ -1360,7 +1362,7 @@ class Tagger(QtWidgets.QApplication):
 
     def run_lookup_cd(self, device):
         disc = Disc()
-        self.set_wait_cursor()
+        busy_cursor_start()
         thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
@@ -1381,7 +1383,7 @@ class Tagger(QtWidgets.QApplication):
 
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
-        self.set_wait_cursor()
+        busy_cursor_start()
         thread.run_task(
             partial(self._parse_disc_ripping_log, disc, filepath),
             partial(self._lookup_disc, disc),
@@ -1468,7 +1470,7 @@ class Tagger(QtWidgets.QApplication):
             toc_string += f"+{offset}"
 
         self.window.set_statusbar_message(N_('Looking up disc from tags…'))
-        self.set_wait_cursor()
+        busy_cursor_start()
 
         # Skip dialog if exactly one match, and match files to album
         disc = Disc()
@@ -1579,14 +1581,6 @@ class Tagger(QtWidgets.QApplication):
     # =======================================================================
     #  Utils
     # =======================================================================
-
-    def set_wait_cursor(self):
-        """Sets the waiting cursor."""
-        super().setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-
-    def restore_cursor(self):
-        """Restores the cursor set by ``set_wait_cursor``."""
-        super().restoreOverrideCursor()
 
     def refresh(self, objs):
         for obj in objs:

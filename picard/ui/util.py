@@ -326,6 +326,30 @@ def menu_builder(menu, main_actions, *args):
             log.error('Invalid menu action: %r', arg)
 
 
+def busy_cursor_start() -> None:
+    """Show the application-wide busy (wait) cursor.
+
+    Pushes a wait cursor onto Qt's override-cursor stack. Must be paired with a
+    matching :func:`busy_cursor_stop`. Use this for operations that have a clear
+    completion point (typically an async callback) where the cursor should stay
+    busy for the whole duration; for fire-and-forget actions whose completion is
+    not tracked, use :func:`flash_busy_cursor` instead.
+
+    Qt's override cursor behaves consistently across Linux, macOS and Windows.
+    """
+    tagger = tagger_instance()
+    tagger.setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
+
+
+def busy_cursor_stop() -> None:
+    """Restore the cursor after a :func:`busy_cursor_start`.
+
+    Pops the wait cursor previously pushed by :func:`busy_cursor_start`.
+    """
+    tagger = tagger_instance()
+    tagger.restoreOverrideCursor()
+
+
 def flash_busy_cursor(msecs: int | None = None) -> None:
     """Briefly show the busy cursor to acknowledge an asynchronous action.
 
@@ -344,6 +368,5 @@ def flash_busy_cursor(msecs: int | None = None) -> None:
     """
     if msecs is None:
         msecs = BUSY_CURSOR_FLASH_DELAY_MS
-    tagger = tagger_instance()
-    tagger.set_wait_cursor()
-    QtCore.QTimer.singleShot(msecs, tagger.restore_cursor)
+    busy_cursor_start()
+    QtCore.QTimer.singleShot(msecs, busy_cursor_stop)
