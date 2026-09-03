@@ -80,7 +80,6 @@ from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
-from PyQt6.QtNetwork import QNetworkReply
 
 from picard import (
     log,
@@ -802,10 +801,6 @@ def load_json(data: bytes | QtCore.QByteArray | str) -> Any:
 
     """
     return json.loads(__convert_to_string(data))
-
-
-def parse_json(reply: QNetworkReply) -> Any:
-    return load_json(reply.readAll())
 
 
 def restore_method(func: Callable) -> Callable:

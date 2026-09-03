@@ -72,6 +72,8 @@ from picard.oauth import OAuthManager
 from picard.util import (
     bytes2human,
     encoded_queryargs,
+)
+from picard.util.qt import (
     parse_json,
 )
 from picard.util.xml import parse_xml

@@ -36,8 +36,10 @@ from time import monotonic
 from typing import Any
 
 from PyQt6 import QtCore
+from PyQt6.QtNetwork import QNetworkReply
 
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.util import load_json
 
 
 class ReadWriteLockContext:
@@ -167,3 +169,8 @@ def build_qurl(
             url_query.addQueryItem(k, str(v))
         url.setQuery(url_query)
     return url
+
+
+def parse_json(reply: QNetworkReply) -> Any:
+    """Deserialize the JSON body of a ``QNetworkReply`` to a Python object."""
+    return load_json(reply.readAll().data())
