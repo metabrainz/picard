@@ -108,7 +108,10 @@
   <url type="translate">https://translations.metabrainz.org/projects/picard/</url>
 
   <translation type="gettext">picard</translation>
-  <developer_name>MetaBrainz Foundation</developer_name>
+  <developer id="org.metabrainz">
+    <name>MetaBrainz Foundation</name>
+    <url>https://metabrainz.org/</url>
+  </developer>
 
   <content_rating type="oars-1.1">
     <content_attribute id="money-purchasing">mild</content_attribute>
