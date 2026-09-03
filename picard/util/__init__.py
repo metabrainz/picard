@@ -76,7 +76,6 @@ import re
 import subprocess  # nosec: B404
 import sys
 import tempfile
-from time import monotonic
 from typing import Any
 import unicodedata
 
@@ -500,48 +499,6 @@ def parse_amazon_url(url: str) -> dict[str, str] | None:
     if match_ is not None:
         return match_.groupdict()
     return None
-
-
-def throttle(interval: float | int) -> Callable:
-    """
-    Throttle a function so that it will only execute once per ``interval``
-    (specified in milliseconds).
-    """
-    mutex = QtCore.QMutex()
-
-    def decorator(func):
-        def later():
-            mutex.lock()
-            func(*decorator.args, **decorator.kwargs)
-            decorator.prev = monotonic()
-            decorator.is_ticking = False
-            mutex.unlock()
-
-        def throttled_func(*args, **kwargs):
-            if decorator.is_ticking:
-                mutex.lock()
-                decorator.args = args
-                decorator.kwargs = kwargs
-                mutex.unlock()
-                return
-            mutex.lock()
-            now = monotonic()
-            r = interval - (now - decorator.prev) * 1000.0
-            if r <= 0:
-                func(*args, **kwargs)
-                decorator.prev = now
-            else:
-                decorator.args = args
-                decorator.kwargs = kwargs
-                QtCore.QTimer.singleShot(int(r), later)
-                decorator.is_ticking = True
-            mutex.unlock()
-
-        return throttled_func
-
-    decorator.prev = 0
-    decorator.is_ticking = False
-    return decorator
 
 
 class IgnoreUpdatesContext:

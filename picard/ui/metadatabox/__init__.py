@@ -69,8 +69,8 @@ from picard.util import (
     icontheme,
     restore_method,
     thread,
-    throttle,
 )
+from picard.util.qt import throttle
 
 from .edittagdialog import (
     EditTagDialog,

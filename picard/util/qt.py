@@ -27,6 +27,7 @@ tooling or a potential headless/alternative frontend).
 """
 
 from collections.abc import (
+    Callable,
     Iterable,
     Iterator,
 )
@@ -89,3 +90,45 @@ def process_events_iter(iterable: Iterable, interval: float = 0.1) -> Iterator:
                 QtCore.QCoreApplication.processEvents()
         yield item
     QtCore.QCoreApplication.processEvents()
+
+
+def throttle(interval: float | int) -> Callable:
+    """
+    Throttle a function so that it will only execute once per ``interval``
+    (specified in milliseconds).
+    """
+    mutex = QtCore.QMutex()
+
+    def decorator(func):
+        def later():
+            mutex.lock()
+            func(*decorator.args, **decorator.kwargs)
+            decorator.prev = monotonic()
+            decorator.is_ticking = False
+            mutex.unlock()
+
+        def throttled_func(*args, **kwargs):
+            if decorator.is_ticking:
+                mutex.lock()
+                decorator.args = args
+                decorator.kwargs = kwargs
+                mutex.unlock()
+                return
+            mutex.lock()
+            now = monotonic()
+            r = interval - (now - decorator.prev) * 1000.0
+            if r <= 0:
+                func(*args, **kwargs)
+                decorator.prev = now
+            else:
+                decorator.args = args
+                decorator.kwargs = kwargs
+                QtCore.QTimer.singleShot(int(r), later)
+                decorator.is_ticking = True
+            mutex.unlock()
+
+        return throttled_func
+
+    decorator.prev = 0
+    decorator.is_ticking = False
+    return decorator
