@@ -94,7 +94,7 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: |
           python setup.py build_appdata
-          appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
+          appstreamcli validate --strict --pedantic --explain org.musicbrainz.Picard.appdata.xml
       - name: Validate desktop file
         if: steps.changes.outputs.src == 'true'
         run: |
