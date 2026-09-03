@@ -50,16 +50,12 @@ from collections import (
 )
 from collections.abc import (
     Callable,
-    Generator,
     Iterable,
     Iterator,
     Mapping,
     Sequence,
 )
-from contextlib import (
-    contextmanager,
-    suppress,
-)
+from contextlib import suppress
 from datetime import (
     date,
     datetime,
@@ -810,42 +806,6 @@ def restore_method(func: Callable) -> Callable:
             return func(*args, **kwargs)
 
     return func_wrapper
-
-
-def reconnect(
-    signal: QtCore.pyqtBoundSignal, newhandler: Callable | None = None, oldhandler: Callable | None = None
-) -> None:
-    """
-    Reconnect an handler to a signal
-
-    It disconnects all previous handlers before connecting new one
-
-    Credits: https://stackoverflow.com/a/21589403
-    """
-    while True:
-        try:
-            if oldhandler is not None:
-                signal.disconnect(oldhandler)
-            else:
-                signal.disconnect()
-        except TypeError:
-            break
-    if newhandler is not None:
-        signal.connect(newhandler)
-
-
-@contextmanager
-def temporary_disconnect(signal: QtCore.pyqtBoundSignal, *handlers: Callable) -> Generator[None, None, None]:
-    """
-    Create context to temporarly disconnect one or more signal handlers
-    """
-    try:
-        for handler in handlers:
-            signal.disconnect(handler)
-        yield
-    finally:
-        for handler in handlers:
-            signal.connect(handler)
 
 
 def compare_barcodes(barcode1: str, barcode2: str) -> bool:

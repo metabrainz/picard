@@ -39,7 +39,7 @@ from picard.const import (
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.i18n import gettext as _
 from picard.tags import tag_names
-from picard.util import temporary_disconnect
+from picard.util.qt import temporary_disconnect
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_edittagdialog import Ui_EditTagDialog
