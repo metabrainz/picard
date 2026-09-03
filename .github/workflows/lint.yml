@@ -94,7 +94,13 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: |
           python setup.py build_appdata
-          appstreamcli validate --strict --pedantic --explain org.musicbrainz.Picard.appdata.xml
+          output=$(appstreamcli validate --strict --pedantic --explain org.musicbrainz.Picard.appdata.xml)
+          echo "$output"
+          if [[ "$output" == *"releases-info-missing"* ]];
+          then
+            echo "The appdata file has a missing or empty <releases> tag."
+            exit 1
+          fi
       - name: Validate desktop file
         if: steps.changes.outputs.src == 'true'
         run: |
