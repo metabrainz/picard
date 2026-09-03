@@ -46,7 +46,7 @@ scripts, not by Picard at runtime.
 | `PICARD_APPX_PUBLISHER` | string | fixed MetaBrainz publisher string | Publisher identity used when building the Windows Store (APPX) package. |
 | `TARGET_ARCH` | string | unset | Target architecture passed to PyInstaller. |
 | `CODESIGN_IDENTITY` | string | unset | macOS code signing identity passed to PyInstaller. |
-| `MACOSX_DEPLOYMENT_TARGET` | string | `11.0` | Minimum macOS version recorded in the built app bundle. |
+| `MACOSX_DEPLOYMENT_TARGET` | string | `11.0` | Standard macOS toolchain variable (not Picard-specific): sets the minimum macOS version targeted by the compiler/linker, which can change the produced binaries (e.g. avoiding newer APIs). Picard's PyInstaller config additionally uses it to set `LSMinimumSystemVersion` in the app bundle. |
 
 The packaging scripts under `scripts/pyinstaller/` also *set* some of the
 runtime `PICARD_*` variables above (e.g. `PICARD_CONFIG_DIR`,
