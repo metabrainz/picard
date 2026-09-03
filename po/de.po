@@ -32,13 +32,14 @@
 # Gsam3 <ggg.deluxe2@gmail.com>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 # janrieger <jan+musicbrainz.org@mainzelmaennchen.net>, 2026.
+# "st.esser" <se@freebsd.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-31 08:59+0200\n"
-"PO-Revision-Date: 2026-08-23 09:12+0000\n"
-"Last-Translator: janrieger <jan+musicbrainz.org@mainzelmaennchen.net>\n"
+"PO-Revision-Date: 2026-09-03 11:12+0000\n"
+"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -73,10 +74,10 @@ msgid "[could not load album %s]"
 msgstr "[Album %s konnte nicht geladen werden]"
 
 #: picard/cluster.py:393
-#, fuzzy, python-format
-#| msgid "No matching releases for cluster %(album)s"
+#, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
-msgstr "Keine passenden Veröffentlichungen für Gruppierung %(album)s"
+msgstr ""
+"Die beste Übereinstimmung für die Gruppierung %(album)s ist nicht eindeutig"
 
 #: picard/cluster.py:395
 #, python-format
@@ -569,17 +570,15 @@ msgstr "Größe von in Tags gespeicherte Bilder anpassen"
 
 #: picard/options.py:268
 msgid "Resized tag image height"
-msgstr ""
+msgstr "Höhe in der Größe angepasster Bilder in Tags"
 
 #: picard/options.py:272
 msgid "Tag image resize mode"
 msgstr ""
 
 #: picard/options.py:274
-#, fuzzy
-#| msgid "All supported image formats"
 msgid "Convert tag image format"
-msgstr "Alle unterstützten Bildformate"
+msgstr "In Tags gespeicherte Bilder konvertieren"
 
 #: picard/options.py:279
 msgid "New tag image format"
@@ -593,7 +592,7 @@ msgstr "Auswahl mehrerer Verzeichnisse zulassen"
 
 #: picard/options.py:283
 msgid "Allow resizing file images"
-msgstr ""
+msgstr "Vergrößern von Bildern in Dateien zulassen"
 
 #: picard/options.py:288
 msgid "Resized file image width"
@@ -672,7 +671,7 @@ msgstr "Aktiviere Schreiben von Tags in Dateien"
 
 #: picard/options.py:356 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
-msgstr ""
+msgstr "Entferne komplettierte Alben nach dem Speichern"
 
 #: picard/options.py:362
 msgid "Use album artist genres"
@@ -1020,11 +1019,11 @@ msgstr "Unterstützung für lange Pfade unter Windows"
 
 #: picard/options.py:629
 msgid "Enable tagger scripts"
-msgstr "Taggerskripte aktivieren"
+msgstr "Tagger-Skripte aktivieren"
 
 #: picard/options.py:630
 msgid "Tagger scripts"
-msgstr "Taggerskripte"
+msgstr "Tagger-Skripte"
 
 #: picard/options.py:635 picard/ui/setupwizard.py:398
 msgid "Check for documentation updates"
@@ -1294,8 +1293,7 @@ msgid ""
 "These plugins may contain security vulnerabilities or malicious code. They "
 "have been automatically disabled for your protection."
 msgstr ""
-"Die folgenden Plugins wurden auf die schwarze Liste gesetzt und "
-"deaktiviert:\n"
+"Die folgenden Plugins wurden auf die Blockliste gesetzt und deaktiviert:\n"
 "\n"
 "{plugin_list}\n"
 "\n"
@@ -1304,7 +1302,7 @@ msgstr ""
 
 #: picard/tagger.py:827
 msgid "Blacklisted Plugins Detected"
-msgstr "Plugins auf der schwarzen Liste erkannt"
+msgstr "Plugins auf der Blokliste erkannt"
 
 #: picard/tagger.py:834
 msgid "Plugin Initialization Failed"
@@ -1513,26 +1511,24 @@ msgid "You can close this window."
 msgstr ""
 
 #: picard/browser/auth_responses.py:163
-#, fuzzy
-#| msgid "Authorization code:"
 msgid "Authorization was declined."
-msgstr "Berechtigungscode:"
+msgstr "Die Autorisierung wurde verweigert."
 
 #: picard/browser/auth_responses.py:164
 msgid "The authorization request was invalid."
-msgstr ""
+msgstr "Die Autorisierungsanfrage war ungültig."
 
 #: picard/browser/auth_responses.py:165
 msgid "This application is not allowed to request authorization."
-msgstr ""
+msgstr "Diese Anwendung darf keine Autorisierung anfordern."
 
 #: picard/browser/auth_responses.py:166
 msgid "The authorization request is not supported."
-msgstr ""
+msgstr "Die Autorisierungsanfrage wird nicht unterstützt."
 
 #: picard/browser/auth_responses.py:167
 msgid "The requested permissions are invalid."
-msgstr ""
+msgstr "Die geforderten Berechtigungen sind ungültig."
 
 #: picard/browser/auth_responses.py:168
 msgid "The server encountered an error. Please try again later."
@@ -1563,35 +1559,29 @@ msgstr ""
 #: picard/browser/auth_responses.py:178 picard/browser/auth_responses.py:180
 #, python-format
 msgid "Picard has not been authorized: %s"
-msgstr ""
+msgstr "Picard wurde nicht autorisiert: %s"
 
 #: picard/browser/auth_responses.py:181
 msgid "Picard has not been authorized."
-msgstr ""
+msgstr "Picard wurde nicht autorisiert."
 
 #: picard/browser/auth_responses.py:194
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication cancelled — %s"
-msgstr "Authentifizierung fehlgeschlagen"
+msgstr "Authentifizierung abgebrochen — %s"
 
 #: picard/browser/auth_responses.py:195
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication cancelled."
-msgstr "Authentifizierung fehlgeschlagen"
+msgstr "Authentifizierung abgebrochen"
 
 #: picard/browser/auth_responses.py:210
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication error — %s"
-msgstr "Authentifizierung erforderlich"
+msgstr "Authentifizierungsfehler — %s"
 
 #: picard/browser/auth_responses.py:211
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication error."
-msgstr "Authentifizierung erforderlich"
+msgstr "Authentifizierungsfehler."
 
 #: picard/browser/auth_responses.py:212
 msgid ""
@@ -1630,15 +1620,15 @@ msgstr "Originalgröße"
 
 #: picard/coverart/providers/caa.py:123
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive"
+msgstr "Cover-Art Archiv"
 
 #: picard/coverart/providers/caa.py:194
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive: Veröffentlichung"
+msgstr "Cover-Art Archiv: Veröffentlichung"
 
 #: picard/coverart/providers/caa_release_group.py:41
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive: Veröffentlichungsgruppe"
+msgstr "Cover-Art Archiv: Veröffentlichungsgruppe"
 
 #: picard/coverart/providers/local.py:61
 msgid "Test file name matching:"
@@ -1661,10 +1651,9 @@ msgid "the file name does not match"
 msgstr "Das Format des Dateinamens darf nicht leer sein."
 
 #: picard/coverart/providers/local.py:87 picard/ui/options/advanced.py:90
-#, fuzzy, python-format
-#| msgid "Ignore file paths (regular expression)"
+#, python-format
 msgid "Invalid regular expression: %s"
-msgstr "Dateipfade ignorieren (regulärer Ausdruck)"
+msgstr "Ungültiger regulärer Ausdruck: %s"
 
 #: picard/coverart/providers/local.py:103
 msgid "Local Files"
@@ -1765,8 +1754,8 @@ msgstr[1] "%d Einstellungen wurden nicht erkannt und wurden übersprungen: %s"
 #, python-format
 msgid "%d setting was automatically upgraded from Picard %s."
 msgid_plural "%d settings were automatically upgraded from Picard %s."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Einstellung wurde automatisch aktualisiert von Picard %s."
+msgstr[1] "%d Einstellungen wurden automatisch aktualisiert von Picard %s."
 
 #: picard/profiles/importer.py:245
 msgid "Naming script section missing 'script' or 'title' field, skipped."
@@ -1818,7 +1807,7 @@ msgstr ""
 
 #: picard/script/functions.py:86
 msgid "$if2(a1,a2,a3,…)"
-msgstr "$if2(a1,a2,a3,…)"
+msgstr "$if2(a1,a2,a3, …)"
 
 #: picard/script/functions.py:87
 msgid "Returns first non empty argument."
@@ -1827,7 +1816,7 @@ msgstr "Gibt das erste nicht leere Argument zurück."
 #: picard/script/functions.py:99
 msgid "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
-"Tut nichts (nützlich für Kommentare oder zum Deaktivieren eines Codeblocks)."
+"Tut nichts (nützlich für Kommentare oder zum Deaktivieren eines Code-Blocks)."
 
 #: picard/script/functions.py:106
 msgid "$left(text,number)"
@@ -2124,10 +2113,8 @@ msgid "Returns the variable `name` (equivalent to `%name%`)."
 msgstr "Gibt die Variable `Name` zurück (entspricht `%name%`)."
 
 #: picard/script/functions.py:397
-#, fuzzy
-#| msgid "$get(name)"
 msgid "$get_new(name)"
-msgstr "$get(Name)"
+msgstr "$get_new(Name)"
 
 #: picard/script/functions.py:399
 msgid ""
@@ -2157,10 +2144,8 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:424
-#, fuzzy
-#| msgid "$get(name)"
 msgid "$get_original(name)"
-msgstr "$get(Name)"
+msgstr "$get_original(Name)"
 
 #: picard/script/functions.py:426
 msgid ""
@@ -2565,8 +2550,9 @@ msgid ""
 msgstr ""
 "Gibt das erste Zeichen von `Text` zurück.\n"
 "Wenn `Text` nicht mit einem alphabetischen Zeichen beginnt, wird stattdessen "
-"`nichtalpha` zurückgegeben. Falls `nichtalpha` nicht\n"
-"angegeben wurde, wird der Standardwert „#“ verwendet.\n"
+"`nichtalpha` zurückgegeben.\n"
+"Falls `nichtalpha` nicht angegeben wurde, wird der Standardwert „#“ "
+"verwendet.\n"
 "\n"
 "_Ab Picard 0.12_"
 
@@ -2598,7 +2584,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 "Ähnlich wie `$truncate()`, liefert aber nur die ersten vollständigen Wörter "
-"aus `Text` zurück, die in die ersten `Länge` Anzahl Zeichen passen.\n"
+"aus `Text` zurück, die in `Länge` Anzahl Zeichen passen.\n"
 "\n"
 "_Ab Picard 0.12_"
 
@@ -2664,9 +2650,8 @@ msgid ""
 msgstr ""
 "Entfernt die angegebenen Präfixe vom Anfang von `Text` und hängt sie ans "
 "Ende an.\n"
-"Mehrere Präfixe können als separate Parameter angegeben werden. Falls kein "
-"Präfix\n"
-"angegeben wird, werden „A“ und „The“ verwendet.\n"
+"Mehrere Präfixe können als separate Parameter angegeben werden.\n"
+"Falls kein Präfix angegeben wird, werden „A“ und „The“ verwendet.\n"
 "\n"
 "Beispiel:\n"
 "\n"
@@ -2692,9 +2677,8 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr ""
 "Entfernt die angegebenen Präfixe vom Anfang von `Text`.\n"
-"Mehrere Präfixe können als separate Parameter angegeben werden. Falls kein "
-"Präfix angegeben wird, werden „A“\n"
-"und „The“ verwendet.\n"
+"Mehrere Präfixe können als separate Parameter angegeben werden.\n"
+"Falls kein Präfix angegeben wird, werden „A“ und „The“ verwendet.\n"
 "\n"
 "Beispiel:\n"
 "\n"
@@ -2818,7 +2802,7 @@ msgstr ""
 
 #: picard/script/functions.py:1105
 msgid "$find(haystack,needle)"
-msgstr "$find(heuhaufen,nadel)"
+msgstr "$find(Heuhaufen,Nadel)"
 
 #: picard/script/functions.py:1107
 msgid ""
@@ -2832,12 +2816,12 @@ msgid ""
 "found."
 msgstr ""
 "Findet die Position einer Zeichenkette innerhalb einer anderen.\n"
-"Gibt den Index des ersten Vorkommens von `nadel` in `heuhaufen` zurück, oder "
-"\"\", wenn `nadel` nicht gefunden wurde.\n"
+"Gibt den Index des ersten Vorkommens von `Nadel` in `Heuhaufen` zurück, oder "
+"\"\", wenn `Nadel` nicht gefunden wurde.\n"
 "\n"
 "_Ab Picard 2.3_\n"
 "\n"
-"Beachte, dass vor Picard 2.3.2 `$find` \"-1\" zurückgab, wenn `nadel` nicht "
+"Beachte, dass vor Picard 2.3.2 `$find` \"-1\" zurückgab, wenn `Nadel` nicht "
 "gefunden wurde."
 
 #: picard/script/functions.py:1123
@@ -2926,11 +2910,11 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 "Standard 'while'-Schleife. Führt `Befehl` wiederholt aus, bis `Bedingung` "
-"nicht mehr als `wahr` ausgewertet wird. Für jede Durchlauf wird die Anzahl "
+"nicht mehr als `wahr` ausgewertet wird. Für jeden Durchlauf wird die Anzahl "
 "der Durchläufe in dem Tag `_loop_count` gespeichert. Dadurch kann auf den "
-"Zählwert innerhalb des Skripts `Befehl` zugegriffen werden. Skript "
-"zugreifen. Die Funktion begrenzt die maximale Anzahl der Iterationen auf "
-"1000 als Schutz gegen das versehentliche Erzeugen einer Endlosschleife."
+"Zählwert innerhalb des Skripts `Befehl` zugegriffen werden. Die Funktion "
+"begrenzt die maximale Anzahl der Iterationen auf 1000 als Schutz gegen das "
+"versehentliche Erzeugen einer Endlosschleife."
 
 #: picard/script/functions.py:1222
 msgid "$map(name,code[,separator=; ])"
