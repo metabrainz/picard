@@ -174,7 +174,6 @@ from picard.util import (
     normpath,
     periodictouch,
     pipe,
-    process_events_iter,
     resolve_fs_path,
     system_supports_long_paths,
     thread,
@@ -183,6 +182,7 @@ from picard.util import (
 )
 from picard.util.checkupdate import UpdateCheckManager
 from picard.util.datahash import DataHash
+from picard.util.qt import process_events_iter
 from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,

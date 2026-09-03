@@ -131,30 +131,6 @@ WIN_LONGPATH_PREFIX = '\\\\?\\'
 WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
-def process_events_iter(iterable: Iterable, interval: float = 0.1) -> Iterator:
-    """
-    Creates an iterator over iterable that calls QCoreApplication.processEvents()
-    after certain time intervals.
-
-    This must only be used in the main thread.
-
-    Args:
-        iterable: iterable object to iterate over
-        interval: interval in seconds to call QCoreApplication.processEvents()
-    """
-    if interval:
-        start = monotonic()
-    for item in iterable:
-        if interval:
-            now = monotonic()
-            delta = now - start
-            if delta > interval:
-                start = now
-                QtCore.QCoreApplication.processEvents()
-        yield item
-    QtCore.QCoreApplication.processEvents()
-
-
 def iter_files_from_objects(objects: Iterable, save: bool = False) -> Iterator:
     """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
     return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
