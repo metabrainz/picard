@@ -68,7 +68,6 @@ from picard.util import (
     _io_encoding,
     album_artist_from_path,
     any_exception_isinstance,
-    build_qurl,
     detect as charset_detect,
     detect_file_encoding,
     encoded_queryargs,
@@ -86,13 +85,16 @@ from picard.util import (
     pattern_as_regex,
     resolve_fs_path,
     system_supports_long_paths,
-    temporary_disconnect,
     titlecase,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
     uniqify,
     wildcards_to_regex_pattern,
     win_prefix_longpath,
+)
+from picard.util.qt import (
+    build_qurl,
+    temporary_disconnect,
 )
 
 

@@ -44,6 +44,18 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+"""General-purpose utility helpers.
+
+This module must not import PyQt6 (Qt) directly. Keeping it Qt-free at the
+import level means individual helpers can be reused from Qt-free contexts
+(e.g. build tooling, or a potential headless/alternative frontend) as long as
+their own transitive imports stay Qt-free too.
+
+Utility helpers that genuinely depend on Qt live in ``picard.util.qt``
+instead. If you need Qt here, add your helper there rather than importing
+PyQt6 in this module.
+"""
+
 from collections import (
     defaultdict,
     namedtuple,
@@ -74,8 +86,7 @@ import sys
 import tempfile
 from typing import Any
 import unicodedata
-
-from PyQt6 import QtCore
+from urllib.parse import quote
 
 from picard import (
     log,
@@ -700,14 +711,6 @@ def album_artist_from_path(filename: str, album: str, artist: str) -> tuple[str,
     return album, artist
 
 
-def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
-    """
-    Percent-encode all values from passed dictionary
-    Keys are left unmodified
-    """
-    return {name: QtCore.QUrl.toPercentEncoding(str(value)).data().decode() for name, value in queryargs.items()}
-
-
 def get_url(url_key: str) -> str:
     """Gets the URL from the key, with {language} and {version} substitutions.
     Args:
@@ -777,6 +780,28 @@ def load_json(data: bytes | bytearray | str) -> Any:
         The decoded Python object (typically a ``dict`` or ``list``).
     """
     return json.loads(data)
+
+
+def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
+    """Percent-encode all values from the passed dictionary.
+
+    Keys are left unmodified.
+
+    ``quote(str(value), safe='')`` reproduces the output of the previous
+    ``QUrl.toPercentEncoding(str(value))`` implementation byte-for-byte for
+    every input reachable in Picard (ASCII, unreserved characters including
+    ``~``, reserved/sub-delims, UTF-8 multi-byte and astral code points,
+    spaces, ``+``, control characters, NUL and empty strings).
+
+    The only behavioral difference is for malformed lone UTF-16 surrogates:
+    ``QUrl`` silently dropped them, whereas ``quote()`` raises
+    ``UnicodeEncodeError``. This is not a concern here because the values come
+    from machine-generated arguments (MBIDs, fingerprints, integers, constant
+    literals) or from the search field, whose text originates from Qt widgets
+    as well-formed Unicode; lone surrogates cannot arise through any of these
+    paths.
+    """
+    return {name: quote(str(value), safe='') for name, value in queryargs.items()}
 
 
 def restore_method(func: Callable) -> Callable:
