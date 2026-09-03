@@ -38,7 +38,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.debug_opts import DebugOpt
-from picard.util import parse_bool_env
+from picard.env import parse_bool_env
 
 from picard.ui.theme_detect import get_linux_dark_mode_strategies
 

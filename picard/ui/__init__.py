@@ -44,10 +44,10 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.env import parse_bool_env
 from picard.i18n import gettext as _
 from picard.util import (
     get_url,
-    parse_bool_env,
     restore_method,
     webbrowser2,
 )

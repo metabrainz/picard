@@ -8,8 +8,8 @@ enabling special setups, or for experimental behavior. They are **not** a
 stable configuration interface: they may be changed, removed, or replaced by a
 proper option at any time.
 
-Boolean variables are parsed by `picard.util.parse_bool_env()` unless noted
-otherwise. It accepts (case-insensitively, ignoring surrounding whitespace):
+Boolean variables are parsed by `picard.env.parse_bool_env()`. It accepts
+(case-insensitively, ignoring surrounding whitespace):
 
 - Truthy: `1`, `true`, `yes`, `on`
 - Falsy: `0`, `false`, `no`, `off`, empty string
@@ -36,13 +36,10 @@ These affect a running Picard instance.
 These are read by the build tooling (`setup.py`, `picard.spec`) and packaging
 scripts, not by Picard at runtime.
 
-> **Note:** For historical/compatibility reasons the build variables below are
-> not parsed by `parse_bool_env()` and use their own truthiness rules, as noted.
-
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
-| `PICARD_BUILD_PORTABLE` | boolean (non-empty is true) | unset | Build a portable Windows package (PyInstaller). |
-| `PICARD_DISABLE_AUTOUPDATE` | boolean (set and not `0` is true) | unset | Disable the built-in auto-update mechanism at build time (see PICARD-3003). |
+| `PICARD_BUILD_PORTABLE` | boolean | `false` | Build a portable Windows package (PyInstaller). |
+| `PICARD_DISABLE_AUTOUPDATE` | boolean | `false` | Disable the built-in auto-update mechanism at build time (see PICARD-3003). |
 | `PICARD_APPX_PUBLISHER` | string | fixed MetaBrainz publisher string | Publisher identity used when building the Windows Store (APPX) package. |
 | `TARGET_ARCH` | string | unset | Target architecture passed to PyInstaller. |
 | `CODESIGN_IDENTITY` | string | unset | macOS code signing identity passed to PyInstaller. |
