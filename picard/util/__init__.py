@@ -767,36 +767,16 @@ def union_sorted_lists(list1: Sequence, list2: Sequence) -> list:
     return union
 
 
-def __convert_to_string(obj: Any) -> str:
-    """Appropriately converts the input `obj` to a string.
+def load_json(data: bytes | bytearray | str) -> Any:
+    """Deserializes a string or bytes-like JSON document to a Python object.
 
     Args:
-        obj (QByteArray, bytes, bytearray, ...): The input object
+        data: The JSON document as ``str``, ``bytes`` or ``bytearray``.
 
     Returns:
-        string: The appropriately decoded string
-
+        The decoded Python object (typically a ``dict`` or ``list``).
     """
-    if isinstance(obj, QtCore.QByteArray):
-        return obj.data().decode()
-    elif isinstance(obj, (bytes, bytearray)):
-        return obj.decode()
-    else:
-        return str(obj)
-
-
-def load_json(data: bytes | QtCore.QByteArray | str) -> Any:
-    """Deserializes a string or bytes like json response and converts
-    it to a python object.
-
-    Args:
-        data (QByteArray, bytes, bytearray, ...): The json response
-
-    Returns:
-        dict: Response data as a python dict
-
-    """
-    return json.loads(__convert_to_string(data))
+    return json.loads(data)
 
 
 def restore_method(func: Callable) -> Callable:
