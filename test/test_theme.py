@@ -768,3 +768,29 @@ def test_de_specific_wrappers_only_run_for_matching_de_param(args):
         else:
             mock_detect.assert_not_called()
             assert result is False
+
+
+@pytest.mark.parametrize(
+    ("force_env", "is_macos", "is_haiku", "expected"),
+    [
+        # No override: Fusion everywhere except macOS and Haiku.
+        (None, False, False, True),
+        (None, True, False, False),
+        (None, False, True, False),
+        # Truthy override forces Fusion on every platform.
+        ("1", True, False, True),
+        ("true", True, False, True),
+        ("on", False, True, True),
+        # Falsy override keeps the default per-platform behavior.
+        ("0", True, False, False),
+        ("false", False, False, True),
+    ],
+)
+def test_should_use_fusion_style(force_env, is_macos, is_haiku, expected):
+    env = {} if force_env is None else {"PICARD_FORCE_FUSION": force_env}
+    with (
+        patch.dict(os.environ, env, clear=True),
+        patch.object(theme_mod, "IS_MACOS", is_macos),
+        patch.object(theme_mod, "IS_HAIKU", is_haiku),
+    ):
+        assert theme_mod._should_use_fusion_style() is expected

@@ -22,7 +22,6 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-import os
 from typing import ClassVar
 import uuid
 
@@ -45,6 +44,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.env import parse_bool_env
 from picard.i18n import gettext as _
 from picard.util import (
     get_url,
@@ -72,14 +72,12 @@ def modal_options():
     (LogView, Script Editor) to remain interactive.
 
     Can be overridden with the PICARD_MODAL_OPTIONS environment variable
-    (set to '1' to force modal, '0' to force non-modal).
+    (set to a truthy value such as '1' to force modal, or a falsy value such
+    as '0' to force non-modal).
 
     Returns True for modal behavior, False for non-modal + disabled parent.
     """
-    override = os.environ.get('PICARD_MODAL_OPTIONS')
-    if override is not None:
-        return override == '1'
-    return IS_MACOS
+    return parse_bool_env('PICARD_MODAL_OPTIONS', default=IS_MACOS)
 
 
 class PreserveGeometry:

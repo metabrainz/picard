@@ -24,6 +24,7 @@ from picard import (
     PICARD_VERSION,
     __version__,
 )
+from picard.env import parse_bool_env
 
 
 def _picard_get_locale_files():
@@ -64,7 +65,7 @@ def has_module(module_name):
 
 
 os_name = platform.system()
-build_portable = bool(os.environ.get('PICARD_BUILD_PORTABLE'))
+build_portable = parse_bool_env('PICARD_BUILD_PORTABLE')
 binaries = []
 
 data_files = get_locale_messages()

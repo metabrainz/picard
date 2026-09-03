@@ -72,6 +72,7 @@ from picard import (  # noqa: E402
     PICARD_DISPLAY_NAME,
     PICARD_VERSION,
 )
+from picard.env import parse_bool_env  # noqa: E402
 
 
 if sys.version_info < (3, 10):  # noqa: UP036
@@ -146,8 +147,7 @@ class picard_build(build):
         if self.disable_autoupdate is None:
             # Support setting this option with an environment variable as
             # a workaround for https://tickets.metabrainz.org/browse/PICARD-3003
-            env_autoupdate = os.environ.get('PICARD_DISABLE_AUTOUPDATE')
-            self.disable_autoupdate = bool(env_autoupdate and env_autoupdate != '0')
+            self.disable_autoupdate = parse_bool_env('PICARD_DISABLE_AUTOUPDATE')
         if not self.disable_locales:
             self.sub_commands.append(('build_locales', None))
 
