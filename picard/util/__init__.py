@@ -81,7 +81,6 @@ from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
-from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtNetwork import QNetworkReply
 
 from picard import (
@@ -537,14 +536,6 @@ def run_executable(executable: str, *args, timeout: int | float | None = None) -
 
     # Return (error code, stdout and stderr)
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
-
-
-def open_local_path(path: str) -> None:
-    url = QtCore.QUrl.fromLocalFile(path)
-    if os.environ.get('SNAP'):
-        run_executable('xdg-open', url.toString())
-    else:
-        QDesktopServices.openUrl(url)
 
 
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

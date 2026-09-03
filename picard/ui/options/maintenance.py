@@ -42,7 +42,6 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.util import (
-    open_local_path,
     resolve_fs_path,
 )
 
@@ -51,7 +50,10 @@ from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    open_local_path,
+)
 
 
 def _safe_autobackup_dir(path):
