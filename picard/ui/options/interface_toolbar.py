@@ -157,7 +157,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'system-search',
         ),
     }
-    ACTION_IDS = frozenset(TOOLBAR_BUTTONS)
+    ACTION_IDS: ClassVar[set[MainAction]] = set(TOOLBAR_BUTTONS)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
