@@ -344,7 +344,7 @@ class picard_clean_ui(Command):
 class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
 
-    re_release = re.compile(r'^# Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
+    re_release = re.compile(r'^## Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
 
     def initialize_options(self):
         pass
