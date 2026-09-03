@@ -43,13 +43,14 @@
 # c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2015
 # c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2012
 # Gsam3 <ggg.deluxe2@gmail.com>, 2026.
+# "st.esser" <se@freebsd.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-09 13:12+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-09-03 12:12+0000\n"
+"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/2/"
 "app/de/>\n"
 "Language: de\n"
@@ -611,11 +612,11 @@ msgstr "Scripting"
 
 #: picard/profile.py:177
 msgid "Enable tagger scripts"
-msgstr "Taggerskripte aktivieren"
+msgstr "Tagger-Skripte aktivieren"
 
 #: picard/profile.py:178
 msgid "Tagger scripts"
-msgstr "Taggerskripte"
+msgstr "Tagger-Skripte"
 
 #: picard/profile.py:183 picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -998,15 +999,15 @@ msgstr "Originalgröße"
 
 #: picard/coverart/providers/caa.py:120
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive"
+msgstr "Cover-Art Archiv"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive: Veröffentlichung"
+msgstr "Cover-Art Archiv: Veröffentlichung"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive: Veröffentlichungsgruppe"
+msgstr "Cover-Art Archiv: Veröffentlichungsgruppe"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
