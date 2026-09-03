@@ -30,10 +30,14 @@ from collections.abc import (
     Callable,
     Iterable,
     Iterator,
+    Mapping,
 )
 from time import monotonic
+from typing import Any
 
 from PyQt6 import QtCore
+
+from picard.const import MUSICBRAINZ_SERVERS
 
 
 class ReadWriteLockContext:
@@ -132,3 +136,34 @@ def throttle(interval: float | int) -> Callable:
     decorator.prev = 0
     decorator.is_ticking = False
     return decorator
+
+
+def build_qurl(
+    host: str, port: int = 80, path: str | None = None, queryargs: Mapping[str, Any] | None = None
+) -> QtCore.QUrl:
+    """
+    Builds and returns a QUrl object from `host`, `port` and `path` and
+    automatically enables HTTPS if necessary.
+
+    Encoded query arguments can be provided in `queryargs`, a
+    dictionary mapping field names to values.
+    """
+    url = QtCore.QUrl()
+    url.setHost(host)
+
+    if port == 443 or host in MUSICBRAINZ_SERVERS:
+        url.setScheme('https')
+    elif port == 80:
+        url.setScheme('http')
+    else:
+        url.setScheme('http')
+        url.setPort(port)
+
+    if path is not None:
+        url.setPath(path)
+    if queryargs is not None:
+        url_query = QtCore.QUrlQuery()
+        for k, v in queryargs.items():
+            url_query.addQueryItem(k, str(v))
+        url.setQuery(url_query)
+    return url

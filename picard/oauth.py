@@ -48,10 +48,8 @@ from picard.i18n import (
     get_locale_bcp47,
     gettext as _,
 )
-from picard.util import (
-    build_qurl,
-    load_json,
-)
+from picard.util import load_json
+from picard.util.qt import build_qurl
 
 
 OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'

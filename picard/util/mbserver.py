@@ -21,7 +21,7 @@ from collections import namedtuple
 
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
-from picard.util import build_qurl
+from picard.util.qt import build_qurl
 
 
 ServerTuple = namedtuple('ServerTuple', ('host', 'port'))
