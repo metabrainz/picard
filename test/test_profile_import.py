@@ -16,6 +16,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from test.picardtestcase import subtest_cases
 from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
@@ -622,3 +623,30 @@ some_option = true
         self.assertTrue(any('failed' in w for w in result.warnings))
         # No upgrades recorded
         self.assertEqual(result.upgraded_settings, [])
+
+    @subtest_cases(
+        "toml",
+        {
+            'profile not a table': 'profile = "hello"\n',
+            'settings not a table': 'settings = 42\n[profile]\ntitle = "T"\n',
+            'scripts not a table': 'scripts = "x"\n[profile]\ntitle = "T"\n',
+            'scripts.naming not a table': '[profile]\ntitle = "T"\n\n[scripts]\nnaming = "x"\n',
+            'scripts.tagging not a list': '[profile]\ntitle = "T"\n\n[scripts]\ntagging = "x"\n',
+            'scripts.tagging entry not a table': '[profile]\ntitle = "T"\n\n[scripts]\ntagging = ["x"]\n',
+        },
+    )
+    def test_import_malformed_section_types_raise_profile_import_error(self, toml):
+        """Type-mismatched (but TOML-valid) sections must raise ProfileImportError.
+
+        Regression test: a profile file could declare a section with the wrong
+        type (e.g. ``profile = "hello"`` instead of a ``[profile]`` table, or
+        ``tagging = "x"`` instead of an array of tables). The importer indexed
+        into these values with ``.get()``/``.items()`` or iterated them,
+        raising ``AttributeError``/``TypeError`` that escaped the documented
+        ``ProfileImportError`` contract and crashed the CLI / produced an
+        uncaught traceback in the UI (callers only catch ProfileImportError).
+        Import is reachable with untrusted input via
+        ``picard-cli profiles import --file <untrusted.toml>``.
+        """
+        with self.assertRaises(ProfileImportError):
+            import_profile(self.config, toml)
