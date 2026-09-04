@@ -280,6 +280,50 @@ class TestSelectRefForPlugin(PicardTestCase):
         ]
         self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')
 
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', (Version.from_string('3.0'),))
+    def test_malformed_min_api_version_does_not_crash(self):
+        """Malformed min_api_version from registry data must not crash ref selection.
+
+        Regression test: min_api_version/max_api_version come from raw,
+        unvalidated registry ref data. Version.from_string() raises VersionError
+        on malformed input (e.g. 'abc'), which previously propagated out of
+        select_ref_for_plugin() during install/update. A ref whose bound cannot
+        be parsed is now skipped (its compatibility cannot be verified), and the
+        next verifiable ref is used.
+        """
+        mgr = PluginRegistryManager(Mock())
+        plugin = Mock()
+        plugin.versioning_scheme = None
+        plugin.git_url = 'url'
+        plugin.refs = [
+            {'name': 'broken', 'min_api_version': 'abc'},
+            {'name': 'good', 'min_api_version': '3.0'},
+        ]
+        # 'broken' is skipped (unparseable), 'good' is compatible and selected.
+        self.assertEqual(mgr.select_ref_for_plugin(plugin), 'good')
+
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', (Version.from_string('3.0'),))
+    def test_malformed_max_api_version_does_not_crash(self):
+        mgr = PluginRegistryManager(Mock())
+        plugin = Mock()
+        plugin.versioning_scheme = None
+        plugin.git_url = 'url'
+        plugin.refs = [
+            {'name': 'broken', 'max_api_version': 'not-a-version'},
+            {'name': 'good', 'max_api_version': '99.0'},
+        ]
+        self.assertEqual(mgr.select_ref_for_plugin(plugin), 'good')
+
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', (Version.from_string('3.0'),))
+    def test_all_refs_malformed_falls_back_to_first(self):
+        """If no ref can be verified, fall back to the first ref (unchanged behavior)."""
+        mgr = PluginRegistryManager(Mock())
+        plugin = Mock()
+        plugin.versioning_scheme = None
+        plugin.git_url = 'url'
+        plugin.refs = [{'name': 'main', 'min_api_version': 'abc'}]
+        self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')
+
     @patch('picard.plugin3.manager.registry.api_versions_tuple', (Version.from_string('10.0'),))
     def test_api_version_multi_digit_comparison(self):
         """Ensure API version 10.0 is correctly compared (not string-based)."""
