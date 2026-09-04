@@ -70,12 +70,12 @@ class PluginManifest:
         return self._localized('name_i18n', 'name', locale)
 
     @property
-    def authors(self) -> tuple[str]:
+    def authors(self) -> tuple[str, ...]:
         authors = self._data.get('authors', [])
         return tuple(authors) if authors else tuple()
 
     @property
-    def maintainers(self) -> tuple[str]:
+    def maintainers(self) -> tuple[str, ...]:
         maintainers = self._data.get('maintainers', [])
         return tuple(maintainers) if maintainers else tuple()
 
