@@ -22,7 +22,10 @@ from pathlib import Path
 import tempfile
 from unittest.mock import Mock
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 from test.plugins3.helpers import (
     create_test_plugin_api,
     load_plugin_manifest,
@@ -101,6 +104,45 @@ class TestPluginTranslations(PicardTestCase):
 
         result = api.tr('user_info', '{name} has {count} items', name='Alice', count=5)
         self.assertEqual(result, 'Alice has 5 items')
+
+    @subtest_cases(
+        "text,expected",
+        {
+            'missing placeholder kwarg': ('Hello {missing}', 'Hello {missing}'),
+            'malformed opening brace': ('Hello {', 'Hello {'),
+            'malformed closing brace': ('Hello }', 'Hello }'),
+        },
+    )
+    def test_tr_bad_format_falls_back_to_unformatted(self, text, expected):
+        """tr() must not crash on bad format strings from plugins/translations.
+
+        Regression test: a badly written plugin or incorrect translation may
+        reference an unsupplied placeholder ('{missing}') or use malformed
+        format syntax (a stray brace). str.format() raised KeyError/ValueError,
+        which propagated out of the translation call. tr() now logs a warning
+        and falls back to the unformatted string.
+        """
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
+
+        result = api.tr('greeting', text, name='World')
+        self.assertEqual(result, expected)
+
+    @subtest_cases(
+        "singular,plural,expected",
+        {
+            'missing placeholder kwarg': ('{missing} file', '{missing} files', '{missing} files'),
+            'malformed opening brace': ('{ file', '{ files', '{ files'),
+            'malformed closing brace': ('} file', '} files', '} files'),
+        },
+    )
+    def test_trn_bad_format_falls_back_to_unformatted(self, singular, plural, expected):
+        """trn() must not crash on bad format strings from plugins/translations."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
+
+        result = api.trn('files', singular, plural, n=5)
+        self.assertEqual(result, expected)
 
 
 def _create_locale_dir(tmpdir):
