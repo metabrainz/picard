@@ -55,6 +55,22 @@ from picard.util.qt import build_qurl
 OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
 
+def redact_token(value: str | None) -> str:
+    """Return a non-reversible marker for a secret token, safe to log.
+
+    OAuth tokens and authorization codes are secrets that must never reach the
+    logs (debug logs are routinely attached to bug reports). This returns a
+    short, stable fingerprint — the first 8 hex characters of the SHA-256
+    digest — formatted as ``<token:xxxxxxxx>``. That is enough to tell whether
+    two log lines refer to the same token (e.g. to see a rotation) without
+    exposing anything usable. Empty or missing values return ``<none>``.
+    """
+    if not value:
+        return '<none>'
+    digest = sha256(value.encode('utf-8')).hexdigest()[:8]
+    return f'<token:{digest}>'
+
+
 class OAuthInvalidStateError(Exception):
     pass
 
@@ -278,12 +294,12 @@ class OAuthManager(QObject):
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
-        log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
+        log.debug("OAuth: got refresh_token %s with scopes %s", redact_token(refresh_token), scopes)
         self.refresh_token = refresh_token
         self.refresh_token_scopes = scopes
 
     def set_access_token(self, access_token, expires_in):
-        log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
+        log.debug("OAuth: got access_token %s that expires in %s seconds", redact_token(access_token), expires_in)
         self.access_token = access_token
         self.access_token_expires = int(time.time() + expires_in - 60)
 
@@ -299,7 +315,7 @@ class OAuthManager(QObject):
         self._refreshing = True
         self._refresh_callbacks = [callback]
 
-        log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
+        log.debug("OAuth: refreshing access_token with a refresh_token %s", redact_token(self.refresh_token))
         params = {
             'grant_type': 'refresh_token',
             'refresh_token': self.refresh_token,
