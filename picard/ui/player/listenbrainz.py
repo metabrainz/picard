@@ -38,7 +38,7 @@ from picard.config import get_config
 from picard.const.appdirs import cache_folder
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import (
+from picard.util.qt import (
     ReadWriteLockContext,
     throttle,
 )

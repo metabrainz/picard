@@ -40,7 +40,7 @@ from PyQt6 import (
 from picard import log
 from picard.debug_opts import DebugOpt
 from picard.i18n import gettext as _
-from picard.util import reconnect
+from picard.util.qt import reconnect
 
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,

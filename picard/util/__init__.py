@@ -44,22 +44,30 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+"""General-purpose utility helpers.
+
+This module must not import PyQt6 (Qt) directly. Keeping it Qt-free at the
+import level means individual helpers can be reused from Qt-free contexts
+(e.g. build tooling, or a potential headless/alternative frontend) as long as
+their own transitive imports stay Qt-free too.
+
+Utility helpers that genuinely depend on Qt live in ``picard.util.qt``
+instead. If you need Qt here, add your helper there rather than importing
+PyQt6 in this module.
+"""
+
 from collections import (
     defaultdict,
     namedtuple,
 )
 from collections.abc import (
     Callable,
-    Generator,
     Iterable,
     Iterator,
     Mapping,
     Sequence,
 )
-from contextlib import (
-    contextmanager,
-    suppress,
-)
+from contextlib import suppress
 from datetime import (
     date,
     datetime,
@@ -76,20 +84,15 @@ import re
 import subprocess  # nosec: B404
 import sys
 import tempfile
-from time import monotonic
 from typing import Any
 import unicodedata
-
-from PyQt6 import QtCore
-from PyQt6.QtGui import QDesktopServices
-from PyQt6.QtNetwork import QNetworkReply
+from urllib.parse import quote
 
 from picard import (
     log,
     tagger_instance,
 )
 from picard.const import (
-    MUSICBRAINZ_SERVERS,
     PICARD_DOCS_URLS,
     PICARD_URLS,
 )
@@ -130,62 +133,6 @@ WIN_MAX_NODE_LEN = 255
 WIN_LONGPATH_PREFIX = '\\\\?\\'
 # Prefix for long UNC share paths in Windows API
 WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
-
-
-class ReadWriteLockContext:
-    """Context manager wrapping a `QReadWriteLock`.
-
-    Multiple threads can obtain a read lock, but only one can obtain a write lock.
-    Read and write locks can be explicitly entered with `lock_for_read` and `lock_for_write`:
-
-        lock = ReadWriteLockContext()
-        with lock.lock_for_read():
-            ...
-    """
-
-    def __init__(self):
-        self.__lock = QtCore.QReadWriteLock()
-
-    def lock_for_read(self):
-        self.__lock.lockForRead()
-        return self
-
-    def lock_for_write(self):
-        self.__lock.lockForWrite()
-        return self
-
-    def unlock(self):
-        self.__lock.unlock()
-
-    def __enter__(self):
-        pass
-
-    def __exit__(self, type, value, tb):
-        self.__lock.unlock()
-
-
-def process_events_iter(iterable: Iterable, interval: float = 0.1) -> Iterator:
-    """
-    Creates an iterator over iterable that calls QCoreApplication.processEvents()
-    after certain time intervals.
-
-    This must only be used in the main thread.
-
-    Args:
-        iterable: iterable object to iterate over
-        interval: interval in seconds to call QCoreApplication.processEvents()
-    """
-    if interval:
-        start = monotonic()
-    for item in iterable:
-        if interval:
-            now = monotonic()
-            delta = now - start
-            if delta > interval:
-                start = now
-                QtCore.QCoreApplication.processEvents()
-        yield item
-    QtCore.QCoreApplication.processEvents()
 
 
 def iter_files_from_objects(objects: Iterable, save: bool = False) -> Iterator:
@@ -539,14 +486,6 @@ def run_executable(executable: str, *args, timeout: int | float | None = None) -
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
 
 
-def open_local_path(path: str) -> None:
-    url = QtCore.QUrl.fromLocalFile(path)
-    if os.environ.get('SNAP'):
-        run_executable('xdg-open', url.toString())
-    else:
-        QDesktopServices.openUrl(url)
-
-
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 
@@ -565,48 +504,6 @@ def parse_amazon_url(url: str) -> dict[str, str] | None:
     if match_ is not None:
         return match_.groupdict()
     return None
-
-
-def throttle(interval: float | int) -> Callable:
-    """
-    Throttle a function so that it will only execute once per ``interval``
-    (specified in milliseconds).
-    """
-    mutex = QtCore.QMutex()
-
-    def decorator(func):
-        def later():
-            mutex.lock()
-            func(*decorator.args, **decorator.kwargs)
-            decorator.prev = monotonic()
-            decorator.is_ticking = False
-            mutex.unlock()
-
-        def throttled_func(*args, **kwargs):
-            if decorator.is_ticking:
-                mutex.lock()
-                decorator.args = args
-                decorator.kwargs = kwargs
-                mutex.unlock()
-                return
-            mutex.lock()
-            now = monotonic()
-            r = interval - (now - decorator.prev) * 1000.0
-            if r <= 0:
-                func(*args, **kwargs)
-                decorator.prev = now
-            else:
-                decorator.args = args
-                decorator.kwargs = kwargs
-                QtCore.QTimer.singleShot(int(r), later)
-                decorator.is_ticking = True
-            mutex.unlock()
-
-        return throttled_func
-
-    decorator.prev = 0
-    decorator.is_ticking = False
-    return decorator
 
 
 class IgnoreUpdatesContext:
@@ -814,14 +711,6 @@ def album_artist_from_path(filename: str, album: str, artist: str) -> tuple[str,
     return album, artist
 
 
-def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
-    """
-    Percent-encode all values from passed dictionary
-    Keys are left unmodified
-    """
-    return {name: QtCore.QUrl.toPercentEncoding(str(value)).data().decode() for name, value in queryargs.items()}
-
-
 def get_url(url_key: str) -> str:
     """Gets the URL from the key, with {language} and {version} substitutions.
     Args:
@@ -849,37 +738,6 @@ def get_url(url_key: str) -> str:
 
     # No match in defined Picard URLs
     return url_key
-
-
-def build_qurl(
-    host: str, port: int = 80, path: str | None = None, queryargs: Mapping[str, Any] | None = None
-) -> QtCore.QUrl:
-    """
-    Builds and returns a QUrl object from `host`, `port` and `path` and
-    automatically enables HTTPS if necessary.
-
-    Encoded query arguments can be provided in `queryargs`, a
-    dictionary mapping field names to values.
-    """
-    url = QtCore.QUrl()
-    url.setHost(host)
-
-    if port == 443 or host in MUSICBRAINZ_SERVERS:
-        url.setScheme('https')
-    elif port == 80:
-        url.setScheme('http')
-    else:
-        url.setScheme('http')
-        url.setPort(port)
-
-    if path is not None:
-        url.setPath(path)
-    if queryargs is not None:
-        url_query = QtCore.QUrlQuery()
-        for k, v in queryargs.items():
-            url_query.addQueryItem(k, str(v))
-        url.setQuery(url_query)
-    return url
 
 
 def union_sorted_lists(list1: Sequence, list2: Sequence) -> list:
@@ -912,40 +770,38 @@ def union_sorted_lists(list1: Sequence, list2: Sequence) -> list:
     return union
 
 
-def __convert_to_string(obj: Any) -> str:
-    """Appropriately converts the input `obj` to a string.
+def load_json(data: bytes | bytearray | str) -> Any:
+    """Deserializes a string or bytes-like JSON document to a Python object.
 
     Args:
-        obj (QByteArray, bytes, bytearray, ...): The input object
+        data: The JSON document as ``str``, ``bytes`` or ``bytearray``.
 
     Returns:
-        string: The appropriately decoded string
-
+        The decoded Python object (typically a ``dict`` or ``list``).
     """
-    if isinstance(obj, QtCore.QByteArray):
-        return obj.data().decode()
-    elif isinstance(obj, (bytes, bytearray)):
-        return obj.decode()
-    else:
-        return str(obj)
+    return json.loads(data)
 
 
-def load_json(data: bytes | QtCore.QByteArray | str) -> Any:
-    """Deserializes a string or bytes like json response and converts
-    it to a python object.
+def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
+    """Percent-encode all values from the passed dictionary.
 
-    Args:
-        data (QByteArray, bytes, bytearray, ...): The json response
+    Keys are left unmodified.
 
-    Returns:
-        dict: Response data as a python dict
+    ``quote(str(value), safe='')`` reproduces the output of the previous
+    ``QUrl.toPercentEncoding(str(value))`` implementation byte-for-byte for
+    every input reachable in Picard (ASCII, unreserved characters including
+    ``~``, reserved/sub-delims, UTF-8 multi-byte and astral code points,
+    spaces, ``+``, control characters, NUL and empty strings).
 
+    The only behavioral difference is for malformed lone UTF-16 surrogates:
+    ``QUrl`` silently dropped them, whereas ``quote()`` raises
+    ``UnicodeEncodeError``. This is not a concern here because the values come
+    from machine-generated arguments (MBIDs, fingerprints, integers, constant
+    literals) or from the search field, whose text originates from Qt widgets
+    as well-formed Unicode; lone surrogates cannot arise through any of these
+    paths.
     """
-    return json.loads(__convert_to_string(data))
-
-
-def parse_json(reply: QNetworkReply) -> Any:
-    return load_json(reply.readAll())
+    return {name: quote(str(value), safe='') for name, value in queryargs.items()}
 
 
 def restore_method(func: Callable) -> Callable:
@@ -955,42 +811,6 @@ def restore_method(func: Callable) -> Callable:
             return func(*args, **kwargs)
 
     return func_wrapper
-
-
-def reconnect(
-    signal: QtCore.pyqtBoundSignal, newhandler: Callable | None = None, oldhandler: Callable | None = None
-) -> None:
-    """
-    Reconnect an handler to a signal
-
-    It disconnects all previous handlers before connecting new one
-
-    Credits: https://stackoverflow.com/a/21589403
-    """
-    while True:
-        try:
-            if oldhandler is not None:
-                signal.disconnect(oldhandler)
-            else:
-                signal.disconnect()
-        except TypeError:
-            break
-    if newhandler is not None:
-        signal.connect(newhandler)
-
-
-@contextmanager
-def temporary_disconnect(signal: QtCore.pyqtBoundSignal, *handlers: Callable) -> Generator[None, None, None]:
-    """
-    Create context to temporarly disconnect one or more signal handlers
-    """
-    try:
-        for handler in handlers:
-            signal.disconnect(handler)
-        yield
-    finally:
-        for handler in handlers:
-            signal.connect(handler)
 
 
 def compare_barcodes(barcode1: str, barcode2: str) -> bool:

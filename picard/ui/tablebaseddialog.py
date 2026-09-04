@@ -40,8 +40,8 @@ from picard.i18n import (
 )
 from picard.util import (
     restore_method,
-    throttle,
 )
+from picard.util.qt import throttle
 
 from picard.ui import PicardDialog
 from picard.ui.columns import (

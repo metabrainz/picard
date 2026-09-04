@@ -49,7 +49,6 @@ from picard.i18n import gettext as _
 from picard.track import Track
 from picard.util import (
     bytes2human,
-    open_local_path,
 )
 
 from .utils import text_as_html
@@ -63,6 +62,7 @@ from .widgets import (
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_infodialog import Ui_InfoDialog
+from picard.ui.util import open_local_path
 
 
 class ArtworkRow:

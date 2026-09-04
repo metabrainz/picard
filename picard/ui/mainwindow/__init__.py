@@ -115,13 +115,10 @@ from picard.util import (
     icontheme,
     iter_files_from_objects,
     iter_unique,
-    open_local_path,
-    reconnect,
     resolve_fs_path,
     restore_method,
     sanitize_filename,
     thread,
-    throttle,
     webbrowser2,
 )
 from picard.util.cdrom import (
@@ -132,6 +129,10 @@ from picard.util.cdrom import (
     has_isrc_support,
 )
 from picard.util.isrc import valid_isrc
+from picard.util.qt import (
+    reconnect,
+    throttle,
+)
 from picard.util.readthedocs import ReadTheDocs
 from picard.webservice.api_helpers import escape_lucene_query
 
@@ -187,6 +188,7 @@ from picard.ui.util import (
     FileDialog,
     find_starting_directory,
     menu_builder,
+    open_local_path,
     show_session_not_found_dialog,
 )
 from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem

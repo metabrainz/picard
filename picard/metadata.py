@@ -47,10 +47,10 @@ from picard.plugin import PluginFunctions
 from picard.similarity import similarity2
 from picard.tags import preserved_tag_names
 from picard.util import (
-    ReadWriteLockContext,
     linear_combination_of_weights,
 )
 from picard.util.imagelist import ImageList
+from picard.util.qt import ReadWriteLockContext
 
 
 if TYPE_CHECKING:

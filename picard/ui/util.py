@@ -26,6 +26,7 @@
 
 
 from html import escape as html_escape
+import os
 
 from PyQt6 import (
     QtCore,
@@ -42,10 +43,21 @@ from picard.config import get_config
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.const.sys import IS_LINUX
 from picard.i18n import gettext as _
-from picard.util import find_existing_path
+from picard.util import (
+    find_existing_path,
+    run_executable,
+)
 
 from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
+
+
+def open_local_path(path: str) -> None:
+    url = QtCore.QUrl.fromLocalFile(path)
+    if os.environ.get('SNAP'):
+        run_executable('xdg-open', url.toString())
+    else:
+        QtGui.QDesktopServices.openUrl(url)
 
 
 def find_starting_directory():

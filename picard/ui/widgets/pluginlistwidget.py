@@ -46,7 +46,7 @@ from picard.plugin3.plugin_metadata import (
     is_local_plugin,
 )
 from picard.plugin3.ref_item import RefItem
-from picard.util import temporary_disconnect
+from picard.util.qt import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector

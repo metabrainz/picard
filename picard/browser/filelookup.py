@@ -38,9 +38,9 @@ from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.disc import Disc
 from picard.util import (
-    build_qurl,
     webbrowser2,
 )
+from picard.util.qt import build_qurl
 
 from picard.ui.searchdialog.album import AlbumSearchDialog
 
