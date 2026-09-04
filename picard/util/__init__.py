@@ -87,7 +87,12 @@ import re
 import subprocess  # nosec: B404
 import sys
 import tempfile
-from typing import Any
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Protocol,
+    TypeVar,
+)
 import unicodedata
 from urllib.parse import quote
 
@@ -124,6 +129,10 @@ winreg = None
 if IS_WIN:
     import winreg  # type: ignore[assignment]
 
+
+if TYPE_CHECKING:
+    from picard.file import File
+
 # Windows path length constraints
 # See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
 # the entire path's length (260 - 1 null character)
@@ -138,7 +147,14 @@ WIN_LONGPATH_PREFIX = '\\\\?\\'
 WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
-def iter_files_from_objects(objects: Iterable, save: bool = False) -> Iterator:
+T = TypeVar("T")
+
+
+class IterableFiles(Protocol):
+    def iterfiles(self, save: bool = False) -> 'Iterable[File]': ...
+
+
+def iter_files_from_objects(objects: 'Iterable[IterableFiles]', save: bool = False) -> 'Iterator[File]':
     """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
     return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
@@ -150,7 +166,7 @@ _io_encoding = sys.getfilesystemencoding()
 # On a glibc system the system locale defaults to ANSI_X3.4-1968
 # It is very unlikely that one would set the locale to ANSI_X3.4-1968
 # intentionally
-def check_io_encoding():
+def check_io_encoding() -> None:
     if _io_encoding == "ANSI_X3.4-1968":
         log.warning("""
 System locale charset is ANSI_X3.4-1968
@@ -557,12 +573,12 @@ class IgnoreUpdatesContext:
         return self._entered > 0
 
 
-def uniqify(seq: Iterable) -> list:
+def uniqify(seq: Iterable[T]) -> list[T]:
     """Uniqify a list, preserving order"""
     return list(iter_unique(seq))
 
 
-def iter_unique(seq: Iterable) -> Iterator:
+def iter_unique(seq: Iterable[T]) -> Iterator[T]:
     """Creates an iterator only returning unique values from seq"""
     seen = set()
     return (x for x in seq if x not in seen and not seen.add(x))
