@@ -17,6 +17,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -58,6 +59,59 @@ class TestPluginManifestSourceLocale(PicardTestCase):
                 self.assertEqual(manifest.source_locale, 'de_DE')
         finally:
             temp_path.unlink(missing_ok=True)
+
+
+class TestPluginManifestMalformedI18n(PicardTestCase):
+    """Regression tests for malformed *_i18n sections in a plugin MANIFEST.toml.
+
+    The i18n accessors (name/description/long_description) previously indexed
+    into whatever value the TOML declared for the section. The manifest
+    validator only rejects *empty* i18n sections, so a section declared with
+    the wrong type still counted as valid. For example ``name_i18n = "enabled"``
+    made ``name('en')`` evaluate ``'en' in "enabled"`` (a substring match) and
+    then ``"enabled"['en']``, raising ``TypeError: string indices must be
+    integers``. Non-string dict values likewise leaked through, breaking the
+    documented ``-> str`` return type.
+
+    The accessors must always return a string, falling back to the plain field.
+    """
+
+    BASE = (
+        b'uuid = "3f9a1b2c-4d5e-4f6a-8b9c-0d1e2f3a4b5c"\n'
+        b'name = "Test Plugin"\n'
+        b'description = "A test plugin for demonstration"\n'
+        b'api = ["3.0"]\n'
+    )
+
+    def _manifest(self, extra: bytes) -> PluginManifest:
+        return PluginManifest('test', io.BytesIO(self.BASE + extra))
+
+    def test_name_i18n_as_string_does_not_crash(self):
+        # 'en' is a substring of 'enabled': the old code indexed into the string.
+        manifest = self._manifest(b'name_i18n = "enabled"\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_name_i18n_non_string_value_returns_plain_field(self):
+        manifest = self._manifest(b'[name_i18n]\nen = 123\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_name_i18n_array_value_returns_plain_field(self):
+        manifest = self._manifest(b'[name_i18n]\nen = ["x"]\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_description_i18n_as_string_does_not_crash(self):
+        manifest = self._manifest(b'description_i18n = "enclosure"\n')
+        self.assertEqual(manifest.description('en'), 'A test plugin for demonstration')
+
+    def test_long_description_i18n_non_string_value_returns_plain_field(self):
+        manifest = self._manifest(b'long_description = "Long desc"\n[long_description_i18n]\nen = 42\n')
+        self.assertEqual(manifest.long_description('en'), 'Long desc')
+
+    def test_valid_i18n_still_translates(self):
+        # Ensure the guard does not break the normal, well-formed case.
+        manifest = self._manifest(b'[name_i18n]\nde = "Test-Erweiterung"\n')
+        self.assertEqual(manifest.name('de'), 'Test-Erweiterung')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
 
 
 class TestPluginApiLocale(PicardTestCase):
