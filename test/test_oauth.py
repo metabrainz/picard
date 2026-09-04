@@ -168,6 +168,17 @@ class RefreshAccessTokenTest(PicardTestCase):
         # The redacted marker should be present so the log stays useful.
         self.assertIn('<token:', output)
 
+    def test_authorization_code_is_not_logged_in_cleartext(self):
+        # The authorization code is a short-lived secret; it must not be logged.
+        manager = self._manager()
+        manager.webservice = MagicMock()
+        manager._OAuthManager__code_verifier = 'test-verifier'
+        with self.assertLogs('main', level='DEBUG') as cm:
+            manager.exchange_authorization_code('secret-auth-code', 'profile tag', callback=lambda **k: None)
+        output = '\n'.join(cm.output)
+        self.assertNotIn('secret-auth-code', output)
+        self.assertIn('<token:', output)
+
 
 class AuthorizationUrlTest(PicardTestCase):
     def _manager(self):

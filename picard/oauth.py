@@ -367,7 +367,7 @@ class OAuthManager(QObject):
                 callback(access_token=access_token)
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
-        log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
+        log.debug("OAuth: exchanging authorization_code %s for an access_token", redact_token(authorization_code))
         params = {
             'grant_type': 'authorization_code',
             'code': authorization_code,
