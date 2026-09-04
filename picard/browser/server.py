@@ -54,6 +54,7 @@ from picard.const import (
     BROWSER_INTEGRATION_MAX_PORT,
     METABRAINZ_OAUTH_SCOPES,
 )
+from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
@@ -205,7 +206,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         self._log(log.error, format, args)
 
     def log_message(self, format, *args):
-        self._log(log.info, format, args)
+        # The access log emits the full request line, including the query
+        # string. For the /auth OAuth callback that query carries the raw
+        # authorization code and state, so this is gated behind an explicit,
+        # dev-facing debug option and stays silent on a normal --debug run.
+        if DebugOpt.BROWSER.enabled:
+            self._log(log.info, format, args)
 
     def _handle_get(self):
         parsed = urlparse(self.path)
