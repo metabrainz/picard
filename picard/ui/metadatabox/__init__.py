@@ -88,6 +88,7 @@ from picard.ui.metadatabox.tagdiffhtml import (
     compute_diff,
     highlight_full,
 )
+from picard.ui.theme import theme
 
 
 # Custom data role for storing diff HTML on table items
@@ -304,6 +305,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         config = get_config()
         config.setting.setting_changed.connect(self._on_setting_changed)
 
+        # Refresh the tag-status highlight colours when they change at runtime
+        # (e.g. after changing a "Tag added" colour in Options and applying).
+        # Without this the box keeps showing the old colours until the next
+        # selection change triggers a rebuild.
+        theme.colors_changed.connect(self._on_colors_changed)
+
         # Connect to plugin manager signals to refresh when plugins change
         plugin_manager = self.tagger.get_plugin_manager()
         if plugin_manager:
@@ -398,6 +405,10 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _on_plugin_changed(self, plugin):
         """Handle plugin enabled/disabled - refresh metadata display"""
+        self.update(drop_album_caches=False)
+
+    def _on_colors_changed(self):
+        """Handle interface color changes - refresh so tag highlights update."""
         self.update(drop_album_caches=False)
 
     def _get_file_lookup(self):

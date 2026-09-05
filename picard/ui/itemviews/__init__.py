@@ -92,6 +92,12 @@ from picard.ui.match_icons import (
 from picard.ui.theme import theme
 
 
+# Sentinel for update_colums_text(): reset a column's foreground/background to
+# the automatic, palette-driven rendering instead of baking a concrete color.
+# Distinct from None, which means "leave this role untouched".
+_AUTO_COLOR = object()
+
+
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     low_color = interface_colors.get_qcolor('match_similarity_low')
@@ -101,6 +107,19 @@ def get_match_color(similarity, basecolor):
         int(c2[1] + (c1[1] - c2[1]) * similarity),
         int(c2[2] + (c1[2] - c2[2]) * similarity),
     )
+
+
+def _match_bgcolor(similarity):
+    """Return the background for a given match similarity.
+
+    A perfect match (similarity >= 1) needs no tint: return _AUTO_COLOR so the
+    row uses the automatic, palette-driven background and follows the widget's
+    colour group (e.g. greyed while the window is disabled). Imperfect matches
+    keep the baked similarity tint, which is a deliberate custom highlight.
+    """
+    if similarity >= 1:
+        return _AUTO_COLOR
+    return get_match_color(similarity, TreeItem.base_color)
 
 
 def _refresh_item_colors(view):
@@ -168,25 +187,34 @@ class MainPanel(QtWidgets.QSplitter):
 
     def _refresh_colors(self):
         """Refresh cached color attributes after a theme or color change."""
-        TreeItem.base_color = self.palette().base().color()
-        TreeItem.text_color = self.palette().text().color()
-        TreeItem.text_color_secondary = (
-            self.palette().brush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text).color()
-        )
+        # base_color is only used as the input to the match-similarity tint
+        # gradient (get_match_color); pin it to the Active palette group so the
+        # tint is stable regardless of the widget state at refresh time.
+        palette = self.palette()
+        TreeItem.base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
+        TreeItem.text_color_secondary = palette.brush(
+            QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text
+        ).color()
+        # For the default (normal / changed) foreground we do NOT bake a color.
+        # _AUTO_COLOR resets the item to automatic, palette-driven rendering so
+        # the track names follow the widget's colour group — greyed while the
+        # options dialog disables the window, normal again once it closes.
+        # Baking the theme's text colour here previously froze the greyed
+        # disabled colour into the items until Picard was restarted.
         TrackItem.track_colors = defaultdict(
-            lambda: TreeItem.text_color,
+            lambda: _AUTO_COLOR,
             {
                 File.State.NORMAL: interface_colors.get_qcolor('entity_saved'),
-                File.State.CHANGED: TreeItem.text_color,
+                File.State.CHANGED: _AUTO_COLOR,
                 File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
                 File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
         )
         FileItem.file_colors = defaultdict(
-            lambda: TreeItem.text_color,
+            lambda: _AUTO_COLOR,
             {
-                File.State.NORMAL: TreeItem.text_color,
-                File.State.CHANGED: TreeItem.text_color,
+                File.State.NORMAL: _AUTO_COLOR,
+                File.State.CHANGED: _AUTO_COLOR,
                 File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
                 File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
@@ -448,9 +476,16 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         from picard.ui.itemviews.custom_columns import CustomColumn
 
         for i, column in enumerate(self.columns):
-            if color is not None:
+            if color is _AUTO_COLOR:
+                # Reset to automatic, palette-driven rendering so the item
+                # follows the widget's colour group (e.g. greyed while the
+                # window is disabled, normal otherwise).
+                self.setForeground(i, QtGui.QBrush())
+            elif color is not None:
                 self.setForeground(i, color)
-            if bgcolor is not None:
+            if bgcolor is _AUTO_COLOR:
+                self.setBackground(i, QtGui.QBrush())
+            elif bgcolor is not None:
                 self.setBackground(i, bgcolor)
             if isinstance(column, ImageColumn):
                 self.setSizeHint(i, column.size)
@@ -681,13 +716,13 @@ class TrackItem(TreeItem):
         if track.num_linked_files == 1:
             file = track.files[0]
             color = TrackItem.track_colors[file.state]
-            bgcolor = get_match_color(file.similarity, TreeItem.base_color)
+            bgcolor = _match_bgcolor(file.similarity)
         else:
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
-                color = TreeItem.text_color
-            bgcolor = get_match_color(1, TreeItem.base_color)
+                color = _AUTO_COLOR
+            bgcolor = _match_bgcolor(1)
         return color, bgcolor
 
 
@@ -720,7 +755,7 @@ class FileItem(TreeItem):
         """Return (foreground, background) colors for this file item."""
         file = self.obj
         color = FileItem.file_colors[file.state]
-        bgcolor = get_match_color(file.similarity, TreeItem.base_color)
+        bgcolor = _match_bgcolor(file.similarity)
         return color, bgcolor
 
     @staticmethod

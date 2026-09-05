@@ -211,6 +211,23 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
+    def changeEvent(self, event):
+        # Items whose colors resolve to automatic (palette-driven) rendering do
+        # not bake a concrete color; they follow the widget's current palette
+        # color group at paint time. When that group changes at runtime — e.g.
+        # the window is disabled while the options dialog is open and enabled
+        # again on "Make It So", or it (de)activates — Qt does not always
+        # repaint the viewport, so those rows can keep showing the previous
+        # group's color (e.g. the greyed disabled text). Force a repaint so the
+        # automatic rows re-render with the current group.
+        if event.type() in {
+            QtCore.QEvent.Type.EnabledChange,
+            QtCore.QEvent.Type.ActivationChange,
+            QtCore.QEvent.Type.PaletteChange,
+        }:
+            self.viewport().update()
+        super().changeEvent(event)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:
