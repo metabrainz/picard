@@ -74,6 +74,11 @@ class PluginMetadata:
 
         # Filter unknown fields and create instance
         filtered_data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
+        # url/ref/commit are required (no dataclass defaults). Persisted config
+        # may be incomplete (hand-edited or written by a different version), so
+        # default missing required fields to '' rather than crashing.
+        for required in ('url', 'ref', 'commit'):
+            filtered_data.setdefault(required, '')
         instance = cls(**filtered_data)
         instance.git_ref = git_ref
         return instance

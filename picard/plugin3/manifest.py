@@ -45,24 +45,37 @@ class PluginManifest:
         self.module_name = module_name
         self._data = tomllib.load(manifest_fp)
 
+    def _localized(self, i18n_field: str, plain_field: str, locale: str) -> str:
+        """Return a localized string field, tolerating malformed manifest data.
+
+        The ``*_i18n`` section and its values come from a plugin-authored
+        MANIFEST.toml and may have the wrong type (the validator only rejects
+        empty sections). Guard that the section is a dict and the resolved
+        value is a string; otherwise fall back to the plain field. Always
+        returns a string.
+        """
+        i18n = self._data.get(i18n_field)
+        if isinstance(i18n, dict):
+            value = i18n.get(locale)
+            if not isinstance(value, str):
+                # Try language without region (e.g., 'de' from 'de_DE')
+                value = i18n.get(locale.split('_')[0])
+            if isinstance(value, str):
+                return value
+        plain = self._data.get(plain_field, '')
+        return plain if isinstance(plain, str) else ''
+
     def name(self, locale: str = 'en') -> str:
         """Get plugin name, optionally translated."""
-        i18n = self._data.get('name_i18n') or {}
-        if locale in i18n:
-            return i18n[locale]
-        # Try language without region (e.g., 'de' from 'de_DE')
-        lang = locale.split('_')[0]
-        if lang in i18n:
-            return i18n[lang]
-        return self._data.get('name', '')
+        return self._localized('name_i18n', 'name', locale)
 
     @property
-    def authors(self) -> tuple[str]:
+    def authors(self) -> tuple[str, ...]:
         authors = self._data.get('authors', [])
         return tuple(authors) if authors else tuple()
 
     @property
-    def maintainers(self) -> tuple[str]:
+    def maintainers(self) -> tuple[str, ...]:
         maintainers = self._data.get('maintainers', [])
         return tuple(maintainers) if maintainers else tuple()
 
@@ -73,25 +86,11 @@ class PluginManifest:
 
     def description(self, locale: str = 'en') -> str:
         """Get short description, optionally translated."""
-        i18n = self._data.get('description_i18n') or {}
-        if locale in i18n:
-            return i18n[locale]
-        # Try language without region
-        lang = locale.split('_')[0]
-        if lang in i18n:
-            return i18n[lang]
-        return self._data.get('description', '')
+        return self._localized('description_i18n', 'description', locale)
 
     def long_description(self, locale: str = 'en') -> str:
         """Get long description, optionally translated."""
-        i18n = self._data.get('long_description_i18n') or {}
-        if locale in i18n:
-            return i18n[locale]
-        # Try language without region
-        lang = locale.split('_')[0]
-        if lang in i18n:
-            return i18n[lang]
-        return self._data.get('long_description', '')
+        return self._localized('long_description_i18n', 'long_description', locale)
 
     def _get_current_locale(self) -> str:
         """Get current locale from Picard's UI language setting or system locale."""
