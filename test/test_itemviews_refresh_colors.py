@@ -22,13 +22,20 @@ from PyQt6 import QtGui
 
 from picard.file import File
 
+from picard.ui.colors import interface_colors
 from picard.ui.itemviews import (
     _AUTO_COLOR,
+    MATCH_TINT_ALPHA_DARK,
+    MATCH_TINT_ALPHA_LIGHT,
     FileItem,
     MainPanel,
     TrackItem,
     TreeItem,
     _match_bgcolor,
+)
+from picard.ui.match_icons import (
+    NUM_LEVELS,
+    similarity_to_level,
 )
 
 
@@ -84,14 +91,87 @@ def test_custom_entity_colors_stay_baked(qapp):
         assert isinstance(colors[File.State.ERROR], QtGui.QColor)
 
 
-def test_base_color_pinned_to_active_group(qapp):
-    """base_color (the match-tint gradient input) is taken from the Active group."""
+def test_base_color_follows_current_color_group(qapp):
+    """base_color (the match-tint gradient input) tracks the current colour group.
+
+    Regression test for the "great match" banding: base_color used to be pinned
+    to the Active group, so baked great-match tints stayed light while perfect
+    matches (automatic rendering) greyed out with the Disabled group whenever
+    the window was disabled — the near-perfect rows banded against the rest.
+    _run_refresh_colors forces the palette's current group to Disabled, so
+    base_color must resolve to the Disabled base (#323232), not the Active one.
+    """
     _run_refresh_colors(qapp)
-    assert TreeItem.base_color.name() == '#242424'
+    assert TreeItem.base_color.name() == '#323232'
+
+
+def test_match_tint_composited_over_current_group_base(qapp):
+    """The match tint composites the low colour over the current group's base.
+
+    Regression test for the "great match" banding: the tint is composited over
+    base_color, which tracks the current colour group. With the group forced to
+    Disabled (#323232), the tint must be nearer the Disabled base than the
+    Active base (#242424), so it does not band against the greyed automatic
+    rows. The exact value matches the alpha-composite formula in _match_bgcolor.
+    """
+    _run_refresh_colors(qapp)
+    similarity = 0.99  # a "great match": high, but not an exact 1.0
+    level = similarity_to_level(similarity)
+    top_level = NUM_LEVELS - 1
+    assert level < top_level  # not the perfect/top level
+
+    bg = _match_bgcolor(similarity)
+    assert isinstance(bg, QtGui.QColor)
+
+    max_alpha = MATCH_TINT_ALPHA_DARK if interface_colors.dark_theme else MATCH_TINT_ALPHA_LIGHT
+    t = (max_alpha * (top_level - level) / top_level) / 255
+    base = QtGui.QColor('#323232')
+    low = interface_colors.get_qcolor('match_similarity_low')
+    expected = QtGui.QColor(
+        int(base.red() + (low.red() - base.red()) * t),
+        int(base.green() + (low.green() - base.green()) * t),
+        int(base.blue() + (low.blue() - base.blue()) * t),
+    )
+    assert bg.name() == expected.name()
+    # Closer to the Disabled base than to the Active base (no banding).
+    assert abs(bg.red() - base.red()) < abs(bg.red() - QtGui.QColor('#242424').red()) + 100
+
+
+def test_match_tint_scales_with_level(qapp):
+    """A poorer match is tinted more strongly than a better one, capped by alpha.
+
+    The poorest match (level 0) gets the strongest tint (full MATCH_TINT_ALPHA)
+    but is still composited over the base — it is not the raw low colour — so it
+    stays subtle. Better matches are progressively closer to the base.
+    """
+    _run_refresh_colors(qapp)
+    base = TreeItem.base_color
+    low = interface_colors.get_qcolor('match_similarity_low')
+
+    def delta(sim):
+        bg = _match_bgcolor(sim)
+        return max(
+            abs(bg.red() - base.red()),
+            abs(bg.green() - base.green()),
+            abs(bg.blue() - base.blue()),
+        )
+
+    poor = delta(0.0)  # level 0
+    great = delta(0.99)  # near-perfect, but not exact
+    # Poorer match is more strongly tinted than the great match.
+    assert poor > great
+    # The great match is still perceptible (not identical to the base).
+    assert great >= 5
+    # Even the poorest match is capped — not the raw low colour.
+    assert delta(0.0) < max(
+        abs(low.red() - base.red()),
+        abs(low.green() - base.green()),
+        abs(low.blue() - base.blue()),
+    )
 
 
 def test_perfect_match_background_is_automatic(qapp):
-    """A perfect match needs no tint, so its background is automatic."""
+    """A perfect (exact 1.0) match needs no tint, so its background is automatic."""
     _run_refresh_colors(qapp)
     assert _match_bgcolor(1) is _AUTO_COLOR
     assert _match_bgcolor(1.0) is _AUTO_COLOR

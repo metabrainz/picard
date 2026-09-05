@@ -495,6 +495,45 @@ class TestMatchQualityColumnDelegate:
         # Should return early without error
         painter.drawText.assert_not_called()
 
+    def test_paint_uses_item_background_brush(
+        self, delegate: MatchQualityColumnDelegate, mock_option: Mock, mock_index: Mock
+    ) -> None:
+        """The delegate fills with the item's background brush when one is set.
+
+        Regression test for the "great match" banding: the match-quality cell
+        used to always fill with ``palette.base()`` (palette-group dependent),
+        while the rest of the row carried a baked match-similarity tint. That
+        made the match column diverge from its own row (and follow the disabled
+        group) whenever the window was disabled. It now honors the item's
+        background brush so the cell stays consistent with the row.
+        """
+        painter = Mock()
+        tint = QtGui.QBrush(QtGui.QColor(40, 60, 80))
+        mock_index.data.return_value = tint
+        mock_option.state = QtWidgets.QStyle.StateFlag.State_Enabled
+
+        with patch.object(delegate, "parent", return_value=None):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
+
+        painter.fillRect.assert_called_once_with(mock_option.rect, tint)
+
+    def test_paint_falls_back_to_palette_base_without_brush(
+        self, delegate: MatchQualityColumnDelegate, mock_option: Mock, mock_index: Mock
+    ) -> None:
+        """With no item background brush, the delegate fills with palette base."""
+        painter = Mock()
+        mock_index.data.return_value = QtGui.QBrush(QtCore.Qt.BrushStyle.NoBrush)
+        base_brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        mock_option.palette.base.return_value = base_brush
+        mock_option.state = QtWidgets.QStyle.StateFlag.State_Enabled
+
+        with patch.object(delegate, "parent", return_value=None):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
+
+        painter.fillRect.assert_called_once_with(mock_option.rect, base_brush)
+
     def test_helpEvent_without_parent(self, delegate: MatchQualityColumnDelegate) -> None:
         """Test helpEvent method when parent is None."""
         event = Mock()

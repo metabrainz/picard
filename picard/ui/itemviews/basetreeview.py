@@ -212,20 +212,29 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def changeEvent(self, event):
-        # Items whose colors resolve to automatic (palette-driven) rendering do
-        # not bake a concrete color; they follow the widget's current palette
-        # color group at paint time. When that group changes at runtime — e.g.
-        # the window is disabled while the options dialog is open and enabled
-        # again on "Make It So", or it (de)activates — Qt does not always
-        # repaint the viewport, so those rows can keep showing the previous
-        # group's color (e.g. the greyed disabled text). Force a repaint so the
-        # automatic rows re-render with the current group.
+        # When the widget's palette colour group changes at runtime — e.g. the
+        # window is disabled while the options dialog is open and enabled again
+        # on "Make It So", or it (de)activates — item colours must be
+        # recomputed:
+        #   * Automatic (palette-driven) cells — normal/changed text, perfect
+        #     matches — follow the group at paint time but Qt does not always
+        #     repaint the viewport, so they need a forced repaint.
+        #   * Baked match-similarity tints (great matches) are frozen against
+        #     the group that was current when they were computed, so they must
+        #     be re-tinted against the new group or they band against the
+        #     automatic cells.
+        # Re-running the panel's colour refresh recomputes base_color for the
+        # current group and re-applies every item's tint, then repaints.
         if event.type() in {
             QtCore.QEvent.Type.EnabledChange,
             QtCore.QEvent.Type.ActivationChange,
             QtCore.QEvent.Type.PaletteChange,
         }:
-            self.viewport().update()
+            panel = getattr(self.window, 'panel', None)
+            if panel is not None:
+                panel._refresh_colors()
+            else:
+                self.viewport().update()
         super().changeEvent(event)
 
     def contextMenuEvent(self, event):
