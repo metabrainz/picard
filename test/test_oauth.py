@@ -17,15 +17,38 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from unittest.mock import patch
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard.oauth import (
     OAuthManager,
     base64url_encode,
+    redact_token,
     s256_encode,
 )
+
+
+class RedactTokenTest(PicardTestCase):
+    def test_redacts_to_stable_partial_hash(self):
+        token = 'super-secret-refresh-token'
+        redacted = redact_token(token)
+        # Never contains the raw token.
+        self.assertNotIn(token, redacted)
+        # Format is <token:xxxxxxxx> with an 8-char hex digest.
+        self.assertRegex(redacted, r'^<token:[0-9a-f]{8}>$')
+        # Stable: the same token always redacts to the same value.
+        self.assertEqual(redacted, redact_token(token))
+
+    def test_different_tokens_redact_differently(self):
+        self.assertNotEqual(redact_token('token-a'), redact_token('token-b'))
+
+    def test_empty_and_none_are_marked_absent(self):
+        self.assertEqual(redact_token(None), '<none>')
+        self.assertEqual(redact_token(''), '<none>')
 
 
 class OAuthManagerTest(PicardTestCase):
@@ -128,6 +151,33 @@ class RefreshAccessTokenTest(PicardTestCase):
         manager.on_refresh_access_token_finished(data, http=None, error=None)
         self.assertEqual('old-refresh-token', manager.refresh_token)
         self.assertEqual('new-access-token', manager.access_token)
+
+    def test_tokens_are_not_logged_in_cleartext(self):
+        # Debug logs are frequently attached to bug reports; token values must
+        # never appear there. Only their redacted partial hash may be logged.
+        manager = self._manager()
+        manager.webservice = MagicMock()
+        with self.assertLogs('main', level='DEBUG') as cm:
+            manager.set_refresh_token('secret-refresh-value', 'profile tag')
+            manager.set_access_token('secret-access-value', 3600)
+            manager._refreshing = False
+            manager.refresh_access_token(callback=lambda **k: None)
+        output = '\n'.join(cm.output)
+        self.assertNotIn('secret-refresh-value', output)
+        self.assertNotIn('secret-access-value', output)
+        # The redacted marker should be present so the log stays useful.
+        self.assertIn('<token:', output)
+
+    def test_authorization_code_is_not_logged_in_cleartext(self):
+        # The authorization code is a short-lived secret; it must not be logged.
+        manager = self._manager()
+        manager.webservice = MagicMock()
+        manager._OAuthManager__code_verifier = 'test-verifier'
+        with self.assertLogs('main', level='DEBUG') as cm:
+            manager.exchange_authorization_code('secret-auth-code', 'profile tag', callback=lambda **k: None)
+        output = '\n'.join(cm.output)
+        self.assertNotIn('secret-auth-code', output)
+        self.assertIn('<token:', output)
 
 
 class AuthorizationUrlTest(PicardTestCase):

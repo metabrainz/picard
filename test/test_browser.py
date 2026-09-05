@@ -41,6 +41,7 @@ from picard.browser.server import (
     clean_header,
 )
 from picard.const import METABRAINZ_OAUTH_SCOPES
+from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthInvalidStateError
 from picard.util import webbrowser2
 
@@ -381,3 +382,46 @@ class RequestHandlerAuthTest(PicardTestCase):
         self.assertIn(b'200', response)
         self.assertIn(b'image/svg+xml', response)
         self.assertIn(b'<svg', response)
+
+
+class RequestHandlerAccessLogTest(PicardTestCase):
+    """The per-request access log must not leak OAuth callback parameters.
+
+    The stdlib BaseHTTPRequestHandler access log emits the full request line,
+    including the query string. For the /auth callback that query contains the
+    raw OAuth authorization code and state. That access line is now gated behind
+    the opt-in DebugOpt.BROWSER, so it is silent on a normal --debug run and the
+    code never reaches the log by default.
+    """
+
+    def setUp(self):
+        super().setUp()
+        DebugOpt.set_registry(set())
+
+    def _make_handler(self):
+        handler = RequestHandler.__new__(RequestHandler)
+        handler.client_address = ('127.0.0.1', 0)
+        return handler
+
+    def test_access_log_silent_by_default(self):
+        handler = self._make_handler()
+        # assertNoLogs raises if any record is emitted on 'main'.
+        with self.assertNoLogs('main', level='DEBUG'):
+            handler.log_message('%s', 'GET /auth?code=SECRETCODE&state=abc HTTP/1.1')
+
+    def test_access_log_enabled_by_debug_opt(self):
+        DebugOpt.BROWSER.enabled = True
+        handler = self._make_handler()
+        with self.assertLogs('main', level='DEBUG') as cm:
+            handler.log_message('%s', 'GET /auth?code=SECRETCODE&state=abc HTTP/1.1')
+        output = '\n'.join(cm.output)
+        # When the dev explicitly opts in, the full request line is logged.
+        self.assertIn('SECRETCODE', output)
+
+    def test_error_log_always_emitted(self):
+        # Genuine request errors must still surface regardless of the opt; they
+        # do not carry the OAuth code.
+        handler = self._make_handler()
+        with self.assertLogs('main', level='DEBUG') as cm:
+            handler.log_error('%s', 'Bad request')
+        self.assertIn('Bad request', '\n'.join(cm.output))
