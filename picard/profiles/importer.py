@@ -118,6 +118,8 @@ def import_profile(
     profile_section = data.get('profile')
     if not profile_section:
         raise ProfileImportError(_("Missing required [profile] section"))
+    if not isinstance(profile_section, dict):
+        raise ProfileImportError(_("The [profile] section must be a table"))
 
     title = profile_section.get('title')
     if not title:
@@ -159,6 +161,8 @@ def import_profile(
     profile_settings = {}
 
     settings_section = data.get('settings', {})
+    if not isinstance(settings_section, dict):
+        raise ProfileImportError(_("The [settings] section must be a table"))
 
     # Apply settings upgrades if the profile is from an older version
     picard_version = profile_section.get('picard_version')
@@ -202,8 +206,12 @@ def import_profile(
 
     # Process [scripts.naming] section
     scripts_section = data.get('scripts', {})
+    if not isinstance(scripts_section, dict):
+        raise ProfileImportError(_("The [scripts] section must be a table"))
     naming_section = scripts_section.get('naming')
     if naming_section:
+        if not isinstance(naming_section, dict):
+            raise ProfileImportError(_("The [scripts.naming] section must be a table"))
         script_id = _import_naming_script(config, naming_section, result)
         if script_id:
             profile_settings['active_file_naming_script_id'] = script_id
@@ -211,6 +219,8 @@ def import_profile(
     # Process [[scripts.tagging]] section
     tagging_section = scripts_section.get('tagging', [])
     if tagging_section:
+        if not isinstance(tagging_section, list):
+            raise ProfileImportError(_("The [[scripts.tagging]] section must be an array of tables"))
         _import_tagger_scripts(config, profile_settings, tagging_section, result)
 
     # Register the profile
@@ -353,6 +363,8 @@ def _import_tagger_scripts(
     duplicate_count = 0
 
     for entry in tagging_section:
+        if not isinstance(entry, dict):
+            raise ProfileImportError(_("Each [[scripts.tagging]] entry must be a table"))
         title = entry.get('title', '')
         script = entry.get('script', '')
         enabled = entry.get('enabled', True)
