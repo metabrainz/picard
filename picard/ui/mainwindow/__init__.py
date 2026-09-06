@@ -301,11 +301,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.metadata_box = MetadataBox(parent=self)
         self.cover_art_box = CoverArtBox(parent=self)
+        # Wrap the cover art box in a scroll area so it can shrink vertically.
+        # Without this, the cover art box's tall minimum height (fixed-size
+        # thumbnail + labels + button) becomes the floor for the whole
+        # metadata view, preventing the main splitter from shrinking it. The
+        # scroll area has a small minimum height and scrolls its content when
+        # clipped, so the separator can be dragged down as it can when the
+        # cover art box is hidden.
+        self.cover_art_scrollarea = QtWidgets.QScrollArea()
+        self.cover_art_scrollarea.setWidget(self.cover_art_box)
+        self.cover_art_scrollarea.setWidgetResizable(True)
+        self.cover_art_scrollarea.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.cover_art_scrollarea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.cover_art_scrollarea.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         metadata_view_layout = QtWidgets.QHBoxLayout()
         metadata_view_layout.setContentsMargins(0, 0, 0, 0)
         metadata_view_layout.setSpacing(0)
         metadata_view_layout.addWidget(self.metadata_box, 1)
-        metadata_view_layout.addWidget(self.cover_art_box, 0)
+        metadata_view_layout.addWidget(self.cover_art_scrollarea, 0)
         self.metadata_view = QtWidgets.QWidget()
         self.metadata_view.setLayout(metadata_view_layout)
 
@@ -2028,6 +2043,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_cover_art(self):
         """Show/hide the cover art box."""
         show = self.action_is_checked(MainAction.SHOW_COVER_ART)
+        # Toggle the scroll area wrapper so the whole column is removed from
+        # the layout when hidden (hiding only the inner box would leave the
+        # empty scroll area taking space). Also toggle the inner box so its
+        # own isHidden()-based update optimizations keep working.
+        self.cover_art_scrollarea.setVisible(show)
         self.cover_art_box.setVisible(show)
         if show:
             self.update_selection()
