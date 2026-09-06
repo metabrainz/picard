@@ -547,7 +547,7 @@ BoolOption(
     'setting',
     'force_standardize_multivalue_artist',
     False,
-    title=N_("Force standarization for multi-valued artist tags"),
+    title=N_("Force standardization for multi-valued artist tags"),
     in_profile=True,
 )
 BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument credits"), in_profile=True)

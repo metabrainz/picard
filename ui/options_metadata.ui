@@ -56,7 +56,7 @@
       <item>
        <widget class="QCheckBox" name="force_standardize_multivalue_artist">
         <property name="text">
-         <string>Force standarization for multi-valued artist tags</string>
+         <string>Force standardization for multi-valued artist tags</string>
         </property>
        </widget>
       </item>
