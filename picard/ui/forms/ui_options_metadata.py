@@ -169,7 +169,6 @@ class Ui_MetadataOptionsPage(object):
         self.retranslateUi(MetadataOptionsPage)
         self.standardize_artist_names.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
-        MetadataOptionsPage.setTabOrder(self.force_standardize_multivalue_artist, self.standardize_instruments)
         MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.standardize_vocals)
         MetadataOptionsPage.setTabOrder(self.standardize_vocals, self.convert_punctuation)
         MetadataOptionsPage.setTabOrder(self.convert_punctuation, self.release_ars)
