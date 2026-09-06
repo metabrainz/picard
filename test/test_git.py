@@ -18,6 +18,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 from pathlib import Path
 import unittest
 from unittest.mock import (
@@ -36,6 +37,7 @@ from picard.git.backend import (
     GitRepository,
     GitStatusFlag,
 )
+from picard.git.backends import pygit2 as pygit2_backend
 from picard.git.factory import git_backend
 
 
@@ -388,6 +390,84 @@ class TestGitBackend(unittest.TestCase):
             self.assertEqual(name, "Alice")
             self.assertEqual(email, "alice@example.com")
             repo.free()
+
+
+class TestGitNetworkTimeouts(unittest.TestCase):
+    """Tests for libgit2 network timeout configuration from environment variables."""
+
+    def setUp(self):
+        skip_if_no_git_backend()
+
+    def _run_with_env(self, connect=None, server=None):
+        """Run _apply_network_timeouts with a fake pygit2.settings and env vars.
+
+        Returns the dict of values that would be assigned to pygit2.settings
+        (attribute name -> value in milliseconds).
+        """
+        applied = {}
+
+        class FakeSettings:
+            # Present attributes so hasattr() is True, like libgit2 1.7+.
+            server_connect_timeout = 0
+            server_timeout = 0
+
+            def __setattr__(self, name, value):
+                applied[name] = value
+
+        env = {}
+        if connect is not None:
+            env[pygit2_backend.GIT_CONNECT_TIMEOUT_ENV] = connect
+        if server is not None:
+            env[pygit2_backend.GIT_SERVER_TIMEOUT_ENV] = server
+
+        # Start from a clean slate: remove our env vars, then set any provided.
+        with patch.dict(os.environ, env, clear=False):
+            if connect is None:
+                os.environ.pop(pygit2_backend.GIT_CONNECT_TIMEOUT_ENV, None)
+            if server is None:
+                os.environ.pop(pygit2_backend.GIT_SERVER_TIMEOUT_ENV, None)
+            with patch.object(pygit2_backend.pygit2, 'settings', FakeSettings()):
+                pygit2_backend.Pygit2Backend._apply_network_timeouts()
+        return applied
+
+    def test_defaults_applied_when_env_unset(self):
+        applied = self._run_with_env()
+        # Defaults are in seconds; libgit2 wants milliseconds.
+        self.assertEqual(applied.get('server_connect_timeout'), pygit2_backend.DEFAULT_GIT_CONNECT_TIMEOUT * 1000)
+        self.assertEqual(applied.get('server_timeout'), pygit2_backend.DEFAULT_GIT_SERVER_TIMEOUT * 1000)
+
+    def test_env_overrides_in_seconds_converted_to_ms(self):
+        applied = self._run_with_env(connect='5', server='45')
+        self.assertEqual(applied.get('server_connect_timeout'), 5000)
+        self.assertEqual(applied.get('server_timeout'), 45000)
+
+    def test_zero_leaves_libgit2_default(self):
+        # 0 means "do not impose a Picard timeout" -> attribute is not set.
+        applied = self._run_with_env(connect='0', server='0')
+        self.assertNotIn('server_connect_timeout', applied)
+        self.assertNotIn('server_timeout', applied)
+
+    def test_unparseable_falls_back_to_defaults(self):
+        applied = self._run_with_env(connect='abc', server='')
+        self.assertEqual(applied.get('server_connect_timeout'), pygit2_backend.DEFAULT_GIT_CONNECT_TIMEOUT * 1000)
+        self.assertEqual(applied.get('server_timeout'), pygit2_backend.DEFAULT_GIT_SERVER_TIMEOUT * 1000)
+
+    def test_values_clamped_to_maximum(self):
+        applied = self._run_with_env(connect='999999', server='999999')
+        self.assertEqual(applied.get('server_connect_timeout'), pygit2_backend.MAX_GIT_TIMEOUT * 1000)
+        self.assertEqual(applied.get('server_timeout'), pygit2_backend.MAX_GIT_TIMEOUT * 1000)
+
+    def test_missing_libgit2_support_is_ignored(self):
+        class OldSettings:
+            # No server_* attributes -> emulate libgit2 < 1.7.
+            pass
+
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(pygit2_backend.GIT_CONNECT_TIMEOUT_ENV, None)
+            os.environ.pop(pygit2_backend.GIT_SERVER_TIMEOUT_ENV, None)
+            with patch.object(pygit2_backend.pygit2, 'settings', OldSettings()):
+                # Must not raise even though the settings are unsupported.
+                pygit2_backend.Pygit2Backend._apply_network_timeouts()
 
 
 if __name__ == '__main__':
