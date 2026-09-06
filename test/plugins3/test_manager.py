@@ -630,6 +630,8 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_repo.get_commit_date.return_value = 1234567890
         mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
 
+        manager._registry_manager._fetch_version_tags = Mock(return_value=[])
+
         # Mock GitOperations
         with (
             patch('picard.plugin3.manager.update.GitOperations.check_dirty_working_dir', return_value=None),
