@@ -644,8 +644,10 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_sort_names = []
     artist_countries = []
     artist_comments = []
+
     config = get_config()
     standardize_names_mode = config.setting['standardize_artist_names']
+
     for artist_info in node:
         use_credited_as = not should_standardize_artist_name(
             standardize_names_mode, artist_info['name'], artist_info['artist']
@@ -657,6 +659,7 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             artist_comments.append(artist.get('disambiguation', ''))
         translated_alias = _translate_artist_node(artist, config=config)
         has_translation = translated_alias.name != artist['name']
+
         if not has_translation and use_credited_as and 'name' in artist_info:
             name = artist_info['name']
             sort_name = _select_sort_name_from_aliases(artist, name, config=config)
@@ -665,11 +668,19 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             sort_name = translated_alias.sort_name
         artist_name += name
         artist_sort_name += sort_name or ''
-        artist_names.append(name)
-        artist_sort_names.append(sort_name or '')
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
+
+        if config.setting['force_standardize_multivalue_artist']:
+            plural_name = translated_alias.name
+            plural_sort_name = translated_alias.sort_name
+        else:
+            plural_name = name
+            plural_sort_name = sort_name
+        artist_names.append(plural_name)
+        artist_sort_names.append(plural_sort_name or '')
+
     return ArtistCreditInfo(
         artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries, artist_comments
     )

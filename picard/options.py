@@ -543,6 +543,13 @@ Option(
     title=N_("Standardize artist names"),
     in_profile=True,
 )
+BoolOption(
+    'setting',
+    'force_standardize_multivalue_artist',
+    False,
+    title=N_("Force standarization for multi-valued artist tags"),
+    in_profile=True,
+)
 BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument credits"), in_profile=True)
 BoolOption('setting', 'standardize_vocals', True, title=N_("Use standardized vocal credits"), in_profile=True)
 BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"), in_profile=True)
