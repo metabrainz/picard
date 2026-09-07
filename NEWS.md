@@ -67,6 +67,7 @@
 - [PICARD-3366](https://tickets.metabrainz.org/browse/PICARD-3366) - Updated match icons, clearer indication of bad match and near-perfect matches
 - [PICARD-3370](https://tickets.metabrainz.org/browse/PICARD-3370) - Refresh About dialog styling and layout
 - [PICARD-3371](https://tickets.metabrainz.org/browse/PICARD-3371) - Speedup opening Options dialog
+- [PICARD-3373](https://tickets.metabrainz.org/browse/PICARD-3373) - Re-organize Option dialog pages
 
 
 ## Version 3.0.0b7 - 2026-07-16
