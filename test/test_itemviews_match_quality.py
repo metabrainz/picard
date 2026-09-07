@@ -822,24 +822,6 @@ class TestItemViewsIntegration:
 class TestCodeFormattingChanges:
     """Test that code formatting changes don't break functionality."""
 
-    def test_get_match_color_formatting(self) -> None:
-        """Test that get_match_color function works with new formatting."""
-        from picard.ui.itemviews import get_match_color
-
-        basecolor = QtGui.QColor(255, 255, 255)
-        similarity = 0.5
-
-        result = get_match_color(similarity, basecolor)
-
-        assert isinstance(result, QtGui.QColor)
-        # Verify the color calculation still works
-        assert result.red() >= 0
-        assert result.red() <= 255
-        assert result.green() >= 0
-        assert result.green() <= 255
-        assert result.blue() >= 0
-        assert result.blue() <= 255
-
     def test_album_item_formatting(self) -> None:
         """Test that AlbumItem tooltip formatting works with new formatting."""
         from picard.ui.itemviews import AlbumItem

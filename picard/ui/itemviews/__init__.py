@@ -107,17 +107,6 @@ MATCH_TINT_ALPHA_LIGHT = 60
 MATCH_TINT_ALPHA_DARK = 90
 
 
-def get_match_color(similarity, basecolor):
-    c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
-    low_color = interface_colors.get_qcolor('match_similarity_low')
-    c2 = (low_color.red(), low_color.green(), low_color.blue())
-    return QtGui.QColor(
-        int(c2[0] + (c1[0] - c2[0]) * similarity),
-        int(c2[1] + (c1[1] - c2[1]) * similarity),
-        int(c2[2] + (c1[2] - c2[2]) * similarity),
-    )
-
-
 def _match_bgcolor(similarity):
     """Return the background tint for a given match similarity.
 
@@ -222,8 +211,8 @@ class MainPanel(QtWidgets.QSplitter):
 
     def _refresh_colors(self):
         """Refresh cached color attributes after a theme or color change."""
-        # base_color is the input to the match-similarity tint gradient
-        # (get_match_color). Take it from the palette's *current* colour group
+        # base_color is the base the match-similarity tint is composited over
+        # (see _match_bgcolor). Take it from the palette's *current* colour group
         # (Active/Inactive/Disabled) rather than pinning it to Active, so the
         # baked great-match tints follow the widget state like the automatic
         # (perfect-match / normal-text) rendering does. Pinning to Active made
