@@ -60,3 +60,38 @@ def parse_bool_env(name: str, default: bool = False) -> bool:
     if value in _ENV_FALSY_VALUES:
         return False
     return default
+
+
+def parse_int_env(name: str, default: int, minimum: int | None = None, maximum: int | None = None) -> int:
+    """Parse a non-negative integer environment variable.
+
+    Reads the variable, strips surrounding whitespace and parses it as a base-10
+    integer. If the variable is unset, empty, or holds a value that cannot be
+    parsed as an integer, ``default`` is returned. When parsing succeeds the
+    value is clamped to the inclusive ``[minimum, maximum]`` range if those
+    bounds are provided.
+
+    This provides a single, predictable convention for Picard-owned integer
+    environment variables (e.g. timeouts and limits).
+
+    Args:
+        name: Name of the environment variable to read.
+        default: Value returned when the variable is unset or unparseable.
+        minimum: Optional inclusive lower bound to clamp the parsed value to.
+        maximum: Optional inclusive upper bound to clamp the parsed value to.
+
+    Returns:
+        The parsed (and optionally clamped) integer value.
+    """
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    try:
+        parsed = int(value.strip())
+    except (ValueError, TypeError):
+        return default
+    if minimum is not None and parsed < minimum:
+        parsed = minimum
+    if maximum is not None and parsed > maximum:
+        parsed = maximum
+    return parsed

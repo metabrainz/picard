@@ -30,6 +30,8 @@ These affect a running Picard instance.
 | `PICARD_CACHE_DIR` | path | OS cache location | Override the directory used for caches. |
 | `PICARD_PLUGIN_DIR` | path | `<appdata>/plugins3` | Override the directory used for version 3 plugins. |
 | `PICARD_PLUGIN_REGISTRY_URL` | URL | built-in registry list (`DEFAULT_PLUGIN_REGISTRY_URLS`) | Override the plugin registry with a single URL used to discover plugins. |
+| `PICARD_GIT_CONNECT_TIMEOUT` | integer (seconds) | `30` | Maximum time to establish the connection to a remote git server during plugin install/update. `0` uses the libgit2/OS default. Capped by the operating system's own connect timeout, so a lower value only shortens the wait. Values are clamped to `0`–`3600`; unparseable values fall back to the default. |
+| `PICARD_GIT_TIMEOUT` | integer (seconds) | `60` | Per socket read/write (stall) timeout for remote git operations. This is not a total-operation budget: a slow but progressing transfer is unaffected; it only trips when the connection goes silent for longer than the value. Raise it behind flaky proxies, lower it to fail fast. `0` uses the libgit2/OS default (block). Values are clamped to `0`–`3600`; unparseable values fall back to the default. |
 
 ## Build variables
 

@@ -34,6 +34,7 @@ except ImportError:
     pygit2 = None  # type: ignore[assignment]
 
 from picard import log
+from picard.env import parse_int_env
 from picard.git.backend import (
     GitBackend,
     GitCommitError,
@@ -49,6 +50,30 @@ from picard.git.backend import (
     GitStatusFlag,
     _log_git_call,
 )
+
+
+# Network timeout defaults for git operations, in seconds.
+#
+# These guard against Picard hanging when a remote git server is unreachable or
+# stalls (e.g. during plugin install/update ref fetches). libgit2 exposes two
+# distinct, purely programmatic settings (no env var of its own); we surface
+# them through Picard-owned environment variables.
+#
+# - connect timeout: time allowed to establish the TCP/TLS connection. libgit2
+#   caps this at the operating system default, so a shorter value only ever
+#   shortens the wait. This is bandwidth-independent.
+# - server timeout: a PER socket read/write (stall) timeout, NOT a total
+#   operation budget. A slow but progressing transfer is unaffected; it only
+#   trips when the socket goes silent for longer than the value. This makes it
+#   safe to keep generous without penalizing slow networks or large repos.
+#
+# A value of 0 means "use the libgit2/OS default" (no Picard-imposed timeout).
+GIT_CONNECT_TIMEOUT_ENV = 'PICARD_GIT_CONNECT_TIMEOUT'
+GIT_SERVER_TIMEOUT_ENV = 'PICARD_GIT_TIMEOUT'
+DEFAULT_GIT_CONNECT_TIMEOUT = 30
+DEFAULT_GIT_SERVER_TIMEOUT = 60
+# Upper bound guards against absurd values; one hour is well beyond any sane use.
+MAX_GIT_TIMEOUT = 3600
 
 
 class Pygit2RemoteCallbacks(GitRemoteCallbacks):
@@ -355,6 +380,41 @@ class Pygit2Backend(GitBackend):
     def __init__(self):
         if not HAS_PYGIT2:
             raise ImportError("pygit2 not available")
+        self._apply_network_timeouts()
+
+    @staticmethod
+    def _apply_network_timeouts():
+        """Configure libgit2 network timeouts from Picard environment variables.
+
+        Reads ``PICARD_GIT_CONNECT_TIMEOUT`` and ``PICARD_GIT_TIMEOUT`` (both in
+        seconds) and applies them to the libgit2 global settings, converting to
+        milliseconds. A value of 0 leaves the corresponding libgit2/OS default in
+        place. Each setting is guarded with ``hasattr`` and any failure to apply
+        is logged and ignored rather than preventing the backend from
+        initializing.
+        """
+        connect_timeout = parse_int_env(
+            GIT_CONNECT_TIMEOUT_ENV, DEFAULT_GIT_CONNECT_TIMEOUT, minimum=0, maximum=MAX_GIT_TIMEOUT
+        )
+        server_timeout = parse_int_env(
+            GIT_SERVER_TIMEOUT_ENV, DEFAULT_GIT_SERVER_TIMEOUT, minimum=0, maximum=MAX_GIT_TIMEOUT
+        )
+
+        # (setting attribute name, value in seconds)
+        for attr, seconds in (
+            ('server_connect_timeout', connect_timeout),
+            ('server_timeout', server_timeout),
+        ):
+            if seconds <= 0:
+                continue
+            if not hasattr(pygit2.settings, attr):
+                log.debug('libgit2 build lacks %s; skipping git timeout setup', attr)
+                continue
+            try:
+                setattr(pygit2.settings, attr, seconds * 1000)
+                log.debug('Set libgit2 %s to %d seconds', attr, seconds)
+            except (pygit2.GitError, OSError, ValueError) as e:
+                log.warning('Failed to set libgit2 %s: %s', attr, e)
 
     @staticmethod
     def _raw(repo: GitRepository):
