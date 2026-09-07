@@ -42,6 +42,7 @@ from picard import (
 from picard.config import get_config
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.const.sys import IS_LINUX
+from picard.env import parse_bool_env
 from picard.i18n import gettext as _
 from picard.util import (
     find_existing_path,
@@ -50,6 +51,42 @@ from picard.util import (
 
 from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
+
+
+def _make_it_so_enabled() -> bool:
+    """Return whether dialog accept buttons should use the "Make It So!" label.
+
+    Enabled by default (preserving the long-standing Easter egg) and can be
+    disabled at runtime by setting the ``PICARD_MAKE_IT_SO`` environment
+    variable to a falsy value. There is deliberately no configuration option:
+    the "Make It So!" reference does not translate well, so a user-facing
+    setting would have no effect in many languages.
+    """
+    return parse_bool_env('PICARD_MAKE_IT_SO', default=True)
+
+
+def add_accept_button(
+    buttonbox: QtWidgets.QDialogButtonBox,
+    role: QtWidgets.QDialogButtonBox.StandardButton = QtWidgets.QDialogButtonBox.StandardButton.Ok,
+) -> QtWidgets.QPushButton:
+    """Add the accept button to a dialog button box with Picard's themed label.
+
+    Creates the standard accept button (``Ok`` by default) on ``buttonbox``.
+    When ``role`` is ``Ok`` and the "Make It So!" Easter egg is enabled (see
+    :func:`_make_it_so_enabled`, which is on by default and controlled by the
+    ``PICARD_MAKE_IT_SO`` environment variable), the button is relabeled with
+    the Star Trek themed "Make It So!" text. In any other case the standard
+    button keeps its native, Qt-translated label. Centralizing this here gives
+    every dialog consistent behavior. Returns the created button so callers can
+    set tooltips, connect signals, etc.
+    """
+    button = buttonbox.addButton(role)
+    # addButton() with a standard button always returns a valid button; assert
+    # to satisfy the type checker (the stub types it as Optional) and callers.
+    assert button is not None
+    if role == QtWidgets.QDialogButtonBox.StandardButton.Ok and _make_it_so_enabled():
+        button.setText(_("Make It So!"))
+    return button
 
 
 def open_local_path(path: str) -> None:
