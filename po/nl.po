@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-09-01 07:11+0000\n"
+"PO-Revision-Date: 2026-09-07 12:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -322,7 +322,7 @@ msgstr "Zet Unicode-tekens om naar ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
-msgstr "Uitgaverelaties gebruiken"
+msgstr "Gebruik uitgaverelaties"
 
 #: picard/profile.py:72
 msgid "Use track and release relationships"
@@ -396,7 +396,7 @@ msgstr "E-mailadres voor het opslaan van waarderingen"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
-msgstr "Waarderingen naar MusicBrainz versturen"
+msgstr "Verstuur waarderingen naar MusicBrainz"
 
 #: picard/profile.py:104 picard/ui/options/tags.py:47
 msgid "Tags"
@@ -420,7 +420,7 @@ msgstr "Behoud ingebedde afbeeldingen bij het verwijderen van tags"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
-msgstr "ID3-tags uit FLAC-bestanden verwijderen"
+msgstr "Verwijder ID3-tags uit FLAC-bestanden"
 
 #: picard/profile.py:112 picard/ui/ui_options_tags.py:77
 msgid "Remove APEv2 tags from MP3 files"
@@ -428,7 +428,7 @@ msgstr "Verwijder APEv2-tags uit MP3-bestanden"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden op"
+msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden toe"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
@@ -492,7 +492,7 @@ msgstr "Sla hoesafbeeldingen op in tags"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr "Slechts één afbeelding van de voorkant inbedden"
+msgstr "Sla slechts één afbeelding van de voorkant in de tags op"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
@@ -611,7 +611,7 @@ msgstr "Gebruikersinterfacethema"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
-msgstr "Het selecteren van meerdere mappen toestaan"
+msgstr "Sta het selecteren van meerdere mappen toe"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
@@ -628,12 +628,12 @@ msgstr "Bij het starten van Picard een instructiemelding tonen"
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:128
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
-"Bij het afsluiten om een bevestiging vragen als er niet-opgeslagen "
-"wijzigingen zijn"
+"Vraag bij het afsluiten om bevestiging als er niet-opgeslagen wijzigingen "
+"zijn"
 
 #: picard/profile.py:195 picard/ui/ui_options_interface.py:129
 msgid "Show a confirmation dialog when saving files"
-msgstr "Bij het opslaan van bestanden een bevestigingsvenster tonen"
+msgstr "Toon bij het opslaan van bestanden een bevestigingsvenster"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
@@ -673,7 +673,7 @@ msgstr "Bestandspaden die met een reguliere expressie overeenkomen, negeren"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
-msgstr "Verborgen bestanden negeren"
+msgstr "Negeer verborgen bestanden"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
@@ -3616,7 +3616,7 @@ msgstr "Naar soortgelijke nummers zoeken …"
 #: picard/ui/mainwindow.py:689
 msgid "View similar tracks and optionally choose a different release"
 msgstr ""
-"Naar soortgelijke nummers zoeken, zodat je een andere uitgave kan kiezen."
+"Naar soortgelijke nummers zoeken, zodat je een andere uitgave kan kiezen"
 
 #: picard/ui/mainwindow.py:697
 msgid "Show &other album versions…"
@@ -3936,7 +3936,7 @@ msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1725
 msgid "Authentication Required"
-msgstr "Machtiging vereist"
+msgstr "Aanmelding vereist"
 
 #: picard/ui/mainwindow.py:1726
 msgid ""
@@ -3971,7 +3971,7 @@ msgstr[1] "(ontbreekt bij %d nummers)"
 
 #: picard/ui/metadatabox.py:218
 msgid "metadata view"
-msgstr "overzicht van metadata"
+msgstr "metadata-overzicht"
 
 #: picard/ui/metadatabox.py:219
 msgid "Displays original and new tags for the selected files"
@@ -4661,7 +4661,7 @@ msgstr "Geluidloze nummers"
 
 #: picard/ui/ui_options_advanced.py:149
 msgid "Tags to ignore for comparison:"
-msgstr "Tags die bij de vergelijking moeten worden genegeerd:"
+msgstr "Negeer bij het vergelijken de volgende tags:"
 
 #: picard/ui/options/dialog.py:214 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
@@ -4832,7 +4832,7 @@ msgstr ", "
 #: picard/ui/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
-"Genres of folksonomietags die moeten worden in- of uitgesloten (één per "
+"Genres of folksonomietags die wel en niet moeten worden gebruikt (één per "
 "regel):"
 
 #: picard/ui/ui_options_genres.py:130
@@ -4900,7 +4900,7 @@ msgstr "Verwijdert een element uit de werkbalk"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
-msgstr "Toon de volgende tags bovenin het overzicht van metadata"
+msgstr "Toon de volgende tags bovenin het metadata-overzicht"
 
 #: picard/ui/ui_options_maintenance.py:86
 msgid "Configuration File:"
@@ -5450,7 +5450,7 @@ msgstr "Tags verwijderen"
 
 #: picard/ui/ui_win_compat_dialog.py:192
 msgid "Character"
-msgstr "Karakter"
+msgstr "Teken"
 
 #: picard/ui/ui_win_compat_dialog.py:193
 msgid "Replacement"
