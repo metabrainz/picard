@@ -249,6 +249,59 @@ When making code changes:
 - **Type hints:** Recommended for new code (existing code has limited coverage)
 - **Naming:** `PascalCase` classes, `snake_case` functions, `UPPER_SNAKE` constants
 
+### Membership Tests and Control Flow
+```python
+# Use a set literal (not a tuple/list) for membership tests against a fixed
+# set of constants. Python optimizes `in {...}`. See the ruff "literal-membership" rule.
+
+# ❌ Tuple/list literal for membership test
+if state in (State.CHANGED, State.NORMAL):
+    ...
+assert suffix in ('.pyc', '.pyo')
+
+# ✅ Set literal
+if state in {State.CHANGED, State.NORMAL}:
+    ...
+assert suffix in {'.pyc', '.pyo'}
+
+
+# Prefer a single membership test over chained equality checks.
+
+# ❌ Multiple equality checks
+if name == 'performer' or name == 'comment':
+    ...
+
+# ✅ Single membership test
+if name in {'performer', 'comment'}:
+    ...
+
+
+# Collapse a nested `else:` + `if` into a single `elif` to reduce indentation.
+# See the ruff "collapsible-else-if" rule.
+
+# ❌ Nested if inside else
+if a:
+    do_x()
+else:
+    if b:
+        do_y()
+    else:
+        do_z()
+
+# ✅ elif
+if a:
+    do_x()
+elif b:
+    do_y()
+else:
+    do_z()
+```
+
+The preview ruff rules can be checked with:
+```bash
+uv run ruff check --preview --select literal-membership,collapsible-else-if
+```
+
 ### Internationalization (i18n)
 ```python
 # Import translation functions
