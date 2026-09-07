@@ -75,6 +75,33 @@ class TestPluginMetadataFromDict(PicardTestCase):
         m = PluginMetadata.from_dict(data)
         self.assertEqual(m.url, 'u')
 
+    def test_missing_required_field_does_not_crash(self):
+        """from_dict() must tolerate stored config missing a required field.
+
+        Regression test: url/ref/commit have no defaults, so a persisted
+        plugins3_metadata entry missing one of them (e.g. hand-edited config or
+        written by a different Picard version) made cls(**data) raise
+        TypeError: missing required positional argument, breaking plugin
+        listing/install/enable. Missing required fields now default to ''.
+        """
+        m = PluginMetadata.from_dict({'url': 'https://x/y', 'ref': 'main'})
+        self.assertEqual(m.url, 'https://x/y')
+        self.assertEqual(m.ref, 'main')
+        self.assertEqual(m.commit, '')
+
+    def test_all_required_fields_missing_does_not_crash(self):
+        m = PluginMetadata.from_dict({'name': 'Foo'})
+        self.assertEqual(m.name, 'Foo')
+        self.assertEqual(m.url, '')
+        self.assertEqual(m.ref, '')
+        self.assertEqual(m.commit, '')
+
+    def test_empty_dict_does_not_crash(self):
+        m = PluginMetadata.from_dict({})
+        self.assertEqual(m.url, '')
+        self.assertEqual(m.ref, '')
+        self.assertEqual(m.commit, '')
+
 
 class TestPluginMetadataGetGitRef(PicardTestCase):
     def test_returns_stored_git_ref(self):

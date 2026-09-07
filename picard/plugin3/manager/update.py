@@ -67,7 +67,7 @@ class UpdateCheck(NamedTuple):
     new_commit: str
     commit_date: int
     old_ref: str
-    new_ref: str
+    new_ref: str | None
     new_ref_type: str | None = None
 
 
@@ -76,8 +76,8 @@ class UpdateAllResult(NamedTuple):
 
     plugin_id: str
     success: bool
-    result: UpdateResult
-    error: str
+    result: UpdateResult | None = None
+    error: str | None = None
 
 
 class PluginUpdater:

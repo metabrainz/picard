@@ -22,6 +22,10 @@ from pathlib import Path
 import shutil
 import sys
 import tempfile
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
@@ -71,6 +75,35 @@ class TestCheckRefType(PicardTestCase):
         ref_type, ref_name = GitOperations.check_ref_type(Path('/nonexistent'), 'main')
         self.assertIsNone(ref_type)
         self.assertEqual(ref_name, 'main')
+
+    def test_check_ref_type_unknown_ref_type_returns_tuple(self):
+        """check_ref_type() must always return a 2-tuple, even for unknown ref types.
+
+        Regression test: when find_git_ref() returned a ref whose ref_type was
+        neither TAG nor BRANCH, the ``if ref:`` branch fell through without an
+        explicit return, so the function implicitly returned None. Callers that
+        unpack the result (``ref_type, ref_name = check_ref_type(...)``) then
+        crashed with ``TypeError: cannot unpack non-iterable NoneType``.
+        """
+        # A git_ref that exists but whose type is neither TAG nor BRANCH.
+        fake_ref = MagicMock()
+        fake_ref.ref_type = object()  # not GitRefType.TAG or .BRANCH
+
+        fake_repo = MagicMock()
+        fake_backend = MagicMock()
+        fake_backend.create_repository.return_value.__enter__.return_value = fake_repo
+
+        with (
+            patch('picard.git.ops.git_backend', return_value=fake_backend),
+            patch('picard.git.ops.find_git_ref', return_value=fake_ref),
+        ):
+            result = GitOperations.check_ref_type(Path('/repo'), 'refs/notes/something')
+
+        # Must be unpackable into (ref_type, ref_name), never None.
+        self.assertIsNotNone(result)
+        ref_type, ref_name = result
+        self.assertIsNone(ref_type)
+        self.assertEqual(ref_name, 'refs/notes/something')
 
 
 @pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")

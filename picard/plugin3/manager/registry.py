@@ -138,13 +138,25 @@ class PluginRegistryManager:
             min_api = ref.get('min_api_version')
             max_api = ref.get('max_api_version')
 
-            # Skip if below minimum
-            if min_api and current_api < Version.from_string(min_api):
-                continue
+            # min/max_api_version come from unvalidated registry data. If a bound
+            # is present but unparseable, we cannot verify this ref's
+            # compatibility, so skip it and keep looking for one we can verify
+            # (falling back to refs[0] below if none qualify).
+            if min_api:
+                min_version = _parse_version_safely(min_api)
+                if min_version is None:
+                    log.warning("Skipping ref %r: invalid min_api_version %r", ref.get('name'), min_api)
+                    continue
+                if current_api < min_version:
+                    continue
 
-            # Skip if above maximum
-            if max_api and current_api > Version.from_string(max_api):
-                continue
+            if max_api:
+                max_version = _parse_version_safely(max_api)
+                if max_version is None:
+                    log.warning("Skipping ref %r: invalid max_api_version %r", ref.get('name'), max_api)
+                    continue
+                if current_api > max_version:
+                    continue
 
             # Compatible ref found
             return ref['name']

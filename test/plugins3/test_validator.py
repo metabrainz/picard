@@ -151,6 +151,30 @@ class TestManifestValidator(PicardTestCase):
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
+    def test_validate_i18n_section_wrong_type(self):
+        """Validation rejects an i18n section that is not a table/dict."""
+        manifest = _valid_manifest(name_i18n='enabled')
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Section 'name_i18n' must be a table of locale -> string", errors)
+
+    def test_validate_i18n_section_array(self):
+        """Validation rejects an i18n section declared as an array."""
+        manifest = _valid_manifest(name_i18n=['x'])
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Section 'name_i18n' must be a table of locale -> string", errors)
+
+    def test_validate_i18n_non_string_value(self):
+        """Validation rejects non-string values within an i18n section."""
+        manifest = _valid_manifest(name_i18n={'en': 123})
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Section 'name_i18n' value for locale 'en' must be a string", errors)
+
+    def test_validate_i18n_invalid_locale_key(self):
+        """Validation rejects invalid locale keys within an i18n section."""
+        manifest = _valid_manifest(name_i18n={'not-a-locale': 'X'})
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Section 'name_i18n' has invalid locale key 'not-a-locale'", errors)
+
     @subtest_cases(
         "locale",
         ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN', 'haw', 'haw_US'],

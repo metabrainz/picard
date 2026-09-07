@@ -17,12 +17,16 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import io
 import json
 from pathlib import Path
 import tempfile
 from unittest.mock import Mock
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 from test.plugins3.helpers import (
     create_test_plugin_api,
     load_plugin_manifest,
@@ -55,6 +59,59 @@ class TestPluginManifestSourceLocale(PicardTestCase):
                 self.assertEqual(manifest.source_locale, 'de_DE')
         finally:
             temp_path.unlink(missing_ok=True)
+
+
+class TestPluginManifestMalformedI18n(PicardTestCase):
+    """Regression tests for malformed *_i18n sections in a plugin MANIFEST.toml.
+
+    The i18n accessors (name/description/long_description) previously indexed
+    into whatever value the TOML declared for the section. The manifest
+    validator only rejects *empty* i18n sections, so a section declared with
+    the wrong type still counted as valid. For example ``name_i18n = "enabled"``
+    made ``name('en')`` evaluate ``'en' in "enabled"`` (a substring match) and
+    then ``"enabled"['en']``, raising ``TypeError: string indices must be
+    integers``. Non-string dict values likewise leaked through, breaking the
+    documented ``-> str`` return type.
+
+    The accessors must always return a string, falling back to the plain field.
+    """
+
+    BASE = (
+        b'uuid = "3f9a1b2c-4d5e-4f6a-8b9c-0d1e2f3a4b5c"\n'
+        b'name = "Test Plugin"\n'
+        b'description = "A test plugin for demonstration"\n'
+        b'api = ["3.0"]\n'
+    )
+
+    def _manifest(self, extra: bytes) -> PluginManifest:
+        return PluginManifest('test', io.BytesIO(self.BASE + extra))
+
+    def test_name_i18n_as_string_does_not_crash(self):
+        # 'en' is a substring of 'enabled': the old code indexed into the string.
+        manifest = self._manifest(b'name_i18n = "enabled"\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_name_i18n_non_string_value_returns_plain_field(self):
+        manifest = self._manifest(b'[name_i18n]\nen = 123\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_name_i18n_array_value_returns_plain_field(self):
+        manifest = self._manifest(b'[name_i18n]\nen = ["x"]\n')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
+
+    def test_description_i18n_as_string_does_not_crash(self):
+        manifest = self._manifest(b'description_i18n = "enclosure"\n')
+        self.assertEqual(manifest.description('en'), 'A test plugin for demonstration')
+
+    def test_long_description_i18n_non_string_value_returns_plain_field(self):
+        manifest = self._manifest(b'long_description = "Long desc"\n[long_description_i18n]\nen = 42\n')
+        self.assertEqual(manifest.long_description('en'), 'Long desc')
+
+    def test_valid_i18n_still_translates(self):
+        # Ensure the guard does not break the normal, well-formed case.
+        manifest = self._manifest(b'[name_i18n]\nde = "Test-Erweiterung"\n')
+        self.assertEqual(manifest.name('de'), 'Test-Erweiterung')
+        self.assertEqual(manifest.name('en'), 'Test Plugin')
 
 
 class TestPluginApiLocale(PicardTestCase):
@@ -101,6 +158,45 @@ class TestPluginTranslations(PicardTestCase):
 
         result = api.tr('user_info', '{name} has {count} items', name='Alice', count=5)
         self.assertEqual(result, 'Alice has 5 items')
+
+    @subtest_cases(
+        "text,expected",
+        {
+            'missing placeholder kwarg': ('Hello {missing}', 'Hello {missing}'),
+            'malformed opening brace': ('Hello {', 'Hello {'),
+            'malformed closing brace': ('Hello }', 'Hello }'),
+        },
+    )
+    def test_tr_bad_format_falls_back_to_unformatted(self, text, expected):
+        """tr() must not crash on bad format strings from plugins/translations.
+
+        Regression test: a badly written plugin or incorrect translation may
+        reference an unsupplied placeholder ('{missing}') or use malformed
+        format syntax (a stray brace). str.format() raised KeyError/ValueError,
+        which propagated out of the translation call. tr() now logs a warning
+        and falls back to the unformatted string.
+        """
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
+
+        result = api.tr('greeting', text, name='World')
+        self.assertEqual(result, expected)
+
+    @subtest_cases(
+        "singular,plural,expected",
+        {
+            'missing placeholder kwarg': ('{missing} file', '{missing} files', '{missing} files'),
+            'malformed opening brace': ('{ file', '{ files', '{ files'),
+            'malformed closing brace': ('} file', '} files', '} files'),
+        },
+    )
+    def test_trn_bad_format_falls_back_to_unformatted(self, singular, plural, expected):
+        """trn() must not crash on bad format strings from plugins/translations."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock(), Mock(), Path(''))
+
+        result = api.trn('files', singular, plural, n=5)
+        self.assertEqual(result, expected)
 
 
 def _create_locale_dir(tmpdir):

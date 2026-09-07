@@ -186,6 +186,8 @@ class GitOperations:
                             return 'tag', ref
                         elif git_ref.ref_type == GitRefType.BRANCH:
                             return 'branch', ref
+                        # Known ref but unrecognized type: treat as unknown.
+                        return None, ref
                     else:
                         # Try as commit hash
                         try:

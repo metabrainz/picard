@@ -729,6 +729,23 @@ class PluginApi:
         return api
 
     # Translation
+    def _safe_format(self, text: str, kwargs: dict) -> str:
+        """Apply str.format() to a translation string, tolerating bad input.
+
+        Translation strings come from plugin code and translation files, so
+        they may reference placeholders that were not supplied or use malformed
+        format syntax (e.g. a stray brace). Rather than let such errors crash
+        the caller, log a warning identifying the plugin and fall back to the
+        unformatted string.
+        """
+        if not kwargs:
+            return text
+        try:
+            return text.format(**kwargs)
+        except (KeyError, IndexError, ValueError, AttributeError) as e:
+            self._logger.warning("Failed to format translation string %r for plugin '%s': %s", text, self._plugin_id, e)
+            return text
+
     def tr(self, key: str, text: str | None = None, **kwargs) -> str:
         """Translate a string for the plugin.
 
@@ -767,8 +784,7 @@ class PluginApi:
                 self._logger.debug("tr() using fallback: '%s' -> '%s'", key, result)
 
         # Apply placeholder substitution
-        if kwargs:
-            result = result.format(**kwargs)
+        result = self._safe_format(result, kwargs)
 
         return result
 
@@ -833,8 +849,7 @@ class PluginApi:
                 result = key
 
         # Apply placeholder substitution
-        if kwargs:
-            result = result.format(**kwargs)
+        result = self._safe_format(result, kwargs)
 
         return result
 
