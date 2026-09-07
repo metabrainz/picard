@@ -272,9 +272,8 @@ class APEv2File(File):
                 tagstr = real_name.lower() + 'number'
                 if tagstr in metadata:
                     tags[real_name] = metadata[tagstr]
-            else:
-                if real_name in tags:
-                    del tags[real_name]
+            elif real_name in tags:
+                del tags[real_name]
 
     def _get_tag_name(self, name):
         if name in self.__casemap:

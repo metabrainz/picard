@@ -237,15 +237,14 @@ class PluginRegistry:
             if success:
                 if callback:
                     callback(True, None)
+            # Parse errors are fatal - don't try next URL
+            elif isinstance(error, RegistryParseError):
+                if callback:
+                    callback(False, error)
             else:
-                # Parse errors are fatal - don't try next URL
-                if isinstance(error, RegistryParseError):
-                    if callback:
-                        callback(False, error)
-                else:
-                    log.warning('Failed to fetch registry from %s: %s', url, error)
-                    # Try next URL for network errors, passing along the error
-                    self._try_next_url(url_index + 1, callback, last_error=error)
+                log.warning('Failed to fetch registry from %s: %s', url, error)
+                # Try next URL for network errors, passing along the error
+                self._try_next_url(url_index + 1, callback, last_error=error)
 
         self._fetch_remote_registry(url, on_fetch_complete)
 

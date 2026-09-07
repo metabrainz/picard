@@ -229,12 +229,11 @@ class OAuthManager(QObject):
     def get_access_token(self, callback):
         if not self.is_authorized():
             callback(access_token=None)
+        elif self.access_token and time.time() < self.access_token_expires:
+            callback(access_token=self.access_token)
         else:
-            if self.access_token and time.time() < self.access_token_expires:
-                callback(access_token=self.access_token)
-            else:
-                self.forget_access_token()
-                self.refresh_access_token(callback)
+            self.forget_access_token()
+            self.refresh_access_token(callback)
 
     def url(self, path=None, params=None):
         return build_qurl(

@@ -770,12 +770,11 @@ class PluginApi:
                 lang = locale.split('_')[0]
                 if lang in self._translations and key in self._translations[lang]:
                     result = self._translations[lang][key]
-                else:
-                    # Try source locale as fallback
-                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
-                        result = self._translations[self._source_locale][key]
-                    elif DebugOpt.PLUGIN_TRANSLATIONS.enabled:
-                        self._logger.debug("tr() no translation found for key '%s' in any locale", key)
+                # Try source locale as fallback
+                elif self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                    result = self._translations[self._source_locale][key]
+                elif DebugOpt.PLUGIN_TRANSLATIONS.enabled:
+                    self._logger.debug("tr() no translation found for key '%s' in any locale", key)
 
         # Fall back to text parameter or key
         if result is None:
@@ -830,12 +829,11 @@ class PluginApi:
                 if lang in self._translations and key in self._translations[lang]:
                     trans = self._translations[lang][key]
                     result = get_plural_translation(trans, plural_form)
-                else:
-                    # Try source locale as fallback
-                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
-                        trans = self._translations[self._source_locale][key]
-                        source_plural_form = get_plural_form(self._source_locale, n)
-                        result = get_plural_translation(trans, source_plural_form)
+                # Try source locale as fallback
+                elif self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                    trans = self._translations[self._source_locale][key]
+                    source_plural_form = get_plural_form(self._source_locale, n)
+                    result = get_plural_translation(trans, source_plural_form)
 
         # Fall back to singular/plural parameters
         if result is None:

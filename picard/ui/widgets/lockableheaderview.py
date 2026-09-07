@@ -52,10 +52,9 @@ class LockableHeaderView(QtWidgets.QHeaderView):
         if is_locked:
             self.prelock_state = self.saveState()
             self.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
-        else:
-            if self.prelock_state is not None:
-                self.restoreState(self.prelock_state)
-                self.prelock_state = None
+        elif self.prelock_state is not None:
+            self.restoreState(self.prelock_state)
+            self.prelock_state = None
 
         self.setSectionsClickable(not is_locked)
         self.setSectionsMovable(not is_locked)

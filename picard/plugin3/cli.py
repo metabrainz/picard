@@ -282,13 +282,12 @@ class PluginCLI(BaseCLI):
             else:
                 self._out.error('Cannot modify plugin with uncommitted changes in non-interactive mode')
                 return False, None
+        elif self._out.yesno('Discard changes and continue?'):
+            result = action_callback(discard_changes=True)
+            return True, result
         else:
-            if self._out.yesno('Discard changes and continue?'):
-                result = action_callback(discard_changes=True)
-                return True, result
-            else:
-                self._out.print('Operation cancelled')
-                return False, None
+            self._out.print('Operation cancelled')
+            return False, None
 
     def _dispatch(self):
         """Dispatch to the appropriate plugin command."""
