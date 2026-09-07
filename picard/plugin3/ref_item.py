@@ -83,7 +83,7 @@ class RefItem:
 
         if self.shortname and short_commit:
             # If ref is the same as commit (commit hash used as ref), just show @commit
-            if self.shortname == self.commit or self.shortname == short_commit:
+            if self.shortname in {self.commit, short_commit}:
                 base = f"@{formatted_commit}"
             else:
                 base = f"{formatted_ref} @{formatted_commit}"

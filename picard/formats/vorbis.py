@@ -156,7 +156,7 @@ class VCommentFile(File):
                     # YYYY-00-00 => YYYY
                     if self.is_date_sanitization_enabled():
                         value = sanitize_date(value)
-                elif name == 'performer' or name == 'comment':
+                elif name in {'performer', 'comment'}:
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     name += ':'
                     if value.endswith(')'):

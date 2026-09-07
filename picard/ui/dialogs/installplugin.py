@@ -624,8 +624,9 @@ class InstallPluginDialog(PicardDialog):
 
     def _disable_ui_for_installation(self):
         """Disable UI elements during installation."""
+        print("_disable_ui_for_installation")
         for widget in self.findChildren(QtWidgets.QWidget):
-            if widget != self.progress_bar and widget != self.status_label:
+            if widget not in {self.progress_bar, self.status_label}:
                 widget.setEnabled(False)
 
     def _enable_ui_after_installation(self):

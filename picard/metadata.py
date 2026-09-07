@@ -298,7 +298,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         name = self.normalize_tag(name)
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
-        values = [str(value) for value in values if value or value == 0 or value == '']
+        values = [str(value) for value in values if value or value in {0, ''}]
         # Remove if there is only a single empty or blank element.
         count = len(values)
         if count and (count > 1 or values[0]):
