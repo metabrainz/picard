@@ -1818,7 +1818,7 @@ def setup_application():
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
-    QtWidgets.QApplication.setDesktopFileName(PICARD_APP_NAME)
+    QtWidgets.QApplication.setDesktopFileName(PICARD_APP_ID)
 
     # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
     # required to support fractional scaling on Windows properly.
