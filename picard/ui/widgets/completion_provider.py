@@ -113,7 +113,7 @@ class CompletionChoicesProvider:
         all_variables = list(builtin_variables | user_defined_variables | user_script_variables)
         all_variables.sort(key=lambda x: (-usage_counts.get(x, 0), x))
 
-        if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
+        if mode in {CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME}:
             for name in sorted(script_function_names()):
                 yield f'${name}'
 
@@ -122,6 +122,6 @@ class CompletionChoicesProvider:
                 yield name
             return
 
-        if mode in (CompletionMode.DEFAULT, CompletionMode.VARIABLE):
+        if mode in {CompletionMode.DEFAULT, CompletionMode.VARIABLE}:
             for name in all_variables:
                 yield f'%{name}%'

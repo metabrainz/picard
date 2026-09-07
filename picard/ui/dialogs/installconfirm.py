@@ -158,7 +158,7 @@ class InstallConfirmDialog(PicardDialog):
 
             # Check trust level
             trust_level = registry.get_trust_level(self.url)
-            if trust_level in ("community", "unregistered"):
+            if trust_level in {"community", "unregistered"}:
                 if trust_level == "community":
                     warning_text = _(
                         "This is a community plugin. Community plugins are not reviewed by the Picard team."

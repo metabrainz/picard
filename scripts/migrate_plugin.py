@@ -143,7 +143,7 @@ def generate_manifest_toml(metadata, module_name):
     # Map v2 API versions to v3
     api_versions = []
     for v in metadata.get('api_versions', []):
-        if v in ['1.0', '2.0']:
+        if v in {'1.0', '2.0'}:
             api_versions.append('3.0')
 
     if not api_versions:
@@ -900,10 +900,10 @@ def convert_plugin_code(content, metadata):
                         nodes_to_remove.add(node)
             elif isinstance(node, (ast.ImportFrom, ast.Import)):
                 if isinstance(node, ast.ImportFrom):
-                    if node.module in ('picard', 'picard.tagger', 'picard.config'):
+                    if node.module in {'picard', 'picard.tagger', 'picard.config'}:
                         if node.module == 'picard':
                             # Only remove if importing log/config
-                            if any(alias.name in ('log', 'config') for alias in node.names):
+                            if any(alias.name in {'log', 'config'} for alias in node.names):
                                 imports_to_remove.add(node)
                         else:
                             imports_to_remove.add(node)
@@ -1447,7 +1447,7 @@ def migrate_plugin(input_file, output_dir=None):
                 or item.name.startswith('.')
                 or item.name in exclude_patterns
                 or item.name in skip_files
-                or item.suffix in ('.pyc', '.pyo', '.pyd', '.so')
+                or item.suffix in {'.pyc', '.pyo', '.pyd', '.so'}
             ):
                 continue
 

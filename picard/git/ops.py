@@ -75,7 +75,7 @@ class GitOperations:
             # Check for any changes (modified, added, deleted, renamed, etc.)
             modified_files = []
             for filepath, flag in status.items():
-                if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
+                if flag not in {GitStatusFlag.CURRENT, GitStatusFlag.IGNORED}:
                     # Ignore Python cache files
                     if (
                         filepath.endswith(('.pyc', '.pyo'))

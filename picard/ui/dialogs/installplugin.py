@@ -502,7 +502,7 @@ class InstallPluginDialog(PicardDialog):
             plugin_data = registry.find_plugin(plugin_id=plugin_id)
             if plugin_data:
                 trust_level = registry.get_trust_level(plugin_data.get('url', ''))
-                if trust_level in ("community", "unregistered"):
+                if trust_level in {"community", "unregistered"}:
                     self._show_trust_warning(trust_level)
                 else:
                     self.warning_label.hide()

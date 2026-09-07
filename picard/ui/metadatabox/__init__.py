@@ -681,7 +681,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         - Ensures actions are only added once per object.
         """
         status = self.tag_diff.status[tag] & TagStatus.CHANGED
-        if status not in (TagStatus.CHANGED, TagStatus.REMOVED):
+        if status not in {TagStatus.CHANGED, TagStatus.REMOVED}:
             return
 
         file_tracks = []

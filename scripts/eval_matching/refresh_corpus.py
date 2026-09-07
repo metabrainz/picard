@@ -72,7 +72,7 @@ def fetch_release(release_id, retries=3):
             with urllib.request.urlopen(req) as resp:
                 return json.loads(resp.read())
         except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503) and attempt < retries - 1:
+            if e.code in {429, 500, 502, 503} and attempt < retries - 1:
                 wait = REQUEST_DELAY * (attempt + 2)
                 print(f"    HTTP {e.code}, retrying in {wait:.0f}s...", file=sys.stderr)
                 time.sleep(wait)

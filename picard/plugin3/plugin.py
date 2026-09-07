@@ -153,7 +153,7 @@ class PluginSourceGit(PluginSource):
         """
         refs = []
         for ref in repo.list_references():
-            if ref.ref_type in (GitRefType.BRANCH, GitRefType.TAG):
+            if ref.ref_type in {GitRefType.BRANCH, GitRefType.TAG}:
                 refs.append(ref.shortname)
 
         if not refs:
@@ -450,7 +450,7 @@ class PluginSourceGit(PluginSource):
                 except (KeyError, GitBackendError):
                     # Fall back to local branch
                     commit = repo.revparse_to_commit(git_ref.name)
-            elif git_ref and git_ref.ref_type in (GitRefType.TAG, GitRefType.BRANCH):
+            elif git_ref and git_ref.ref_type in {GitRefType.TAG, GitRefType.BRANCH}:
                 commit = repo.revparse_to_commit(git_ref.name)
             else:
                 # For commits or unknown refs, try as-is

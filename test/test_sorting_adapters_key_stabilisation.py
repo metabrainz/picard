@@ -82,7 +82,7 @@ def test_numeric_sort_adapter_key_shape_and_category(value: str, expect_flag: in
 
     key = adapter.sort_key(Dummy())
     assert isinstance(key, tuple)
-    assert key[0] in (0, 1)
+    assert key[0] in {0, 1}
     assert key[0] == expect_flag
 
 

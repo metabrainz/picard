@@ -977,7 +977,7 @@ class File(MetadataItem):
                     break
             else:
                 self.similarity = 1.0
-                if self.state in (File.State.CHANGED, File.State.NORMAL):
+                if self.state in {File.State.CHANGED, File.State.NORMAL}:
                     if self.metadata.images and self.orig_metadata.images != self._expected_embedded_images():
                         self.state = File.State.CHANGED
                     else:
