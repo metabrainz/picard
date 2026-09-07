@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-31 08:59+0200\n"
-"PO-Revision-Date: 2026-09-01 07:11+0000\n"
+"PO-Revision-Date: 2026-09-07 12:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -432,7 +432,7 @@ msgstr "Voor compleetheid negeren: video’s"
 
 #: picard/options.py:186 picard/ui/forms/ui_options_advanced.py:53
 msgid "Ignore hidden files"
-msgstr "Verborgen bestanden negeren"
+msgstr "Negeer verborgen bestanden"
 
 #: picard/options.py:187
 msgid "Ignore file paths (regular expression)"
@@ -464,7 +464,7 @@ msgstr "Bestandsnaam voor afbeeldingen"
 
 #: picard/options.py:214 picard/ui/forms/ui_options_cover.py:128
 msgid "Embed only a single front image"
-msgstr "Slechts één afbeelding van de voorkant inbedden"
+msgstr "Sla slechts één afbeelding van de voorkant in de tags op"
 
 #: picard/options.py:219
 msgid "Never replace images with smaller ones"
@@ -500,7 +500,7 @@ msgstr "Verwijder afbeeldingen uit tags"
 
 #: picard/options.py:243
 msgid "Save only one front image"
-msgstr "Slechts één afbeelding van de voorkant inbedden"
+msgstr "Sla slechts één afbeelding van de voorkant op"
 
 #: picard/options.py:244
 msgid "Show cover art details in view"
@@ -633,7 +633,7 @@ msgstr "Bij geconfigureerde server indienen"
 #: picard/options.py:350 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr "ISRC’s van de cd lezen"
+msgstr "Lees ISRC’s van de cd"
 
 #: picard/options.py:351
 msgid "Enable managing user collections"
@@ -641,7 +641,7 @@ msgstr "Het beheren van gebruikerscollecties inschakelen"
 
 #: picard/options.py:356 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
-msgstr "Complete uitgaven na het opslaan verwijderen"
+msgstr "Verwijder complete uitgaven na het opslaan"
 
 #: picard/options.py:362
 msgid "Use album artist genres"
@@ -694,7 +694,7 @@ msgstr "Vraag bij het opslaan om bevestiging"
 #: picard/options.py:392
 msgid "Confirm quit if unsaved changes"
 msgstr ""
-"Vraag bij het afsluiten om bevestiging als er niet opgeslagen wijzigingen "
+"Vraag bij het afsluiten om bevestiging als er niet-opgeslagen wijzigingen "
 "zijn"
 
 #: picard/options.py:393 picard/ui/forms/ui_options_interface.py:120
@@ -799,7 +799,7 @@ msgstr "Naam voor losse opnamen"
 
 #: picard/options.py:493 picard/ui/forms/ui_options_metadata.py:194
 msgid "Use release relationships"
-msgstr "Uitgaverelaties gebruiken"
+msgstr "Gebruik uitgaverelaties"
 
 #: picard/options.py:494
 msgid "Translation script exceptions"
@@ -907,7 +907,7 @@ msgstr "E-mailadres voor opslaan waarderingen"
 
 #: picard/options.py:570 picard/ui/forms/ui_options_ratings.py:62
 msgid "Submit ratings to MusicBrainz"
-msgstr "Waarderingen naar MusicBrainz versturen"
+msgstr "Verstuur waarderingen naar MusicBrainz"
 
 #: picard/options.py:574 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
@@ -1021,7 +1021,7 @@ msgstr "Sla tags in bestanden op"
 
 #: picard/options.py:647
 msgid "Fix missing seekpoints in FLAC"
-msgstr "Ontbrekende zoekpunten in FLAC-bestanden toevoegen"
+msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden toe"
 
 #: picard/options.py:648
 msgid "Preserved tags list"
@@ -1458,7 +1458,7 @@ msgstr "Aanmelden gelukt."
 
 #: picard/browser/auth_responses.py:143
 msgid "Picard has been authorized."
-msgstr "Picard is aangemeld."
+msgstr "Picard is gemachtigd."
 
 #: picard/browser/auth_responses.py:146 picard/browser/auth_responses.py:199
 #: picard/browser/auth_responses.py:215
@@ -1467,19 +1467,19 @@ msgstr "Je kan dit venster nu sluiten."
 
 #: picard/browser/auth_responses.py:163
 msgid "Authorization was declined."
-msgstr "De aanmelding is afgewezen."
+msgstr "De machtiging is afgewezen."
 
 #: picard/browser/auth_responses.py:164
 msgid "The authorization request was invalid."
-msgstr "Het aanmeldingsverzoek was ongeldig."
+msgstr "Het machtigingsverzoek was ongeldig."
 
 #: picard/browser/auth_responses.py:165
 msgid "This application is not allowed to request authorization."
-msgstr "Deze applicatie mag geen aanmelding verzoeken."
+msgstr "Deze applicatie mag geen machtiging aanvragen."
 
 #: picard/browser/auth_responses.py:166
 msgid "The authorization request is not supported."
-msgstr "Het aanmeldingsverzoek wordt niet ondersteund."
+msgstr "Het machtigingsverzoek wordt niet ondersteund."
 
 #: picard/browser/auth_responses.py:167
 msgid "The requested permissions are invalid."
@@ -1499,53 +1499,47 @@ msgstr "Het aanmelden vereist extra handelingen."
 
 #: picard/browser/auth_responses.py:171
 msgid "You need to sign in to continue."
-msgstr ""
+msgstr "Je moet je aanmelden om verder te gaan."
 
 #: picard/browser/auth_responses.py:172
 msgid "Your consent is required to continue."
-msgstr ""
+msgstr "Je toestemming is nodig om verder te gaan."
 
 #: picard/browser/auth_responses.py:173
 msgid "You need to select an account to continue."
-msgstr ""
+msgstr "Je moet een account selecteren om verder te gaan."
 
 #: picard/browser/auth_responses.py:178 picard/browser/auth_responses.py:180
 #, python-format
 msgid "Picard has not been authorized: %s"
-msgstr ""
+msgstr "Picard is niet gemachtigd: %s"
 
 #: picard/browser/auth_responses.py:181
 msgid "Picard has not been authorized."
-msgstr ""
+msgstr "Picard is niet gemachtigd."
 
 #: picard/browser/auth_responses.py:194
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication cancelled — %s"
-msgstr "Aanmelden mislukt"
+msgstr "Aanmelden geannuleerd: %s"
 
 #: picard/browser/auth_responses.py:195
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication cancelled."
-msgstr "Aanmelden mislukt"
+msgstr "Aanmelden geannuleerd."
 
 #: picard/browser/auth_responses.py:210
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication error — %s"
-msgstr "Machtiging vereist"
+msgstr "Aanmeldingsfout: %s"
 
 #: picard/browser/auth_responses.py:211
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication error."
-msgstr "Machtiging vereist"
+msgstr "Aanmeldingsfout."
 
 #: picard/browser/auth_responses.py:212
 msgid ""
 "This authentication request is no longer valid. Please try signing in again."
-msgstr ""
+msgstr "Deze aanmelding is niet meer geldig. Meld je opnieuw aan."
 
 #: picard/coverart/__init__.py:241
 #, python-format
@@ -3472,7 +3466,7 @@ msgstr "Bestanden en uitgaven worden geladen ({files} bestanden)"
 #: picard/session/session_loader.py:111
 #, python-brace-format
 msgid "Waiting on network ({requests} requests)…"
-msgstr "Wacht op ({requests} netwerkverzoeken)"
+msgstr "Wacht op netwerk ({requests} verzoeken)"
 
 #: picard/session/session_loader.py:112
 msgid "Finalizing…"
@@ -3749,7 +3743,7 @@ msgstr "Tekstkleur logboek (waarschuwing)"
 
 #: picard/ui/colors.py:52
 msgid "Low match similarity background"
-msgstr "Achtergrond weinig overeenkomst"
+msgstr "Achtergrond bij weinig overeenkomst"
 
 #: picard/ui/colors.py:53
 msgid "Profile highlight background"
@@ -3794,7 +3788,7 @@ msgstr "Syntaxismarkering"
 
 #: picard/ui/colors.py:59
 msgid "Escape syntax highlight"
-msgstr "Markering voor ontsnappingssyntaxis"
+msgstr "Markering voor uitsluitingssyntaxis"
 
 #: picard/ui/colors.py:60
 msgid "Function syntax highlight"
@@ -3875,7 +3869,7 @@ msgstr "Filters selecteren"
 
 #: picard/ui/filter.py:194
 msgid "Select / clear all filters"
-msgstr "Alle filters (de)selecteren"
+msgstr "(De)selecteer alle filters"
 
 #: picard/ui/infostatus.py:67
 msgid "Stop all pending network requests"
@@ -4205,8 +4199,7 @@ msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
 msgstr ""
-"Je kan deze instellingen later in de Opties veranderen, onder Opties → "
-"Opties → Bestandsnamen."
+"Je kan deze instellingen later in Opties → Opties → Bestandsnamen aanpassen."
 
 #: picard/ui/setupwizard.py:236
 msgid "Destination folder required"
@@ -4242,7 +4235,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:273
 msgid "Save cover art as separate image files"
-msgstr "Sla hoesafbeeldingen op als aparte bestanden"
+msgstr "Hoesafbeeldingen als aparte bestanden opstaan"
 
 #: picard/ui/setupwizard.py:274
 msgid ""
@@ -4253,16 +4246,17 @@ msgstr ""
 "bijbehorende audiobestanden opgeslagen."
 
 #: picard/ui/setupwizard.py:279
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Prefer release group cover art"
-msgstr "Geef uitgaven van dit type voorrang"
+msgstr "Hoesafbeeldingen van de uitgavegroep gebruiken"
 
 #: picard/ui/setupwizard.py:281
 msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
 msgstr ""
+"Gebruik de afbeelding die is ingesteld voor de groep uitgaven in plaats van "
+"de specifieke uitgave. Dit is vaak een afbeelding van hogere kwaliteit, maar "
+"komt misschien niet overeen met de uitgave die je voor je hebt."
 
 #: picard/ui/setupwizard.py:289
 msgid "You can change these later under Options → Options → Cover Art."
@@ -4304,23 +4298,18 @@ msgid "You can change these later under Options → General → Startup."
 msgstr "Je kan dit later in ‘Opties → Algemeen → Opstarten’ aanpassen."
 
 #: picard/ui/setupwizard.py:439
-#, fuzzy
-#| msgid "Additional file patterns"
 msgid "Additional Metadata"
-msgstr "Extra bestandspatronen"
+msgstr "Extra metadata"
 
 #: picard/ui/setupwizard.py:440
-#, fuzzy
-#| msgid ""
-#| "Choose whether Picard should rename and move your files when saving tags."
 msgid "Choose whether Picard should fetch extra details about each track."
-msgstr ""
-"Selecteer of Picard je bestanden moet hernoemen en verplaatsen wanneer hij "
-"de tags opslaat."
+msgstr "Selecteer of Picard voor elk nummer extra informatie moet ophalen."
 
 #: picard/ui/setupwizard.py:445
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr ""
+"Gedetailleerde informatie over relaties (uitvoerende artiesten, componisten "
+"enz. ophalen)"
 
 #: picard/ui/setupwizard.py:447
 msgid ""
@@ -4333,12 +4322,19 @@ msgid ""
 "load to the servers. Enable it if you want the most complete tags and don't "
 "mind the extra loading time."
 msgstr ""
+"Voor elk nummer zal Picard extra informatie ophalen, zoals de artiesten die "
+"eraan meewerkten, de componist en de tekstschrijver, en gerelateerde "
+"composities. Zo krijg je veel uitgebreidere tags.\n"
+"\n"
+"Dit is standaard uitgeschakeld, omdat hiervoor meer gegevens van de "
+"MusicBrainz-servers moet worden opgehaald, waardoor het laden van uitgaven "
+"wat langer duurt en onze servers zwaarder worden belast. Schakel dit in als "
+"je de meest complete tags wil hebben en je het niet vervelend vindt om "
+"langer te wachten."
 
 #: picard/ui/setupwizard.py:460
-#, fuzzy
-#| msgid "You can change these later under Options → Options → Cover Art."
 msgid "You can change this later under Options → Options → Metadata."
-msgstr "Je kan dit later in ‘Opties → Opties → Hoesafbeeldingen’ aanpassen."
+msgstr "Je kan dit later in ‘Opties → Opties → Metadata’ aanpassen."
 
 #: picard/ui/setupwizard.py:486
 msgid "Picard Setup"
@@ -4523,10 +4519,8 @@ msgid "Ctrl+Shift+I"
 msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox/__init__.py:189 picard/ui/coverartbox/__init__.py:195
-#, fuzzy
-#| msgid "Save tags to files"
 msgid "Saved to File"
-msgstr "Sla tags in bestanden op"
+msgstr "In bestand opgeslagen"
 
 #: picard/ui/coverartbox/__init__.py:197
 msgid "New Cover Art"
@@ -4538,7 +4532,7 @@ msgstr "Huidige afbeelding"
 
 #: picard/ui/coverartbox/__init__.py:208 picard/ui/infodialog/dialog.py:331
 msgid "This cover art will be removed from tags when saved"
-msgstr ""
+msgstr "Bij het opslaan wordt deze afbeelding uit de tags verwijderd"
 
 #: picard/ui/coverartbox/__init__.py:485
 msgid "All supported image formats"
@@ -5396,12 +5390,12 @@ msgid ""
 "When saving, remove cover images embedded in tags. Images will only be "
 "removed if they are also being saved as separate files."
 msgstr ""
+"Bij het opslaan worden afbeeldingen uit tags verwijderd. Dit gebeurt alleen "
+"als de afbeelding ook als afzonderlijk bestand wordt opgeslagen."
 
 #: picard/ui/forms/ui_options_cover.py:139
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Remove cover images from tags"
-msgstr "Sla hoesafbeeldingen op in tags"
+msgstr "Verwijder hoesafbeeldingen uit tags"
 
 #: picard/ui/forms/ui_options_cover.py:140
 msgid "Cover Art Providers"
@@ -5615,7 +5609,7 @@ msgstr ", "
 #: picard/ui/forms/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
-"Genres of folksonomietags die moeten worden in- of uitgesloten (één per "
+"Genres of folksonomietags die wel en niet moeten worden gebruikt (één per "
 "regel):"
 
 #: picard/ui/forms/ui_options_interface.py:118
@@ -5632,7 +5626,7 @@ msgstr "Thema voor de gebruikersinterface:"
 
 #: picard/ui/forms/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
-msgstr "Het selecteren van meerdere mappen toestaan"
+msgstr "Sta het selecteren van meerdere mappen toe"
 
 #: picard/ui/forms/ui_options_interface.py:125
 msgid "Show the new user dialog when starting Picard"
@@ -5641,12 +5635,12 @@ msgstr "Toon bij het opstarten de melding voor nieuwe gebruikers"
 #: picard/ui/forms/ui_options_interface.py:126
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
-"Bij het afsluiten om een bevestiging vragen als er niet-opgeslagen "
-"wijzigingen zijn"
+"Vraag bij het afsluiten om bevestiging als er niet-opgeslagen wijzigingen "
+"zijn"
 
 #: picard/ui/forms/ui_options_interface.py:127
 msgid "Show a confirmation dialog when saving files"
-msgstr "Bij het opslaan van bestanden een bevestigingsvenster tonen"
+msgstr "Toon bij het opslaan van bestanden een bevestigingsvenster"
 
 #: picard/ui/forms/ui_options_interface.py:128
 msgid "Adjust horizontal position in file browser automatically"
@@ -5723,7 +5717,7 @@ msgstr "Verwijdert een element uit de werkbalk"
 
 #: picard/ui/forms/ui_options_interface_top_tags.py:43
 msgid "Show the below tags above all other tags in the metadata view"
-msgstr "Toon de volgende tags bovenin het overzicht van metadata"
+msgstr "Toon de volgende tags bovenin het metadata-overzicht"
 
 #: picard/ui/forms/ui_options_lookup.py:85
 msgid "File Loading"
@@ -5816,7 +5810,7 @@ msgstr "Geluidloze nummers"
 
 #: picard/ui/forms/ui_options_matching.py:147
 msgid "Tags to ignore for comparison:"
-msgstr "Tags die bij de vergelijking moeten worden genegeerd:"
+msgstr "Negeer bij het vergelijken de volgende tags:"
 
 #: picard/ui/forms/ui_options_metadata.py:190
 msgid "Standardize artist names:"
@@ -5867,7 +5861,7 @@ msgstr "Selecteren …"
 
 #: picard/ui/forms/ui_options_metadata.py:204
 msgid "Ignore name translation for these language scripts:"
-msgstr "Schakel het vertalen van artiestennamen voor deze schriften uit:"
+msgstr "Vertaal namen in de volgende schriften niet:"
 
 #: picard/ui/forms/ui_options_metadata.py:207
 msgid "Custom Fields"
@@ -6168,7 +6162,7 @@ msgstr "Behoud ingebedde afbeeldingen bij het verwijderen van tags"
 
 #: picard/ui/forms/ui_options_tags.py:98
 msgid "Remove ID3 tags from FLAC files"
-msgstr "ID3-tags uit FLAC-bestanden verwijderen"
+msgstr "Verwijder ID3-tags uit FLAC-bestanden"
 
 #: picard/ui/forms/ui_options_tags.py:99
 msgid "Remove APEv2 tags from MP3 files"
@@ -6176,7 +6170,7 @@ msgstr "Verwijder APEv2-tags uit MP3-bestanden"
 
 #: picard/ui/forms/ui_options_tags.py:100
 msgid "Fix missing seekpoints for FLAC files"
-msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden op"
+msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden toe"
 
 #: picard/ui/forms/ui_options_tags.py:102
 msgid ""
@@ -6326,7 +6320,7 @@ msgstr "Windows-1252"
 #: picard/ui/forms/ui_passworddialog.py:67
 #: picard/ui/mainwindow/__init__.py:2080
 msgid "Authentication Required"
-msgstr "Machtiging vereist"
+msgstr "Aanmelding vereist"
 
 #: picard/ui/forms/ui_provider_options_caa.py:79
 msgid "Download only selected image types"
@@ -6448,7 +6442,7 @@ msgstr "Tags verwijderen"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:199
 msgid "Character"
-msgstr "Karakter"
+msgstr "Teken"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:200
 msgid "Replacement"
@@ -7700,7 +7694,7 @@ msgstr "Naar soortgelijke nummers zoeken …"
 #: picard/ui/mainwindow/actions.py:321
 msgid "View similar tracks and optionally choose a different release"
 msgstr ""
-"Naar soortgelijke nummers zoeken, zodat je een andere uitgave kan kiezen."
+"Naar soortgelijke nummers zoeken, zodat je een andere uitgave kan kiezen"
 
 #: picard/ui/mainwindow/actions.py:330
 msgid "Show &other album versions…"
@@ -7966,7 +7960,7 @@ msgstr "Wis alle recente sessievermeldingen"
 
 #: picard/ui/metadatabox/__init__.py:313
 msgid "metadata view"
-msgstr "overzicht van metadata"
+msgstr "metadata-overzicht"
 
 #: picard/ui/metadatabox/__init__.py:314
 msgid "Displays original and new tags for the selected files"
