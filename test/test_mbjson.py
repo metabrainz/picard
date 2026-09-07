@@ -73,7 +73,7 @@ settings = {
     "standardize_artist_names": StandardizeArtistNames.NONE,
     "translate_artist_names": True,
     "translate_artist_names_script_exception": False,
-    "force_standardize_multivalue_artist": False,
+    "always_standardize_multivalue_artist": False,
     "standardize_instruments": True,
     "standardize_vocals": True,
     "release_ars": True,
@@ -588,7 +588,7 @@ class RecordingArtistAliasesTest(MBJSONTest):
         t = Track('1')
         config.setting['translate_artist_names'] = False
         config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
-        config.setting['force_standardize_multivalue_artist'] = True
+        config.setting['always_standardize_multivalue_artist'] = True
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], '後ろから這いより隊C')
         self.assertEqual(m['artists'], 'クー子')
@@ -645,7 +645,7 @@ class RecordingArtistAliasesLocalesTest(MBJSONTest):
         t = Track('1')
         config.setting['translate_artist_names'] = True
         config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
-        config.setting['force_standardize_multivalue_artist'] = True
+        config.setting['always_standardize_multivalue_artist'] = True
         config.setting['translation_locales'] = ['ja']
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], '後ろから這いより隊C')

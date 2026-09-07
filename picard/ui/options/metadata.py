@@ -99,7 +99,7 @@ class MetadataOptionsPage(OptionsPage):
         'translate_from_sortname': {'widgets': ['translate_from_sortname']},
         'script_exceptions': {'widgets': ['selected_scripts']},
         'standardize_artist_names': {'widgets': ['standardize_artist_names']},
-        'force_standardize_multivalue_artist': {'widgets': ['force_standardize_multivalue_artist']},
+        'always_standardize_multivalue_artist': {'widgets': ['always_standardize_multivalue_artist']},
         'standardize_instruments': {'widgets': ['standardize_instruments']},
         'standardize_vocals': {'widgets': ['standardize_vocals']},
         'convert_punctuation': {'widgets': ['convert_punctuation']},
@@ -153,7 +153,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.standardize_artist_names.setCurrentIndex(
             self.ui.standardize_artist_names.findData(config.setting['standardize_artist_names'])
         )
-        self.ui.force_standardize_multivalue_artist.setChecked(config.setting['force_standardize_multivalue_artist'])
+        self.ui.always_standardize_multivalue_artist.setChecked(config.setting['always_standardize_multivalue_artist'])
         self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
         self.ui.standardize_vocals.setChecked(config.setting['standardize_vocals'])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
@@ -195,7 +195,9 @@ class MetadataOptionsPage(OptionsPage):
                 self.tagger.nats.update()
         config.setting['translate_from_sortname'] = self.ui.translate_from_sortname.isChecked()
         config.setting['standardize_artist_names'] = self.ui.standardize_artist_names.currentData()
-        config.setting['force_standardize_multivalue_artist'] = self.ui.force_standardize_multivalue_artist.isChecked()
+        config.setting['always_standardize_multivalue_artist'] = (
+            self.ui.always_standardize_multivalue_artist.isChecked()
+        )
         config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
         config.setting['standardize_vocals'] = self.ui.standardize_vocals.isChecked()
         config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()

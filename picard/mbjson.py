@@ -672,7 +672,7 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
 
-        if config.setting['force_standardize_multivalue_artist']:
+        if config.setting['always_standardize_multivalue_artist']:
             plural_name = translated_alias.name
             plural_sort_name = translated_alias.sort_name
         else:
