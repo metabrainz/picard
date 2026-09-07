@@ -84,7 +84,7 @@ def extract_from_code(plugin_dir, existing_translations):
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     # Check if it's api.tr(), api.trn(), or t_()
-                    if isinstance(node.func, ast.Attribute) and node.func.attr in ('tr', 'trn'):
+                    if isinstance(node.func, ast.Attribute) and node.func.attr in {'tr', 'trn'}:
                         extract_translation_call(node, translations, py_file, lines, t_variables)
                     elif isinstance(node.func, ast.Name) and node.func.id == 't_':
                         extract_translation_call(node, translations, py_file, lines, t_variables)
@@ -176,7 +176,7 @@ def extract_translation_call(node, translations, py_file, lines, t_variables):
     key = get_string_value(node.args[0])
     if not key:
         # Check if it's a variable from t_() - if so, skip warning
-        if func_name in ('tr', 'trn'):
+        if func_name in {'tr', 'trn'}:
             first_arg = node.args[0]
             # Handle direct variable: api.tr(ERROR_MSG)
             if isinstance(first_arg, ast.Name) and first_arg.id in t_variables:
@@ -189,7 +189,7 @@ def extract_translation_call(node, translations, py_file, lines, t_variables):
         return
 
     # Handle tr() and t_() with single text
-    if func_name in ('tr', 't_'):
+    if func_name in {'tr', 't_'}:
         text = get_string_value(node.args[1]) if len(node.args) > 1 else None
         plural = get_string_value(node.args[2]) if len(node.args) > 2 else None
 

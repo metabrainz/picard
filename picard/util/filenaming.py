@@ -362,7 +362,7 @@ def make_short_filename(basedir: str, relpath: str, win_shorten_path: bool = Fal
     relpath = os.path.normpath(relpath)
     if win_shorten_path and relative_to:
         relative_to = os.path.abspath(relative_to)
-        assert basedir.startswith(relative_to) and basedir.split(relative_to)[1][:1] in (os.path.sep, ''), (
+        assert basedir.startswith(relative_to) and basedir.split(relative_to)[1][:1] in {os.path.sep, ''}, (
             "`relative_to` must be an ancestor of `basedir`"
         )
     # always strip the relpath parts

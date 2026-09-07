@@ -653,8 +653,7 @@ class WebService(QtCore.QObject):
                         self.authorization_required.emit()
 
             elif not request.max_retries_reached() and (
-                response_code == 503
-                or response_code == 429
+                response_code in {429, 503}
                 # Sometimes QT returns a http status code of 200 even when there
                 # is a service unavailable error.
                 or error == QNetworkReply.NetworkError.ServiceUnavailableError

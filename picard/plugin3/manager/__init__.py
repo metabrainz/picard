@@ -508,7 +508,7 @@ class PluginManager(QObject):
         loaded_uuids = {p.uuid for p in self._plugins if p.uuid}
 
         for uuid, entry in list(metadata_dict.items()):
-            if entry.get('ref_type') not in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV):
+            if entry.get('ref_type') not in {REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV}:
                 continue
             # Skip if already loaded (e.g. symlink in plugin dir)
             if uuid in loaded_uuids:

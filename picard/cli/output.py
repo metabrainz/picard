@@ -214,4 +214,4 @@ class CliOutput:
     def yesno(self, question, default='N'):
         """Ask a yes/no question and return True if yes, False otherwise."""
         response = input(self.d_prompt(question, default)).strip().lower()
-        return response in ('y', 'yes')
+        return response in {'y', 'yes'}

@@ -825,9 +825,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     for value in values:
                         if text in str(value).lower():
                             matches.add(tag)
-                else:
-                    if text in str(values).lower():
-                        matches.add(tag)
+                elif text in str(values).lower():
+                    matches.add(tag)
 
         return has_tags, matches
 

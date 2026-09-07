@@ -75,7 +75,7 @@ class GitOperations:
             # Check for any changes (modified, added, deleted, renamed, etc.)
             modified_files = []
             for filepath, flag in status.items():
-                if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
+                if flag not in {GitStatusFlag.CURRENT, GitStatusFlag.IGNORED}:
                     # Ignore Python cache files
                     if (
                         filepath.endswith(('.pyc', '.pyo'))
@@ -195,15 +195,14 @@ class GitOperations:
                             return 'commit', ref
                         except Exception:
                             return None, ref
+                # Check current HEAD state
+                elif repo.is_head_detached():
+                    commit = repo.get_head_target()[:7]
+                    return 'commit', commit
                 else:
-                    # Check current HEAD state
-                    if repo.is_head_detached():
-                        commit = repo.get_head_target()[:7]
-                        return 'commit', commit
-                    else:
-                        # HEAD points to a branch
-                        branch_name = repo.get_head_shorthand()
-                        return 'branch', branch_name
+                    # HEAD points to a branch
+                    branch_name = repo.get_head_shorthand()
+                    return 'branch', branch_name
 
         except GitBackendError:
             return None, ref

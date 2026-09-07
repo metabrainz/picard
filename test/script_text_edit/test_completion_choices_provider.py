@@ -181,7 +181,7 @@ class TestCompletionChoicesProviderModes:
             assert 'test_var' in choices
             assert 'builtin_var' in choices
             assert not any(choice.startswith('%') for choice in choices)
-        elif mode in (CompletionMode.DEFAULT, CompletionMode.VARIABLE):
+        elif mode in {CompletionMode.DEFAULT, CompletionMode.VARIABLE}:
             # Variable modes return %name% format
             assert '%test_var%' in choices
             assert '%builtin_var%' in choices

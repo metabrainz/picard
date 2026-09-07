@@ -502,7 +502,7 @@ class InstallPluginDialog(PicardDialog):
             plugin_data = registry.find_plugin(plugin_id=plugin_id)
             if plugin_data:
                 trust_level = registry.get_trust_level(plugin_data.get('url', ''))
-                if trust_level in ("community", "unregistered"):
+                if trust_level in {"community", "unregistered"}:
                     self._show_trust_warning(trust_level)
                 else:
                     self.warning_label.hide()
@@ -624,8 +624,9 @@ class InstallPluginDialog(PicardDialog):
 
     def _disable_ui_for_installation(self):
         """Disable UI elements during installation."""
+        print("_disable_ui_for_installation")
         for widget in self.findChildren(QtWidgets.QWidget):
-            if widget != self.progress_bar and widget != self.status_label:
+            if widget not in {self.progress_bar, self.status_label}:
                 widget.setEnabled(False)
 
     def _enable_ui_after_installation(self):

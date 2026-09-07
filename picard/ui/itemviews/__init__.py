@@ -643,13 +643,12 @@ class AlbumItem(TreeItem):
             else:
                 self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved)
                 self.setToolTip(self.columns.status_icon_column, _("Album unchanged and complete"))
+        elif album.is_modified():
+            self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
+            self.setToolTip(self.columns.status_icon_column, _("Album modified"))
         else:
-            if album.is_modified():
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
-                self.setToolTip(self.columns.status_icon_column, _("Album modified"))
-            else:
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
-                self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
+            self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
+            self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
         self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.panel.update_current_view()

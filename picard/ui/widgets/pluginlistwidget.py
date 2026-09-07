@@ -496,7 +496,7 @@ class PluginListWidget(QtWidgets.QWidget):
                     target_enabled = False  # Disable it
                 elif plugin.state == PluginState.LOADED:
                     target_enabled = False  # Disable loaded plugins (they're stuck, need to be reset)
-                elif plugin.state in (PluginState.DISABLED, PluginState.DISCOVERED):
+                elif plugin.state in {PluginState.DISABLED, PluginState.DISCOVERED}:
                     # Don't try to enable plugins that have failed before
                     if plugin.plugin_id in self._failed_enables:
                         return

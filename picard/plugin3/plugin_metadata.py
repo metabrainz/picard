@@ -95,18 +95,16 @@ class PluginMetadata:
                 if self.ref.startswith('refs/'):
                     # Already a full name, use as-is
                     full_name = self.ref
+                # Short name, construct full name based on ref_type
+                elif self.ref_type == 'tag':
+                    full_name = f"refs/tags/{self.ref}"
+                elif self.ref_type == 'branch':
+                    full_name = f"refs/heads/{self.ref}"
+                # Unknown type, assume it's a short name and guess
+                elif self.ref.startswith('v') or '.' in self.ref:
+                    full_name = f"refs/tags/{self.ref}"
                 else:
-                    # Short name, construct full name based on ref_type
-                    if self.ref_type == 'tag':
-                        full_name = f"refs/tags/{self.ref}"
-                    elif self.ref_type == 'branch':
-                        full_name = f"refs/heads/{self.ref}"
-                    else:
-                        # Unknown type, assume it's a short name and guess
-                        if self.ref.startswith('v') or '.' in self.ref:
-                            full_name = f"refs/tags/{self.ref}"
-                        else:
-                            full_name = f"refs/heads/{self.ref}"
+                    full_name = f"refs/heads/{self.ref}"
             else:
                 # Only commit, no ref name
                 full_name = self.commit
@@ -136,7 +134,7 @@ LOCAL_DEV_MARKER = N_('local-dev')
 
 def is_local_plugin(metadata) -> bool:
     """Check if metadata represents a local plugin. Safe with None."""
-    return metadata is not None and getattr(metadata, 'ref_type', None) in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV)
+    return metadata is not None and getattr(metadata, 'ref_type', None) in {REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV}
 
 
 class PluginMetadataManager:
@@ -316,33 +314,31 @@ class PluginMetadataManager:
                     git_ref = metadata.get_git_ref()
                     current_ref = git_ref.shortname if git_ref.shortname else None
                     current_commit = metadata.commit
-            else:
-                # Prefer metadata ref over detected ref for consistency
-                if metadata and metadata.ref:
-                    git_ref = metadata.get_git_ref()
-                    current_ref = git_ref.shortname if git_ref.shortname else metadata.ref
+            # Prefer metadata ref over detected ref for consistency
+            elif metadata and metadata.ref:
+                git_ref = metadata.get_git_ref()
+                current_ref = git_ref.shortname if git_ref.shortname else metadata.ref
 
             # Set ref type from metadata
             current_ref_type = metadata.ref_type if metadata else None
 
+        # Not installed - try registry ID, UUID, or URL
+        elif '://' in identifier or '/' in identifier:
+            # Looks like a URL
+            url = identifier
+            registry_id = self._registry.get_registry_id(url=url)
         else:
-            # Not installed - try registry ID, UUID, or URL
-            if '://' in identifier or '/' in identifier:
-                # Looks like a URL
-                url = identifier
-                registry_id = self._registry.get_registry_id(url=url)
-            else:
-                # Try as registry ID or UUID
-                registry_plugin = self._registry.find_plugin(plugin_id=identifier)
-                if not registry_plugin:
-                    # Try as UUID
-                    registry_plugin = self._registry.find_plugin(uuid=identifier)
+            # Try as registry ID or UUID
+            registry_plugin = self._registry.find_plugin(plugin_id=identifier)
+            if not registry_plugin:
+                # Try as UUID
+                registry_plugin = self._registry.find_plugin(uuid=identifier)
 
-                if not registry_plugin:
-                    return None
+            if not registry_plugin:
+                return None
 
-                url = registry_plugin.git_url
-                registry_id = registry_plugin.id or identifier
+            url = registry_plugin.git_url
+            registry_id = registry_plugin.id or identifier
 
         # Get registry data if available
         registry_plugin = self._registry.find_plugin(plugin_id=registry_id) if registry_id else None

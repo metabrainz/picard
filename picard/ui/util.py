@@ -194,9 +194,8 @@ class FileDialog(QtWidgets.QFileDialog):
                 path = volume.rootPath()
                 if volume.isRoot():
                     root_volume = path
-                else:
-                    if not IS_LINUX or (path.startswith("/media/") or path.startswith("/mnt/")):
-                        volume_paths.append(path)
+                elif not IS_LINUX or (path.startswith("/media/") or path.startswith("/mnt/")):
+                    volume_paths.append(path)
         paths = [
             root_volume,
             QtCore.QDir.homePath(),

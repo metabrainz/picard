@@ -372,9 +372,9 @@ class ProfilesOptionsPage(OptionsPage):
             return self._get_scripts_list(config.setting[key])
         if key == 'ca_providers':
             return self._get_ca_providers_list(config.setting[key])
-        if key in ('cover_tags_resize_mode', 'cover_file_resize_mode'):
+        if key in {'cover_tags_resize_mode', 'cover_file_resize_mode'}:
             return self._get_ca_resize_mode(config.setting[key])
-        if key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
+        if key in {'cover_tags_convert_to_format', 'cover_file_convert_to_format'}:
             return self._get_ca_convert_format(config.setting[key])
         if isinstance(value, str):
             return '"%s"' % value

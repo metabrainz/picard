@@ -1570,7 +1570,7 @@ def _type_args(_type, *args):
         _typer = int
     elif _type == 'float':
         _typer = float
-    elif _type in ('text', 'nocase'):
+    elif _type in {'text', 'nocase'}:
         pass
     else:
         # Unknown processing type

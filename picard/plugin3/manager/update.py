@@ -370,7 +370,7 @@ class PluginUpdater:
             )
 
             for r in repo.list_references():
-                if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
+                if r.ref_type == GitRefType.TAG and metadata.ref in {r.shortname, r.name}:
                     is_tag_installation = True
                     resolved_ref_info = f"tag {metadata.ref}"
                     break

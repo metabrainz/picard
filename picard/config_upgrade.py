@@ -226,13 +226,12 @@ def upgrade_option_value(
         # Plain dict path
         if name in settings and settings[name] is not None:
             settings[name] = transform(settings[name])
-    else:
-        # ConfigSection path
-        if name in settings:
-            value = settings.raw_value(name)
-            if value is not None:
-                with settings.no_profile():
-                    settings[name] = transform(value)
+    # ConfigSection path
+    elif name in settings:
+        value = settings.raw_value(name)
+        if value is not None:
+            with settings.no_profile():
+                settings[name] = transform(value)
 
 
 def get_option_value(

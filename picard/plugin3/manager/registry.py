@@ -248,7 +248,7 @@ class PluginRegistryManager:
             return None
 
         # Use version parsing for semver/calver, lexicographic for custom regex
-        if versioning_scheme in ('semver', 'calver'):
+        if versioning_scheme in {'semver', 'calver'}:
             try:
                 current_version = _parse_version_safely(current_tag)
                 if not current_version:

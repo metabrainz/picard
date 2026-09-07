@@ -1166,7 +1166,7 @@ def iswbound(char: str) -> bool:
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """Checks whether the given character is a word boundary"""
     category = unicodedata.category(char)
-    return 'Zs' == category or 'Sk' == category or 'P' == category[0]
+    return category in {'Zs', 'Sk'} or 'P' == category[0]
 
 
 def titlecase(text: str) -> str:

@@ -207,7 +207,7 @@ class CompareToTrackTest(PicardTestCase):
             track_json['score'] = score
             match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
             # Score 42 → 0.42 multiplier; 'foo'/None → treated as 1.0
-            if score in (42, '42'):
+            if score in {42, '42'}:
                 self.assertLess(match_.similarity, 0.5)
             else:
                 self.assertGreater(match_.similarity, 0.5)
