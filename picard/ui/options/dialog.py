@@ -114,6 +114,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_wave,
 )
 from picard.ui.theme import theme as _theme
+from picard.ui.util import add_accept_button
 
 
 if TYPE_CHECKING:
@@ -312,8 +313,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
         # Buttons
-        ok = QtWidgets.QPushButton(_("Make It So!"))
-        self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        add_accept_button(self.ui.buttonbox)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)

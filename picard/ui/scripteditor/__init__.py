@@ -77,7 +77,10 @@ from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
 )
-from picard.ui.util import set_widget_fixed_width_for_text
+from picard.ui.util import (
+    add_accept_button,
+    set_widget_fixed_width_for_text,
+)
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 
@@ -160,7 +163,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.reset_button.setToolTip(self.reset_action.toolTip())
         self.reset_button.clicked.connect(self.reload_from_config)
 
-        self.save_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.save_button = add_accept_button(self.ui.buttonbox)
         self.save_button.setToolTip(self.save_action.toolTip())
         self.ui.buttonbox.accepted.connect(self.make_it_so)
 
