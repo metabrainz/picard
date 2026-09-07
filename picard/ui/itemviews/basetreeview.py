@@ -211,6 +211,32 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
+    def changeEvent(self, event):
+        # When the widget's palette colour group changes at runtime — e.g. the
+        # window is disabled while the options dialog is open and enabled again
+        # on "Make It So", or it (de)activates — item colours must be
+        # recomputed:
+        #   * Automatic (palette-driven) cells — normal/changed text, perfect
+        #     matches — follow the group at paint time but Qt does not always
+        #     repaint the viewport, so they need a forced repaint.
+        #   * Baked match-similarity tints (great matches) are frozen against
+        #     the group that was current when they were computed, so they must
+        #     be re-tinted against the new group or they band against the
+        #     automatic cells.
+        # Re-running the panel's colour refresh recomputes base_color for the
+        # current group and re-applies every item's tint, then repaints.
+        if event.type() in {
+            QtCore.QEvent.Type.EnabledChange,
+            QtCore.QEvent.Type.ActivationChange,
+            QtCore.QEvent.Type.PaletteChange,
+        }:
+            panel = getattr(self.window, 'panel', None)
+            if panel is not None:
+                panel._refresh_colors()
+            else:
+                self.viewport().update()
+        super().changeEvent(event)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:

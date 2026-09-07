@@ -282,7 +282,15 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
             fill_brush = option.palette.highlight()
         else:
-            fill_brush = option.palette.base()
+            # Honor the item's background brush (the match-similarity tint set
+            # via QTreeWidgetItem.setBackground) so this delegate-drawn cell
+            # stays consistent with the rest of the row. Fall back to the
+            # palette base when the item has no explicit background.
+            background = index.data(QtCore.Qt.ItemDataRole.BackgroundRole)
+            if isinstance(background, QtGui.QBrush) and background.style() != QtCore.Qt.BrushStyle.NoBrush:
+                fill_brush = background
+            else:
+                fill_brush = option.palette.base()
         painter.fillRect(option.rect, fill_brush)
 
         # Get item data
