@@ -42,6 +42,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.const.sys import IS_SNAP
 from picard.file import File
 
 from .player import (
@@ -51,7 +52,8 @@ from .player import (
 )
 
 
-MPRIS2_DBUS_BUS_NAME = f'org.mpris.MediaPlayer2.{PICARD_APP_ID}'
+MPRIS2_PLAYER_ID = 'picard' if IS_SNAP else PICARD_APP_ID
+MPRIS2_DBUS_BUS_NAME = f'org.mpris.MediaPlayer2.{MPRIS2_PLAYER_ID}'
 MPRIS2_DBUS_OBJECT_PATH = '/org/mpris/MediaPlayer2'
 MPRIS2_DBUS_INTERFACE = 'org.mpris.MediaPlayer2'
 MPRIS2_DBUS_INTERFACE_PLAYER = 'org.mpris.MediaPlayer2.Player'
