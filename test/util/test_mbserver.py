@@ -21,10 +21,67 @@ from test.picardtestcase import PicardTestCase
 
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util.mbserver import (
+    AuthScheme,
+    MBServer,
     build_submission_url,
+    get_server,
     get_submission_server,
     is_official_server,
+    official_servers,
+    server_usable_auth_scheme,
 )
+
+
+class GetServerTest(PicardTestCase):
+    def test_official_servers_use_meb_oauth2(self):
+        for host in MUSICBRAINZ_SERVERS:
+            server = get_server(host)
+            self.assertTrue(server.official)
+            self.assertEqual(frozenset({AuthScheme.MEB_OAUTH2}), server.auth_schemes)
+            self.assertTrue(server.supports_auth)
+            self.assertIs(AuthScheme.MEB_OAUTH2, server.usable_auth_scheme())
+
+    def test_unknown_host_defaults_to_non_official_no_auth(self):
+        server = get_server('example.com')
+        self.assertFalse(server.official)
+        self.assertEqual(frozenset(), server.auth_schemes)
+        self.assertIsNone(server.usable_auth_scheme())
+
+    def test_unknown_host_uses_given_port(self):
+        self.assertEqual(8042, get_server('example.com', port=8042).port)
+        # Known servers keep their fixed port regardless of the argument.
+        self.assertEqual(443, get_server('musicbrainz.org', port=8042).port)
+
+    def test_auth_schemes_coerced_to_frozenset(self):
+        # Any iterable passed for auth_schemes is normalized to a frozenset, so
+        # the (immutable) instance always stores a hashable, immutable value.
+        server = MBServer(host='h', auth_schemes=[AuthScheme.MEB_OAUTH2, AuthScheme.MEB_OAUTH2])
+        self.assertEqual(frozenset({AuthScheme.MEB_OAUTH2}), server.auth_schemes)
+        self.assertIsInstance(server.auth_schemes, frozenset)
+
+    def test_default_auth_schemes_is_empty_frozenset(self):
+        server = MBServer(host='h')
+        self.assertEqual(frozenset(), server.auth_schemes)
+        self.assertIsInstance(server.auth_schemes, frozenset)
+
+    def test_official_entries_match_musicbrainz_servers(self):
+        for host in MUSICBRAINZ_SERVERS:
+            self.assertTrue(get_server(host).official)
+
+
+class ServerUsableAuthSchemeTest(PicardTestCase):
+    def test_official_hosts(self):
+        for host in MUSICBRAINZ_SERVERS:
+            self.assertIs(AuthScheme.MEB_OAUTH2, server_usable_auth_scheme(host))
+
+    def test_no_auth_hosts(self):
+        self.assertIsNone(server_usable_auth_scheme('test.musicbrainz.org'))
+        self.assertIsNone(server_usable_auth_scheme('example.com'))
+
+
+class OfficialServersTest(PicardTestCase):
+    def test_returns_musicbrainz_servers(self):
+        self.assertEqual(tuple(MUSICBRAINZ_SERVERS), official_servers())
 
 
 class IsOfficialServerTest(PicardTestCase):

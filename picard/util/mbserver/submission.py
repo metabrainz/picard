@@ -17,25 +17,17 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+"""Helpers for choosing and building MusicBrainz data submission URLs."""
+
 from collections import namedtuple
 
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.util.mbserver.registry import is_official_server
 from picard.util.qt import build_qurl
 
 
 ServerTuple = namedtuple('ServerTuple', ('host', 'port'))
-
-
-def is_official_server(host: str) -> bool:
-    """Returns True, if host is an official MusicBrainz server for the primary database.
-
-    Args:
-        host: the hostname
-
-    Returns: True, if host is an official MusicBrainz server, False otherwise
-    """
-    return host in MUSICBRAINZ_SERVERS
 
 
 def get_submission_server() -> ServerTuple:
