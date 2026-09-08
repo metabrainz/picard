@@ -28,6 +28,7 @@ from picard.util.mbserver import (
     get_submission_server,
     is_official_server,
     official_servers,
+    server_change_requires_logout,
     server_usable_auth_scheme,
 )
 
@@ -82,6 +83,26 @@ class ServerUsableAuthSchemeTest(PicardTestCase):
 class OfficialServersTest(PicardTestCase):
     def test_returns_musicbrainz_servers(self):
         self.assertEqual(tuple(MUSICBRAINZ_SERVERS), official_servers())
+
+
+class ServerChangeRequiresLogoutTest(PicardTestCase):
+    def test_same_host_no_logout(self):
+        self.assertFalse(server_change_requires_logout('musicbrainz.org', 'musicbrainz.org'))
+        self.assertFalse(server_change_requires_logout('localhost', 'localhost'))
+
+    def test_between_official_servers_no_logout(self):
+        self.assertFalse(server_change_requires_logout('musicbrainz.org', 'beta.musicbrainz.org'))
+        self.assertFalse(server_change_requires_logout('beta.musicbrainz.org', 'musicbrainz.org'))
+
+    def test_official_to_unauthenticated_requires_logout(self):
+        self.assertTrue(server_change_requires_logout('musicbrainz.org', 'test.musicbrainz.org'))
+        self.assertTrue(server_change_requires_logout('musicbrainz.org', 'localhost'))
+
+    def test_from_unauthenticated_server_no_logout(self):
+        # No login was tied to a server Picard cannot authenticate against, so
+        # switching away from it never requires a logout.
+        self.assertFalse(server_change_requires_logout('test.musicbrainz.org', 'musicbrainz.org'))
+        self.assertFalse(server_change_requires_logout('localhost', 'example.com'))
 
 
 class IsOfficialServerTest(PicardTestCase):

@@ -144,6 +144,30 @@ def server_usable_auth_scheme(host: str) -> AuthScheme | None:
     return get_server(host).usable_auth_scheme()
 
 
+def server_change_requires_logout(old_host: str, new_host: str) -> bool:
+    """Returns True if changing the server from `old_host` to `new_host` invalidates the login.
+
+    A login is obtained against `old_host` using the authentication scheme Picard
+    uses for it. That login stays valid only if `new_host` also accepts that same
+    scheme; otherwise the stored credentials are no longer usable and the user
+    must be logged out.
+
+    If Picard would not authenticate against `old_host` at all (no usable scheme,
+    e.g. a local replica or the test server), there is no login tied to it, so no
+    logout is required.
+
+    Args:
+        old_host: the previously configured hostname
+        new_host: the newly configured hostname
+
+    Returns: True if the change requires a logout, False if the login stays valid
+    """
+    old_scheme = get_server(old_host).usable_auth_scheme()
+    if old_scheme is None:
+        return False
+    return old_scheme not in get_server(new_host).auth_schemes
+
+
 def official_servers() -> tuple[str, ...]:
     """Returns the official MusicBrainz database server hostnames, in order.
 

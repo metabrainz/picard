@@ -31,6 +31,7 @@ from picard.util.mbserver.registry import (
     get_server,
     is_official_server,
     official_servers,
+    server_change_requires_logout,
     server_usable_auth_scheme,
 )
 from picard.util.mbserver.submission import (
@@ -50,5 +51,6 @@ __all__ = (
     'get_submission_server',
     'is_official_server',
     'official_servers',
+    'server_change_requires_logout',
     'server_usable_auth_scheme',
 )

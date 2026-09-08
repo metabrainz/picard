@@ -38,7 +38,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util.mbserver import is_official_server
+from picard.util.mbserver import (
+    is_official_server,
+    server_change_requires_logout,
+)
 
 from picard.ui.colors import stylesheet_validation_error
 from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
@@ -89,11 +92,36 @@ class GeneralOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting['server_host'] = self.ui.server_host.currentText().strip()
+        old_server_host = config.setting['server_host']
+        new_server_host = self.ui.server_host.currentText().strip()
+        config.setting['server_host'] = new_server_host
         config.setting['server_port'] = self.ui.server_port.value()
         config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
         config.setting['remove_complete_albums_after_save'] = self.ui.remove_complete_albums_after_save.isChecked()
+        if server_change_requires_logout(old_server_host, new_server_host):
+            self._logout_stale_credentials(old_server_host, new_server_host)
         self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
+
+    def _logout_stale_credentials(self, old_server_host, new_server_host):
+        # The login is only valid on servers that accept the authentication scheme
+        # it was obtained with (see server_change_requires_logout). After switching
+        # to a server with a different scheme — e.g. to or from a server that
+        # accepts no authentication, such as a local replica or the test server —
+        # the stored credentials are no longer usable, and keeping them causes
+        # confusing authentication errors and login prompts against a server that
+        # cannot authenticate the user. Just forget the locally stored credentials;
+        # do not attempt a network token revocation, as the involved servers may be
+        # unreachable or reject the request. See PICARD-3137.
+        oauth_manager = self.tagger.webservice.oauth_manager
+        if not oauth_manager.is_authorized():
+            return
+        log.debug(
+            "Server changed from %r to %r; logging out to invalidate the stale login",
+            old_server_host,
+            new_server_host,
+        )
+        oauth_manager.forget_access_token()
+        oauth_manager.forget_refresh_token()
 
     def _update_user_collections(self, config, new_enable_user_collections):
         old_enable_user_collections = config.setting['enable_user_collections']
