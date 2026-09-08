@@ -54,6 +54,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QCheckBox" name="always_standardize_multivalue_artist">
+        <property name="text">
+         <string>Always standardize multi-valued artist tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="standardize_instruments">
         <property name="text">
          <string>Use standardized instrument credits</string>
@@ -312,6 +319,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>always_standardize_multivalue_artist</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>standardize_vocals</tabstop>
   <tabstop>convert_punctuation</tabstop>
