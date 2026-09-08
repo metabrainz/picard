@@ -86,3 +86,22 @@ Do **not** create your own `QApplication` or `QCoreApplication` in tests — doi
 causes crashes when `pytest-randomly` reorders tests. Always reuse the shared `qapp`
 fixture. If a unittest-based test needs a Qt event loop, call
 `QCoreApplication.instance()` and only create a new one if it returns `None`.
+
+## Directory layout and file naming
+
+Tests are grouped into subdirectories that mirror the code they cover, for example:
+
+- `test/ui/` — user interface code (`picard/ui/`)
+- `test/formats/` — audio format handlers (`picard/formats/`)
+- `test/plugins3/` — the v3 plugin system (`picard/plugin3/`)
+- `test/util/` — utilities (`picard/util/`)
+
+Files are named `test_<subject>.py`. Inside a subdirectory, do **not** repeat the
+directory name in the file name: a UI test lives at `test/ui/test_ratingwidget.py`,
+not `test/ui/test_ui_ratingwidget.py`, just as a format test is
+`test/formats/test_mp4.py`. Tests that do not belong to a specific subsystem stay at
+the top level of `test/`.
+
+Imports use absolute package paths (`from test.picardtestcase import ...`) and test
+data is located with `get_test_data_path()`, so a test's behaviour does not depend on
+which directory the file lives in; moving a test between directories is safe.
