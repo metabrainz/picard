@@ -65,13 +65,20 @@ from picard import (
     log,
 )
 from picard.config import get_config
-from picard.const import appdirs
+from picard.const import (
+    METABRAINZ_OAUTH_HOST,
+    appdirs,
+)
 from picard.const.defaults import DEFAULT_CACHE_SIZE_IN_BYTES
 from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthManager
 from picard.util import (
     bytes2human,
     encoded_queryargs,
+)
+from picard.util.mbserver import (
+    AuthScheme,
+    server_usable_auth_scheme,
 )
 from picard.util.qt import (
     parse_json,
@@ -542,9 +549,41 @@ class WebService(QtCore.QObject):
             return
 
         if request.mblogin:
-            self.oauth_manager.get_access_token(partial(self._send_request, request, task))
-        else:
-            self._send_request(request, task)
+            # Only authenticate against servers that advertise an auth scheme
+            # Picard can perform. Other servers (e.g. an unofficial mirror, or the
+            # official test server which does not accept the production OAuth
+            # login) would reject an authenticated request with HTTP 401, so send
+            # the request unauthenticated and drop any user-specific inc params
+            # instead. This avoids a re-authentication loop against a server that
+            # can never accept our credentials. See PICARD-3424.
+            #
+            # The MetaBrainz OAuth provider host is not a MusicBrainz server (it is
+            # not in the registry) but authenticated OAuth calls such as the
+            # /oauth2/userinfo request made during login target it, so it must
+            # always carry the bearer token.
+            if request.host == METABRAINZ_OAUTH_HOST:
+                scheme = AuthScheme.MEB_OAUTH2
+            else:
+                scheme = server_usable_auth_scheme(request.host)
+            if scheme is None:
+                self._downgrade_to_unauthenticated(request)
+            elif scheme is AuthScheme.MEB_OAUTH2:
+                self.oauth_manager.get_access_token(partial(self._send_request, request, task))
+                return
+        self._send_request(request, task)
+
+    @staticmethod
+    def _downgrade_to_unauthenticated(request: WSRequest):
+        """Turn an mblogin request into an unauthenticated one in place.
+
+        Clears the mblogin flag and strips user-specific (auth-only) inc params,
+        so the request can be sent to a server that does not accept our login.
+        """
+        request.mblogin = False
+        url, modified = WebService._strip_auth_inc_params(request.url())
+        if modified:
+            request.setUrl(url)
+        log.debug("Sending request without authentication: %s", request.url().toString())
 
     @staticmethod
     def urls_equivalent(leftUrl: QUrl, rightUrl: QUrl) -> bool:
@@ -862,6 +901,28 @@ class WebService(QtCore.QObject):
                 if handler is not None:
                     handler(b'', _AuthorizationErrorReply(request), error)
 
+    @staticmethod
+    def _strip_auth_inc_params(url: QUrl) -> tuple[QUrl, bool]:
+        """Return a copy of `url` with user-specific (auth-only) inc params removed.
+
+        Returns a tuple of the (possibly modified) URL and a bool indicating
+        whether any auth-only inc params were actually removed.
+        """
+        url = QUrl(url)
+        query = QtCore.QUrlQuery(url)
+        if not query.hasQueryItem('inc'):
+            return url, False
+        inc_value = query.queryItemValue('inc', QUrl.ComponentFormattingOption.FullyDecoded)
+        inc_params = set(inc_value.split('+'))
+        filtered_params = inc_params - _AUTH_REQUIRED_INC_PARAMS
+        if filtered_params == inc_params:
+            return url, False
+        query.removeQueryItem('inc')
+        if filtered_params:
+            query.addQueryItem('inc', '+'.join(sorted(filtered_params)))
+        url.setQuery(query)
+        return url, True
+
     def _retry_without_auth(self, request: WSRequest):
         """Retry a request without authentication and user-specific inc params.
 
@@ -869,19 +930,7 @@ class WebService(QtCore.QObject):
         If nothing changed, the request is dropped and the handler is called with
         the authentication error.
         """
-        url = QUrl(request.url())
-        query = QtCore.QUrlQuery(url)
-        modified = False
-        if query.hasQueryItem('inc'):
-            inc_value = query.queryItemValue('inc', QUrl.ComponentFormattingOption.FullyDecoded)
-            inc_params = set(inc_value.split('+'))
-            filtered_params = inc_params - _AUTH_REQUIRED_INC_PARAMS
-            if filtered_params != inc_params:
-                modified = True
-                query.removeQueryItem('inc')
-                if filtered_params:
-                    query.addQueryItem('inc', '+'.join(sorted(filtered_params)))
-                url.setQuery(query)
+        url, modified = self._strip_auth_inc_params(request.url())
         if modified:
             request.setUrl(url)
             request.mblogin = False
