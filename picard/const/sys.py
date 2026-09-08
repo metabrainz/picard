@@ -29,7 +29,7 @@ IS_MACOS: bool = sys.platform == 'darwin'
 IS_HAIKU: bool = sys.platform == 'haiku'
 
 # Detect whether running as a Snap package
-IS_SNAP: bool = IS_LINUX and bool(os.getenv('SNAP'))
+IS_SNAP: bool = IS_LINUX and os.getenv('SNAP_NAME', '') == 'picard'
 
 # These variables are set by pyinstaller if running from a packaged build
 # See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html
