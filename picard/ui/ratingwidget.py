@@ -26,7 +26,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import log, tagger_instance
 from picard.config import get_config
 from picard.i18n import N_
 
@@ -94,7 +94,7 @@ class RatingWidget(QtWidgets.QWidget):
 
     def _submitted(self, document, http, error):
         if error:
-            self.tagger.window.set_statusbar_message(
+            tagger_instance().window.set_statusbar_message(
                 N_('Failed to submit rating for track "%(track_title)s" due to server error %(error)d'),
                 {'track_title': self._track.metadata['title'], 'error': error},
                 echo=None,
@@ -111,7 +111,7 @@ class RatingWidget(QtWidgets.QWidget):
         if config.setting['submit_ratings']:
             ratings = {('recording', track.id): self._rating}
             try:
-                self.tagger.mb_api.submit_ratings(ratings, self._submitted)
+                tagger_instance().mb_api.submit_ratings(ratings, self._submitted)
             except ValueError:  # This should never happen as self._rating is always an integer
                 log.error("Failed to submit rating for recording %s", track.id, exc_info=True)
 
