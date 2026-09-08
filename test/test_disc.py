@@ -27,6 +27,7 @@ from test.picardtestcase import PicardTestCase
 
 import picard.disc
 from picard.util.mbserver import ServerTuple
+import picard.util.mbserver.submission
 
 
 test_toc = [1, 11, 242457, 150, 44942, 61305, 72755, 96360, 130485, 147315, 164275, 190702, 205412, 220437]
@@ -50,7 +51,7 @@ class DiscTest(PicardTestCase):
 
     def test_static_submission_url_no_config(self):
         with patch.object(
-            picard.util.mbserver, 'get_submission_server', return_value=ServerTuple('example.com', 443)
+            picard.util.mbserver.submission, 'get_submission_server', return_value=ServerTuple('example.com', 443)
         ) as mocked:
             self.assertEqual(
                 picard.disc.Disc._submission_url('A', 2, 'B C'),
