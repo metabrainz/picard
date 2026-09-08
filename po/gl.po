@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-08-31 08:59+0200\n"
-"PO-Revision-Date: 2026-08-13 14:12+0000\n"
+"PO-Revision-Date: 2026-09-08 07:25+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:209
@@ -261,15 +261,19 @@ msgstr "País de lanzamento"
 #: picard/debug_opts.py:173
 msgid "Log request throttling, congestion window, and backoff details"
 msgstr ""
+"Rexistrar os detalles da limitación de solicitudes, da xanela de conxestión "
+"e do retroceso"
 
 #: picard/debug_opts.py:174
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: picard/debug_opts.py:174
 msgid ""
 "Log theme switching diagnostics, palette colors, and color scheme details"
 msgstr ""
+"Rexistrar os diagnósticos do troco de tema, as cores da paleta e os detalles "
+"do esquema de cores"
 
 #: picard/file.py:334
 msgid "Cannot save file: the file no longer exists."
@@ -1663,12 +1667,12 @@ msgstr "Fallou a autenticación"
 
 #: picard/browser/auth_responses.py:143
 msgid "Picard has been authorized."
-msgstr ""
+msgstr "Picard foi autorizado."
 
 #: picard/browser/auth_responses.py:146 picard/browser/auth_responses.py:199
 #: picard/browser/auth_responses.py:215
 msgid "You can close this window."
-msgstr ""
+msgstr "Podes pechar esta xanela."
 
 #: picard/browser/auth_responses.py:163
 #, fuzzy
@@ -1678,27 +1682,27 @@ msgstr "Código de autorización:"
 
 #: picard/browser/auth_responses.py:164
 msgid "The authorization request was invalid."
-msgstr ""
+msgstr "A solicitude de autorización non é válida."
 
 #: picard/browser/auth_responses.py:165
 msgid "This application is not allowed to request authorization."
-msgstr ""
+msgstr "Esta aplicación non ten permiso para solicitar autorización."
 
 #: picard/browser/auth_responses.py:166
 msgid "The authorization request is not supported."
-msgstr ""
+msgstr "A solicitude de autorización non é compatible."
 
 #: picard/browser/auth_responses.py:167
 msgid "The requested permissions are invalid."
-msgstr ""
+msgstr "Os permisos solicitados non son válidos."
 
 #: picard/browser/auth_responses.py:168
 msgid "The server encountered an error. Please try again later."
-msgstr ""
+msgstr "O servidor atopou un erro. Téntao de novo máis tarde."
 
 #: picard/browser/auth_responses.py:169
 msgid "The service is temporarily unavailable. Please try again later."
-msgstr ""
+msgstr "O servizo non está dispoñible temporalmente. Téntao de novo máis tarde."
 
 #: picard/browser/auth_responses.py:170
 #, fuzzy
@@ -1708,24 +1712,24 @@ msgstr "Activar a puntuación de pistas"
 
 #: picard/browser/auth_responses.py:171
 msgid "You need to sign in to continue."
-msgstr ""
+msgstr "Tes que iniciar sesión para continuar."
 
 #: picard/browser/auth_responses.py:172
 msgid "Your consent is required to continue."
-msgstr ""
+msgstr "É preciso o teu consentimento para continuar."
 
 #: picard/browser/auth_responses.py:173
 msgid "You need to select an account to continue."
-msgstr ""
+msgstr "Tes que seleccionar unha conta para continuar."
 
 #: picard/browser/auth_responses.py:178 picard/browser/auth_responses.py:180
 #, python-format
 msgid "Picard has not been authorized: %s"
-msgstr ""
+msgstr "Picard non foi autorizado: %s"
 
 #: picard/browser/auth_responses.py:181
 msgid "Picard has not been authorized."
-msgstr ""
+msgstr "Picard non foi autorizado."
 
 #: picard/browser/auth_responses.py:194
 #, fuzzy, python-format
@@ -1755,6 +1759,8 @@ msgstr "Autenticación requirida"
 msgid ""
 "This authentication request is no longer valid. Please try signing in again."
 msgstr ""
+"Esta solicitude de autenticación xa non é válida. Tenta iniciar sesión de "
+"novo."
 
 #: picard/coverart/__init__.py:241
 #, fuzzy, python-format
@@ -1803,7 +1809,7 @@ msgstr "Arquivo de Portadas: Grupo de Edicións"
 
 #: picard/coverart/providers/local.py:61
 msgid "Test file name matching:"
-msgstr ""
+msgstr "Probar a coincidencia dos nomes de ficheiro:"
 
 #: picard/coverart/providers/local.py:63
 #, fuzzy
@@ -2564,6 +2570,30 @@ msgid ""
 "\n"
 "_Since Picard 3.0_"
 msgstr ""
+"Devolve o valor da variable `nome` só dos novos metadatos\n"
+"(de MusicBrainz ou establecidos por un script), ignorando os valores que só "
+"existen nas\n"
+"etiquetas orixinais do ficheiro.\n"
+"\n"
+"Isto é útil para comprobar se MusicBrainz proporcionou realmente unha "
+"etiqueta específica.\n"
+"Cando un ficheiro se asocia a unha pista, %name% pode devolver un valor das "
+"etiquetas\n"
+"existentes do ficheiro mesmo se MusicBrainz non proporcionou ningún. "
+"$get_new só devolve\n"
+"o valor se foi establecido por MusicBrainz ou por un script.\n"
+"\n"
+"Exemplo:\n"
+"\n"
+"    $if($get_new(composer),,$set(composer,$if2"
+"(%lyricist%,%writer%,%arranger%)))\n"
+"\n"
+"Isto establece o compositor a partir doutros campos só se MusicBrainz non "
+"proporcionou un,\n"
+"independentemente da etiqueta de compositor que tivese orixinalmente o "
+"ficheiro.\n"
+"\n"
+"_Dende Picard 3.0_"
 
 #: picard/script/functions.py:424
 #, fuzzy
@@ -2585,6 +2615,18 @@ msgid ""
 "\n"
 "_Since Picard 3.0_"
 msgstr ""
+"Devolve o valor da variable `name` só dos metadatos orixinais do ficheiro,\n"
+"ignorando os valores procedentes de MusicBrainz ou dos scripts.\n"
+"\n"
+"Isto é útil para acceder aos valores das etiquetas existentes no ficheiro "
+"independentemente do que\n"
+"MusicBrainz proporcionase.\n"
+"\n"
+"Exemplo:\n"
+"\n"
+"    $set(comment,Original artist was: $get_original(artist))\n"
+"\n"
+"_Dende Picard 3.0_"
 
 #: picard/script/functions.py:445
 msgid "$copy(new,old)"
@@ -5418,17 +5460,17 @@ msgstr ""
 
 #: picard/ui/playground.py:100
 msgid "This playground will not be preserved on exit."
-msgstr ""
+msgstr "Este espazo de probas non se conservará ao saír."
 
 #: picard/ui/playground.py:103
 #, python-format
 msgid "Red: %s."
-msgstr ""
+msgstr "Vermello: %s."
 
 #: picard/ui/playground.py:104
 #, python-format
 msgid "Green: %s."
-msgstr ""
+msgstr "Verde: %s."
 
 #: picard/ui/ratingwidget.py:98
 #, fuzzy, python-format
@@ -5633,6 +5675,9 @@ msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
 msgstr ""
+"Usar a portada principal do álbum en lugar da portada específica da edición. "
+"Normalmente ofrece imaxes de maior calidade, pero pode non coincidir coa túa "
+"edición exacta."
 
 #: picard/ui/setupwizard.py:289
 msgid "You can change these later under Options → Options → Cover Art."
@@ -5647,13 +5692,15 @@ msgstr "Última actualización:"
 
 #: picard/ui/setupwizard.py:371
 msgid "Choose how Picard should check for updates."
-msgstr ""
+msgstr "Escolle como debe comprobar Picard se hai actualizacións."
 
 #: picard/ui/setupwizard.py:383
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
 msgstr ""
+"Comprobar en liña se hai unha nova versión do programa e mostrar un diálogo "
+"de actualización se está dispoñible."
 
 #: picard/ui/setupwizard.py:391
 #, fuzzy
@@ -5667,10 +5714,12 @@ msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
 msgstr ""
+"Comprobar se hai traducións dispoñibles da documentación, para que a axuda "
+"en liña se poida amosar no teu idioma."
 
 #: picard/ui/setupwizard.py:405
 msgid "You can change these later under Options → General → Startup."
-msgstr ""
+msgstr "Podes cambiar estas opcións máis adiante en Opcións → Xeral → Inicio."
 
 #: picard/ui/setupwizard.py:439
 #, fuzzy
@@ -5690,6 +5739,7 @@ msgstr ""
 #: picard/ui/setupwizard.py:445
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr ""
+"Obter relacións detalladas das pistas (intérpretes, compositores e máis)"
 
 #: picard/ui/setupwizard.py:447
 msgid ""
@@ -5702,6 +5752,14 @@ msgid ""
 "load to the servers. Enable it if you want the most complete tags and don't "
 "mind the extra loading time."
 msgstr ""
+"Para cada pista, Picard tamén descargará créditos adicionais, como os "
+"músicos que participaron na interpretación, o compositor e o letrista, así "
+"como obras relacionadas. Isto proporciona etiquetas moito máis completas.\n"
+"\n"
+"Está desactivado de maneira predeterminada porque descarga máis datos dos "
+"servidores de MusicBrainz, o que fai que a carga dos álbums sexa un pouco "
+"máis lenta e aumenta a carga dos servidores. Actívao se queres obter as "
+"etiquetas máis completas e non che importa o tempo adicional de carga."
 
 #: picard/ui/setupwizard.py:460
 #, fuzzy
@@ -5726,6 +5784,9 @@ msgid ""
 "Welcome to MusicBrainz Picard! Start by adding your music files: use 'Add "
 "Files' or 'Add Directory' from the toolbar or the File menu."
 msgstr ""
+"Benvido a MusicBrainz Picard! Comeza engadindo os teus ficheiros de música: "
+"usa «Engadir ficheiros» ou «Engadir directorio» na barra de ferramentas ou "
+"no menú Ficheiro."
 
 #: picard/ui/tutorial.py:57
 msgid ""
@@ -5733,24 +5794,37 @@ msgid ""
 "click 'Cluster' in the toolbar to group them by album, or select files and "
 "use 'Lookup' or 'Scan' to identify them."
 msgstr ""
+"Os teus ficheiros están agora no panel esquerdo, en «Ficheiros sen "
+"correspondencia». O seguinte paso é facer clic en «Agrupar» na barra de "
+"ferramentas para agrupalos por álbum, ou seleccionar os ficheiros e usar «"
+"Buscar» ou «Analizar» para identificalos."
 
 #: picard/ui/tutorial.py:66
 msgid ""
 "Files have been grouped into clusters by album. Now select a cluster and "
 "click 'Lookup' in the toolbar to find the matching MusicBrainz release."
 msgstr ""
+"Os ficheiros agrupáronse en grupos por álbum. Agora selecciona un grupo e "
+"fai clic en «Buscar» na barra de ferramentas para atopar a edición "
+"correspondente en MusicBrainz."
 
 #: picard/ui/tutorial.py:75
 msgid ""
 "Picard is looking up your selection on MusicBrainz. Matched albums will "
 "appear in the right pane. You can then review the metadata before saving."
 msgstr ""
+"Picard está buscando a túa selección en MusicBrainz. Os álbums aos que se "
+"lles atopou correspondencia aparecerán no panel dereito. A continuación "
+"poderás revisar os metadatos antes de gardalos."
 
 #: picard/ui/tutorial.py:84
 msgid ""
 "Picard is generating audio fingerprints and looking up your files on "
 "AcoustID. Matched files will move to the right pane automatically."
 msgstr ""
+"Picard está xerando pegadas dixitais de son e buscando os teus ficheiros en "
+"AcoustID. Os ficheiros aos que se lles atopou correspondencia pasarán "
+"automaticamente ao panel dereito."
 
 #: picard/ui/tutorial.py:93
 msgid ""
@@ -5759,6 +5833,11 @@ msgid ""
 "the results, then click 'Save' in the toolbar to write the new tags to your "
 "files."
 msgstr ""
+"Cargouse un álbum no panel dereito e os ficheiros asociáronse ás pistas. A "
+"cor indica a calidade da correspondencia: o verde significa unha boa "
+"correspondencia. Revisa os resultados e, a continuación, fai clic en «Gardar"
+"» na barra de ferramentas para escribir as novas etiquetas nos teus "
+"ficheiros."
 
 #: picard/ui/tutorial.py:103
 msgid ""
@@ -5767,18 +5846,28 @@ msgid ""
 "click a value to edit it. When you're happy with the tags, click 'Save' in "
 "the toolbar to write them."
 msgstr ""
+"A vista de metadatos amosa as etiquetas do elemento seleccionado. «Valor "
+"orixinal» é o que hai actualmente no teu ficheiro; «Novo valor» é o que "
+"Picard escribirá. Fai dobre clic nun valor para editalo. Cando esteas "
+"satisfeito coas etiquetas, fai clic en «Gardar» na barra de ferramentas para "
+"escribilas."
 
 #: picard/ui/tutorial.py:114
 msgid ""
 "Cover art for the selected item is shown here. You can drag and drop images, "
 "or right-click for more options."
 msgstr ""
+"Aquí amósase a portada do elemento seleccionado. Podes arrastrar e soltar "
+"imaxes ou facer clic co botón dereito para ver máis opcións."
 
 #: picard/ui/tutorial.py:122
 msgid ""
 "Saving writes the new metadata to your files. If renaming or moving is "
 "enabled in the options, files will also be renamed or moved accordingly."
 msgstr ""
+"Ao gardar, escríbense os novos metadatos nos teus ficheiros. Se nas opcións "
+"está activado o troco de nome ou o traslado, os ficheiros tamén trocarán de "
+"nome ou de localización segundo corresponda."
 
 #: picard/ui/tutorial.py:131
 msgid ""
@@ -5787,14 +5876,18 @@ msgid ""
 "right pane, use 'Lookup' on a cluster, search for it via 'Search', or paste "
 "a MusicBrainz URL."
 msgstr ""
+"Podes arrastrar ficheiros entre os paneis esquerdo e dereito para asocialos "
+"manualmente a álbums e pistas, ou arrastralos de volta para eliminar a "
+"correspondencia. Para engadir un álbum ao panel dereito, usa «Buscar» nun "
+"grupo, búscao mediante «Busca» ou pega un URL de MusicBrainz."
 
 #: picard/ui/tutorial.py:150
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "Titorial de Picard"
 
 #: picard/ui/tutorial.py:173
 msgid "Learn more…"
-msgstr ""
+msgstr "Máis información…"
 
 #: picard/ui/tutorial.py:181
 #, fuzzy
@@ -5804,7 +5897,7 @@ msgstr "Non mostrar esta advertencia de novo."
 
 #: picard/ui/tutorial.py:185
 msgid "Got it"
-msgstr ""
+msgstr "Entendido"
 
 #: picard/ui/util.py:77
 #, python-format
@@ -5845,12 +5938,12 @@ msgstr "Os cambios só se aplican ao reiniciar"
 
 #: picard/ui/util.py:305
 msgid "Load Session"
-msgstr ""
+msgstr "Cargar sesión"
 
 #: picard/ui/util.py:306
 #, python-format
 msgid "The session file \"%(path)s\" was not found."
-msgstr ""
+msgstr "Non se atopou o ficheiro de sesión «%(path)s»."
 
 #: picard/ui/coverartbox/__init__.py:131
 msgid "Show more details"
@@ -5876,7 +5969,7 @@ msgstr "Portada orixinal"
 
 #: picard/ui/coverartbox/__init__.py:208 picard/ui/infodialog/dialog.py:331
 msgid "This cover art will be removed from tags when saved"
-msgstr ""
+msgstr "Esta portada eliminarase das etiquetas ao gardar"
 
 #: picard/ui/coverartbox/__init__.py:485
 msgid "All supported image formats"
@@ -5929,13 +6022,15 @@ msgstr "URL da imaxe de portada:"
 
 #: picard/ui/dialogs/installconfirm.py:50
 msgid "Confirm Plugin Installation"
-msgstr ""
+msgstr "Confirmar a instalación do complemento"
 
 #: picard/ui/dialogs/installconfirm.py:74
 msgid ""
 "Plugins run with full access to your system. Only install plugins from "
 "sources you trust."
 msgstr ""
+"Os complementos execútanse con acceso completo ao teu sistema. Instala só "
+"complementos procedentes de fontes nas que confíes."
 
 #: picard/ui/dialogs/installconfirm.py:83
 #, fuzzy
@@ -5953,37 +6048,41 @@ msgstr "Instalar o complemento…"
 #: picard/ui/dialogs/installconfirm.py:101
 #, python-brace-format
 msgid "Repository: {url}"
-msgstr ""
+msgstr "Repositorio: {url}"
 
 #: picard/ui/dialogs/installconfirm.py:103
 #, python-brace-format
 msgid "Path: {path}"
-msgstr ""
+msgstr "Ruta: {path}"
 
 #: picard/ui/dialogs/installconfirm.py:118
 msgid "Git Reference (Optional)"
-msgstr ""
+msgstr "Referencia de Git (opcional)"
 
 #: picard/ui/dialogs/installconfirm.py:131
 msgid "Yes, Install!"
-msgstr ""
+msgstr "Si, instalar!"
 
 #: picard/ui/dialogs/installconfirm.py:153
 #, python-brace-format
 msgid "This plugin is blacklisted: {reason}"
-msgstr ""
+msgstr "Este complemento está na lista negra: {reason}"
 
 #: picard/ui/dialogs/installconfirm.py:164
 msgid ""
 "This is a community plugin. Community plugins are not reviewed by the Picard "
 "team."
 msgstr ""
+"Este é un complemento da comunidade. Os complementos da comunidade non son "
+"revisados polo equipo de Picard."
 
 #: picard/ui/dialogs/installconfirm.py:168
 msgid ""
 "This plugin is not in the official registry. Installing unregistered plugins "
 "may pose security risks."
 msgstr ""
+"Este complemento non está no rexistro oficial. A instalación de complementos "
+"non rexistrados pode supoñer riscos de seguridade."
 
 #: picard/ui/dialogs/installplugin.py:72
 #, fuzzy
@@ -6006,7 +6105,7 @@ msgstr "Todos os ficheiros"
 
 #: picard/ui/dialogs/installplugin.py:122
 msgid "Trust"
-msgstr ""
+msgstr "De confianza"
 
 #: picard/ui/dialogs/installplugin.py:122 picard/ui/searchdialog/album.py:158
 #: picard/ui/searchdialog/artist.py:45 picard/ui/searchdialog/track.py:66
@@ -6015,45 +6114,45 @@ msgstr "Nome"
 
 #: picard/ui/dialogs/installplugin.py:122
 msgid "Categories"
-msgstr ""
+msgstr "Categorías"
 
 #: picard/ui/dialogs/installplugin.py:140
 msgid "Registry"
-msgstr ""
+msgstr "Rexistro"
 
 #: picard/ui/dialogs/installplugin.py:146
 msgid "Install from URL"
-msgstr ""
+msgstr "Instalar dende URL"
 
 #: picard/ui/dialogs/installplugin.py:150
 msgid "https://github.com/user/plugin"
-msgstr ""
+msgstr "https://github.com/user/plugin"
 
 #: picard/ui/dialogs/installplugin.py:151
 msgid "Git URL:"
-msgstr ""
+msgstr "URL de Git:"
 
 #: picard/ui/dialogs/installplugin.py:154
 #: picard/ui/dialogs/installplugin.py:185
 msgid "main"
-msgstr ""
+msgstr "main"
 
 #: picard/ui/dialogs/installplugin.py:155
 #: picard/ui/dialogs/installplugin.py:186
 msgid "Ref/Tag:"
-msgstr ""
+msgstr "Referencia/etiqueta:"
 
 #: picard/ui/dialogs/installplugin.py:159
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: picard/ui/dialogs/installplugin.py:165
 msgid "Install from Local Directory"
-msgstr ""
+msgstr "Instalar desde un directorio local"
 
 #: picard/ui/dialogs/installplugin.py:171
 msgid "/path/to/plugin/directory"
-msgstr ""
+msgstr "/ruta/do/complemento/directorio"
 
 #: picard/ui/dialogs/installplugin.py:177
 #: picard/ui/dialogs/installplugin.py:178
@@ -6074,13 +6173,16 @@ msgstr "Director"
 
 #: picard/ui/dialogs/installplugin.py:188
 msgid "Load in-place (ignore git)"
-msgstr ""
+msgstr "Cargar no propio lugar (ignorar Git)"
 
 #: picard/ui/dialogs/installplugin.py:191
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
 msgstr ""
+"Se está marcado, o complemento cargarase directamente dende o disco sen as "
+"funcionalidades de Git (sen actualizacións nin cambio de referencia). É útil "
+"para o desenvolvemento activo."
 
 #: picard/ui/dialogs/installplugin.py:201 picard/ui/dialogs/plugininfo.py:238
 #, fuzzy
@@ -6103,39 +6205,44 @@ msgstr "Seleccione un ficheiro ou un directorio"
 
 #: picard/ui/dialogs/installplugin.py:292
 msgid "The directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "O directorio non contén un ficheiro MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:304
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
 msgstr ""
+"Este complemento non está xestionado por Git. Instalarase como un "
+"complemento local non xestionado por Git, sen xestión de versións nin "
+"actualizacións."
 
 #: picard/ui/dialogs/installplugin.py:318
 msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
 msgstr ""
+"As funcionalidades de Git (actualizacións e referencias) estarán "
+"desactivadas. O complemento cargarase directamente dende este directorio."
 
 #: picard/ui/dialogs/installplugin.py:374
 msgid "Official plugin - reviewed by Picard team"
-msgstr ""
+msgstr "Complemento oficial - revisado polo equipo de Picard"
 
 #: picard/ui/dialogs/installplugin.py:375
 msgid "Trusted plugin - from known developers"
-msgstr ""
+msgstr "Complemento de confianza - de desenvolvedores coñecidos"
 
 #: picard/ui/dialogs/installplugin.py:376
 msgid "Community plugin - not reviewed"
-msgstr ""
+msgstr "Complemento da comunidade - non revisado"
 
 #: picard/ui/dialogs/installplugin.py:377
 msgid "Unregistered plugin - not in official registry"
-msgstr ""
+msgstr "Complemento non rexistrado - non está no rexistro oficial"
 
 #: picard/ui/dialogs/installplugin.py:422
 msgid "Double-click to view detailed plugin information"
-msgstr ""
+msgstr "Fai dobre clic para ver información detallada do complemento"
 
 #: picard/ui/dialogs/installplugin.py:490
 #, fuzzy
@@ -6145,13 +6252,16 @@ msgstr "Selecciona un directorio"
 
 #: picard/ui/dialogs/installplugin.py:510
 msgid "Plugin not found in registry"
-msgstr ""
+msgstr "Complemento non atopado no rexistro"
 
 #: picard/ui/dialogs/installplugin.py:521
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
 msgstr ""
+"Aviso: este é un complemento da comunidade. Os complementos da comunidade "
+"non son revisados polo equipo de Picard. Instala só complementos procedentes "
+"de fontes nas que confíes."
 
 #: picard/ui/dialogs/installplugin.py:530
 msgid ""
@@ -6159,6 +6269,9 @@ msgid ""
 "unregistered plugins may pose security risks. Only install plugins from "
 "sources you trust."
 msgstr ""
+"Aviso: este complemento non está no rexistro oficial. A instalación de "
+"complementos non rexistrados pode supoñer riscos de seguridade. Instala só "
+"complementos procedentes de fontes nas que confíes."
 
 #: picard/ui/dialogs/installplugin.py:578
 #, fuzzy
@@ -6180,15 +6293,15 @@ msgstr "Título non válido"
 
 #: picard/ui/dialogs/installplugin.py:592
 msgid "Invalid Plugin Directory"
-msgstr ""
+msgstr "Directorio de complemento non válido"
 
 #: picard/ui/dialogs/installplugin.py:593
 msgid "The selected directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "O directorio seleccionado non contén un ficheiro MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:604
 msgid "Plugin Not Managed by Git"
-msgstr ""
+msgstr "Complemento non xestionado por Git"
 
 #: picard/ui/dialogs/installplugin.py:606
 msgid ""
@@ -6200,10 +6313,17 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Este complemento non está xestionado por git.\n"
+"\n"
+"É necesario un repositorio de git para distribuír un complemento e para "
+"engadilo ao rexistro oficial. Sen git, a xestión de versións e as "
+"actualizacións automáticas non están dispoñibles.\n"
+"\n"
+"Queres continuar?"
 
 #: picard/ui/dialogs/installplugin.py:655
 msgid "Plugin has no repository URL"
-msgstr ""
+msgstr "O complemento non ten un URL de repositorio"
 
 #: picard/ui/dialogs/installplugin.py:722
 #, fuzzy
@@ -6237,7 +6357,7 @@ msgstr "Fallou a autenticación"
 
 #: picard/ui/dialogs/plugin_order_selector.py:62
 msgid "Plugin Execution Order"
-msgstr ""
+msgstr "Orde de execución do complemento"
 
 #: picard/ui/dialogs/plugin_order_selector.py:68
 msgid ""
@@ -6247,6 +6367,11 @@ msgid ""
 "button, or by using your mouse to drag the function to the desired location "
 "in the list."
 msgstr ""
+"Isto mostra a orde na que Picard executa as funcións de procesamento de "
+"metadatos dos complementos. Podes cambiar a orde movendo as funcións cara "
+"arriba ou cara abaixo: selecciona a función que queres mover e usa o botón "
+"de subir ou baixar, ou arrastra a función co rato ata a posición desexada na "
+"lista."
 
 #: picard/ui/dialogs/plugin_order_selector.py:84
 #, fuzzy
@@ -6274,11 +6399,11 @@ msgstr "A tonalidade da música."
 
 #: picard/ui/dialogs/plugin_order_selector.py:96
 msgid "The type of metadata processor used (album or track)"
-msgstr ""
+msgstr "O tipo de procesador de metadatos utilizado (álbum ou pista)"
 
 #: picard/ui/dialogs/plugin_order_selector.py:97
 msgid "The method or function within the plugin module that is called"
-msgstr ""
+msgstr "O método ou función dentro do módulo do complemento que se chama"
 
 #: picard/ui/dialogs/plugin_order_selector.py:118
 #, fuzzy
@@ -6319,11 +6444,11 @@ msgstr "ID3"
 
 #: picard/ui/dialogs/plugininfo.py:100
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #: picard/ui/dialogs/plugininfo.py:101
 msgid "Registry ID:"
-msgstr ""
+msgstr "ID do rexistro:"
 
 #: picard/ui/dialogs/plugininfo.py:102
 #, fuzzy
@@ -6345,11 +6470,11 @@ msgstr "Versión:"
 
 #: picard/ui/dialogs/plugininfo.py:105
 msgid "Trust Level:"
-msgstr ""
+msgstr "Nivel de confianza:"
 
 #: picard/ui/dialogs/plugininfo.py:106
 msgid "Categories:"
-msgstr ""
+msgstr "Categorías:"
 
 #: picard/ui/dialogs/plugininfo.py:107
 #: picard/ui/widgets/plugindetailswidget.py:95
@@ -6386,7 +6511,7 @@ msgstr "Licenza:"
 
 #: picard/ui/dialogs/plugininfo.py:112
 msgid "Homepage:"
-msgstr ""
+msgstr "Páxina web:"
 
 #: picard/ui/dialogs/plugininfo.py:113
 #, fuzzy
@@ -6397,7 +6522,7 @@ msgstr "&Informar dun erro…"
 #: picard/ui/dialogs/plugininfo.py:114
 #: picard/ui/widgets/plugindetailswidget.py:184
 msgid "Path:"
-msgstr ""
+msgstr "Ruta:"
 
 #: picard/ui/dialogs/plugininfo.py:115
 #, fuzzy
@@ -6418,7 +6543,7 @@ msgstr "Sitio web oficial"
 
 #: picard/ui/dialogs/plugininfo.py:246
 msgid "Trusted"
-msgstr ""
+msgstr "De confianza"
 
 #: picard/ui/dialogs/plugininfo.py:247
 msgid "Community"
@@ -6426,7 +6551,7 @@ msgstr "Comunidade"
 
 #: picard/ui/dialogs/plugininfo.py:248
 msgid "Unregistered"
-msgstr ""
+msgstr "Non rexistrado"
 
 #: picard/ui/forms/ui_aboutdialog.py:243
 msgid "About Picard"
@@ -6469,12 +6594,17 @@ msgid ""
 "A <a href=\"https://metabrainz.org\">MetaBrainz Foundation</a> project, "
 "powered by the <a href=\"https://musicbrainz.org\">MusicBrainz</a> database."
 msgstr ""
+"Un proxecto da <a href=\"https://metabrainz.org\">Fundación MetaBrainz</a>, "
+"impulsado pola base de datos de <a href=\"https://musicbrainz.org\">"
+"MusicBrainz</a>."
 
 #: picard/ui/forms/ui_aboutdialog.py:251
 msgid ""
 "Translated by the MusicBrainz community. Thank you to everyone who helps "
 "make Picard available in more languages!"
 msgstr ""
+"Traducido pola comunidade de MusicBrainz. Grazas a todas as persoas que "
+"axudan a facer que Picard estea dispoñible en máis idiomas!"
 
 #: picard/ui/forms/ui_aboutdialog.py:252
 #, fuzzy
@@ -6585,7 +6715,7 @@ msgstr "G&rafismo"
 
 #: picard/ui/forms/ui_infodialog.py:106
 msgid "&Chaos"
-msgstr ""
+msgstr "&Caos"
 
 #: picard/ui/forms/ui_infostatus.py:119
 #: picard/ui/forms/ui_options_cover_processing.py:296
@@ -6642,7 +6772,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:110
 msgid "Sessions Management"
-msgstr ""
+msgstr "Xestión de sesións"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:111
 msgid ""
@@ -6654,6 +6784,14 @@ msgid ""
 "\n"
 "These settings determine how the session files are managed."
 msgstr ""
+"Picard pode gardar e restaurar o estado actual do teu espazo de traballo "
+"como un ficheiro de sesión dende o menú principal Ficheiro. As sesións "
+"conservan a localización dos ficheiros (sen agrupar, grupos, álbums, pistas "
+"específicas e gravacións independentes), as túas edicións manuais dos "
+"metadatos e determinadas opcións de configuración, para que poidas continuar "
+"o traballo máis tarde.\n"
+"\n"
+"Estas opcións determinan como se xestionan os ficheiros de sesión."
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:114
 #, fuzzy
@@ -6669,19 +6807,20 @@ msgstr "Versión"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:117
 msgid "Auto-save every N minutes (0 to disable):"
-msgstr ""
+msgstr "Gardar automaticamente cada N minutos (0 para desactivar):"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:118
 msgid "Attempt session backup on unexpected shutdown"
 msgstr ""
+"Tentar facer unha copia de seguridade da sesión ao pecharse inesperadamente"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:119
 msgid "Include MusicBrainz data in saved sessions"
-msgstr ""
+msgstr "Incluír os datos de MusicBrainz nas sesións gardadas"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:120
 msgid "Do not make MusicBrainz requests on restore"
-msgstr ""
+msgstr "Non facer solicitudes a MusicBrainz ao restaurar"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
 #, fuzzy
@@ -6691,7 +6830,7 @@ msgstr "&Carga os ficheiros seleccionados"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:122
 msgid "Load last saved session on startup"
-msgstr ""
+msgstr "Cargar a derradeira sesión gardada ao iniciar"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:67
 #: picard/ui/options/dialog.py:504
