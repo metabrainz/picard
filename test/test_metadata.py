@@ -25,8 +25,8 @@
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
+    create_image,
 )
-from test.test_coverart_image import create_image
 
 from picard.coverart.image import CoverArtImage
 from picard.metadata import (
