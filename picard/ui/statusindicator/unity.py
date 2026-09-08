@@ -19,8 +19,6 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-import os
-
 from PyQt6.QtCore import (
     QObject,
     pyqtClassInfo,
@@ -34,12 +32,13 @@ from PyQt6.QtDBus import (
 from PyQt6.QtWidgets import QMainWindow
 
 from picard import PICARD_DESKTOP_NAME
+from picard.const.sys import IS_SNAP
 
 from . import AbstractProgressStatusIndicator
 
 
 DBUS_INTERFACE = 'com.canonical.Unity.LauncherEntry'
-APP_ID = PICARD_DESKTOP_NAME if not os.getenv('SNAP') else 'picard_picard.desktop'
+APP_ID = 'picard_picard.desktop' if IS_SNAP else PICARD_DESKTOP_NAME
 
 
 class UnityLauncherEntryService(QObject):

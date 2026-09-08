@@ -39,8 +39,10 @@ from PyQt6.QtDBus import (
 from picard import (
     PICARD_APP_ID,
     PICARD_DISPLAY_NAME,
+    log,
     tagger_instance,
 )
+from picard.const.sys import IS_SNAP
 from picard.file import File
 
 from .player import (
@@ -50,7 +52,8 @@ from .player import (
 )
 
 
-MPRIS2_DBUS_BUS_NAME = 'org.mpris.MediaPlayer2.picard'
+MPRIS2_PLAYER_ID = 'picard' if IS_SNAP else PICARD_APP_ID
+MPRIS2_DBUS_BUS_NAME = f'org.mpris.MediaPlayer2.{MPRIS2_PLAYER_ID}'
 MPRIS2_DBUS_OBJECT_PATH = '/org/mpris/MediaPlayer2'
 MPRIS2_DBUS_INTERFACE = 'org.mpris.MediaPlayer2'
 MPRIS2_DBUS_INTERFACE_PLAYER = 'org.mpris.MediaPlayer2.Player'
@@ -80,8 +83,16 @@ class MPRIS2NowPlayingService:
 
         dbus = QDBusConnection.sessionBus()
         self._mpris2_service = MPRIS2Service(dbus, self._player)
-        dbus.registerService(MPRIS2_DBUS_BUS_NAME)
-        dbus.registerObject(MPRIS2_DBUS_OBJECT_PATH, self._mpris2_service)
+        if not dbus.registerService(MPRIS2_DBUS_BUS_NAME):
+            log.warning(
+                'Failed to register MPRIS2 DBus service "%s": %s', MPRIS2_DBUS_BUS_NAME, dbus.lastError().message()
+            )
+            return
+        if not dbus.registerObject(MPRIS2_DBUS_OBJECT_PATH, self._mpris2_service):
+            log.warning(
+                'Failed to register MPRIS2 DBus object "%s": %s', MPRIS2_DBUS_OBJECT_PATH, dbus.lastError().message()
+            )
+            return
 
     def disable(self):
         if not self._mpris2_service:
@@ -262,7 +273,6 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
 class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     """See https://specifications.freedesktop.org/mpris/latest/Player_Interface.html"""
 
-    # TODO: Actually trigger
     Seeked = pyqtSignal('qlonglong')
 
     def __init__(self, parent: MPRIS2Service, player: Player):
