@@ -56,7 +56,7 @@ class Ui_GeneralOptionsPage(object):
         self.gridlayout.addWidget(self.server_host, 1, 0, 1, 1)
         self.server_host_primary_warning = QtWidgets.QFrame(parent=self.musicbrainz_server_box)
         self.server_host_primary_warning.setStyleSheet(
-            "QFrame { background-color: #ffc107; color: black }\nQCheckBox { color: black }"
+            "#server_host_primary_warning { border: 2px solid palette(highlight); border-radius: 3px }"
         )
         self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.server_host_primary_warning.setObjectName("server_host_primary_warning")

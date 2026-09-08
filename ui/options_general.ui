@@ -78,8 +78,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="QFrame" name="server_host_primary_warning">
         <property name="styleSheet">
-         <string notr="true">QFrame { background-color: #ffc107; color: black }
-QCheckBox { color: black }</string>
+         <string notr="true">#server_host_primary_warning { border: 2px solid palette(highlight); border-radius: 3px }</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Shape::NoFrame</enum>
