@@ -31,6 +31,7 @@ from PyQt6.QtCore import QUrl
 
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.util.mbserver import get_submission_server
 from picard.webservice import (
     CLIENT_STRING,
     PendingRequest,
@@ -68,6 +69,34 @@ class MBAPIHelper(APIHelper):
         self._base_url = host_port_to_url(host, port)
         self._base_url.setPath('/ws/2')
         return self._base_url
+
+    @property
+    def submission_base_url(self) -> QUrl:
+        """Base URL for data submission.
+
+        Data submission should be done against the primary MusicBrainz database
+        rather than the (possibly mirror) server used for fetching data. See
+        :func:`picard.util.mbserver.get_submission_server`.
+        """
+        # Keep it dynamic since host/port can be changed via options.
+        server = get_submission_server()
+        url = host_port_to_url(server.host, server.port)
+        url.setPath('/ws/2')
+        return url
+
+    def submission_url_from_path(self, path: str) -> QUrl:
+        """Build a full submission URL for the given API path."""
+        url = QUrl(self.submission_base_url)
+        url.setPath(url.path() + path)
+        return url
+
+    def _post_submission(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
+        """POST to the submission server (primary MusicBrainz database)."""
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        kwargs['url'] = self.submission_url_from_path(path)
+        kwargs['handler'] = handler
+        kwargs['data'] = data
+        return self._webservice.post_url(**kwargs)
 
     def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['mblogin'] = kwargs.get('mblogin', True)
@@ -225,7 +254,7 @@ class MBAPIHelper(APIHelper):
     def submit_ratings(self, ratings: dict[tuple[str, str], int], handler: ReplyHandler) -> PendingRequest:
         params = {'client': CLIENT_STRING}
         data = self._xml_ratings(ratings)
-        return self.post(
+        return self._post_submission(
             "/rating",
             data,
             handler,
@@ -263,7 +292,7 @@ class MBAPIHelper(APIHelper):
         """
         params = {'client': CLIENT_STRING}
         data = self._xml_isrcs(recordings_isrcs)
-        return self.post(
+        return self._post_submission(
             "/recording",
             data,
             handler,

@@ -211,6 +211,78 @@ class MBAPITest(PicardTestCase):
         self.assertEqual(result, expected)
 
 
+class MBAPISubmissionServerTest(PicardTestCase):
+    """Data submission (ISRCs, ratings) must target the submission server.
+
+    Regression test for PICARD-3425: submissions should go to the primary
+    MusicBrainz database (the submission server), not the possibly-mirror
+    server configured for fetching data.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.ws = MagicMock(auto_spec=WebService)
+        self.api = MBAPIHelper(self.ws)
+
+    def _posted_url(self):
+        self.assertGreater(self.ws.post_url.call_count, 0)
+        return self.ws.post_url.call_args[1]['url']
+
+    def test_submit_isrcs_uses_submission_server_for_mirror(self):
+        # A non-official mirror without opt-in must fall back to the primary server.
+        self.set_config_values(
+            setting={
+                'server_host': 'mirror.example.com',
+                'server_port': 8042,
+                'use_server_for_submission': False,
+            }
+        )
+        self.api.submit_isrcs({'aaaa': ['USRC17607839']}, None)
+        url = self._posted_url()
+        self.assertEqual('musicbrainz.org', url.host())
+        self.assertTrue(url.path().startswith('/ws/2/recording'))
+
+    def test_submit_ratings_uses_submission_server_for_mirror(self):
+        self.set_config_values(
+            setting={
+                'server_host': 'mirror.example.com',
+                'server_port': 8042,
+                'use_server_for_submission': False,
+            }
+        )
+        self.api.submit_ratings({('recording', 'a'): 1}, None)
+        url = self._posted_url()
+        self.assertEqual('musicbrainz.org', url.host())
+        self.assertTrue(url.path().startswith('/ws/2/rating'))
+
+    def test_submit_isrcs_uses_official_server(self):
+        # An official server is used directly for submission.
+        self.set_config_values(
+            setting={
+                'server_host': 'beta.musicbrainz.org',
+                'server_port': 80,
+                'use_server_for_submission': False,
+            }
+        )
+        self.api.submit_isrcs({'aaaa': ['USRC17607839']}, None)
+        url = self._posted_url()
+        self.assertEqual('beta.musicbrainz.org', url.host())
+
+    def test_submit_ratings_uses_unofficial_server_when_opted_in(self):
+        # A non-official server is honoured when the user opts in.
+        self.set_config_values(
+            setting={
+                'server_host': 'mirror.example.com',
+                'server_port': 8042,
+                'use_server_for_submission': True,
+            }
+        )
+        self.api.submit_ratings({('recording', 'a'): 1}, None)
+        url = self._posted_url()
+        self.assertEqual('mirror.example.com', url.host())
+        self.assertEqual(8042, url.port())
+
+
 class LuceneHelpersTest(PicardTestCase):
     def test_escape_lucene_query(self):
         self.assertEqual('', escape_lucene_query(''))
