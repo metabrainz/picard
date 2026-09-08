@@ -1844,11 +1844,9 @@ def setup_dbus():
 
 
 def main(localedir=None, autoupdate=True):
-    log.enable_default_handlers()
-
     """Main entry point to the program"""
+    log.enable_default_handlers()
     setup_application()
-
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     cmdline_args = process_cmdline_args()
