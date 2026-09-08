@@ -228,7 +228,8 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
 
     @Fullscreen.setter  # type: ignore[no-redef]
     def Fullscreen(self, value):
-        raise NotImplementedError()
+        # Not supported
+        pass
 
     @pyqtProperty(bool)
     def CanSetFullscreen(self):
