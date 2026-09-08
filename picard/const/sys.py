@@ -18,13 +18,18 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 import sys
 
 
+# Operating system detection
 IS_WIN: bool = sys.platform == 'win32'
 IS_LINUX: bool = sys.platform == 'linux'
 IS_MACOS: bool = sys.platform == 'darwin'
 IS_HAIKU: bool = sys.platform == 'haiku'
+
+# Detect whether running as a Snap package
+IS_SNAP: bool = IS_LINUX and bool(os.getenv('SNAP'))
 
 # These variables are set by pyinstaller if running from a packaged build
 # See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html

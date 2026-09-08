@@ -26,7 +26,6 @@
 
 
 from html import escape as html_escape
-import os
 
 from PyQt6 import (
     QtCore,
@@ -41,7 +40,10 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
-from picard.const.sys import IS_LINUX
+from picard.const.sys import (
+    IS_LINUX,
+    IS_SNAP,
+)
 from picard.env import parse_bool_env
 from picard.i18n import gettext as _
 from picard.util import (
@@ -91,7 +93,7 @@ def add_accept_button(
 
 def open_local_path(path: str) -> None:
     url = QtCore.QUrl.fromLocalFile(path)
-    if os.environ.get('SNAP'):
+    if IS_SNAP:
         run_executable('xdg-open', url.toString())
     else:
         QtGui.QDesktopServices.openUrl(url)
