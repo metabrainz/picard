@@ -29,6 +29,7 @@ from PyQt6.QtNetwork import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const import METABRAINZ_OAUTH_HOST
 from picard.webservice import (
     MAX_PENDING_AUTHORIZATION_REQUESTS,
     WebService,
@@ -375,3 +376,74 @@ class WebServiceAuthorizationTest(PicardTestCase):
         handler.assert_called_once()
         args = handler.call_args[0]
         self.assertEqual(args[2], QNetworkReply.NetworkError.AuthenticationRequiredError)
+
+
+class WebServiceAuthGateTest(PicardTestCase):
+    """Tests for PICARD-3424: only authenticate against servers that advertise a
+    scheme Picard can perform; downgrade to unauthenticated for all others."""
+
+    def setUp(self):
+        super().setUp()
+        self.tmpdir = self.mktmpdir()
+        self.patcher = patch('picard.webservice.appdirs.cache_folder', return_value=self.tmpdir)
+        self.patcher.start()
+        self.addCleanup(self.patcher.stop)
+        self.rc_patcher = patch('picard.webservice.ratecontrol')
+        self.rc_patcher.start()
+        self.addCleanup(self.rc_patcher.stop)
+        self.set_config_values(
+            {
+                'use_proxy': False,
+                'server_host': 'musicbrainz.org',
+                'network_transfer_timeout_seconds': 30,
+                'network_cache_size_bytes': 100 * 1000 * 1000,
+            }
+        )
+        self.ws = WebService()
+        self.ws._timer_run_next_task = MagicMock()
+        self.ws._timer_count_pending_requests = MagicMock()
+        self.ws.oauth_manager = MagicMock()
+
+    def _mblogin_request(self, url):
+        return WSRequest(method='GET', url=url, handler=dummy_handler, mblogin=True)
+
+    def test_official_host_fetches_token(self):
+        request = self._mblogin_request('https://musicbrainz.org/ws/2/collection')
+        with patch.object(self.ws, '_send_request') as mock_send:
+            self.ws._start_request(request)
+        # OAuth token is fetched; _send_request is deferred to the token callback.
+        self.ws.oauth_manager.get_access_token.assert_called_once()
+        mock_send.assert_not_called()
+        self.assertTrue(request.mblogin)
+
+    def test_oauth_provider_host_is_authenticated(self):
+        # The OAuth provider host must carry the token, e.g. for the
+        # /oauth2/userinfo request during login; it must not be downgraded.
+        request = self._mblogin_request(f'https://{METABRAINZ_OAUTH_HOST}/oauth2/userinfo')
+        with patch.object(self.ws, '_send_request') as mock_send:
+            self.ws._start_request(request)
+        self.ws.oauth_manager.get_access_token.assert_called_once()
+        mock_send.assert_not_called()
+        self.assertTrue(request.mblogin)
+
+    def test_no_auth_host_downgrades_and_sends_unauthenticated(self):
+        url = 'https://test.musicbrainz.org/ws/2/release/1?inc=artists+user-collections+user-ratings'
+        request = self._mblogin_request(url)
+        with patch.object(self.ws, '_send_request') as mock_send:
+            self.ws._start_request(request)
+        # No token fetched; request sent directly, unauthenticated.
+        self.ws.oauth_manager.get_access_token.assert_not_called()
+        mock_send.assert_called_once_with(request, None)
+        self.assertFalse(request.mblogin)
+        url_str = request.url().toString()
+        self.assertNotIn('user-collections', url_str)
+        self.assertNotIn('user-ratings', url_str)
+        self.assertIn('artists', url_str)
+
+    def test_unknown_host_downgrades(self):
+        request = self._mblogin_request('http://localhost:5000/ws/2/collection')
+        with patch.object(self.ws, '_send_request') as mock_send:
+            self.ws._start_request(request)
+        self.ws.oauth_manager.get_access_token.assert_not_called()
+        mock_send.assert_called_once_with(request, None)
+        self.assertFalse(request.mblogin)
