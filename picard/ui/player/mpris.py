@@ -262,7 +262,6 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
 class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     """See https://specifications.freedesktop.org/mpris/latest/Player_Interface.html"""
 
-    # TODO: Actually trigger
     Seeked = pyqtSignal('qlonglong')
 
     def __init__(self, parent: MPRIS2Service, player: Player):
