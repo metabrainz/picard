@@ -51,7 +51,7 @@ from .player import (
 )
 
 
-MPRIS2_DBUS_BUS_NAME = 'org.mpris.MediaPlayer2.picard'
+MPRIS2_DBUS_BUS_NAME = f'org.mpris.MediaPlayer2.{PICARD_APP_ID}'
 MPRIS2_DBUS_OBJECT_PATH = '/org/mpris/MediaPlayer2'
 MPRIS2_DBUS_INTERFACE = 'org.mpris.MediaPlayer2'
 MPRIS2_DBUS_INTERFACE_PLAYER = 'org.mpris.MediaPlayer2.Player'
