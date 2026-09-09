@@ -27,6 +27,7 @@ import unittest
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
+    create_image,
     subtest_cases,
 )
 
@@ -44,17 +45,6 @@ from picard.coverart.utils import (
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util.filenaming import WinPathTooLong
-
-
-def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None):
-    return CoverArtImage(
-        data=create_fake_png(extra_data),
-        types=types,
-        comment=comment,
-        support_types=support_types,
-        support_multi_types=support_multi_types,
-        id3_type=id3_type,
-    )
 
 
 class TagCoverArtImageTest(PicardTestCase):

@@ -46,6 +46,7 @@ from picard import (
     config,
     log,
 )
+from picard.coverart.image import CoverArtImage
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
 from picard.i18n import setup_i18n
@@ -221,6 +222,18 @@ def get_test_data_path(*paths) -> Path:
 def create_fake_png(extra: bytes = b''):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
     return b'\x89PNG\x0d\x0a\x1a\x0a' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
+
+
+def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None):
+    """Creates a CoverArtImage backed by fake PNG data, for use in tests."""
+    return CoverArtImage(
+        data=create_fake_png(extra_data),
+        types=types,
+        comment=comment,
+        support_types=support_types,
+        support_multi_types=support_multi_types,
+        id3_type=id3_type,
+    )
 
 
 def load_test_json(filename):

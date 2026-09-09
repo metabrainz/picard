@@ -24,8 +24,10 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
-from test.test_coverart_image import create_image
+from test.picardtestcase import (
+    PicardTestCase,
+    create_image,
+)
 
 from picard import config
 from picard.item import MetadataItem
