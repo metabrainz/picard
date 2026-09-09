@@ -1487,7 +1487,7 @@
 - [PICARD-1054](https://tickets.metabrainz.org/browse/PICARD-1054) - Picard swallows values of Qt command line arguments
 - [PICARD-1218](https://tickets.metabrainz.org/browse/PICARD-1218) - Script names aren't truncated properly
 - [PICARD-1312](https://tickets.metabrainz.org/browse/PICARD-1312) - Hotkeys for buttons do not work on macOS
-- [PICARD-1565](https://tickets.metabrainz.org/browse/PICARD-1565) - Picard ignores results in Acoust ID web service response
+- [PICARD-1565](https://tickets.metabrainz.org/browse/PICARD-1565) - Picard ignores results in AcoustID web service response
 - [PICARD-1592](https://tickets.metabrainz.org/browse/PICARD-1592) - APEv2: Read tags case insensitive
 - [PICARD-1625](https://tickets.metabrainz.org/browse/PICARD-1625) - UI unresponsive while matching files to release
 - [PICARD-1626](https://tickets.metabrainz.org/browse/PICARD-1626) - Locales in Options > Metadata are not translated and not sorted
@@ -1708,7 +1708,7 @@
 - [PICARD-729](https://tickets.metabrainz.org/browse/PICARD-729) - Tracks get stuck at "\[loading track information\]" on Bad Gateway errors
 - [PICARD-938](https://tickets.metabrainz.org/browse/PICARD-938) - Need two left-arrow key presses to go from track with file to album
 - [PICARD-1178](https://tickets.metabrainz.org/browse/PICARD-1178) - Images tagged with extra types that the user has chosen to ignore should not be shown as 'modified'
-- [PICARD-1288](https://tickets.metabrainz.org/browse/PICARD-1288) - Folskonomy tags / genre fallback on album artists tags not working
+- [PICARD-1288](https://tickets.metabrainz.org/browse/PICARD-1288) - Folksonomy tags / genre fallback on album artists tags not working
 - [PICARD-1422](https://tickets.metabrainz.org/browse/PICARD-1422) - Windows: Uninstall 32 bit Picard before upgrade
 - [PICARD-1447](https://tickets.metabrainz.org/browse/PICARD-1447) - When releasing a new version, appdata should also be updated
 - [PICARD-1460](https://tickets.metabrainz.org/browse/PICARD-1460) - Windows installer does not detect running instance
@@ -1829,7 +1829,7 @@
 - [PICARD-1440](https://tickets.metabrainz.org/browse/PICARD-1440) - Support loading and renaming Standard MIDI Files (SMF)
 
 ### Tasks
-- [PICARD-1333](https://tickets.metabrainz.org/browse/PICARD-1333) - Run CI tests agaist oldest supported mutagen
+- [PICARD-1333](https://tickets.metabrainz.org/browse/PICARD-1333) - Run CI tests against oldest supported mutagen
 - [PICARD-1347](https://tickets.metabrainz.org/browse/PICARD-1347) - Refactor script.py to avoid code duplication
 - [PICARD-1365](https://tickets.metabrainz.org/browse/PICARD-1365) - Allow building with PyQt 5.11 or later
 - [PICARD-1442](https://tickets.metabrainz.org/browse/PICARD-1442) - Support new Audio Play secondary type
@@ -1885,7 +1885,7 @@
 
 ## Version 2.0.3 - 2018-08-10
 ### Bugfixes
-- [PICARD-1122](https://tickets.metabrainz.org/browse/PICARD-1122) - Preffered release type settings are exclusive and should be inclusive
+- [PICARD-1122](https://tickets.metabrainz.org/browse/PICARD-1122) - Preferred release type settings are exclusive and should be inclusive
 - [PICARD-1207](https://tickets.metabrainz.org/browse/PICARD-1207) - Move additional files feature fails when source directory contains non-ascii characters
 - [PICARD-1247](https://tickets.metabrainz.org/browse/PICARD-1247) - Not all "preserved" tags are preserved
 - [PICARD-1305](https://tickets.metabrainz.org/browse/PICARD-1305) - Search dialog crashes picard when record doesn't have an album
@@ -2031,11 +2031,11 @@
 - [PICARD-996](https://tickets.metabrainz.org/browse/PICARD-996) - Disabling the cover art box and enabling it again doesn't bring it back
 - [PICARD-998](https://tickets.metabrainz.org/browse/PICARD-998) - Disabling the action toolbar sometimes doesn't work
 - [PICARD-1005](https://tickets.metabrainz.org/browse/PICARD-1005) - If a cluster is moved to the album side of the main window it gets moved to unmatched files
-- [PICARD-1006](https://tickets.metabrainz.org/browse/PICARD-1006) - Drag and drop for cover arts doesnt work on OSX
+- [PICARD-1006](https://tickets.metabrainz.org/browse/PICARD-1006) - Drag and drop for cover arts doesn't work on OSX
 - [PICARD-1010](https://tickets.metabrainz.org/browse/PICARD-1010) - Unsetting View/Cover Art doesn't work permanently
 - [PICARD-1011](https://tickets.metabrainz.org/browse/PICARD-1011) - Toolbar tab order incorrect after PICARD-908
 - [PICARD-1014](https://tickets.metabrainz.org/browse/PICARD-1014) - Number of images in release info is calculated incorrectly
-- [PICARD-1015](https://tickets.metabrainz.org/browse/PICARD-1015) - Artwork tab of the Track Info DIalog doesn't show changes anymore
+- [PICARD-1015](https://tickets.metabrainz.org/browse/PICARD-1015) - Artwork tab of the Track Info Dialog doesn't show changes anymore
 - [PICARD-1018](https://tickets.metabrainz.org/browse/PICARD-1018) - CoverArtBox doesn't show new/removed images after unmatched files are added/removed to the album
 - [PICARD-1023](https://tickets.metabrainz.org/browse/PICARD-1023) - Directory persistence for Add Directory needs tweaking
 - [PICARD-1029](https://tickets.metabrainz.org/browse/PICARD-1029) - Fix ~artists_sort metadata variable
@@ -2076,7 +2076,7 @@
 - [PICARD-592](https://tickets.metabrainz.org/browse/PICARD-592) - Can't open Options
 - [PICARD-688](https://tickets.metabrainz.org/browse/PICARD-688) - "Tags from filenames" action stays enabled even if it is unavailable.
 - [PICARD-701](https://tickets.metabrainz.org/browse/PICARD-701) - Using the first image type as filename changes the name of front images
-- [PICARD-706](https://tickets.metabrainz.org/browse/PICARD-706) - Fingerprint Submission Failes if AcoustID tags are present and/or invalid
+- [PICARD-706](https://tickets.metabrainz.org/browse/PICARD-706) - Fingerprint Submission fails if AcoustID tags are present and/or invalid
 - [PICARD-726](https://tickets.metabrainz.org/browse/PICARD-726) - Picard moves into the selected folder
 - [PICARD-730](https://tickets.metabrainz.org/browse/PICARD-730) - Picard does not support (recording) relationship credits
 - [PICARD-748](https://tickets.metabrainz.org/browse/PICARD-748) - Picard repeats/duplicates field data
@@ -2133,7 +2133,7 @@
 - [PICARD-937](https://tickets.metabrainz.org/browse/PICARD-937) - Status bar not cleared when selection changed
 - [PICARD-942](https://tickets.metabrainz.org/browse/PICARD-942) - Open containing folder not working for shared files over network
 - [PICARD-945](https://tickets.metabrainz.org/browse/PICARD-945) - Warning: Plugin directory '…/python2.7/site-packages/contrib/plugins' doesn't exist
-- [PICARD-946](https://tickets.metabrainz.org/browse/PICARD-946) - Additionnal files aren't moved anymore
+- [PICARD-946](https://tickets.metabrainz.org/browse/PICARD-946) - Additional files aren't moved anymore
 - [PICARD-947](https://tickets.metabrainz.org/browse/PICARD-947) - Search window error message does not appear translated
 - [PICARD-950](https://tickets.metabrainz.org/browse/PICARD-950) - Open Containing Folder duplicates
 - [PICARD-958](https://tickets.metabrainz.org/browse/PICARD-958) - Errors when directory / file names contain unicode characters
@@ -2520,7 +2520,7 @@
 - Fixed copy and paste (#5428, Philipp Wolfer)
 - Fixed loading of files with corrupted PUIDs (#5331, Carlin Mangar)
 - Fixed redirection handling (Lukáš Lalinský)
-- Fixed writng of iTunNORM tags in ID3 (Carlin Mangar)
+- Fixed writing of iTunNORM tags in ID3 (Carlin Mangar)
 - Always restore window position so that the window is visible (Carlin Mangar)
 - Updated translations.
 
