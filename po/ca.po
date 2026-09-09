@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-08 09:25+0200\n"
-"PO-Revision-Date: 2026-08-27 12:12+0000\n"
+"PO-Revision-Date: 2026-09-09 15:13+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -262,22 +262,22 @@ msgstr ""
 
 #: picard/debug_opts.py:184
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: picard/debug_opts.py:184
 msgid ""
 "Log theme switching diagnostics, palette colors, and color scheme details"
 msgstr ""
+"Registra diagnòstics de canvi de tema i detalls dels colors de la paleta i "
+"l'esquema de colors"
 
 #: picard/debug_opts.py:185 picard/ui/forms/ui_options_network.py:185
 msgid "Browser Integration"
 msgstr "Integració amb el navegador"
 
 #: picard/debug_opts.py:185
-#, fuzzy
-#| msgid "Browser integration not enabled"
 msgid "Log browser integration HTTP requests"
-msgstr "La integració amb el navegador no està habilitada"
+msgstr "Registra les sol·licituds HTTP de la integració amb el navegador"
 
 #: picard/file.py:335
 msgid "Cannot save file: the file no longer exists."
@@ -501,10 +501,8 @@ msgid "Embed images into tags"
 msgstr "Incrusta les imatges a les etiquetes"
 
 #: picard/options.py:251
-#, fuzzy
-#| msgid "Embed images into tags"
 msgid "Remove images from tags"
-msgstr "Incrusta les imatges a les etiquetes"
+msgstr "Suprimeix les imatges de les etiquetes"
 
 #: picard/options.py:252
 msgid "Save only one front image"
@@ -816,10 +814,8 @@ msgid "Standardize artist names"
 msgstr "Estandarditza els noms dels artistes"
 
 #: picard/options.py:550 picard/ui/forms/ui_options_metadata.py:195
-#, fuzzy
-#| msgid "Use standardized vocal credits"
 msgid "Always standardize multi-valued artist tags"
-msgstr "Fes servir els crèdits de veu estandarditzats"
+msgstr "Estandarditza sempre les etiquetes d'artista de diversos valors"
 
 #: picard/options.py:553 picard/ui/forms/ui_options_metadata.py:196
 msgid "Use standardized instrument credits"
@@ -1468,111 +1464,100 @@ msgid "Add file as recording…"
 msgstr "Afegeix el fitxer com a enregistrament…"
 
 #: picard/browser/auth_responses.py:142
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication successful — %s"
-msgstr "S'ha produït un error d'autenticació"
+msgstr "Autenticació correcta: %s"
 
 #: picard/browser/auth_responses.py:143
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication successful."
-msgstr "S'ha produït un error d'autenticació"
+msgstr "Autenticació correcta."
 
 #: picard/browser/auth_responses.py:144
 msgid "Picard has been authorized."
-msgstr ""
+msgstr "S'ha autoritzat Picard."
 
 #: picard/browser/auth_responses.py:147 picard/browser/auth_responses.py:200
 #: picard/browser/auth_responses.py:216
 msgid "You can close this window."
-msgstr ""
+msgstr "Podeu tancar aquesta finestra."
 
 #: picard/browser/auth_responses.py:164
-#, fuzzy
-#| msgid "Authorization code:"
 msgid "Authorization was declined."
-msgstr "Codi d'autorització:"
+msgstr "S'ha rebutjat l'autorització."
 
 #: picard/browser/auth_responses.py:165
 msgid "The authorization request was invalid."
-msgstr ""
+msgstr "La sol·licitud d'autorització no era vàlida."
 
 #: picard/browser/auth_responses.py:166
 msgid "This application is not allowed to request authorization."
-msgstr ""
+msgstr "Aquesta aplicació no té permís per a sol·licitar autorització."
 
 #: picard/browser/auth_responses.py:167
 msgid "The authorization request is not supported."
-msgstr ""
+msgstr "No s'admet la sol·licitud d'autorització."
 
 #: picard/browser/auth_responses.py:168
 msgid "The requested permissions are invalid."
-msgstr ""
+msgstr "Els permisos sol·licitats no són vàlids."
 
 #: picard/browser/auth_responses.py:169
 msgid "The server encountered an error. Please try again later."
-msgstr ""
+msgstr "S'ha produït un error del servidor. Torneu-ho a provar més tard."
 
 #: picard/browser/auth_responses.py:170
 msgid "The service is temporarily unavailable. Please try again later."
-msgstr ""
+msgstr "El servei no està disponible temporalment. Torneu-ho a provar més tard."
 
 #: picard/browser/auth_responses.py:171
-#, fuzzy
-#| msgid "Enable track ratings (requires login)"
 msgid "Additional interaction is required to sign in."
-msgstr "Habilita les puntuacions de les pistes (requereix iniciar la sessió)"
+msgstr "Cal interacció addicional per a iniciar la sessió."
 
 #: picard/browser/auth_responses.py:172
 msgid "You need to sign in to continue."
-msgstr ""
+msgstr "Heu d'iniciar la sessió per a continuar."
 
 #: picard/browser/auth_responses.py:173
 msgid "Your consent is required to continue."
-msgstr ""
+msgstr "Cal el vostre consentiment per a continuar."
 
 #: picard/browser/auth_responses.py:174
 msgid "You need to select an account to continue."
-msgstr ""
+msgstr "Heu de seleccionar un compte per a continuar."
 
 #: picard/browser/auth_responses.py:179 picard/browser/auth_responses.py:181
 #, python-format
 msgid "Picard has not been authorized: %s"
-msgstr ""
+msgstr "No s'ha autoritzat Picard: %s"
 
 #: picard/browser/auth_responses.py:182
 msgid "Picard has not been authorized."
-msgstr ""
+msgstr "No s'ha autoritzat Picard."
 
 #: picard/browser/auth_responses.py:195
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication cancelled — %s"
-msgstr "S'ha produït un error d'autenticació"
+msgstr "S'ha cancel·lat l'autenticació: %s"
 
 #: picard/browser/auth_responses.py:196
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication cancelled."
-msgstr "S'ha produït un error d'autenticació"
+msgstr "S'ha cancel·lat l'autenticació."
 
 #: picard/browser/auth_responses.py:211
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication error — %s"
-msgstr "Es requereix autenticació"
+msgstr "S'ha produït un error d'autenticació: %s"
 
 #: picard/browser/auth_responses.py:212
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication error."
-msgstr "Es requereix autenticació"
+msgstr "S'ha produït un error d'autenticació."
 
 #: picard/browser/auth_responses.py:213
 msgid ""
 "This authentication request is no longer valid. Please try signing in again."
 msgstr ""
+"Aquesta sol·licitud d'autenticació ja no és vàlida. Proveu de tornar a "
+"iniciar la sessió."
 
 #: picard/coverart/__init__.py:241
 #, python-format
@@ -1698,10 +1683,8 @@ msgid "Missing required [profile] section"
 msgstr "Falta la secció [profile] obligatòria"
 
 #: picard/profiles/importer.py:122
-#, fuzzy
-#| msgid "The profile title cannot be blank."
 msgid "The [profile] section must be a table"
-msgstr "El títol del perfil no pot estar en blanc."
+msgstr "La secció [profile] ha de ser una taula"
 
 #: picard/profiles/importer.py:126
 msgid "Missing required 'title' in [profile] section"
@@ -1723,7 +1706,7 @@ msgstr "No hi ha cap perfil existent amb l'ID «%s» per substituir"
 
 #: picard/profiles/importer.py:165
 msgid "The [settings] section must be a table"
-msgstr ""
+msgstr "La secció [settings] ha de ser una taula"
 
 #: picard/profiles/importer.py:178
 #, python-format
@@ -1735,18 +1718,16 @@ msgstr ""
 "no s'hagin convertit alguns paràmetres."
 
 #: picard/profiles/importer.py:210
-#, fuzzy
-#| msgid "The script title must not be empty."
 msgid "The [scripts] section must be a table"
-msgstr "El títol de l'script no pot estar buit."
+msgstr "La secció [scripts] ha de ser una taula"
 
 #: picard/profiles/importer.py:214
 msgid "The [scripts.naming] section must be a table"
-msgstr ""
+msgstr "La secció [scripts.naming] ha de ser una taula"
 
 #: picard/profiles/importer.py:223
 msgid "The [[scripts.tagging]] section must be an array of tables"
-msgstr ""
+msgstr "La secció [[scripts.tagging]] ha de ser una matriu de taules"
 
 #: picard/profiles/importer.py:234
 #, python-format
@@ -1756,13 +1737,11 @@ msgstr[0] "No s'ha reconegut %d paràmetre i s'ha omès: %s"
 msgstr[1] "No s'han reconegut %d paràmetres i s'han omès: %s"
 
 #: picard/profiles/importer.py:247
-#, fuzzy, python-format
-#| msgid "%d setting was not recognized and was skipped: %s"
-#| msgid_plural "%d settings were not recognized and were skipped: %s"
+#, python-format
 msgid "%d setting had an out-of-range value and was corrected: %s"
 msgid_plural "%d settings had out-of-range values and were corrected: %s"
-msgstr[0] "No s'ha reconegut %d paràmetre i s'ha omès: %s"
-msgstr[1] "No s'han reconegut %d paràmetres i s'han omès: %s"
+msgstr[0] "%d paràmetre tenia un valor fora de rang i s'ha corregit: %s"
+msgstr[1] "%d paràmetres tenien un valor fora de rang i s'han corregit: %s"
 
 #: picard/profiles/importer.py:259
 #, python-format
@@ -1778,7 +1757,7 @@ msgstr ""
 
 #: picard/profiles/importer.py:367
 msgid "Each [[scripts.tagging]] entry must be a table"
-msgstr ""
+msgstr "Cada entrada a [[scripts.tagging]] ha de ser una taula"
 
 #: picard/profiles/importer.py:388
 #, python-format
@@ -4361,16 +4340,17 @@ msgstr ""
 "els fitxers d'àudio, a la mateixa carpeta."
 
 #: picard/ui/setupwizard.py:279
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Prefer release group cover art"
-msgstr "Tipus de publicacions preferits"
+msgstr "Prefereix la caràtula del grup de publicacions"
 
 #: picard/ui/setupwizard.py:281
 msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
 msgstr ""
+"S'utilitzarà la caràtula principal de l'àlbum en comptes del material gràfic "
+"específic de l'edició. Això normalment proporciona imatges de qualitat més "
+"alta, però és possible que no coincideixin amb la publicació exacta."
 
 #: picard/ui/setupwizard.py:289
 msgid "You can change these later under Options → Options → Cover Art."
@@ -4412,23 +4392,16 @@ msgid "You can change these later under Options → General → Startup."
 msgstr "Podeu canviar-ho més tard a «Opcions → General → Inici»."
 
 #: picard/ui/setupwizard.py:439
-#, fuzzy
-#| msgid "Additional file patterns"
 msgid "Additional Metadata"
-msgstr "Patrons de fitxers addicionals"
+msgstr "Metadades addicionals"
 
 #: picard/ui/setupwizard.py:440
-#, fuzzy
-#| msgid ""
-#| "Choose whether Picard should rename and move your files when saving tags."
 msgid "Choose whether Picard should fetch extra details about each track."
-msgstr ""
-"Trieu si Picard ha de canviar el nom i moure els fitxers en desar les "
-"etiquetes."
+msgstr "Trieu si Picard ha de recuperar detalls addicionals sobre cada pista."
 
 #: picard/ui/setupwizard.py:445
 msgid "Fetch detailed track relationships (performers, composers, and more)"
-msgstr ""
+msgstr "Recupera relacions de pistes detallades (intèrprets, compositors i més)"
 
 #: picard/ui/setupwizard.py:447
 msgid ""
@@ -4441,12 +4414,18 @@ msgid ""
 "load to the servers. Enable it if you want the most complete tags and don't "
 "mind the extra loading time."
 msgstr ""
+"Per a cada pista, Picard també baixarà crèdits addicionals, com ara els "
+"músics que l'han interpretat, el compositor, el lletrista i obres "
+"relacionades. Això us proporciona etiquetes més riques.\n"
+"\n"
+"S'inhabilita per defecte perquè baixa més dades dels servidors de "
+"MusicBrainz, la qual cosa fa que els àlbums es carreguin una mica més "
+"lentament i afegeix càrrega als servidors. Habiliteu-ho si voleu les "
+"etiquetes més completes i no us importa el temps de càrrega addicional."
 
 #: picard/ui/setupwizard.py:460
-#, fuzzy
-#| msgid "You can change these later under Options → Options → Cover Art."
 msgid "You can change this later under Options → Options → Metadata."
-msgstr "Podeu canviar-ho més tard a «Opcions → Opcions → Caràtules»."
+msgstr "Podeu canviar-ho més tard a «Opcions → Opcions → Metadades»."
 
 #: picard/ui/setupwizard.py:486
 msgid "Picard Setup"
@@ -4632,10 +4611,8 @@ msgid "Ctrl+Shift+I"
 msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox/__init__.py:189 picard/ui/coverartbox/__init__.py:195
-#, fuzzy
-#| msgid "Save tags to files"
 msgid "Saved to File"
-msgstr "Desa les etiquetes als fitxers"
+msgstr "Desat al fitxer"
 
 #: picard/ui/coverartbox/__init__.py:197
 msgid "New Cover Art"
@@ -4647,7 +4624,7 @@ msgstr "Caràtula original"
 
 #: picard/ui/coverartbox/__init__.py:208 picard/ui/infodialog/dialog.py:331
 msgid "This cover art will be removed from tags when saved"
-msgstr ""
+msgstr "Aquesta caràtula se suprimirà de les etiquetes en desar"
 
 #: picard/ui/coverartbox/__init__.py:485
 msgid "All supported image formats"
@@ -5508,12 +5485,12 @@ msgid ""
 "When saving, remove cover images embedded in tags. Images will only be "
 "removed if they are also being saved as separate files."
 msgstr ""
+"En desar, suprimeix les imatges de la caràtula incrustades a les etiquetes. "
+"Les imatges només se suprimiran si també es desen com a fitxers independents."
 
 #: picard/ui/forms/ui_options_cover.py:139
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Remove cover images from tags"
-msgstr "Incrusta les imatges de la caràtula a les etiquetes"
+msgstr "Suprimeix les imatges de la caràtula de les etiquetes"
 
 #: picard/ui/forms/ui_options_cover.py:140
 msgid "Cover Art Providers"
