@@ -362,6 +362,14 @@ class ID3File(File):
             'filename': filename,
             'file_length': file.info.length,
             'itunes_compatible': config.setting['itunes_compatible_grouping'],
+            # A file that has both GRP1 and TIT1 was written using the modern
+            # iTunes convention, where GRP1 holds the grouping and TIT1 holds
+            # the work (mutagen documents GRP1 as "iTunes Grouping" and TIT1 as
+            # "Content group description"). In that case the frame layout is
+            # unambiguous, so TIT1 is always read as work regardless of the
+            # itunes_compatible_grouping option (see _load_tit1_frame). See
+            # https://mutagen.readthedocs.io/en/latest/api/id3_frames.html
+            'has_grp1': 'GRP1' in tags,
             'rating_user_email': id3_rating_user_email(config),
             'rating_steps': config.setting['rating_steps'],
         }
@@ -404,8 +412,18 @@ class ID3File(File):
     def _load_tit1_frame(self, frame, metadata, config_params):
         """Process a TIT1 frame and add it to metadata.
         Handles work/grouping based on iTunes compatibility setting.
+
+        If the file also has a GRP1 frame (always read as grouping), then it was
+        written using the modern iTunes convention where GRP1 holds the grouping
+        and TIT1 holds the work. In that case TIT1 is read as work regardless of
+        the itunes_compatible_grouping option, so that a file tagged by modern
+        iTunes does not lose its work value or duplicate it into grouping.
+        Otherwise the option decides: work when enabled, grouping when disabled.
         """
-        name = 'work' if config_params['itunes_compatible'] else 'grouping'
+        if config_params.get('has_grp1'):
+            name = 'work'
+        else:
+            name = 'work' if config_params['itunes_compatible'] else 'grouping'
         for text in frame.text:
             if text:
                 metadata.add(name, text)
