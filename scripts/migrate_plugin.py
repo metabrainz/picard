@@ -495,11 +495,11 @@ def convert_plugin_api_v2_to_v3(content):
                 pos = match.end()
                 content = content[:pos] + '\n' + import_block + '\n' + content[pos:]
 
-    # PluginPriority
+    # PluginPriority (may be qualified, e.g. plugin.PluginPriority.HIGH)
     if 'PluginPriority' in content:
-        content = re.sub(r'PluginPriority\.HIGH', '100', content)
-        content = re.sub(r'PluginPriority\.NORMAL', '0', content)
-        content = re.sub(r'PluginPriority\.LOW', '-100', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.HIGH', '100', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.NORMAL', '0', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.LOW', '-100', content)
         warnings.append("✓ Converted PluginPriority constants to integers")
 
     return content, warnings

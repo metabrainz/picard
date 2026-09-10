@@ -335,3 +335,36 @@ register_album_action(MyAlbumAction())
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertIn('def on_load(api, file)', content)
+
+    def test_qualified_plugin_priority_converted(self):
+        """A qualified PluginPriority reference (plugin.PluginPriority.HIGH) is
+        converted to an integer without leaving the module qualifier behind.
+
+        Regression: previously only the bare `PluginPriority.HIGH` was matched,
+        producing `plugin.100`, which is a syntax error and cascaded into the
+        registration call not being removed (observed migrating the real
+        `instruments` v2 plugin).
+        """
+        v2_code = (
+            "from picard import metadata\n"
+            "from picard import plugin\n\n\n"
+            "def add_instruments(album, metadata, track, release):\n"
+            "    pass\n\n\n"
+            "metadata.register_track_metadata_processor(\n"
+            "    add_instruments, priority=plugin.PluginPriority.HIGH)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # Output must be valid Python
+        import ast as _ast
+
+        _ast.parse(content)
+        # No mangled qualifier and no leftover module-level registration
+        self.assertNotIn('plugin.100', content)
+        self.assertNotIn('metadata.register_track_metadata_processor', content)
+        # Registration moved into enable()
+        self.assertIn('api.register_track_metadata_processor(add_instruments)', content)
