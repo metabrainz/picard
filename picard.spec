@@ -94,6 +94,9 @@ if build_portable:
 hiddenimports = [
     'cffi',  # Needed for pygit2
     'dataclasses',  # Provide dataclasses support for plugins
+    # Used by plugins (e.g. "Create Local Plugin"), but not otherwise
+    # referenced, so PyInstaller would not bundle it (PICARD-3432).
+    'picard.plugin3.cli',
 ]
 
 if has_module('opencc'):
