@@ -1,9 +1,39 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0rc2 - 2026-09-10
+
+### Bugfixes
+- [PICARD-3412](https://tickets.metabrainz.org/browse/PICARD-3412) - Picard logs the user out after ~1 hour, requiring re-authentication on nearly every startup
+- [PICARD-3413](https://tickets.metabrainz.org/browse/PICARD-3413) - Crash in User Interface > Toolbar Actions on Add Action
+- [PICARD-3415](https://tickets.metabrainz.org/browse/PICARD-3415) - The item views for unclustered and clustered files do not use the system folder icon
+- [PICARD-3416](https://tickets.metabrainz.org/browse/PICARD-3416) - Generated Appstream appdata file has empty release list
+- [PICARD-3417](https://tickets.metabrainz.org/browse/PICARD-3417) - Item views and the metadata box do not refresh correctly when interface colors are changed and applied
+- [PICARD-3420](https://tickets.metabrainz.org/browse/PICARD-3420) - Set proper pygit2 timeouts, reduce the risk of hang
+- [PICARD-3421](https://tickets.metabrainz.org/browse/PICARD-3421) - Wrong desktop file name passed to QApplication.setDesktopFileName() breaks XDG/Wayland app-id association
+- [PICARD-3423](https://tickets.metabrainz.org/browse/PICARD-3423) - Snap package does not register the MPRIS2 audio player DBus interface
+- [PICARD-3424](https://tickets.metabrainz.org/browse/PICARD-3424) - Infinite re-authentication loop when a server rejects a valid OAuth token
+- [PICARD-3425](https://tickets.metabrainz.org/browse/PICARD-3425) - Submission server is not used for ISRC and rating submission
+- [PICARD-3426](https://tickets.metabrainz.org/browse/PICARD-3426) - "Submit data to the configured server" checkbox checkmark not visible in dark mode
+- [PICARD-3427](https://tickets.metabrainz.org/browse/PICARD-3427) - Crash when clicking on a track rating
+
+### Improvements
+- [PICARD-3137](https://tickets.metabrainz.org/browse/PICARD-3137) - Do not ask for authentication when switching to a server not supporting authentication
+- [PICARD-3407](https://tickets.metabrainz.org/browse/PICARD-3407) - Add `is_from_mb` flag to plugin `register_script_variable()` function
+- [PICARD-3408](https://tickets.metabrainz.org/browse/PICARD-3408) - Using `--debug-opt` flag alone doesn't enable debug log level
+- [PICARD-3409](https://tickets.metabrainz.org/browse/PICARD-3409) - Reduce memory usage
+- [PICARD-3410](https://tickets.metabrainz.org/browse/PICARD-3410) - Show a busy cursor to acknowledge async lookup and cluster actions
+- [PICARD-3414](https://tickets.metabrainz.org/browse/PICARD-3414) - Unify boolean environment variable parsing and add `PICARD_FORCE_FUSION`
+- [PICARD-3419](https://tickets.metabrainz.org/browse/PICARD-3419) - Add option to standardize artist name only in "artists" and "albumartists" tags
+- [PICARD-3422](https://tickets.metabrainz.org/browse/PICARD-3422) - Make the "Make It So!" accept button reusable and configurable, and extend it to the Script Editor
+
+### Tasks
+- [PICARD-3048](https://tickets.metabrainz.org/browse/PICARD-3048) - Document manual editing of tags with metadata view and tag editor
+- [PICARD-3215](https://tickets.metabrainz.org/browse/PICARD-3215) - Update documentation for restructured CD lookup menu
+
+
 ## Version 3.0.0rc1 - 2026-09-01
 
 ### Bugfixes
-
 - [PICARD-1877](https://tickets.metabrainz.org/browse/PICARD-1877) - The language field of a lyrics (USLT) tag is not preserved
 - [PICARD-3377](https://tickets.metabrainz.org/browse/PICARD-3377) - `picard-cli plugins compile-ui` fails when called on a .ui file inside a directory
 - [PICARD-3381](https://tickets.metabrainz.org/browse/PICARD-3381) - Alternative Qt6 rcc path missing for RHEL
@@ -18,14 +48,12 @@
 - [PICARD-3406](https://tickets.metabrainz.org/browse/PICARD-3406) - AttributeError: 'Pygit2Repository' object has no attribute 'branches'
 
 ### New Features
-
 - [PICARD-700](https://tickets.metabrainz.org/browse/PICARD-700) - Add a new tag "albumartists"
 - [PICARD-3378](https://tickets.metabrainz.org/browse/PICARD-3378) - Add tagger script functions `$get_new()` and `$get_original()` to allow direct access to new or original file tags
 - [PICARD-3379](https://tickets.metabrainz.org/browse/PICARD-3379) - Add a regex testing playground to the Advanced options screen
 - [PICARD-3380](https://tickets.metabrainz.org/browse/PICARD-3380) - Option to remove all cover images from tags
 
 ### Improvements
-
 - [PICARD-2109](https://tickets.metabrainz.org/browse/PICARD-2109) - Set cover art default to CAA Release Group
 - [PICARD-2442](https://tickets.metabrainz.org/browse/PICARD-2442) - Allow runtime theme changes
 - [PICARD-2844](https://tickets.metabrainz.org/browse/PICARD-2844) - Make language required for both comment and lyrics tags
