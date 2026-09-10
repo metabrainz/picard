@@ -33,6 +33,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import (
     Option,
     get_config,
@@ -136,7 +137,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(config.setting['translate_artist_names'])
         self.ui.translate_album_titles.setChecked(config.setting['translate_album_titles'])
         self.ui.translate_track_titles.setChecked(config.setting['translate_track_titles'])
-        self.current_locales = config.setting['translation_locales']
+        self.current_locales = self._sanitized_locales(config.setting['translation_locales'])
         self.make_locales_text()
         self.current_scripts = config.setting['script_exceptions']
         self.make_scripts_text()
@@ -160,10 +161,35 @@ class MetadataOptionsPage(OptionsPage):
 
         self.set_enabled_states()
 
+    @staticmethod
+    def _sanitized_locales(locales):
+        """Filter out locale codes not present in ALIAS_LOCALES.
+
+        A configuration carried over from an older Picard (or a different CLDR
+        version), or a corrupted value, may reference a locale that no longer
+        exists. Such entries are dropped so they cannot crash the page or be
+        re-persisted. If nothing valid remains, fall back to the option default
+        so the user is never left with an empty locale list.
+        """
+        valid = []
+        for locale in locales:
+            if locale in ALIAS_LOCALES:
+                valid.append(locale)
+            else:
+                log.warning("Ignoring unknown translation locale %r", locale)
+        if not valid:
+            return list(Option.get_default('setting', 'translation_locales'))
+        return valid
+
     def make_locales_text(self):
         def translated_locales():
             for locale in self.current_locales:
-                yield gettext_constants(ALIAS_LOCALES[locale])
+                # current_locales is sanitized in load(), but guard here too so
+                # this method is safe to call with arbitrary input.
+                name = ALIAS_LOCALES.get(locale)
+                if name is None:
+                    continue
+                yield gettext_constants(name)
 
         self.ui.selected_locales.setText('; '.join(translated_locales()))
 
@@ -253,10 +279,15 @@ class MultiLocaleSelector(PicardDialog):
 
     def load(self):
         for locale in self.parent().current_locales:
+            # current_locales is sanitized by MetadataOptionsPage.load(), but
+            # guard defensively so an unknown code can never crash the dialog.
+            name = ALIAS_LOCALES.get(locale)
+            if name is None:
+                continue
             # Note that items in the selected locales list are not indented because
             # the root locale may not be in the list, or may not immediately precede
             # the specific locale.
-            label = gettext_constants(ALIAS_LOCALES[locale])
+            label = gettext_constants(name)
             item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, locale)
             self.ui.selected_locales.addItem(item)
