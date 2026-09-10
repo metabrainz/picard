@@ -368,3 +368,46 @@ register_album_action(MyAlbumAction())
         self.assertNotIn('metadata.register_track_metadata_processor', content)
         # Registration moved into enable()
         self.assertIn('api.register_track_metadata_processor(add_instruments)', content)
+
+    def test_migrated_output_is_valid_python(self):
+        """migrate_plugin() writes syntactically valid Python and does not emit
+        the "not valid Python" error for a normal plugin (output-validation
+        safety net does not false-positive)."""
+        import ast as _ast
+        import contextlib
+        import io
+
+        v2_plugin = '''PLUGIN_NAME = "Valid Output"
+PLUGIN_AUTHOR = "Author"
+PLUGIN_DESCRIPTION = "Test"
+PLUGIN_VERSION = "1.0"
+PLUGIN_API_VERSIONS = ["2.0"]
+PLUGIN_LICENSE = "GPL-2.0-or-later"
+PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+from picard.metadata import register_track_metadata_processor
+
+
+def process_track(album, metadata, track, release):
+    metadata['custom'] = 'value'
+
+
+register_track_metadata_processor(process_track)
+'''
+
+        input_file = self.temp_path / 'valid_output.py'
+        input_file.write_text(v2_plugin)
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        output_dir = self.temp_path / 'valid_output_v3'
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
+
+        code = (output_dir / '__init__.py').read_text()
+        # Parses cleanly
+        _ast.parse(code)
+        # And the validation safety net did not flag it
+        self.assertNotIn('not valid Python', buf.getvalue())

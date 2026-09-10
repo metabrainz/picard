@@ -653,7 +653,20 @@ The tool will:
 - Update Qt imports
 - Create git repository structure
 
-**Note:** Manual review and testing still required.
+**Note:** Manual review and testing still required. The tool also validates
+its own output and warns if the generated `__init__.py` is not valid Python,
+or if it could not finish cleanup automatically (in which case obsolete
+`register_*()` calls or imports may remain).
+
+### Coverage reference
+
+The migrator has been exercised against the full set of v2 plugins in the
+[picard-plugins](https://github.com/metabrainz/picard-plugins) `2.0` branch
+(74 plugins). All of them migrate to syntactically valid v3 code. This is a
+smoke test of the mechanical conversion only — it does not guarantee runtime
+behavior, so migrated plugins still need manual review and testing (in
+particular, verify processor function signatures and any multi-module
+plugins, which may need registrations wired up in `enable()` by hand).
 
 ---
 

@@ -895,8 +895,14 @@ def convert_plugin_code(content, metadata):
                             imports_to_remove.add(node)
                     elif node.module and any(func in [alias.name for alias in node.names] for func in register_funcs):
                         imports_to_remove.add(node)
-    except (SyntaxError, ValueError):
-        pass
+    except (SyntaxError, ValueError) as e:
+        # The intermediate (post-conversion) source could not be re-parsed, so
+        # registration calls / obsolete imports were NOT removed automatically.
+        # Surface this rather than silently producing a half-migrated file.
+        all_warnings.append("⚠️  Could not re-parse the converted code to finish cleanup automatically.")
+        all_warnings.append(f"   Reason: {e}")
+        all_warnings.append("   Review the output: obsolete register_*() calls and imports may remain,")
+        all_warnings.append("   and an enable() function may not have been added.")
 
     for node in nodes_to_remove | imports_to_remove:
         for line_no in range(node.lineno - 1, node.end_lineno):
@@ -1411,12 +1417,29 @@ def migrate_plugin(input_file, output_dir=None):
     code_path = out_path / '__init__.py'
     code_path.write_text(new_code, encoding='utf-8')
 
+    # Validate that the generated code is syntactically valid Python. This is a
+    # safety net: some conversions are text/regex based and could, on unusual
+    # input, emit code that does not parse. Surface it rather than silently
+    # writing a broken file.
+    output_syntax_error = None
+    try:
+        ast.parse(new_code)
+    except SyntaxError as e:
+        output_syntax_error = e
+
     # Format with ruff
     format_with_ruff(code_path)
     print(f"  Created: {code_path}")
 
     # Collect all warnings
     all_warnings = code_warnings + qt_warnings
+    if output_syntax_error is not None:
+        all_warnings.insert(0, "")
+        all_warnings.insert(
+            0,
+            f"❌ Generated __init__.py is not valid Python (line {output_syntax_error.lineno}: "
+            f"{output_syntax_error.msg}). Manual fixes required.",
+        )
 
     # Process .ui source files - regenerate with pyuic6
     regenerated_files = []
