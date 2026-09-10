@@ -806,35 +806,7 @@ def convert_plugin_code(content, metadata):
 
     # Add info about API access pattern
     if register_calls:
-        all_warnings.append("ℹ️  API access pattern (verify your processor function signatures):")
-        all_warnings.append("   Processor functions now receive 'api' as the FIRST argument, and the")
-        all_warnings.append("   remaining parameters changed too. This script rewrites signatures it")
-        all_warnings.append("   recognizes (canonical v2 parameter names/order), but if your function")
-        all_warnings.append("   used different parameter names or order it will NOT have been rewritten")
-        all_warnings.append("   - update it by hand. The correct v3 signatures are:")
-        if 'register_track_metadata_processor' in content:
-            all_warnings.append("")
-            all_warnings.append("   Track metadata processor:")
-            all_warnings.append("     v2: def process_track(album, metadata, track, release):")
-            all_warnings.append("     v3: def process_track(api, track, metadata, track_node, release_node=None):")
-        if 'register_album_metadata_processor' in content:
-            all_warnings.append("")
-            all_warnings.append("   Album metadata processor:")
-            all_warnings.append("     v2: def process_album(album, metadata, release):")
-            all_warnings.append("     v3: def process_album(api, album, metadata, release_node):")
-        all_warnings.append("")
-        all_warnings.append("   With 'api' you can then use api.logger.info(...), api.global_config, etc.")
-        all_warnings.append("   Classes: use 'self.api' in OptionsPage, BaseAction, CoverArtProvider.")
-
-        # Name the specific processor functions that were NOT auto-rewritten, so
-        # the author knows exactly which signatures still need the 'api' argument.
-        not_rewritten = find_processors_missing_api(content, register_calls)
-        if not_rewritten:
-            all_warnings.append("")
-            all_warnings.append("   ⚠️  These registered processors still lack the 'api' first argument")
-            all_warnings.append("      (auto-rewrite did not recognize their signature) - fix them by hand:")
-            for name in not_rewritten:
-                all_warnings.append(f"        - {name}")
+        all_warnings.extend(processor_api_warnings(content, register_calls))
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -993,6 +965,54 @@ def convert_plugin_code(content, metadata):
                     new_lines.append(f'    api.{reg_func}({instance}.{method})')
 
     return '\n'.join(new_lines), all_warnings
+
+
+def processor_api_warnings(content, register_calls):
+    """Build the informational warning lines about v3 processor signatures.
+
+    Explains that processors now take ``api`` first, shows the correct v2->v3
+    signatures for the processor types present, and names any registered
+    processor whose signature was not auto-rewritten.
+    """
+    lines = [
+        "ℹ️  API access pattern (verify your processor function signatures):",
+        "   Processor functions now receive 'api' as the FIRST argument, and the",
+        "   remaining parameters changed too. This script rewrites signatures it",
+        "   recognizes (canonical v2 parameter names/order), but if your function",
+        "   used different parameter names or order it will NOT have been rewritten",
+        "   - update it by hand. The correct v3 signatures are:",
+    ]
+    if 'register_track_metadata_processor' in content:
+        lines += [
+            "",
+            "   Track metadata processor:",
+            "     v2: def process_track(album, metadata, track, release):",
+            "     v3: def process_track(api, track, metadata, track_node, release_node=None):",
+        ]
+    if 'register_album_metadata_processor' in content:
+        lines += [
+            "",
+            "   Album metadata processor:",
+            "     v2: def process_album(album, metadata, release):",
+            "     v3: def process_album(api, album, metadata, release_node):",
+        ]
+    lines += [
+        "",
+        "   With 'api' you can then use api.logger.info(...), api.global_config, etc.",
+        "   Classes: use 'self.api' in OptionsPage, BaseAction, CoverArtProvider.",
+    ]
+
+    # Name the specific processor functions that were NOT auto-rewritten, so
+    # the author knows exactly which signatures still need the 'api' argument.
+    not_rewritten = find_processors_missing_api(content, register_calls)
+    if not_rewritten:
+        lines += [
+            "",
+            "   ⚠️  These registered processors still lack the 'api' first argument",
+            "      (auto-rewrite did not recognize their signature) - fix them by hand:",
+        ]
+        lines += [f"        - {name}" for name in not_rewritten]
+    return lines
 
 
 def find_processors_missing_api(content, register_calls):
