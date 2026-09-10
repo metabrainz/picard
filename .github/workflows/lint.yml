@@ -42,8 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Install pymarkdownlnt
-        run: pip install pymarkdownlnt
       - name: Check for changes
         id: changes
         uses: dorny/paths-filter@v4
@@ -53,6 +51,9 @@ jobs:
               - '.github/workflows/lint.yml'
               - 'pyproject.toml'
               - '**/*.md'
+      - name: Install pymarkdownlnt
+        if: steps.changes.outputs.src == 'true'
+        run: pip install pymarkdownlnt
       - name: Run pymarkdownlnt
         if: steps.changes.outputs.src == 'true'
         run: pymarkdownlnt scan -r .
@@ -68,10 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: '3.13'
       - name: Check for changes
         id: changes
         uses: dorny/paths-filter@v4
@@ -84,6 +81,11 @@ jobs:
               - 'po/appstream/*.po'
               - 'NEWS.md'
               - 'setup.py'
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        if: steps.changes.outputs.src == 'true'
+        with:
+          python-version: '3.13'
       - name: Install utils
         if: steps.changes.outputs.src == 'true'
         run: |
