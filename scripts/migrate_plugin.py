@@ -451,31 +451,6 @@ def convert_plugin_api_v2_to_v3(content):
     return content, warnings
 
 
-def analyze_function_signatures(tree):
-    """Analyze function signatures that need updating for v3."""
-    warnings = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            # Check for metadata processor signatures
-            if 'process' in node.name.lower():
-                args = [arg.arg for arg in node.args.args]
-
-                # Track metadata processor (v2: album, metadata, track, release)
-                if len(args) == 4 and 'album' in args and 'track' in args:
-                    warnings.append(f"⚠️  Function '{node.name}': Track metadata processor signature changed")
-                    warnings.append(f"   v2: def {node.name}(album, metadata, track, release)")
-                    warnings.append(f"   v3: def {node.name}(api, track, metadata, track_node, release_node=None)")
-
-                # Album metadata processor (v2: album, metadata, release)
-                elif len(args) == 3 and 'album' in args and 'release' in args:
-                    warnings.append(f"⚠️  Function '{node.name}': Album metadata processor signature changed")
-                    warnings.append(f"   v2: def {node.name}(album, metadata, release)")
-                    warnings.append(f"   v3: def {node.name}(api, album, metadata, release_node)")
-
-    return warnings
-
-
 def detect_instance_method_registrations(tree):
     """Detect instance method registrations like register_*(instance.method)."""
     instance_registrations = []
