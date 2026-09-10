@@ -411,3 +411,58 @@ register_track_metadata_processor(process_track)
         _ast.parse(code)
         # And the validation safety net did not flag it
         self.assertNotIn('not valid Python', buf.getvalue())
+
+    def test_tagger_album_processor_signature_rewritten(self):
+        """v2 album processor named (tagger, metadata, release) is rewritten.
+
+        Regression: only the (album, metadata, release) form was handled, so a
+        function using the `tagger` first-parameter name (e.g. no_release,
+        standardise_feat) was left with its v2 signature.
+        """
+        v2_code = (
+            "from picard.metadata import register_album_metadata_processor\n\n\n"
+            "def process_album(tagger, metadata, release):\n"
+            "    pass\n\n\n"
+            "register_album_metadata_processor(process_album)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def process_album(api, album, metadata, release_node)', content)
+
+    def test_nested_register_calls_are_warned(self):
+        """register_*() calls nested in an if/try/function are not lifted into
+        enable(); the migrator must warn about them by name."""
+        v2_code = (
+            "import sys\n"
+            "from picard.file import register_file_post_load_processor\n\n\n"
+            "if sys.platform == 'haiku':\n\n"
+            "    def on_load(file):\n"
+            "        pass\n\n"
+            "    register_file_post_load_processor(on_load)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        joined = '\n'.join(warnings)
+        self.assertIn('NOT at module top level', joined)
+        self.assertIn('register_file_post_load_processor', joined)
+
+    def test_toplevel_register_calls_not_falsely_warned(self):
+        """A normal module-level registration must NOT trigger the nested warning."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def process_track(album, metadata, track, release):\n"
+            "    pass\n\n\n"
+            "register_track_metadata_processor(process_track)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertNotIn('NOT at module top level', '\n'.join(warnings))

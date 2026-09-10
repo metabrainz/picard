@@ -88,6 +88,29 @@ def register_func_name(call, allowed=REGISTER_FUNCS):
     return None
 
 
+def find_non_toplevel_register_calls(tree):
+    """Return names of register_*() calls that are NOT at module top level.
+
+    The migrator only lifts module-level registrations into ``enable()``.
+    Registrations nested inside ``if``/``try``/functions (for example
+    platform guards like ``if sys.platform == 'haiku':``) are missed, which
+    leaves dangling ``register_*()`` calls and no ``enable()``. Detect these so
+    the user is warned instead of getting silently broken output.
+    """
+    toplevel = set()
+    for node in tree.body:
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            if register_func_name(node.value) is not None:
+                toplevel.add(id(node.value))
+
+    nested = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and register_func_name(node) is not None:
+            if id(node) not in toplevel:
+                nested.append(register_func_name(node))
+    return sorted(set(nested))
+
+
 def format_import_statement(module, names):
     """Format import statement with trailing comma for ruff formatting.
 
@@ -808,6 +831,18 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         all_warnings.extend(processor_api_warnings(content, register_calls))
 
+    # Warn about registrations the migrator cannot lift into enable() because
+    # they are nested (inside if/try/functions), e.g. platform guards.
+    nested_registers = find_non_toplevel_register_calls(tree)
+    if nested_registers:
+        all_warnings.append("")
+        all_warnings.append("⚠️  Found register_*() calls that are NOT at module top level and were")
+        all_warnings.append("   therefore NOT moved into enable() (e.g. nested in an if/try/function):")
+        for name in nested_registers:
+            all_warnings.append(f"     - {name}")
+        all_warnings.append("   Move the corresponding api.register_*() calls into enable() by hand,")
+        all_warnings.append("   and remove the leftover v2 register_*() calls.")
+
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
     all_warnings.extend(api_warnings)
@@ -1072,6 +1107,12 @@ def fix_function_signatures(content, tree):
             # Album metadata processor: (album, metadata, release) -> (api, album, metadata)
             elif len(args) == 3 and 'album' in args and 'metadata' in args and 'release' in args:
                 old_sig = f"def {node.name}(album, metadata, release)"
+                new_sig = f"def {node.name}(api, album, metadata, release_node)"
+                replacements.append((old_sig, new_sig))
+
+            # Album metadata processor with tagger: (tagger, metadata, release) -> (api, album, metadata)
+            elif len(args) == 3 and 'tagger' in args and 'metadata' in args and 'release' in args:
+                old_sig = f"def {node.name}(tagger, metadata, release)"
                 new_sig = f"def {node.name}(api, album, metadata, release_node)"
                 replacements.append((old_sig, new_sig))
 
