@@ -465,13 +465,13 @@ def analyze_function_signatures(tree):
                 if len(args) == 4 and 'album' in args and 'track' in args:
                     warnings.append(f"⚠️  Function '{node.name}': Track metadata processor signature changed")
                     warnings.append(f"   v2: def {node.name}(album, metadata, track, release)")
-                    warnings.append(f"   v3: def {node.name}(track, metadata)")
+                    warnings.append(f"   v3: def {node.name}(api, track, metadata, track_node, release_node=None)")
 
                 # Album metadata processor (v2: album, metadata, release)
                 elif len(args) == 3 and 'album' in args and 'release' in args:
                     warnings.append(f"⚠️  Function '{node.name}': Album metadata processor signature changed")
                     warnings.append(f"   v2: def {node.name}(album, metadata, release)")
-                    warnings.append(f"   v3: def {node.name}(album, metadata)")
+                    warnings.append(f"   v3: def {node.name}(api, album, metadata, release_node)")
 
     return warnings
 
@@ -808,11 +808,35 @@ def convert_plugin_code(content, metadata):
 
     # Add info about API access pattern
     if register_calls:
-        all_warnings.append("ℹ️  API access pattern:")
-        all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
+        all_warnings.append("ℹ️  API access pattern (verify your processor function signatures):")
+        all_warnings.append("   Processor functions now receive 'api' as the FIRST argument, and the")
+        all_warnings.append("   remaining parameters changed too. This script rewrites signatures it")
+        all_warnings.append("   recognizes (canonical v2 parameter names/order), but if your function")
+        all_warnings.append("   used different parameter names or order it will NOT have been rewritten")
+        all_warnings.append("   - update it by hand. The correct v3 signatures are:")
         if 'register_track_metadata_processor' in content:
-            all_warnings.append("   - Processors: Parameters of track metadata processors have changed")
-        all_warnings.append("   - Classes: Use 'self.api' in OptionsPage, BaseAction, CoverArtProvider")
+            all_warnings.append("")
+            all_warnings.append("   Track metadata processor:")
+            all_warnings.append("     v2: def process_track(album, metadata, track, release):")
+            all_warnings.append("     v3: def process_track(api, track, metadata, track_node, release_node=None):")
+        if 'register_album_metadata_processor' in content:
+            all_warnings.append("")
+            all_warnings.append("   Album metadata processor:")
+            all_warnings.append("     v2: def process_album(album, metadata, release):")
+            all_warnings.append("     v3: def process_album(api, album, metadata, release_node):")
+        all_warnings.append("")
+        all_warnings.append("   With 'api' you can then use api.logger.info(...), api.global_config, etc.")
+        all_warnings.append("   Classes: use 'self.api' in OptionsPage, BaseAction, CoverArtProvider.")
+
+        # Name the specific processor functions that were NOT auto-rewritten, so
+        # the author knows exactly which signatures still need the 'api' argument.
+        not_rewritten = find_processors_missing_api(content, register_calls)
+        if not_rewritten:
+            all_warnings.append("")
+            all_warnings.append("   ⚠️  These registered processors still lack the 'api' first argument")
+            all_warnings.append("      (auto-rewrite did not recognize their signature) - fix them by hand:")
+            for name in not_rewritten:
+                all_warnings.append(f"        - {name}")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -981,6 +1005,43 @@ def convert_plugin_code(content, metadata):
     return '\n'.join(new_lines), all_warnings
 
 
+def find_processors_missing_api(content, register_calls):
+    """Return processor functions whose signature was not rewritten to take 'api'.
+
+    ``register_calls`` is a list of ``(register_func_name, target_name)`` tuples.
+    We only consider metadata/file processors (whose first v3 parameter must be
+    ``api``). A function is flagged if it is defined in ``content`` and its first
+    parameter is not named ``api`` — i.e. the automatic signature rewrite in
+    :func:`fix_function_signatures` did not recognize its v2 form (for example
+    because the author used non-canonical parameter names or order).
+    """
+    processor_funcs = {
+        'register_track_metadata_processor',
+        'register_album_metadata_processor',
+        'register_file_post_load_processor',
+        'register_file_post_save_processor',
+        'register_file_post_addition_to_track_processor',
+        'register_file_post_removal_from_track_processor',
+        'register_album_post_removal_processor',
+    }
+    targets = {target for reg, target in register_calls if reg in processor_funcs}
+    if not targets:
+        return []
+
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, ValueError):
+        return []
+
+    missing = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name in targets:
+            first_arg = node.args.args[0].arg if node.args.args else None
+            if first_arg != 'api':
+                missing.append(node.name)
+    return sorted(set(missing))
+
+
 def fix_function_signatures(content, tree):
     """Fix function signatures for v3 API."""
     replacements = []
@@ -1007,9 +1068,20 @@ def fix_function_signatures(content, tree):
                 new_sig = f"def {node.name}(api, album, metadata, release_node)"
                 replacements.append((old_sig, new_sig))
 
-            # File processor: (track, file) -> (api, file)
+            # File-to-track processor: (track, file) -> (api, track, file)
+            # v2 register_file_post_addition_to_track_processor /
+            # register_file_post_removal_from_track_processor use (track, file)
+            # (e.g. lrclib_lyrics: def get_lyrics(track, file)); v3 keeps track.
             elif len(args) == 2 and 'track' in args and 'file' in args:
                 old_sig = f"def {node.name}(track, file)"
+                new_sig = f"def {node.name}(api, track, file)"
+                replacements.append((old_sig, new_sig))
+
+            # File processor: (file) -> (api, file)
+            # v2 register_file_post_load_processor / register_file_post_save_processor
+            # use (file) (e.g. haikuattrs: def on_file_load_processor(file)).
+            elif len(args) == 1 and args[0] == 'file':
+                old_sig = f"def {node.name}(file)"
                 new_sig = f"def {node.name}(api, file)"
                 replacements.append((old_sig, new_sig))
 

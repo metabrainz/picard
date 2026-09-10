@@ -244,3 +244,94 @@ register_album_action(MyAlbumAction())
         self.assertNotIn('\nregister_track_metadata_processor(MyAlbumAction())', code)
         self.assertIn('def enable(api: PluginApi):', code)
         self.assertIn('  api.register_album_action(MyAlbumAction)', code)
+
+    def test_track_processor_signature_rewritten_with_api(self):
+        """A canonical v2 track processor signature is rewritten to the full v3 form."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def process_track(album, metadata, track, release):\n"
+            "    metadata['custom'] = 'value'\n\n\n"
+            "register_track_metadata_processor(process_track)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # v3 signature: api first, plus track_node/release_node
+        self.assertIn('def process_track(api, track, metadata, track_node, release_node)', content)
+        # No per-function "still lacks api" warning for a recognized signature
+        joined = '\n'.join(warnings)
+        self.assertNotIn('still lack the', joined)
+
+    def test_album_processor_signature_rewritten_with_api(self):
+        """A canonical v2 album processor signature is rewritten to the full v3 form."""
+        v2_code = (
+            "from picard.metadata import register_album_metadata_processor\n\n\n"
+            "def process_album(album, metadata, release):\n"
+            "    metadata['custom'] = 'value'\n\n\n"
+            "register_album_metadata_processor(process_album)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def process_album(api, album, metadata, release_node)', content)
+
+    def test_non_canonical_processor_flagged_by_name(self):
+        """A processor with non-canonical parameter names is NOT auto-rewritten,
+        and the warning names the specific function that still needs 'api'."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def my_proc(alb, meta, trk, rel):\n"
+            "    meta['x'] = 'y'\n\n\n"
+            "register_track_metadata_processor(my_proc)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # Signature was not rewritten (still no 'api' first arg)
+        self.assertIn('def my_proc(alb, meta, trk, rel)', content)
+        # And the warning names it explicitly
+        joined = '\n'.join(warnings)
+        self.assertIn('still lack the', joined)
+        self.assertIn('my_proc', joined)
+
+    def test_file_to_track_processor_keeps_track_arg(self):
+        """v2 file-to-track processor (track, file) -> v3 (api, track, file).
+
+        The track argument must be retained (see docs/PLUGINSV3/API.md:
+        register_file_post_addition_to_track_processor -> function(api, track, file)).
+        """
+        v2_code = (
+            "from picard.file import register_file_post_addition_to_track_processor\n\n\n"
+            "def get_lyrics(track, file):\n"
+            "    pass\n\n\n"
+            "register_file_post_addition_to_track_processor(get_lyrics)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def get_lyrics(api, track, file)', content)
+
+    def test_file_processor_gets_api_arg(self):
+        """v2 file processor (file) -> v3 (api, file)."""
+        v2_code = (
+            "from picard.file import register_file_post_load_processor\n\n\n"
+            "def on_load(file):\n"
+            "    pass\n\n\n"
+            "register_file_post_load_processor(on_load)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def on_load(api, file)', content)

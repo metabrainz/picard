@@ -212,7 +212,7 @@ The `PluginApi` is passed explicitly to functions and classes:
 **For Processors:** API is injected as first parameter via `functools.partial`
 
 ```python
-def process_track(api, track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     """API is automatically injected as first parameter."""
     api.logger.info("Processing track")
     if api.global_config.setting['example_enabled']:
@@ -448,7 +448,7 @@ class ExampleOptionsPage(OptionsPage):
         config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, album, metadata, track, release):
+def process_track(album, metadata, track, release):
     log.info("Processing track: %s", track)
     if config.setting['example_enabled']:
         metadata['example'] = 'processed'
@@ -507,7 +507,7 @@ class ExampleOptionsPage(OptionsPage):
         self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     api.logger.info(f"Processing track: {track}")
     if api.global_config.setting.get('example_enabled', False):
         metadata['example'] = 'processed'
@@ -548,7 +548,7 @@ if my_bool.value:
 **V3 uses direct config access:**
 ```python
 # In processors
-def process(api, track, metadata):
+def process(api, track, metadata, track_node, release_node=None):
     if api.plugin_config.get('my_enabled', True):
         text = api.plugin_config.get('my_key', 'default')
 

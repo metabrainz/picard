@@ -112,7 +112,7 @@ register_track_metadata_processor(process_track)
 
 **After**:
 ```python
-def process_track(track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     metadata['custom'] = 'value'
 
 
@@ -120,6 +120,17 @@ def enable(api):
     """Called when plugin is enabled."""
     api.register_track_metadata_processor(process_track)
 ```
+
+> **Important:** Processor functions receive `api` as their **first** argument
+> in v3, and the remaining parameters changed too. The auto-migration script
+> does **not** rewrite your function signatures (the body may still reference
+> the old parameters), so you must update them by hand. The full v3 signatures
+> are:
+>
+> - Track: `def process_track(api, track, metadata, track_node, release_node=None)`
+> - Album: `def process_album(api, album, metadata, release_node)`
+>
+> With `api` in scope you can call `api.logger.info(...)`, `api.global_config`, etc.
 
 #### 3. Decorator Patterns
 **Before**:
@@ -154,7 +165,7 @@ if config.setting['enabled']:
 
 **After - In Processors**:
 ```python
-def my_processor(api, track, metadata):
+def my_processor(api, track, metadata, track_node, release_node=None):
     api.logger.info("Processing")
     if api.global_config.setting['enabled']:
         metadata['custom'] = 'value'
@@ -200,7 +211,7 @@ def process(album, metadata, track, release):
 
 **V3 - Direct config access**:
 ```python
-def process(api, track, metadata):
+def process(api, track, metadata, track_node, release_node=None):
     if api.plugin_config.get('my_plugin_enabled', True):
         text = api.plugin_config.get('my_plugin_text', 'default')
         count = api.plugin_config.get('my_plugin_count', 10)
@@ -258,7 +269,7 @@ def process_track(tagger, metadata, track, release):
 
 **After**:
 ```python
-def process_track(track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     pass
 ```
 
@@ -423,7 +434,7 @@ from picard.plugin3.api import OptionsPage
 
 
 # Processors get api as first parameter
-def my_processor(api, track, metadata):
+def my_processor(api, track, metadata, track_node, release_node=None):
     api.logger.info("Processing")
 
 
@@ -506,7 +517,7 @@ Picard V3 uses explicit API parameter passing via `functools.partial`:
 **For Processors:** API is injected as first parameter
 
 ```python
-def my_track_processor(api, track, metadata):
+def my_track_processor(api, track, metadata, track_node, release_node=None):
     """API is automatically injected as first parameter."""
     api.logger.info("Processing track")
     if api.global_config.setting['my_option']:
@@ -552,7 +563,7 @@ from picard.plugin3.api import OptionsPage
 
 
 # In processors - use api parameter
-def my_processor(api, track, metadata):
+def my_processor(api, track, metadata, track_node, release_node=None):
     api.logger.info("Processing")
     api.global_config.setting['option']
 
@@ -602,7 +613,7 @@ register_album_metadata_processor(fetch_data)
 from functools import partial
 
 
-def fetch_data(api, album, metadata, release):
+def fetch_data(api, album, metadata, release_node):
     task_id = f'data_{album.id}'
 
     def create_request():
@@ -661,7 +672,7 @@ register_track_metadata_processor(clean_title)
 
 **V3** (after migration):
 ```python
-def clean_title(api, track, metadata):
+def clean_title(api, track, metadata, track_node, release_node=None):
     metadata['title'] = metadata['title'].strip()
 
 
