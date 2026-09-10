@@ -47,6 +47,7 @@ from picard.i18n import (
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog
+from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.options import OptionsPage
 from picard.ui.widgets.plugindetailswidget import PluginDetailsWidget
 from picard.ui.widgets.pluginlistwidget import PluginListWidget
@@ -529,8 +530,12 @@ class Plugins3OptionsPage(OptionsPage):
             self.plugin_list.set_updates(config.persist['plugins3_updates'])
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.warning(
-                self, _("Update Failed"), _("Failed to update plugin: {errmsg}").format(errmsg=error_msg)
+            show_plugin_error(
+                self,
+                _("Update Failed"),
+                _("Failed to update the plugin."),
+                error=error_msg,
+                plugin=plugin,
             )
 
         self.plugin_manager.refresh_updates_available.emit()

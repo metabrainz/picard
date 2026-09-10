@@ -684,6 +684,16 @@ class RegistryPlugin(InstallablePlugin):
         return self._data.get('maintainers', [])
 
     @property
+    def report_bugs_to(self):
+        """Get the plugin's bug-reporting URL, if provided by the registry."""
+        return self._data.get('report_bugs_to', '')
+
+    @property
+    def homepage(self):
+        """Get the plugin's homepage URL, if provided by the registry."""
+        return self._data.get('homepage', '')
+
+    @property
     def added_at(self):
         """Get plugin added timestamp."""
         return self._data.get('added_at')

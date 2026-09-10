@@ -29,6 +29,7 @@ from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.ref_item import RefItem
 
+from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.util import font_scaled_size
 from picard.ui.widgets.pluginformat import (
@@ -240,7 +241,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.plugin_uninstalled.emit()  # Signal that plugin was uninstalled
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
+            show_plugin_error(
+                self,
+                _("Uninstall Failed"),
+                _("Failed to uninstall the plugin."),
+                error=error_msg,
+                plugin=plugin,
+            )
 
     def _get_authors_display(self, plugin):
         """Get authors display text."""
@@ -361,8 +368,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                     callback=partial(self._on_uninstall_complete, self.current_plugin),
                 )
             except Exception as e:
-                QtWidgets.QMessageBox.critical(
-                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {errmsg}").format(errmsg=str(e))
+                show_plugin_error(
+                    self,
+                    _("Uninstall Failed"),
+                    _("Failed to uninstall the plugin."),
+                    error=str(e),
+                    plugin=self.current_plugin,
                 )
 
     def _perform_update(self):

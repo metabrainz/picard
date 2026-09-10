@@ -42,6 +42,7 @@ from picard.plugin3.registry import RegistryPlugin
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
+from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.theme import theme
 from picard.ui.util import font_scaled_size
@@ -704,6 +705,10 @@ class InstallPluginDialog(PicardDialog):
         self.progress_bar.show()
         self.progress_bar.setValue(0)
 
+        # Remember the plugin being installed so a failure dialog can offer a
+        # plugin-specific "report this issue" link when the info is available.
+        self._installing_plugin = plugin
+
         # Start async installation
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(
@@ -727,6 +732,12 @@ class InstallPluginDialog(PicardDialog):
         else:
             self.status_label.setText(_("Installation failed"))
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Installation Failed"), error_msg)
+            show_plugin_error(
+                self,
+                _("Installation Failed"),
+                _("Failed to install the plugin."),
+                error=error_msg,
+                plugin=getattr(self, '_installing_plugin', None),
+            )
             # Re-enable UI
             self._enable_ui_after_installation()

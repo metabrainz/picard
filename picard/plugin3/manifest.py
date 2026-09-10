@@ -159,6 +159,10 @@ class PluginManifest:
         return self._data.get('report_bugs_to', '')
 
     @property
+    def homepage(self) -> str:
+        return self._data.get('homepage', '')
+
+    @property
     def source_locale(self) -> str:
         """Get source locale for translations, defaults to 'en'."""
         return self._data.get('source_locale', DEFAULT_SOURCE_LOCALE)
