@@ -87,6 +87,7 @@ PICARD_URLS = {
     'doc_cover_art_types': MB_DOCS_BASE_URL + "/Cover_Art/Types",
     'plugins': "https://picard.musicbrainz.org/plugins/",
     'forum': "https://community.metabrainz.org/c/picard",
+    'bugtracker': "https://tickets.metabrainz.org/projects/PICARD",
     'donate': "https://metabrainz.org/donate",
     'translate': "https://wiki.musicbrainz.org/MusicBrainz_Picard/Internationalization",
     'chromaprint': "https://acoustid.org/chromaprint#download",

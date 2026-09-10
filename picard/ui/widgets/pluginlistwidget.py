@@ -49,6 +49,7 @@ from picard.plugin3.ref_item import RefItem
 from picard.util.qt import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
+from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.formattedtextdelegate import FormattedTextDelegate
@@ -671,17 +672,21 @@ class PluginListWidget(QtWidgets.QWidget):
         menu.exec(self.tree_widget.mapToGlobal(position))
 
     def _enable_error_dialog(self, plugin, errmsg):
-        QtWidgets.QMessageBox.critical(
+        show_plugin_error(
             self,
             _("Plugin Error"),
-            _('Failed to enable plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
+            _("Failed to enable the plugin."),
+            error=errmsg,
+            plugin=plugin,
         )
 
     def _disable_error_dialog(self, plugin, errmsg):
-        QtWidgets.QMessageBox.critical(
+        show_plugin_error(
             self,
             _("Plugin Error"),
-            _('Failed to disable plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
+            _("Failed to disable the plugin."),
+            error=errmsg,
+            plugin=plugin,
         )
 
     def _toggle_plugin_from_menu(self, plugin, enabled):
@@ -708,10 +713,12 @@ class PluginListWidget(QtWidgets.QWidget):
         )
 
     def _update_error_dialog(self, plugin, errmsg):
-        QtWidgets.QMessageBox.critical(
+        show_plugin_error(
             self,
             _("Plugin Error"),
-            _('Failed to update plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
+            _("Failed to update the plugin."),
+            error=errmsg,
+            plugin=plugin,
         )
 
     def _on_context_update_complete(self, plugin, result):
@@ -727,10 +734,12 @@ class PluginListWidget(QtWidgets.QWidget):
             self._update_error_dialog(plugin, error_msg)
 
     def _uninstall_error_dialog(self, plugin, errmsg):
-        QtWidgets.QMessageBox.critical(
+        show_plugin_error(
             self,
             _("Plugin Error"),
-            _('Failed to uninstall plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
+            _("Failed to uninstall the plugin."),
+            error=errmsg,
+            plugin=plugin,
         )
 
     def _uninstall_plugin_from_menu(self, plugin):
