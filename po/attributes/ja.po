@@ -34,7 +34,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-08-23 02:12+0000\n"
+"PO-Revision-Date: 2026-09-03 18:13+0000\n"
 "Last-Translator: Life4649 <metabrainz@fujinraijin.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
@@ -43,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -3406,7 +3406,6 @@ msgid "E-sharp minor"
 msgstr "嬰ホ短調"
 
 #: DB:work_attribute_type/name:215
-#, fuzzy
 msgctxt "work_attribute_type"
 msgid "EAÜ ID"
 msgstr "EAÜ ID"
@@ -3557,12 +3556,9 @@ msgid "F Dorian"
 msgstr "ヘ調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "ヘ調ドリア"
+msgstr "ヘ・ロクリアン"
 
 #: DB:work_attribute_type_allowed_value/value:1061
 msgctxt "work_attribute_type_allowed_value"
@@ -3784,12 +3780,9 @@ msgid "G Dorian"
 msgstr "ト調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "ト調ドリア"
+msgstr "ト・ロクリアン"
 
 #: DB:work_attribute_type_allowed_value/value:1062
 msgctxt "work_attribute_type_allowed_value"
@@ -4075,12 +4068,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ASCAP ID"
+msgstr "HDS-ZAMP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4965,20 +4955,14 @@ msgstr "先住民の領土/保護区"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
 msgstr ""
-"北米のインディアン居留地/居留地や中南米の先住民の領土など、先住民が統治する半"
-"自治区に使用される。"
+"「先住民族の領域/保留地」は、北米のインディアン保留地や中南米の先住民族領域な"
+"ど、先住民族によって統治される半自治領に対して使用される。"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5626,12 +5610,9 @@ msgid "Kōmal riṣabh asāvēri"
 msgstr "<i>Kōmal riṣabh asāvēri</i>"
 
 #: DB:work_attribute_type/name:207
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "APA ID"
 msgctxt "work_attribute_type"
 msgid "LATGA ID"
-msgstr "APA ID"
+msgstr "LATGA ID"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -5769,12 +5750,9 @@ msgid "MCT ID"
 msgstr "MCT ID"
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "NICAUTOR ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "NICAUTOR ID"
+msgstr "MUSICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -5927,7 +5905,6 @@ msgid "Maveraünnehir"
 msgstr "<i>Maveraünnehir</i>"
 
 #: DB:editor_collection_type/name:6
-#, fuzzy
 msgctxt "collection_type"
 msgid "Maybe attending"
 msgstr "おそらく開催される"
@@ -5998,10 +5975,9 @@ msgid "Mersiye"
 msgstr "<i>Mersiye</i>"
 
 #: DB:release_packaging/name:54
-#, fuzzy
 msgctxt "release_packaging"
 msgid "Metal Tin"
-msgstr "Metal Tin"
+msgstr "メタル缶"
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"
@@ -7928,12 +7904,9 @@ msgid "Series name"
 msgstr "シリーズ名"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist series"
 msgctxt "series_type"
 msgid "Series series"
-msgstr "アーティストのシリーズ"
+msgstr "シリーズのシリーズ"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"

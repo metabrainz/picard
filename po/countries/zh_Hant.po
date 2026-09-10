@@ -1,9 +1,9 @@
 # guardiansock <guardian.sock5925@fastmail.com>, 2024.
-# BestSteve <ibmibmibm.tw@gmail.com>, 2025.
+# BestSteve <ibmibmibm.tw@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2025-03-31 11:45+0000\n"
+"PO-Revision-Date: 2026-09-09 06:13+0000\n"
 "Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/countries/zh_Hant/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -102,7 +102,7 @@ msgstr "巴林"
 #. iso.code:BD
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:18
 msgid "Bangladesh"
-msgstr "孟加拉國"
+msgstr "孟加拉"
 
 #. iso.code:BB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:19
@@ -707,12 +707,12 @@ msgstr "馬爾地夫"
 #. iso.code:ML
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:131
 msgid "Mali"
-msgstr "馬里"
+msgstr "馬利"
 
 #. iso.code:MT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:132
 msgid "Malta"
-msgstr "馬耳他"
+msgstr "馬爾他"
 
 #. iso.code:MH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:133
@@ -762,7 +762,7 @@ msgstr "蒙古"
 #. iso.code:ME
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:247
 msgid "Montenegro"
-msgstr "黑山"
+msgstr "蒙特內哥羅"
 
 #. iso.code:MS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:143
@@ -782,7 +782,7 @@ msgstr "莫三比克"
 #. iso.code:MM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:146
 msgid "Myanmar"
-msgstr "緬甸"
+msgstr "緬甸文"
 
 #. iso.code:NA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:147
@@ -792,7 +792,7 @@ msgstr "納米比亞"
 #. iso.code:NR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:148
 msgid "Nauru"
-msgstr "諾魯"
+msgstr "諾魯語"
 
 #. iso.code:NP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:149
@@ -967,7 +967,7 @@ msgstr "聖赫勒拿、亞森欣與崔斯坦達庫尼亞"
 #. iso.code:KN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:178
 msgid "Saint Kitts and Nevis"
-msgstr "聖基茨和尼維斯"
+msgstr "聖克里斯多福及尼維斯"
 
 #. iso.code:LC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:179
@@ -1137,7 +1137,7 @@ msgstr "台灣"
 #. iso.code:TJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:206
 msgid "Tajikistan"
-msgstr "塔吉克斯坦"
+msgstr "塔吉克"
 
 #. iso.code:TZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:207
@@ -1162,7 +1162,7 @@ msgstr "多哥"
 #. iso.code:TK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:210
 msgid "Tokelau"
-msgstr "托克勞"
+msgstr "托克勞語"
 
 #. iso.code:TO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:211
@@ -1192,7 +1192,7 @@ msgstr "特克斯和凱科斯群島"
 #. iso.code:TV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:217
 msgid "Tuvalu"
-msgstr "吐瓦魯"
+msgstr "吐瓦魯語"
 
 #. iso.code:TR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:214
