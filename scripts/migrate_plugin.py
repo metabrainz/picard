@@ -34,6 +34,45 @@ import re
 import sys
 
 
+# Metadata and file/event processor registration functions. Their v3 callbacks
+# all take ``api`` as the first argument.
+PROCESSOR_FUNCS = frozenset(
+    {
+        'register_track_metadata_processor',
+        'register_album_metadata_processor',
+        'register_file_post_load_processor',
+        'register_file_post_save_processor',
+        'register_file_post_addition_to_track_processor',
+        'register_file_post_removal_from_track_processor',
+        'register_album_post_removal_processor',
+    }
+)
+
+# All v2 registration functions handled by the migrator (processors plus
+# actions, options pages, script functions, cover art, formats, etc.).
+REGISTER_FUNCS = PROCESSOR_FUNCS | frozenset(
+    {
+        'register_cluster_action',
+        'register_clusterlist_action',
+        'register_file_action',
+        'register_album_action',
+        'register_track_action',
+        'register_options_page',
+        'register_script_function',
+        'register_script_variable',
+        'register_cover_art_provider',
+        'register_cover_art_filter',
+        'register_cover_art_metadata_filter',
+        'register_cover_art_processor',
+        'register_format',
+        'register_ui_init',
+    }
+)
+
+# v2 config option classes converted to api.plugin_config access.
+OPTION_TYPES = frozenset({'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'})
+
+
 def format_import_statement(module, names):
     """Format import statement with trailing comma for ruff formatting.
 
@@ -454,15 +493,7 @@ def convert_plugin_api_v2_to_v3(content):
 def detect_instance_method_registrations(tree):
     """Detect instance method registrations like register_*(instance.method)."""
     instance_registrations = []
-    register_funcs = {
-        'register_track_metadata_processor',
-        'register_album_metadata_processor',
-        'register_file_post_load_processor',
-        'register_file_post_save_processor',
-        'register_file_post_addition_to_track_processor',
-        'register_file_post_removal_from_track_processor',
-        'register_album_post_removal_processor',
-    }
+    register_funcs = PROCESSOR_FUNCS
 
     for node in tree.body:
         # Find module-level register calls
@@ -520,29 +551,7 @@ def convert_plugin_code(content, metadata):
 
     # Find register calls and imports to remove
     register_calls = []
-    register_funcs = {
-        'register_track_metadata_processor',
-        'register_album_metadata_processor',
-        'register_file_post_load_processor',
-        'register_file_post_save_processor',
-        'register_file_post_addition_to_track_processor',
-        'register_file_post_removal_from_track_processor',
-        'register_album_post_removal_processor',
-        'register_cluster_action',
-        'register_clusterlist_action',
-        'register_file_action',
-        'register_album_action',
-        'register_track_action',
-        'register_options_page',
-        'register_script_function',
-        'register_script_variable',
-        'register_cover_art_provider',
-        'register_cover_art_filter',
-        'register_cover_art_metadata_filter',
-        'register_cover_art_processor',
-        'register_format',
-        'register_ui_init',
-    }
+    register_funcs = REGISTER_FUNCS
 
     nodes_to_remove = set()
     imports_to_remove = set()
@@ -707,8 +716,7 @@ def convert_plugin_code(content, metadata):
                             imports_to_remove.add(node)
                 elif node.module == 'picard.config':
                     # Check if importing config option types
-                    option_types = {'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'}
-                    imported_options = {alias.name for alias in node.names if alias.name in option_types}
+                    imported_options = {alias.name for alias in node.names if alias.name in OPTION_TYPES}
                     if imported_options:
                         imports_to_remove.add(node)
                 elif node.module == 'picard.tagger':
@@ -990,16 +998,7 @@ def find_processors_missing_api(content, register_calls):
     :func:`fix_function_signatures` did not recognize its v2 form (for example
     because the author used non-canonical parameter names or order).
     """
-    processor_funcs = {
-        'register_track_metadata_processor',
-        'register_album_metadata_processor',
-        'register_file_post_load_processor',
-        'register_file_post_save_processor',
-        'register_file_post_addition_to_track_processor',
-        'register_file_post_removal_from_track_processor',
-        'register_album_post_removal_processor',
-    }
-    targets = {target for reg, target in register_calls if reg in processor_funcs}
+    targets = {target for reg, target in register_calls if reg in PROCESSOR_FUNCS}
     if not targets:
         return []
 
@@ -1101,7 +1100,6 @@ def convert_config_options(content):
     except (SyntaxError, ValueError):
         return content, [], []
 
-    option_types = ['TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option']
     option_list = []  # (var_name, key, default_value, option_type)
     lines_to_remove = set()
 
@@ -1110,7 +1108,7 @@ def convert_config_options(content):
         if isinstance(node, ast.Assign):
             if isinstance(node.value, ast.Call):
                 if isinstance(node.value.func, ast.Name):
-                    if node.value.func.id in option_types:
+                    if node.value.func.id in OPTION_TYPES:
                         # Extract variable name
                         if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
                             var_name = node.targets[0].id
@@ -1136,7 +1134,7 @@ def convert_config_options(content):
         # Find options that are not assigned
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Name):
-                if node.func.id in option_types:
+                if node.func.id in OPTION_TYPES:
                     # Extract arguments: Option(section, key, default)
                     if len(node.args) >= 3:
                         # section = node.value.args[0]  # Usually "setting"
