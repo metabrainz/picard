@@ -39,7 +39,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-08 09:25+0200\n"
 "PO-Revision-Date: 2026-09-10 06:36+0000\n"
-"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -773,7 +773,7 @@ msgstr "Benachrichtigungen zu „Aktuelle Wiedergabe“ aktivieren"
 
 #: picard/options.py:448
 msgid "Enable ListenBrainz listen submissions"
-msgstr ""
+msgstr "ListenBrainz-Übermittlung aktivieren"
 
 #: picard/options.py:454
 #, fuzzy
@@ -783,7 +783,7 @@ msgstr "Bewertungen an MusicBrainz übermitteln"
 
 #: picard/options.py:457 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr ""
+msgstr "ListenBrainz-Benutzertoken"
 
 #: picard/options.py:465
 msgid "Colors to use for light theme"
@@ -887,7 +887,7 @@ msgstr "Track-Titel übersetzen"
 
 #: picard/options.py:561 picard/ui/forms/ui_options_metadata.py:211
 msgid "Use artist sort name for translation"
-msgstr ""
+msgstr "Sortiernamen des Künstlers für Übersetzungen verwenden"
 
 #: picard/options.py:567
 msgid "Translate artist names exception"
@@ -1403,7 +1403,8 @@ msgstr "Abfrage-Fehler"
 #: picard/tagger.py:1446
 msgid "Selected files contain tags with conflicting disc information"
 msgstr ""
-"Die ausgewählten Dateien enthalten Tags mit widersprüchlichen Informationen"
+"Die ausgewählten Dateien enthalten Tags mit widersprüchlichen Disk-"
+"Informatione"
 
 #: picard/tagger.py:1463
 #, python-format
@@ -1525,7 +1526,7 @@ msgstr "Picard wurde autorisiert."
 #: picard/browser/auth_responses.py:147 picard/browser/auth_responses.py:200
 #: picard/browser/auth_responses.py:216
 msgid "You can close this window."
-msgstr ""
+msgstr "Dieses Fenster kann geschlossen werden."
 
 #: picard/browser/auth_responses.py:164
 msgid "Authorization was declined."
@@ -1549,11 +1550,12 @@ msgstr "Die geforderten Berechtigungen sind ungültig."
 
 #: picard/browser/auth_responses.py:169
 msgid "The server encountered an error. Please try again later."
-msgstr ""
+msgstr "Server-Fehler. Bitte später erneut versuchen."
 
 #: picard/browser/auth_responses.py:170
 msgid "The service is temporarily unavailable. Please try again later."
 msgstr ""
+"Der Service ist vorübergehend nicht verfügbar. Bitte später erneut versuchen."
 
 #: picard/browser/auth_responses.py:171
 #, fuzzy
@@ -1721,7 +1723,7 @@ msgstr "Lokal"
 
 #: picard/plugin3/plugin_metadata.py:132
 msgid "local-dev"
-msgstr ""
+msgstr "lokal-dev"
 
 #: picard/plugin3/ref_item.py:101
 #, python-brace-format
@@ -1753,6 +1755,9 @@ msgid ""
 "Unsupported profile format version %s (this version of Picard supports "
 "format version %s). Please upgrade Picard to import this profile."
 msgstr ""
+"Nicht unterstützte Dateiformat-Version %s (diese Version von Picard "
+"unterstützt Version %s). Bitte Picard aktualisieren, um dieses Profil laden "
+"zu können."
 
 #: picard/profiles/importer.py:146
 #, python-format
@@ -1769,6 +1774,8 @@ msgid ""
 "Settings upgrade from Picard %s failed: %s. Some settings may not have been "
 "converted."
 msgstr ""
+"Aktualisierung der Einstellungen von Picard %s ist fehlgeschlagen: %s. "
+"Einige Einstellungen wurden möglicherweise nicht konvertiert."
 
 #: picard/profiles/importer.py:210
 #, fuzzy
@@ -4197,12 +4204,12 @@ msgstr ""
 #: picard/ui/playground.py:103
 #, python-format
 msgid "Red: %s."
-msgstr ""
+msgstr "Rot: %s."
 
 #: picard/ui/playground.py:104
 #, python-format
 msgid "Green: %s."
-msgstr ""
+msgstr "Grün: %s."
 
 #: picard/ui/ratingwidget.py:98
 #, python-format
