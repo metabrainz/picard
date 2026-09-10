@@ -170,6 +170,41 @@ def _is_simple_value(value) -> bool:
     return isinstance(value, (str, int, float, bool))
 
 
+def profile_option_is_override(config, option_name, profile_value) -> bool:
+    """Return True if a profile setting actually overrides the base value.
+
+    A profile may *track* an option (the option key is present in the profile)
+    without changing its effective value.  This is the case when the profile
+    has no value set yet (``None``) or when the stored value is equal to the
+    current base (non-profile) value.  Only when the profile provides a simple
+    scalar value that differs from the base value does it truly *override* the
+    option.
+
+    Both the field highlighting (:meth:`OptionsDialog._check_and_highlight_option`)
+    and the page-level warning message (:meth:`OptionsDialog.update_profile_save_warning`)
+    rely on this single definition so that the two never disagree about what
+    counts as an override.
+    """
+    if profile_value is None:
+        # Tracked but no value set yet.
+        return False
+    if is_plugin_profile_key(option_name):
+        section, name = option_name.split('/', 1)
+        opt = Option.get(section, name)
+        base_value = opt.default if opt else None
+    else:
+        opt = Option.get('setting', option_name)
+        with config.setting.no_profile():
+            base_value = config.setting[option_name]
+    # Convert profile value to same type for comparison
+    if opt:
+        try:
+            profile_value = opt.convert(profile_value)
+        except (ValueError, TypeError):
+            pass
+    return _is_simple_value(profile_value) and profile_value != base_value
+
+
 class _PageScrollArea(QtWidgets.QScrollArea):
     """A scroll area for options pages that only scrolls when content truly
     cannot fit in the available viewport.
@@ -616,32 +651,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             if option_name not in profile_settings:
                 continue
             profile_value = profile_settings[option_name]
-            if profile_value is None:
-                # Tracked but no value set yet
+            if profile_option_is_override(config, option_name, profile_value):
+                tooltip_text = _("This option is overridden by profile: %s") % profile_title
+                obj.setStyleSheet(style_override)
+            else:
                 tooltip_text = _("This option is tracked by profile: %s") % profile_title
                 obj.setStyleSheet(style_tracked)
-            else:
-                # Check if value actually differs from base
-                if is_plugin_profile_key(option_name):
-                    section, name = option_name.split('/', 1)
-                    opt = Option.get(section, name)
-                    base_value = opt.default if opt else None
-                else:
-                    opt = Option.get('setting', option_name)
-                    with config.setting.no_profile():
-                        base_value = config.setting[option_name]
-                # Convert profile value to same type for comparison
-                if opt:
-                    try:
-                        profile_value = opt.convert(profile_value)
-                    except (ValueError, TypeError):
-                        pass
-                if _is_simple_value(profile_value) and profile_value != base_value:
-                    tooltip_text = _("This option is overridden by profile: %s") % profile_title
-                    obj.setStyleSheet(style_override)
-                else:
-                    tooltip_text = _("This option is tracked by profile: %s") % profile_title
-                    obj.setStyleSheet(style_tracked)
             # Append to existing tooltip if not already present
             if obj in seen_widgets:
                 break
@@ -700,11 +715,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def update_profile_save_warning(self, page):
         working_profiles, working_settings = self.get_working_profile_data()
-        profile_set = set()
+        config = get_config()
+        override_set = set()
+        tracked_set = set()
 
         option_group = profile_groups_group_from_page(page)
         if option_group:
             for opt in option_group['settings']:
+                option_name = setting_profile_key(opt.name, opt.section)
                 for idx, item in enumerate(working_profiles):
                     if not item['enabled']:
                         continue
@@ -712,10 +730,25 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     if profile_id not in working_settings:
                         continue
                     profile_settings = working_settings[profile_id]
-                    if setting_profile_key(opt.name, opt.section) in profile_settings:
-                        profile_set.add((idx, item['title']))
+                    if option_name not in profile_settings:
+                        continue
+                    profile_value = profile_settings[option_name]
+                    key = (idx, item['title'])
+                    if profile_option_is_override(config, option_name, profile_value):
+                        override_set.add(key)
+                    else:
+                        tracked_set.add(key)
 
-        if not profile_set:
+        # Only profiles that actually override a value (not merely track it)
+        # drive the warning, so the message stays consistent with the field
+        # highlighting.
+        if override_set:
+            profile_set = override_set
+            overridden = True
+        elif tracked_set:
+            profile_set = tracked_set
+            overridden = False
+        else:
             self.ui.profile_warning.setVisible(False)
             return
 
@@ -726,10 +759,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             names = ', '.join([f'"{p[1]}"' for p in sorted_profiles[:3]]) + ', …'
 
         has_highlights = option_group and any(opt.highlights for opt in option_group['settings'])
-        if has_highlights:
-            msg = _('The highlighted settings on this page are overridden by %s') % names
+        if overridden:
+            if has_highlights:
+                msg = _('The highlighted settings on this page are overridden by %s') % names
+            else:
+                msg = _('Some settings on this page are overridden by %s') % names
         else:
-            msg = _('Some settings on this page are overridden by %s') % names
+            if has_highlights:
+                msg = _('The highlighted settings on this page are tracked by %s') % names
+            else:
+                msg = _('Some settings on this page are tracked by %s') % names
         self.profile_warning_text.setText(msg)
         self.ui.profile_warning.setVisible(True)
 
