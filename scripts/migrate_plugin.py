@@ -73,6 +73,21 @@ REGISTER_FUNCS = PROCESSOR_FUNCS | frozenset(
 OPTION_TYPES = frozenset({'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'})
 
 
+def register_func_name(call, allowed=REGISTER_FUNCS):
+    """Return the registration function name invoked by an ``ast.Call``, or None.
+
+    Handles both direct calls (``register_foo(...)``) and qualified calls
+    (``metadata.register_foo(...)``/``providers.register_foo(...)``). Only names
+    present in ``allowed`` are returned.
+    """
+    func = call.func
+    if isinstance(func, ast.Name) and func.id in allowed:
+        return func.id
+    if isinstance(func, ast.Attribute) and func.attr in allowed:
+        return func.attr
+    return None
+
+
 def format_import_statement(module, names):
     """Format import statement with trailing comma for ruff formatting.
 
@@ -874,12 +889,7 @@ def convert_plugin_code(content, metadata):
         # Then check which ones are used in register calls
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
-                if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
-                    if node.value.args and isinstance(node.value.args[0], ast.Name):
-                        var_name = node.value.args[0].id
-                        if var_name in potential_vars_second:
-                            instantiated_vars_second_pass[var_name] = potential_vars_second[var_name]
-                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
+                if register_func_name(node.value, register_funcs) is not None:
                     if node.value.args and isinstance(node.value.args[0], ast.Name):
                         var_name = node.value.args[0].id
                         if var_name in potential_vars_second:
@@ -888,10 +898,7 @@ def convert_plugin_code(content, metadata):
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
                 # Handle direct calls: register_*()
-                if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
-                    nodes_to_remove.add(node)
-                # Handle qualified calls: providers.register_*(), metadata.register_*()
-                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
+                if register_func_name(node.value, register_funcs) is not None:
                     nodes_to_remove.add(node)
             elif isinstance(node, ast.Assign):
                 # Remove instantiated action/page variables
