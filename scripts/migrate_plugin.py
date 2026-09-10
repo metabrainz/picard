@@ -1576,10 +1576,19 @@ def migrate_plugin(input_file, output_dir=None):
         copied_dirs = []
         conflicts = []
 
+        # Never copy the output directory into itself (it may live inside the
+        # source directory, e.g. the default <name>_v3 next to the input file)
+        # or the migration script itself.
+        out_path_resolved = out_path.resolve()
+        this_script = Path(__file__).resolve()
+
         for item in input_path.parent.iterdir():
-            # Skip the main input file, hidden files, Python build artifacts, and generated files
+            # Skip the main input file, hidden files, Python build artifacts,
+            # generated files, the output directory, and this script.
             if (
                 item == input_path
+                or item.resolve() == out_path_resolved
+                or item.resolve() == this_script
                 or item.name.startswith('.')
                 or item.name in exclude_patterns
                 or item.name in skip_files
@@ -1614,6 +1623,21 @@ def migrate_plugin(input_file, output_dir=None):
             print(f"\n✓ Copied {len(copied_files)} file(s)")
         if copied_dirs:
             print(f"✓ Copied {len(copied_dirs)} directory(ies)")
+        if copied_files or copied_dirs:
+            # The migrator copies every sibling of the input file into the
+            # output, assuming the input lives in a dedicated plugin directory.
+            # If it was run in a directory with unrelated files, warn clearly.
+            copied_all = copied_files + copied_dirs
+            all_warnings.append(
+                "⚠️  Copied all files next to the input into the output directory "
+                "(assumes the input is in a dedicated plugin folder):"
+            )
+            for n in copied_all:
+                all_warnings.append(f"     - {n}")
+            all_warnings.append(
+                "   If any of these are unrelated, remove them, or re-run from a folder "
+                "containing only the plugin (or pass an explicit output directory)."
+            )
         if conflicts:
             all_warnings.append(f"⚠️  Renamed {len(conflicts)} conflicting file(s):")
             for old, new in conflicts:
