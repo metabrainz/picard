@@ -581,7 +581,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
-        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=25)
         bg_override = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=120)
 
         for page in self.loaded_pages:
