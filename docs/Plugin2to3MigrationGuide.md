@@ -103,7 +103,7 @@ license = "GPL-2.0-or-later"
 from picard.metadata import register_track_metadata_processor
 
 
-def process_track(album, metadata, track, release):
+def process_track(album, metadata, track_node, release_node):
     metadata['custom'] = 'value'
 
 
@@ -203,7 +203,7 @@ my_bool = BoolOption("setting", "my_plugin_enabled", True)
 my_int = IntOption("setting", "my_plugin_count", 10)
 
 
-def process(album, metadata, track, release):
+def process(album, metadata, track_node, release_node):
     if my_bool.value:
         text = my_text.value
         count = my_int.value
@@ -262,8 +262,8 @@ class MyOptionsPage(OptionsPage):
 #### 6. Function Signatures
 **Before**:
 ```python
-def process_track(tagger, metadata, track, release):
-    # or: def process_track(album, metadata, track, release)
+def process_track(tagger, metadata, track_node, release_node):
+    # or: def process_track(album, metadata, track_node, release_node)
     pass
 ```
 
@@ -663,7 +663,7 @@ PLUGIN_NAME = "Title Cleaner"
 from picard.metadata import register_track_metadata_processor
 
 
-def clean_title(album, metadata, track, release):
+def clean_title(album, metadata, track_node, release_node):
     metadata['title'] = metadata['title'].strip()
 
 

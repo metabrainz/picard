@@ -1027,7 +1027,7 @@ def processor_api_warnings(content, register_calls):
         lines += [
             "",
             "   Track metadata processor:",
-            "     v2: def process_track(album, metadata, track, release):",
+            "     v2: def process_track(album, metadata, track_node, release_node):",
             "     v3: def process_track(api, track, metadata, track_node, release_node=None):",
         ]
     if 'register_album_metadata_processor' in content:

@@ -448,8 +448,8 @@ class ExampleOptionsPage(OptionsPage):
         config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(album, metadata, track, release):
-    log.info("Processing track: %s", track)
+def process_track(album, metadata, track_node, release_node):
+    log.info("Processing track: %s", track_node)
     if config.setting['example_enabled']:
         metadata['example'] = 'processed'
 
