@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-08 09:25+0200\n"
+"POT-Creation-Date: 2026-09-11 09:09+0200\n"
 "PO-Revision-Date: 2026-08-09 10:08+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -369,7 +369,7 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i bild saknas i vissa spår"
 msgstr[1] "%i olika bilder bland spåren"
 
-#: picard/log.py:93 picard/ui/dialogs/installplugin.py:656
+#: picard/log.py:93 picard/ui/dialogs/installplugin.py:657
 #: picard/ui/options/renaming.py:116 picard/ui/scripteditor/__init__.py:569
 #: picard/ui/scripteditor/__init__.py:572
 #: picard/ui/scripteditor/__init__.py:881
@@ -381,7 +381,7 @@ msgstr "Fel"
 msgid "Warning"
 msgstr "Varning"
 
-#: picard/log.py:95 picard/ui/dialogs/installplugin.py:470
+#: picard/log.py:95 picard/ui/dialogs/installplugin.py:471
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
@@ -1177,7 +1177,7 @@ msgstr "Spår"
 
 #: picard/coverart/utils.py:47 picard/plugin.py:137
 #: picard/ui/dialogs/plugininfo.py:240 picard/ui/dialogs/plugininfo.py:250
-#: picard/ui/options/profiles.py:691 picard/ui/widgets/pluginlistwidget.py:298
+#: picard/ui/options/profiles.py:691 picard/ui/widgets/pluginlistwidget.py:299
 msgid "Unknown"
 msgstr "Okänd"
 
@@ -1185,7 +1185,7 @@ msgstr "Okänd"
 msgid "No function description available."
 msgstr "Ingen funktionsbeskrivning är tillgänglig."
 
-#: picard/profile.py:89 picard/ui/options/plugins.py:59
+#: picard/profile.py:89 picard/ui/options/plugins.py:60
 msgid "Plugins"
 msgstr "Insticksmoduler"
 
@@ -1669,7 +1669,7 @@ msgid "Formats"
 msgstr "Format"
 
 #: picard/plugin3/categories.py:33 picard/ui/forms/ui_options_metadata.py:193
-#: picard/ui/options/metadata.py:87
+#: picard/ui/options/metadata.py:88
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -3574,7 +3574,7 @@ msgstr "Länkar"
 msgid "See Also"
 msgstr "Se även"
 
-#: picard/tags/tagvar.py:72 picard/ui/widgets/pluginlistwidget.py:147
+#: picard/tags/tagvar.py:72 picard/ui/widgets/pluginlistwidget.py:148
 msgid "Plugin"
 msgstr "Insticksmodul"
 
@@ -4523,52 +4523,52 @@ msgstr "Visa inte tips igen"
 msgid "Got it"
 msgstr "Jag förstår"
 
-#: picard/ui/util.py:88
+#: picard/ui/util.py:90
 msgid "Make It So!"
 msgstr "Tillämpa"
 
-#: picard/ui/util.py:128
+#: picard/ui/util.py:130
 #, python-format
 msgid "%s - %s"
 msgstr "%s - %s"
 
-#: picard/ui/util.py:150
+#: picard/ui/util.py:152
 msgid "Select a file or a directory"
 msgstr "Välj en fil eller mapp"
 
-#: picard/ui/util.py:156
+#: picard/ui/util.py:158
 msgid "Select a target file"
 msgstr "Välj en målfil"
 
-#: picard/ui/util.py:169
+#: picard/ui/util.py:171
 msgid "Select a file"
 msgstr "Välj en fil"
 
-#: picard/ui/util.py:182
+#: picard/ui/util.py:184
 msgid "Select one or more files"
 msgstr "Välj en eller flera filer"
 
-#: picard/ui/util.py:195
+#: picard/ui/util.py:197
 msgid "Select a directory"
 msgstr "Välj en mapp"
 
-#: picard/ui/util.py:211
+#: picard/ui/util.py:213
 msgid "Select one or more directories"
 msgstr "Välj en eller flera mappar"
 
-#: picard/ui/util.py:339
+#: picard/ui/util.py:341
 msgid "You have to restart Picard for the changes to take effect."
 msgstr "Picard måste startas om för att ändringarna ska börja gälla."
 
-#: picard/ui/util.py:340
+#: picard/ui/util.py:342
 msgid "Changes only applied on restart"
 msgstr "Ändringarna tillämpas först efter omstart"
 
-#: picard/ui/util.py:355
+#: picard/ui/util.py:357
 msgid "Load Session"
 msgstr "Läs in session"
 
-#: picard/ui/util.py:356
+#: picard/ui/util.py:358
 #, python-format
 msgid "The session file \"%(path)s\" was not found."
 msgstr "Sessionsfilen ”%(path)s” hittades inte."
@@ -4709,72 +4709,72 @@ msgstr ""
 "Insticksmodulen finns inte i det officiella registret. Installation av "
 "oregistrerade insticksmoduler kan medföra säkerhetsrisker."
 
-#: picard/ui/dialogs/installplugin.py:72
+#: picard/ui/dialogs/installplugin.py:73
 msgid "Install Plugin"
 msgstr "Installera insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:108 picard/ui/options/plugins.py:120
+#: picard/ui/dialogs/installplugin.py:109 picard/ui/options/plugins.py:121
 msgid "Search plugins…"
 msgstr "Sök efter insticksmoduler…"
 
-#: picard/ui/dialogs/installplugin.py:113
-#: picard/ui/dialogs/installplugin.py:340
+#: picard/ui/dialogs/installplugin.py:114
+#: picard/ui/dialogs/installplugin.py:341
 msgid "All Categories"
 msgstr "Alla kategorier"
 
-#: picard/ui/dialogs/installplugin.py:122
+#: picard/ui/dialogs/installplugin.py:123
 msgid "Trust"
 msgstr "Förtroende"
 
-#: picard/ui/dialogs/installplugin.py:122 picard/ui/searchdialog/album.py:158
+#: picard/ui/dialogs/installplugin.py:123 picard/ui/searchdialog/album.py:158
 #: picard/ui/searchdialog/artist.py:45 picard/ui/searchdialog/track.py:66
 msgid "Name"
 msgstr "Namn"
 
-#: picard/ui/dialogs/installplugin.py:122
+#: picard/ui/dialogs/installplugin.py:123
 msgid "Categories"
 msgstr "Kategorier"
 
-#: picard/ui/dialogs/installplugin.py:140
+#: picard/ui/dialogs/installplugin.py:141
 msgid "Registry"
 msgstr "Register"
 
-#: picard/ui/dialogs/installplugin.py:146
+#: picard/ui/dialogs/installplugin.py:147
 msgid "Install from URL"
 msgstr "Installera från URL"
 
-#: picard/ui/dialogs/installplugin.py:150
+#: picard/ui/dialogs/installplugin.py:151
 msgid "https://github.com/user/plugin"
 msgstr "https://github.com/user/plugin"
 
-#: picard/ui/dialogs/installplugin.py:151
+#: picard/ui/dialogs/installplugin.py:152
 msgid "Git URL:"
 msgstr "Git-URL:"
 
-#: picard/ui/dialogs/installplugin.py:154
-#: picard/ui/dialogs/installplugin.py:185
+#: picard/ui/dialogs/installplugin.py:155
+#: picard/ui/dialogs/installplugin.py:186
 msgid "main"
 msgstr "main"
 
-#: picard/ui/dialogs/installplugin.py:155
-#: picard/ui/dialogs/installplugin.py:186
+#: picard/ui/dialogs/installplugin.py:156
+#: picard/ui/dialogs/installplugin.py:187
 msgid "Ref/Tag:"
 msgstr "Referens/tagg:"
 
-#: picard/ui/dialogs/installplugin.py:159
+#: picard/ui/dialogs/installplugin.py:160
 msgid "URL"
 msgstr "URL"
 
-#: picard/ui/dialogs/installplugin.py:165
+#: picard/ui/dialogs/installplugin.py:166
 msgid "Install from Local Directory"
 msgstr "Installera från lokal mapp"
 
-#: picard/ui/dialogs/installplugin.py:171
+#: picard/ui/dialogs/installplugin.py:172
 msgid "/path/to/plugin/directory"
 msgstr "/sökväg/till/insticksmodulens/mapp"
 
-#: picard/ui/dialogs/installplugin.py:177
 #: picard/ui/dialogs/installplugin.py:178
+#: picard/ui/dialogs/installplugin.py:179
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
 #: picard/ui/forms/ui_options_interface.py:131
 #: picard/ui/forms/ui_options_maintenance.py:149
@@ -4782,15 +4782,15 @@ msgstr "/sökväg/till/insticksmodulens/mapp"
 msgid "Select directory"
 msgstr "Välj mapp"
 
-#: picard/ui/dialogs/installplugin.py:182
+#: picard/ui/dialogs/installplugin.py:183
 msgid "Directory:"
 msgstr "Mapp:"
 
-#: picard/ui/dialogs/installplugin.py:188
+#: picard/ui/dialogs/installplugin.py:189
 msgid "Load in-place (ignore git)"
 msgstr "Läs in på plats (ignorera Git)"
 
-#: picard/ui/dialogs/installplugin.py:191
+#: picard/ui/dialogs/installplugin.py:192
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
@@ -4799,24 +4799,24 @@ msgstr ""
 "Git-funktioner (inga uppdateringar och inget byte av referens). Användbart "
 "vid aktiv utveckling."
 
-#: picard/ui/dialogs/installplugin.py:201 picard/ui/dialogs/plugininfo.py:238
+#: picard/ui/dialogs/installplugin.py:202 picard/ui/dialogs/plugininfo.py:238
 msgid "Local"
 msgstr "Lokal"
 
-#: picard/ui/dialogs/installplugin.py:222
+#: picard/ui/dialogs/installplugin.py:223
 msgid "Install…"
 msgstr "Installera…"
 
-#: picard/ui/dialogs/installplugin.py:286
-#: picard/ui/dialogs/installplugin.py:584
+#: picard/ui/dialogs/installplugin.py:287
+#: picard/ui/dialogs/installplugin.py:585
 msgid "The selected path is not a directory."
 msgstr "Den valda sökvägen är inte en mapp."
 
-#: picard/ui/dialogs/installplugin.py:292
+#: picard/ui/dialogs/installplugin.py:293
 msgid "The directory does not contain a MANIFEST.toml file."
 msgstr "Mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:304
+#: picard/ui/dialogs/installplugin.py:305
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
@@ -4824,7 +4824,7 @@ msgstr ""
 "Insticksmodulen hanteras inte av Git. Den installeras som en lokal "
 "insticksmodul utan Git, versionshantering eller uppdateringar."
 
-#: picard/ui/dialogs/installplugin.py:318
+#: picard/ui/dialogs/installplugin.py:319
 msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
@@ -4832,35 +4832,35 @@ msgstr ""
 "Git-funktioner (uppdateringar och referenser) inaktiveras. Insticksmodulen "
 "läses in direkt från den här mappen."
 
-#: picard/ui/dialogs/installplugin.py:374
+#: picard/ui/dialogs/installplugin.py:375
 msgid "Official plugin - reviewed by Picard team"
 msgstr "Officiell insticksmodul – granskad av Picard-teamet"
 
-#: picard/ui/dialogs/installplugin.py:375
+#: picard/ui/dialogs/installplugin.py:376
 msgid "Trusted plugin - from known developers"
 msgstr "Betrodd insticksmodul – från kända utvecklare"
 
-#: picard/ui/dialogs/installplugin.py:376
+#: picard/ui/dialogs/installplugin.py:377
 msgid "Community plugin - not reviewed"
 msgstr "Gemenskapsmodul – inte granskad"
 
-#: picard/ui/dialogs/installplugin.py:377
+#: picard/ui/dialogs/installplugin.py:378
 msgid "Unregistered plugin - not in official registry"
 msgstr "Oregistrerad insticksmodul – finns inte i det officiella registret"
 
-#: picard/ui/dialogs/installplugin.py:422
+#: picard/ui/dialogs/installplugin.py:423
 msgid "Double-click to view detailed plugin information"
 msgstr "Dubbelklicka för att visa detaljerad information om insticksmodulen"
 
-#: picard/ui/dialogs/installplugin.py:490
+#: picard/ui/dialogs/installplugin.py:491
 msgid "Select Plugin Directory"
 msgstr "Välj mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:510
+#: picard/ui/dialogs/installplugin.py:511
 msgid "Plugin not found in registry"
 msgstr "Insticksmodulen hittades inte i registret"
 
-#: picard/ui/dialogs/installplugin.py:521
+#: picard/ui/dialogs/installplugin.py:522
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
@@ -4868,7 +4868,7 @@ msgstr ""
 "Varning: Detta är en gemenskapsmodul. Gemenskapsmoduler granskas inte av "
 "Picard-teamet. Installera endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:530
+#: picard/ui/dialogs/installplugin.py:531
 msgid ""
 "Warning: This plugin is not in the official registry. Installing "
 "unregistered plugins may pose security risks. Only install plugins from "
@@ -4878,31 +4878,31 @@ msgstr ""
 "av oregistrerade insticksmoduler kan medföra säkerhetsrisker. Installera "
 "endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:578
+#: picard/ui/dialogs/installplugin.py:579
 msgid "No Directory Selected"
 msgstr "Ingen mapp har valts"
 
-#: picard/ui/dialogs/installplugin.py:578
+#: picard/ui/dialogs/installplugin.py:579
 msgid "Please select a local plugin directory."
 msgstr "Välj en lokal mapp för insticksmodulen."
 
-#: picard/ui/dialogs/installplugin.py:584
+#: picard/ui/dialogs/installplugin.py:585
 msgid "Invalid Directory"
 msgstr "Ogiltig mapp"
 
-#: picard/ui/dialogs/installplugin.py:592
+#: picard/ui/dialogs/installplugin.py:593
 msgid "Invalid Plugin Directory"
 msgstr "Ogiltig mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:593
+#: picard/ui/dialogs/installplugin.py:594
 msgid "The selected directory does not contain a MANIFEST.toml file."
 msgstr "Den valda mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:604
+#: picard/ui/dialogs/installplugin.py:605
 msgid "Plugin Not Managed by Git"
 msgstr "Insticksmodulen hanteras inte av Git"
 
-#: picard/ui/dialogs/installplugin.py:606
+#: picard/ui/dialogs/installplugin.py:607
 msgid ""
 "This plugin is not managed by git.\n"
 "\n"
@@ -4920,31 +4920,63 @@ msgstr ""
 "\n"
 "Vill du fortsätta?"
 
-#: picard/ui/dialogs/installplugin.py:656
+#: picard/ui/dialogs/installplugin.py:657
 msgid "Plugin has no repository URL"
 msgstr "Insticksmodulen saknar URL till kodförrådet"
 
-#: picard/ui/dialogs/installplugin.py:723
+#: picard/ui/dialogs/installplugin.py:728
 msgid "Plugin installed successfully"
 msgstr "Insticksmodulen installerades"
 
-#: picard/ui/dialogs/installplugin.py:728
+#: picard/ui/dialogs/installplugin.py:733
 msgid "Installation failed"
 msgstr "Installationen misslyckades"
 
-#: picard/ui/dialogs/installplugin.py:729 picard/ui/options/plugins.py:531
-#: picard/ui/widgets/plugindetailswidget.py:242
-#: picard/ui/widgets/plugindetailswidget.py:395
-#: picard/ui/widgets/pluginlistwidget.py:726
-#: picard/ui/widgets/pluginlistwidget.py:756
-#: picard/ui/widgets/pluginlistwidget.py:842
-#: picard/ui/widgets/pluginlistwidget.py:875
+#: picard/ui/dialogs/installplugin.py:734 picard/ui/options/plugins.py:532
+#: picard/ui/widgets/plugindetailswidget.py:243
+#: picard/ui/widgets/plugindetailswidget.py:406
+#: picard/ui/widgets/pluginlistwidget.py:733
+#: picard/ui/widgets/pluginlistwidget.py:765
+#: picard/ui/widgets/pluginlistwidget.py:851
+#: picard/ui/widgets/pluginlistwidget.py:884
 msgid "Unknown error"
 msgstr "Okänt fel"
 
-#: picard/ui/dialogs/installplugin.py:730
+#: picard/ui/dialogs/installplugin.py:737
 msgid "Installation Failed"
 msgstr "Installationen misslyckades"
+
+#: picard/ui/dialogs/installplugin.py:738
+#, fuzzy
+#| msgid "Failed to uninstall plugin: {errmsg}"
+msgid "Failed to install the plugin."
+msgstr "Det gick inte att avinstallera insticksmodulen: {errmsg}"
+
+#: picard/ui/dialogs/plugin_error.py:169
+#, python-format
+msgid "If this looks like a plugin problem, report it to the plugin author: %s"
+msgstr ""
+
+#: picard/ui/dialogs/plugin_error.py:173
+#, python-format
+msgid "Please report this issue on the %s."
+msgstr ""
+
+#: picard/ui/dialogs/plugin_error.py:174
+#, fuzzy
+#| msgid "MusicBrainz Track Id"
+msgid "MusicBrainz bug tracker"
+msgstr "MusicBrainz spår-id"
+
+#: picard/ui/dialogs/plugin_error.py:182
+#, fuzzy, python-format
+#| msgid "Plugin: %s"
+msgid "Plugin \"%s\":"
+msgstr "Insticksmodul: %s"
+
+#: picard/ui/dialogs/plugin_error.py:187
+msgid "Error reported by the plugin:"
+msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:62
 msgid "Plugin Execution Order"
@@ -5028,7 +5060,7 @@ msgstr "Tillstånd:"
 
 #: picard/ui/dialogs/plugininfo.py:103
 #: picard/ui/forms/ui_scripteditor_details.py:103
-#: picard/ui/widgets/plugindetailswidget.py:90
+#: picard/ui/widgets/plugindetailswidget.py:91
 msgid "Version:"
 msgstr "Version:"
 
@@ -5045,18 +5077,18 @@ msgid "Categories:"
 msgstr "Kategorier:"
 
 #: picard/ui/dialogs/plugininfo.py:107
-#: picard/ui/widgets/plugindetailswidget.py:95
+#: picard/ui/widgets/plugindetailswidget.py:96
 msgid "Authors:"
 msgstr "Författare:"
 
 #: picard/ui/dialogs/plugininfo.py:108
-#: picard/ui/widgets/plugindetailswidget.py:100
+#: picard/ui/widgets/plugindetailswidget.py:101
 msgid "Maintainers:"
 msgstr "Underhållare:"
 
 #: picard/ui/dialogs/plugininfo.py:109
-#: picard/ui/widgets/plugindetailswidget.py:108
-#: picard/ui/widgets/plugindetailswidget.py:187
+#: picard/ui/widgets/plugindetailswidget.py:109
+#: picard/ui/widgets/plugindetailswidget.py:188
 msgid "Repository:"
 msgstr "Kodförråd:"
 
@@ -5078,7 +5110,7 @@ msgid "Report Bugs To:"
 msgstr "Rapportera fel till:"
 
 #: picard/ui/dialogs/plugininfo.py:114
-#: picard/ui/widgets/plugindetailswidget.py:184
+#: picard/ui/widgets/plugindetailswidget.py:185
 msgid "Path:"
 msgstr "Sökväg:"
 
@@ -8707,24 +8739,24 @@ msgstr "Bekräfta borttagning"
 msgid "Are you sure you want to remove the selected option settings?"
 msgstr "Vill du ta bort de valda inställningarna?"
 
-#: picard/ui/options/metadata.py:126
+#: picard/ui/options/metadata.py:127
 msgid "Do not standardize artist names"
 msgstr "Standardisera inte artistnamn"
 
-#: picard/ui/options/metadata.py:128
+#: picard/ui/options/metadata.py:129
 msgid "Standardize artist name variations only"
 msgstr "Standardisera endast variationer av artistnamn"
 
-#: picard/ui/options/metadata.py:131
+#: picard/ui/options/metadata.py:132
 msgid "Standardize artist name variations and name changes"
 msgstr "Standardisera variationer och ändringar av artistnamn"
 
-#: picard/ui/options/metadata.py:266
+#: picard/ui/options/metadata.py:297
 #, python-brace-format
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:327
+#: picard/ui/options/metadata.py:358
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -8768,118 +8800,119 @@ msgstr ""
 msgid "Audio Player"
 msgstr "Ljudspelare"
 
-#: picard/ui/options/plugins.py:107
+#: picard/ui/options/plugins.py:108
 #, python-brace-format
 msgid "Plugins unavailable: {reason}."
 msgstr "Insticksmoduler är inte tillgängliga: {reason}."
 
-#: picard/ui/options/plugins.py:127
+#: picard/ui/options/plugins.py:128
 msgid "Install Plugin…"
 msgstr "Installera insticksmodul…"
 
-#: picard/ui/options/plugins.py:128
+#: picard/ui/options/plugins.py:129
 msgid "Install a new plugin from the registry or a custom URL"
 msgstr "Installera en ny insticksmodul från registret eller en anpassad URL"
 
-#: picard/ui/options/plugins.py:132 picard/ui/options/plugins.py:274
+#: picard/ui/options/plugins.py:133 picard/ui/options/plugins.py:275
 msgid "Refresh All"
 msgstr "Uppdatera allt"
 
-#: picard/ui/options/plugins.py:133
+#: picard/ui/options/plugins.py:134
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
 "Uppdatera registret och listan över insticksmoduler samt sök efter "
 "uppdateringar"
 
-#: picard/ui/options/plugins.py:139 picard/ui/options/plugins.py:353
+#: picard/ui/options/plugins.py:140 picard/ui/options/plugins.py:354
 msgid "Hide Details"
 msgstr "Dölj information"
 
-#: picard/ui/options/plugins.py:142
+#: picard/ui/options/plugins.py:143
 msgid "Show/hide plugin details panel"
 msgstr "Visa eller dölj informationspanelen för insticksmoduler"
 
-#: picard/ui/options/plugins.py:224
+#: picard/ui/options/plugins.py:225
 #, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
 msgstr[0] "{plugin_count:,d} insticksmodul installerad"
 msgstr[1] "{plugin_count:,d} insticksmoduler installerade"
 
-#: picard/ui/options/plugins.py:233
+#: picard/ui/options/plugins.py:234
 #, python-brace-format
 msgid "Error loading plugins: {}"
 msgstr "Fel vid inläsning av insticksmoduler: {}"
 
-#: picard/ui/options/plugins.py:238
+#: picard/ui/options/plugins.py:239
 msgid "Refreshing…"
 msgstr "Uppdaterar…"
 
-#: picard/ui/options/plugins.py:239
+#: picard/ui/options/plugins.py:240
 msgid "Refreshing plugin registry, list, and checking for updates…"
 msgstr ""
 "Uppdaterar registret och listan över insticksmoduler samt söker efter "
 "uppdateringar…"
 
-#: picard/ui/options/plugins.py:245 picard/ui/options/plugins.py:271
+#: picard/ui/options/plugins.py:246 picard/ui/options/plugins.py:272
 #, python-brace-format
 msgid "Error refreshing: {}"
 msgstr "Fel vid uppdatering: {}"
 
-#: picard/ui/options/plugins.py:259
+#: picard/ui/options/plugins.py:260
 #, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
 msgstr[0] "{plugin_count:,d} insticksmodul"
 msgstr[1] "{plugin_count:,d} insticksmoduler"
 
-#: picard/ui/options/plugins.py:263
+#: picard/ui/options/plugins.py:264
 #, python-brace-format
 msgid "{update_count:,d} update available"
 msgid_plural "{update_count:,d} updates available"
 msgstr[0] "{update_count:,d} uppdatering tillgänglig"
 msgstr[1] "{update_count:,d} uppdateringar tillgängliga"
 
-#: picard/ui/options/plugins.py:266
+#: picard/ui/options/plugins.py:267
 #, python-brace-format
 msgid "Refreshed - {plugins}, {updates}"
 msgstr "Uppdaterat – {plugins}, {updates}"
 
-#: picard/ui/options/plugins.py:302
+#: picard/ui/options/plugins.py:303
 msgid "Plugin system not available - Git backend required"
 msgstr "Systemet för insticksmoduler är inte tillgängligt – Git-bakänden krävs"
 
-#: picard/ui/options/plugins.py:356
+#: picard/ui/options/plugins.py:357
 msgid "Show Details"
 msgstr "Visa information"
 
-#: picard/ui/options/plugins.py:395
+#: picard/ui/options/plugins.py:396
 #, python-brace-format
 msgid "Plugin \"{name}\" {action}"
 msgstr "Insticksmodulen ”{name}” {action}"
 
-#: picard/ui/options/plugins.py:460
+#: picard/ui/options/plugins.py:461
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
 msgstr "Insticksmodulen ”{name}” installerades"
 
-#: picard/ui/options/plugins.py:497
+#: picard/ui/options/plugins.py:498
 msgid "All plugin updates completed"
 msgstr "Alla uppdateringar av insticksmoduler slutfördes"
 
-#: picard/ui/options/plugins.py:508
+#: picard/ui/options/plugins.py:509
 #, python-brace-format
 msgid "Updating {name}…"
 msgstr "Uppdaterar {name}…"
 
-#: picard/ui/options/plugins.py:533
-#: picard/ui/widgets/plugindetailswidget.py:396
+#: picard/ui/options/plugins.py:535
+#: picard/ui/widgets/plugindetailswidget.py:407
 msgid "Update Failed"
 msgstr "Uppdateringen misslyckades"
 
-#: picard/ui/options/plugins.py:533
-#, python-brace-format
-msgid "Failed to update plugin: {errmsg}"
+#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
+#, fuzzy
+#| msgid "Failed to update plugin: {errmsg}"
+msgid "Failed to update the plugin."
 msgstr "Det gick inte att uppdatera insticksmodulen: {errmsg}"
 
 #: picard/ui/options/profiles.py:92
@@ -9731,52 +9764,60 @@ msgstr ""
 "Tabellen är låst. Lås upp den via snabbmenyn i tabellrubriken för att kunna "
 "sortera och ändra kolumnbredd."
 
-#: picard/ui/widgets/plugindetailswidget.py:116
-#: picard/ui/widgets/plugindetailswidget.py:199
-#: picard/ui/widgets/plugindetailswidget.py:203
-#: picard/ui/widgets/plugindetailswidget.py:383
-#: picard/ui/widgets/pluginlistwidget.py:626
+#: picard/ui/widgets/plugindetailswidget.py:117
+#: picard/ui/widgets/plugindetailswidget.py:200
+#: picard/ui/widgets/plugindetailswidget.py:204
+#: picard/ui/widgets/plugindetailswidget.py:394
+#: picard/ui/widgets/pluginlistwidget.py:627
 msgid "Update"
 msgstr "Uppdatera"
 
-#: picard/ui/widgets/plugindetailswidget.py:120
-#: picard/ui/widgets/pluginlistwidget.py:631
+#: picard/ui/widgets/plugindetailswidget.py:121
+#: picard/ui/widgets/pluginlistwidget.py:632
 msgid "Uninstall"
 msgstr "Avinstallera"
 
-#: picard/ui/widgets/plugindetailswidget.py:124
-#: picard/ui/widgets/pluginlistwidget.py:646
+#: picard/ui/widgets/plugindetailswidget.py:125
+#: picard/ui/widgets/pluginlistwidget.py:647
 msgid "Information"
 msgstr "Information"
 
-#: picard/ui/widgets/plugindetailswidget.py:152
+#: picard/ui/widgets/plugindetailswidget.py:153
 msgid "No description available"
 msgstr "Ingen beskrivning är tillgänglig"
 
-#: picard/ui/widgets/plugindetailswidget.py:195
-#: picard/ui/widgets/pluginlistwidget.py:623
+#: picard/ui/widgets/plugindetailswidget.py:196
+#: picard/ui/widgets/pluginlistwidget.py:624
 msgid "Reload"
 msgstr "Läs in igen"
 
-#: picard/ui/widgets/plugindetailswidget.py:243
-#: picard/ui/widgets/plugindetailswidget.py:365
+#: picard/ui/widgets/plugindetailswidget.py:246
+#: picard/ui/widgets/plugindetailswidget.py:373
 msgid "Uninstall Failed"
 msgstr "Avinstallationen misslyckades"
 
-#: picard/ui/widgets/plugindetailswidget.py:278
+#: picard/ui/widgets/plugindetailswidget.py:247
+#: picard/ui/widgets/plugindetailswidget.py:374
+#: picard/ui/widgets/pluginlistwidget.py:740
+#, fuzzy
+#| msgid "Failed to uninstall plugin: {errmsg}"
+msgid "Failed to uninstall the plugin."
+msgstr "Det gick inte att avinstallera insticksmodulen: {errmsg}"
+
+#: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
 msgstr "Inte tillämpligt"
 
-#: picard/ui/widgets/plugindetailswidget.py:292
+#: picard/ui/widgets/plugindetailswidget.py:299
 #, python-brace-format
 msgid "Update to {version}"
 msgstr "Uppdatera till {version}"
 
-#: picard/ui/widgets/plugindetailswidget.py:312
+#: picard/ui/widgets/plugindetailswidget.py:319
 msgid "Update Plugin"
 msgstr "Uppdatera insticksmodul"
 
-#: picard/ui/widgets/plugindetailswidget.py:313
+#: picard/ui/widgets/plugindetailswidget.py:320
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" is set to not update automatically.\n"
@@ -9787,12 +9828,7 @@ msgstr ""
 "\n"
 "Vill du ändå uppdatera den?"
 
-#: picard/ui/widgets/plugindetailswidget.py:365
-#, python-brace-format
-msgid "Failed to uninstall plugin: {errmsg}"
-msgstr "Det gick inte att avinstallera insticksmodulen: {errmsg}"
-
-#: picard/ui/widgets/plugindetailswidget.py:372
+#: picard/ui/widgets/plugindetailswidget.py:383
 msgid "Updating…"
 msgstr "Uppdaterar…"
 
@@ -9805,125 +9841,105 @@ msgstr "aktuell"
 msgid "Commit date: {date}"
 msgstr "Incheckningsdatum: {date}"
 
-#: picard/ui/widgets/pluginlistwidget.py:93
-#: picard/ui/widgets/pluginlistwidget.py:105
+#: picard/ui/widgets/pluginlistwidget.py:94
+#: picard/ui/widgets/pluginlistwidget.py:106
 msgid "Update All"
 msgstr "Uppdatera alla"
 
-#: picard/ui/widgets/pluginlistwidget.py:101
+#: picard/ui/widgets/pluginlistwidget.py:102
 #, python-brace-format
 msgid "Update Selected ({count})"
 msgstr "Uppdatera valda ({count})"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Enabled"
 msgstr "Aktiverad"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Version"
 msgstr "Version"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "New Version"
 msgstr "Ny version"
 
-#: picard/ui/widgets/pluginlistwidget.py:313
+#: picard/ui/widgets/pluginlistwidget.py:314
 msgid "This plugin is included in updates"
 msgstr "Den här insticksmodulen ingår i uppdateringar"
 
-#: picard/ui/widgets/pluginlistwidget.py:315
+#: picard/ui/widgets/pluginlistwidget.py:316
 msgid "This plugin is excluded from updates"
 msgstr "Den här insticksmodulen undantas från uppdateringar"
 
-#: picard/ui/widgets/pluginlistwidget.py:327
+#: picard/ui/widgets/pluginlistwidget.py:328
 msgid "In Progress…"
 msgstr "Pågår…"
 
-#: picard/ui/widgets/pluginlistwidget.py:336
-#: picard/ui/widgets/pluginlistwidget.py:370
-#: picard/ui/widgets/pluginlistwidget.py:373
-#: picard/ui/widgets/pluginlistwidget.py:380
+#: picard/ui/widgets/pluginlistwidget.py:337
+#: picard/ui/widgets/pluginlistwidget.py:371
+#: picard/ui/widgets/pluginlistwidget.py:374
+#: picard/ui/widgets/pluginlistwidget.py:381
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: picard/ui/widgets/pluginlistwidget.py:610
+#: picard/ui/widgets/pluginlistwidget.py:611
 msgid "Disable"
 msgstr "Inaktivera"
 
-#: picard/ui/widgets/pluginlistwidget.py:613
+#: picard/ui/widgets/pluginlistwidget.py:614
 msgid "Enable"
 msgstr "Aktivera"
 
-#: picard/ui/widgets/pluginlistwidget.py:635
+#: picard/ui/widgets/pluginlistwidget.py:636
 msgid "Reinstall"
 msgstr "Installera om"
 
-#: picard/ui/widgets/pluginlistwidget.py:640
+#: picard/ui/widgets/pluginlistwidget.py:641
 msgid "Switch Ref"
 msgstr "Byt referens"
 
-#: picard/ui/widgets/pluginlistwidget.py:653
+#: picard/ui/widgets/pluginlistwidget.py:654
 msgid "View Directory"
 msgstr "Visa mapp"
 
-#: picard/ui/widgets/pluginlistwidget.py:655
+#: picard/ui/widgets/pluginlistwidget.py:656
 msgid "View Repository"
 msgstr "Visa kodförråd"
 
-#: picard/ui/widgets/pluginlistwidget.py:661
+#: picard/ui/widgets/pluginlistwidget.py:662
 msgid "Report a Bug"
 msgstr "Rapportera ett fel"
 
-#: picard/ui/widgets/pluginlistwidget.py:667
+#: picard/ui/widgets/pluginlistwidget.py:668
 msgid "Execution Order"
 msgstr "Körningsordning"
 
-#: picard/ui/widgets/pluginlistwidget.py:676
-#: picard/ui/widgets/pluginlistwidget.py:683
-#: picard/ui/widgets/pluginlistwidget.py:713
-#: picard/ui/widgets/pluginlistwidget.py:732
-#: picard/ui/widgets/pluginlistwidget.py:762
-#: picard/ui/widgets/pluginlistwidget.py:848
+#: picard/ui/widgets/pluginlistwidget.py:677
+#: picard/ui/widgets/pluginlistwidget.py:686
+#: picard/ui/widgets/pluginlistwidget.py:718
+#: picard/ui/widgets/pluginlistwidget.py:739
+#: picard/ui/widgets/pluginlistwidget.py:771
+#: picard/ui/widgets/pluginlistwidget.py:857
 msgid "Plugin Error"
 msgstr "Fel i insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:677
-#, python-brace-format
-msgid ""
-"Failed to enable plugin \"{name}\":\n"
-"{errmsg}"
+#: picard/ui/widgets/pluginlistwidget.py:678
+#, fuzzy
+#| msgid ""
+#| "Failed to enable plugin \"{name}\":\n"
+#| "{errmsg}"
+msgid "Failed to enable the plugin."
 msgstr ""
 "Det gick inte att aktivera insticksmodulen ”{name}”:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:684
-#, python-brace-format
-msgid ""
-"Failed to disable plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Det gick inte att inaktivera insticksmodulen ”{name}”:\n"
-"{errmsg}"
+#: picard/ui/widgets/pluginlistwidget.py:687
+#, fuzzy
+#| msgid "Failed to update plugin: {errmsg}"
+msgid "Failed to disable the plugin."
+msgstr "Det gick inte att uppdatera insticksmodulen: {errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:714
-#, python-brace-format
-msgid ""
-"Failed to update plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Det gick inte att uppdatera insticksmodulen ”{name}”:\n"
-"{errmsg}"
-
-#: picard/ui/widgets/pluginlistwidget.py:733
-#, python-brace-format
-msgid ""
-"Failed to uninstall plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Det gick inte att avinstallera insticksmodulen ”{name}”:\n"
-"{errmsg}"
-
-#: picard/ui/widgets/pluginlistwidget.py:763
+#: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
 msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
@@ -9932,15 +9948,15 @@ msgstr ""
 "Det gick inte att installera om insticksmodulen ”{name}”:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:773
+#: picard/ui/widgets/pluginlistwidget.py:782
 msgid "Could not find plugin repository URL"
 msgstr "Det gick inte att hitta URL:en till insticksmodulens kodförråd"
 
-#: picard/ui/widgets/pluginlistwidget.py:781
+#: picard/ui/widgets/pluginlistwidget.py:790
 msgid "Reinstall Local Plugin"
 msgstr "Installera om lokal insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:784
+#: picard/ui/widgets/pluginlistwidget.py:793
 msgid ""
 "This plugin is loaded in local mode (git ignored).\n"
 "\n"
@@ -9952,15 +9968,15 @@ msgstr ""
 "Vill du behålla det lokala läget eller byta till Git-hanterat läge, där "
 "insticksmodulen klonas till mappen för insticksmoduler?"
 
-#: picard/ui/widgets/pluginlistwidget.py:789
+#: picard/ui/widgets/pluginlistwidget.py:798
 msgid "Keep local"
 msgstr "Behåll lokalt läge"
 
-#: picard/ui/widgets/pluginlistwidget.py:790
+#: picard/ui/widgets/pluginlistwidget.py:799
 msgid "Switch to git"
 msgstr "Byt till Git"
 
-#: picard/ui/widgets/pluginlistwidget.py:849
+#: picard/ui/widgets/pluginlistwidget.py:858
 #, python-brace-format
 msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
@@ -9969,11 +9985,11 @@ msgstr ""
 "Det gick inte att byta referens för insticksmodulen ”{name}”:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:886
+#: picard/ui/widgets/pluginlistwidget.py:895
 msgid "Plugin Re-enable Failed"
 msgstr "Insticksmodulen kunde inte aktiveras igen"
 
-#: picard/ui/widgets/pluginlistwidget.py:888
+#: picard/ui/widgets/pluginlistwidget.py:897
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" was updated/switched successfully but could not be re-"
@@ -9988,55 +10004,55 @@ msgstr ""
 "\n"
 "Insticksmodulen är för närvarande inaktiverad."
 
-#: picard/ui/widgets/pluginlistwidget.py:933
+#: picard/ui/widgets/pluginlistwidget.py:942
 msgid "There were no installed metadata processing plugins found."
 msgstr "Inga installerade insticksmoduler för metadatabearbetning hittades."
 
-#: picard/ui/widgets/pluginlistwidget.py:934
+#: picard/ui/widgets/pluginlistwidget.py:943
 msgid "No Data"
 msgstr "Inga data"
 
-#: picard/ui/widgets/pluginlistwidget.py:954
+#: picard/ui/widgets/pluginlistwidget.py:963
 msgid "Uninstall Plugin"
 msgstr "Avinstallera insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:962
+#: picard/ui/widgets/pluginlistwidget.py:971
 #, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
 msgstr "Vill du avinstallera ”{name}”?"
 
-#: picard/ui/widgets/pluginlistwidget.py:965
+#: picard/ui/widgets/pluginlistwidget.py:974
 msgid "Also remove plugin configuration"
 msgstr "Ta även bort insticksmodulens konfiguration"
 
-#: picard/ui/widgets/pluginlistwidget.py:966
+#: picard/ui/widgets/pluginlistwidget.py:975
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr ""
 "Ta bort alla sparade inställningar och all konfiguration för den här "
 "insticksmodulen"
 
-#: picard/ui/widgets/pluginlistwidget.py:970
+#: picard/ui/widgets/pluginlistwidget.py:979
 msgid "Yes, Uninstall!"
 msgstr "Ja, avinstallera!"
 
-#: picard/ui/widgets/pluginlistwidget.py:994
+#: picard/ui/widgets/pluginlistwidget.py:1003
 msgid "Switch Git Ref"
 msgstr "Byt Git-referens"
 
-#: picard/ui/widgets/pluginlistwidget.py:1005
+#: picard/ui/widgets/pluginlistwidget.py:1014
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
 msgstr "Byt referens för ”{name}”"
 
-#: picard/ui/widgets/pluginlistwidget.py:1015
+#: picard/ui/widgets/pluginlistwidget.py:1024
 msgid "Yes, Switch!"
 msgstr "Ja, byt!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1044
+#: picard/ui/widgets/pluginlistwidget.py:1053
 msgid "No Ref Selected"
 msgstr "Ingen referens har valts"
 
-#: picard/ui/widgets/pluginlistwidget.py:1045
+#: picard/ui/widgets/pluginlistwidget.py:1054
 msgid "Please select or enter a ref to switch to."
 msgstr "Välj eller ange en referens att byta till."
 
@@ -10328,9 +10344,29 @@ msgstr ""
 "\n"
 "%s"
 
-#, python-format
-#~ msgid "Plugin: %s"
-#~ msgstr "Insticksmodul: %s"
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to disable plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Det gick inte att inaktivera insticksmodulen ”{name}”:\n"
+#~ "{errmsg}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to update plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Det gick inte att uppdatera insticksmodulen ”{name}”:\n"
+#~ "{errmsg}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to uninstall plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Det gick inte att avinstallera insticksmodulen ”{name}”:\n"
+#~ "{errmsg}"
 
 #~ msgid "You have changed the application theme."
 #~ msgstr "Du har ändrat programmets tema."
@@ -11021,9 +11057,6 @@ msgstr ""
 
 #~ msgid "MusicBrainz Artist Id"
 #~ msgstr "MusicBrainz artist-id"
-
-#~ msgid "MusicBrainz Track Id"
-#~ msgstr "MusicBrainz spår-id"
 
 #~ msgid "MusicBrainz Work Id"
 #~ msgstr "MusicBrainz jobb-id"

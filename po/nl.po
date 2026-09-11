@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-08 09:25+0200\n"
+"POT-Creation-Date: 2026-09-11 09:09+0200\n"
 "PO-Revision-Date: 2026-09-07 12:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
@@ -361,7 +361,7 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i afbeelding niet in alle nummers"
 msgstr[1] "%i verschillende afbeeldingen in de nummers"
 
-#: picard/log.py:93 picard/ui/dialogs/installplugin.py:656
+#: picard/log.py:93 picard/ui/dialogs/installplugin.py:657
 #: picard/ui/options/renaming.py:116 picard/ui/scripteditor/__init__.py:569
 #: picard/ui/scripteditor/__init__.py:572
 #: picard/ui/scripteditor/__init__.py:881
@@ -373,7 +373,7 @@ msgstr "Fout"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: picard/log.py:95 picard/ui/dialogs/installplugin.py:470
+#: picard/log.py:95 picard/ui/dialogs/installplugin.py:471
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
@@ -1165,7 +1165,7 @@ msgstr "Nummer"
 
 #: picard/coverart/utils.py:47 picard/plugin.py:137
 #: picard/ui/dialogs/plugininfo.py:240 picard/ui/dialogs/plugininfo.py:250
-#: picard/ui/options/profiles.py:691 picard/ui/widgets/pluginlistwidget.py:298
+#: picard/ui/options/profiles.py:691 picard/ui/widgets/pluginlistwidget.py:299
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -1173,7 +1173,7 @@ msgstr "Onbekend"
 msgid "No function description available."
 msgstr "Geen functiebeschrijving beschikbaar."
 
-#: picard/profile.py:89 picard/ui/options/plugins.py:59
+#: picard/profile.py:89 picard/ui/options/plugins.py:60
 msgid "Plugins"
 msgstr "Plug-ins"
 
@@ -1645,7 +1645,7 @@ msgid "Formats"
 msgstr "Mediumtypes"
 
 #: picard/plugin3/categories.py:33 picard/ui/forms/ui_options_metadata.py:193
-#: picard/ui/options/metadata.py:87
+#: picard/ui/options/metadata.py:88
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -3564,7 +3564,7 @@ msgstr "Links"
 msgid "See Also"
 msgstr "Zie ook"
 
-#: picard/tags/tagvar.py:72 picard/ui/widgets/pluginlistwidget.py:147
+#: picard/tags/tagvar.py:72 picard/ui/widgets/pluginlistwidget.py:148
 msgid "Plugin"
 msgstr "Plug-in"
 
@@ -4517,52 +4517,52 @@ msgstr "Tips niet meer weergeven"
 msgid "Got it"
 msgstr "Begrepen"
 
-#: picard/ui/util.py:88
+#: picard/ui/util.py:90
 msgid "Make It So!"
 msgstr "Oké"
 
-#: picard/ui/util.py:128
+#: picard/ui/util.py:130
 #, python-format
 msgid "%s - %s"
 msgstr "%s - %s"
 
-#: picard/ui/util.py:150
+#: picard/ui/util.py:152
 msgid "Select a file or a directory"
 msgstr "Een bestand of map selecteren"
 
-#: picard/ui/util.py:156
+#: picard/ui/util.py:158
 msgid "Select a target file"
 msgstr "Een doelbestand selecteren"
 
-#: picard/ui/util.py:169
+#: picard/ui/util.py:171
 msgid "Select a file"
 msgstr "Een bestand selecteren"
 
-#: picard/ui/util.py:182
+#: picard/ui/util.py:184
 msgid "Select one or more files"
 msgstr "Een of meer bestanden selecteren"
 
-#: picard/ui/util.py:195
+#: picard/ui/util.py:197
 msgid "Select a directory"
 msgstr "Een map selecteren"
 
-#: picard/ui/util.py:211
+#: picard/ui/util.py:213
 msgid "Select one or more directories"
 msgstr "Een of meer mappen selecteren"
 
-#: picard/ui/util.py:339
+#: picard/ui/util.py:341
 msgid "You have to restart Picard for the changes to take effect."
 msgstr "De veranderingen worden actief nadat je Picard hebt herstart."
 
-#: picard/ui/util.py:340
+#: picard/ui/util.py:342
 msgid "Changes only applied on restart"
 msgstr "Veranderingen alleen bij herstart toegepast"
 
-#: picard/ui/util.py:355
+#: picard/ui/util.py:357
 msgid "Load Session"
 msgstr "Sessie laden"
 
-#: picard/ui/util.py:356
+#: picard/ui/util.py:358
 #, python-format
 msgid "The session file \"%(path)s\" was not found."
 msgstr "Het sessiebestand ‘%(path)s’ is niet gevonden."
@@ -4701,72 +4701,72 @@ msgstr ""
 "Deze plug-in staat niet in het officiële register. Het installeren van niet-"
 "geregistreerde plug-ins kan veiligheidsrisico’s met zich meebrengen."
 
-#: picard/ui/dialogs/installplugin.py:72
+#: picard/ui/dialogs/installplugin.py:73
 msgid "Install Plugin"
 msgstr "Plug-ins installeren"
 
-#: picard/ui/dialogs/installplugin.py:108 picard/ui/options/plugins.py:120
+#: picard/ui/dialogs/installplugin.py:109 picard/ui/options/plugins.py:121
 msgid "Search plugins…"
 msgstr "Plug-ins zoeken …"
 
-#: picard/ui/dialogs/installplugin.py:113
-#: picard/ui/dialogs/installplugin.py:340
+#: picard/ui/dialogs/installplugin.py:114
+#: picard/ui/dialogs/installplugin.py:341
 msgid "All Categories"
 msgstr "Alle categorieën"
 
-#: picard/ui/dialogs/installplugin.py:122
+#: picard/ui/dialogs/installplugin.py:123
 msgid "Trust"
 msgstr "Vertrouwen"
 
-#: picard/ui/dialogs/installplugin.py:122 picard/ui/searchdialog/album.py:158
+#: picard/ui/dialogs/installplugin.py:123 picard/ui/searchdialog/album.py:158
 #: picard/ui/searchdialog/artist.py:45 picard/ui/searchdialog/track.py:66
 msgid "Name"
 msgstr "Naam"
 
-#: picard/ui/dialogs/installplugin.py:122
+#: picard/ui/dialogs/installplugin.py:123
 msgid "Categories"
 msgstr "Categorieën"
 
-#: picard/ui/dialogs/installplugin.py:140
+#: picard/ui/dialogs/installplugin.py:141
 msgid "Registry"
 msgstr "Register"
 
-#: picard/ui/dialogs/installplugin.py:146
+#: picard/ui/dialogs/installplugin.py:147
 msgid "Install from URL"
 msgstr "Van URL installeren"
 
-#: picard/ui/dialogs/installplugin.py:150
+#: picard/ui/dialogs/installplugin.py:151
 msgid "https://github.com/user/plugin"
 msgstr "https://github.com/user/plugin"
 
-#: picard/ui/dialogs/installplugin.py:151
+#: picard/ui/dialogs/installplugin.py:152
 msgid "Git URL:"
 msgstr "Git-URL:"
 
-#: picard/ui/dialogs/installplugin.py:154
-#: picard/ui/dialogs/installplugin.py:185
+#: picard/ui/dialogs/installplugin.py:155
+#: picard/ui/dialogs/installplugin.py:186
 msgid "main"
 msgstr "hoofd"
 
-#: picard/ui/dialogs/installplugin.py:155
-#: picard/ui/dialogs/installplugin.py:186
+#: picard/ui/dialogs/installplugin.py:156
+#: picard/ui/dialogs/installplugin.py:187
 msgid "Ref/Tag:"
 msgstr "Ref/tag:"
 
-#: picard/ui/dialogs/installplugin.py:159
+#: picard/ui/dialogs/installplugin.py:160
 msgid "URL"
 msgstr "URL"
 
-#: picard/ui/dialogs/installplugin.py:165
+#: picard/ui/dialogs/installplugin.py:166
 msgid "Install from Local Directory"
 msgstr "Uit lokale map installeren"
 
-#: picard/ui/dialogs/installplugin.py:171
+#: picard/ui/dialogs/installplugin.py:172
 msgid "/path/to/plugin/directory"
 msgstr "/pad/naar/plug-inmap"
 
-#: picard/ui/dialogs/installplugin.py:177
 #: picard/ui/dialogs/installplugin.py:178
+#: picard/ui/dialogs/installplugin.py:179
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
 #: picard/ui/forms/ui_options_interface.py:131
 #: picard/ui/forms/ui_options_maintenance.py:149
@@ -4774,15 +4774,15 @@ msgstr "/pad/naar/plug-inmap"
 msgid "Select directory"
 msgstr "Map selecteren"
 
-#: picard/ui/dialogs/installplugin.py:182
+#: picard/ui/dialogs/installplugin.py:183
 msgid "Directory:"
 msgstr "Map:"
 
-#: picard/ui/dialogs/installplugin.py:188
+#: picard/ui/dialogs/installplugin.py:189
 msgid "Load in-place (ignore git)"
 msgstr "Lokaal laden (git negeren)"
 
-#: picard/ui/dialogs/installplugin.py:191
+#: picard/ui/dialogs/installplugin.py:192
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
@@ -4791,24 +4791,24 @@ msgstr ""
 "geladen, zonder git-functies (geen updates, niet van verwijzing wisselen). "
 "Handig voor actieve ontwikkeling."
 
-#: picard/ui/dialogs/installplugin.py:201 picard/ui/dialogs/plugininfo.py:238
+#: picard/ui/dialogs/installplugin.py:202 picard/ui/dialogs/plugininfo.py:238
 msgid "Local"
 msgstr "Lokaal"
 
-#: picard/ui/dialogs/installplugin.py:222
+#: picard/ui/dialogs/installplugin.py:223
 msgid "Install…"
 msgstr "Installeren …"
 
-#: picard/ui/dialogs/installplugin.py:286
-#: picard/ui/dialogs/installplugin.py:584
+#: picard/ui/dialogs/installplugin.py:287
+#: picard/ui/dialogs/installplugin.py:585
 msgid "The selected path is not a directory."
 msgstr "Het geselecteerde pas verwijst niet naar een map."
 
-#: picard/ui/dialogs/installplugin.py:292
+#: picard/ui/dialogs/installplugin.py:293
 msgid "The directory does not contain a MANIFEST.toml file."
 msgstr "De map bevat geen MANIFEST.toml-bestand."
 
-#: picard/ui/dialogs/installplugin.py:304
+#: picard/ui/dialogs/installplugin.py:305
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
@@ -4816,7 +4816,7 @@ msgstr ""
 "Deze plug-in wordt niet via git beheerd. Hij wordt geïnstalleerd als lokale "
 "plug-in zonder versiebeheer of updates."
 
-#: picard/ui/dialogs/installplugin.py:318
+#: picard/ui/dialogs/installplugin.py:319
 msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
@@ -4824,35 +4824,35 @@ msgstr ""
 "Git-functies (updates, verwijzingen) worden uitgeschakeld. De plug-in wordt "
 "rechtstreeks uit deze map geladen."
 
-#: picard/ui/dialogs/installplugin.py:374
+#: picard/ui/dialogs/installplugin.py:375
 msgid "Official plugin - reviewed by Picard team"
 msgstr "Officiële plug-in: beoordeeld door Picard-team"
 
-#: picard/ui/dialogs/installplugin.py:375
+#: picard/ui/dialogs/installplugin.py:376
 msgid "Trusted plugin - from known developers"
 msgstr "Vertrouwde plug-in: van bekende ontwikkelaar"
 
-#: picard/ui/dialogs/installplugin.py:376
+#: picard/ui/dialogs/installplugin.py:377
 msgid "Community plugin - not reviewed"
 msgstr "Plug-in uit gemeenschap: niet beoordeeld"
 
-#: picard/ui/dialogs/installplugin.py:377
+#: picard/ui/dialogs/installplugin.py:378
 msgid "Unregistered plugin - not in official registry"
 msgstr "Niet-geregistreerde plug-in: niet in het officiële register"
 
-#: picard/ui/dialogs/installplugin.py:422
+#: picard/ui/dialogs/installplugin.py:423
 msgid "Double-click to view detailed plugin information"
 msgstr "Dubbelklik om details over de plug-in weer te geven"
 
-#: picard/ui/dialogs/installplugin.py:490
+#: picard/ui/dialogs/installplugin.py:491
 msgid "Select Plugin Directory"
 msgstr "Plug-inmap selecteren"
 
-#: picard/ui/dialogs/installplugin.py:510
+#: picard/ui/dialogs/installplugin.py:511
 msgid "Plugin not found in registry"
 msgstr "De plug-in is niet in het register gevonden"
 
-#: picard/ui/dialogs/installplugin.py:521
+#: picard/ui/dialogs/installplugin.py:522
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
@@ -4861,7 +4861,7 @@ msgstr ""
 "door het Picard-team beoordeeld. Installeer alleen plug-ins uit bronnen die "
 "je vertrouwt."
 
-#: picard/ui/dialogs/installplugin.py:530
+#: picard/ui/dialogs/installplugin.py:531
 msgid ""
 "Warning: This plugin is not in the official registry. Installing "
 "unregistered plugins may pose security risks. Only install plugins from "
@@ -4871,31 +4871,31 @@ msgstr ""
 "installeren van niet-geregistreerde plug-ins kan veiligheidsrisico’s met "
 "zich meebrengen. Installeer alleen plug-ins uit bronnen die je vertrouwt."
 
-#: picard/ui/dialogs/installplugin.py:578
+#: picard/ui/dialogs/installplugin.py:579
 msgid "No Directory Selected"
 msgstr "Geen map geselecteerd"
 
-#: picard/ui/dialogs/installplugin.py:578
+#: picard/ui/dialogs/installplugin.py:579
 msgid "Please select a local plugin directory."
 msgstr "Selecteer een lokale plug-inmap."
 
-#: picard/ui/dialogs/installplugin.py:584
+#: picard/ui/dialogs/installplugin.py:585
 msgid "Invalid Directory"
 msgstr "Ongeldige map"
 
-#: picard/ui/dialogs/installplugin.py:592
+#: picard/ui/dialogs/installplugin.py:593
 msgid "Invalid Plugin Directory"
 msgstr "Ongeldige plug-inmap"
 
-#: picard/ui/dialogs/installplugin.py:593
+#: picard/ui/dialogs/installplugin.py:594
 msgid "The selected directory does not contain a MANIFEST.toml file."
 msgstr "De geselecteerde map bevat geen MANIFEST.toml-bestand."
 
-#: picard/ui/dialogs/installplugin.py:604
+#: picard/ui/dialogs/installplugin.py:605
 msgid "Plugin Not Managed by Git"
 msgstr "Plug-in niet beheerd via git"
 
-#: picard/ui/dialogs/installplugin.py:606
+#: picard/ui/dialogs/installplugin.py:607
 msgid ""
 "This plugin is not managed by git.\n"
 "\n"
@@ -4913,31 +4913,63 @@ msgstr ""
 "\n"
 "Wil je verdergaan?"
 
-#: picard/ui/dialogs/installplugin.py:656
+#: picard/ui/dialogs/installplugin.py:657
 msgid "Plugin has no repository URL"
 msgstr "De plug-in heeft geen opslagplaats-URL"
 
-#: picard/ui/dialogs/installplugin.py:723
+#: picard/ui/dialogs/installplugin.py:728
 msgid "Plugin installed successfully"
 msgstr "Plug-in geïnstalleerd"
 
-#: picard/ui/dialogs/installplugin.py:728
+#: picard/ui/dialogs/installplugin.py:733
 msgid "Installation failed"
 msgstr "Installatie mislukt"
 
-#: picard/ui/dialogs/installplugin.py:729 picard/ui/options/plugins.py:531
-#: picard/ui/widgets/plugindetailswidget.py:242
-#: picard/ui/widgets/plugindetailswidget.py:395
-#: picard/ui/widgets/pluginlistwidget.py:726
-#: picard/ui/widgets/pluginlistwidget.py:756
-#: picard/ui/widgets/pluginlistwidget.py:842
-#: picard/ui/widgets/pluginlistwidget.py:875
+#: picard/ui/dialogs/installplugin.py:734 picard/ui/options/plugins.py:532
+#: picard/ui/widgets/plugindetailswidget.py:243
+#: picard/ui/widgets/plugindetailswidget.py:406
+#: picard/ui/widgets/pluginlistwidget.py:733
+#: picard/ui/widgets/pluginlistwidget.py:765
+#: picard/ui/widgets/pluginlistwidget.py:851
+#: picard/ui/widgets/pluginlistwidget.py:884
 msgid "Unknown error"
 msgstr "Onbekende fout"
 
-#: picard/ui/dialogs/installplugin.py:730
+#: picard/ui/dialogs/installplugin.py:737
 msgid "Installation Failed"
 msgstr "Installatie mislukt"
+
+#: picard/ui/dialogs/installplugin.py:738
+#, fuzzy
+#| msgid "Failed to uninstall plugin: {errmsg}"
+msgid "Failed to install the plugin."
+msgstr "Kon plug-in niet verwijderen: {errmsg}"
+
+#: picard/ui/dialogs/plugin_error.py:169
+#, python-format
+msgid "If this looks like a plugin problem, report it to the plugin author: %s"
+msgstr ""
+
+#: picard/ui/dialogs/plugin_error.py:173
+#, python-format
+msgid "Please report this issue on the %s."
+msgstr ""
+
+#: picard/ui/dialogs/plugin_error.py:174
+#, fuzzy
+#| msgid "MusicBrainz Track Id"
+msgid "MusicBrainz bug tracker"
+msgstr "MusicBrainz-ID nummer"
+
+#: picard/ui/dialogs/plugin_error.py:182
+#, fuzzy, python-format
+#| msgid "Plugin: %s"
+msgid "Plugin \"%s\":"
+msgstr "Plug-in: %s"
+
+#: picard/ui/dialogs/plugin_error.py:187
+msgid "Error reported by the plugin:"
+msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:62
 msgid "Plugin Execution Order"
@@ -5022,7 +5054,7 @@ msgstr "Status:"
 
 #: picard/ui/dialogs/plugininfo.py:103
 #: picard/ui/forms/ui_scripteditor_details.py:103
-#: picard/ui/widgets/plugindetailswidget.py:90
+#: picard/ui/widgets/plugindetailswidget.py:91
 msgid "Version:"
 msgstr "Versie:"
 
@@ -5039,18 +5071,18 @@ msgid "Categories:"
 msgstr "Categorieën:"
 
 #: picard/ui/dialogs/plugininfo.py:107
-#: picard/ui/widgets/plugindetailswidget.py:95
+#: picard/ui/widgets/plugindetailswidget.py:96
 msgid "Authors:"
 msgstr "Auteur(s):"
 
 #: picard/ui/dialogs/plugininfo.py:108
-#: picard/ui/widgets/plugindetailswidget.py:100
+#: picard/ui/widgets/plugindetailswidget.py:101
 msgid "Maintainers:"
 msgstr "Onderhouder(s):"
 
 #: picard/ui/dialogs/plugininfo.py:109
-#: picard/ui/widgets/plugindetailswidget.py:108
-#: picard/ui/widgets/plugindetailswidget.py:187
+#: picard/ui/widgets/plugindetailswidget.py:109
+#: picard/ui/widgets/plugindetailswidget.py:188
 msgid "Repository:"
 msgstr "Opslagplaats:"
 
@@ -5072,7 +5104,7 @@ msgid "Report Bugs To:"
 msgstr "Bugs melden aan:"
 
 #: picard/ui/dialogs/plugininfo.py:114
-#: picard/ui/widgets/plugindetailswidget.py:184
+#: picard/ui/widgets/plugindetailswidget.py:185
 msgid "Path:"
 msgstr "Pad:"
 
@@ -8699,24 +8731,24 @@ msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 "Weet je zeker dat je de geselecteerde optie-instellingen wil verwijderen?"
 
-#: picard/ui/options/metadata.py:126
+#: picard/ui/options/metadata.py:127
 msgid "Do not standardize artist names"
 msgstr "Artiestennamen niet standaardiseren"
 
-#: picard/ui/options/metadata.py:128
+#: picard/ui/options/metadata.py:129
 msgid "Standardize artist name variations only"
 msgstr "Alleen naamvariaties standaardiseren"
 
-#: picard/ui/options/metadata.py:131
+#: picard/ui/options/metadata.py:132
 msgid "Standardize artist name variations and name changes"
 msgstr "Naamvariaties en naamswijzigingen standaardiseren"
 
-#: picard/ui/options/metadata.py:266
+#: picard/ui/options/metadata.py:297
 #, python-brace-format
 msgid "{indent}{locale}"
 msgstr "{indent}{locale}"
 
-#: picard/ui/options/metadata.py:327
+#: picard/ui/options/metadata.py:358
 msgid ""
 "Each selected script includes a matching threshold value used to determine "
 "if that script should be used. When an artist name is evaluated to determine "
@@ -8762,118 +8794,119 @@ msgstr ""
 msgid "Audio Player"
 msgstr "Audiospeler"
 
-#: picard/ui/options/plugins.py:107
+#: picard/ui/options/plugins.py:108
 #, python-brace-format
 msgid "Plugins unavailable: {reason}."
 msgstr "Plug-ins niet beschikbaar: {reason}."
 
-#: picard/ui/options/plugins.py:127
+#: picard/ui/options/plugins.py:128
 msgid "Install Plugin…"
 msgstr "Plug-in installeren …"
 
-#: picard/ui/options/plugins.py:128
+#: picard/ui/options/plugins.py:129
 msgid "Install a new plugin from the registry or a custom URL"
 msgstr "Installeer een nieuwe plug-in uit het register of via een URL"
 
-#: picard/ui/options/plugins.py:132 picard/ui/options/plugins.py:274
+#: picard/ui/options/plugins.py:133 picard/ui/options/plugins.py:275
 msgid "Refresh All"
 msgstr "Alles vernieuwen"
 
-#: picard/ui/options/plugins.py:133
+#: picard/ui/options/plugins.py:134
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
 "Vernieuw het register en de lijst met plug-ins en kijk of er nieuwe versies "
 "zijn"
 
-#: picard/ui/options/plugins.py:139 picard/ui/options/plugins.py:353
+#: picard/ui/options/plugins.py:140 picard/ui/options/plugins.py:354
 msgid "Hide Details"
 msgstr "Details verbergen"
 
-#: picard/ui/options/plugins.py:142
+#: picard/ui/options/plugins.py:143
 msgid "Show/hide plugin details panel"
 msgstr "Toon/verberg het paneel met plug-indetails"
 
-#: picard/ui/options/plugins.py:224
+#: picard/ui/options/plugins.py:225
 #, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
 msgstr[0] "{plugin_count:,d} plug-in geïnstalleerd"
 msgstr[1] "{plugin_count:,d} plug-ins geïnstalleerd"
 
-#: picard/ui/options/plugins.py:233
+#: picard/ui/options/plugins.py:234
 #, python-brace-format
 msgid "Error loading plugins: {}"
 msgstr "Fout bij het laden van plug-ins: {}"
 
-#: picard/ui/options/plugins.py:238
+#: picard/ui/options/plugins.py:239
 msgid "Refreshing…"
 msgstr "Aan het vernieuwen"
 
-#: picard/ui/options/plugins.py:239
+#: picard/ui/options/plugins.py:240
 msgid "Refreshing plugin registry, list, and checking for updates…"
 msgstr ""
 "Het register en de lijst met plug-ins worden vernieuwd en er wordt naar "
 "nieuwe versies gezocht …"
 
-#: picard/ui/options/plugins.py:245 picard/ui/options/plugins.py:271
+#: picard/ui/options/plugins.py:246 picard/ui/options/plugins.py:272
 #, python-brace-format
 msgid "Error refreshing: {}"
 msgstr "Fout met het vernieuwen: {}"
 
-#: picard/ui/options/plugins.py:259
+#: picard/ui/options/plugins.py:260
 #, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
 msgstr[0] "{plugin_count:,d} plug-in"
 msgstr[1] "{plugin_count:,d} plug-ins"
 
-#: picard/ui/options/plugins.py:263
+#: picard/ui/options/plugins.py:264
 #, python-brace-format
 msgid "{update_count:,d} update available"
 msgid_plural "{update_count:,d} updates available"
 msgstr[0] "{update_count:,d} nieuwe versie beschikbaar"
 msgstr[1] "{update_count:,d} nieuwe versies beschikbaar"
 
-#: picard/ui/options/plugins.py:266
+#: picard/ui/options/plugins.py:267
 #, python-brace-format
 msgid "Refreshed - {plugins}, {updates}"
 msgstr "Vernieuwd: {plugins}, {updates}"
 
-#: picard/ui/options/plugins.py:302
+#: picard/ui/options/plugins.py:303
 msgid "Plugin system not available - Git backend required"
 msgstr "Plug-insysteem niet beschikbaar: Git-backend vereist"
 
-#: picard/ui/options/plugins.py:356
+#: picard/ui/options/plugins.py:357
 msgid "Show Details"
 msgstr "Meer details"
 
-#: picard/ui/options/plugins.py:395
+#: picard/ui/options/plugins.py:396
 #, python-brace-format
 msgid "Plugin \"{name}\" {action}"
 msgstr "Plug-in ‘{name}’ {action}"
 
-#: picard/ui/options/plugins.py:460
+#: picard/ui/options/plugins.py:461
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
 msgstr "Plug-in ‘{name}’ geïnstalleerd"
 
-#: picard/ui/options/plugins.py:497
+#: picard/ui/options/plugins.py:498
 msgid "All plugin updates completed"
 msgstr "Alle plug-ins zijn bijgewerkt"
 
-#: picard/ui/options/plugins.py:508
+#: picard/ui/options/plugins.py:509
 #, python-brace-format
 msgid "Updating {name}…"
 msgstr "{name} wordt bijgewerkt"
 
-#: picard/ui/options/plugins.py:533
-#: picard/ui/widgets/plugindetailswidget.py:396
+#: picard/ui/options/plugins.py:535
+#: picard/ui/widgets/plugindetailswidget.py:407
 msgid "Update Failed"
 msgstr "Bijwerken mislukt"
 
-#: picard/ui/options/plugins.py:533
-#, python-brace-format
-msgid "Failed to update plugin: {errmsg}"
+#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
+#, fuzzy
+#| msgid "Failed to update plugin: {errmsg}"
+msgid "Failed to update the plugin."
 msgstr "Kon plug-in niet bijwerken: {errmsg}"
 
 #: picard/ui/options/profiles.py:92
@@ -9738,52 +9771,60 @@ msgstr ""
 "De tabel is vastgezet. Om de kolommen te kunnen sorteren, vergroten of "
 "verkleinen, moet je de tabel via het contextmenu ontgrendelen."
 
-#: picard/ui/widgets/plugindetailswidget.py:116
-#: picard/ui/widgets/plugindetailswidget.py:199
-#: picard/ui/widgets/plugindetailswidget.py:203
-#: picard/ui/widgets/plugindetailswidget.py:383
-#: picard/ui/widgets/pluginlistwidget.py:626
+#: picard/ui/widgets/plugindetailswidget.py:117
+#: picard/ui/widgets/plugindetailswidget.py:200
+#: picard/ui/widgets/plugindetailswidget.py:204
+#: picard/ui/widgets/plugindetailswidget.py:394
+#: picard/ui/widgets/pluginlistwidget.py:627
 msgid "Update"
 msgstr "Bijwerken"
 
-#: picard/ui/widgets/plugindetailswidget.py:120
-#: picard/ui/widgets/pluginlistwidget.py:631
+#: picard/ui/widgets/plugindetailswidget.py:121
+#: picard/ui/widgets/pluginlistwidget.py:632
 msgid "Uninstall"
 msgstr "Verwijderen"
 
-#: picard/ui/widgets/plugindetailswidget.py:124
-#: picard/ui/widgets/pluginlistwidget.py:646
+#: picard/ui/widgets/plugindetailswidget.py:125
+#: picard/ui/widgets/pluginlistwidget.py:647
 msgid "Information"
 msgstr "Informatie"
 
-#: picard/ui/widgets/plugindetailswidget.py:152
+#: picard/ui/widgets/plugindetailswidget.py:153
 msgid "No description available"
 msgstr "Geen beschrijving beschikbaar"
 
-#: picard/ui/widgets/plugindetailswidget.py:195
-#: picard/ui/widgets/pluginlistwidget.py:623
+#: picard/ui/widgets/plugindetailswidget.py:196
+#: picard/ui/widgets/pluginlistwidget.py:624
 msgid "Reload"
 msgstr "Opnieuw laden"
 
-#: picard/ui/widgets/plugindetailswidget.py:243
-#: picard/ui/widgets/plugindetailswidget.py:365
+#: picard/ui/widgets/plugindetailswidget.py:246
+#: picard/ui/widgets/plugindetailswidget.py:373
 msgid "Uninstall Failed"
 msgstr "Verwijderen mislukt"
 
-#: picard/ui/widgets/plugindetailswidget.py:278
+#: picard/ui/widgets/plugindetailswidget.py:247
+#: picard/ui/widgets/plugindetailswidget.py:374
+#: picard/ui/widgets/pluginlistwidget.py:740
+#, fuzzy
+#| msgid "Failed to uninstall plugin: {errmsg}"
+msgid "Failed to uninstall the plugin."
+msgstr "Kon plug-in niet verwijderen: {errmsg}"
+
+#: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
 msgstr "N.v.t."
 
-#: picard/ui/widgets/plugindetailswidget.py:292
+#: picard/ui/widgets/plugindetailswidget.py:299
 #, python-brace-format
 msgid "Update to {version}"
 msgstr "Bijwerken naar {version}"
 
-#: picard/ui/widgets/plugindetailswidget.py:312
+#: picard/ui/widgets/plugindetailswidget.py:319
 msgid "Update Plugin"
 msgstr "Plug-in bijwerken"
 
-#: picard/ui/widgets/plugindetailswidget.py:313
+#: picard/ui/widgets/plugindetailswidget.py:320
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" is set to not update automatically.\n"
@@ -9795,12 +9836,7 @@ msgstr ""
 "\n"
 "Wil je hem toch bijwerken?"
 
-#: picard/ui/widgets/plugindetailswidget.py:365
-#, python-brace-format
-msgid "Failed to uninstall plugin: {errmsg}"
-msgstr "Kon plug-in niet verwijderen: {errmsg}"
-
-#: picard/ui/widgets/plugindetailswidget.py:372
+#: picard/ui/widgets/plugindetailswidget.py:383
 msgid "Updating…"
 msgstr "Aan het bijwerken"
 
@@ -9813,125 +9849,105 @@ msgstr "huidig"
 msgid "Commit date: {date}"
 msgstr "Datum van commit: {date}"
 
-#: picard/ui/widgets/pluginlistwidget.py:93
-#: picard/ui/widgets/pluginlistwidget.py:105
+#: picard/ui/widgets/pluginlistwidget.py:94
+#: picard/ui/widgets/pluginlistwidget.py:106
 msgid "Update All"
 msgstr "Alles bijwerken"
 
-#: picard/ui/widgets/pluginlistwidget.py:101
+#: picard/ui/widgets/pluginlistwidget.py:102
 #, python-brace-format
 msgid "Update Selected ({count})"
 msgstr "{count} geselecteerde plug-ins bijwerken"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Version"
 msgstr "Versie"
 
-#: picard/ui/widgets/pluginlistwidget.py:147
+#: picard/ui/widgets/pluginlistwidget.py:148
 msgid "New Version"
 msgstr "Nieuwe versie"
 
-#: picard/ui/widgets/pluginlistwidget.py:313
+#: picard/ui/widgets/pluginlistwidget.py:314
 msgid "This plugin is included in updates"
 msgstr "Deze plug-in wordt bijgewerkt"
 
-#: picard/ui/widgets/pluginlistwidget.py:315
+#: picard/ui/widgets/pluginlistwidget.py:316
 msgid "This plugin is excluded from updates"
 msgstr "Deze plug-in wordt niet bijgewerkt"
 
-#: picard/ui/widgets/pluginlistwidget.py:327
+#: picard/ui/widgets/pluginlistwidget.py:328
 msgid "In Progress…"
 msgstr "In uitvoering"
 
-#: picard/ui/widgets/pluginlistwidget.py:336
-#: picard/ui/widgets/pluginlistwidget.py:370
-#: picard/ui/widgets/pluginlistwidget.py:373
-#: picard/ui/widgets/pluginlistwidget.py:380
+#: picard/ui/widgets/pluginlistwidget.py:337
+#: picard/ui/widgets/pluginlistwidget.py:371
+#: picard/ui/widgets/pluginlistwidget.py:374
+#: picard/ui/widgets/pluginlistwidget.py:381
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: picard/ui/widgets/pluginlistwidget.py:610
+#: picard/ui/widgets/pluginlistwidget.py:611
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: picard/ui/widgets/pluginlistwidget.py:613
+#: picard/ui/widgets/pluginlistwidget.py:614
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: picard/ui/widgets/pluginlistwidget.py:635
+#: picard/ui/widgets/pluginlistwidget.py:636
 msgid "Reinstall"
 msgstr "Opnieuw installeren"
 
-#: picard/ui/widgets/pluginlistwidget.py:640
+#: picard/ui/widgets/pluginlistwidget.py:641
 msgid "Switch Ref"
 msgstr "Ref wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:653
+#: picard/ui/widgets/pluginlistwidget.py:654
 msgid "View Directory"
 msgstr "Map bekijken"
 
-#: picard/ui/widgets/pluginlistwidget.py:655
+#: picard/ui/widgets/pluginlistwidget.py:656
 msgid "View Repository"
 msgstr "Opslagplaats bekijken"
 
-#: picard/ui/widgets/pluginlistwidget.py:661
+#: picard/ui/widgets/pluginlistwidget.py:662
 msgid "Report a Bug"
 msgstr "Een bug melden"
 
-#: picard/ui/widgets/pluginlistwidget.py:667
+#: picard/ui/widgets/pluginlistwidget.py:668
 msgid "Execution Order"
 msgstr "Uitvoeringsvolgorde"
 
-#: picard/ui/widgets/pluginlistwidget.py:676
-#: picard/ui/widgets/pluginlistwidget.py:683
-#: picard/ui/widgets/pluginlistwidget.py:713
-#: picard/ui/widgets/pluginlistwidget.py:732
-#: picard/ui/widgets/pluginlistwidget.py:762
-#: picard/ui/widgets/pluginlistwidget.py:848
+#: picard/ui/widgets/pluginlistwidget.py:677
+#: picard/ui/widgets/pluginlistwidget.py:686
+#: picard/ui/widgets/pluginlistwidget.py:718
+#: picard/ui/widgets/pluginlistwidget.py:739
+#: picard/ui/widgets/pluginlistwidget.py:771
+#: picard/ui/widgets/pluginlistwidget.py:857
 msgid "Plugin Error"
 msgstr "Plug-infout"
 
-#: picard/ui/widgets/pluginlistwidget.py:677
-#, python-brace-format
-msgid ""
-"Failed to enable plugin \"{name}\":\n"
-"{errmsg}"
+#: picard/ui/widgets/pluginlistwidget.py:678
+#, fuzzy
+#| msgid ""
+#| "Failed to enable plugin \"{name}\":\n"
+#| "{errmsg}"
+msgid "Failed to enable the plugin."
 msgstr ""
 "Kon plug-in ‘{name}’ niet inschakelen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:684
-#, python-brace-format
-msgid ""
-"Failed to disable plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Kon plug-in ‘{name}’ niet uitschakelen:\n"
-"{errmsg}"
+#: picard/ui/widgets/pluginlistwidget.py:687
+#, fuzzy
+#| msgid "Failed to update plugin: {errmsg}"
+msgid "Failed to disable the plugin."
+msgstr "Kon plug-in niet bijwerken: {errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:714
-#, python-brace-format
-msgid ""
-"Failed to update plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Kon plug-in ‘{name}’ niet bijwerken:\n"
-"{errmsg}"
-
-#: picard/ui/widgets/pluginlistwidget.py:733
-#, python-brace-format
-msgid ""
-"Failed to uninstall plugin \"{name}\":\n"
-"{errmsg}"
-msgstr ""
-"Kon plug-in ‘{name}’ niet verwijderen:\n"
-"{errmsg}"
-
-#: picard/ui/widgets/pluginlistwidget.py:763
+#: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
 msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
@@ -9940,15 +9956,15 @@ msgstr ""
 "Kon plug-in ‘{name}’ niet opnieuw installeren:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:773
+#: picard/ui/widgets/pluginlistwidget.py:782
 msgid "Could not find plugin repository URL"
 msgstr "Kon de URL van de plug-inopslagplaats niet vinden"
 
-#: picard/ui/widgets/pluginlistwidget.py:781
+#: picard/ui/widgets/pluginlistwidget.py:790
 msgid "Reinstall Local Plugin"
 msgstr "Lokale plug-in opnieuw installeren"
 
-#: picard/ui/widgets/pluginlistwidget.py:784
+#: picard/ui/widgets/pluginlistwidget.py:793
 msgid ""
 "This plugin is loaded in local mode (git ignored).\n"
 "\n"
@@ -9960,15 +9976,15 @@ msgstr ""
 "Wil je de lokale modus behouden of de plug-in via git beheren (klonen naar "
 "de plug-inmap)?"
 
-#: picard/ui/widgets/pluginlistwidget.py:789
+#: picard/ui/widgets/pluginlistwidget.py:798
 msgid "Keep local"
 msgstr "Lokaal houden"
 
-#: picard/ui/widgets/pluginlistwidget.py:790
+#: picard/ui/widgets/pluginlistwidget.py:799
 msgid "Switch to git"
 msgstr "Git gebruiken"
 
-#: picard/ui/widgets/pluginlistwidget.py:849
+#: picard/ui/widgets/pluginlistwidget.py:858
 #, python-brace-format
 msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
@@ -9977,11 +9993,11 @@ msgstr ""
 "Kon plug-in ‘{name}’ niet naar andere ref wijzigen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:886
+#: picard/ui/widgets/pluginlistwidget.py:895
 msgid "Plugin Re-enable Failed"
 msgstr "Plug-in opnieuw inschakelen mislukt"
 
-#: picard/ui/widgets/pluginlistwidget.py:888
+#: picard/ui/widgets/pluginlistwidget.py:897
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" was updated/switched successfully but could not be re-"
@@ -9996,55 +10012,55 @@ msgstr ""
 "\n"
 "De plug-in is nu uitgeschakeld."
 
-#: picard/ui/widgets/pluginlistwidget.py:933
+#: picard/ui/widgets/pluginlistwidget.py:942
 msgid "There were no installed metadata processing plugins found."
 msgstr ""
 "Er zijn geen geïnstalleerde plug-ins voor het verwerken van metadata "
 "gevonden."
 
-#: picard/ui/widgets/pluginlistwidget.py:934
+#: picard/ui/widgets/pluginlistwidget.py:943
 msgid "No Data"
 msgstr "Geen gegevens"
 
-#: picard/ui/widgets/pluginlistwidget.py:954
+#: picard/ui/widgets/pluginlistwidget.py:963
 msgid "Uninstall Plugin"
 msgstr "Plug-in verwijderen"
 
-#: picard/ui/widgets/pluginlistwidget.py:962
+#: picard/ui/widgets/pluginlistwidget.py:971
 #, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
 msgstr "Weet je zeker dat je ‘{name}’ wil verwijderen?"
 
-#: picard/ui/widgets/pluginlistwidget.py:965
+#: picard/ui/widgets/pluginlistwidget.py:974
 msgid "Also remove plugin configuration"
 msgstr "Verwijder ook de instellingen van de plug-in"
 
-#: picard/ui/widgets/pluginlistwidget.py:966
+#: picard/ui/widgets/pluginlistwidget.py:975
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr "Verwijder alle opgeslagen instellingen voor deze plug-in"
 
-#: picard/ui/widgets/pluginlistwidget.py:970
+#: picard/ui/widgets/pluginlistwidget.py:979
 msgid "Yes, Uninstall!"
 msgstr "Ja, verwijderen!"
 
-#: picard/ui/widgets/pluginlistwidget.py:994
+#: picard/ui/widgets/pluginlistwidget.py:1003
 msgid "Switch Git Ref"
 msgstr "Git-ref wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:1005
+#: picard/ui/widgets/pluginlistwidget.py:1014
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
 msgstr "Ref van ‘{name}’ wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:1015
+#: picard/ui/widgets/pluginlistwidget.py:1024
 msgid "Yes, Switch!"
 msgstr "Ja, wijzigen!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1044
+#: picard/ui/widgets/pluginlistwidget.py:1053
 msgid "No Ref Selected"
 msgstr "Geen ref geselecteerd"
 
-#: picard/ui/widgets/pluginlistwidget.py:1045
+#: picard/ui/widgets/pluginlistwidget.py:1054
 msgid "Please select or enter a ref to switch to."
 msgstr "Selecteer een ref om naar over te schakelen."
 
@@ -10331,9 +10347,29 @@ msgstr ""
 "\n"
 "%s"
 
-#, python-format
-#~ msgid "Plugin: %s"
-#~ msgstr "Plug-in: %s"
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to disable plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Kon plug-in ‘{name}’ niet uitschakelen:\n"
+#~ "{errmsg}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to update plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Kon plug-in ‘{name}’ niet bijwerken:\n"
+#~ "{errmsg}"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Failed to uninstall plugin \"{name}\":\n"
+#~ "{errmsg}"
+#~ msgstr ""
+#~ "Kon plug-in ‘{name}’ niet verwijderen:\n"
+#~ "{errmsg}"
 
 #~ msgid "You have changed the application theme."
 #~ msgstr "Je hebt het thema van de applicatie gewijzigd."
@@ -11269,9 +11305,6 @@ msgstr ""
 
 #~ msgid "MusicBrainz Original Artist Id"
 #~ msgstr "MusicBrainz-ID originele artiest"
-
-#~ msgid "MusicBrainz Track Id"
-#~ msgstr "MusicBrainz-ID nummer"
 
 #~ msgid "MusicBrainz Work Id"
 #~ msgstr "MusicBrainz-ID compositie"
