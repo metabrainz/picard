@@ -352,7 +352,7 @@ class MyOptionsPage(OptionsPage):
     TITLE = 'My Plugin'
     PARENT = 'plugins'
     OPTIONS: ClassVar[PageOptionConfigs] = {
-        'greeting': {},
+        'greeting': {'widgets': ['greeting_input']},
     }
 
     def load(self):
@@ -418,7 +418,15 @@ class MyOptionsPage(OptionsPage):
 
 The widget will be highlighted in the options dialog when the option is tracked or overridden by an active profile.
 
-**Note:** Widget highlighting will only work if is accessed from the `OptionsPage` sub-class as `self.ui.{widget}` or `self.{widget}`. The above example would highlight the widget `self.ui.greeting_input` or `self.greeting_input`.
+Each key in `OPTIONS` is an option name; its `'widgets'` entry is a list of the
+widget attribute names on the page that edit that option. A widget name is
+resolved on the `OptionsPage` subclass instance, either via a loaded Qt Designer
+UI object (`self.ui.<name>`) or directly on the page (`self.<name>`). Listing
+more than one widget highlights all of them for the same option.
+
+**Note:** Highlighting only works when the widget is reachable from the
+`OptionsPage` subclass as `self.ui.<name>` or `self.<name>`. The example above
+highlights `self.ui.greeting_input` or `self.greeting_input`.
 
 **Behavior summary:**
 
