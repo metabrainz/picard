@@ -329,6 +329,49 @@ def enable(api):
 
 When a profile is active and overrides the option, reads from `api.plugin_config['greeting']` automatically return the profile value. Writes go to the profile's storage. The base (non-profile) value is preserved.
 
+**Two things are required for the option to appear in the Profiles editor:**
+
+1. Register it with `in_profile=True` and a `title` (as above).
+2. Surface it through an `OptionsPage` that lists it in its `OPTIONS` dict and
+   is registered with `api.register_options_page(...)`.
+
+Registering the option alone is not enough: an option is only added to the
+profile groups (the "Settings to include in profile" tree on the Option
+Profiles page) when a registered options page declares it. If your plugin
+registers a profile-eligible option but never exposes it on a registered
+options page, it will not show up in the profiles editor.
+
+```python
+from typing import ClassVar
+
+from picard.plugin3.api import OptionsPage, PageOptionConfigs
+
+
+class MyOptionsPage(OptionsPage):
+    NAME = 'my_plugin'
+    TITLE = 'My Plugin'
+    PARENT = 'plugins'
+    OPTIONS: ClassVar[PageOptionConfigs] = {
+        'greeting': {},
+    }
+
+    def load(self):
+        self.greeting_input.setText(self.api.plugin_config['greeting'])
+
+    def save(self):
+        self.api.plugin_config['greeting'] = self.greeting_input.text()
+
+
+def enable(api):
+    api.plugin_config.register_option(
+        'greeting',
+        'Hello World',
+        title='Greeting message',
+        in_profile=True,
+    )
+    api.register_options_page(MyOptionsPage)
+```
+
 #### Numeric bounds
 
 Numeric options (int or float defaults) can declare a valid range with
