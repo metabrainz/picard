@@ -23,6 +23,7 @@ from test.picardtestcase import PicardTestCase
 from picard.config import (
     Config,
     Option,
+    ProfileConfigSection,
     TextOption,
 )
 
@@ -78,3 +79,21 @@ class TestProfileOptionIsOverride(PicardTestCase):
         # A string profile value equal to the base after conversion is tracked.
         TextOption('setting', 'server_host', 'musicbrainz.org', in_profile=True)
         self.assertFalse(profile_option_is_override(self.config, 'server_host', 'musicbrainz.org'))
+
+    def test_plugin_key_uses_stored_base_not_default(self):
+        # A plugin option whose stored base value differs from its default.
+        # A profile tracking it with a value equal to the stored base value
+        # must be classified as tracked, NOT overridden. Regression: the base
+        # value was previously read from opt.default only.
+        TextOption('plugin.abc', 'greeting', 'default_value', in_profile=True)
+        section = ProfileConfigSection(self.config, 'plugin.abc')
+        with self.config.setting.no_profile():
+            section['greeting'] = 'base_value'
+
+        key = 'plugin.abc/greeting'
+        # Equal to the stored base value -> tracked
+        self.assertFalse(profile_option_is_override(self.config, key, 'base_value'))
+        # Equal to the default but different from the stored base -> override
+        self.assertTrue(profile_option_is_override(self.config, key, 'default_value'))
+        # Different from both -> override
+        self.assertTrue(profile_option_is_override(self.config, key, 'other_value'))

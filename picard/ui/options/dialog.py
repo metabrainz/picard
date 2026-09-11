@@ -46,6 +46,7 @@ from picard import (
 from picard.config import (
     Option,
     OptionError,
+    ProfileConfigSection,
     get_config,
 )
 from picard.debug_opts import DebugOpt
@@ -191,7 +192,12 @@ def profile_option_is_override(config, option_name, profile_value) -> bool:
     if is_plugin_profile_key(option_name):
         section, name = option_name.split('/', 1)
         opt = Option.get(section, name)
-        base_value = opt.default if opt else None
+        # Read the option's base (non-profile) value from its own plugin
+        # section, not just its default: a plugin may have a stored base value
+        # that differs from the default. no_profile() on config.setting also
+        # disables profile lookup for plugin sections.
+        with config.setting.no_profile():
+            base_value = ProfileConfigSection(config, section)[name]
     else:
         opt = Option.get('setting', option_name)
         with config.setting.no_profile():
