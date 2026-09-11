@@ -74,6 +74,13 @@ In accordance with the AI use policy portion of the [MetaBrainz Contribution Gui
 
 ## Action
 
+<!--
+    If this PR addresses a PICARD-XXX ticket and requires that the documentation be updated,
+    please enter a new ticket as a sub Task to the ticket.  Otherwise, please enter a new
+    ticket in the ticket tracker for the required documentation changes, referring to this PR.
+
+    https://tickets.metabrainz.org/projects/PICARD/issues/?filter=allopenissues
+-->
 Additional actions required:
 * [ ] Update Picard [documentation](https://github.com/metabrainz/picard-docs) (please include a reference to this PR)
 * [ ] Other (please specify below)
