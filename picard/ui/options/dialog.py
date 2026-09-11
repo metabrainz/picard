@@ -189,19 +189,24 @@ def profile_option_is_override(config, option_name, profile_value) -> bool:
     if profile_value is None:
         # Tracked but no value set yet.
         return False
+
+    # Determine the section and the config section object to read the base
+    # (non-profile) value from. Plugin options live in their own
+    # 'plugin.<uuid>' section; core options live in 'setting'.
     if is_plugin_profile_key(option_name):
-        section, name = option_name.split('/', 1)
-        opt = Option.get(section, name)
-        # Read the option's base (non-profile) value from its own plugin
-        # section, not just its default: a plugin may have a stored base value
-        # that differs from the default. no_profile() on config.setting also
-        # disables profile lookup for plugin sections.
-        with config.setting.no_profile():
-            base_value = ProfileConfigSection(config, section)[name]
+        section_name, name = option_name.split('/', 1)
+        config_section = ProfileConfigSection(config, section_name)
     else:
-        opt = Option.get('setting', option_name)
-        with config.setting.no_profile():
-            base_value = config.setting[option_name]
+        section_name, name = 'setting', option_name
+        config_section = config.setting
+
+    opt = Option.get(section_name, name)
+    # no_profile() on config.setting disables profile lookup globally, including
+    # for ProfileConfigSection instances (they read the active profiles/override
+    # from config.setting), so it yields the base value for both cases.
+    with config.setting.no_profile():
+        base_value = config_section[name]
+
     # Convert profile value to same type for comparison
     if opt:
         try:
