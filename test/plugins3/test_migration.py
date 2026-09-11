@@ -244,3 +244,225 @@ register_album_action(MyAlbumAction())
         self.assertNotIn('\nregister_track_metadata_processor(MyAlbumAction())', code)
         self.assertIn('def enable(api: PluginApi):', code)
         self.assertIn('  api.register_album_action(MyAlbumAction)', code)
+
+    def test_track_processor_signature_rewritten_with_api(self):
+        """A canonical v2 track processor signature is rewritten to the full v3 form."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def process_track(album, metadata, track, release):\n"
+            "    metadata['custom'] = 'value'\n\n\n"
+            "register_track_metadata_processor(process_track)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # v3 signature: api first, plus track_node/release_node
+        self.assertIn('def process_track(api, track, metadata, track_node, release_node)', content)
+        # No per-function "still lacks api" warning for a recognized signature
+        joined = '\n'.join(warnings)
+        self.assertNotIn('still lack the', joined)
+
+    def test_album_processor_signature_rewritten_with_api(self):
+        """A canonical v2 album processor signature is rewritten to the full v3 form."""
+        v2_code = (
+            "from picard.metadata import register_album_metadata_processor\n\n\n"
+            "def process_album(album, metadata, release):\n"
+            "    metadata['custom'] = 'value'\n\n\n"
+            "register_album_metadata_processor(process_album)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def process_album(api, album, metadata, release_node)', content)
+
+    def test_non_canonical_processor_flagged_by_name(self):
+        """A processor with non-canonical parameter names is NOT auto-rewritten,
+        and the warning names the specific function that still needs 'api'."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def my_proc(alb, meta, trk, rel):\n"
+            "    meta['x'] = 'y'\n\n\n"
+            "register_track_metadata_processor(my_proc)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # Signature was not rewritten (still no 'api' first arg)
+        self.assertIn('def my_proc(alb, meta, trk, rel)', content)
+        # And the warning names it explicitly
+        joined = '\n'.join(warnings)
+        self.assertIn('still lack the', joined)
+        self.assertIn('my_proc', joined)
+
+    def test_file_to_track_processor_keeps_track_arg(self):
+        """v2 file-to-track processor (track, file) -> v3 (api, track, file).
+
+        The track argument must be retained (see docs/PLUGINSV3/API.md:
+        register_file_post_addition_to_track_processor -> function(api, track, file)).
+        """
+        v2_code = (
+            "from picard.file import register_file_post_addition_to_track_processor\n\n\n"
+            "def get_lyrics(track, file):\n"
+            "    pass\n\n\n"
+            "register_file_post_addition_to_track_processor(get_lyrics)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def get_lyrics(api, track, file)', content)
+
+    def test_file_processor_gets_api_arg(self):
+        """v2 file processor (file) -> v3 (api, file)."""
+        v2_code = (
+            "from picard.file import register_file_post_load_processor\n\n\n"
+            "def on_load(file):\n"
+            "    pass\n\n\n"
+            "register_file_post_load_processor(on_load)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def on_load(api, file)', content)
+
+    def test_qualified_plugin_priority_converted(self):
+        """A qualified PluginPriority reference (plugin.PluginPriority.HIGH) is
+        converted to an integer without leaving the module qualifier behind.
+
+        Regression: previously only the bare `PluginPriority.HIGH` was matched,
+        producing `plugin.100`, which is a syntax error and cascaded into the
+        registration call not being removed (observed migrating the real
+        `instruments` v2 plugin).
+        """
+        v2_code = (
+            "from picard import metadata\n"
+            "from picard import plugin\n\n\n"
+            "def add_instruments(album, metadata, track, release):\n"
+            "    pass\n\n\n"
+            "metadata.register_track_metadata_processor(\n"
+            "    add_instruments, priority=plugin.PluginPriority.HIGH)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+
+        # Output must be valid Python
+        import ast as _ast
+
+        _ast.parse(content)
+        # No mangled qualifier and no leftover module-level registration
+        self.assertNotIn('plugin.100', content)
+        self.assertNotIn('metadata.register_track_metadata_processor', content)
+        # Registration moved into enable()
+        self.assertIn('api.register_track_metadata_processor(add_instruments)', content)
+
+    def test_migrated_output_is_valid_python(self):
+        """migrate_plugin() writes syntactically valid Python and does not emit
+        the "not valid Python" error for a normal plugin (output-validation
+        safety net does not false-positive)."""
+        import ast as _ast
+        import contextlib
+        import io
+
+        v2_plugin = '''PLUGIN_NAME = "Valid Output"
+PLUGIN_AUTHOR = "Author"
+PLUGIN_DESCRIPTION = "Test"
+PLUGIN_VERSION = "1.0"
+PLUGIN_API_VERSIONS = ["2.0"]
+PLUGIN_LICENSE = "GPL-2.0-or-later"
+PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+from picard.metadata import register_track_metadata_processor
+
+
+def process_track(album, metadata, track, release):
+    metadata['custom'] = 'value'
+
+
+register_track_metadata_processor(process_track)
+'''
+
+        input_file = self.temp_path / 'valid_output.py'
+        input_file.write_text(v2_plugin)
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        output_dir = self.temp_path / 'valid_output_v3'
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
+
+        code = (output_dir / '__init__.py').read_text()
+        # Parses cleanly
+        _ast.parse(code)
+        # And the validation safety net did not flag it
+        self.assertNotIn('not valid Python', buf.getvalue())
+
+    def test_tagger_album_processor_signature_rewritten(self):
+        """v2 album processor named (tagger, metadata, release) is rewritten.
+
+        Regression: only the (album, metadata, release) form was handled, so a
+        function using the `tagger` first-parameter name (e.g. no_release,
+        standardise_feat) was left with its v2 signature.
+        """
+        v2_code = (
+            "from picard.metadata import register_album_metadata_processor\n\n\n"
+            "def process_album(tagger, metadata, release):\n"
+            "    pass\n\n\n"
+            "register_album_metadata_processor(process_album)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertIn('def process_album(api, album, metadata, release_node)', content)
+
+    def test_nested_register_calls_are_warned(self):
+        """register_*() calls nested in an if/try/function are not lifted into
+        enable(); the migrator must warn about them by name."""
+        v2_code = (
+            "import sys\n"
+            "from picard.file import register_file_post_load_processor\n\n\n"
+            "if sys.platform == 'haiku':\n\n"
+            "    def on_load(file):\n"
+            "        pass\n\n"
+            "    register_file_post_load_processor(on_load)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        joined = '\n'.join(warnings)
+        self.assertIn('NOT at module top level', joined)
+        self.assertIn('register_file_post_load_processor', joined)
+
+    def test_toplevel_register_calls_not_falsely_warned(self):
+        """A normal module-level registration must NOT trigger the nested warning."""
+        v2_code = (
+            "from picard.metadata import register_track_metadata_processor\n\n\n"
+            "def process_track(album, metadata, track, release):\n"
+            "    pass\n\n\n"
+            "register_track_metadata_processor(process_track)\n"
+        )
+
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
+        self.assertNotIn('NOT at module top level', '\n'.join(warnings))

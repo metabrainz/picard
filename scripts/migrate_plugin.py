@@ -34,6 +34,83 @@ import re
 import sys
 
 
+# Metadata and file/event processor registration functions. Their v3 callbacks
+# all take ``api`` as the first argument.
+PROCESSOR_FUNCS = frozenset(
+    {
+        'register_track_metadata_processor',
+        'register_album_metadata_processor',
+        'register_file_post_load_processor',
+        'register_file_post_save_processor',
+        'register_file_post_addition_to_track_processor',
+        'register_file_post_removal_from_track_processor',
+        'register_album_post_removal_processor',
+    }
+)
+
+# All v2 registration functions handled by the migrator (processors plus
+# actions, options pages, script functions, cover art, formats, etc.).
+REGISTER_FUNCS = PROCESSOR_FUNCS | frozenset(
+    {
+        'register_cluster_action',
+        'register_clusterlist_action',
+        'register_file_action',
+        'register_album_action',
+        'register_track_action',
+        'register_options_page',
+        'register_script_function',
+        'register_script_variable',
+        'register_cover_art_provider',
+        'register_cover_art_filter',
+        'register_cover_art_metadata_filter',
+        'register_cover_art_processor',
+        'register_format',
+        'register_ui_init',
+    }
+)
+
+# v2 config option classes converted to api.plugin_config access.
+OPTION_TYPES = frozenset({'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'})
+
+
+def register_func_name(call, allowed=REGISTER_FUNCS):
+    """Return the registration function name invoked by an ``ast.Call``, or None.
+
+    Handles both direct calls (``register_foo(...)``) and qualified calls
+    (``metadata.register_foo(...)``/``providers.register_foo(...)``). Only names
+    present in ``allowed`` are returned.
+    """
+    func = call.func
+    if isinstance(func, ast.Name) and func.id in allowed:
+        return func.id
+    if isinstance(func, ast.Attribute) and func.attr in allowed:
+        return func.attr
+    return None
+
+
+def find_non_toplevel_register_calls(tree):
+    """Return names of register_*() calls that are NOT at module top level.
+
+    The migrator only lifts module-level registrations into ``enable()``.
+    Registrations nested inside ``if``/``try``/functions (for example
+    platform guards like ``if sys.platform == 'haiku':``) are missed, which
+    leaves dangling ``register_*()`` calls and no ``enable()``. Detect these so
+    the user is warned instead of getting silently broken output.
+    """
+    toplevel = set()
+    for node in tree.body:
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            if register_func_name(node.value) is not None:
+                toplevel.add(id(node.value))
+
+    nested = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and register_func_name(node) is not None:
+            if id(node) not in toplevel:
+                nested.append(register_func_name(node))
+    return sorted(set(nested))
+
+
 def format_import_statement(module, names):
     """Format import statement with trailing comma for ruff formatting.
 
@@ -441,53 +518,20 @@ def convert_plugin_api_v2_to_v3(content):
                 pos = match.end()
                 content = content[:pos] + '\n' + import_block + '\n' + content[pos:]
 
-    # PluginPriority
+    # PluginPriority (may be qualified, e.g. plugin.PluginPriority.HIGH)
     if 'PluginPriority' in content:
-        content = re.sub(r'PluginPriority\.HIGH', '100', content)
-        content = re.sub(r'PluginPriority\.NORMAL', '0', content)
-        content = re.sub(r'PluginPriority\.LOW', '-100', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.HIGH', '100', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.NORMAL', '0', content)
+        content = re.sub(r'(?:[\w.]+\.)?PluginPriority\.LOW', '-100', content)
         warnings.append("✓ Converted PluginPriority constants to integers")
 
     return content, warnings
 
 
-def analyze_function_signatures(tree):
-    """Analyze function signatures that need updating for v3."""
-    warnings = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            # Check for metadata processor signatures
-            if 'process' in node.name.lower():
-                args = [arg.arg for arg in node.args.args]
-
-                # Track metadata processor (v2: album, metadata, track, release)
-                if len(args) == 4 and 'album' in args and 'track' in args:
-                    warnings.append(f"⚠️  Function '{node.name}': Track metadata processor signature changed")
-                    warnings.append(f"   v2: def {node.name}(album, metadata, track, release)")
-                    warnings.append(f"   v3: def {node.name}(track, metadata)")
-
-                # Album metadata processor (v2: album, metadata, release)
-                elif len(args) == 3 and 'album' in args and 'release' in args:
-                    warnings.append(f"⚠️  Function '{node.name}': Album metadata processor signature changed")
-                    warnings.append(f"   v2: def {node.name}(album, metadata, release)")
-                    warnings.append(f"   v3: def {node.name}(album, metadata)")
-
-    return warnings
-
-
 def detect_instance_method_registrations(tree):
     """Detect instance method registrations like register_*(instance.method)."""
     instance_registrations = []
-    register_funcs = {
-        'register_track_metadata_processor',
-        'register_album_metadata_processor',
-        'register_file_post_load_processor',
-        'register_file_post_save_processor',
-        'register_file_post_addition_to_track_processor',
-        'register_file_post_removal_from_track_processor',
-        'register_album_post_removal_processor',
-    }
+    register_funcs = PROCESSOR_FUNCS
 
     for node in tree.body:
         # Find module-level register calls
@@ -545,29 +589,7 @@ def convert_plugin_code(content, metadata):
 
     # Find register calls and imports to remove
     register_calls = []
-    register_funcs = {
-        'register_track_metadata_processor',
-        'register_album_metadata_processor',
-        'register_file_post_load_processor',
-        'register_file_post_save_processor',
-        'register_file_post_addition_to_track_processor',
-        'register_file_post_removal_from_track_processor',
-        'register_album_post_removal_processor',
-        'register_cluster_action',
-        'register_clusterlist_action',
-        'register_file_action',
-        'register_album_action',
-        'register_track_action',
-        'register_options_page',
-        'register_script_function',
-        'register_script_variable',
-        'register_cover_art_provider',
-        'register_cover_art_filter',
-        'register_cover_art_metadata_filter',
-        'register_cover_art_processor',
-        'register_format',
-        'register_ui_init',
-    }
+    register_funcs = REGISTER_FUNCS
 
     nodes_to_remove = set()
     imports_to_remove = set()
@@ -732,8 +754,7 @@ def convert_plugin_code(content, metadata):
                             imports_to_remove.add(node)
                 elif node.module == 'picard.config':
                     # Check if importing config option types
-                    option_types = {'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'}
-                    imported_options = {alias.name for alias in node.names if alias.name in option_types}
+                    imported_options = {alias.name for alias in node.names if alias.name in OPTION_TYPES}
                     if imported_options:
                         imports_to_remove.add(node)
                 elif node.module == 'picard.tagger':
@@ -808,11 +829,19 @@ def convert_plugin_code(content, metadata):
 
     # Add info about API access pattern
     if register_calls:
-        all_warnings.append("ℹ️  API access pattern:")
-        all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
-        if 'register_track_metadata_processor' in content:
-            all_warnings.append("   - Processors: Parameters of track metadata processors have changed")
-        all_warnings.append("   - Classes: Use 'self.api' in OptionsPage, BaseAction, CoverArtProvider")
+        all_warnings.extend(processor_api_warnings(content, register_calls))
+
+    # Warn about registrations the migrator cannot lift into enable() because
+    # they are nested (inside if/try/functions), e.g. platform guards.
+    nested_registers = find_non_toplevel_register_calls(tree)
+    if nested_registers:
+        all_warnings.append("")
+        all_warnings.append("⚠️  Found register_*() calls that are NOT at module top level and were")
+        all_warnings.append("   therefore NOT moved into enable() (e.g. nested in an if/try/function):")
+        for name in nested_registers:
+            all_warnings.append(f"     - {name}")
+        all_warnings.append("   Move the corresponding api.register_*() calls into enable() by hand,")
+        all_warnings.append("   and remove the leftover v2 register_*() calls.")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -867,12 +896,7 @@ def convert_plugin_code(content, metadata):
         # Then check which ones are used in register calls
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
-                if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
-                    if node.value.args and isinstance(node.value.args[0], ast.Name):
-                        var_name = node.value.args[0].id
-                        if var_name in potential_vars_second:
-                            instantiated_vars_second_pass[var_name] = potential_vars_second[var_name]
-                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
+                if register_func_name(node.value, register_funcs) is not None:
                     if node.value.args and isinstance(node.value.args[0], ast.Name):
                         var_name = node.value.args[0].id
                         if var_name in potential_vars_second:
@@ -881,10 +905,7 @@ def convert_plugin_code(content, metadata):
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
                 # Handle direct calls: register_*()
-                if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
-                    nodes_to_remove.add(node)
-                # Handle qualified calls: providers.register_*(), metadata.register_*()
-                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
+                if register_func_name(node.value, register_funcs) is not None:
                     nodes_to_remove.add(node)
             elif isinstance(node, ast.Assign):
                 # Remove instantiated action/page variables
@@ -909,8 +930,14 @@ def convert_plugin_code(content, metadata):
                             imports_to_remove.add(node)
                     elif node.module and any(func in [alias.name for alias in node.names] for func in register_funcs):
                         imports_to_remove.add(node)
-    except (SyntaxError, ValueError):
-        pass
+    except (SyntaxError, ValueError) as e:
+        # The intermediate (post-conversion) source could not be re-parsed, so
+        # registration calls / obsolete imports were NOT removed automatically.
+        # Surface this rather than silently producing a half-migrated file.
+        all_warnings.append("⚠️  Could not re-parse the converted code to finish cleanup automatically.")
+        all_warnings.append(f"   Reason: {e}")
+        all_warnings.append("   Review the output: obsolete register_*() calls and imports may remain,")
+        all_warnings.append("   and an enable() function may not have been added.")
 
     for node in nodes_to_remove | imports_to_remove:
         for line_no in range(node.lineno - 1, node.end_lineno):
@@ -981,6 +1008,82 @@ def convert_plugin_code(content, metadata):
     return '\n'.join(new_lines), all_warnings
 
 
+def processor_api_warnings(content, register_calls):
+    """Build the informational warning lines about v3 processor signatures.
+
+    Explains that processors now take ``api`` first, shows the correct v2->v3
+    signatures for the processor types present, and names any registered
+    processor whose signature was not auto-rewritten.
+    """
+    lines = [
+        "ℹ️  API access pattern (verify your processor function signatures):",
+        "   Processor functions now receive 'api' as the FIRST argument, and the",
+        "   remaining parameters changed too. This script rewrites signatures it",
+        "   recognizes (canonical v2 parameter names/order), but if your function",
+        "   used different parameter names or order it will NOT have been rewritten",
+        "   - update it by hand. The correct v3 signatures are:",
+    ]
+    if 'register_track_metadata_processor' in content:
+        lines += [
+            "",
+            "   Track metadata processor:",
+            "     v2: def process_track(album, metadata, track_node, release_node):",
+            "     v3: def process_track(api, track, metadata, track_node, release_node=None):",
+        ]
+    if 'register_album_metadata_processor' in content:
+        lines += [
+            "",
+            "   Album metadata processor:",
+            "     v2: def process_album(album, metadata, release):",
+            "     v3: def process_album(api, album, metadata, release_node):",
+        ]
+    lines += [
+        "",
+        "   With 'api' you can then use api.logger.info(...), api.global_config, etc.",
+        "   Classes: use 'self.api' in OptionsPage, BaseAction, CoverArtProvider.",
+    ]
+
+    # Name the specific processor functions that were NOT auto-rewritten, so
+    # the author knows exactly which signatures still need the 'api' argument.
+    not_rewritten = find_processors_missing_api(content, register_calls)
+    if not_rewritten:
+        lines += [
+            "",
+            "   ⚠️  These registered processors still lack the 'api' first argument",
+            "      (auto-rewrite did not recognize their signature) - fix them by hand:",
+        ]
+        lines += [f"        - {name}" for name in not_rewritten]
+    return lines
+
+
+def find_processors_missing_api(content, register_calls):
+    """Return processor functions whose signature was not rewritten to take 'api'.
+
+    ``register_calls`` is a list of ``(register_func_name, target_name)`` tuples.
+    We only consider metadata/file processors (whose first v3 parameter must be
+    ``api``). A function is flagged if it is defined in ``content`` and its first
+    parameter is not named ``api`` — i.e. the automatic signature rewrite in
+    :func:`fix_function_signatures` did not recognize its v2 form (for example
+    because the author used non-canonical parameter names or order).
+    """
+    targets = {target for reg, target in register_calls if reg in PROCESSOR_FUNCS}
+    if not targets:
+        return []
+
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, ValueError):
+        return []
+
+    missing = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name in targets:
+            first_arg = node.args.args[0].arg if node.args.args else None
+            if first_arg != 'api':
+                missing.append(node.name)
+    return sorted(set(missing))
+
+
 def fix_function_signatures(content, tree):
     """Fix function signatures for v3 API."""
     replacements = []
@@ -1007,9 +1110,26 @@ def fix_function_signatures(content, tree):
                 new_sig = f"def {node.name}(api, album, metadata, release_node)"
                 replacements.append((old_sig, new_sig))
 
-            # File processor: (track, file) -> (api, file)
+            # Album metadata processor with tagger: (tagger, metadata, release) -> (api, album, metadata)
+            elif len(args) == 3 and 'tagger' in args and 'metadata' in args and 'release' in args:
+                old_sig = f"def {node.name}(tagger, metadata, release)"
+                new_sig = f"def {node.name}(api, album, metadata, release_node)"
+                replacements.append((old_sig, new_sig))
+
+            # File-to-track processor: (track, file) -> (api, track, file)
+            # v2 register_file_post_addition_to_track_processor /
+            # register_file_post_removal_from_track_processor use (track, file)
+            # (e.g. lrclib_lyrics: def get_lyrics(track, file)); v3 keeps track.
             elif len(args) == 2 and 'track' in args and 'file' in args:
                 old_sig = f"def {node.name}(track, file)"
+                new_sig = f"def {node.name}(api, track, file)"
+                replacements.append((old_sig, new_sig))
+
+            # File processor: (file) -> (api, file)
+            # v2 register_file_post_load_processor / register_file_post_save_processor
+            # use (file) (e.g. haikuattrs: def on_file_load_processor(file)).
+            elif len(args) == 1 and args[0] == 'file':
+                old_sig = f"def {node.name}(file)"
                 new_sig = f"def {node.name}(api, file)"
                 replacements.append((old_sig, new_sig))
 
@@ -1054,7 +1174,6 @@ def convert_config_options(content):
     except (SyntaxError, ValueError):
         return content, [], []
 
-    option_types = ['TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option']
     option_list = []  # (var_name, key, default_value, option_type)
     lines_to_remove = set()
 
@@ -1063,7 +1182,7 @@ def convert_config_options(content):
         if isinstance(node, ast.Assign):
             if isinstance(node.value, ast.Call):
                 if isinstance(node.value.func, ast.Name):
-                    if node.value.func.id in option_types:
+                    if node.value.func.id in OPTION_TYPES:
                         # Extract variable name
                         if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
                             var_name = node.targets[0].id
@@ -1089,7 +1208,7 @@ def convert_config_options(content):
         # Find options that are not assigned
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Name):
-                if node.func.id in option_types:
+                if node.func.id in OPTION_TYPES:
                     # Extract arguments: Option(section, key, default)
                     if len(node.args) >= 3:
                         # section = node.value.args[0]  # Usually "setting"
@@ -1339,12 +1458,29 @@ def migrate_plugin(input_file, output_dir=None):
     code_path = out_path / '__init__.py'
     code_path.write_text(new_code, encoding='utf-8')
 
+    # Validate that the generated code is syntactically valid Python. This is a
+    # safety net: some conversions are text/regex based and could, on unusual
+    # input, emit code that does not parse. Surface it rather than silently
+    # writing a broken file.
+    output_syntax_error = None
+    try:
+        ast.parse(new_code)
+    except SyntaxError as e:
+        output_syntax_error = e
+
     # Format with ruff
     format_with_ruff(code_path)
     print(f"  Created: {code_path}")
 
     # Collect all warnings
     all_warnings = code_warnings + qt_warnings
+    if output_syntax_error is not None:
+        all_warnings.insert(0, "")
+        all_warnings.insert(
+            0,
+            f"❌ Generated __init__.py is not valid Python (line {output_syntax_error.lineno}: "
+            f"{output_syntax_error.msg}). Manual fixes required.",
+        )
 
     # Process .ui source files - regenerate with pyuic6
     regenerated_files = []
@@ -1440,10 +1576,19 @@ def migrate_plugin(input_file, output_dir=None):
         copied_dirs = []
         conflicts = []
 
+        # Never copy the output directory into itself (it may live inside the
+        # source directory, e.g. the default <name>_v3 next to the input file)
+        # or the migration script itself.
+        out_path_resolved = out_path.resolve()
+        this_script = Path(__file__).resolve()
+
         for item in input_path.parent.iterdir():
-            # Skip the main input file, hidden files, Python build artifacts, and generated files
+            # Skip the main input file, hidden files, Python build artifacts,
+            # generated files, the output directory, and this script.
             if (
                 item == input_path
+                or item.resolve() == out_path_resolved
+                or item.resolve() == this_script
                 or item.name.startswith('.')
                 or item.name in exclude_patterns
                 or item.name in skip_files
@@ -1478,6 +1623,21 @@ def migrate_plugin(input_file, output_dir=None):
             print(f"\n✓ Copied {len(copied_files)} file(s)")
         if copied_dirs:
             print(f"✓ Copied {len(copied_dirs)} directory(ies)")
+        if copied_files or copied_dirs:
+            # The migrator copies every sibling of the input file into the
+            # output, assuming the input lives in a dedicated plugin directory.
+            # If it was run in a directory with unrelated files, warn clearly.
+            copied_all = copied_files + copied_dirs
+            all_warnings.append(
+                "⚠️  Copied all files next to the input into the output directory "
+                "(assumes the input is in a dedicated plugin folder):"
+            )
+            for n in copied_all:
+                all_warnings.append(f"     - {n}")
+            all_warnings.append(
+                "   If any of these are unrelated, remove them, or re-run from a folder "
+                "containing only the plugin (or pass an explicit output directory)."
+            )
         if conflicts:
             all_warnings.append(f"⚠️  Renamed {len(conflicts)} conflicting file(s):")
             for old, new in conflicts:

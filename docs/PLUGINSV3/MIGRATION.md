@@ -212,7 +212,7 @@ The `PluginApi` is passed explicitly to functions and classes:
 **For Processors:** API is injected as first parameter via `functools.partial`
 
 ```python
-def process_track(api, track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     """API is automatically injected as first parameter."""
     api.logger.info("Processing track")
     if api.global_config.setting['example_enabled']:
@@ -448,8 +448,8 @@ class ExampleOptionsPage(OptionsPage):
         config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, album, metadata, track, release):
-    log.info("Processing track: %s", track)
+def process_track(album, metadata, track_node, release_node):
+    log.info("Processing track: %s", track_node)
     if config.setting['example_enabled']:
         metadata['example'] = 'processed'
 
@@ -507,7 +507,7 @@ class ExampleOptionsPage(OptionsPage):
         self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, track, metadata):
+def process_track(api, track, metadata, track_node, release_node=None):
     api.logger.info(f"Processing track: {track}")
     if api.global_config.setting.get('example_enabled', False):
         metadata['example'] = 'processed'
@@ -548,7 +548,7 @@ if my_bool.value:
 **V3 uses direct config access:**
 ```python
 # In processors
-def process(api, track, metadata):
+def process(api, track, metadata, track_node, release_node=None):
     if api.plugin_config.get('my_enabled', True):
         text = api.plugin_config.get('my_key', 'default')
 
@@ -653,7 +653,20 @@ The tool will:
 - Update Qt imports
 - Create git repository structure
 
-**Note:** Manual review and testing still required.
+**Note:** Manual review and testing still required. The tool also validates
+its own output and warns if the generated `__init__.py` is not valid Python,
+or if it could not finish cleanup automatically (in which case obsolete
+`register_*()` calls or imports may remain).
+
+### Coverage reference
+
+The migrator has been exercised against the full set of v2 plugins in the
+[picard-plugins](https://github.com/metabrainz/picard-plugins) `2.0` branch
+(74 plugins). All of them migrate to syntactically valid v3 code. This is a
+smoke test of the mechanical conversion only — it does not guarantee runtime
+behavior, so migrated plugins still need manual review and testing (in
+particular, verify processor function signatures and any multi-module
+plugins, which may need registrations wired up in `enable()` by hand).
 
 ---
 
