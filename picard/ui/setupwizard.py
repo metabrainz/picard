@@ -454,6 +454,19 @@ class MetadataPage(SetupWizardPage):
         )
         layout.addWidget(self.track_ars_checkbox)
 
+        self.convert_punctuation_checkbox = WizardCheckbox(
+            _("Convert Unicode punctuation to ASCII"),
+            _(
+                "Replace typographic Unicode punctuation with plain ASCII equivalents "
+                "in tags — mainly curly apostrophes (\N{RIGHT SINGLE QUOTATION MARK}) "
+                "become straight single quotes ('). Curly double quotes "
+                "(\N{LEFT DOUBLE QUOTATION MARK} and \N{RIGHT DOUBLE QUOTATION MARK}) become "
+                "straight quotes (\"), and dashes (\N{EM DASH}) become hyphens (-).\n\n"
+                "Useful if your player or file system does not handle these characters well."
+            ),
+        )
+        layout.addWidget(self.convert_punctuation_checkbox)
+
         layout.addStretch()
         hint = QtWidgets.QLabel(
             _("You can change this later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Metadata.")
@@ -464,9 +477,11 @@ class MetadataPage(SetupWizardPage):
     def initializePage(self) -> None:
         config = get_config()
         self.track_ars_checkbox.set_checked(config.setting['track_ars'])
+        self.convert_punctuation_checkbox.set_checked(config.setting['convert_punctuation'])
 
     def save_settings(self, config: Config) -> None:
         config.setting['track_ars'] = self.track_ars_checkbox.is_checked()
+        config.setting['convert_punctuation'] = self.convert_punctuation_checkbox.is_checked()
 
 
 class SetupWizard(QtWidgets.QWizard):

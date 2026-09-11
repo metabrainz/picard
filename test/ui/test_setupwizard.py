@@ -47,3 +47,23 @@ class TestSetupWizardMetadataPage(PicardTestCase):
             self.assertEqual(config.setting['track_ars'], not initial)
         finally:
             page.deleteLater()
+
+    def test_convert_punctuation_reflects_config_disabled(self, *args):
+        self._check_convert_punctuation_roundtrip(initial=False)
+
+    def test_convert_punctuation_reflects_config_enabled(self, *args):
+        self._check_convert_punctuation_roundtrip(initial=True)
+
+    def _check_convert_punctuation_roundtrip(self, initial):
+        self.set_config_values(setting={'convert_punctuation': initial})
+        config = get_config()
+        page = MetadataPage()
+        try:
+            page.initializePage()
+            self.assertEqual(page.convert_punctuation_checkbox.is_checked(), initial)
+
+            page.convert_punctuation_checkbox.set_checked(not initial)
+            page.save_settings(config)
+            self.assertEqual(config.setting['convert_punctuation'], not initial)
+        finally:
+            page.deleteLater()
