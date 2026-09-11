@@ -21,7 +21,10 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any
+from typing import (
+    Any,
+    TypeAlias,
+)
 
 
 @dataclass
@@ -46,5 +49,5 @@ class ProgressUpdate:
 
 
 # Callback type definitions
-OperationCallback = Callable[[OperationResult], None]
-ProgressCallback = Callable[[ProgressUpdate], None]
+OperationCallback: TypeAlias = Callable[[OperationResult], None]
+ProgressCallback: TypeAlias = Callable[[ProgressUpdate], None]

@@ -25,6 +25,7 @@
 
 from collections import namedtuple
 from collections.abc import Iterable
+from typing import TypeAlias
 
 
 PREGAP_LENGTH: int = 150
@@ -35,7 +36,7 @@ TocEntry = namedtuple('TocEntry', 'number start_sector end_sector')
 
 # Type alias for MusicBrainz TOC numbers tuple:
 # (first_track, last_track, leadout_offset, offset_1, offset_2, ...)
-TocNumbers = tuple[int, ...]
+TocNumbers: TypeAlias = tuple[int, ...]
 
 
 class NotSupportedTOCError(Exception):

@@ -21,7 +21,10 @@
 
 """User dialog service for common dialog interactions."""
 
-from typing import Literal
+from typing import (
+    Literal,
+    TypeAlias,
+)
 
 from PyQt6 import QtWidgets
 
@@ -30,7 +33,7 @@ from picard.i18n import gettext as _
 from picard.ui.itemviews.custom_columns.column_controller import InvalidSpecAnalysis
 
 
-UnsavedAction = Literal["save", "discard", "cancel"]
+UnsavedAction: TypeAlias = Literal["save", "discard", "cancel"]
 
 
 class UserDialogService:

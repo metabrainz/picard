@@ -325,7 +325,7 @@ class PluginApi:
         return plugin_name, filename, lineno
 
     @classmethod
-    def deprecation_warning(cls, message: str, *args: Any, frame_depth: int = 3):
+    def deprecation_warning(cls, message: str, *args: Any, frame_depth: int = 3) -> None:
         """Emit a deprecation warning once per unique caller location.
 
         Args:

@@ -52,7 +52,7 @@ from picard.version import (
 # Type alias for the polymorphic settings parameter accepted by upgrade functions.
 # Either a plain dict (profile overrides, imported settings) or a SettingConfigSection
 # (base config at startup).
-Settings = dict | SettingConfigSection
+Settings: TypeAlias = dict | SettingConfigSection
 
 SettingsUpgradeFunc: TypeAlias = Callable[[Settings], None]
 ConfigUpgradeFunc: TypeAlias = Callable[[Config], None]
