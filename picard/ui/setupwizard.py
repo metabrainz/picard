@@ -29,7 +29,6 @@ from picard.config import (
     get_config,
 )
 from picard.const import PLUGINS_BACKGROUND_CHECK_DELAY
-from picard.const.sys import IS_WIN
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 from picard.i18n import gettext as _
@@ -487,8 +486,7 @@ class SetupWizard(QtWidgets.QWizard):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setMinimumSize(620, 480)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
-        if IS_WIN:
-            self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
+        self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
 
         self._pages: list[SetupWizardPage] = []
         for page_class in self.PAGES:
