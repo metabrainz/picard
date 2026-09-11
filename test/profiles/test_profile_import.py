@@ -276,6 +276,10 @@ standardize_artists = true
         # All imported scripts are enabled by default
         self.assertTrue(scripts[0][2])
         self.assertTrue(scripts[1][2])
+        # The master "enable tagger scripts" toggle must be turned on, otherwise
+        # the imported scripts would never run (PICARD: reported as
+        # "Enable tagger script isn't exported").
+        self.assertTrue(settings['enable_tagger_scripts'])
 
     def test_import_tagger_scripts_deduplication(self):
         ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
@@ -335,6 +339,52 @@ script = "$noop()"
         self.assertEqual(len(scripts), 2)
         self.assertTrue(scripts[0][2])  # enabled
         self.assertFalse(scripts[1][2])  # disabled
+
+    def test_import_respects_explicit_enable_tagger_scripts_false(self):
+        # A backup export records the master toggle under [scripts]. An explicit
+        # value must be preserved rather than force-enabled.
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Backup"
+picard_version = "3.0.0"
+
+[scripts]
+enable_tagger_scripts = false
+
+[[scripts.tagging]]
+title = "Some script"
+enabled = false
+script = "$noop()"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertFalse(settings['enable_tagger_scripts'])
+
+    def test_import_respects_explicit_enable_tagger_scripts_true(self):
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Backup"
+picard_version = "3.0.0"
+
+[scripts]
+enable_tagger_scripts = true
+
+[[scripts.tagging]]
+title = "Some script"
+enabled = true
+script = "$set(a,b)"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertTrue(settings['enable_tagger_scripts'])
 
     def test_import_duplicate_title_gets_number_suffix(self):
         # Create an existing profile with the same title

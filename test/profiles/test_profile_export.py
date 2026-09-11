@@ -160,10 +160,12 @@ class TestProfileExport(TestPicardConfigCommon):
 
     def test_export_tagger_scripts_backup_mode(self):
         ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
 
         self._setup_profile(
             'p1',
             {
+                'enable_tagger_scripts': True,
                 'list_of_scripts': [
                     (0, 'Enabled Script', True, '$set(foo,bar)'),
                     (1, 'Disabled Script', False, '$noop()'),
@@ -179,6 +181,49 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertEqual(len(scripts), 2)
         self.assertTrue(scripts[0]['enabled'])
         self.assertFalse(scripts[1]['enabled'])
+        # Backup mode preserves the master toggle so a restore is faithful.
+        self.assertTrue(parsed['scripts']['enable_tagger_scripts'])
+
+    def test_export_tagger_scripts_backup_mode_toggle_off(self):
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        self._setup_profile(
+            'p1',
+            {
+                'enable_tagger_scripts': False,
+                'list_of_scripts': [
+                    (0, 'Enabled Script', True, '$set(foo,bar)'),
+                ],
+            },
+        )
+
+        result = export_profile(self.config, 'p1', title='Test', mode='backup')
+        parsed = tomllib.loads(result)
+
+        self.assertFalse(parsed['scripts']['enable_tagger_scripts'])
+
+    def test_export_tagger_scripts_share_mode_omits_toggle(self):
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        self._setup_profile(
+            'p1',
+            {
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [
+                    (0, 'Enabled Script', True, '$set(foo,bar)'),
+                ],
+            },
+        )
+
+        result = export_profile(self.config, 'p1', title='Test', mode='share')
+        parsed = tomllib.loads(result)
+
+        # Share mode omits the master toggle: the importer always enables tagger
+        # scripts when scripts are present, so shared scripts run automatically.
+        self.assertNotIn('enable_tagger_scripts', parsed['scripts'])
+        self.assertNotIn('enable_tagger_scripts', parsed.get('settings', {}))
 
     def test_export_naming_script(self):
         TextOption('setting', 'active_file_naming_script_id', '', title="Active script", in_profile=True)

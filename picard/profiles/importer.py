@@ -221,7 +221,11 @@ def import_profile(
     if tagging_section:
         if not isinstance(tagging_section, list):
             raise ProfileImportError(_("The [[scripts.tagging]] section must be an array of tables"))
-        _import_tagger_scripts(config, profile_settings, tagging_section, result)
+        # A backup export records the master "enable tagger scripts" toggle
+        # under [scripts]; share exports omit it. When present we honour the
+        # exact value, otherwise the toggle is enabled so imported scripts run.
+        explicit_enable = scripts_section.get('enable_tagger_scripts')
+        _import_tagger_scripts(config, profile_settings, tagging_section, result, explicit_enable)
 
     # Register the profile
     _register_profile(config, profile_id, unique_title, enabled, profile_settings, replace=bool(replace_id))
@@ -350,8 +354,16 @@ def _import_tagger_scripts(
     profile_settings: dict,
     tagging_section: list,
     result: ProfileImportResult,
+    explicit_enable: bool | None = None,
 ):
-    """Import tagger scripts into the profile settings."""
+    """Import tagger scripts into the profile settings.
+
+    Args:
+        explicit_enable: The value of the master ``enable_tagger_scripts``
+            toggle as recorded in the profile file (backup exports), or None
+            if absent (share exports). When None, the toggle is enabled so the
+            imported scripts actually run; otherwise the exact value is kept.
+    """
     # Get existing scripts from the profile (if any) or start fresh
     existing_scripts = profile_settings.get('list_of_scripts', [])
 
@@ -394,6 +406,16 @@ def _import_tagger_scripts(
 
     if existing_scripts:
         profile_settings['list_of_scripts'] = existing_scripts
+
+    # Decide the master "enable tagger scripts" toggle:
+    # - An explicit value from the file (backup export) is always honoured.
+    # - Otherwise (share export), only enable when new scripts were actually
+    #   imported, so the shared scripts run without the user flipping the
+    #   switch. Do nothing when everything was a duplicate (no real change).
+    if explicit_enable is not None:
+        profile_settings['enable_tagger_scripts'] = bool(explicit_enable)
+    elif imported_count:
+        profile_settings['enable_tagger_scripts'] = True
 
 
 def _register_profile(

@@ -208,6 +208,16 @@ def _export_scripts(doc, config, profile_settings, mode):
                     doc.add('scripts', scripts_container)
             doc['scripts'].add('tagging', tagging_array)
 
+            # In backup mode, preserve the master "enable tagger scripts" toggle
+            # so a restore faithfully reproduces the original state. In share
+            # mode the toggle is intentionally omitted: the importer always
+            # enables tagger scripts when scripts are present, so shared scripts
+            # run without the recipient having to flip the switch manually.
+            if mode == 'backup':
+                enable = profile_settings.get('enable_tagger_scripts')
+                if enable is not None:
+                    doc['scripts'].add('enable_tagger_scripts', enable)
+
 
 def _resolve_naming_script(config, script_id: str) -> tuple[dict | None, bool]:
     """Resolve a naming script ID to its content dict.

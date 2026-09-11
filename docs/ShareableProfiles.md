@@ -394,6 +394,15 @@ In share mode: only enabled scripts are exported (no `enabled` field written).
 In backup mode: all scripts are exported with an explicit `enabled` field.
 Imported scripts default to enabled if the field is absent.
 
+##### The `enable_tagger_scripts` master toggle
+
+`enable_tagger_scripts` is a per-profile boolean that gates *all* tagger script processing for that profile. It is distinct from the per-script `enabled` flag: even if individual scripts are enabled, none of them run while the master toggle is off. Because it is a script-related option it is never written to `[settings]`; it is handled alongside the scripts:
+
+- Backup mode: the exact value is written as `enable_tagger_scripts` under the `[scripts]` table so a restore reproduces the author's configuration faithfully. A tracked-but-unset (`None`) toggle is skipped, consistent with the handling of other `None`-valued settings.
+- Share mode: the toggle is deliberately omitted from the file. On import, tagger scripts are always enabled when `[[scripts.tagging]]` entries are present. This prevents a shared profile from carrying the author's incidental local on/off state and silently disabling tagger scripting on the recipient's machine (the master toggle is an override, so a `false` value would force the recipient's scripts off, not merely leave them as-is). A profile shared with scripts is meant to have those scripts run, so the "enabled" intent is implied by the presence of the scripts rather than stored as a separate flag.
+
+On import, an explicit `enable_tagger_scripts` value under `[scripts]` (backup export) is always honored; when it is absent (share export), the toggle is enabled only if at least one new script was actually imported, so a duplicate-only re-import makes no change.
+
 #### `[plugins.<uuid>]` — Plugin Option Overrides (optional)
 
 Each plugin with overridden options gets its own sub-table keyed by UUID:
@@ -427,7 +436,9 @@ sections for uninstalled plugins are skipped with a warning.
 5. If `[[scripts.tagging]]` entries exist:
    - Append to the profile's `list_of_scripts` override
    - Respect the `enabled` field if present (default: `true`)
-   - Set `enable_tagger_scripts = true` in the profile
+   - Set the `enable_tagger_scripts` master toggle: honor an explicit value
+     under `[scripts]` (backup export) if present, otherwise enable it (share
+     export) so the imported scripts actually run
 6. If `[plugins.*]` sections exist:
    - For each plugin UUID, check if the plugin is installed
    - If installed: apply settings as profile overrides (keyed as
@@ -488,10 +499,11 @@ framework design.
    referenced script into `[scripts.naming]` (unless it's a built-in preset,
    in which case keep the ID in `[settings]` and omit `[scripts.naming]`)
 6. If `list_of_scripts` is overridden:
-   - **Share mode:** embed only **enabled** scripts into `[[scripts.tagging]]`
-   - **Backup mode:** embed **all** scripts with an explicit `enabled` field
-7. Remove `active_file_naming_script_id` and `list_of_scripts` from `[settings]`
-   (they're represented in `[scripts]` instead)
+   - **Share mode:** embed only **enabled** scripts into `[[scripts.tagging]]`, and omit the `enable_tagger_scripts` master toggle (import re-enables it)
+   - **Backup mode:** embed **all** scripts with an explicit `enabled` field, and write the `enable_tagger_scripts` master toggle under `[scripts]` to preserve the exact state (a `None`/unset toggle is skipped)
+7. Remove `active_file_naming_script_id`, `list_of_scripts`, and
+   `enable_tagger_scripts` from `[settings]` (they're represented in `[scripts]`
+   instead)
 8. If plugin options are present, resolve plugin names from installed plugins
    and populate `required_plugins` in `[profile]` metadata
 9. Write TOML using `tomlkit` (preserves multiline strings, allows adding comments)
