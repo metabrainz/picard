@@ -585,56 +585,67 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         return working_profiles, working_settings
 
     def highlight_enabled_profile_options(self, load_settings=False):
+        for page in self.loaded_pages:
+            self._highlight_page_options(page, load_settings=load_settings)
+
+    def _highlight_page_options(self, page, load_settings=False):
+        """Apply profile highlighting to the widgets of a single loaded page.
+
+        This is called both for every loaded page from
+        :meth:`highlight_enabled_profile_options` and individually from
+        :meth:`switch_page` so that pages loaded lazily (on first visit) get
+        their highlights applied even though they were not loaded when the
+        dialog was first shown.
+        """
+        option_group = profile_groups_group_from_page(page)
+        if not option_group:
+            return
+        if load_settings:
+            page.load()
         working_profiles, working_settings = self.get_working_profile_data()
         bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=25)
         bg_override = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=120)
-
-        for page in self.loaded_pages:
-            option_group = profile_groups_group_from_page(page)
-            if option_group:
-                if load_settings:
-                    page.load()
-                seen_widgets = set()
-                for opt in option_group['settings']:
-                    for objname in opt.highlights:
-                        try:
-                            obj = getattr(page.ui, objname)
-                        except AttributeError:
-                            try:
-                                obj = getattr(page, objname)
-                            except AttributeError:
-                                log.warning(
-                                    "Option '%s' references widget '%s' not found on page '%s'",
-                                    opt.name,
-                                    objname,
-                                    page.NAME,
-                                )
-                                continue
-                        if not isinstance(obj, QtWidgets.QWidget):
-                            log.warning(
-                                "Option '%s' references widget '%s', expected QWidget, found '%s' on page '%s'",
-                                opt.name,
-                                objname,
-                                obj.__class__.__name__,
-                                page.NAME,
-                            )
-                            continue
-                        # Skip list/tree views - stylesheets break checkable item rendering
-                        if isinstance(obj, QtWidgets.QAbstractItemView):
-                            continue
-                        style_override = "#%s { background-color: %s; }" % (objname, bg_override)
-                        style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
-                        style_reset = "#%s { }" % (objname)
-                        self._check_and_highlight_option(
-                            obj,
-                            setting_profile_key(opt.name, opt.section),
-                            working_profiles,
-                            working_settings,
-                            style_override,
-                            style_tracked,
-                            style_reset,
-                            seen_widgets,
+        seen_widgets = set()
+        for opt in option_group['settings']:
+            for objname in opt.highlights:
+                try:
+                    obj = getattr(page.ui, objname)
+                except AttributeError:
+                    try:
+                        obj = getattr(page, objname)
+                    except AttributeError:
+                        log.warning(
+                            "Option '%s' references widget '%s' not found on page '%s'",
+                            opt.name,
+                            objname,
+                            page.NAME,
                         )
+                        continue
+                if not isinstance(obj, QtWidgets.QWidget):
+                    log.warning(
+                        "Option '%s' references widget '%s', expected QWidget, found '%s' on page '%s'",
+                        opt.name,
+                        objname,
+                        obj.__class__.__name__,
+                        page.NAME,
+                    )
+                    continue
+                # Skip list/tree views - stylesheets break checkable item rendering
+                if isinstance(obj, QtWidgets.QAbstractItemView):
+                    continue
+                style_override = "#%s { background-color: %s; }" % (objname, bg_override)
+                style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
+                style_reset = "#%s { }" % (objname)
+                self._check_and_highlight_option(
+                    obj,
+                    setting_profile_key(opt.name, opt.section),
+                    working_profiles,
+                    working_settings,
+                    style_override,
+                    style_tracked,
+                    style_reset,
+                    seen_widgets,
+                )
 
     def _check_and_highlight_option(
         self,
@@ -791,6 +802,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.set_profiles_button_and_highlight(page)
             self.ui.reset_button.setDisabled(not page.loaded)
             self._show_page(page)
+            # Pages are loaded lazily on first visit, so a page shown after the
+            # dialog's initial highlight pass would otherwise never get its
+            # per-widget profile highlights applied. Highlight it now.
+            if page.loaded:
+                self._highlight_page_options(page)
             config = get_config()
             log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
