@@ -460,7 +460,7 @@ class MetadataPage(SetupWizardPage):
                 "Replace typographic Unicode punctuation with plain ASCII equivalents "
                 "in tags — mainly curly apostrophes (\N{RIGHT SINGLE QUOTATION MARK}) "
                 "become straight single quotes ('). Curly double quotes "
-                "(\N{LEFT DOUBLE QUOTATION MARK}\N{RIGHT DOUBLE QUOTATION MARK}) become "
+                "(\N{LEFT DOUBLE QUOTATION MARK} and \N{RIGHT DOUBLE QUOTATION MARK}) become "
                 "straight quotes (\"), and dashes (\N{EM DASH}) become hyphens (-).\n\n"
                 "Useful if your player or file system does not handle these characters well."
             ),
