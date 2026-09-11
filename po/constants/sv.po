@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2026-07-26 09:38+0000\n"
+"PO-Revision-Date: 2026-09-11 15:22+0000\n"
 "Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "2/constants/sv/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -27,11 +27,11 @@ msgstr "Endast stabila utgåvor"
 
 #: picard/const/__init__.py:177
 msgid "Stable and Beta releases"
-msgstr "Stabila och beta-utgåvor"
+msgstr "Stabila utgåvor och betautgåvor"
 
 #: picard/const/__init__.py:183
 msgid "Stable, Beta and Dev releases"
-msgstr "Stabila-, beta- och dev-utgåvor"
+msgstr "Stabila utgåvor, betautgåvor och utvecklingsutgåvor"
 
 #: picard/const/__init__.py:201
 msgid "My script"
@@ -1882,7 +1882,7 @@ msgstr "Västfrisiska (Nederländerna)"
 
 #: picard/const/locales.py:459
 msgid "Irish"
-msgstr "irländska"
+msgstr "iriska"
 
 #: picard/const/locales.py:460
 msgid "Irish (United Kingdom)"

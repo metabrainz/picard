@@ -2,7 +2,7 @@
     "MsgAlreadyInstalled": "${PRODUCT_NAME} är redan installerat och måste avinstalleras innan du kan uppgradera till version ${PRODUCT_VERSION}.\n\nKlicka på ”OK” för att fortsätta eller ”Avbryt” för att avbryta uppgraderingen.",
     "MsgApplicationRunning": "${PRODUCT_NAME} körs. Stäng programmet och försök igen.",
     "MsgRequires64Bit": "Den här versionen av ${PRODUCT_NAME} kräver en 64-bitarsversion av Windows.",
-    "MsgUninstallFailed": "Det gick inte att avinstallera ${PRODUCT_NAME}.",
+    "MsgUninstallFailed": "Det gick inte att avinstallera den tidigare versionen.",
     "MuiDescriptionDesktop": "Installerar en genväg på skrivbordet.",
     "MuiDescriptionLang": "Installerar översättningar av ${PRODUCT_NAME} för olika språk.",
     "MuiDescriptionRequired": "Installerar ${PRODUCT_NAME} och de filer som krävs för att programmet ska kunna köras.",

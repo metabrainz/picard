@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-07-26 09:37+0000\n"
+"PO-Revision-Date: 2026-09-11 15:22+0000\n"
 "Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "2/app/sv/>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -114,8 +114,8 @@ msgid ""
 msgstr ""
 "Det separata filnamnsschemat för album med blandade artister har tagits bort "
 "i den här versionen av Picard.\n"
-"Ditt filnamnsschema har automatiskt slagits samman med album för enskilda "
-"artister."
+"Ditt filnamnsschema har automatiskt slagits samman med det för album med en "
+"enda artist."
 
 #: picard/config_upgrade.py:98
 msgid ""
@@ -130,7 +130,7 @@ msgstr ""
 "i den här versionen av Picard.\n"
 "Du använder för närvarande inte det här alternativet, men har ett separat "
 "filnamnsschema definierat.\n"
-"Vill du ta bort den eller slå samman den med ditt filnamnsschema för album "
+"Vill du ta bort det eller slå samman det med ditt filnamnsschema för album "
 "med enskilda artister?"
 
 #: picard/config_upgrade.py:105
@@ -2190,7 +2190,7 @@ msgstr "Ta med &alla"
 
 #: picard/ui/caa_types_selector.py:259
 msgid "E&xclude all"
-msgstr "Uteslut &alla"
+msgstr "&Uteslut alla"
 
 #: picard/ui/caa_types_selector.py:260
 msgid "C&lear all"
@@ -2292,7 +2292,7 @@ msgstr "Visa utgåva på MusicBrainz"
 
 #: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
-msgstr "Vanliga bilder på alla spår"
+msgstr "Gemensamma bilder för alla spår"
 
 #: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
@@ -2352,7 +2352,7 @@ msgstr "&Flytta taggade filer hit"
 
 #: picard/ui/filebrowser.py:94
 msgid "Show &hidden files"
-msgstr "Visa dolda &filer"
+msgstr "Visa &dolda filer"
 
 #: picard/ui/filebrowser.py:100
 msgid "&Set as starting directory"
@@ -2529,7 +2529,7 @@ msgstr "Kompositör"
 
 #: picard/ui/itemviews.py:166 picard/util/tags.py:60
 msgid "Disc Subtitle"
-msgstr "Använd avancerad frågesyntax"
+msgstr "Skivundertitel"
 
 #: picard/ui/itemviews.py:167
 msgid "Track No."
@@ -3057,8 +3057,8 @@ msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
 msgstr ""
-"Använd AcoustID-ljudfingeravtryck för att identifiera filer från den riktiga "
-"musiken, även om de inte har någon metadata"
+"Använd AcoustID-ljudfingeravtryck för att identifiera filerna utifrån själva "
+"musiken, även om de saknar metadata"
 
 #: picard/ui/mainwindow.py:777
 msgid "Identify the file using its AcoustID audio fingerprint"
@@ -3070,7 +3070,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:785
 msgid "&Generate AcoustID Fingerprints"
-msgstr "&Skapa AcoustID-fingeravtryck"
+msgstr "&Generera AcoustID-fingeravtryck"
 
 #: picard/ui/mainwindow.py:786 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
@@ -4706,9 +4706,9 @@ msgid ""
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found, "
 "it will default to Front type."
 msgstr ""
-"Första gruppen i det reguljära uttrycket, om tillgängligt, kommer att "
-"användas som typ. Med andra ord cover-back-spine.jpg kommer att anges som "
-"typer Back + Spine. Om ingen typ hittas kommer den att sättas till Front-typ."
+"Den första gruppen i det reguljära uttrycket, om det finns någon, används "
+"som typ. Till exempel får cover-back-spine.jpg typerna Baksida + Rygg. Om "
+"ingen typ hittas används Framsida som förvald typ."
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
@@ -5163,7 +5163,7 @@ msgstr "Dra och släpp för att ordna om"
 
 #: picard/ui/options/interface_top_tags.py:40
 msgid "Top Tags"
-msgstr "Vanligaste taggar"
+msgstr "Prioriterade taggar"
 
 #: picard/ui/options/maintenance.py:64
 msgid "Maintenance"
@@ -5450,7 +5450,7 @@ msgstr "Återställ alla"
 
 #: picard/ui/options/renaming.py:256
 msgid "The location to move files to must not be empty."
-msgstr "Platsen för att flytta filer till får inte vara tom."
+msgstr "Målplatsen som filerna ska flyttas till måste anges."
 
 #: picard/ui/options/renaming_compat.py:69
 msgid "Compatibility"
@@ -5588,7 +5588,7 @@ msgstr "Område"
 
 #: picard/ui/searchdialog/artist.py:58
 msgid "Begin"
-msgstr "Börja"
+msgstr "Start"
 
 #: picard/ui/searchdialog/artist.py:59
 msgid "Begin Area"
@@ -5789,11 +5789,11 @@ msgstr "AcoustID"
 
 #: picard/util/tags.py:39
 msgid "Album Artist Sort Order"
-msgstr "Albumartist sorteringsordning"
+msgstr "Albumartistens sorteringsnamn"
 
 #: picard/util/tags.py:41
 msgid "Album Sort Order"
-msgstr "Album sorteringsordning"
+msgstr "Albumets sorteringsnamn"
 
 #: picard/util/tags.py:42
 msgid "Arranger"
@@ -5805,7 +5805,7 @@ msgstr "Artister"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
-msgstr "Artist sorteringsordning"
+msgstr "Artistens sorteringsnamn"
 
 #: picard/util/tags.py:46
 msgid "ASIN"
@@ -5853,7 +5853,7 @@ msgstr "Skivnummer"
 
 #: picard/util/tags.py:61
 msgid "DJ-Mixer"
-msgstr "DJ-mixer"
+msgstr "DJ-mixare"
 
 #: picard/util/tags.py:62
 msgid "Encoded By"
@@ -5881,7 +5881,7 @@ msgstr "ISRC"
 
 #: picard/util/tags.py:69
 msgid "Key"
-msgstr "Nyckel"
+msgstr "Tonart"
 
 #: picard/util/tags.py:70
 msgid "Record Label"
@@ -5897,7 +5897,7 @@ msgstr "Låttext"
 
 #: picard/util/tags.py:77
 msgid "Mixer"
-msgstr "Mixer"
+msgstr "Mixare"
 
 #: picard/util/tags.py:78
 msgid "Mood"
@@ -5983,7 +5983,7 @@ msgstr "Ursprungligt år"
 
 #: picard/util/tags.py:99
 msgid "Performer"
-msgstr "Uppträdande"
+msgstr "Utövare"
 
 #: picard/util/tags.py:100
 msgid "Podcast"
@@ -6023,7 +6023,7 @@ msgstr "Utgivningstyp"
 
 #: picard/util/tags.py:110
 msgid "Remixer"
-msgstr "Remixer"
+msgstr "Remixare"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
@@ -6035,7 +6035,7 @@ msgstr "ReplayGain-albumtopp"
 
 #: picard/util/tags.py:113
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain-albumintervall"
+msgstr "ReplayGain-ljudstyrkeomfång för album"
 
 #: picard/util/tags.py:114
 msgid "ReplayGain Reference Loudness"
@@ -6051,7 +6051,7 @@ msgstr "ReplayGain-spårtopp"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Track Range"
-msgstr "ReplayGain-spårintervall"
+msgstr "ReplayGain-ljudstyrkeomfång för spår"
 
 #: picard/util/tags.py:118
 msgid "Script"
@@ -6067,7 +6067,7 @@ msgstr "Programmets sorteringsnamn"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
-msgstr "Visa arbete & rörelse"
+msgstr "Visa verk och sats"
 
 #: picard/util/tags.py:122
 msgid "Subtitle"
@@ -6075,7 +6075,7 @@ msgstr "Undertitel"
 
 #: picard/util/tags.py:124
 msgid "Title Sort Order"
-msgstr "Titel sorteringsordning"
+msgstr "Titelns sorteringsnamn"
 
 #: picard/util/tags.py:125
 msgid "Total Discs"
@@ -6091,7 +6091,7 @@ msgstr "Spårnummer"
 
 #: picard/util/tags.py:128
 msgid "Artist Website"
-msgstr "Artist webbsida"
+msgstr "Artistens webbplats"
 
 #: picard/util/tags.py:129
 msgid "Work"
@@ -6099,7 +6099,7 @@ msgstr "Verk"
 
 #: picard/util/tags.py:130
 msgid "Writer"
-msgstr "Låtskrivare"
+msgstr "Författare"
 
 #: picard/util/time.py:48
 #, python-format
