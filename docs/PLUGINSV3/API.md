@@ -329,6 +329,49 @@ def enable(api):
 
 When a profile is active and overrides the option, reads from `api.plugin_config['greeting']` automatically return the profile value. Writes go to the profile's storage. The base (non-profile) value is preserved.
 
+**Two things are required for the option to appear in the Profiles editor:**
+
+1. Register it with `in_profile=True` and a `title` (as above).
+2. Surface it through an `OptionsPage` that lists it in its `OPTIONS` dict and
+   is registered with `api.register_options_page(...)`.
+
+Registering the option alone is not enough: an option is only added to the
+profile groups (the "Settings to include in profile" tree on the Option
+Profiles page) when a registered options page declares it. If your plugin
+registers a profile-eligible option but never exposes it on a registered
+options page, it will not show up in the profiles editor.
+
+```python
+from typing import ClassVar
+
+from picard.plugin3.api import OptionsPage, PageOptionConfigs
+
+
+class MyOptionsPage(OptionsPage):
+    NAME = 'my_plugin'
+    TITLE = 'My Plugin'
+    PARENT = 'plugins'
+    OPTIONS: ClassVar[PageOptionConfigs] = {
+        'greeting': {'widgets': ['greeting_input']},
+    }
+
+    def load(self):
+        self.greeting_input.setText(self.api.plugin_config['greeting'])
+
+    def save(self):
+        self.api.plugin_config['greeting'] = self.greeting_input.text()
+
+
+def enable(api):
+    api.plugin_config.register_option(
+        'greeting',
+        'Hello World',
+        title='Greeting message',
+        in_profile=True,
+    )
+    api.register_options_page(MyOptionsPage)
+```
+
 #### Numeric bounds
 
 Numeric options (int or float defaults) can declare a valid range with
@@ -375,7 +418,15 @@ class MyOptionsPage(OptionsPage):
 
 The widget will be highlighted in the options dialog when the option is tracked or overridden by an active profile.
 
-**Note:** Widget highlighting will only work if is accessed from the `OptionsPage` sub-class as `self.ui.{widget}` or `self.{widget}`. The above example would highlight the widget `self.ui.greeting_input` or `self.greeting_input`.
+Each key in `OPTIONS` is an option name; its `'widgets'` entry is a list of the
+widget attribute names on the page that edit that option. A widget name is
+resolved on the `OptionsPage` subclass instance, either via a loaded Qt Designer
+UI object (`self.ui.<name>`) or directly on the page (`self.<name>`). Listing
+more than one widget highlights all of them for the same option.
+
+**Note:** Highlighting only works when the widget is reachable from the
+`OptionsPage` subclass as `self.ui.<name>` or `self.<name>`. The example above
+highlights `self.ui.greeting_input` or `self.greeting_input`.
 
 **Behavior summary:**
 
