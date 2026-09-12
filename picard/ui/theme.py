@@ -234,6 +234,17 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
     # colors to the palette.
     if not palette_is_dark(palette):
         apply_dark_palette_colors(palette)
+    elif IS_MACOS:
+        # On macOS, some inactive text colors of the default dark palette default to black.
+        # Force colors from our palette to avoid this issue.
+        fix_colors = {
+            role: DARK_PALETTE_COLORS[role]
+            for role in (
+                QtGui.QPalette.ColorRole.ButtonText,
+                (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText),
+            )
+        }
+        _apply_palette_colors(palette, fix_colors)
 
 
 def apply_light_theme_to_palette(palette: QtGui.QPalette) -> None:
