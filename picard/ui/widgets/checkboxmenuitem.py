@@ -25,6 +25,14 @@ from PyQt6 import (
 
 
 class CheckboxMenuItem(QtWidgets.QWidget):
+    """Custom checkable menu item.
+
+    This widget provides a custom checkable menu item that can be used in a QMenu.
+    It is similar to a standard QAction checkable item, but the menu does not close
+    when the item is toggled. This is suitable for selectable items, where the user
+    might want to toggle multiple items without closing the menu.
+    """
+
     toggled = QtCore.pyqtSignal(bool)
 
     def __init__(self, menu: QtWidgets.QMenu, action: QtGui.QAction, text: str, parent=None):
@@ -118,3 +126,26 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         else:
             option.state |= QtWidgets.QStyle.StateFlag.State_Raised
         painter.drawControl(QtWidgets.QStyle.ControlElement.CE_MenuItem, option)
+
+
+def create_checkable_menu_item(
+    menu_bar: QtWidgets.QMenuBar | None, menu: QtWidgets.QMenu, title: str, checked: bool
+) -> QtGui.QAction:
+    """Create a checkable menu item for a menu.
+
+    On most platforms this creates a custom checkable menu item using CheckboxMenuItem.
+
+    If the menu bar is a native menu bar (e.g. on macOS), a normal menu action is
+    created, as a custom widget does not integrate well into the global menu and the
+    color scheme of the global menu can differ from the application's color scheme.
+    """
+    if menu_bar and menu_bar.isNativeMenuBar():
+        action = QtGui.QAction(title, menu)
+        action.setCheckable(True)
+    else:
+        action = QtWidgets.QWidgetAction(menu)
+        checkbox = CheckboxMenuItem(menu, action, title)
+        action.setDefaultWidget(checkbox)
+
+    action.setChecked(checked)
+    return action

@@ -191,7 +191,7 @@ from picard.ui.util import (
     open_local_path,
     show_session_not_found_dialog,
 )
-from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
+from picard.ui.widgets.checkboxmenuitem import create_checkable_menu_item
 
 
 SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
@@ -2352,12 +2352,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # Use QWidgetAction with a QCheckBox so toggling does not close the menu.
         def _add_menu_item(title, checked, profile_id):
-            menu = self.profile_quick_selector_menu
-            action = QtWidgets.QWidgetAction(menu)
-            action.setChecked(checked)
-            checkbox = CheckboxMenuItem(menu, action, title)
-            checkbox.toggled.connect(partial(self._set_profile_enabled, profile_id))
-            action.setDefaultWidget(checkbox)
+            action = create_checkable_menu_item(self.menuBar(), self.profile_quick_selector_menu, title, checked)
+            action.toggled.connect(partial(self._set_profile_enabled, profile_id))
             self.profile_quick_selector_menu.addAction(action)
 
         if option_profiles:
@@ -2429,11 +2425,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 ((s, _(get_option_title(s))) for s in quick_settings),
                 key=lambda x: x[1],
             ):
-                action = QtWidgets.QWidgetAction(self.quick_settings_menu)
-                action.setChecked(config.setting[setting_id])
-                checkbox = CheckboxMenuItem(self.quick_settings_menu, action, title)
-                checkbox.toggled.connect(partial(self._toggle_quick_setting, setting_id))
-                action.setDefaultWidget(checkbox)
+                action = create_checkable_menu_item(
+                    self.menuBar(), self.quick_settings_menu, title, bool(config.setting[setting_id])
+                )
+                action.toggled.connect(partial(self._toggle_quick_setting, setting_id))
                 self.quick_settings_menu.addAction(action)
         else:
             placeholder = QtGui.QAction(_("No quick settings configured"), self.quick_settings_menu)
