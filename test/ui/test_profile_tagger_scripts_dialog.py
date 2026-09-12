@@ -56,3 +56,22 @@ class TestProfileTaggerScriptsDialog(PicardTestCase):
         dialog = self._make_dialog()
         positions = [dialog._list.item(i).data(QtCore.Qt.ItemDataRole.UserRole) for i in range(dialog._list.count())]
         self.assertEqual(positions, [0, 1, 2])
+
+    def test_ok_button_enabled_when_any_checked(self):
+        dialog = self._make_dialog()
+        # Two scripts start checked, so OK is enabled.
+        self.assertTrue(dialog._ok_button.isEnabled())
+
+    def test_ok_button_disabled_when_none_checked(self):
+        dialog = self._make_dialog()
+        for i in range(dialog._list.count()):
+            dialog._list.item(i).setCheckState(QtCore.Qt.CheckState.Unchecked)
+        self.assertFalse(dialog._ok_button.isEnabled())
+
+    def test_ok_button_reenabled_after_recheck(self):
+        dialog = self._make_dialog()
+        for i in range(dialog._list.count()):
+            dialog._list.item(i).setCheckState(QtCore.Qt.CheckState.Unchecked)
+        self.assertFalse(dialog._ok_button.isEnabled())
+        dialog._list.item(0).setCheckState(QtCore.Qt.CheckState.Checked)
+        self.assertTrue(dialog._ok_button.isEnabled())

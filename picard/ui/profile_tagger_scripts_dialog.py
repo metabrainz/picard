@@ -37,6 +37,10 @@ from picard.i18n import gettext as _
 class ProfileTaggerScriptsDialog(QtWidgets.QDialog):
     """Ask whether to enable tagger scripting for an imported profile.
 
+    The accept button ("Enable tagger scripts") is disabled while no script is
+    checked, so accepting always enables at least one script. Cancelling
+    ("Import without enabling") imports the scripts with tagger scripting off.
+
     Args:
         profile_title: Title of the imported profile (for the message).
         scripts: List of (position, title, enabled, content) tuples for the
@@ -71,21 +75,31 @@ class ProfileTaggerScriptsDialog(QtWidgets.QDialog):
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, pos)
+        self._list.itemChanged.connect(self._update_ok_button)
         layout.addWidget(self._list)
 
         buttons = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel,
             parent=self,
         )
-        ok_button = buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Ok)
-        if ok_button is not None:
-            ok_button.setText(_("Enable tagger scripts"))
+        self._ok_button = buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        if self._ok_button is not None:
+            self._ok_button.setText(_("Enable tagger scripts"))
         cancel_button = buttons.button(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         if cancel_button is not None:
             cancel_button.setText(_("Import without enabling"))
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
+
+        # The OK button enables tagger scripting, which is meaningless with no
+        # script checked; keep it disabled until at least one is selected.
+        self._update_ok_button()
+
+    def _update_ok_button(self):
+        """Enable the OK button only when at least one script is checked."""
+        if self._ok_button is not None:
+            self._ok_button.setEnabled(bool(self.selected_positions()))
 
     def selected_positions(self) -> set:
         """Return the set of script positions the user left checked."""
