@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-09 15:13+0000\n"
+"PO-Revision-Date: 2026-09-12 15:26+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -4977,36 +4977,32 @@ msgid "Installation Failed"
 msgstr "S'ha produït un error d'instal·lació"
 
 #: picard/ui/dialogs/installplugin.py:738
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to install the plugin."
-msgstr "No s'ha pogut desinstal·lar el connector: {errmsg}"
+msgstr "No s'ha pogut instal·lar el connector."
 
 #: picard/ui/dialogs/plugin_error.py:169
 #, python-format
 msgid "If this looks like a plugin problem, report it to the plugin author: %s"
 msgstr ""
+"Si sembla un problema del connector, informeu-ne a l'autor del connector: %s"
 
 #: picard/ui/dialogs/plugin_error.py:173
 #, python-format
 msgid "Please report this issue on the %s."
-msgstr ""
+msgstr "Informeu del problema al %s."
 
 #: picard/ui/dialogs/plugin_error.py:174
-#, fuzzy
-#| msgid "MusicBrainz Track Id"
 msgid "MusicBrainz bug tracker"
-msgstr "ID de la pista de MusicBrainz"
+msgstr "sistema de seguiment d'errors de MusicBrainz"
 
 #: picard/ui/dialogs/plugin_error.py:182
-#, fuzzy, python-format
-#| msgid "Plugin: %s"
+#, python-format
 msgid "Plugin \"%s\":"
-msgstr "Connector: %s"
+msgstr "Connector «%s»:"
 
 #: picard/ui/dialogs/plugin_error.py:187
 msgid "Error reported by the plugin:"
-msgstr ""
+msgstr "Error notificat pel connector:"
 
 #: picard/ui/dialogs/plugin_order_selector.py:62
 msgid "Plugin Execution Order"
@@ -8970,10 +8966,8 @@ msgid "Update Failed"
 msgstr "Error d'actualització"
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to update the plugin."
-msgstr "No s'ha pogut actualitzar el connector: {errmsg}"
+msgstr "No s'ha pogut actualitzar el connector."
 
 #: picard/ui/options/profiles.py:92
 msgid "Option Profiles"
@@ -9871,10 +9865,8 @@ msgstr "S'ha produït un error de desinstal·lació"
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:740
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to uninstall the plugin."
-msgstr "No s'ha pogut desinstal·lar el connector: {errmsg}"
+msgstr "No s'ha pogut desinstal·lar el connector."
 
 #: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
@@ -9996,20 +9988,12 @@ msgid "Plugin Error"
 msgstr "Error del connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
-#, fuzzy
-#| msgid ""
-#| "Failed to enable plugin \"{name}\":\n"
-#| "{errmsg}"
 msgid "Failed to enable the plugin."
-msgstr ""
-"No s'ha pogut habilitar el connector «{name}»:\n"
-"{errmsg}"
+msgstr "No s'ha pogut habilitar el connector."
 
 #: picard/ui/widgets/pluginlistwidget.py:687
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to disable the plugin."
-msgstr "No s'ha pogut actualitzar el connector: {errmsg}"
+msgstr "No s'ha pogut inhabilitar el connector."
 
 #: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
