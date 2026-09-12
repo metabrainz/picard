@@ -45,6 +45,7 @@ from test.picardtestcase import (
 from picard.cluster import Cluster
 from picard.const.defaults import DEFAULT_FILE_NAMING_FORMAT
 from picard.extension_points.script_functions import (
+    Bound,
     FunctionRegistryItem,
     generate_function_signature,
     register_script_function,
@@ -138,10 +139,10 @@ class ScriptParserTest(PicardTestCase):
         def somefunc():
             return 'x'
 
-        item = FunctionRegistryItem(somefunc, 'x', 'y', 'doc', signature='$somefunc()')
+        item = FunctionRegistryItem(somefunc, True, Bound(0, None), 'doc', signature='$somefunc()')
         self.assertEqual(item.function, somefunc)
-        self.assertEqual(item.eval_args, 'x')
-        self.assertEqual(item.argcount, 'y')
+        self.assertEqual(item.eval_args, True)
+        self.assertEqual(item.argcount, Bound(0, None))
         self.assertEqual(item.signature, '$somefunc()')
         self.assertEqual(item.documentation, 'doc')
 
@@ -151,7 +152,7 @@ class ScriptParserTest(PicardTestCase):
             + r'[^ ]+'
             + re.escape(r'.somefunc at ')
             + r'[^>]+'
-            + re.escape(r'>, x, y, $somefunc(), """doc""", None, None)')
+            + re.escape(r'>, True, Bound(lower=0, upper=None), $somefunc(), """doc""", None, None)')
             + r'$'
         )
 
