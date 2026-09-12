@@ -64,7 +64,7 @@ class FunctionRegistryItem:
         self,
         function: Callable,
         eval_args: bool,
-        argcount: Bound | bool,
+        argcount: Bound | None,
         documentation: str | None = None,
         name: str | None = None,
         module: str | None = None,
@@ -140,7 +140,10 @@ def register_script_function(
     varargs = argspec.varargs is not None
     defaults = len(argspec.defaults) if argspec.defaults else 0
 
-    argcount = Bound(args - defaults, args if not varargs else None)
+    if check_argcount:
+        argcount = Bound(args - defaults, args if not varargs else None)
+    else:
+        argcount = None
 
     if not documentation:
         documentation = function.__doc__
@@ -158,7 +161,7 @@ def register_script_function(
             FunctionRegistryItem(
                 function,
                 eval_args,
-                argcount if argcount and check_argcount else False,
+                argcount,
                 documentation=documentation,
                 name=name,
                 module=function.__module__,
