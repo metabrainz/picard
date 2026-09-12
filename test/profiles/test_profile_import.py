@@ -276,6 +276,12 @@ standardize_artists = true
         # All imported scripts are enabled by default
         self.assertTrue(scripts[0][2])
         self.assertTrue(scripts[1][2])
+        # A share export omits the enable_tagger_scripts toggle. The importer
+        # must NOT silently enable tagger scripting; instead it defers the
+        # decision to the caller (UI prompt or CLI flag).
+        self.assertTrue(result.tagger_scripts_enable_pending)
+        self.assertEqual(len(result.pending_tagger_scripts), 2)
+        self.assertNotIn('enable_tagger_scripts', settings)
 
     def test_import_tagger_scripts_deduplication(self):
         ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
@@ -335,6 +341,132 @@ script = "$noop()"
         self.assertEqual(len(scripts), 2)
         self.assertTrue(scripts[0][2])  # enabled
         self.assertFalse(scripts[1][2])  # disabled
+
+    def test_import_share_scripts_defers_enable_only_for_enabled(self):
+        # Share export (no explicit enable_tagger_scripts). One script is
+        # enabled, one is not. The decision is deferred and only the enabled
+        # script is offered to the caller. enable_tagger_scripts is not written.
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Shared"
+picard_version = "3.0.0"
+
+[[scripts.tagging]]
+title = "Enabled"
+enabled = true
+script = "$set(a,b)"
+
+[[scripts.tagging]]
+title = "Disabled"
+enabled = false
+script = "$noop()"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertNotIn('enable_tagger_scripts', settings)
+        self.assertTrue(result.tagger_scripts_enable_pending)
+        # Only the enabled script is a pending candidate.
+        self.assertEqual(len(result.pending_tagger_scripts), 1)
+        self.assertEqual(result.pending_tagger_scripts[0][1], 'Enabled')
+
+    def test_import_share_scripts_none_enabled_not_pending(self):
+        # Share export where every imported script is disabled: nothing would
+        # run, so there is no enable decision to make.
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Shared"
+picard_version = "3.0.0"
+
+[[scripts.tagging]]
+title = "Disabled"
+enabled = false
+script = "$noop()"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertNotIn('enable_tagger_scripts', settings)
+        self.assertFalse(result.tagger_scripts_enable_pending)
+        self.assertEqual(result.pending_tagger_scripts, [])
+
+    def test_import_backup_scripts_not_pending(self):
+        # Backup export carries an explicit enable_tagger_scripts; the decision
+        # is honored verbatim and is never pending.
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Backup"
+picard_version = "3.0.0"
+
+[scripts]
+enable_tagger_scripts = true
+
+[[scripts.tagging]]
+title = "Enabled"
+enabled = true
+script = "$set(a,b)"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertTrue(settings['enable_tagger_scripts'])
+        self.assertFalse(result.tagger_scripts_enable_pending)
+        self.assertEqual(result.pending_tagger_scripts, [])
+
+    def test_import_respects_explicit_enable_tagger_scripts_false(self):
+        # A backup export records the master toggle under [scripts]. An explicit
+        # value must be preserved rather than force-enabled.
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Backup"
+picard_version = "3.0.0"
+
+[scripts]
+enable_tagger_scripts = false
+
+[[scripts.tagging]]
+title = "Some script"
+enabled = false
+script = "$noop()"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertFalse(settings['enable_tagger_scripts'])
+
+    def test_import_respects_explicit_enable_tagger_scripts_true(self):
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Backup"
+picard_version = "3.0.0"
+
+[scripts]
+enable_tagger_scripts = true
+
+[[scripts.tagging]]
+title = "Some script"
+enabled = true
+script = "$set(a,b)"
+"""
+        result = import_profile(self.config, toml)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertTrue(settings['enable_tagger_scripts'])
 
     def test_import_duplicate_title_gets_number_suffix(self):
         # Create an existing profile with the same title
