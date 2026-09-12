@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-07-27 10:13+0000\n"
+"PO-Revision-Date: 2026-09-12 15:27+0000\n"
 "Last-Translator: blueday <jonatan.k.nyberg@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "3/constants/sv/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -27,11 +27,11 @@ msgstr "Endast stabila utgåvor"
 
 #: picard/const/__init__.py:155
 msgid "Stable and Beta releases"
-msgstr "Stabila och beta-utgåvor"
+msgstr "Stabila utgåvor och betautgåvor"
 
 #: picard/const/__init__.py:162
 msgid "Stable, Beta and Dev releases"
-msgstr "Stabila-, beta- och dev-utgåvor"
+msgstr "Stabila utgåvor, betautgåvor och utvecklingsutgåvor"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
@@ -1965,7 +1965,7 @@ msgstr "Västfrisiska (Nederländerna)"
 
 #: picard/const/locales.py:462
 msgid "Irish"
-msgstr "irländska"
+msgstr "iriska"
 
 #: picard/const/locales.py:463
 msgid "Irish (United Kingdom)"
@@ -4360,7 +4360,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr "Albumartist sorteringsordning"
+msgstr "Albumartistens sorteringsnamn"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4388,7 +4388,7 @@ msgstr "Utgåvans titel."
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr "Album sorteringsordning"
+msgstr "Albumets sorteringsnamn"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4454,7 +4454,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr "Artist sorteringsordning"
+msgstr "Artistens sorteringsnamn"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4687,7 +4687,7 @@ msgstr ""
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr "Använd avancerad frågesyntax"
+msgstr "Skivundertitel"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
@@ -4695,7 +4695,7 @@ msgstr "Medietiteln som angetts för en viss skiva i utgåvan."
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr "DJ-mixer"
+msgstr "DJ-mixare"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
@@ -4830,7 +4830,7 @@ msgstr ""
 
 #: picard/const/tags.py:485
 msgid "Key"
-msgstr "Nyckel"
+msgstr "Tonart"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
@@ -4906,7 +4906,7 @@ msgstr "Mediet som utgåvan distribuerades på, exempelvis CD."
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr "Mixer"
+msgstr "Mixare"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -5199,7 +5199,7 @@ msgstr ""
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr "Uppträdande"
+msgstr "Utövare"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5543,7 +5543,7 @@ msgstr "Utgåvetyperna som tilldelats utgåvegruppen."
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr "Remixer"
+msgstr "Remixare"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
@@ -5567,11 +5567,11 @@ msgstr "Albumets toppvärde som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain-albumintervall"
+msgstr "ReplayGain-ljudstyrkeomfång för album"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
-msgstr "Albumets intervall som beräknats genom ReplayGain-analys."
+msgstr "Albumets ljudstyrkeomfång som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
@@ -5601,11 +5601,11 @@ msgstr "Spårets toppvärde som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
-msgstr "ReplayGain-spårintervall"
+msgstr "ReplayGain-ljudstyrkeomfång för spår"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
-msgstr "Spårets intervall som beräknats genom ReplayGain-analys."
+msgstr "Spårets ljudstyrkeomfång som beräknats genom ReplayGain-analys."
 
 #: picard/const/tags.py:1063
 msgid "Sample Rate"
@@ -5661,7 +5661,7 @@ msgstr "Programmets namn om inspelningen hör till ett tv-program."
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
-msgstr "Visa arbete & rörelse"
+msgstr "Visa verk och sats"
 
 #: picard/const/tags.py:1110
 msgid ""
@@ -5717,7 +5717,7 @@ msgstr "Spårets titel."
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr "Titel sorteringsordning"
+msgstr "Titelns sorteringsnamn"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5765,7 +5765,7 @@ msgstr "Värdet är ”1” om spåret är en video."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
-msgstr "Artist webbsida"
+msgstr "Artistens webbplats"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
@@ -5835,7 +5835,7 @@ msgstr "Särskiljningskommentaren som hör till verket."
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr "Låtskrivare"
+msgstr "Författare"
 
 #: picard/const/tags.py:1234
 msgid ""
