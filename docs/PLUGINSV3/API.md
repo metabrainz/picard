@@ -988,7 +988,7 @@ def enable(api):
     api.register_clusterlist_action(MyAction)
 
     # Plugin Tools menu
-    api.register_tools_menu_action(action)
+    api.register_tools_menu_action(MyAction)
 ```
 
 **Note**: Pass the class, not an instance. Picard makes `self.api` available inside
