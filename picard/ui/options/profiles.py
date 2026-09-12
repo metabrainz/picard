@@ -74,6 +74,7 @@ from picard.util import get_base_title
 from picard.ui.forms.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
+from picard.ui.profile_tagger_scripts_dialog import ProfileTaggerScriptsDialog
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
@@ -774,11 +775,45 @@ class ProfilesOptionsPage(OptionsPage):
                 "\n".join(result.warnings),
             )
 
+        # A shared profile carrying enabled tagger scripts does not turn on
+        # tagger scripting silently: ask the user and apply their per-script
+        # choice. A backup import (explicit toggle in the file) is not pending.
+        if result.tagger_scripts_enable_pending:
+            self._resolve_pending_tagger_scripts(config, result)
+
         # Update the dialog's working state
         all_settings = config.profiles['user_profile_settings']
         self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
 
         return result
+
+    def _resolve_pending_tagger_scripts(self, config, result):
+        """Prompt whether to enable tagger scripting for a just-imported profile.
+
+        Enables ``enable_tagger_scripts`` for the profile only if the user
+        accepts with at least one script checked, and applies the per-script
+        selection back into the profile's ``list_of_scripts``.
+        """
+        dialog = ProfileTaggerScriptsDialog(result.title, result.pending_tagger_scripts, parent=self)
+        accepted = dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted
+        selected = dialog.selected_positions() if accepted else set()
+
+        all_settings = config.profiles['user_profile_settings']
+        settings = all_settings.get(result.profile_id, {})
+
+        if accepted and selected:
+            # Apply per-script choices and enable tagger scripting.
+            scripts = settings.get('list_of_scripts', [])
+            settings['list_of_scripts'] = [
+                (pos, name, pos in selected, content) for pos, name, _enabled, content in scripts
+            ]
+            settings['enable_tagger_scripts'] = True
+        else:
+            # Import the scripts but leave tagger scripting disabled.
+            settings['enable_tagger_scripts'] = False
+
+        all_settings[result.profile_id] = settings
+        config.profiles['user_profile_settings'] = all_settings
 
     def import_and_replace_profile(self, item):
         """Import a profile from a TOML file and replace the given profile."""

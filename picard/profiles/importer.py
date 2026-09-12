@@ -77,6 +77,16 @@ class ProfileImportResult:
         out_of_bounds: List of OutOfBoundsSetting for imported values that were
             outside their option's declared bounds.
         warnings: List of warning messages for the user.
+        tagger_scripts_enable_pending: True when tagger scripts were imported
+            from a share export (no explicit enable_tagger_scripts value in the
+            file) and at least one is enabled, so enabling tagger scripting is
+            left for the caller to decide (a UI prompt or CLI flag) rather than
+            done silently. When True, the importer has NOT written
+            enable_tagger_scripts into the profile settings.
+        pending_tagger_scripts: The imported tagger scripts awaiting the
+            caller's enable decision, as a list of (position, title, enabled,
+            content) tuples matching the profile's list_of_scripts entries.
+            Populated only when tagger_scripts_enable_pending is True.
     """
 
     def __init__(self, profile_id: str, title: str):
@@ -86,6 +96,8 @@ class ProfileImportResult:
         self.upgraded_settings: list[str] = []
         self.out_of_bounds: list[OutOfBoundsSetting] = []
         self.warnings: list[str] = []
+        self.tagger_scripts_enable_pending: bool = False
+        self.pending_tagger_scripts: list[tuple[int, str, bool, str]] = []
 
 
 def import_profile(
@@ -221,9 +233,9 @@ def import_profile(
     if tagging_section:
         if not isinstance(tagging_section, list):
             raise ProfileImportError(_("The [[scripts.tagging]] section must be an array of tables"))
-        # A backup export records the master "enable tagger scripts" toggle
-        # under [scripts]; share exports omit it. When present we honour the
-        # exact value, otherwise the toggle is enabled so imported scripts run.
+        # A backup export records the enable_tagger_scripts toggle under
+        # [scripts]; share exports omit it. When present we honor the exact
+        # value; otherwise the enable decision is deferred to the caller.
         explicit_enable = scripts_section.get('enable_tagger_scripts')
         _import_tagger_scripts(config, profile_settings, tagging_section, result, explicit_enable)
 
@@ -359,10 +371,10 @@ def _import_tagger_scripts(
     """Import tagger scripts into the profile settings.
 
     Args:
-        explicit_enable: The value of the master ``enable_tagger_scripts``
-            toggle as recorded in the profile file (backup exports), or None
-            if absent (share exports). When None, the toggle is enabled so the
-            imported scripts actually run; otherwise the exact value is kept.
+        explicit_enable: The value of the ``enable_tagger_scripts`` toggle as
+            recorded in the profile file (backup exports), or None if absent
+            (share exports). When set, the exact value is honored silently.
+            When None, the decision is deferred to the caller (see below).
     """
     # Get existing scripts from the profile (if any) or start fresh
     existing_scripts = profile_settings.get('list_of_scripts', [])
@@ -407,15 +419,20 @@ def _import_tagger_scripts(
     if existing_scripts:
         profile_settings['list_of_scripts'] = existing_scripts
 
-    # Decide the master "enable tagger scripts" toggle:
-    # - An explicit value from the file (backup export) is always honoured.
-    # - Otherwise (share export), only enable when new scripts were actually
-    #   imported, so the shared scripts run without the user flipping the
-    #   switch. Do nothing when everything was a duplicate (no real change).
+    # Decide the ``enable_tagger_scripts`` toggle:
+    # - Backup export (explicit value present): honor it verbatim and silently.
+    #   The file is a faithful snapshot of the user's own config.
+    # - Share export (no explicit value): do NOT enable silently. If the profile
+    #   ends up with at least one enabled tagger script, defer the decision to
+    #   the caller (UI prompt or CLI flag) so enabling is never a surprise.
+    #   With no enabled script there is nothing to run, so no decision is needed.
     if explicit_enable is not None:
         profile_settings['enable_tagger_scripts'] = bool(explicit_enable)
     elif imported_count:
-        profile_settings['enable_tagger_scripts'] = True
+        pending = [(pos, name, enabled, content) for pos, name, enabled, content in existing_scripts if enabled]
+        if pending:
+            result.tagger_scripts_enable_pending = True
+            result.pending_tagger_scripts = pending
 
 
 def _register_profile(

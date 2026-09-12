@@ -207,6 +207,81 @@ class TestProfileCLI(TestPicardConfigCommon):
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Invalid TOML', stderr.getvalue())
 
+    def _write_shared_scripts_toml(self):
+        toml_file = os.path.join(self.tmp_directory, 'scripts.toml')
+        with open(toml_file, 'w', encoding='utf-8') as f:
+            f.write(
+                '[profile]\ntitle = "Shared"\npicard_version = "3.0.0"\n\n'
+                '[[scripts.tagging]]\ntitle = "S1"\nscript = "$set(a,b)"\n'
+            )
+        return toml_file
+
+    @patch('picard.cli.profiles.get_config')
+    def test_cmd_import_scripts_no_enable_flag(self, mock_get_config):
+        # --no-enable-tagger-scripts imports the scripts but leaves tagger
+        # scripting disabled, without prompting.
+        mock_get_config.return_value = self.config
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable", in_profile=True)
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+
+        args = SimpleNamespace(
+            file=self._write_shared_scripts_toml(),
+            enable=False,
+            replace=None,
+            enable_tagger_scripts=False,
+            yes=False,
+        )
+        output, stdout, stderr = _make_output()
+        exit_code = cmd_import(args, output)
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        settings = next(iter(self.config.profiles['user_profile_settings'].values()))
+        self.assertFalse(settings['enable_tagger_scripts'])
+
+    @patch('picard.cli.profiles.get_config')
+    def test_cmd_import_scripts_yes_enables(self, mock_get_config):
+        # --yes auto-confirms enabling tagger scripting.
+        mock_get_config.return_value = self.config
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable", in_profile=True)
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+
+        args = SimpleNamespace(
+            file=self._write_shared_scripts_toml(),
+            enable=False,
+            replace=None,
+            enable_tagger_scripts=True,
+            yes=True,
+        )
+        output, stdout, stderr = _make_output()
+        exit_code = cmd_import(args, output)
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        settings = next(iter(self.config.profiles['user_profile_settings'].values()))
+        self.assertTrue(settings['enable_tagger_scripts'])
+
+    @patch('picard.cli.profiles.get_config')
+    def test_cmd_import_scripts_prompts_by_default(self, mock_get_config):
+        # Without --yes or --no-enable-tagger-scripts, the user is prompted.
+        mock_get_config.return_value = self.config
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable", in_profile=True)
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+
+        args = SimpleNamespace(
+            file=self._write_shared_scripts_toml(),
+            enable=False,
+            replace=None,
+            enable_tagger_scripts=True,
+            yes=False,
+        )
+        output, stdout, stderr = _make_output()
+        with patch.object(output, 'yesno', return_value=True) as mock_yesno:
+            exit_code = cmd_import(args, output)
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_yesno.assert_called_once()
+        settings = next(iter(self.config.profiles['user_profile_settings'].values()))
+        self.assertTrue(settings['enable_tagger_scripts'])
+
     @unittest.skipUnless(export_available, "profile export requires tomlkit")
     @patch('picard.cli.profiles.get_config')
     def test_cmd_export_backup_mode(self, mock_get_config):

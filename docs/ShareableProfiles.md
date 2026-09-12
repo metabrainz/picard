@@ -399,9 +399,16 @@ Imported scripts default to enabled if the field is absent.
 `enable_tagger_scripts` is a per-profile boolean that gates *all* tagger script processing for that profile. It is distinct from the per-script `enabled` flag: even if individual scripts are enabled, none of them run while the master toggle is off. Because it is a script-related option it is never written to `[settings]`; it is handled alongside the scripts:
 
 - Backup mode: the exact value is written as `enable_tagger_scripts` under the `[scripts]` table so a restore reproduces the author's configuration faithfully. A tracked-but-unset (`None`) toggle is skipped, consistent with the handling of other `None`-valued settings.
-- Share mode: the toggle is deliberately omitted from the file. On import, tagger scripts are always enabled when `[[scripts.tagging]]` entries are present. This prevents a shared profile from carrying the author's incidental local on/off state and silently disabling tagger scripting on the recipient's machine (the master toggle is an override, so a `false` value would force the recipient's scripts off, not merely leave them as-is). A profile shared with scripts is meant to have those scripts run, so the "enabled" intent is implied by the presence of the scripts rather than stored as a separate flag.
+- Share mode: the toggle is deliberately omitted from the file. This prevents a shared profile from carrying the author's incidental local on/off state and silently disabling tagger scripting on the recipient's machine (the master toggle is an override, so a `false` value would force the recipient's scripts off, not merely leave them as-is).
 
-On import, an explicit `enable_tagger_scripts` value under `[scripts]` (backup export) is always honored; when it is absent (share export), the toggle is enabled only if at least one new script was actually imported, so a duplicate-only re-import makes no change.
+On import, an explicit `enable_tagger_scripts` value under `[scripts]` (backup export) is always honored silently — a backup is a faithful restore of the user's own configuration.
+
+When the value is absent (share export) and the imported profile contains at least one enabled tagger script, tagger scripting is **never enabled silently**. Instead the user is asked what to do:
+
+- In the GUI, an "Enable Tagger Scripts?" dialog lists the imported scripts (each pre-checked according to its authored `enabled` flag). Accepting with at least one script checked enables `enable_tagger_scripts` for the profile and applies the per-script selection; unchecking everything or cancelling imports the scripts but leaves tagger scripting disabled.
+- In the CLI (`picard-cli profiles import`), the user is prompted the same way. `--yes` enables without prompting; `--no-enable-tagger-scripts` imports the scripts without enabling.
+
+If no imported script is enabled (only possible in backup exports, since share mode omits disabled scripts), there is nothing to run and no prompt is shown. A duplicate-only re-import imports no new scripts and makes no change.
 
 #### `[plugins.<uuid>]` — Plugin Option Overrides (optional)
 
@@ -437,8 +444,9 @@ sections for uninstalled plugins are skipped with a warning.
    - Append to the profile's `list_of_scripts` override
    - Respect the `enabled` field if present (default: `true`)
    - Set the `enable_tagger_scripts` master toggle: honor an explicit value
-     under `[scripts]` (backup export) if present, otherwise enable it (share
-     export) so the imported scripts actually run
+     under `[scripts]` (backup export) silently; when absent (share export) and
+     at least one imported script is enabled, ask the user whether to enable
+     tagger scripting (GUI dialog / CLI prompt) rather than enabling silently
 6. If `[plugins.*]` sections exist:
    - For each plugin UUID, check if the plugin is installed
    - If installed: apply settings as profile overrides (keyed as

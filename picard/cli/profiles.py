@@ -117,11 +117,18 @@ def setup_parser(profiles_parser):
     p_import.add_argument('file', metavar='FILE', help="TOML file to import")
     p_import.add_argument('--enable', action='store_true', help="enable the profile after import")
     p_import.add_argument(
+        '--no-enable-tagger-scripts',
+        dest='enable_tagger_scripts',
+        action='store_false',
+        help="import tagger scripts from a shared profile without enabling tagger scripting "
+        "(otherwise you are prompted; use --yes to enable without prompting)",
+    )
+    p_import.add_argument(
         '--replace',
         metavar='TITLE_OR_ID',
         help="replace an existing profile (match by title or UUID, partial allowed)",
     )
-    p_import.set_defaults(run_command=_run_profiles)
+    p_import.set_defaults(run_command=_run_profiles, enable_tagger_scripts=True)
 
 
 def cmd_list(output):
@@ -229,10 +236,54 @@ def cmd_import(args, output):
         for warning in result.warnings:
             output.warning(warning)
 
+    # A shared profile carrying enabled tagger scripts does not enable tagger
+    # scripting silently. Match the GUI: ask the user. --no-enable-tagger-
+    # scripts forces "import without enabling" non-interactively; --yes
+    # auto-confirms enabling.
+    if result.tagger_scripts_enable_pending:
+        _apply_cli_tagger_scripts_decision(config, result, args, output)
+
     # Save config to persist the imported profile
     config.sync()
 
     return ExitCode.SUCCESS
+
+
+def _apply_cli_tagger_scripts_decision(config, result, args, output):
+    """Decide and apply whether to enable tagger scripting for a CLI import.
+
+    The importer leaves enable_tagger_scripts undecided for shared profiles
+    with enabled scripts. Resolution order:
+    - ``--no-enable-tagger-scripts`` (args.enable_tagger_scripts is False):
+      import without enabling, no prompt.
+    - ``--yes``: enable without prompting.
+    - otherwise: list the scripts and ask.
+    """
+    count = len(result.pending_tagger_scripts)
+
+    if not args.enable_tagger_scripts:
+        enable = False
+    elif getattr(args, 'yes', False):
+        enable = True
+    else:
+        output.warning(
+            f"The imported profile contains {count} enabled tagger script(s)."
+            " Tagger scripting is currently disabled for this profile:"
+        )
+        for _pos, name, _enabled, _content in result.pending_tagger_scripts:
+            output.print(f"  - {output.d_name(name)}")
+        enable = output.yesno("Enable tagger scripting for this profile?")
+
+    all_settings = config.profiles['user_profile_settings']
+    settings = all_settings.get(result.profile_id, {})
+    settings['enable_tagger_scripts'] = enable
+    all_settings[result.profile_id] = settings
+    config.profiles['user_profile_settings'] = all_settings
+
+    if enable:
+        output.success(f"Tagger scripting enabled for this profile ({count} script(s)).")
+    else:
+        output.print("Tagger scripting left disabled for this profile.")
 
 
 def _run_profiles(args):
