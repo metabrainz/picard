@@ -71,6 +71,7 @@ from picard.cluster import (
 from picard.config import get_config
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.item_actions import (
+    add_action_to_menu,
     ext_point_album_actions,
     ext_point_cluster_actions,
     ext_point_clusterlist_actions,
@@ -385,17 +386,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             plugin_menus = {}
             for ActionClass in plugin_actions:
                 try:
-                    # Determine target menu based on MENU attribute
-                    action_menu = plugin_menu
-                    for index in range(1, len(ActionClass.MENU) + 1):
-                        key = tuple(ActionClass.MENU[:index])
-                        if key in plugin_menus:
-                            action_menu = plugin_menus[key]
-                        else:
-                            action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
-                    action = ActionClass()
-                    action.setParent(action_menu)  # Set parent to keep action alive
-                    action_menu.addAction(action)
+                    add_action_to_menu(ActionClass, plugin_menu, plugin_menus)
                 except Exception:
                     log.error("Failed to add plugin action %r", ActionClass, exc_info=True)
 
