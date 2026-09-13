@@ -467,40 +467,35 @@ def get_github_display_names(github_users):
     else:
         debug("Warning: No GitHub token found, API rate limits may apply")
     retries_left = MAX_RATE_LIMIT_RETRIES
-    users_iter = iter(github_users.items())
-    git_name, gh_user = None, None
-    while True:
-        if git_name is None:
-            item = next(users_iter, None)
-            if item is None:
-                break
-            git_name, gh_user = item
-        try:
-            url = f'https://api.github.com/users/{url_quote(gh_user)}'
-            req = Request(url, headers=headers)
-            with urlopen(req, timeout=5) as resp:
-                data = json.loads(resp.read())
-                name = data.get('name')
+    for git_name, gh_user in github_users.items():
+        while True:  # retry loop for rate limiting; break to advance to next user
+            try:
+                url = f'https://api.github.com/users/{url_quote(gh_user)}'
+                req = Request(url, headers=headers)
+                with urlopen(req, timeout=5) as resp:
+                    name = json.loads(resp.read()).get('name')
                 if name:
                     display_names[git_name] = name
-            git_name, gh_user = None, None  # advance to next user
-        except urllib.error.HTTPError as e:
-            is_rate_limit = e.code == 429 or (e.code == 403 and e.headers.get('X-RateLimit-Remaining') == '0')
-            if is_rate_limit and retries_left > 0:
-                wait = _get_rate_limit_wait(e.headers)
-                if wait is not None:
-                    debug(f"Rate limited, waiting {wait}s ({retries_left} retries left)")
-                    time.sleep(wait)
-                    retries_left -= 1
-                    continue
-            if is_rate_limit:
-                debug(f"Rate limited on {gh_user}, skipping remaining")
                 break
-            debug(f"GitHub API error for {gh_user}: {e}")
-            git_name, gh_user = None, None  # skip this user, continue
-        except Exception as e:
-            debug(f"GitHub API error for {gh_user}: {e}")
-            git_name, gh_user = None, None  # skip this user, continue
+            except urllib.error.HTTPError as e:
+                is_rate_limit = e.code == 429 or (e.code == 403 and e.headers.get('X-RateLimit-Remaining') == '0')
+                if is_rate_limit and retries_left > 0:
+                    wait = _get_rate_limit_wait(e.headers)
+                    if wait is not None:
+                        debug(f"Rate limited, waiting {wait}s ({retries_left} retries left)")
+                        time.sleep(wait)
+                        retries_left -= 1
+                        continue
+                if is_rate_limit:
+                    debug(f"Rate limited on {gh_user}, skipping remaining")
+                    if display_names:
+                        debug(f"Resolved {len(display_names)} display names from GitHub")
+                    return display_names
+                debug(f"GitHub API error for {gh_user}: {e}")
+                break
+            except Exception as e:
+                debug(f"GitHub API error for {gh_user}: {e}")
+                break
     if display_names:
         debug(f"Resolved {len(display_names)} display names from GitHub")
     return display_names
