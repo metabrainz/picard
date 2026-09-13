@@ -40,7 +40,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from PyQt6 import QtGui
+from PyQt6 import (
+    QtGui,
+    QtWidgets,
+)
 
 from picard import tagger_instance
 from picard.plugin import ExtensionPoint
@@ -83,6 +86,43 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
 
     def callback(self, objs):
         raise NotImplementedError
+
+
+def add_action_to_menu(
+    action_class: type[BaseAction],
+    root_menu: QtWidgets.QMenu,
+    submenus: dict[tuple[str, ...], QtWidgets.QMenu],
+) -> None:
+    """Instantiate a plugin action and add it to the appropriate (sub)menu.
+
+    The action's ``MENU`` attribute defines an optional menu path. Each item in
+    the path is a submenu name; the action is added as a child of the last
+    submenu. Submenus are created on demand and shared via the ``submenus``
+    cache so that actions sharing a menu path end up in the same submenu.
+
+    Parameters
+    ----------
+    action_class : type[BaseAction]
+        The plugin action class to instantiate.
+    root_menu : QtWidgets.QMenu
+        The menu that serves as the root of the action's menu path.
+    submenus : dict[tuple[str, ...], QtWidgets.QMenu]
+        Cache mapping a menu path prefix to its created submenu. Callers should
+        reuse the same dict across all actions added to ``root_menu``.
+    """
+    action_menu = root_menu
+    menu_path: tuple[str, ...] = ()
+    for menu_name in action_class.MENU:
+        menu_path += (menu_name,)
+        submenu = submenus.get(menu_path)
+        if submenu is None:
+            submenu = action_menu.addMenu(menu_name)
+            assert submenu is not None  # addMenu(str) always returns a QMenu
+            submenus[menu_path] = submenu
+        action_menu = submenu
+    action = action_class()
+    action.setParent(action_menu)  # Set parent to keep action alive
+    action_menu.addAction(action)
 
 
 ext_point_album_actions = ExtensionPoint[type[BaseAction]](label='album_actions')
