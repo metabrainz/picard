@@ -116,6 +116,14 @@ CODE_AUTHOR_TRANSLATIONS = {
     'Philipp Wolfer': {'langs': {'German'}, 'weblate': 'outsidecontext'},
 }
 
+# Human-maintained map of translator name -> Weblate username, for translators
+# whose Weblate account cannot be resolved automatically (their git commit
+# email is not a Weblate noreply address and they are absent from the credits
+# API window). Consulted when building profile links.
+TRANSLATOR_WEBLATE_USERS = {
+    'Nicolás Tamargo': 'reosarevok',
+}
+
 
 def is_weblate_bot_username(username):
     """Return True for automated Weblate accounts (addon:, mt:, webhook:, ...).
@@ -633,11 +641,22 @@ def format_code_authors(code_authors, github_users, display_names, translator_la
     return f"Code contributions by {join_names(names)}."
 
 
+def resolve_weblate_username(name, weblate_users):
+    """Resolve a translator name to a Weblate username.
+
+    Prefers curated overrides (for contributors whose git name differs from
+    their Weblate account, or who are absent from the auto-derived sources),
+    then falls back to the auto-derived name->username mapping.
+    """
+    curated = CODE_AUTHOR_TRANSLATIONS.get(name, {}).get('weblate') or TRANSLATOR_WEBLATE_USERS.get(name)
+    return curated or weblate_users.get(name)
+
+
 def format_translators(translators, translator_langs, weblate_users):
     """Format translators with languages and optional Weblate links."""
     parts = []
     for name in sorted(translators, key=str.casefold):
-        wb_user = weblate_users.get(name)
+        wb_user = resolve_weblate_username(name, weblate_users)
         url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
         langs = ', '.join(sorted(translator_langs[name]))
         parts.append(f"{linked_name(url, display_from_name(name))} ({langs})")
@@ -662,17 +681,11 @@ def format_translators_by_language(translators, translator_langs, weblate_users)
         for language in info['langs']:
             by_language.setdefault(canonical_language(language), set()).add(name)
 
-    def weblate_username(name):
-        # Prefer a curated Weblate username (git name may differ from the
-        # Weblate account name), then fall back to the auto-derived mapping.
-        curated = CODE_AUTHOR_TRANSLATIONS.get(name, {}).get('weblate')
-        return curated or weblate_users.get(name)
-
     lines = []
     for language in sorted(by_language, key=str.casefold):
         names = []
         for name in sorted(by_language[language], key=str.casefold):
-            wb_user = weblate_username(name)
+            wb_user = resolve_weblate_username(name, weblate_users)
             url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
             names.append(linked_name(url, display_from_name(name)))
         lines.append(f"<strong>{language}:</strong> {join_names(names)}")
