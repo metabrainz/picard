@@ -27,12 +27,13 @@ bar "Plugin Tools" section. Both call sites share
 from PyQt6 import QtGui, QtWidgets
 
 from picard.extension_points.item_actions import add_action_to_menu
+from picard.util.display_title_base import HasMenuItems
 
 
 def _make_action_class(title, menu):
     """Build a minimal QAction subclass mimicking BaseAction's MENU contract."""
 
-    class _Action(QtGui.QAction):
+    class _Action(QtGui.QAction, HasMenuItems):
         MENU = menu
 
         def __init__(self):
@@ -113,3 +114,37 @@ def test_action_parent_is_target_submenu(qapp):
 
 def _action_titles_and_objects(menu):
     return {a.text(): a for a in menu.actions() if a.menu() is None}
+
+
+class _FakeApi:
+    """Minimal stand-in for the plugin API translation surface."""
+
+    def tr(self, key, text=None, **kwargs):
+        return f"tr({key})"
+
+    def trn(self, key, singular=None, plural=None, n=0, **kwargs):
+        return f"trn({key})"
+
+
+def test_display_menu_translates_via_api_without_mutating(qapp):
+    ActionClass = _make_action_class("Do Thing", ("Menu", ("plural.key", "One", "Many")))
+    ActionClass.api = _FakeApi()
+
+    # Plain string goes through tr(), tuple (plural) goes through trn().
+    assert ActionClass.display_menu() == ("tr(Menu)", "trn(plural.key)")
+    # MENU is left untouched, so the call is idempotent.
+    assert ActionClass.MENU == ("Menu", ("plural.key", "One", "Many"))
+    assert ActionClass.display_menu() == ("tr(Menu)", "trn(plural.key)")
+
+
+def test_action_added_under_translated_submenu(qapp):
+    ActionClass = _make_action_class("Do Thing", ("Menu",))
+    ActionClass.api = _FakeApi()
+
+    root = QtWidgets.QMenu()
+    submenus = {}
+    add_action_to_menu(ActionClass, root, submenus)
+
+    # Submenu title uses the translated MENU element, not the raw key.
+    assert _submenu_titles(root) == ["tr(Menu)"]
+    assert _action_titles(submenus[("tr(Menu)",)]) == ["Do Thing"]

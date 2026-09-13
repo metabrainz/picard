@@ -66,13 +66,14 @@ class BaseAction(QtGui.QAction, HasDisplayTitle, HasMenuItems):
 
     # Menu path for the action. Each item in the tuple is a submenu name.
     # The action will be added as a child to the last submenu in the tuple.
-    MENU: tuple[str, ...] = tuple()
+    # For plugins, items may be marked with t_() (which can expand to a
+    # (key, singular, plural) tuple); use display_menu() to get the translated path.
+    MENU: tuple[str | tuple[str, str, str], ...] = tuple()
 
     def __init__(self, parent=None):
         super().__init__(self.display_title(), parent=parent)
         self.tagger = tagger_instance()
         self.triggered.connect(self.__callback)
-        self.translate_menu()
 
     def __callback(self):
         objs = self.tagger.window.selected_objects
@@ -116,7 +117,7 @@ def add_action_to_menu(
     """
     action_menu = root_menu
     menu_path: tuple[str, ...] = ()
-    for menu_name in action_class.MENU:
+    for menu_name in action_class.display_menu():
         menu_path += (menu_name,)
         submenu = submenus.get(menu_path)
         if submenu is None:
