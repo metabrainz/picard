@@ -71,6 +71,21 @@ except ImportError:
 
 EXCLUDE = {'Weblate', 'dependabot[bot]'}
 
+# Human-maintained alias map for contributors who appear under more than one
+# git author name. Maps a secondary/alternate name to the canonical name so
+# the contributor is credited once (using the canonical name's resolved
+# GitHub username and link). Add entries here when a person shows up twice in
+# the generated credits under different names.
+AUTHOR_ALIASES = {
+    'FRC': 'frcooper',
+}
+
+
+def canonical_author(name):
+    """Return the canonical git author name for a possibly-aliased name."""
+    return AUTHOR_ALIASES.get(name, name)
+
+
 # Paths containing translation files managed via Weblate.
 # Used to separate translators from code contributors.
 TRANSLATION_PATHS = ('po/', 'installer/i18n/sources/')
@@ -387,7 +402,7 @@ def get_code_authors(rev_range):
     """Return set of author names who committed changes outside translation paths."""
     excludes = [f':!{path}' for path in TRANSLATION_PATHS]
     lines = git('log', '--format=%aN', rev_range, '--', *excludes).splitlines()
-    authors = {a for a in lines if a and a not in EXCLUDE}
+    authors = {canonical_author(a) for a in lines if a and a not in EXCLUDE}
     debug(f"Found {len(authors)} code authors")
     return authors
 
@@ -403,7 +418,7 @@ def get_translator_langs(rev_range):
             continue
         match = RE_WEBLATE_LANG.search(subject)
         if match:
-            translator_langs.setdefault(author, set()).add(match.group(1))
+            translator_langs.setdefault(canonical_author(author), set()).add(match.group(1))
     debug(f"Found {len(translator_langs)} translators from commit messages")
     return translator_langs
 
@@ -424,6 +439,21 @@ def linked_name(url, text):
     """Return text (comma-quoted) wrapped in an HTML link, or plain if url is falsy."""
     text = quote_name(text)
     return html_link(url, text) if url else text
+
+
+RE_EMAIL = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+
+
+def display_from_name(name):
+    """Return a display string for an author name, obfuscating raw emails.
+
+    If the name is a bare email address (e.g. a translator with no full name),
+    return only the local part before the '@' so the contributor is still
+    credited without publishing a scrapeable address.
+    """
+    if RE_EMAIL.match(name):
+        return name.split('@', 1)[0]
+    return name
 
 
 def join_names(names):
@@ -537,7 +567,7 @@ def format_code_authors(code_authors, github_users, display_names, translator_la
     names = []
     for name in sorted(code_authors, key=str.casefold):
         gh_user = github_users.get(name)
-        display = display_names.get(name, name)
+        display = display_from_name(display_names.get(name, name))
         url = f'{GITHUB_URL}/{url_quote(gh_user)}' if gh_user else None
         entry = linked_name(url, display)
         # Only show translation languages if the person is a confirmed
@@ -556,7 +586,7 @@ def format_translators(translators, translator_langs, weblate_users):
         wb_user = weblate_users.get(name)
         url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
         langs = ', '.join(sorted(translator_langs[name]))
-        parts.append(f"{linked_name(url, name)} ({langs})")
+        parts.append(f"{linked_name(url, display_from_name(name))} ({langs})")
     return f"Translations were updated by {join_names(parts)}."
 
 
