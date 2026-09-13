@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2026-09-09 06:13+0000\n"
+"PO-Revision-Date: 2026-09-11 13:00+0000\n"
 "Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/countries/zh_Hant/>\n"
@@ -147,12 +147,12 @@ msgstr "玻利維亞"
 #. iso.code:BQ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:258
 msgid "Bonaire, Sint Eustatius and Saba"
-msgstr "博內爾、聖尤斯特歐斯和薩巴"
+msgstr "博內爾、聖尤斯特歐斯及薩巴"
 
 #. iso.code:BA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:27
 msgid "Bosnia and Herzegovina"
-msgstr "波士尼亞和赫塞哥維納"
+msgstr "波士尼亞及赫塞哥維納"
 
 #. iso.code:BW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:28
@@ -482,7 +482,7 @@ msgstr "格瑞那達"
 #. iso.code:GP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:87
 msgid "Guadeloupe"
-msgstr "瓜德羅普"
+msgstr "瓜地洛普"
 
 #. iso.code:GU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:88
@@ -522,7 +522,7 @@ msgstr "海地"
 #. iso.code:HM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:94
 msgid "Heard Island and McDonald Islands"
-msgstr "赫德島和麥克唐納島"
+msgstr "赫德島及麥克唐納群島"
 
 #. iso.code:HN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:95
@@ -767,7 +767,7 @@ msgstr "蒙特內哥羅"
 #. iso.code:MS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:143
 msgid "Montserrat"
-msgstr "蒙特塞拉特"
+msgstr "蒙哲臘"
 
 #. iso.code:MA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:144
@@ -957,12 +957,12 @@ msgstr "留尼旺"
 #. iso.code:BL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:255
 msgid "Saint Barthélemy"
-msgstr "聖巴特勒米"
+msgstr "聖巴瑟米"
 
 #. iso.code:SH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:196
 msgid "Saint Helena, Ascension and Tristan da Cunha"
-msgstr "聖赫勒拿、亞森欣與崔斯坦達庫尼亞"
+msgstr "聖赫勒拿、亞森欣及崔斯坦達庫尼亞"
 
 #. iso.code:KN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:178
@@ -982,7 +982,7 @@ msgstr "法屬聖馬丁"
 #. iso.code:PM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:197
 msgid "Saint Pierre and Miquelon"
-msgstr "聖皮耶與密克隆"
+msgstr "聖皮耶及密克隆"
 
 #. iso.code:VC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:180
@@ -1022,7 +1022,7 @@ msgstr "塞爾維亞"
 #. iso.code:CS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-msgstr "塞爾維亞與蒙特內哥羅"
+msgstr "塞爾維亞及蒙特內哥羅"
 
 #. iso.code:SC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:186
@@ -1072,7 +1072,7 @@ msgstr "南非"
 #. iso.code:GS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:248
 msgid "South Georgia and the South Sandwich Islands"
-msgstr "南喬治亞和南桑威奇群島"
+msgstr "南喬治亞及南桑威奇群島"
 
 #. iso.code:KR
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:113
@@ -1112,7 +1112,7 @@ msgstr "蘇利南"
 #. iso.code:SJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:200
 msgid "Svalbard and Jan Mayen"
-msgstr "斯瓦爾巴和揚馬延"
+msgstr "斯瓦爾巴及揚馬延"
 
 #. iso.code:SE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:202
@@ -1187,7 +1187,7 @@ msgstr "土庫曼"
 #. iso.code:TC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:216
 msgid "Turks and Caicos Islands"
-msgstr "特克斯和凱科斯群島"
+msgstr "特克斯及凱科斯群島"
 
 #. iso.code:TV
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:217
@@ -1267,7 +1267,7 @@ msgstr "越南"
 #. iso.code:WF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:232
 msgid "Wallis and Futuna"
-msgstr "瓦利斯和富圖納"
+msgstr "瓦利斯及富圖納"
 
 #. iso.code:EH
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:233
