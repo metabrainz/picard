@@ -75,29 +75,34 @@ class HasMenuItems:
     """This class can be used as a mix-in by classes providing a static MENU tuple,
     such as the BaseAction class used for adding plugin actions to menus.
 
-    A sub class of this should define a MENU class attribute, as a set of strings
-    defining the desired menu heierarchy. For plugins, the MENU elements may be marked
-    with the t_() function exposed by the plugin API.
+    A sub class of this should define a MENU class attribute, as a tuple defining the
+    desired menu hierarchy. Each element is either a plain string or, for plugins, a
+    string marked with the t_() function exposed by the plugin API (which may expand to
+    a (key, singular, plural) tuple for plural forms).
     """
 
-    MENU: tuple[str, ...]
+    MENU: tuple[str | tuple[str, str, str], ...]
 
     @classmethod
-    def translate_menu(cls) -> None:
-        """Translate the elements contained in the class MENU attribute, and replace
-        the MENU attribute with the translated elements.
+    def display_menu(cls) -> tuple[str, ...]:
+        """Return the translated MENU path for this class.
+
+        This attempts to translate each element with the API translation system if
+        available, otherwise uses gettext. The class ``MENU`` attribute is left
+        unchanged, so the method is safe to call repeatedly.
         """
-        if not hasattr(cls, 'MENU'):
-            return
-
+        menu = getattr(cls, 'MENU', ())
         api = getattr(cls, 'api', None)
-        if not api:
-            return
-
-        menu: list[str] = []
-        for item in cls.MENU:
-            if isinstance(item, tuple):
-                menu.append(api.trn(*item, n=1))
+        translated: list[str] = []
+        for item in menu:
+            if api:
+                # In case the item was created with t_() using a plural form
+                if isinstance(item, tuple):
+                    translated.append(api.trn(*item, n=1))
+                else:
+                    translated.append(api.tr(item))
+            elif isinstance(item, tuple):
+                translated.append(_(item[1]))
             else:
-                menu.append(api.tr(item))
-        cls.MENU = tuple(menu)
+                translated.append(_(item))
+        return tuple(translated)
