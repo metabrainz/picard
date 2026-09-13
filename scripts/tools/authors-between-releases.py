@@ -188,19 +188,30 @@ def iter_git_log(rev_range, format_fields, *pathspecs):
         yield line.split('\t', num_fields - 1)
 
 
+def _map_names_by_email(rev_range, pattern, pathspecs=(), label=None):
+    """Map author names to usernames extracted from noreply emails via git log.
+
+    Scans '%aN'/'%aE' pairs (optionally restricted to pathspecs), applies
+    pattern to each email, and maps the author name to the first capture group
+    of the first matching email, skipping EXCLUDE names. With rev_range=None,
+    scans the full repository history.
+    """
+    users = {}
+    for name, email in iter_git_log(rev_range, ('%aN', '%aE'), *pathspecs):
+        match = pattern.search(email)
+        if match and name not in EXCLUDE:
+            users.setdefault(name, match.group(1))
+    if users and label:
+        debug(f"Found {len(users)} {label}")
+    return users
+
+
 def get_github_users_from_emails(rev_range=None):
     """Map author names to GitHub usernames from noreply emails.
 
     With rev_range=None, scans the full repository history.
     """
-    github_users = {}
-    for name, email in iter_git_log(rev_range, ('%aN', '%aE')):
-        match = RE_GITHUB_NOREPLY.search(email)
-        if match and name not in EXCLUDE:
-            github_users.setdefault(name, match.group(1))
-    if github_users:
-        debug(f"Found {len(github_users)} GitHub users from noreply emails")
-    return github_users
+    return _map_names_by_email(rev_range, RE_GITHUB_NOREPLY, label="GitHub users from noreply emails")
 
 
 _known_github_users_cache = None
@@ -250,14 +261,12 @@ def get_github_users(rev_range):
 
 def get_weblate_users_from_emails(rev_range):
     """Map author names to Weblate usernames from noreply emails in git log."""
-    weblate_users = {}
-    for name, email in iter_git_log(rev_range, ('%aN', '%aE'), *TRANSLATION_PATHS):
-        match = RE_WEBLATE_NOREPLY.search(email)
-        if match and name not in EXCLUDE:
-            weblate_users.setdefault(name, match.group(1))
-    if weblate_users:
-        debug(f"Found {len(weblate_users)} Weblate users from noreply emails")
-    return weblate_users
+    return _map_names_by_email(
+        rev_range,
+        RE_WEBLATE_NOREPLY,
+        pathspecs=TRANSLATION_PATHS,
+        label="Weblate users from noreply emails",
+    )
 
 
 WEBLATE_REPORT_POLL_INTERVAL = 2  # seconds between task polls
