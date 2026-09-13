@@ -71,10 +71,6 @@ except ImportError:
 
 EXCLUDE = {'Weblate', 'dependabot[bot]', 'Automatic translation add-on'}
 
-# Weblate usernames with this prefix are automated add-on accounts (e.g. the
-# automatic machine-translation add-on), not human translators.
-WEBLATE_ADDON_PREFIX = 'addon:'
-
 # Human-maintained alias map for contributors who appear under more than one
 # git author name. Maps a secondary/alternate name to the canonical name so
 # the contributor is credited once (using the canonical name's resolved
@@ -88,6 +84,42 @@ AUTHOR_ALIASES = {
 def canonical_author(name):
     """Return the canonical git author name for a possibly-aliased name."""
     return AUTHOR_ALIASES.get(name, name)
+
+
+# Human-maintained normalization map for language names. Different Weblate
+# commit-message labels can name the same language differently (e.g. an older
+# "(Simplified)" label vs the current "(Simplified Han script)" for the same
+# zh_Hans/zh_CN translation). Map variant spellings to a single canonical name.
+# Add entries here when the same language shows up under more than one name.
+LANGUAGE_ALIASES = {
+    'Chinese (Simplified)': 'Chinese (Simplified Han script)',
+    'Chinese (Traditional)': 'Chinese (Traditional Han script)',
+}
+
+
+def canonical_language(name):
+    """Return the canonical language name for a possibly-variant spelling."""
+    return LANGUAGE_ALIASES.get(name, name)
+
+
+# Human-maintained map crediting code authors for languages they genuinely
+# translated. Code authors are otherwise excluded from the translator list
+# (they appear in the code-contributions line, and the commit-message language
+# labels over-attribute maintainers who merely merged translation PRs). Use
+# canonical language names (post LANGUAGE_ALIASES). Only affects --by-language.
+CODE_AUTHOR_TRANSLATIONS = {
+    'Laurent Monin': {'French'},
+    'Philipp Wolfer': {'German'},
+}
+
+
+def is_weblate_bot_username(username):
+    """Return True for automated Weblate accounts (addon:, mt:, webhook:, ...).
+
+    All such system accounts use a 'prefix:' form in their username; human
+    usernames never contain a colon.
+    """
+    return ':' in username
 
 
 # Paths containing translation files managed via Weblate.
@@ -308,21 +340,19 @@ def _weblate_api_request(api_key, url, method='GET', data=None):
         return json.loads(resp.read())
 
 
-def get_weblate_users_from_api(api_key, rev_range):
-    """Fetch translator usernames from the Weblate Reports API.
+def _weblate_credits_report(api_key, rev_range):
+    """Fetch the raw Weblate credits report for the given release range.
 
-    Schedules a credits report, polls for completion, and parses the result.
-    The end date is set to the day after the target tag to ensure
-    translations made on the tag date are included.
-    Returns a dict mapping full_name to Weblate username.
+    Schedules a credits report, polls for completion, and returns the parsed
+    JSON (a list of single-key {language: [user, ...]} dicts), or None on
+    error/timeout. The end date is set to the day after the target tag to
+    ensure translations made on the tag date are included.
     """
     from_tag, to_tag = rev_range.split('..', 1)
     start = get_tag_date(from_tag)
-    end_date = date.fromisoformat(get_tag_date(to_tag)) + timedelta(days=1)
-    end = end_date.isoformat()
+    end = (date.fromisoformat(get_tag_date(to_tag)) + timedelta(days=1)).isoformat()
 
     debug(f"Fetching Weblate credits for {start}..{end}")
-    credits = {}
     try:
         # Schedule the credits report
         report = _weblate_api_request(
@@ -334,7 +364,7 @@ def get_weblate_users_from_api(api_key, rev_range):
         task_path = report.get('task_url', '')
         if not task_path:
             debug("Weblate API: no task_url in response")
-            return credits
+            return None
 
         # Poll until the task completes
         task_url = WEBLATE_BASE_URL + task_path
@@ -347,28 +377,42 @@ def get_weblate_users_from_api(api_key, rev_range):
                 break
         else:
             debug("Weblate API: report generation timed out")
-            return credits
+            return None
 
         # Fetch the report JSON data
         report_path = task.get('result', {}).get('url', '')
         if not report_path:
             debug("Weblate API: no report URL in task result")
-            return credits
+            return None
         report_url = WEBLATE_BASE_URL + report_path + 'json/'
-        data = _weblate_api_request(api_key, report_url)
-
-        for lang_entry in data:
-            for users in lang_entry.values():
-                for user in users:
-                    full_name = user.get('full_name', '')
-                    username = user.get('username', '')
-                    if username.startswith(WEBLATE_ADDON_PREFIX) or full_name in EXCLUDE:
-                        continue  # skip automated add-on/bot accounts
-                    if full_name and username:
-                        credits.setdefault(full_name, username)
-        debug(f"Found {len(credits)} translators from Weblate API")
+        return _weblate_api_request(api_key, report_url)
     except Exception as e:
         debug(f"Weblate API error: {e}")
+        return None
+
+
+def get_weblate_users_from_api(api_key, rev_range):
+    """Return a flat dict mapping translator full_name to Weblate username.
+
+    Uses the Weblate credits report for the range. Automated accounts
+    (addon:, mt:, webhook:, ... usernames contain a colon) and EXCLUDE names
+    are filtered out.
+    """
+    data = _weblate_credits_report(api_key, rev_range)
+    credits = {}
+    if not data:
+        return credits
+    for lang_entry in data:
+        for users in lang_entry.values():
+            for user in users:
+                full_name = user.get('full_name', '')
+                username = user.get('username', '')
+                if not full_name or not username:
+                    continue
+                if is_weblate_bot_username(username) or full_name in EXCLUDE:
+                    continue
+                credits.setdefault(full_name, username)
+    debug(f"Found {len(credits)} translators from Weblate API")
     return credits
 
 
@@ -596,6 +640,35 @@ def format_translators(translators, translator_langs, weblate_users):
     return f"Translations were updated by {join_names(parts)}."
 
 
+def format_translators_by_language(translators, translator_langs, weblate_users):
+    """Format translators grouped by language, one line per language (HTML).
+
+    Inverts the same translator->languages data used by format_translators
+    (so the translator set and links stay consistent with the default view),
+    normalizes language names via LANGUAGE_ALIASES, and emits a bold language
+    label followed by its translators, one language per line.
+    """
+    by_language = {}
+    for name in translators:
+        for language in translator_langs[name]:
+            by_language.setdefault(canonical_language(language), set()).add(name)
+
+    # Credit code authors for languages they genuinely translated (curated).
+    for name, languages in CODE_AUTHOR_TRANSLATIONS.items():
+        for language in languages:
+            by_language.setdefault(canonical_language(language), set()).add(name)
+
+    lines = []
+    for language in sorted(by_language, key=str.casefold):
+        names = []
+        for name in sorted(by_language[language], key=str.casefold):
+            wb_user = weblate_users.get(name)
+            url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
+            names.append(linked_name(url, display_from_name(name)))
+        lines.append(f"<strong>{language}:</strong> {join_names(names)}")
+    return 'Translations were updated by:<br>\n' + '<br>\n'.join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -618,6 +691,12 @@ def main():
         '--quiet',
         action='store_true',
         help="suppress progress messages on stderr",
+    )
+    parser.add_argument(
+        '--by-language',
+        action='store_true',
+        help="group translators by language (one line per language); "
+        "requires Weblate API access, falls back to the default format otherwise",
     )
     args = parser.parse_args()
 
@@ -652,7 +731,10 @@ def main():
         # crediting admins who appear in API credits from merge operations
         print(format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_email_users))
     if translators:
-        print(format_translators(translators, translator_langs, weblate_users))
+        if args.by_language:
+            print(format_translators_by_language(translators, translator_langs, weblate_users))
+        else:
+            print(format_translators(translators, translator_langs, weblate_users))
 
 
 if __name__ == '__main__':
