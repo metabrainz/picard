@@ -69,7 +69,11 @@ except ImportError:
     WeblateConfig = None  # type: ignore
 
 
-EXCLUDE = {'Weblate', 'dependabot[bot]'}
+EXCLUDE = {'Weblate', 'dependabot[bot]', 'Automatic translation add-on'}
+
+# Weblate usernames with this prefix are automated add-on accounts (e.g. the
+# automatic machine-translation add-on), not human translators.
+WEBLATE_ADDON_PREFIX = 'addon:'
 
 # Human-maintained alias map for contributors who appear under more than one
 # git author name. Maps a secondary/alternate name to the canonical name so
@@ -358,6 +362,8 @@ def get_weblate_users_from_api(api_key, rev_range):
                 for user in users:
                     full_name = user.get('full_name', '')
                     username = user.get('username', '')
+                    if username.startswith(WEBLATE_ADDON_PREFIX) or full_name in EXCLUDE:
+                        continue  # skip automated add-on/bot accounts
                     if full_name and username:
                         credits.setdefault(full_name, username)
         debug(f"Found {len(credits)} translators from Weblate API")
