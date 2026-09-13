@@ -689,7 +689,7 @@ def format_translators_by_language(translators, translator_langs, weblate_users)
             url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
             names.append(linked_name(url, display_from_name(name)))
         lines.append(f"<strong>{language}:</strong> {join_names(names)}")
-    return 'Translations were updated by:<br>\n' + '<br>\n'.join(lines)
+    return '\nTranslations were updated by:<br>\n' + '<br>\n'.join(lines)
 
 
 def main():
