@@ -1,5 +1,22 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0rc3 - 2026-09-13
+
+### Bugfixes
+- [PICARD-3428](https://tickets.metabrainz.org/browse/PICARD-3428) - Metadata options page greys out after being opened once when translation_locales contains an unknown locale code
+- [PICARD-3429](https://tickets.metabrainz.org/browse/PICARD-3429) - If Picard was built with update check disabled the update level setting must be hidden
+- [PICARD-3430](https://tickets.metabrainz.org/browse/PICARD-3430) - macOS: Text color issues in dark mode
+- [PICARD-3432](https://tickets.metabrainz.org/browse/PICARD-3432) - Frozen builds do not bundle `picard.plugin3.cli`, breaking plugins that import it
+- [PICARD-3433](https://tickets.metabrainz.org/browse/PICARD-3433) - Options page: field highlight and bottom warning disagree about profile overrides
+- [PICARD-3436](https://tickets.metabrainz.org/browse/PICARD-3436) - Profile-overridden settings are only highlighted on the first Options page shown
+- [PICARD-3437](https://tickets.metabrainz.org/browse/PICARD-3437) - Importing a shareable profile that contains tagger scripts leaves the scripts disabled
+
+### Improvements
+- [PICARD-3431](https://tickets.metabrainz.org/browse/PICARD-3431) - Plugin install/enable/disable/uninstall errors aren't clearly displayed as coming from the plugin
+- [PICARD-3434](https://tickets.metabrainz.org/browse/PICARD-3434) - Use Modern Style for Wizard across all platforms
+- [PICARD-3435](https://tickets.metabrainz.org/browse/PICARD-3435) - Setup wizard: add option to convert Unicode punctuation to ASCII
+
+
 ## Version 3.0.0rc2 - 2026-09-10
 
 ### Bugfixes
