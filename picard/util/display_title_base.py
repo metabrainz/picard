@@ -61,14 +61,18 @@ class HasDisplayTitle:
         """
         title = getattr(cls, 'TITLE', getattr(cls, 'NAME', None)) or cls.__name__
         api = getattr(cls, 'api', None)
-        if api:
-            # In case the TITLE was created with t_() using a plural form
-            if isinstance(title, tuple):
-                return api.trn(*title, n=1)
-            else:
-                return api.tr(title)
+        return _translation_helper(api, title)
+
+
+def _translation_helper(api, text):
+    if api:
+        # In case the text was created with t_() using a plural form
+        if isinstance(text, tuple):
+            return api.trn(*text, n=1)
         else:
-            return _(title)
+            return api.tr(text)
+    else:
+        return _(text)
 
 
 class HasMenuItems:
@@ -95,14 +99,5 @@ class HasMenuItems:
         api = getattr(cls, 'api', None)
         translated: list[str] = []
         for item in menu:
-            if api:
-                # In case the item was created with t_() using a plural form
-                if isinstance(item, tuple):
-                    translated.append(api.trn(*item, n=1))
-                else:
-                    translated.append(api.tr(item))
-            elif isinstance(item, tuple):
-                translated.append(_(item[1]))
-            else:
-                translated.append(_(item))
+            translated.append(_translation_helper(api, item))
         return tuple(translated)
