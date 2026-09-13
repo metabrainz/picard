@@ -107,9 +107,13 @@ def canonical_language(name):
 # (they appear in the code-contributions line, and the commit-message language
 # labels over-attribute maintainers who merely merged translation PRs). Use
 # canonical language names (post LANGUAGE_ALIASES). Only affects --by-language.
+#
+# 'weblate' is the contributor's Weblate username, used for the profile link
+# when their git author name differs from their Weblate account name (so the
+# automatic name-based lookup would miss it).
 CODE_AUTHOR_TRANSLATIONS = {
-    'Laurent Monin': {'French'},
-    'Philipp Wolfer': {'German'},
+    'Laurent Monin': {'langs': {'French'}, 'weblate': 'Zas'},
+    'Philipp Wolfer': {'langs': {'German'}, 'weblate': 'outsidecontext'},
 }
 
 
@@ -654,15 +658,21 @@ def format_translators_by_language(translators, translator_langs, weblate_users)
             by_language.setdefault(canonical_language(language), set()).add(name)
 
     # Credit code authors for languages they genuinely translated (curated).
-    for name, languages in CODE_AUTHOR_TRANSLATIONS.items():
-        for language in languages:
+    for name, info in CODE_AUTHOR_TRANSLATIONS.items():
+        for language in info['langs']:
             by_language.setdefault(canonical_language(language), set()).add(name)
+
+    def weblate_username(name):
+        # Prefer a curated Weblate username (git name may differ from the
+        # Weblate account name), then fall back to the auto-derived mapping.
+        curated = CODE_AUTHOR_TRANSLATIONS.get(name, {}).get('weblate')
+        return curated or weblate_users.get(name)
 
     lines = []
     for language in sorted(by_language, key=str.casefold):
         names = []
         for name in sorted(by_language[language], key=str.casefold):
-            wb_user = weblate_users.get(name)
+            wb_user = weblate_username(name)
             url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
             names.append(linked_name(url, display_from_name(name)))
         lines.append(f"<strong>{language}:</strong> {join_names(names)}")
