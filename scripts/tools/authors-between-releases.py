@@ -76,6 +76,7 @@ EXCLUDE = {'Weblate', 'dependabot[bot]'}
 TRANSLATION_PATHS = ('po/', 'installer/i18n/sources/')
 
 WEBLATE_API_URL = 'https://translations.metabrainz.org/api'
+WEBLATE_BASE_URL = 'https://translations.metabrainz.org'
 WEBLATE_URL = 'https://translations.metabrainz.org/user'
 GITHUB_URL = 'https://github.com'
 
@@ -301,7 +302,7 @@ def get_weblate_users_from_api(api_key, rev_range):
             return credits
 
         # Poll until the task completes
-        task_url = WEBLATE_API_URL.rsplit('/api', 1)[0] + task_path
+        task_url = WEBLATE_BASE_URL + task_path
         elapsed = 0
         while elapsed < WEBLATE_REPORT_TIMEOUT:
             time.sleep(WEBLATE_REPORT_POLL_INTERVAL)
@@ -318,7 +319,7 @@ def get_weblate_users_from_api(api_key, rev_range):
         if not report_path:
             debug("Weblate API: no report URL in task result")
             return credits
-        report_url = WEBLATE_API_URL.rsplit('/api', 1)[0] + report_path + 'json/'
+        report_url = WEBLATE_BASE_URL + report_path + 'json/'
         data = _weblate_api_request(api_key, report_url)
 
         for lang_entry in data:
@@ -366,7 +367,7 @@ def get_code_authors(rev_range):
     """Return set of author names who committed changes outside translation paths."""
     excludes = [f':!{path}' for path in TRANSLATION_PATHS]
     lines = git('log', '--format=%aN', rev_range, '--', *excludes).splitlines()
-    authors = set(a for a in lines if a and a not in EXCLUDE)
+    authors = {a for a in lines if a and a not in EXCLUDE}
     debug(f"Found {len(authors)} code authors")
     return authors
 
