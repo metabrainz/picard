@@ -358,9 +358,13 @@ def get_weblate_api_key() -> str | None:
     return api_key
 
 
-def get_weblate_users(rev_range):
-    """Map author names to Weblate usernames from noreply emails and API credits."""
-    users = get_weblate_users_from_emails(rev_range)
+def get_weblate_users(rev_range, email_users=None):
+    """Map author names to Weblate usernames from noreply emails and API credits.
+
+    If email_users (the result of get_weblate_users_from_emails) is provided,
+    it is reused instead of scanning the git log again.
+    """
+    users = dict(email_users) if email_users is not None else get_weblate_users_from_emails(rev_range)
     api_key = get_weblate_api_key()
     if api_key:
         for name, username in get_weblate_users_from_api(api_key, rev_range).items():
@@ -587,8 +591,8 @@ def main():
     debug(f"{rev_range}:")
 
     github_users = get_github_users(rev_range)
-    weblate_users = get_weblate_users(rev_range)
     weblate_email_users = get_weblate_users_from_emails(rev_range)
+    weblate_users = get_weblate_users(rev_range, email_users=weblate_email_users)
     code_authors = get_code_authors(rev_range)
     translator_langs = get_translator_langs(rev_range)
     translators = set(translator_langs.keys()) - code_authors
