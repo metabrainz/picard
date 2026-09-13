@@ -2401,13 +2401,22 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
 
         self.plugin_tools_menu.menuAction().setVisible(True)
+        plugin_menus = {}
 
         for ActionClass in actions:
             # Instantiate action with API
             try:
+                # Determine target menu based on MENU attribute
+                action_menu = self.plugin_tools_menu
+                for index in range(1, len(ActionClass.MENU) + 1):
+                    key = tuple(ActionClass.MENU[:index])
+                    if key in plugin_menus:
+                        action_menu = plugin_menus[key]
+                    else:
+                        action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
                 action = ActionClass()
-                action.setParent(self.plugin_tools_menu)  # Set parent to keep action alive
-                self.plugin_tools_menu.addAction(action)
+                action.setParent(action_menu)  # Set parent to keep action alive
+                action_menu.addAction(action)
             except Exception as ex:
                 log.error("Error adding plugin action", exc_info=ex)
 
