@@ -411,6 +411,12 @@ def quote_name(name):
     return name
 
 
+def linked_name(url, text):
+    """Return text (comma-quoted) wrapped in an HTML link, or plain if url is falsy."""
+    text = quote_name(text)
+    return html_link(url, text) if url else text
+
+
 def join_names(names):
     """Join names with commas and 'and' before the last one."""
     if len(names) <= 1:
@@ -523,10 +529,8 @@ def format_code_authors(code_authors, github_users, display_names, translator_la
     for name in sorted(code_authors, key=str.casefold):
         gh_user = github_users.get(name)
         display = display_names.get(name, name)
-        if gh_user:
-            entry = html_link(f'{GITHUB_URL}/{url_quote(gh_user)}', quote_name(display))
-        else:
-            entry = quote_name(display)
+        url = f'{GITHUB_URL}/{url_quote(gh_user)}' if gh_user else None
+        entry = linked_name(url, display)
         # Only show translation languages if the person is a confirmed
         # Weblate translator (not just the merge author of squashed commits)
         if name in weblate_users and name in translator_langs:
@@ -541,12 +545,9 @@ def format_translators(translators, translator_langs, weblate_users):
     parts = []
     for name in sorted(translators, key=str.casefold):
         wb_user = weblate_users.get(name)
-        if wb_user:
-            linked_name = html_link(f'{WEBLATE_URL}/{url_quote(wb_user)}/', quote_name(name))
-        else:
-            linked_name = quote_name(name)
+        url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
         langs = ', '.join(sorted(translator_langs[name]))
-        parts.append(f"{linked_name} ({langs})")
+        parts.append(f"{linked_name(url, name)} ({langs})")
     return f"Translations were updated by {join_names(parts)}."
 
 
