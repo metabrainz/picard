@@ -69,3 +69,35 @@ class HasDisplayTitle:
                 return api.tr(title)
         else:
             return _(title)
+
+
+class HasMenuItems:
+    """This class can be used as a mix-in by classes providing a static MENU tuple,
+    such as the BaseAction class used for adding plugin actions to menus.
+
+    A sub class of this should define a MENU class attribute, as a set of strings
+    defining the desired menu heierarchy. For plugins, the MENU elements may be marked
+    with the t_() function exposed by the plugin API.
+    """
+
+    MENU: tuple[str, ...]
+
+    @classmethod
+    def translate_menu(cls) -> None:
+        """Translate the elements contained in the class MENU attribute, and replace
+        the MENU attribute with the translated elements.
+        """
+        if not hasattr(cls, 'MENU'):
+            return
+
+        api = getattr(cls, 'api', None)
+        if not api:
+            return
+
+        menu: list[str] = []
+        for item in cls.MENU:
+            if isinstance(item, tuple):
+                menu.append(api.trn(*item, n=1))
+            else:
+                menu.append(api.tr(item))
+        cls.MENU = tuple(menu)

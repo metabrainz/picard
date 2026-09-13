@@ -44,10 +44,13 @@ from PyQt6 import QtGui
 
 from picard import tagger_instance
 from picard.plugin import ExtensionPoint
-from picard.util.display_title_base import HasDisplayTitle
+from picard.util.display_title_base import (
+    HasDisplayTitle,
+    HasMenuItems,
+)
 
 
-class BaseAction(QtGui.QAction, HasDisplayTitle):
+class BaseAction(QtGui.QAction, HasDisplayTitle, HasMenuItems):
     """Base class for plugin actions.
 
     Subclasses should set the `TITLE` and optionally the `MENU` attributes to define the
@@ -66,6 +69,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
         super().__init__(self.display_title(), parent=parent)
         self.tagger = tagger_instance()
         self.triggered.connect(self.__callback)
+        self.translate_menu()
 
     def __callback(self):
         objs = self.tagger.window.selected_objects
