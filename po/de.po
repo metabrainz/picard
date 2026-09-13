@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-10 06:36+0000\n"
+"PO-Revision-Date: 2026-09-13 08:24+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -1508,16 +1508,13 @@ msgid "Add file as recording…"
 msgstr "Datei als Aufnahme hinzufügen …"
 
 #: picard/browser/auth_responses.py:142
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication successful — %s"
-msgstr "Authentifizierung fehlgeschlagen"
+msgstr "Authentifizierung erfolgreich — %s"
 
 #: picard/browser/auth_responses.py:143
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication successful."
-msgstr "Authentifizierung fehlgeschlagen"
+msgstr "Authentifizierung erfolgreich."
 
 #: picard/browser/auth_responses.py:144
 msgid "Picard has been authorized."
@@ -1591,7 +1588,7 @@ msgstr "Authentifizierung abgebrochen — %s"
 
 #: picard/browser/auth_responses.py:196
 msgid "Authentication cancelled."
-msgstr "Authentifizierung abgebrochen"
+msgstr "Authentifizierung abgebrochen."
 
 #: picard/browser/auth_responses.py:211
 #, python-format
@@ -3660,10 +3657,9 @@ msgid "%s — MusicBrainz Picard"
 msgstr "%s — MusicBrainz Picard"
 
 #: picard/ui/aboutdialog.py:126
-#, fuzzy, python-format
-#| msgid "Version"
+#, python-format
 msgid "Version %s"
-msgstr "Version"
+msgstr "Version %s"
 
 #: picard/ui/aboutdialog.py:157
 #, python-format
@@ -4992,10 +4988,8 @@ msgid "Installation Failed"
 msgstr "Installation fehlgeschlagen"
 
 #: picard/ui/dialogs/installplugin.py:738
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to install the plugin."
-msgstr "Plugin-Deinstallation fehlgeschlagen: {errmsg}"
+msgstr "Plugin-Installation fehlgeschlagen."
 
 #: picard/ui/dialogs/plugin_error.py:169
 #, python-format
@@ -5014,10 +5008,9 @@ msgid "MusicBrainz bug tracker"
 msgstr "MusicBrainz-Titel-ID"
 
 #: picard/ui/dialogs/plugin_error.py:182
-#, fuzzy, python-format
-#| msgid "Plugin: %s"
+#, python-format
 msgid "Plugin \"%s\":"
-msgstr "Plugin: %s"
+msgstr "Plugin „%s“:"
 
 #: picard/ui/dialogs/plugin_error.py:187
 msgid "Error reported by the plugin:"
@@ -5915,14 +5908,11 @@ msgstr ""
 "Differenz der Titellänge unterhalb dieser Anzahl von Sekunden ignorieren"
 
 #: picard/ui/forms/ui_options_matching.py:142
-#, fuzzy
-#| msgid ""
-#| "Ignore the following tracks when determining whether a release is complete"
 msgid ""
 "Ignore the following tracks when determining whether a release is complete:"
 msgstr ""
 "Die folgenden Titel bei der Überprüfung der Vollständigkeit einer "
-"Veröffentlichung ignorieren"
+"Veröffentlichung ignorieren:"
 
 #: picard/ui/forms/ui_options_matching.py:143
 msgid "Video tracks"
