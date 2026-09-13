@@ -123,16 +123,28 @@ def get_tag_date(tag):
     return git('log', '-1', '--format=%aI', tag).strip()[:10]
 
 
+def git_log_lines(fmt, rev_range=None, extra_flags=(), pathspecs=()):
+    """Run 'git log' and return its output lines.
+
+    Centralizes the common invocation shape: optional flags, a --format
+    string, an optional revision range (None/empty scans full history), and
+    optional pathspecs (added after a '--' separator).
+    """
+    args = ['log', *extra_flags, f'--format={fmt}']
+    if rev_range:
+        args.append(rev_range)
+    if pathspecs:
+        args.extend(('--', *pathspecs))
+    return git(*args).splitlines()
+
+
 def get_github_users_from_merges(rev_range=None):
     """Map author names to GitHub usernames from PR merge commits.
 
     With rev_range=None, scans the full repository history.
     """
-    log_args = ['log', '--merges', '--format=%P %s']
-    if rev_range:
-        log_args.append(rev_range)
     pr_parents = {}
-    for line in git(*log_args).splitlines():
+    for line in git_log_lines('%P %s', rev_range, extra_flags=('--merges',)):
         match = RE_MERGE_PR.search(line)
         if match:
             pr_parents[match.group(1)] = match.group(2)
@@ -169,13 +181,8 @@ def iter_git_log(rev_range, format_fields, *pathspecs):
         *pathspecs: Optional pathspec arguments for git log
     """
     fmt = '\t'.join(format_fields)
-    args = ['log', f'--format={fmt}']
-    if rev_range:
-        args.append(rev_range)
-    if pathspecs:
-        args.extend(('--', *pathspecs))
     num_fields = len(format_fields)
-    for line in git(*args).splitlines():
+    for line in git_log_lines(fmt, rev_range, pathspecs=pathspecs):
         if '\t' not in line:
             continue
         yield line.split('\t', num_fields - 1)
