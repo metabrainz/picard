@@ -122,10 +122,16 @@ def get_tag_date(tag):
     return git('log', '-1', '--format=%aI', tag).strip()[:10]
 
 
-def get_github_users_from_merges(rev_range):
-    """Map author names to GitHub usernames from PR merge commits."""
+def get_github_users_from_merges(rev_range=None):
+    """Map author names to GitHub usernames from PR merge commits.
+
+    With rev_range=None, scans the full repository history.
+    """
+    log_args = ['log', '--merges', '--format=%P %s']
+    if rev_range:
+        log_args.append(rev_range)
     pr_parents = {}
-    for line in git('log', '--merges', '--format=%P %s', rev_range).splitlines():
+    for line in git(*log_args).splitlines():
         match = RE_MERGE_PR.search(line)
         if match:
             pr_parents[match.group(1)] = match.group(2)
@@ -156,12 +162,15 @@ def iter_git_log(rev_range, format_fields, *pathspecs):
     """Yield tuples from git log with tab-separated format fields.
 
     Args:
-        rev_range: Git revision range (e.g. 'tag1..tag2')
+        rev_range: Git revision range (e.g. 'tag1..tag2'), or None/empty to
+            scan the full repository history.
         format_fields: Git format placeholders (e.g. '%aN', '%aE', '%s')
         *pathspecs: Optional pathspec arguments for git log
     """
     fmt = '\t'.join(format_fields)
-    args = ['log', f'--format={fmt}', rev_range]
+    args = ['log', f'--format={fmt}']
+    if rev_range:
+        args.append(rev_range)
     if pathspecs:
         args.extend(('--', *pathspecs))
     num_fields = len(format_fields)
@@ -171,8 +180,11 @@ def iter_git_log(rev_range, format_fields, *pathspecs):
         yield line.split('\t', num_fields - 1)
 
 
-def get_github_users_from_emails(rev_range):
-    """Map author names to GitHub usernames from noreply emails."""
+def get_github_users_from_emails(rev_range=None):
+    """Map author names to GitHub usernames from noreply emails.
+
+    With rev_range=None, scans the full repository history.
+    """
     github_users = {}
     for name, email in iter_git_log(rev_range, ('%aN', '%aE')):
         match = RE_GITHUB_NOREPLY.search(email)
@@ -183,10 +195,47 @@ def get_github_users_from_emails(rev_range):
     return github_users
 
 
+_known_github_users_cache = None
+
+
+def get_known_github_users():
+    """Derive a name->GitHub username map from the full repository history.
+
+    Scans all PR merge commits and GitHub noreply emails across the entire
+    history (not just the selected range). This provides a fallback for
+    contributors whose username cannot be derived from the range alone (e.g.
+    commits authored with a real email address and not merged via a
+    "Merge pull request" commit within the range).
+
+    Noreply emails take precedence over merge-commit fork owners, because the
+    email encodes the actual GitHub username while a PR's source branch owner
+    may use a different fork slug.
+
+    The result is cached for the lifetime of the process.
+    """
+    global _known_github_users_cache
+    if _known_github_users_cache is not None:
+        return _known_github_users_cache
+    debug("Deriving known GitHub users from full history")
+    users = get_github_users_from_merges()
+    for name, username in get_github_users_from_emails().items():
+        users[name] = username  # email wins over merge fork-owner slug
+    debug(f"Derived {len(users)} known GitHub users from full history")
+    _known_github_users_cache = users
+    return users
+
+
 def get_github_users(rev_range):
-    """Map author names to GitHub usernames from merge commits and noreply emails."""
+    """Map author names to GitHub usernames from merge commits and noreply emails.
+
+    Falls back to usernames derived from the full repository history for
+    contributors whose username cannot be resolved from the range alone. The
+    fallback is consulted last so it never overrides data from the range.
+    """
     users = get_github_users_from_merges(rev_range)
     for name, username in get_github_users_from_emails(rev_range).items():
+        users.setdefault(name, username)
+    for name, username in get_known_github_users().items():
         users.setdefault(name, username)
     return users
 
