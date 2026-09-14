@@ -97,6 +97,11 @@ hiddenimports = [
     # Used by plugins (e.g. "Create Local Plugin"), but not otherwise
     # referenced, so PyInstaller would not bundle it (PICARD-3432).
     'picard.plugin3.cli',
+    # SQLite is part of the Python standard library but Picard does not import
+    # it, so PyInstaller would not bundle the sqlite3 module and its native
+    # extension. Include it so plugins (and potentially Picard itself) can use
+    # SQLite in packaged builds.
+    'sqlite3',
 ]
 
 if has_module('opencc'):
@@ -172,7 +177,7 @@ else:
             pathex=['picard'],
             binaries=[],
             datas=[],
-            hiddenimports=['cffi'],
+            hiddenimports=['cffi', 'sqlite3'],
             hookspath=None,
             runtime_hooks=[],
             excludes=excludes,
