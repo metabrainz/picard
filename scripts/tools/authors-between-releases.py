@@ -71,21 +71,6 @@ except ImportError:
 
 EXCLUDE = {'Weblate', 'dependabot[bot]', 'Automatic translation add-on'}
 
-# Human-maintained alias map for contributors who appear under more than one
-# git author name. Maps a secondary/alternate name to the canonical name so
-# the contributor is credited once (using the canonical name's resolved
-# GitHub username and link). Add entries here when a person shows up twice in
-# the generated credits under different names.
-AUTHOR_ALIASES = {
-    'FRC': 'frcooper',
-}
-
-
-def canonical_author(name):
-    """Return the canonical git author name for a possibly-aliased name."""
-    return AUTHOR_ALIASES.get(name, name)
-
-
 # Human-maintained normalization map for language names. Different Weblate
 # commit-message labels can name the same language differently (e.g. an older
 # "(Simplified)" label vs the current "(Simplified Han script)" for the same
@@ -464,7 +449,7 @@ def get_code_authors(rev_range):
     """Return set of author names who committed changes outside translation paths."""
     excludes = [f':!{path}' for path in TRANSLATION_PATHS]
     lines = git('log', '--format=%aN', rev_range, '--', *excludes).splitlines()
-    authors = {canonical_author(a) for a in lines if a and a not in EXCLUDE}
+    authors = {a for a in lines if a and a not in EXCLUDE}
     debug(f"Found {len(authors)} code authors")
     return authors
 
@@ -480,7 +465,7 @@ def get_translator_langs(rev_range):
             continue
         match = RE_WEBLATE_LANG.search(subject)
         if match:
-            translator_langs.setdefault(canonical_author(author), set()).add(match.group(1))
+            translator_langs.setdefault(author, set()).add(match.group(1))
     debug(f"Found {len(translator_langs)} translators from commit messages")
     return translator_langs
 
