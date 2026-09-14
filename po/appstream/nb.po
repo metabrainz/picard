@@ -15,9 +15,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2026-03-09 07:11+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-09-14 10:14+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/3/appstream/nb_NO/>\n"
 "Language: nb\n"
@@ -25,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -63,13 +62,12 @@ msgid "Features:"
 msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:29
-#, fuzzy
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"Picard støtter masse populære formater, så som; mp3, flac, ogg, m4a, wma, "
-"wav og mange flere."
+"Flere formater: Picard støtter masse populære formater, som mp3, flac, ogg, "
+"m4a, wma, wav og mange flere."
 
 #: org.musicbrainz.Picard.appdata.xml.in:33
 msgid ""
@@ -104,11 +102,12 @@ msgid ""
 msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:54
-#, fuzzy
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr "Picard kan finne og laste ned de riktige omslagsbildene for dine album."
+msgstr ""
+"Omslagsbilder: Picard kan finne og laste ned de riktige omslagsbildene for "
+"dine album."
 
 #: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""

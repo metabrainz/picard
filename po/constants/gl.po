@@ -2,15 +2,15 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2023, 2026.
 # ninjum <ninjum@gmx.es>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-08-12 13:12+0000\n"
-"Last-Translator: ninjum <ninjum@gmx.es>\n"
+"PO-Revision-Date: 2026-09-14 10:14+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/constants/gl/>\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -5061,7 +5061,7 @@ msgstr ""
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
-msgstr "DAta do lanzamento orixinal"
+msgstr "Data do lanzamento orixinal"
 
 #: picard/const/tags.py:705
 msgid ""

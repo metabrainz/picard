@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-13 08:24+0000\n"
+"PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
 "3/app/sv/>\n"
@@ -7611,7 +7611,7 @@ msgstr "Flytta till &papperskorgen"
 
 #: picard/ui/mainwindow/actions.py:198
 msgid "Shift+Del"
-msgstr "Shift+Delete"
+msgstr "Shift+Del"
 
 #: picard/ui/mainwindow/actions.py:206
 msgid "S&ubmit AcoustIDs"
