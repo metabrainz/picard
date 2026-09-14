@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-19 07:12+0000\n"
+"PO-Revision-Date: 2026-09-14 04:13+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
 ": n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -3866,12 +3866,13 @@ msgstr ""
 #: picard/ui/playertoolbar.py:174
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
+"Vidinis grotuvas: medijos ištekliaus formatas nėra (visiškai) palaikomas."
 
 #: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
-msgstr ""
+msgstr "Vidinis grotuvas: nėra reikiamų leidimų paleisti medijos išteklį."
 
 #: picard/ui/playertoolbar.py:178
 msgid ""
@@ -3898,37 +3899,37 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:204
 msgid "Pause"
-msgstr ""
+msgstr "Pristabdyti"
 
 #: picard/ui/playertoolbar.py:205
 msgid "Pause or resume current playback"
-msgstr ""
+msgstr "Pristabdyti arba tęsti dabartinę perklausą"
 
 #: picard/ui/playertoolbar.py:343
 #, python-format
 msgid "%1.1f ×"
-msgstr ""
+msgstr "%1.1f ×"
 
 #: picard/ui/playertoolbar.py:349
 msgid "Change playback speed"
-msgstr ""
+msgstr "Keisti perklausos greitį"
 
 #: picard/ui/playertoolbar.py:356
 msgid "Playback speed"
-msgstr ""
+msgstr "Perklausos greitis"
 
 #: picard/ui/playertoolbar.py:399
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #: picard/ui/playertoolbar.py:405
 msgid "Change audio volume"
-msgstr ""
+msgstr "Keisti garso garsumą"
 
 #: picard/ui/playertoolbar.py:411
 msgid "Audio volume"
-msgstr ""
+msgstr "Garso garsumas"
 
 #: picard/ui/pluginupdatedialog.py:38
 msgid "Perform this check again the next time you start Picard."
@@ -4076,11 +4077,11 @@ msgstr "&Importuoti skripto failą"
 
 #: picard/ui/scripteditor.py:569
 msgid "Import a file as a new script"
-msgstr ""
+msgstr "Importuoti failą kaip naują skriptą"
 
 #: picard/ui/scripteditor.py:574
 msgid "&Export a script file"
-msgstr ""
+msgstr "&Eksportuoti skripto failą"
 
 #: picard/ui/scripteditor.py:575
 msgid "Export the script to a file"
@@ -5870,15 +5871,13 @@ msgstr "Suderinamumas"
 
 #: picard/ui/options/renaming_compat.py:135
 msgid "Invalid directory separator replacement"
-msgstr ""
+msgstr "Netinkamas katalogų skirtuko pakeitimas."
 
 #: picard/ui/options/renaming_compat.py:136
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Keičiamasis simbolis, naudojamas katalogų skirtukams"
+msgstr "Katalogų skirtukų pakeitimas pats neturi būti katalogų skirtukas."
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
