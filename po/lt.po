@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
 "Language: lt\n"
@@ -7623,7 +7623,6 @@ msgid "Media"
 msgstr "Medija"
 
 #: picard/ui/itemviews/columns.py:174
-#, fuzzy
 msgid "ISWC"
 msgstr "ISWC"
 
@@ -7632,32 +7631,24 @@ msgid "Size"
 msgstr "Dydis"
 
 #: picard/ui/itemviews/columns.py:185
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Leidinio tipas"
+msgstr "Failo tipas"
 
 #: picard/ui/itemviews/columns.py:188
-#, fuzzy
-#| msgid "Director"
 msgid "Directory"
-msgstr "Režisierius"
+msgstr "Katelogas"
 
 #: picard/ui/itemviews/columns.py:190
-#, fuzzy
-#| msgid "The file was empty"
 msgid "File Extension"
-msgstr "Failas buvo tuščias."
+msgstr "Failo plėtinys"
 
 #: picard/ui/itemviews/columns.py:193
 msgid "File Creation Time"
-msgstr ""
+msgstr "Failo sukūrimo laikas"
 
 #: picard/ui/itemviews/columns.py:197
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "Praleidumas:"
+msgstr "Bitų sparta"
 
 #: picard/ui/itemviews/columns.py:205
 msgid "Genre"
@@ -7700,10 +7691,9 @@ msgid "Extra files: %(count)d"
 msgstr ""
 
 #: picard/ui/itemviews/match_quality_column.py:255
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "Neatitinkantys failai"
+msgstr "Neatitinkantys failai: %(count)d"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
 msgid "Manage Custom Columns"
@@ -7769,10 +7759,8 @@ msgid "Width"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:72
-#, fuzzy
-#| msgid "title"
 msgid "Untitled"
-msgstr "pavadinimas"
+msgstr "Be pavadinimo"
 
 #: picard/ui/itemviews/custom_columns/shared.py:154
 msgid "Show this column in the Files view."
@@ -9985,28 +9973,20 @@ msgid "Replace '%s'"
 msgstr ""
 
 #: picard/ui/options/profiles.py:714
-#, fuzzy
-#| msgid "Create a new profile"
 msgid "Create new copy"
-msgstr "Kurti naują profilį"
+msgstr "Kurti naują kopiją"
 
 #: picard/ui/options/profiles.py:773
-#, fuzzy
-#| msgid "Warning"
 msgid "Import Warnings"
-msgstr "Įspėjimas"
+msgstr "Importo įspėjimai"
 
 #: picard/ui/options/profiles.py:788
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and Replace Profile"
-msgstr "&Importuoti skripto failą"
+msgstr "Importuoti ir pakeisti profilį"
 
 #: picard/ui/options/profiles.py:805
-#, fuzzy
-#| msgid "Rename profile"
 msgid "Replace Profile"
-msgstr "Pervadinti profilį"
+msgstr "Pakeisti profilį"
 
 #: picard/ui/options/profiles.py:807
 #, python-format
@@ -10062,10 +10042,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/releases.py:133
-#, fuzzy
-#| msgid "Preferred medium formats"
 msgid "Preferred medium formats (higher priority first)"
-msgstr "Pageidaujami laikmenos formatai"
+msgstr "Pageidaujami laikmenos formatai (aukščiausias prioritetas pirmiausia)"
 
 #: picard/ui/options/releases.py:136
 msgid ""
@@ -10073,6 +10051,9 @@ msgid ""
 "here (e.g. CD over Digital Media).<br>The top format gets the strongest "
 "preference."
 msgstr ""
+"Kai egzistuoja kelios to paties leidinio ledimai, pageidauti čia nurodytiems "
+"formatams (pvz., CD už skaitmeninę mediją).<br>Pirmenybė teikiama viršuje "
+"nurodytam formatui."
 
 #: picard/ui/options/renaming.py:62
 msgid "File Naming"
@@ -10088,15 +10069,13 @@ msgstr "Suderinamumas"
 
 #: picard/ui/options/renaming_compat.py:127
 msgid "Invalid directory separator replacement"
-msgstr ""
+msgstr "Netinkamas katalogų skirtuko pakeitimas."
 
 #: picard/ui/options/renaming_compat.py:128
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Keičiamasis simbolis, naudojamas katalogų skirtukams"
+msgstr "Katalogų skirtukų pakeitimas pats neturi būti katalogų skirtukas."
 
 #: picard/ui/options/renaming_compat.py:137
 msgid ""
@@ -10139,20 +10118,16 @@ msgid "Script Error"
 msgstr "Skripto klaida"
 
 #: picard/ui/options/sessions.py:45
-#, fuzzy
-#| msgid "Version"
 msgid "Sessions"
-msgstr "Versija"
+msgstr "Seansai"
 
 #: picard/ui/options/sessions.py:114
-#, fuzzy
-#| msgid "Select all"
 msgid "Select Sessions Folder"
-msgstr "Pasirinkti viską"
+msgstr "Pasirinkti seansų aplanką"
 
 #: picard/ui/options/startup.py:55
 msgid "Startup"
-msgstr ""
+msgstr "Paleidimas"
 
 #: picard/ui/options/tags_compatibility_aac.py:38
 msgid "AAC"
@@ -10169,17 +10144,18 @@ msgstr "WAVE"
 #: picard/ui/player/player.py:284
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
+"Vidinis grotuvas: medijos ištekliaus formatas nėra (visiškai) palaikomas."
 
 #: picard/ui/player/player.py:286
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
-msgstr ""
+msgstr "Vidinis grotuvas: nėra reikiamų leidimų paleisti medijos išteklį."
 
 #: picard/ui/player/player.py:288
 #, python-format
 msgid "Internal player: %(error)s, %(message)s"
-msgstr ""
+msgstr "Vidinis grotuvas: %(error)s, %(message)s."
 
 #: picard/ui/player/toolbar.py:57
 msgid "Player"
@@ -10187,51 +10163,49 @@ msgstr "Grotuvas"
 
 #: picard/ui/player/toolbar.py:76
 msgid "Pause"
-msgstr ""
+msgstr "Pristabdyti"
 
 #: picard/ui/player/toolbar.py:77
 msgid "Pause or resume current playback"
-msgstr ""
+msgstr "Pristabdyti arba tęsti dabartinę perklausą"
 
 #: picard/ui/player/toolbar.py:83
 msgid "Ctrl+P"
 msgstr "Ctrl+P"
 
 #: picard/ui/player/toolbar.py:218
-#, fuzzy
-#| msgid "Unknown script"
 msgid "Unknown Artist"
-msgstr "Nežinomas skriptas"
+msgstr "Nežinomas atlikėjas"
 
 #: picard/ui/player/toolbar.py:238
 #, python-format
 msgid "%1.1f ×"
-msgstr ""
+msgstr "%1.1f ×"
 
 #: picard/ui/player/toolbar.py:246
 msgid "Change playback speed"
-msgstr ""
+msgstr "Keisti perklausos greitį"
 
 #: picard/ui/player/toolbar.py:252
 msgid "Playback speed"
-msgstr ""
+msgstr "Perklausos greitis"
 
 #: picard/ui/player/toolbar.py:300
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #: picard/ui/player/toolbar.py:308
 msgid "Change audio volume"
-msgstr ""
+msgstr "Keisti garso garsumą"
 
 #: picard/ui/player/toolbar.py:313
 msgid "Volume up"
-msgstr ""
+msgstr "Garsumo didinimas"
 
 #: picard/ui/player/toolbar.py:314
 msgid "Increase audio volume"
-msgstr ""
+msgstr "Padidinti garso garsumą"
 
 #: picard/ui/player/toolbar.py:319
 msgid "Ctrl+Shift++"
@@ -10239,11 +10213,11 @@ msgstr "Ctrl+Shift++"
 
 #: picard/ui/player/toolbar.py:323
 msgid "Volume down"
-msgstr ""
+msgstr "Garsumo mažinimas"
 
 #: picard/ui/player/toolbar.py:324
 msgid "Decrease audio volume"
-msgstr ""
+msgstr "Sumažinti garso garsumą"
 
 #: picard/ui/player/toolbar.py:329
 msgid "Ctrl+Shift+-"
@@ -10251,7 +10225,7 @@ msgstr "Ctrl+Shift+-"
 
 #: picard/ui/player/toolbar.py:334
 msgid "Audio volume"
-msgstr ""
+msgstr "Garso garsumas"
 
 #: picard/ui/scripteditor/__init__.py:105
 msgid "File naming script editor"
@@ -10263,11 +10237,11 @@ msgstr "&Importuoti skripto failą"
 
 #: picard/ui/scripteditor/__init__.py:248
 msgid "Import a file as a new script"
-msgstr ""
+msgstr "Importuoti failą kaip naują skriptą"
 
 #: picard/ui/scripteditor/__init__.py:253
 msgid "&Export a script file"
-msgstr ""
+msgstr "&Eksportuoti skripto failą"
 
 #: picard/ui/scripteditor/__init__.py:254
 msgid "Export the script to a file"
@@ -10671,10 +10645,8 @@ msgstr "Išdiegimas nepavyko"
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:740
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to uninstall the plugin."
-msgstr "Nepavyko išdiegti įskiepį: {errmsg}."
+msgstr "Nepavyko išdiegti įskiepio."
 
 #: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
@@ -10796,24 +10768,12 @@ msgid "Plugin Error"
 msgstr "Įskiepio klaida"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
-#, fuzzy
-#| msgid ""
-#| "Failed to enable plugin \"{name}\":\n"
-#| "{errmsg}"
 msgid "Failed to enable the plugin."
-msgstr ""
-"Nepavyko įjungti įskiepio „{name}“:\n"
-"{errmsg}."
+msgstr "Nepavyko įjungti įskiepio."
 
 #: picard/ui/widgets/pluginlistwidget.py:687
-#, fuzzy
-#| msgid ""
-#| "Failed to disable plugin \"{name}\":\n"
-#| "{errmsg}"
 msgid "Failed to disable the plugin."
-msgstr ""
-"Nepavyko išjungti įskiepio „{name}“:\n"
-"{errmsg}."
+msgstr "Nepavyko išjungti įskiepio."
 
 #: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
