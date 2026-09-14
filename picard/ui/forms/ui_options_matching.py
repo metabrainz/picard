@@ -77,7 +77,7 @@ class Ui_MatchingOptionsPage(object):
         self.ignore_track_duration_difference_under.setSizePolicy(sizePolicy)
         self.ignore_track_duration_difference_under.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.ignore_track_duration_difference_under.setAccelerated(True)
-        self.ignore_track_duration_difference_under.setMinimum(1)
+        self.ignore_track_duration_difference_under.setMinimum(0)
         self.ignore_track_duration_difference_under.setMaximum(7200)
         self.ignore_track_duration_difference_under.setProperty("value", 2)
         self.ignore_track_duration_difference_under.setObjectName("ignore_track_duration_difference_under")

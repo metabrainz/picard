@@ -195,7 +195,7 @@ IntOption(
     2,
     title=N_("Allowed track difference (seconds)"),
     in_profile=True,
-    bounds=(1, 7200),
+    bounds=(0, 7200),
 )
 IntOption(
     'setting',
