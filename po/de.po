@@ -39,7 +39,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -1660,7 +1660,7 @@ msgstr "Dateiname für Bilder"
 
 #: picard/coverart/providers/local.py:65
 msgid "the file name does not match"
-msgstr "Dateinamen stimmt nicht überein"
+msgstr "Der Dateiname stimmt nicht überein"
 
 #: picard/coverart/providers/local.py:87 picard/ui/options/advanced.py:90
 #, python-format
