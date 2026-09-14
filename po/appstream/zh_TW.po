@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020
+# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020, 2026.
 # Transifex Bot <>, 2023
 # silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2026.
 #
@@ -12,9 +12,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2026-07-31 19:12+0000\n"
-"Last-Translator: silentbird "
-"<silentbird@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-09-14 04:14+0000\n"
+"Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/2/appstream/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -22,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -38,8 +37,8 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"您需要整理您的音樂收藏庫？Picard 是開放源代碼且跨平臺的音樂標籤管理程式，由 "
-"MusicBrainz 製作。就算沒有後設資料參考，它也有能力辨識音訊檔案。"
+"您需要整理您的音樂收藏庫？Picard 是開放原始碼且跨平台的音樂標籤管理程式，由 "
+"MusicBrainz 製作。就算沒有詮釋資料參考，它也有能力辨識音訊檔案。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
@@ -49,9 +48,9 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard讓您依照個人喜好，重新命名音訊檔案和分類檔案至不同資料夾，藉此幫助您整"
-"理音樂收藏。Picard支援多種外掛程式，您甚至可以編寫自己的外掛。Picard支援多種"
-"音訊檔案格式，還可以為您查找整張CD。"
+"Picard 讓您依照個人喜好，重新命名音訊檔案和分類檔案至不同資料夾，藉此幫助您整"
+"理音樂收藏。Picard 支援多種外掛程式，您甚至可以編寫自己的外掛程式。Picard 支"
+"援多種音訊檔案格式，還可以為您查詢整張 CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
@@ -59,23 +58,23 @@ msgstr "管理音訊檔案的標籤從來沒有這麼簡單。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
-msgstr "功能:"
+msgstr "功能："
 
 #: org.musicbrainz.Picard.appdata.xml.in:27
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"多種格式: Picard 支援所有流行的音樂格式，包含 MP3、FLAC、OGG、M4A、WMA、WAV，"
-"與其他。"
+"多種格式：Picard 支援所有流行的音樂格式，包含 MP3、FLAC、OGG、M4A、WMA、WAV "
+"等格式。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: Picard 使用 AcoustID 音訊特徵碼，來實際辨認音樂本體，即使它們缺少後"
-"設資料。"
+"AcoustID: Picard 使用 AcoustID 音訊指紋，來實際辨認音樂本體，即使它們缺少詮釋"
+"資料。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
@@ -83,20 +82,20 @@ msgid ""
 "MusicBrainz database to provide accurate information about millions of music "
 "releases."
 msgstr ""
-"綜合資料庫: Picard 使用開放且由社群維護的 MusicBrainz 資料庫來提供上百萬筆音"
+"綜合資料庫：Picard 使用開放且由社群維護的 MusicBrainz 資料庫來提供上百萬筆音"
 "樂發行品的準確資訊。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
-msgstr "CD 查找: Picard 可以按一下就查找整張音樂 CD。"
+msgstr "CD 查詢：Picard 可以按一下就查詢整張音樂 CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"套件支援: 如果您需要特別功能，您可以從預先提供的套件中選擇，或是製作您自己的"
-"套件。"
+"外掛程式支援：如果您需要特別功能，您可以從預先提供的外掛程式中選擇，或是製作"
+"您自己的外掛程式。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
@@ -104,14 +103,14 @@ msgid ""
 "exactly specify how your music files will be named and how the tags will "
 "look like."
 msgstr ""
-"腳本: 彈性但易學的腳本語言，讓您可以準確指定您的音樂檔案如何命名，與如何上標"
+"腳本：彈性但易學的腳本語言，讓您可以準確指定您的音樂檔案如何命名，與如何上標"
 "籤。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr "專輯封面：Picard可以為您的專輯搜尋和下載正確的封面。"
+msgstr "封面圖：Picard 可以為您的專輯搜尋並下載正確的封面圖。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -119,8 +118,8 @@ msgid ""
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"開放源代碼: Picard 基於 GNU 通用公共授權條款 2.0 或其之後的版本，且在有優秀開"
-"發者所開發的 GitHub 上託管。"
+"開放原始碼：Picard 採用 GNU 通用公共授權條款 2.0 或其後續版本，並託管於 "
+"GitHub，由多位優秀的開發者持續積極開發。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
@@ -128,7 +127,7 @@ msgstr "MetaBrainz 基金會"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr "用新一代的MusicBrainz標籤器整理您的音樂"
+msgstr "用新一代的 MusicBrainz 標籤工具整理您的音樂"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
