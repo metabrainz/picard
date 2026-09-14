@@ -1041,11 +1041,18 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_diff_html = None
 
             if tag == '~length':
-                # Always show diff for length when display values differ,
-                # regardless of tolerance-based status (it's read-only/informational).
+                # Show the length diff only when the difference exceeds the
+                # tolerance (ignore_track_duration_difference_under). The
+                # tolerance is applied when computing the tag status, so we
+                # honour that status here instead of always highlighting when
+                # the displayed values differ (PICARD-3442).
                 # Skip when values are grouped (multiple files with different lengths).
                 # Use placeholder color for new value since this tag is never written.
-                if not tag_diff.old.status(tag).is_grouped and not tag_diff.new.status(tag).is_grouped:
+                if (
+                    tag_status == TagStatus.CHANGED
+                    and not tag_diff.old.status(tag).is_grouped
+                    and not tag_diff.new.status(tag).is_grouped
+                ):
                     old_text = format_time(tag_diff.old.get(tag, 0))
                     new_text = format_time(tag_diff.new.get(tag, 0))
                     old_diff_html, _unused = compute_diff(old_text, new_text, removed_bg, added_bg, diff_colors.text)
