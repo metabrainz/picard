@@ -27,7 +27,10 @@ from picard.metadata import MULTI_VALUED_JOINER
 
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
-from picard.ui.metadatabox.tagdiff import TagDiff
+from picard.ui.metadatabox.tagdiff import (
+    TagDiff,
+    TagStatus,
+)
 
 
 class FakeMetadataBox:
@@ -427,3 +430,53 @@ class MetadataBoxCopyPasteTest(PicardTestCase):
         obj.metadata['artist'] = ['Existing']
         list(self.box._paste_from_json(self._json_mimedata({'artist': {'old': ['Old'], 'removed': True}})))
         self.assertNotIn('artist', obj.metadata)
+
+
+class GetSelectedTagsReadonlyTest(PicardTestCase):
+    """PICARD-3441: get_selected_tags must derive readonly/removable from the
+    status bitmask, not exact-equality against a single flag."""
+
+    def setUp(self):
+        super().setUp()
+        self.box = FakeMetadataBox(self.tagger)
+
+    def _tag_diff_with(self, tag, *, readonly, removable):
+        td = TagDiff()
+        td.add(tag, old="60000", new="61000", removable=removable, readonly=readonly)
+        td.objects += 1
+        td.update_tag_names()
+        self.box.tag_diff = td
+        return td
+
+    def _selected(self, tag, column=MetadataBox.COLUMN_NEW):
+        row = self.box.tag_diff.tag_names.index(tag)
+        self.box.set_current(row, column)
+        self.box.set_selected([(row, column)])
+        return self.box.get_selected_tags(self.box.selectedItems())
+
+    def test_readonly_not_removable_tag_status_has_multiple_bits(self):
+        # Sanity check: a read-only, non-removable tag has more than one status bit,
+        # which is exactly what broke the old exact-equality comparisons.
+        td = self._tag_diff_with('~length', readonly=True, removable=False)
+        status = td.status['~length']
+        self.assertTrue(status & TagStatus.READONLY)
+        self.assertTrue(status & TagStatus.NOTREMOVABLE)
+        self.assertNotEqual(status, TagStatus.READONLY)
+        self.assertNotEqual(status, TagStatus.NOTREMOVABLE)
+
+    def test_readonly_tag_copied_as_readonly(self):
+        # The old code compared status == TagStatus.READONLY, which is false when
+        # other bits (e.g. NOTREMOVABLE, UNCHANGED) are also set, so read-only was
+        # lost when copying. With the bitmask test it is preserved.
+        self._tag_diff_with('~length', readonly=True, removable=False)
+        result = self._selected('~length')
+        self.assertTrue(result.is_readonly('~length'))
+
+    def test_normal_tag_not_copied_as_readonly(self):
+        td = TagDiff()
+        td.add('artist', old=['Old'], new=['New'])
+        td.objects += 1
+        td.update_tag_names()
+        self.box.tag_diff = td
+        result = self._selected('artist')
+        self.assertFalse(result.is_readonly('artist'))

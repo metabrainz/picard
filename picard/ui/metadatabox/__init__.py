@@ -475,8 +475,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                 old=value[self.COLUMN_ORIG] if col == self.COLUMN_ORIG else None,
                 new=new,
                 removed=removed if col == self.COLUMN_NEW else False,
-                removable=self.tag_diff.status[tag] != TagStatus.NOTREMOVABLE,
-                readonly=self.tag_diff.status[tag] == TagStatus.READONLY,
+                removable=not (self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE),
+                readonly=bool(self.tag_diff.status[tag] & TagStatus.READONLY),
             )
 
         result.update_tag_names()
