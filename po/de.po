@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-13 08:24+0000\n"
+"PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -1555,10 +1555,8 @@ msgstr ""
 "Der Service ist vorübergehend nicht verfügbar. Bitte später erneut versuchen."
 
 #: picard/browser/auth_responses.py:171
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "Additional interaction is required to sign in."
-msgstr "Titelbewertungen aktivieren"
+msgstr "Zur Anmeldung ist eine weitere Interaktion notwendig."
 
 #: picard/browser/auth_responses.py:172
 msgid "You need to sign in to continue."
@@ -1661,10 +1659,8 @@ msgid "the file name matches"
 msgstr "Dateiname für Bilder"
 
 #: picard/coverart/providers/local.py:65
-#, fuzzy
-#| msgid "The file naming format must not be empty."
 msgid "the file name does not match"
-msgstr "Das Format des Dateinamens darf nicht leer sein."
+msgstr "Dateinamen stimmt nicht überein"
 
 #: picard/coverart/providers/local.py:87 picard/ui/options/advanced.py:90
 #, python-format
@@ -1737,14 +1733,12 @@ msgid "Missing required [profile] section"
 msgstr "Fehlender erforderlicher [profile]-Abschnitt"
 
 #: picard/profiles/importer.py:122
-#, fuzzy
-#| msgid "The profile title cannot be blank."
 msgid "The [profile] section must be a table"
-msgstr "Der Profiltitel darf nicht leer sein."
+msgstr "Der Abschnitt [profile] muss eine Tabelle sein"
 
 #: picard/profiles/importer.py:126
 msgid "Missing required 'title' in [profile] section"
-msgstr "Fehlender erforderlicher Titel ('title') in [profile]-Abschnitt"
+msgstr "Fehlender erforderlicher Titel („title“) in [profile]-Abschnitt"
 
 #: picard/profiles/importer.py:133
 #, python-format
@@ -1763,7 +1757,7 @@ msgstr "Kein bestehendes Profile mit der ID „%s“ zum Ersetzen"
 
 #: picard/profiles/importer.py:165
 msgid "The [settings] section must be a table"
-msgstr ""
+msgstr "Der Abschnitt [settings] muss eine Tabelle sein"
 
 #: picard/profiles/importer.py:178
 #, python-format
@@ -1775,18 +1769,16 @@ msgstr ""
 "Einige Einstellungen wurden möglicherweise nicht konvertiert."
 
 #: picard/profiles/importer.py:210
-#, fuzzy
-#| msgid "The script title must not be empty."
 msgid "The [scripts] section must be a table"
-msgstr "Der Skript-Titel darf nicht leer sein."
+msgstr "Der Abschnitt [scripts] muss eine Tabelle sein"
 
 #: picard/profiles/importer.py:214
 msgid "The [scripts.naming] section must be a table"
-msgstr ""
+msgstr "Der Abschnitt [scripts.naming] muss eine Tabelle sein"
 
 #: picard/profiles/importer.py:223
 msgid "The [[scripts.tagging]] section must be an array of tables"
-msgstr ""
+msgstr "Der Abschnitt [[scripts.tagging]] muss eine Liste von Tabellen sein"
 
 #: picard/profiles/importer.py:234
 #, python-format
@@ -1814,10 +1806,12 @@ msgstr[1] "%d Einstellungen wurden automatisch aktualisiert von Picard %s."
 #: picard/profiles/importer.py:315
 msgid "Naming script section missing 'script' or 'title' field, skipped."
 msgstr ""
+"Der Abschnitt für Dateibenennungs-Skripte wurde wegen fehlender „script“- "
+"und „title“-Felder übersprungen."
 
 #: picard/profiles/importer.py:367
 msgid "Each [[scripts.tagging]] entry must be a table"
-msgstr ""
+msgstr "Jeder Eintrag in `[[scripts.tagging]]` muss eine Tabelle sein"
 
 #: picard/profiles/importer.py:388
 #, python-format
@@ -5002,10 +4996,8 @@ msgid "Please report this issue on the %s."
 msgstr ""
 
 #: picard/ui/dialogs/plugin_error.py:174
-#, fuzzy
-#| msgid "MusicBrainz Track Id"
 msgid "MusicBrainz bug tracker"
-msgstr "MusicBrainz-Titel-ID"
+msgstr "MusicBrainz-Bugtracker"
 
 #: picard/ui/dialogs/plugin_error.py:182
 #, python-format
@@ -7577,20 +7569,17 @@ msgid "Waiting for MusicBrainz authentication…"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:2095
-#, fuzzy
-#| msgid "MusicBrainz Recording Id"
 msgid "MusicBrainz authentication declined"
-msgstr "MusicBrainz-Aufnahme-ID"
+msgstr "MusicBrainz-Authentifizierung fehlgeschlagen"
 
 #: picard/ui/mainwindow/__init__.py:2103
 msgid "Successfully authenticated with MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:2109
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "MusicBrainz authentication failed: %(error)s"
-msgstr "Authentifizierung fehlgeschlagen"
+msgstr "MusicBrainz-Authentifizierung fehlgeschlagen: %(error)s"
 
 #: picard/ui/mainwindow/__init__.py:2116
 msgid "Authentication failed"
@@ -8450,18 +8439,12 @@ msgid "Genres"
 msgstr "Genres"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
-#| msgid "Rename files"
 msgid "Test genres filter:"
-msgstr "Dateien umbenennen"
+msgstr "Genre-Filter testen:"
 
 #: picard/ui/options/genres.py:100
-#, fuzzy
-#| msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgid "Enter genres or folksonomy tags to test, one per line."
-msgstr ""
-"Zu verwendende oder zu ignorierende Genres oder Folksonomy-Tags (eins pro "
-"Zeile):"
+msgstr "Zu testende Genres oder Folksonomy-Tags eingeben (eins pro Zeile)."
 
 #: picard/ui/options/genres.py:101
 msgid "the tag will be kept"
@@ -8968,10 +8951,8 @@ msgid "Update Failed"
 msgstr "Aktualisierung fehlgeschlagen"
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to update the plugin."
-msgstr "Fehler bei Plugin-Aktualisierung: {errmsg}"
+msgstr "Plugin-Aktualisierung fehlgeschlagen."
 
 #: picard/ui/options/profiles.py:92
 msgid "Option Profiles"
@@ -9899,10 +9880,8 @@ msgstr "Deinstallation fehlgeschlagen"
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:740
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to uninstall the plugin."
-msgstr "Plugin-Deinstallation fehlgeschlagen: {errmsg}"
+msgstr "Plugin-Deinstallation fehlgeschlagen."
 
 #: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
@@ -10025,20 +10004,12 @@ msgid "Plugin Error"
 msgstr "Plugin-Fehler"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
-#, fuzzy
-#| msgid ""
-#| "Failed to enable plugin \"{name}\":\n"
-#| "{errmsg}"
 msgid "Failed to enable the plugin."
-msgstr ""
-"Aktivierung des Plugins „{name}“ fehlgeschlagen:\n"
-"{errmsg}"
+msgstr "Aktivierung des Plugins fehlgeschlagen."
 
 #: picard/ui/widgets/pluginlistwidget.py:687
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to disable the plugin."
-msgstr "Fehler bei Plugin-Aktualisierung: {errmsg}"
+msgstr "Plugin-Deaktivierung fehlgeschlagen."
 
 #: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format

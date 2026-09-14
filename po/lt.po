@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-08-19 07:12+0000\n"
-"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
+"PO-Revision-Date: 2026-09-14 10:13+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
 "Language: lt\n"
@@ -24,9 +24,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 2026.8.1\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:218
@@ -7723,10 +7723,8 @@ msgid "Delete"
 msgstr "Ištrinti"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:154
-#, fuzzy
-#| msgid "250 px"
 msgid " px"
-msgstr "250 tšk."
+msgstr " tšk."
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:182
 #, fuzzy
@@ -10987,7 +10985,7 @@ msgstr "Pasirinktinė"
 #: picard/ui/widgets/refselector.py:118
 #, python-brace-format
 msgid "Recommended: <b>{ref}</b> ({description})"
-msgstr "Rekomenduojama: {ref} {description}"
+msgstr "Rekomenduojama: <b>{ref}</b> ({description})"
 
 #: picard/ui/widgets/refselector.py:121
 msgid "Use the default ref (usually main/master branch)"
