@@ -76,7 +76,8 @@ TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
     is_multi_value=N_('multi-value variable'),
-    is_preserved=N_('preserved read-only'),
+    is_read_only=N_('read-only'),
+    is_preserved=N_('preserved'),
     not_script_variable=N_('not for use in scripts'),
     is_calculated=N_('calculated'),
     is_file_info=N_('info from audio file'),
@@ -93,6 +94,7 @@ class TagVar:
         longdesc=None,
         additionaldesc=None,
         is_preserved=False,
+        is_read_only=False,
         is_hidden=False,
         is_script_variable=True,
         is_tag=True,
@@ -118,6 +120,9 @@ class TagVar:
         additionaldesc: Additional description which might include more details or examples.  May
                         contain markdown.
         is_preserved: the tag is preserved (boolean, default: False)
+        is_read_only: force the tag to be marked read-only in the UI even when it is
+                      not preserved (boolean, default: False). Preserved tags are
+                      always considered read-only; see the is_read_only property.
         is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
         is_script_variable: the tag can be used as script variable (boolean, default: True)
         is_tag: the tag is an actual tag (not a calculated or derived one) (boolean, default: True)
@@ -138,6 +143,7 @@ class TagVar:
         self._longdesc = longdesc
         self._additionaldesc = additionaldesc
         self.is_preserved = is_preserved
+        self._is_read_only = is_read_only
         self.is_hidden = is_hidden
         self.is_script_variable = is_script_variable
         self.is_tag = is_tag
@@ -172,6 +178,16 @@ class TagVar:
         if not self._additionaldesc:
             return ''
         return self._additionaldesc.strip()
+
+    @property
+    def is_read_only(self):
+        """Whether the tag is read-only (never written to files).
+
+        True when explicitly marked read-only, or when the tag is preserved:
+        preserved tags are kept from the original file and never written by
+        Picard, so they are effectively read-only in the UI.
+        """
+        return self._is_read_only or self.is_preserved
 
     @property
     def not_from_mb(self):
