@@ -123,9 +123,9 @@ def is_weblate_bot_username(username):
 # Used to separate translators from code contributors.
 TRANSLATION_PATHS = ('po/', 'installer/i18n/sources/')
 
-WEBLATE_API_URL = 'https://translations.metabrainz.org/api'
 WEBLATE_BASE_URL = 'https://translations.metabrainz.org'
-WEBLATE_URL = 'https://translations.metabrainz.org/user'
+WEBLATE_API_URL = f'{WEBLATE_BASE_URL}/api'
+WEBLATE_USER_URL = f'{WEBLATE_BASE_URL}/user'
 GITHUB_URL = 'https://github.com'
 
 
@@ -642,7 +642,7 @@ def format_translators(translators, translator_langs, weblate_users):
     parts = []
     for name in sorted(translators, key=str.casefold):
         wb_user = resolve_weblate_username(name, weblate_users)
-        url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
+        url = f'{WEBLATE_USER_URL}/{url_quote(wb_user)}/' if wb_user else None
         langs = ', '.join(sorted(translator_langs[name]))
         parts.append(f"{linked_name(url, display_from_name(name))} ({langs})")
     return f"Translations were updated by {join_names(parts)}."
@@ -671,7 +671,7 @@ def format_translators_by_language(translators, translator_langs, weblate_users)
         names = []
         for name in sorted(by_language[language], key=str.casefold):
             wb_user = resolve_weblate_username(name, weblate_users)
-            url = f'{WEBLATE_URL}/{url_quote(wb_user)}/' if wb_user else None
+            url = f'{WEBLATE_USER_URL}/{url_quote(wb_user)}/' if wb_user else None
             names.append(linked_name(url, display_from_name(name)))
         lines.append(f"<strong>{language}:</strong> {join_names(names)}")
     return '\nTranslations were updated by:<br>\n' + '<br>\n'.join(lines)
