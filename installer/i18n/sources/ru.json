@@ -11,7 +11,7 @@
     "OptionRemoveSettings": "Очистить сохранённые настройки и личные данные",
     "SectionDesktop": "Рабочий стол",
     "SectionLanguages": "Языки",
-    "SectionRequired": "Системные файлы (обязательно)",
+    "SectionRequired": "Файлы программы (обязательно)",
     "SectionShortcuts": "Ярлыки",
     "SectionStartMenu": "Меню Пуск"
 }

@@ -36,8 +36,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-08-09 10:08+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-09-14 10:13+0000\n"
+"Last-Translator: wileyfoxyx "
+"<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "3/app/ru/>\n"
 "Language: ru\n"
@@ -47,7 +48,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -74,10 +75,9 @@ msgid "[could not load album %s]"
 msgstr "[не удается загрузить альбом %s]"
 
 #: picard/cluster.py:393
-#, fuzzy, python-format
-#| msgid "No matching releases for cluster %(album)s"
+#, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
-msgstr "Нет совпадения для кластера %(album)s"
+msgstr "Лучшее совпаденее для кластера %(album)s неоднозначно"
 
 #: picard/cluster.py:395
 #, python-format
@@ -211,20 +211,16 @@ msgid "Log git backend method calls"
 msgstr ""
 
 #: picard/debug_opts.py:176
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Translations"
-msgstr "[загружается информация об альбоме]"
+msgstr "Переводы плагина"
 
 #: picard/debug_opts.py:176
 msgid "Log plugin translation lookups and fallbacks"
 msgstr ""
 
 #: picard/debug_opts.py:177
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Updates"
-msgstr "Плагины"
+msgstr "Обновления плагина"
 
 #: picard/debug_opts.py:177
 msgid "Log detailed plugin version checking and update detection"
@@ -326,10 +322,9 @@ msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Нет соответствующих треков для файла \"%(filename)s\""
 
 #: picard/file.py:1177
-#, fuzzy, python-format
-#| msgid "No matching tracks for file \"%(filename)s\""
+#, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr "Нет соответствующих треков для файла \"%(filename)s\""
+msgstr "Лучшее совпадение для файла \"%(filename)s\" неоднозначно"
 
 #: picard/file.py:1179
 #, python-format
@@ -343,7 +338,7 @@ msgstr "Просмотр метаданных для файла %(filename)s…"
 
 #: picard/isrcsubmit.py:270
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "Один и тот же ISRC найден для разных записей"
 
 #: picard/isrcsubmit.py:276
 msgid "ISRC already assigned to another track on this release"
@@ -355,23 +350,19 @@ msgstr ""
 
 #: picard/isrcsubmit.py:284
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "У файла несколько кодов ISRC (неоднозначный источник)"
 
 #: picard/isrcsubmit.py:323
-#, fuzzy
-#| msgid "Submitting AcoustIDs …"
 msgid "Submitting ISRCs …"
-msgstr "Отправка AcoustIDs …"
+msgstr "Отправка ISRC …"
 
 #: picard/isrcsubmit.py:334
 msgid "ISRC submission failed"
-msgstr ""
+msgstr "Не удалось отправить ISRC"
 
 #: picard/isrcsubmit.py:349
-#, fuzzy
-#| msgid "AcoustID submission finished successfully"
 msgid "ISRC submission finished successfully"
-msgstr "Отправка AcoustID успешно завершена"
+msgstr "Отправка ISRC успешно завершена"
 
 #: picard/item.py:342
 #, python-format
@@ -431,16 +422,12 @@ msgid "Download only approved images"
 msgstr "Загружать только утвержденные изображения."
 
 #: picard/options.py:109
-#, fuzzy
-#| msgid "Show cover art file size"
 msgid "Cover art image size"
-msgstr "Показать размер файла обложки"
+msgstr "Размер файла обложки"
 
 #: picard/options.py:111
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types"
-msgstr "Тип Обложки"
+msgstr "Типы изображений обложки"
 
 #: picard/options.py:117
 #, fuzzy
@@ -549,10 +536,8 @@ msgid "Embed images into tags"
 msgstr "Добавлять обложки в теги"
 
 #: picard/options.py:251
-#, fuzzy
-#| msgid "Embed images into tags"
 msgid "Remove images from tags"
-msgstr "Добавлять обложки в теги"
+msgstr "Убирать обложки из тегов"
 
 #: picard/options.py:252
 msgid "Save only one front image"
@@ -703,7 +688,7 @@ msgstr ""
 #: picard/options.py:383 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
-msgstr ""
+msgstr "Читать коды ISRC с диска"
 
 #: picard/options.py:384
 #, fuzzy
@@ -760,27 +745,20 @@ msgid "Adjust horizontal position in file browser"
 msgstr ""
 
 #: picard/options.py:425
-#, fuzzy
-#| msgid "Move files when saving"
 msgid "Confirm when saving"
-msgstr "Перемещать файлы при сохранении"
+msgstr "Подтверждать при сохранении"
 
 #: picard/options.py:427
-#, fuzzy
-#| msgid "Show a quit confirmation dialog for unsaved changes"
 msgid "Confirm quit if unsaved changes"
-msgstr ""
-"Показать диалоговое окно подтверждения выхода при несохраненных изменениях"
+msgstr "Подтверждать выход при несохраненных изменениях"
 
 #: picard/options.py:428 picard/ui/forms/ui_options_interface.py:120
 msgid "Show icons in menus"
 msgstr "Показывать иконки в меню"
 
 #: picard/options.py:429
-#, fuzzy
-#| msgid "Show a usage warning dialog when Picard starts"
 msgid "Show warning when Picard starts"
-msgstr "Показывать диалог предупреждения об использовании при запуске Picard"
+msgstr "Показывать предупреждения об использовании при запуске Picard"
 
 #: picard/options.py:430
 msgid "Begin browsing in a specific directory"
@@ -800,7 +778,7 @@ msgstr "Язык интерфейса"
 
 #: picard/options.py:441
 msgid "User interface color theme"
-msgstr ""
+msgstr "Цвет интерфейса"
 
 #: picard/options.py:442
 msgid "Use advanced search syntax"
@@ -812,31 +790,27 @@ msgstr ""
 
 #: picard/options.py:448
 msgid "Enable ListenBrainz listen submissions"
-msgstr ""
+msgstr "Включить отправку информации о прослушиваниях в ListenBrainz"
 
 #: picard/options.py:454
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit only tagged files to ListenBrainz"
-msgstr "Отправить рейтинги в MusicBrainz"
+msgstr "Отправить в ListenBrainz только размеченные файлы"
 
 #: picard/options.py:457 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr ""
+msgstr "Токен пользователя ListenBrainz"
 
 #: picard/options.py:465
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "Цвета при использовании светлой темы"
 
 #: picard/options.py:471
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "Цвета при использовании темной темы"
 
 #: picard/options.py:476
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Quick Menu options"
-msgstr "Настройки кодировщика"
+msgstr "Опции Быстрого меню"
 
 #: picard/options.py:495
 msgid "Layout of the tool bar"
@@ -847,16 +821,12 @@ msgid "Tags to show at the top"
 msgstr ""
 
 #: picard/options.py:509
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration backup directory"
-msgstr "Требуется настройка"
+msgstr "Путь для хранения копий конфигурации"
 
 #: picard/options.py:520
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum similarity"
-msgstr "Минимальная ширина изображения"
+msgstr "Минимальная схожесть"
 
 #: picard/options.py:521
 #, fuzzy
@@ -874,16 +844,12 @@ msgid "Translation locales"
 msgstr ""
 
 #: picard/options.py:534
-#, fuzzy
-#| msgid "Convert Unicode punctuation characters to ASCII"
 msgid "Convert Unicode punctuation to ASCII"
-msgstr "Превращать знаки препинания Юникода в простой вариант ASCII"
+msgstr "Превращать знаки препинания Юникода в ASCII"
 
 #: picard/options.py:535
-#, fuzzy
-#| msgid "Guess track number and title from filename if empty"
 msgid "Guess track number and title"
-msgstr "Угадать отсутствующие номер и название трека по имени файла"
+msgstr "Угадать номер и название трека"
 
 #: picard/options.py:536
 msgid "Standalone recordings name"
@@ -898,10 +864,8 @@ msgid "Translation script exceptions"
 msgstr ""
 
 #: picard/options.py:543
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist names"
-msgstr "Использовать общепризнанные имена для артистов"
+msgstr "Общепризнанные имена исполнителя"
 
 #: picard/options.py:550 picard/ui/forms/ui_options_metadata.py:195
 #, fuzzy
@@ -930,16 +894,12 @@ msgid "Translate artist names"
 msgstr "Перевести имя исполнителя"
 
 #: picard/options.py:558
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate album titles"
-msgstr "Перевести имя исполнителя"
+msgstr "Переводить названия альбомов"
 
 #: picard/options.py:559
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate track titles"
-msgstr "Перевести имя исполнителя"
+msgstr "Переводить названия треков"
 
 #: picard/options.py:561 picard/ui/forms/ui_options_metadata.py:211
 msgid "Use artist sort name for translation"
@@ -966,13 +926,12 @@ msgid "Listen only on localhost"
 msgstr "Слушать только на localhost"
 
 #: picard/options.py:587
-#, fuzzy
 msgid "Default listening port"
-msgstr "Порт для прослушивания:"
+msgstr "Порт для прослушивания по умолчанию"
 
 #: picard/options.py:595
 msgid "Network cache size (bytes)"
-msgstr ""
+msgstr "Размер кэша сети (в байтах)"
 
 #: picard/options.py:605
 msgid "Request timeout (seconds)"
@@ -980,31 +939,31 @@ msgstr ""
 
 #: picard/options.py:609
 msgid "Proxy password"
-msgstr ""
+msgstr "Пароль прокси"
 
 #: picard/options.py:610
 msgid "Proxy server address"
-msgstr ""
+msgstr "Адрес прокси-сервера"
 
 #: picard/options.py:615
 msgid "Proxy server port"
-msgstr ""
+msgstr "Порт прокси-сервера"
 
 #: picard/options.py:620
 msgid "Type of proxy server"
-msgstr ""
+msgstr "Тип прокси-сервера"
 
 #: picard/options.py:621
 msgid "Proxy username"
-msgstr ""
+msgstr "Имя пользователя прокси"
 
 #: picard/options.py:622
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "Использовать прокси-сервер"
 
 #: picard/options.py:626
 msgid "Plugins execution order"
-msgstr ""
+msgstr "Порядок запуска плагинов"
 
 #: picard/options.py:635
 msgid "Enable track ratings"
@@ -1060,10 +1019,8 @@ msgid "Destination directory"
 msgstr "Каталог назначения"
 
 #: picard/options.py:667 picard/ui/forms/ui_options_renaming.py:141
-#, fuzzy
-#| msgid "Overwrite existing image files"
 msgid "Overwrite existing files"
-msgstr "Перезаписывать существующие файлы изображений"
+msgstr "Перезаписывать существующие файлы"
 
 #: picard/options.py:668
 msgid "Rename files"
@@ -1079,13 +1036,11 @@ msgstr ""
 
 #: picard/options.py:681 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Заменять пробелы нижним подчеркиванием"
 
 #: picard/options.py:687
-#, fuzzy
-#| msgid "Windows compatibility"
 msgid "Windows compatibility characters"
-msgstr "Совместимость с Windows"
+msgstr "Символы совместимости с Windows"
 
 #: picard/options.py:690 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
@@ -1094,7 +1049,7 @@ msgstr "Совместимость с Windows"
 
 #: picard/options.py:695 picard/ui/options/renaming_compat.py:135
 msgid "Windows long path support"
-msgstr ""
+msgstr "Поддержка длинных путей в Windows"
 
 #: picard/options.py:703
 msgid "Enable tagger scripts"
@@ -1134,10 +1089,8 @@ msgid "Clear existing tags"
 msgstr "Очищать существующие теги"
 
 #: picard/options.py:721
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Save tags to files"
-msgstr "Записать тэги в файлы"
+msgstr "Сохранять теги в файлы"
 
 #: picard/options.py:722
 msgid "Fix missing seekpoints in FLAC"
@@ -1148,49 +1101,36 @@ msgid "Preserved tags list"
 msgstr ""
 
 #: picard/options.py:724
-#, fuzzy
-#| msgid "Keep embedded images when clearing tags"
 msgid "Keep embedded images"
-msgstr "Сохранять встроенные изображения при очистке тегов"
+msgstr "Сохранять встроенные изображения"
 
 #: picard/options.py:725
-#, fuzzy
-#| msgid "Preserve timestamps of tagged files"
 msgid "Preserve timestamps"
-msgstr "Сохранять временные метки файлов с тегами"
+msgstr "Сохранять временные метки"
 
 #: picard/options.py:726
-#, fuzzy
-#| msgid "Remove APEv2 tags from MP3 files"
 msgid "Remove APEv2 tags from MP3"
-msgstr "Удалять APEv2 теги из MP3 файлов"
+msgstr "Удалять APEv2 теги из MP3"
 
 #: picard/options.py:727
-#, fuzzy
-#| msgid "Remove ID3 tags from FLAC files"
 msgid "Remove ID3 tags from FLAC"
-msgstr "Удалять ID3 теги из FLAC файлов"
+msgstr "Удалять ID3 теги из FLAC"
 
 #: picard/options.py:731
 msgid "Save APEv2 tags to AAC"
 msgstr "Сохранять теги APEv2 в AAC"
 
 #: picard/options.py:732
-#, fuzzy
-#| msgid "Remove APEv2 tags from AAC files"
 msgid "Remove APEv2 tags from AAC"
-msgstr "Удалять APEv2 теги из AAC файлов"
+msgstr "Удалять APEv2 теги из AAC"
 
 #: picard/options.py:736
-#, fuzzy
 msgid "Save APEv2 tags to AC3"
-msgstr "Сохранять теги APEv2 в AAC"
+msgstr "Сохранять APEv2 теги в AC3"
 
 #: picard/options.py:737
-#, fuzzy
-#| msgid "Remove APEv2 tags from AC3 files"
 msgid "Remove APEv2 tags from AC3"
-msgstr "Удалять APEv2 теги из AC3 файлов"
+msgstr "Удалять APEv2 теги из AC3"
 
 #: picard/options.py:741
 msgid "ID3v2.3 join character"
@@ -1246,17 +1186,15 @@ msgstr "Не удалось сохранить файл журнала"
 
 #: picard/options.py:781
 msgid "Auto-save interval"
-msgstr ""
+msgstr "Интервал автосохранения"
 
 #: picard/options.py:791
 msgid "Backup session on unexpected exit"
 msgstr ""
 
 #: picard/options.py:798
-#, fuzzy
-#| msgid "Use genres from MusicBrainz"
 msgid "Include MusicBrainz data"
-msgstr "Использовать жанры из MusicBrainz"
+msgstr "Включать данные из MusicBrainz"
 
 #: picard/options.py:805
 #, fuzzy
@@ -1275,16 +1213,12 @@ msgid "Plugins to exclude from updates"
 msgstr ""
 
 #: picard/plugin.py:128
-#, fuzzy
-#| msgid "New version available"
 msgid "No plugin description available."
-msgstr "Доступна новая версия"
+msgstr "Нет доступного описания плагина."
 
 #: picard/plugin.py:130
-#, fuzzy
-#| msgid "Unknown language"
 msgid "Unknown Plugin"
-msgstr "Неизвестный язык"
+msgstr "Неизвестный плагин"
 
 #: picard/plugin.py:133 picard/ui/cdlookup.py:65
 #: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1214
@@ -1303,10 +1237,8 @@ msgid "Unknown"
 msgstr "Неизвестный"
 
 #: picard/plugin.py:144
-#, fuzzy
-#| msgid "New version available"
 msgid "No function description available."
-msgstr "Доступна новая версия"
+msgstr "Нет доступного описания функции."
 
 #: picard/profile.py:89 picard/ui/options/plugins.py:60
 msgid "Plugins"
@@ -1339,7 +1271,6 @@ msgid "Cat No"
 msgstr "Номер в каталоге"
 
 #: picard/releasegroup.py:63
-#, fuzzy
 msgid "Packaging"
 msgstr "Упаковка"
 
@@ -1366,7 +1297,7 @@ msgstr ""
 
 #: picard/tagger.py:464
 msgid "Disabled by command line parameter"
-msgstr ""
+msgstr "Отключено параметром командной строки"
 
 #: picard/tagger.py:657 picard/ui/forms/ui_options_general.py:135
 msgid "MusicBrainz Account"
@@ -1379,7 +1310,7 @@ msgstr "Код авторизации:"
 #: picard/tagger.py:784 picard/ui/mainwindow/__init__.py:1593
 #: picard/ui/mainwindow/__init__.py:1619
 msgid "Failed to load session"
-msgstr ""
+msgstr "Не удалось загрузить сессию"
 
 #: picard/tagger.py:785 picard/ui/mainwindow/__init__.py:1594
 #: picard/ui/mainwindow/__init__.py:1620
@@ -1401,16 +1332,20 @@ msgid ""
 "These plugins may contain security vulnerabilities or malicious code. They "
 "have been automatically disabled for your protection."
 msgstr ""
+"Следующие плагины были добавлены в черный список и отключены:\n"
+"\n"
+"{plugin_list}\n"
+"\n"
+"Эти плагины могут содержать уязвимости безопасности или вредоносный код. Для "
+"вашей безопасности, они были автоматически отключены."
 
 #: picard/tagger.py:833
 msgid "Blacklisted Plugins Detected"
-msgstr ""
+msgstr "Обнаружены плагины из черного списка"
 
 #: picard/tagger.py:840
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Initialization Failed"
-msgstr "[загружается информация об альбоме]"
+msgstr "Не удалось инициализировать плагин"
 
 #: picard/tagger.py:841
 #, python-brace-format
@@ -1419,6 +1354,9 @@ msgid ""
 "\n"
 "{plugin_list}"
 msgstr ""
+"Следующие плагины были отключены, так как не удалось их загрузить:\n"
+"\n"
+"{plugin_list}"
 
 #: picard/tagger.py:1306
 #, python-format
@@ -1426,15 +1364,14 @@ msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Удаление альбома %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:1335
-#, fuzzy, python-format
-#| msgid "Error importing \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
-msgstr "Ошибка при импорте \"%(filename)s\": %(error)s"
+msgstr "Ошибка при перемещении файла \"%(filename)s\" в корзину"
 
 #: picard/tagger.py:1340
 #, python-format
 msgid "Moved %(count)i files to trash"
-msgstr ""
+msgstr "Перенесено файлов в корзину: %(count)i"
 
 #: picard/tagger.py:1346
 msgid "CD Lookup Error"
@@ -1480,13 +1417,11 @@ msgstr ""
 
 #: picard/tagger.py:1423 picard/tagger.py:1438
 msgid "Disc information could not be found"
-msgstr ""
+msgstr "Не удалось найти информацию о диске"
 
 #: picard/tagger.py:1425 picard/tagger.py:1440 picard/tagger.py:1448
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Lookup Error"
-msgstr "Ошибка опознавания CD"
+msgstr "Ошибка опознавания"
 
 #: picard/tagger.py:1446
 msgid "Selected files contain tags with conflicting disc information"
@@ -1955,7 +1890,7 @@ msgstr ""
 
 #: picard/script/functions.py:73
 msgid "$if(if,then[,else])"
-msgstr ""
+msgstr "$if(if,then[,else])"
 
 #: picard/script/functions.py:74
 msgid "If `if` is not empty, it returns `then`, otherwise it returns `else`."
@@ -1963,11 +1898,11 @@ msgstr ""
 
 #: picard/script/functions.py:86
 msgid "$if2(a1,a2,a3,…)"
-msgstr ""
+msgstr "$if2(a1,a2,a3,…)"
 
 #: picard/script/functions.py:87
 msgid "Returns first non empty argument."
-msgstr ""
+msgstr "Возвращает первый непустой аргумент."
 
 #: picard/script/functions.py:99
 msgid "Does nothing (useful for comments or disabling a block of code)."
@@ -1975,7 +1910,7 @@ msgstr ""
 
 #: picard/script/functions.py:106
 msgid "$left(text,number)"
-msgstr ""
+msgstr "$left(text,number)"
 
 #: picard/script/functions.py:107
 msgid "Returns the first `number` characters from `text`."
