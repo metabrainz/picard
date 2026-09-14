@@ -69,6 +69,7 @@ from picard.ui.widgets.context_detector import (
     CompletionMode,
     ContextDetector,
 )
+from picard.ui.widgets.plaintextedit import PlainTextEdit
 from picard.ui.widgets.user_script_scanner import UserScriptScanner
 from picard.ui.widgets.variable_extractor import VariableExtractor
 
@@ -410,11 +411,11 @@ def _replace_control_chars(text):
             yield ch
 
 
-class ScriptTextEdit(QTextEdit):
+class ScriptTextEdit(PlainTextEdit):
     autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_(]')
 
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent, font_family=FONT_FAMILY_MONOSPACE)
         config = get_config()
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.initialize_completer()
@@ -422,9 +423,7 @@ class ScriptTextEdit(QTextEdit):
         # Initialize dynamic variables from current (possibly empty) script content.
         self.completer.update_dynamic_variables(self.toPlainText())
 
-        self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
-        self.setAcceptRichText(False)
         self.wordwrap_action = QAction(_("&Word wrap script"), self)
         self.wordwrap_action.setToolTip(_("Word wrap long lines in the editor"))
         self.wordwrap_action.triggered.connect(self.update_wordwrap)
@@ -505,13 +504,8 @@ class ScriptTextEdit(QTextEdit):
             position -= 1
         return None
 
-    def insertFromMimeData(self, source):
-        text = _clean_text(source.text())
-        # Create a new data object, as modifying the existing one does not
-        # work on Windows if copying from outside the Qt app.
-        source = QtCore.QMimeData()
-        source.setText(text)
-        return super().insertFromMimeData(source)
+    def clean_pasted_text(self, text):
+        return _clean_text(text)
 
     def setPlainText(self, text):
         super().setPlainText(text)
