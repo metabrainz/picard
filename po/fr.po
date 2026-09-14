@@ -25,7 +25,7 @@
 # Matthieu Martin, 2006
 # Matthieu Martin, 2006
 # Nicolas ANCEAU <n.anceau@gmail.com>, 2019
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2026.
 # Pierre Slamich <pierre.slamich@gmail.com>, 2006
 # Raphaël Fery <pask@kodu.fr>, 2017
 # AO <ao@localizationlab.org>, 2015
@@ -41,8 +41,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-07-11 15:12+0000\n"
-"Last-Translator: rez00 <sylvain.mengue@gmail.com>\n"
+"PO-Revision-Date: 2026-09-14 04:13+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/2/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4352,7 +4352,7 @@ msgid ""
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
-"SI vous sélectionnez des fichiers du panneau Grappes ou du panneau Albums "
+"Si vous sélectionnez des fichiers du panneau Grappes ou du panneau Albums "
 "avant d'ouvrir les Options, au plus %u fichiers seront choisis aléatoirement "
 "dans votre sélection comme exemples pour le nommage de fichiers. Si vous ne "
 "sélectionnez aucun fichier, des exemples par défaut seront utilisés."
