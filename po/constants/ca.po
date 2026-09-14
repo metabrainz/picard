@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-09-12 15:27+0000\n"
+"PO-Revision-Date: 2026-09-14 10:14+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -5560,12 +5560,18 @@ msgid ""
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
 "movement name instead of the track title."
 msgstr ""
+"Mostra l'obra i el moviment. Si aquesta etiqueta es defineix en «1», els "
+"reproductors compatibles amb l'etiqueta, com ara iTunes i MusicBee, "
+"mostraran l'obra, el número de moviment i el nom del moviment en comptes del "
+"títol de la pista."
 
 #: picard/const/tags.py:1114
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
 msgstr ""
+"Per exemple, la pista es mostrarà com a «Simfonia núm. 5 en do menor, op. "
+"67: II. Andante con moto» independentment del valor de l'etiqueta de títol."
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
@@ -5576,6 +5582,8 @@ msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
 msgstr ""
+"Nom d'ordenació del programa si l'enregistrament està associat a un programa "
+"de televisió."
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
@@ -5584,6 +5592,8 @@ msgstr "Subtítol"
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
 msgstr ""
+"S'utilitza per a la informació relacionada directament amb el títol dels "
+"continguts."
 
 #: picard/const/tags.py:1133
 msgid "Synced Lyrics"
@@ -5647,7 +5657,7 @@ msgstr "Vídeo"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
-msgstr ""
+msgstr "Definiu-ho en «1» si la pista és un vídeo."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
@@ -5666,6 +5676,8 @@ msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr ""
+"Nom de l'obra associada a la pista (p. ex., «Simfonia núm. 5 en do menor, "
+"op. 67»)."
 
 #: picard/const/tags.py:1190
 msgid ""
@@ -5673,6 +5685,9 @@ msgid ""
 "the \"Save iTunes compatible grouping and work\" option in order for the "
 "work to be displayed correctly."
 msgstr ""
+"Nota: Si feu servir iTunes amb fitxers MP3, heu d'activar l'opció «Desa les "
+"etiquetes d'agrupació i obra compatibles amb iTunes» perquè l'obra es mostri "
+"correctament."
 
 #: picard/const/tags.py:1198
 msgid "Work Series"
@@ -5724,12 +5739,16 @@ msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr ""
+"Noms dels escriptors associats a l'obra relacionada. No s'escriu a la "
+"majoria de formats de fitxer automàticament."
 
 #: picard/const/tags.py:1237
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
+"Podeu fusionar-ho amb els compositors amb un script com ara `$copymerge"
+"(composer,writer)`."
 
 #: picard/const/tags.py:1243
 msgid "Writer Sort"
@@ -5737,4 +5756,4 @@ msgstr "Ordre de l'escriptor"
 
 #: picard/const/tags.py:1244
 msgid "The sort names of the writers for the work."
-msgstr ""
+msgstr "Noms d'ordenació dels escriptors de l'obra."
