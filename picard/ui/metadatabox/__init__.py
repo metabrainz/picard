@@ -1127,6 +1127,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._set_item_tag(tag_item, tag)
 
             tag_status = self.tag_diff.tag_status(tag)
+            is_readonly = self.tag_diff.is_readonly(tag)
             color = colors.get(tag_status, colors[TagStatus.UNCHANGED])
 
             # Tag name column gets the status color
@@ -1136,11 +1137,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._set_item_value(orig_item, self.tag_diff.old, tag, color)
 
             new_item = get_table_item(row, self.COLUMN_NEW)
-            if not self.tag_diff.is_readonly(tag):
+            if not is_readonly:
                 new_item.setFlags(editable_item_flags)
-            new_color = (
-                placeholder_color if tag_status == TagStatus.UNCHANGED or self.tag_diff.is_readonly(tag) else color
-            )
+            new_color = placeholder_color if tag_status == TagStatus.UNCHANGED or is_readonly else color
             if tag_status == TagStatus.REMOVED:
                 # For removed tags, leave the new value column empty
                 new_item.setText("")
@@ -1156,6 +1155,15 @@ class MetadataBox(QtWidgets.QTableWidget):
             old_diff_html, new_diff_html = self.tag_diff.diff_html.get(tag, (None, None))
             orig_item.setData(DIFF_HTML_ROLE, old_diff_html)
             new_item.setData(DIFF_HTML_ROLE, new_diff_html)
+
+            # Visually distinguish read-only, informational rows (e.g. ~length,
+            # ~filepath) that are never written by giving them a subtle
+            # background tint using the system's alternate-base color.
+            if is_readonly:
+                bg = self.palette().color(QtGui.QPalette.ColorRole.AlternateBase)
+                tag_item.setBackground(bg)
+                orig_item.setBackground(bg)
+                new_item.setBackground(bg)
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
