@@ -87,6 +87,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.debug_opts import DebugOpt
+from picard.extension_points.item_actions import add_action_to_menu
 from picard.extension_points.plugin_tools_menu import (
     ext_point_plugin_tools_items,
     signaler,
@@ -2394,20 +2395,22 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Update the Plugin Tools menu"""
         actions = list(ext_point_plugin_tools_items)
 
-        self.plugin_tools_menu.clear()
+        plugin_tools_menu = self.plugin_tools_menu
+        if plugin_tools_menu is None:
+            return
+        plugin_tools_menu.clear()
 
         if not actions:
-            self.plugin_tools_menu.menuAction().setVisible(False)
+            plugin_tools_menu.menuAction().setVisible(False)
             return
 
-        self.plugin_tools_menu.menuAction().setVisible(True)
+        plugin_tools_menu.menuAction().setVisible(True)
+        plugin_menus = {}
 
         for ActionClass in actions:
             # Instantiate action with API
             try:
-                action = ActionClass()
-                action.setParent(self.plugin_tools_menu)  # Set parent to keep action alive
-                self.plugin_tools_menu.addAction(action)
+                add_action_to_menu(ActionClass, plugin_tools_menu, plugin_menus)
             except Exception as ex:
                 log.error("Error adding plugin action", exc_info=ex)
 

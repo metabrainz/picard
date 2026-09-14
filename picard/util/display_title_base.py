@@ -61,11 +61,43 @@ class HasDisplayTitle:
         """
         title = getattr(cls, 'TITLE', getattr(cls, 'NAME', None)) or cls.__name__
         api = getattr(cls, 'api', None)
-        if api:
-            # In case the TITLE was created with t_() using a plural form
-            if isinstance(title, tuple):
-                return api.trn(*title, n=1)
-            else:
-                return api.tr(title)
+        return _translation_helper(api, title)
+
+
+def _translation_helper(api, text):
+    if api:
+        # In case the text was created with t_() using a plural form
+        if isinstance(text, tuple):
+            return api.trn(*text, n=1)
         else:
-            return _(title)
+            return api.tr(text)
+    else:
+        return _(text)
+
+
+class HasMenuItems:
+    """This class can be used as a mix-in by classes providing a static MENU tuple,
+    such as the BaseAction class used for adding plugin actions to menus.
+
+    A sub class of this should define a MENU class attribute, as a tuple defining the
+    desired menu hierarchy. Each element is either a plain string or, for plugins, a
+    string marked with the t_() function exposed by the plugin API (which may expand to
+    a (key, singular, plural) tuple for plural forms).
+    """
+
+    MENU: tuple[str | tuple[str, str, str], ...]
+
+    @classmethod
+    def display_menu(cls) -> tuple[str, ...]:
+        """Return the translated MENU path for this class.
+
+        This attempts to translate each element with the API translation system if
+        available, otherwise uses gettext. The class ``MENU`` attribute is left
+        unchanged, so the method is safe to call repeatedly.
+        """
+        menu = getattr(cls, 'MENU', ())
+        api = getattr(cls, 'api', None)
+        translated: list[str] = []
+        for item in menu:
+            translated.append(_translation_helper(api, item))
+        return tuple(translated)
