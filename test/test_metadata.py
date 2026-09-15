@@ -49,10 +49,6 @@ settings = {
     'standardize_vocals': False,
     'translate_artist_names': False,
     'release_ars': True,
-    'release_type_scores': [
-        ('Album', 1.0),
-        ('Other', 1.0),
-    ],
 }
 
 

@@ -28,7 +28,6 @@ class RatingWidgetTest(PicardTestCase):
         super().setUp()
         self.set_config_values(
             setting={
-                'rating_steps': 6,
                 'submit_ratings': True,
             }
         )
@@ -53,7 +52,7 @@ class RatingWidgetTest(PicardTestCase):
         self.assertEqual({('recording', self.track.id): 4}, ratings)
 
     def test_update_track_no_submit_when_disabled(self):
-        self.set_config_values(setting={'rating_steps': 6, 'submit_ratings': False})
+        self.set_config_values(setting={'submit_ratings': False})
         widget = RatingWidget(self.track)
         widget._rating = 3
         widget._update_track()
