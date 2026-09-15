@@ -58,6 +58,7 @@ import mutagen.trueaudio
 
 from picard import log
 from picard.config import get_config
+from picard.const import RATING_STEPS
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -363,7 +364,6 @@ class ID3File(File):
             'file_length': file.info.length,
             'itunes_compatible': config.setting['itunes_compatible_grouping'],
             'rating_user_email': id3_rating_user_email(config),
-            'rating_steps': config.setting['rating_steps'],
         }
 
     def _upgrade_23_frames(self, tags):
@@ -527,7 +527,7 @@ class ID3File(File):
         Handles rating, converting from ID3's 0-255 range to Picard's configured range.
         """
         if frame.email == config_params['rating_user_email']:
-            rating = int(round(frame.rating / 255.0 * (config_params['rating_steps'] - 1)))
+            rating = int(round(frame.rating / 255.0 * (RATING_STEPS - 1)))
             metadata.add('~rating', rating)
 
     def _save(self, filename, metadata):
@@ -548,7 +548,6 @@ class ID3File(File):
             'people_frames': people_frames,
             'itunes_compatible': itunes_compatible,
             'rating_user_email': id3_rating_user_email(config),
-            'rating_steps': config.setting['rating_steps'],
             'write_id3v23': config.setting['write_id3v23'],
         }
 
@@ -818,7 +817,6 @@ class ID3File(File):
     def _save_rating_tag(self, tags, name, values, config_params):
         """Save rating to POPM frame."""
         rating_user_email = config_params['rating_user_email']
-        rating_steps = config_params['rating_steps']
         # Search for an existing POPM frame to get the current playcount
         for frame in tags.values():
             if frame.FrameID == 'POPM' and frame.email == rating_user_email:
@@ -828,7 +826,7 @@ class ID3File(File):
             count = 0
 
         # Convert rating to range between 0 and 255
-        rating = int(round(float(values[0]) * 255 / (rating_steps - 1)))
+        rating = int(round(float(values[0]) * 255 / (RATING_STEPS - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
 
     def _save_grouping_tag(self, tags, name, values, config_params):
