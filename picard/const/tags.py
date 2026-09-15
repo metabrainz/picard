@@ -599,6 +599,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Length'),
         longdesc=N_('The length of the track in format mins:secs.'),
         is_hidden=True,
+        is_read_only=True,
         is_tag=False,
     ),
     TagVar(
