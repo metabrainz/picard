@@ -44,7 +44,6 @@ settings = {
     'enabled_plugins': '',
     'id3v23_join_with': '/',
     'id3v2_encoding': 'utf-8',
-    'rating_steps': 6,
     'rating_user_email': 'users@musicbrainz.org',
     'remove_ape_from_mp3': False,
     'remove_id3_from_flac': False,

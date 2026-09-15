@@ -44,6 +44,11 @@ USER_PLUGIN_DIR = appdirs.plugin_folder()
 # Network Cache default settings
 CACHE_SIZE_DISPLAY_UNIT = 1000 * 1000
 
+# The rating scale has N steps; ratings map onto the range 0..(RATING_STEPS - 1),
+# and that divisor is used when reading and writing ratings in every tag format
+# (asf, id3, vorbis) and by the rating widget. This is not user-configurable.
+RATING_STEPS = 6
+
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_URL = 'https://api.acoustid.org/v2'

@@ -415,7 +415,7 @@ example-plugin/
   ui_options.py
 ```
 
-**__init__.py:**
+**`__init__.py`:**
 ```python
 PLUGIN_NAME = "Example Plugin"
 PLUGIN_AUTHOR = "John Doe"
@@ -482,7 +482,7 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 categories = ["metadata"]
 ```
 
-**__init__.py:**
+**`__init__.py`:**
 ```python
 from picard.plugin3.api import OptionsPage
 from PyQt6.QtWidgets import QCheckBox

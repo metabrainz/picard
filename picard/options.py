@@ -65,7 +65,6 @@ from picard.const.defaults import (
     DEFAULT_PROGRAM_UPDATE_LEVEL,
     DEFAULT_QUERY_LIMIT,
     DEFAULT_QUICK_MENU_ITEMS,
-    DEFAULT_RELEASE_TYPE_SCORES,
     DEFAULT_REPLACEMENT,
     DEFAULT_SHOW_MENU_ICONS,
     DEFAULT_STARTING_DIR,
@@ -633,11 +632,6 @@ ListOption('persist', 'profile_settings_tree_expanded_list', [])
 # picard/ui/options/ratings.py
 # Ratings
 BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings"), in_profile=True)
-# The rating scale has N steps; ratings map onto the range 0..(rating_steps - 1),
-# and that divisor is used when reading and writing ratings in every tag format
-# (asf, id3, vorbis) and by the rating widget. A value below 2 would make the
-# range collapse or divide by zero, so clamp it to a minimum of 2.
-IntOption('setting', 'rating_steps', 6, bounds=(2, None))
 TextOption(
     'setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email for saving ratings"), in_profile=True
 )
@@ -647,9 +641,6 @@ BoolOption('setting', 'submit_ratings', True, title=N_("Submit ratings to MusicB
 # Preferred Releases
 ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries"), in_profile=True)
 ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats"), in_profile=True)
-ListOption(
-    'setting', 'release_type_scores', DEFAULT_RELEASE_TYPE_SCORES, title=N_("Preferred release types"), in_profile=True
-)
 ListOption('setting', 'preferred_release_types', [], title=N_("Preferred release types"), in_profile=True)
 ListOption('setting', 'discouraged_release_types', [], title=N_("Discouraged release types"), in_profile=True)
 

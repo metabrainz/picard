@@ -223,7 +223,6 @@ settings are readable; niche complex options are at least valid TOML.
 |--------|----------------|-------------|-------|
 | `caa_image_types` | `['front']` | `["front"]` | Direct mapping |
 | `ca_providers` | `[('Cover Art Archive', True), ...]` | `[["Cover Art Archive", true], ...]` | List of lists — already readable since names are strings |
-| `release_type_scores` | `[('album', 0.75), ...]` | `[["album", 0.75], ...]` | List of lists — clear enough |
 | `standardize_artists` | `True` | `true` | Direct mapping |
 
 Complex options that cannot be cleanly represented in TOML should be documented
@@ -612,7 +611,6 @@ lists of tuples internally:
 | Option | Internal structure | After TOML round-trip |
 |--------|-------------------|----------------------|
 | `list_of_scripts` | `[(pos, name, enabled, script), ...]` | `[[pos, name, enabled, script], ...]` |
-| `release_type_scores` | `[("album", 0.75), ...]` | `[["album", 0.75], ...]` |
 | `ca_providers` | `[("Cover Art Archive", True), ...]` | `[["Cover Art Archive", true], ...]` |
 | `script_exceptions` | `[(script_id, threshold), ...]` | `[[script_id, threshold], ...]` |
 

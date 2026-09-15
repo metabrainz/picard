@@ -35,6 +35,7 @@ from mutagen.asf import (
 
 from picard import log
 from picard.config import get_config
+from picard.const import RATING_STEPS
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -211,7 +212,6 @@ class ASFFile(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
-        config = get_config()
         self.__casemap = {}
         file = ASF(filename)
         metadata = Metadata()
@@ -245,13 +245,12 @@ class ASFFile(File):
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5.
                 # The result is converted to str because the values below are
                 # filtered on truthiness, which would drop a rating of 0.
-                rating_steps = config.setting['rating_steps']
                 try:
                     rating = int(values[0])
                 except ValueError:
                     log.warning('Invalid rating value in %r: %s', filename, values[0])
                 else:
-                    values[0] = str(round(rating / 99 * (rating_steps - 1)))
+                    values[0] = str(round(rating / 99 * (RATING_STEPS - 1)))
             elif name == 'WM/PartOfSet':
                 disc = str(values[0]).split("/")
                 if len(disc) > 1:
@@ -299,7 +298,7 @@ class ASFFile(File):
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             elif name == '~rating':
-                values = [int(values[0]) * 99 // (config.setting['rating_steps'] - 1)]
+                values = [int(values[0]) * 99 // (RATING_STEPS - 1)]
             elif name == 'discnumber' and 'totaldiscs' in metadata:
                 values = ['%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])]
             if name in self.__TRANS:

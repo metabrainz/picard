@@ -584,7 +584,7 @@ de = "Sende deine Musik zu ListenBrainz"
 fr = "Soumettez votre musique sur ListenBrainz"
 ```
 
-### __init__.py
+### `__init__.py`
 ```python
 from picard.plugin3.api import PluginApi
 from picard.i18n import gettext as _
