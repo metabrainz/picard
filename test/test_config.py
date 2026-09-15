@@ -26,6 +26,9 @@ import logging
 import os
 import shutil
 from typing import ClassVar
+from unittest import mock
+
+from PyQt6 import QtCore
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -1293,3 +1296,91 @@ class TestRestoreDefaults(TestPicardConfigCommon):
         # Base value untouched
         with self.config.setting.no_profile():
             self.assertEqual(section['opt'], 'plug_base')
+
+
+class TestObsoleteOptionsCleanup(TestPicardConfigCommon):
+    """Save-time removal of options listed in OBSOLETE_OPTIONS (Config.sync).
+
+    The cleaner only runs after config upgrade hooks have completed, so tests
+    that expect cleaning set _upgrade_hooks_ran to simulate that state.
+    """
+
+    def test_obsolete_option_removed_on_sync(self):
+        self.config._upgrade_hooks_ran = True
+        # Seed a raw key that is in the real OBSOLETE_OPTIONS registry.
+        self.config.setValue('setting/release_type_scores', 'stale')
+        self.assertTrue(self.config.contains('setting/release_type_scores'))
+
+        self.config.sync()
+
+        self.assertFalse(self.config.contains('setting/release_type_scores'))
+
+    def test_not_cleaned_before_upgrade_hooks_ran(self):
+        # Fail-safe: with upgrades not (yet) run, sync must NOT purge, so a
+        # not-yet-migrated config never loses keys a hook might still need.
+        self.assertFalse(self.config._upgrade_hooks_ran)
+        self.config.setValue('setting/release_type_scores', 'stale')
+
+        self.config.sync()
+
+        self.assertTrue(self.config.contains('setting/release_type_scores'))
+
+    def test_absent_obsolete_option_is_noop(self):
+        self.config._upgrade_hooks_ran = True
+        self.assertFalse(self.config.contains('setting/release_type_scores'))
+        self.config.sync()
+        self.assertFalse(self.config.contains('setting/release_type_scores'))
+
+    def test_non_listed_keys_preserved(self):
+        self.config._upgrade_hooks_ran = True
+        self.config.setValue('setting/some_current_option', 'keep-me')
+        self.config.setValue('persist/window_geometry', 'keep-me-too')
+
+        self.config.sync()
+
+        self.assertTrue(self.config.contains('setting/some_current_option'))
+        self.assertEqual(self.config.value('setting/some_current_option'), 'keep-me')
+        self.assertTrue(self.config.contains('persist/window_geometry'))
+
+    def test_cleaner_uses_registry(self):
+        # With a controlled registry, only listed keys are removed; a
+        # plugin-namespaced key with a similar name is left untouched.
+        self.config._upgrade_hooks_ran = True
+        self.config.setValue('setting/dev_only_option', 'x')
+        self.config.setValue('setting/dev_only_option_plugin', 'y')
+        self.config.setValue('persist/dev_only_persist', 'z')
+
+        with mock.patch.object(
+            config,
+            'OBSOLETE_OPTIONS',
+            (('setting', 'dev_only_option'), ('persist', 'dev_only_persist')),
+        ):
+            self.config.sync()
+
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+        self.assertFalse(self.config.contains('persist/dev_only_persist'))
+        # Similarly-named, not-listed key is preserved.
+        self.assertTrue(self.config.contains('setting/dev_only_option_plugin'))
+
+    def test_run_upgrade_hooks_enables_cleaning_and_purges(self):
+        # After a successful upgrade pass the flag is set and obsolete keys are
+        # purged by the final sync, without needing an explicit sync() call.
+        self.config.setValue('setting/release_type_scores', 'stale')
+        self.config.run_upgrade_hooks({})
+        self.assertTrue(self.config._upgrade_hooks_ran)
+        self.assertFalse(self.config.contains('setting/release_type_scores'))
+
+    def test_remove_obsolete_options_safe_before_initialize(self):
+        # from_app calls sync() before __initialize(); the cleaner must work
+        # using only raw QSettings access, without the ConfigSection instances.
+        bare = Config()
+        QtCore.QSettings.__init__(bare, self.configpath, QtCore.QSettings.Format.IniFormat, None)
+        bare.setValue('setting/release_type_scores', 'stale')
+        # No __initialize() called: the flag attribute does not exist yet.
+        self.assertFalse(hasattr(bare, '_upgrade_hooks_ran'))
+
+        bare._remove_obsolete_options()  # must not raise, must not purge
+
+        # Not known-migrated (missing flag) -> key preserved.
+        self.assertTrue(bare.contains('setting/release_type_scores'))
+        del bare
