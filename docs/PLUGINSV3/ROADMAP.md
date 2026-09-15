@@ -26,8 +26,8 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 ## Table of Contents
 
 - [Current State](#current-state)
-- [Phase 1: Functional CLI-Only System](#phase-1-functional-cli-only-system)
-- [Phase 2: Polish & Robustness](#phase-2-polish--robustness)
+- [Phase 1: Functional CLI-Only System](#phase-1-functional-cli-only-system--complete)
+- [Phase 2: Polish and Robustness](#phase-2-polish-and-robustness)
 - [Phase 3: Official Plugin Repository](#phase-3-official-plugin-repository)
 - [Phase 4: GUI](#phase-4-gui)
 - [Success Metrics](#success-metrics)
@@ -434,7 +434,7 @@ See [REGISTRY.md](REGISTRY.md) for registry schema and [SECURITY.md](SECURITY.md
 
 ---
 
-## Phase 2: Polish & Robustness
+## Phase 2: Polish and Robustness
 
 **Goal:** Make CLI system production-ready.
 
