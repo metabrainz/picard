@@ -86,6 +86,14 @@ from picard.util import unique_numbered_title
 # @upgrade_config functions receive the full `config` object. They do NOT run on
 # profiles or imported data. Only use for persist, allKeys(), interactive dialogs.
 #
+# INTERACTIVE HOOKS:
+# A hook that prompts the user must be declared @upgrade_config('x.y.z',
+# interactive=True) and take an `interactive: bool = True` parameter.
+# run_config_upgrades passes the caller's choice (GUI: True; CLI: False). Such
+# a hook MUST, when interactive is False: skip every prompt, pick the
+# NON-DESTRUCTIVE outcome (keep/merge data rather than discard), and
+# log.warning() the automatic choice. See merge_va_file_naming for reference.
+#
 # Multiple functions can share the same version. All decorator types share a
 # single registry: execution order follows source file order regardless of type.
 # This lets you control sequencing when a settings change and a config change
@@ -129,7 +137,7 @@ from picard.util import unique_numbered_title
 #   config.setting.remove('old_name')
 
 
-@upgrade_config('1.0.0final0')
+@upgrade_config('1.0.0final0', interactive=True)
 def merge_va_file_naming(config, interactive=True, merge=True):
     """In version 1.0, the file naming formats for single and various artist releases were merged."""
     _s = config.setting
@@ -193,6 +201,14 @@ def merge_va_file_naming(config, interactive=True, merge=True):
                 msgbox.addButton(_("Remove"), QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
                 msgbox.exec()
                 merge = msgbox.clickedButton() == merge_button
+            else:
+                # Non-interactive: keep the user's custom VA format (merge)
+                # rather than discarding it, and record the automatic choice.
+                log.warning(
+                    "Config upgrade automatically merged the obsolete various artists "
+                    "file naming scheme into the main file naming format. Review your "
+                    "file naming settings if this is not what you want."
+                )
             remove_va_file_naming_format(merge=merge)
         else:
             # default format, disabled
