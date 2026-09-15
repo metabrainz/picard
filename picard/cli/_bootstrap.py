@@ -33,7 +33,11 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
 )
-from picard.config import setup_config
+from picard.config import (
+    get_config,
+    setup_config,
+)
+from picard.config_upgrade import run_config_upgrades
 from picard.options import init_options
 
 
@@ -57,6 +61,11 @@ def minimal_init(config_file=None, *, with_webservice=False):
 
     init_options()
     setup_config(app=app, filename=config_file)
+
+    # Migrate the config like the GUI does, so even read-only commands (e.g.
+    # profiles list) operate on current-format data. Non-interactive: the CLI
+    # is headless and must not block on an upgrade dialog.
+    run_config_upgrades(get_config(), interactive=False)
 
     if with_webservice:
         # Import here to avoid circular imports and unnecessary loading
