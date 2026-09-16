@@ -4,14 +4,14 @@
 #
 # Translators:
 # Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
+# MichTheOcelot <mich352@dondohub.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-05-07 14:11+0000\n"
-"Last-Translator: Automatic translation add-on <noreply-addon-"
-"autotranslate@weblate.org>\n"
+"PO-Revision-Date: 2026-09-16 07:13+0000\n"
+"Last-Translator: MichTheOcelot <mich352@dondohub.com>\n"
 "Language-Team: Spanish (Latin America) <https://translations.metabrainz.org/"
 "projects/picard/2/app/es_419/>\n"
 "Language: es_419\n"
@@ -19,36 +19,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
 msgid "Unmatched Files"
-msgstr ""
+msgstr "Archivos desagrupados"
 
 #: picard/album.py:516
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Álbum %(id)s cargado: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr ""
+msgstr "Cargando álbum %(id)s …"
 
 #: picard/album.py:790
 msgid "[loading album information]"
-msgstr ""
+msgstr "[cargando información del álbum]"
 
 #: picard/album.py:792
 #, python-format
 msgid "[could not load album %s]"
-msgstr ""
+msgstr "[no se ha podido cargar el álbum %s]"
 
 #: picard/cluster.py:260
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "¡Identificado el grupo '%(album)s'!"
 
 #: picard/cluster.py:263
 #, python-format
@@ -58,39 +58,39 @@ msgstr ""
 #: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "Buscando metadatos para el grupo %(album)s…"
 
 #: picard/cluster.py:338
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Archivos desagrupados"
 
 #: picard/collection.py:78
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Añadida %(count)i publicación a la colección \"%(name)s\""
+msgstr[1] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eliminada %(count)i publicación de la colección \"%(name)s\""
+msgstr[1] "Eliminadas %(count)i publicaciónes de la colección \"%(name)s\""
 
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Error al modificar las colecciones: %(error)s"
 
 #: picard/collection.py:119
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Error al cargar las colecciones: %(error)s"
 
 #: picard/config_upgrade.py:84 picard/config_upgrade.py:97
 msgid "Various Artists file naming scheme removal"
-msgstr ""
+msgstr "Borrado del método de nombrado de archivos de múltiples artistas"
 
 #: picard/config_upgrade.py:85
 msgid ""
@@ -99,6 +99,10 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
+"Esta versión de Picard elimina el método de nombrado específico para álbumes "
+"de múltiples artistas. \n"
+"Su método de nombrado ha sido combinado automáticamente con el de álbumes de "
+"un solo artista."
 
 #: picard/config_upgrade.py:98
 msgid ""
@@ -109,26 +113,34 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
+"Esta versión de Picard elimina el método de nombrado específico para álbumes "
+"de múltiples artistas. \n"
+"No está usando esta opción, pero tiene guardado un método específico para el "
+"caso. \n"
+"¿Desea eliminarlo o combinarlo con el método para álbumes de un solo artista?"
 
 #: picard/config_upgrade.py:105
 msgid "Merge"
-msgstr ""
+msgstr "Combinar"
 
 #: picard/config_upgrade.py:106 picard/ui/metadatabox.py:427
 #: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: picard/config_upgrade.py:424
 msgid "Primary file naming script"
 msgstr ""
 
 #: picard/file.py:220
+#, fuzzy
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"El archivo no puede ser analizado, el archivo esta dañado o tiene un formato "
+"que no es admitido."
 
 #: picard/file.py:853
 #, python-format
@@ -148,18 +160,18 @@ msgstr ""
 #: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr ""
+msgstr "Buscando metadatos en archivo %(filename)s…"
 
 #: picard/log.py:67 picard/ui/options/renaming.py:256
 #: picard/ui/scripteditor.py:889 picard/ui/scripteditor.py:892
 #: picard/ui/scripteditor.py:1198 picard/ui/scripteditor.py:1426
-#, fuzzy
 msgid "Error"
-msgstr "error"
+msgstr "Error"
 
 #: picard/log.py:68
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "Precaucion"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -2431,15 +2443,15 @@ msgstr ""
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i imagen"
+msgstr[1] "%i imágenes"
 
 #: picard/ui/item.py:144
-#, python-format
+#, fuzzy, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i imagen no encontrada en todas las pistas"
+msgstr[1] "%i imágenes distintas en las pistas"
 
 #: picard/ui/itemviews.py:160 picard/util/tags.py:123
 msgid "Title"
@@ -2583,7 +2595,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:871
 msgid "Clusters"
-msgstr ""
+msgstr "Grupos"
 
 #: picard/ui/itemviews.py:881
 msgid "album view"
@@ -4238,8 +4250,9 @@ msgid "Request timeout in seconds:"
 msgstr ""
 
 #: picard/ui/ui_options_network.py:139
+#, fuzzy
 msgid "Browser Integration"
-msgstr ""
+msgstr "Integracion con el buscador"
 
 #: picard/ui/ui_options_network.py:140
 msgid "Default listening port:"
@@ -5047,7 +5060,7 @@ msgstr ""
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
-msgstr ""
+msgstr "Emparejamiento"
 
 #: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
@@ -5641,7 +5654,7 @@ msgstr ""
 
 #: picard/util/tags.py:68
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/util/tags.py:69
 msgid "Key"
