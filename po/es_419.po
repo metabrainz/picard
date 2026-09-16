@@ -4,14 +4,14 @@
 #
 # Translators:
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# MichTheOcelot <mich352@dondohub.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-07-29 08:33+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-09-16 07:13+0000\n"
+"Last-Translator: MichTheOcelot <mich352@dondohub.com>\n"
 "Language-Team: Spanish (Latin America) <https://translations.metabrainz.org/"
 "projects/picard/3/app/es_419/>\n"
 "Language: es_419\n"
@@ -19,31 +19,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:218
 msgid "Unmatched Files"
-msgstr ""
+msgstr "Archivos desagrupados"
 
 #: picard/album.py:849
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Álbum %(id)s cargado: %(artist)s - %(album)s"
 
 #: picard/album.py:911
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr ""
+msgstr "Cargando álbum %(id)s …"
 
 #: picard/album.py:1141
 msgid "[loading album information]"
-msgstr ""
+msgstr "[cargando información del álbum]"
 
 #: picard/album.py:1143
 #, python-format
 msgid "[could not load album %s]"
-msgstr ""
+msgstr "[no se ha podido cargar el álbum %s]"
 
 #: picard/cluster.py:393
 #, python-format
@@ -53,7 +53,7 @@ msgstr ""
 #: picard/cluster.py:395
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "¡Identificado el grupo '%(album)s'!"
 
 #: picard/cluster.py:398
 #, python-format
@@ -63,43 +63,43 @@ msgstr ""
 #: picard/cluster.py:454
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "Buscando metadatos para el grupo %(album)s…"
 
 #: picard/cluster.py:516
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Archivos desagrupados"
 
 #: picard/cluster.py:555
 msgid "Clusters"
-msgstr ""
+msgstr "Grupos"
 
 #: picard/collection.py:106
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Error al modificar las colecciones: %(error)s"
 
 #: picard/collection.py:116
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Añadida %(count)i publicación a la colección \"%(name)s\""
+msgstr[1] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 
 #: picard/collection.py:128
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eliminada %(count)i publicación de la colección \"%(name)s\""
+msgstr[1] "Eliminadas %(count)i publicaciónes de la colección \"%(name)s\""
 
 #: picard/collection.py:165
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Error al cargar las colecciones: %(error)s"
 
 #: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
 msgid "Various Artists file naming scheme removal"
-msgstr ""
+msgstr "Borrado del método de nombrado de archivos de múltiples artistas"
 
 #: picard/config_upgrade_hooks.py:165
 msgid ""
@@ -108,6 +108,10 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
+"Esta versión de Picard elimina el método de nombrado específico para álbumes "
+"de múltiples artistas. \n"
+"Su método de nombrado ha sido combinado automáticamente con el de álbumes de "
+"un solo artista."
 
 #: picard/config_upgrade_hooks.py:183
 msgid ""
@@ -118,10 +122,15 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
+"Esta versión de Picard elimina el método de nombrado específico para álbumes "
+"de múltiples artistas. \n"
+"No está usando esta opción, pero tiene guardado un método específico para el "
+"caso. \n"
+"¿Desea eliminarlo o combinarlo con el método para álbumes de un solo artista?"
 
 #: picard/config_upgrade_hooks.py:192
 msgid "Merge"
-msgstr ""
+msgstr "Combinar"
 
 #: picard/config_upgrade_hooks.py:193
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
@@ -129,7 +138,7 @@ msgstr ""
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:156
 #: picard/ui/widgets/preferencelistwidget.py:89
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: picard/config_upgrade_hooks.py:529
 msgid "Primary file naming script"
@@ -137,11 +146,11 @@ msgstr ""
 
 #: picard/debug_opts.py:172
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Ruta a la extensión"
 
 #: picard/debug_opts.py:172
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Rutas a los registros de la extensión"
 
 #: picard/debug_opts.py:173
 msgid "Web Service Post Data"
@@ -169,7 +178,7 @@ msgstr ""
 
 #: picard/debug_opts.py:176
 msgid "Plugin Translations"
-msgstr ""
+msgstr "Traducciones de la extensión"
 
 #: picard/debug_opts.py:176
 msgid "Log plugin translation lookups and fallbacks"
@@ -177,7 +186,7 @@ msgstr ""
 
 #: picard/debug_opts.py:177
 msgid "Plugin Updates"
-msgstr ""
+msgstr "Actualizaciones de la extensión"
 
 #: picard/debug_opts.py:177
 msgid "Log detailed plugin version checking and update detection"
@@ -195,7 +204,7 @@ msgstr ""
 #: picard/debug_opts.py:179 picard/ui/forms/ui_options_matching.py:134
 #: picard/ui/options/matching.py:37
 msgid "Matching"
-msgstr ""
+msgstr "Emparejamiento"
 
 #: picard/debug_opts.py:179
 msgid "Log similarity scores and match decisions"
@@ -220,7 +229,7 @@ msgstr ""
 #: picard/debug_opts.py:182 picard/ui/cdlookup.py:229
 #: picard/ui/itemviews/columns.py:173
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/debug_opts.py:182
 msgid "Log ISRC processing, submission, and lookup details"
@@ -236,8 +245,9 @@ msgid "Log request throttling, congestion window, and backoff details"
 msgstr ""
 
 #: picard/debug_opts.py:184
+#, fuzzy
 msgid "Theme"
-msgstr ""
+msgstr "Diseño"
 
 #: picard/debug_opts.py:184
 msgid ""
@@ -245,66 +255,78 @@ msgid ""
 msgstr ""
 
 #: picard/debug_opts.py:185 picard/ui/forms/ui_options_network.py:185
+#, fuzzy
 msgid "Browser Integration"
-msgstr ""
+msgstr "Integracion con el buscador"
 
 #: picard/debug_opts.py:185
+#, fuzzy
 msgid "Log browser integration HTTP requests"
-msgstr ""
+msgstr "Registro de solicitudes HTTP de la integracion con el buscador"
 
 #: picard/file.py:335
+#, fuzzy
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "No se puede guardar archivo: el archivo ya no existe"
 
 #: picard/file.py:339
+#, fuzzy
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "No se puede guardar archivo: permiso denegado."
 
 #: picard/file.py:344
+#, fuzzy
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"El archivo no puede ser analizado, el archivo esta dañado o tiene un formato "
+"que no es admitido."
 
 #: picard/file.py:1174 picard/file.py:1191
 #, python-format
 msgid "No matching tracks for file \"%(filename)s\""
-msgstr ""
+msgstr "No se han encontrado pistas concordantes para el archivo '%(filename)s'"
 
 #: picard/file.py:1177
-#, python-format
+#, fuzzy, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr ""
+msgstr "La mejor pareja para el archivo '%(filename)s' es ambigua"
 
 #: picard/file.py:1179
-#, python-format
+#, fuzzy, python-format
 msgid "File \"%(filename)s\" identified!"
-msgstr ""
+msgstr "¡Identificado el archivo '%(filename)s'!"
 
 #: picard/file.py:1259
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr ""
+msgstr "Buscando metadatos en archivo %(filename)s…"
 
 #: picard/isrcsubmit.py:270
+#, fuzzy
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "Mismo ISRC encontrado para distintas grabaciones"
 
 #: picard/isrcsubmit.py:276
+#, fuzzy
 msgid "ISRC already assigned to another track on this release"
-msgstr ""
+msgstr "Este ISRC ya ha sido asignado a otra pista en esta publicacion"
 
 #: picard/isrcsubmit.py:279
+#, fuzzy
 msgid "ISRC already submitted"
-msgstr ""
+msgstr "Este ISRC ya ha sido remitido"
 
 #: picard/isrcsubmit.py:284
+#, fuzzy
 msgid "File has multiple ISRCs (uncertain source)"
-msgstr ""
+msgstr "Este archivo tiene multiples ISRC (fuente indeterminada)"
 
 #: picard/isrcsubmit.py:323
+#, fuzzy
 msgid "Submitting ISRCs …"
-msgstr ""
+msgstr "Remitiendo ISRCs …"
 
 #: picard/isrcsubmit.py:334
 msgid "ISRC submission failed"
@@ -318,28 +340,28 @@ msgstr ""
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i imagen"
+msgstr[1] "%i imágenes"
 
 #: picard/item.py:345
-#, python-format
+#, fuzzy, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i imagen no encontrada en todas las pistas"
+msgstr[1] "%i imágenes distintas en las pistas"
 
 #: picard/log.py:93 picard/ui/dialogs/installplugin.py:657
 #: picard/ui/options/renaming.py:116 picard/ui/scripteditor/__init__.py:569
 #: picard/ui/scripteditor/__init__.py:572
 #: picard/ui/scripteditor/__init__.py:881
 #: picard/ui/scripteditor/__init__.py:1110
-#, fuzzy
 msgid "Error"
-msgstr "error"
+msgstr "Error"
 
 #: picard/log.py:94
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "Precaucion"
 
 #: picard/log.py:95 picard/ui/dialogs/installplugin.py:471
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
