@@ -9,13 +9,14 @@
 # Pintér Ádám <pinteradam2000@gmail.com>, 2016
 # Syp <http://musicbrainz.org/user/view.html?modname=syp>, 2005
 # hildgyorgy <hild.gyorgy@freemail.hu>, 2026.
+# pXF <pxf@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-14 10:13+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-09-16 07:13+0000\n"
+"Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/hu/>\n"
 "Language: hu\n"
@@ -287,6 +288,8 @@ msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"A fájl elemzése sikertelen volt; a fájl vagy sérült, vagy nem támogatott a "
+"fájl formátum."
 
 #: picard/file.py:1174 picard/file.py:1191
 #, fuzzy, python-format
