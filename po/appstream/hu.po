@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2026-09-17 09:13+0000\n"
+"PO-Revision-Date: 2026-09-17 13:41+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/appstream/hu/>\n"
@@ -59,7 +59,7 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:27
 msgid "Features:"
-msgstr ""
+msgstr "Funkciók:"
 
 #: org.musicbrainz.Picard.appdata.xml.in:29
 msgid ""
