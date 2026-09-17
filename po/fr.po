@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 14:00+0000\n"
+"PO-Revision-Date: 2026-09-17 14:07+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -3923,14 +3923,12 @@ msgid "Saved entity"
 msgstr "Entité sauvegardée"
 
 #: picard/ui/colors.py:47
-#, fuzzy
-#| msgid "Append front cover art"
 msgid "First cover art"
-msgstr "Ajouter l’illustration de couverture"
+msgstr "Première illustration de couverture"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:52
 msgid "Others"
-msgstr ""
+msgstr "Autres"
 
 #: picard/ui/colors.py:48
 msgid "Log view text (debug)"
@@ -3939,7 +3937,7 @@ msgstr "Texte du journal (débogage)"
 #: picard/ui/colors.py:48 picard/ui/colors.py:49 picard/ui/colors.py:50
 #: picard/ui/colors.py:51 picard/ui/forms/ui_options_startup.py:131
 msgid "Logging"
-msgstr ""
+msgstr "Journalisation"
 
 #: picard/ui/colors.py:49
 msgid "Log view text (error)"
@@ -3955,11 +3953,11 @@ msgstr "Texte du journal (attention)"
 
 #: picard/ui/colors.py:52
 msgid "Low match similarity background"
-msgstr ""
+msgstr "Arrière-plan de faible ressemblance de correspondance"
 
 #: picard/ui/colors.py:53
 msgid "Profile highlight background"
-msgstr ""
+msgstr "Arrière-plan de surbrillance de profil"
 
 #: picard/ui/colors.py:53 picard/ui/colors.py:54
 #: picard/ui/forms/ui_options_attached_profiles.py:68
@@ -3970,7 +3968,7 @@ msgstr "Profils d'options"
 
 #: picard/ui/colors.py:54
 msgid "Profile highlight foreground"
-msgstr ""
+msgstr "Premier plan de surbrillance de profil"
 
 #: picard/ui/colors.py:55
 msgid "Tag added"
@@ -3991,52 +3989,38 @@ msgid "Tag removed"
 msgstr "Balise supprimée"
 
 #: picard/ui/colors.py:58
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Error syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique des erreurs"
 
 #: picard/ui/colors.py:58 picard/ui/colors.py:59 picard/ui/colors.py:60
 #: picard/ui/colors.py:61 picard/ui/colors.py:62 picard/ui/colors.py:63
 #: picard/ui/colors.py:64
-#, fuzzy
-#| msgid "Clear Highlight"
 msgid "Syntax Highlighting"
-msgstr "Effacer surlignage"
+msgstr "Coloration syntaxique"
 
 #: picard/ui/colors.py:59
 msgid "Escape syntax highlight"
-msgstr ""
+msgstr "Coloration syntaxique des échappements"
 
 #: picard/ui/colors.py:60
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Function syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique des fonctions"
 
 #: picard/ui/colors.py:61
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Noop syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique des noop"
 
 #: picard/ui/colors.py:62
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Special syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique des caractères spéciaux"
 
 #: picard/ui/colors.py:63
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Unicode syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique de l’Unicode"
 
 #: picard/ui/colors.py:64
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Variable syntax highlight"
-msgstr "Chaîne à surligner"
+msgstr "Coloration syntaxique des variables"
 
 #: picard/ui/columns.py:53
 #, fuzzy
@@ -4175,10 +4159,8 @@ msgid "&Submit"
 msgstr "&Soumettre l’ID de disque"
 
 #: picard/ui/logview.py:171
-#, fuzzy
-#| msgid "Show &more details…"
 msgid "&View detail…"
-msgstr "&Plus de détails…"
+msgstr "&Voir le détail…"
 
 #: picard/ui/logview.py:176 picard/ui/metadatabox/__init__.py:742
 msgid "&Copy"
@@ -4189,40 +4171,28 @@ msgid "Select &all"
 msgstr "Tou&t sélectionner"
 
 #: picard/ui/logview.py:212
-#, fuzzy
-#| msgid "Show more details"
 msgid "Log Detail"
-msgstr "Plus de détails"
+msgstr "Détail du journal"
 
 #: picard/ui/logview.py:340
-#, fuzzy
-#| msgid "Log in"
 msgid "Log View"
-msgstr "Connexion"
+msgstr "Affichage du journal"
 
 #: picard/ui/logview.py:354
-#, fuzzy
-#| msgid "Clear Log"
 msgid "Clear &log…"
-msgstr "Effacer le journal"
+msgstr "Effacer le &journal…"
 
 #: picard/ui/logview.py:358
-#, fuzzy
-#| msgid "Rename files"
 msgid "&Regex filter"
-msgstr "Renommer les fichiers"
+msgstr "Filtre par expression &régulière"
 
 #: picard/ui/logview.py:363
-#, fuzzy
-#| msgid "metadata view"
 msgid "&Compact view"
-msgstr "affichage des métadonnées"
+msgstr "Affichage com&pact"
 
 #: picard/ui/logview.py:372
-#, fuzzy
-#| msgid "&Help"
 msgid "Help"
-msgstr "&Aide"
+msgstr "Aide"
 
 #: picard/ui/logview.py:379 picard/ui/logview.py:548
 msgid "Verbosity"
@@ -4235,16 +4205,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/logview.py:392 picard/ui/logview.py:394
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Options"
+msgstr "Options de débogage"
 
 #: picard/ui/logview.py:404 picard/ui/logview.py:412
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filter"
-msgstr "Grappes"
+msgstr "Filtre"
 
 #: picard/ui/logview.py:419
 msgid "Save As…"
@@ -4256,7 +4222,7 @@ msgstr "Enregistrer la vue du journal dans un fichier"
 
 #: picard/ui/logview.py:486
 msgid "Text files (*.txt);;All files (*)"
-msgstr ""
+msgstr "Fichiers texte (*.txt);;Tous les fichiers (*)"
 
 #: picard/ui/logview.py:494
 msgid "File already exists, do you really want to save to this file?"
@@ -4267,10 +4233,9 @@ msgid "Failed to save Log View to file"
 msgstr "Échec de l’enregistrement de la vue du journal dans le fichier"
 
 #: picard/ui/logview.py:507
-#, fuzzy, python-format
-#| msgid "Something prevented data to be written to '%s'"
+#, python-format
 msgid "Something prevented data to be written to \"%s\"."
-msgstr "Quelque chose à empêcher l’écriture des données dans « %s »"
+msgstr "Quelque chose a empêché l’écriture des données dans « %s »."
 
 #: picard/ui/logview.py:517
 msgid "Clear Log"
