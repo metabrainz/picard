@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 12:15+0000\n"
+"PO-Revision-Date: 2026-09-17 12:48+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -1693,11 +1693,9 @@ msgid "the file name does not match"
 msgstr "Le format de nommage de fichiers ne doit pas être vide."
 
 #: picard/coverart/providers/local.py:87 picard/ui/options/advanced.py:90
-#, fuzzy, python-format
-#| msgid "Ignore file paths matching a regular expression"
+#, python-format
 msgid "Invalid regular expression: %s"
-msgstr ""
-"Ignorer les chemins de fichier correspondants à une expression régulière"
+msgstr "Expression régulière invalide : %s"
 
 #: picard/coverart/providers/local.py:103
 msgid "Local Files"
@@ -4145,10 +4143,8 @@ msgid "Pending requests"
 msgstr "Demande en attente"
 
 #: picard/ui/isrcsubmitdialog.py:42 picard/ui/options/interface_toolbar.py:124
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit ISRCs"
-msgstr "Envoyer les AcoustID"
+msgstr "Soumettre les ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:46
 #, fuzzy
@@ -4917,10 +4913,8 @@ msgid "Install Plugin"
 msgstr "Installer un greffon…"
 
 #: picard/ui/dialogs/installplugin.py:109 picard/ui/options/plugins.py:121
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Search plugins…"
-msgstr "Installer un greffon…"
+msgstr "Rechercher des greffons…"
 
 #: picard/ui/dialogs/installplugin.py:114
 #: picard/ui/dialogs/installplugin.py:341
@@ -6046,7 +6040,7 @@ msgstr ""
 #: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:49
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Menu des réglages rapides"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 msgid ""
@@ -8638,25 +8632,23 @@ msgstr "Avancé"
 
 #: picard/ui/options/advanced.py:60
 msgid "Test file path matching:"
-msgstr ""
+msgstr "Tester la correspondance des chemins de fichier :"
 
 #: picard/ui/options/advanced.py:62
 msgid "Enter file paths to test, one per line."
-msgstr ""
+msgstr "Saisissez les chemins de fichier à tester, un par ligne."
 
 #: picard/ui/options/advanced.py:63
-#, fuzzy
-#| msgid "The file was empty"
 msgid "the file path matches"
-msgstr "Le fichier était vide"
+msgstr "le chemin de fichier correspond"
 
 #: picard/ui/options/advanced.py:64
 msgid "the file path does not match"
-msgstr ""
+msgstr "le chemin de fichier ne correspond pas"
 
 #: picard/ui/options/cdlookup.py:72
 msgid "ISRC extraction is not supported on this platform."
-msgstr ""
+msgstr "L’extraction des ISRC n’est pas prise en charge sur cette plateforme."
 
 #: picard/ui/options/cover_processing.py:52
 #, fuzzy
@@ -8665,12 +8657,12 @@ msgstr "Traitement"
 
 #: picard/ui/options/dialog.py:137
 msgid "This page failed to initialize"
-msgstr ""
+msgstr "Échec de l’initialisation de cette page"
 
 #: picard/ui/options/dialog.py:139
 #, python-format
 msgid "Error while initializing option page \"%s\":"
-msgstr ""
+msgstr "Erreur lors de l’initialisation de la page d’options « %s » :"
 
 #: picard/ui/options/dialog.py:153
 #, python-format
@@ -8678,10 +8670,12 @@ msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
 msgstr ""
+"Veuillez consulter la <a href=\"%s\">documentation de dépannage</a> et "
+"éventuellement signaler un bogue."
 
 #: picard/ui/options/dialog.py:306
 msgid "Display help regarding option profiles"
-msgstr ""
+msgstr "Afficher l’aide concernant les profils d’options"
 
 #: picard/ui/options/dialog.py:310
 msgid "&Restore all Defaults"
@@ -8710,26 +8704,24 @@ msgid ""
 msgstr "Les options de cette page ne peuvent pas être gérées par les profils."
 
 #: picard/ui/options/dialog.py:621 picard/ui/options/dialog.py:643
-#, fuzzy, python-format
-#| msgid "This option will be saved to profile: %s"
+#, python-format
 msgid "This option is tracked by profile: %s"
-msgstr "Cette option sera sauvée vers le profil : %s"
+msgstr "Cette option est suivie par le profil : %s"
 
 #: picard/ui/options/dialog.py:640
-#, fuzzy, python-format
-#| msgid "This option will be saved to profile: %s"
+#, python-format
 msgid "This option is overridden by profile: %s"
-msgstr "Cette option sera sauvée vers le profil : %s"
+msgstr "Cette option est remplacée par le profil : %s"
 
 #: picard/ui/options/dialog.py:730
 #, python-format
 msgid "The highlighted settings on this page are overridden by %s"
-msgstr ""
+msgstr "Les réglages en surbrillance sur cette page sont remplacés par %s"
 
 #: picard/ui/options/dialog.py:732
 #, python-format
 msgid "Some settings on this page are overridden by %s"
-msgstr ""
+msgstr "Certains réglages sur cette page sont remplacés par %s"
 
 #: picard/ui/options/dialog.py:906
 msgid "Unexpected error"
@@ -8758,12 +8750,16 @@ msgid ""
 "Hover an option to see which profiles contain it.\n"
 "%s = option is in this profile, %s = option is not in this profile"
 msgstr ""
+"Survolez une option pour voir quels profils la contiennent.\n"
+"%s = l’option est dans ce profil, %s = l’option n’est pas dans ce profil"
 
 #: picard/ui/options/dialog.py:1118
 msgid ""
 "This option is in the selected profile(s).\n"
 "Click to remove it from them."
 msgstr ""
+"Cette option est dans le(s) profil(s) sélectionné(s).\n"
+"Cliquez pour l’en retirer."
 
 #: picard/ui/options/dialog.py:1125
 #, python-format
@@ -8771,12 +8767,16 @@ msgid ""
 "This option is in: %s\n"
 "Click to add it to the selected profile(s)."
 msgstr ""
+"Cette option est dans : %s\n"
+"Cliquez pour l’ajouter au(x) profil(s) sélectionné(s)."
 
 #: picard/ui/options/dialog.py:1127
 msgid ""
 "This option is not in any profile.\n"
 "Click to add it to the selected profile(s)."
 msgstr ""
+"Cette option n’est dans aucun profil.\n"
+"Cliquez pour l’ajouter au(x) profil(s) sélectionné(s)."
 
 #: picard/ui/options/fingerprinting.py:69
 msgid "Fingerprinting"
@@ -8801,22 +8801,20 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Connecté en tant que <b>%s</b>."
 
 #: picard/ui/options/general.py:154
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Erreur lors de la déconnexion"
+msgstr "Erreur de déconnexion"
 
 #: picard/ui/options/general.py:157
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
-"Une erreur du serveur est survenue pendant la révocation de l'accès au "
-"serveur MusicBrainz: %s \n"
+"Une erreur du serveur est survenue lors de la révocation de l’accès au "
+"serveur MusicBrainz : %s\n"
 "\n"
-"Retirer les identifiants stocké localement quand même ?"
+"Supprimer tout de même les identifiants stockés localement ?"
 
 #: picard/ui/options/genres.py:41
 msgid ""
@@ -8888,25 +8886,21 @@ msgid "Genres"
 msgstr "Genres"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
-#| msgid "Rename files"
 msgid "Test genres filter:"
-msgstr "Renommer les fichiers"
+msgstr "Tester le filtre de genres :"
 
 #: picard/ui/options/genres.py:100
-#, fuzzy
-#| msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgid "Enter genres or folksonomy tags to test, one per line."
 msgstr ""
-"Genres ou étiquettes folksonomiques à inclure ou exclure, un par ligne :"
+"Saisissez les genres ou étiquettes de folksonomie à tester, un par ligne."
 
 #: picard/ui/options/genres.py:101
 msgid "the tag will be kept"
-msgstr ""
+msgstr "la balise sera conservée"
 
 #: picard/ui/options/genres.py:102
 msgid "the tag will be skipped"
-msgstr ""
+msgstr "la balise sera ignorée"
 
 #: picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -8939,19 +8933,15 @@ msgstr "Valeur par défaut du système"
 
 #: picard/ui/options/interface.py:143
 msgid "Reset tutorial and setup wizard…"
-msgstr ""
+msgstr "Réinitialiser le tutoriel et l’assistant de configuration…"
 
 #: picard/ui/options/interface.py:198
-#, fuzzy
-#| msgid "User interface language"
 msgid "You have changed the interface language."
-msgstr "Langue de l’interface utilisateur"
+msgstr "Vous avez changé la langue de l’interface."
 
 #: picard/ui/options/interface.py:222
-#, fuzzy
-#| msgid "File Save Warning"
 msgid "Option Setting Warning"
-msgstr "Alerte Enregistrement de fichier"
+msgstr "Avertissement de réglage d’option"
 
 #: picard/ui/options/interface.py:224
 msgid ""
@@ -8961,41 +8951,40 @@ msgid ""
 "\n"
 "Are you sure that you want to enable this setting?"
 msgstr ""
+"En activant l’option de répertoires multiples, Picard n’utilisera plus le "
+"sélecteur de fichiers du système pour choisir les répertoires. Cela peut "
+"réduire certaines fonctionnalités.\n"
+"\n"
+"Êtes-vous sûr de vouloir activer ce réglage ?"
 
 #: picard/ui/options/interface.py:237
-#, fuzzy
-#| msgid "Reset all"
 msgid "Reset Tutorial"
-msgstr "Tout réinitialiser"
+msgstr "Réinitialiser le tutoriel"
 
 #: picard/ui/options/interface.py:238
 msgid ""
 "This will reset the tutorial and setup wizard so they are shown again. "
 "Continue?"
 msgstr ""
+"Cela réinitialisera le tutoriel et l’assistant de configuration afin qu’ils "
+"soient affichés à nouveau. Continuer ?"
 
 #: picard/ui/options/interface_colors.py:77
 msgid "Choose a color"
 msgstr "Choisir une couleur"
 
 #: picard/ui/options/interface_colors.py:182
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "Rétablir les colonnes par défaut"
+msgstr "Rétablir la couleur par défaut"
 
 #: picard/ui/options/interface_cover_art_box.py:40
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Illustrations"
+msgstr "Boîte d’illustrations"
 
 #: picard/ui/options/interface_quick_menu.py:82
 #: picard/ui/options/profiles.py:269
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Titre"
+msgstr "titre"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -9031,23 +9020,19 @@ msgstr "Enregistrer"
 
 #: picard/ui/options/interface_toolbar.py:116
 msgid "Move to trash"
-msgstr ""
+msgstr "Mettre à la corbeille"
 
 #: picard/ui/options/interface_toolbar.py:120
 msgid "Submit AcoustIDs"
 msgstr "Envoyer les AcoustID"
 
 #: picard/ui/options/interface_toolbar.py:128
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "Rechercher le CD …"
+msgstr "Rechercher la balise TOC…"
 
 #: picard/ui/options/interface_toolbar.py:132
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD log file…"
-msgstr "Rechercher le CD …"
+msgstr "Rechercher le fichier journal du CD…"
 
 #: picard/ui/options/interface_toolbar.py:140 picard/ui/player/toolbar.py:68
 msgid "Play"
@@ -9066,10 +9051,8 @@ msgid "Drag and Drop to re-order"
 msgstr "Glisser-déplacer pour réordonner"
 
 #: picard/ui/options/interface_toolbar.py:294
-#, fuzzy
-#| msgid "Select all"
 msgid "Select an action"
-msgstr "Tout sélectionner"
+msgstr "Sélectionner une action"
 
 #: picard/ui/options/interface_top_tags.py:35
 msgid "Top Tags"
@@ -9080,26 +9063,6 @@ msgid "Maintenance"
 msgstr "Maintenance"
 
 #: picard/ui/options/maintenance.py:89
-#, fuzzy
-#| msgid ""
-#| "This allows you to remove unused option settings from the configuration "
-#| "INI file.\n"
-#| "\n"
-#| "Settings that are found in the configuration file that do not appear on "
-#| "any option settings page will be listed below. If your configuration file "
-#| "does not contain any unused option settings, then the list will be empty "
-#| "and the removal checkbox will be disabled.\n"
-#| "\n"
-#| "Note that unused option settings could come from plugins that have been "
-#| "uninstalled, so please be careful to not remove settings that you may "
-#| "want to use later when the plugin is reinstalled. Options belonging to "
-#| "plugins that are installed but currently disabled will not be listed for "
-#| "possible removal.\n"
-#| "\n"
-#| "To remove one or more settings, first enable the removal by checking the "
-#| "\"Remove selected options\" box. You can then select the settings to "
-#| "remove by checking the box next to the setting. When you choose \"Make It "
-#| "So!\" to save your option settings, the selected items will be removed."
 msgid ""
 "Settings that are found in the configuration file that do not appear on any "
 "option settings page are listed below. If your configuration file does not "
@@ -9117,26 +9080,22 @@ msgid ""
 "the \"Remove selected options\" box. When you choose \"Make It So!\" to save "
 "your option settings, the selected items will be removed."
 msgstr ""
-"Cela vous permet de supprimer les paramètres d'option inutilisés du fichier "
-"INI de configuration.\n"
+"Les réglages présents dans le fichier de configuration qui n’apparaissent "
+"sur aucune page de réglages d’options sont listés ci-dessous. Si votre "
+"fichier de configuration ne contient aucun réglage d’option inutilisé, la "
+"liste sera vide et la case de suppression sera désactivée.\n"
 "\n"
-"Les paramètres trouvés dans le fichier de configuration qui n'apparaissent "
-"sur aucune page de paramètres d'options seront répertoriés ci-dessous. Si "
-"votre fichier de configuration ne contient aucun paramètre d'option "
-"inutilisé, la liste sera vide et la case à cocher de suppression sera "
-"désactivée.\n"
+"Notez que les réglages d’options inutilisés peuvent provenir de greffons "
+"désinstallés ; veillez donc à ne pas supprimer des réglages que vous "
+"pourriez vouloir réutiliser plus tard lors de la réinstallation du greffon. "
+"Les options appartenant à des greffons installés mais actuellement "
+"désactivés ne sont pas listées pour une suppression éventuelle.\n"
 "\n"
-"Notez que les paramètres d'options inutilisés peuvent provenir de greffons "
-"qui ont été désinstallés, veillez donc à ne pas supprimer les paramètres que "
-"vous voudrez peut-être utiliser ultérieurement lorsque le greffon sera "
-"réinstallé. Les options appartenant aux greffons actuellement désactivés ne "
-"seront pas listés une éventuelle suppression.\n"
-"\n"
-"Pour supprimer un ou plusieurs paramètres, activez d'abord la suppression en "
-"cochant la case \"Supprimer les options sélectionnées\". Vous pouvez ensuite "
-"sélectionner les paramètres à supprimer en cochant la case à côté du "
-"paramètre. Lorsque vous choisissez \"Faites ainsi !\" pour enregistrer vos "
-"paramètres d'option, les éléments sélectionnés seront supprimés."
+"Pour supprimer un ou plusieurs réglages, sélectionnez ceux que vous voulez "
+"supprimer en cochant la case à côté du réglage, puis activez la suppression "
+"en cochant la case « Supprimer les options sélectionnées ». Lorsque vous "
+"choisirez « Faites ainsi ! » pour enregistrer vos réglages d’options, les "
+"éléments sélectionnés seront supprimés."
 
 #: picard/ui/options/maintenance.py:103
 msgid "Option"
@@ -9147,10 +9106,8 @@ msgid "Value"
 msgstr "Valeur"
 
 #: picard/ui/options/maintenance.py:137
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
-msgstr "Configuration requise"
+msgstr "Erreur de répertoire de sauvegarde du fichier de configuration"
 
 #: picard/ui/options/maintenance.py:138
 #, python-format
@@ -9158,54 +9115,51 @@ msgid ""
 "The path provided isn't a valid directory, reverting to:\n"
 "%s\n"
 msgstr ""
+"Le chemin fourni n’est pas un répertoire valide, retour à :\n"
+"%s\n"
 
 #: picard/ui/options/maintenance.py:171
-#, fuzzy, python-format
-#| msgid ""
-#| "The configuration file currently contains %(totalcount)d option settings, "
-#| "%(unusedcount)d which are unused."
+#, python-format
 msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
 msgstr ""
-"La configuration contient actuellement %(totalcount)d paramètres d'options, "
-"%(unusedcount)d sont inutilisés."
+"Le fichier de configuration contient actuellement %(totalcount)d réglages "
+"d’options (%(unusedcount)d inutilisés)."
 
 #: picard/ui/options/maintenance.py:211
 msgid "Configuration files"
 msgstr "Fichiers de configuration"
 
 #: picard/ui/options/maintenance.py:230
-#, fuzzy
-#| msgid "Backup Configuration File"
 msgid "Backup Configuration File Save Error"
-msgstr "Sauvegarder le fichier de configuration"
+msgstr "Erreur d’enregistrement de la sauvegarde du fichier de configuration"
 
 #: picard/ui/options/maintenance.py:231
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "Failed to save the configuration file to:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Il y a eu un problème lors de la restoration du fichier de configuration. "
-"Merci de consulter les logs pour plus de détails."
+"Échec de l’enregistrement du fichier de configuration vers :\n"
+"%s\n"
+"\n"
+"Veuillez consulter les journaux pour plus de détails."
 
 #: picard/ui/options/maintenance.py:240 picard/ui/options/maintenance.py:249
 msgid "Backup Configuration File"
 msgstr "Sauvegarder le fichier de configuration"
 
 #: picard/ui/options/maintenance.py:250
-#, fuzzy, python-format
-#| msgid "Configuration successfully backed up to %s"
+#, python-format
 msgid ""
 "Configuration successfully backed up to:\n"
 "%s"
-msgstr "La configuration a été sauvée avec succès dans %s"
+msgstr ""
+"Configuration sauvegardée avec succès vers :\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:279 picard/ui/options/maintenance.py:297
 #: picard/ui/options/maintenance.py:307
@@ -9213,13 +9167,7 @@ msgid "Load Backup Configuration File"
 msgstr "Charger une sauvegarde de fichier de configuration"
 
 #: picard/ui/options/maintenance.py:281
-#, fuzzy, python-format
-#| msgid ""
-#| "Loading a backup configuration file will replace the current "
-#| "configuration settings. A backup copy of the current file will be saved "
-#| "automatically.\n"
-#| "\n"
-#| "Do you want to continue?"
+#, python-format
 msgid ""
 "Loading a backup configuration file will replace the current configuration "
 "settings.\n"
@@ -9229,39 +9177,40 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Charger une sauvegarde de fichier de configuration remplacera la "
-"configuration courante. Une copie de sauvegarde du fichier courant sera "
-"automatiquement réalisée.\n"
+"Le chargement d’une sauvegarde de fichier de configuration remplacera les "
+"réglages de configuration actuels.\n"
+"Avant toute modification, la configuration actuelle sera automatiquement "
+"enregistrée vers :\n"
+"%s\n"
 "\n"
-"Voulez-vous continuer ?"
+"Voulez-vous continuer ?"
 
 #: picard/ui/options/maintenance.py:298
-#, fuzzy, python-format
-#| msgid "Configuration successfully loaded from %s"
+#, python-format
 msgid ""
 "Configuration successfully loaded from:\n"
 "%s"
-msgstr "La configuration a été chargée avec succès depuis %s"
+msgstr ""
+"Configuration chargée avec succès depuis :\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:308
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "There was a problem restoring the configuration file from:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Il y a eu un problème lors de la restoration du fichier de configuration. "
-"Merci de consulter les logs pour plus de détails."
+"Un problème est survenu lors de la restauration du fichier de configuration "
+"depuis :\n"
+"%s\n"
+"\n"
+"Veuillez consulter les journaux pour plus de détails."
 
 #: picard/ui/options/maintenance.py:318
-#, fuzzy
-#| msgid "Configuration File:"
 msgid "Select Configuration File to Load"
-msgstr "Fichier de configuration :"
+msgstr "Sélectionner le fichier de configuration à charger"
 
 #: picard/ui/options/maintenance.py:368
 #: picard/ui/widgets/profilelistwidget.py:109
@@ -9276,20 +9225,16 @@ msgstr ""
 "sélectionnés ?"
 
 #: picard/ui/options/metadata.py:127
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Do not standardize artist names"
-msgstr "Utiliser des noms d’artistes normalisés"
+msgstr "Ne pas normaliser les noms d’artistes"
 
 #: picard/ui/options/metadata.py:129
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist name variations only"
-msgstr "Utiliser des noms d’artistes normalisés"
+msgstr "Normaliser uniquement les variations de noms d’artistes"
 
 #: picard/ui/options/metadata.py:132
 msgid "Standardize artist name variations and name changes"
-msgstr ""
+msgstr "Normaliser les variations et les changements de noms d’artistes"
 
 #: picard/ui/options/metadata.py:297
 #, python-brace-format
@@ -9326,11 +9271,11 @@ msgstr "Réseau"
 
 #: picard/ui/options/network.py:70
 msgid "Remove all locally cached network requests"
-msgstr ""
+msgstr "Supprimer toutes les requêtes réseau mises en cache localement"
 
 #: picard/ui/options/network.py:71
 msgid "Current size of the local network disk cache"
-msgstr ""
+msgstr "Taille actuelle du cache disque réseau local"
 
 #: picard/ui/options/network.py:74
 #, python-format
@@ -9338,17 +9283,17 @@ msgid ""
 "Maximum size of the network cache. A negative value resets to the default "
 "size (%d MB)."
 msgstr ""
+"Taille maximale du cache réseau. Une valeur négative rétablit la taille par "
+"défaut (%d Mo)."
 
 #: picard/ui/options/player.py:36
-#, fuzzy
-#| msgid "Player"
 msgid "Audio Player"
-msgstr "Lecteur"
+msgstr "Lecteur audio"
 
 #: picard/ui/options/plugins.py:108
 #, python-brace-format
 msgid "Plugins unavailable: {reason}."
-msgstr ""
+msgstr "Greffons indisponibles : {reason}."
 
 #: picard/ui/options/plugins.py:128
 #, fuzzy
@@ -9359,109 +9304,100 @@ msgstr "Installer un greffon…"
 #: picard/ui/options/plugins.py:129
 msgid "Install a new plugin from the registry or a custom URL"
 msgstr ""
+"Installer un nouveau greffon depuis le registre ou une URL personnalisée"
 
 #: picard/ui/options/plugins.py:133 picard/ui/options/plugins.py:275
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refresh All"
-msgstr "&Rafraîchir"
+msgstr "Tout actualiser"
 
 #: picard/ui/options/plugins.py:134
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
+"Actualiser le registre et la liste des greffons, et vérifier les mises à jour"
 
 #: picard/ui/options/plugins.py:140 picard/ui/options/plugins.py:354
-#, fuzzy
-#| msgid "Details"
 msgid "Hide Details"
-msgstr "Détails"
+msgstr "Masquer les détails"
 
 #: picard/ui/options/plugins.py:143
 msgid "Show/hide plugin details panel"
-msgstr ""
+msgstr "Afficher/masquer le panneau de détails du greffon"
 
 #: picard/ui/options/plugins.py:225
-#, fuzzy, python-brace-format
-#| msgid "plus {extra_file_count:,d} other plugin."
-#| msgid_plural "plus {extra_file_count:,d} other plugins."
+#, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
-msgstr[0] "plus {extra_file_count:,d} autre greffon."
-msgstr[1] "plus {extra_file_count:,d} autres greffons."
-msgstr[2] "plus {extra_file_count:,d} autres greffons."
+msgstr[0] "{plugin_count:,d} greffon installé"
+msgstr[1] "{plugin_count:,d} greffons installés"
+msgstr[2] "{plugin_count:,d} greffons installés"
 
 #: picard/ui/options/plugins.py:234
-#, fuzzy, python-brace-format
-#| msgid "Error loading plugins list: %(error)s"
+#, python-brace-format
 msgid "Error loading plugins: {}"
-msgstr "Erreur lors du chargement de la liste des greffons : %(error)s"
+msgstr "Erreur lors du chargement des greffons : {}"
 
 #: picard/ui/options/plugins.py:239
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refreshing…"
-msgstr "&Rafraîchir"
+msgstr "Actualisation…"
 
 #: picard/ui/options/plugins.py:240
 msgid "Refreshing plugin registry, list, and checking for updates…"
 msgstr ""
+"Actualisation du registre et de la liste des greffons, et vérification des "
+"mises à jour…"
 
 #: picard/ui/options/plugins.py:246 picard/ui/options/plugins.py:272
 #, python-brace-format
 msgid "Error refreshing: {}"
-msgstr ""
+msgstr "Erreur lors de l’actualisation : {}"
 
 #: picard/ui/options/plugins.py:260
-#, fuzzy, python-brace-format
-#| msgid "plus {extra_file_count:,d} other plugin."
-#| msgid_plural "plus {extra_file_count:,d} other plugins."
+#, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
-msgstr[0] "plus {extra_file_count:,d} autre greffon."
-msgstr[1] "plus {extra_file_count:,d} autres greffons."
-msgstr[2] "plus {extra_file_count:,d} autres greffons."
+msgstr[0] "{plugin_count:,d} greffon"
+msgstr[1] "{plugin_count:,d} greffons"
+msgstr[2] "{plugin_count:,d} greffons"
 
 #: picard/ui/options/plugins.py:264
 #, python-brace-format
 msgid "{update_count:,d} update available"
 msgid_plural "{update_count:,d} updates available"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{update_count:,d} mise à jour disponible"
+msgstr[1] "{update_count:,d} mises à jour disponibles"
+msgstr[2] "{update_count:,d} mises à jour disponibles"
 
 #: picard/ui/options/plugins.py:267
 #, python-brace-format
 msgid "Refreshed - {plugins}, {updates}"
-msgstr ""
+msgstr "Actualisé - {plugins}, {updates}"
 
 #: picard/ui/options/plugins.py:303
 msgid "Plugin system not available - Git backend required"
-msgstr ""
+msgstr "Système de greffons indisponible - le moteur Git est requis"
 
 #: picard/ui/options/plugins.py:357
-#, fuzzy
-#| msgid "Show more details"
 msgid "Show Details"
-msgstr "Plus de détails"
+msgstr "Afficher les détails"
 
 #: picard/ui/options/plugins.py:396
 #, python-brace-format
 msgid "Plugin \"{name}\" {action}"
-msgstr ""
+msgstr "Greffon « {name} » {action}"
 
 #: picard/ui/options/plugins.py:461
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
-msgstr ""
+msgstr "Greffon « {name} » installé avec succès"
 
 #: picard/ui/options/plugins.py:498
 msgid "All plugin updates completed"
-msgstr ""
+msgstr "Toutes les mises à jour des greffons sont terminées"
 
 #: picard/ui/options/plugins.py:509
 #, python-brace-format
 msgid "Updating {name}…"
-msgstr ""
+msgstr "Mise à jour de {name}…"
 
 #: picard/ui/options/plugins.py:535
 #: picard/ui/widgets/plugindetailswidget.py:407
@@ -9469,11 +9405,8 @@ msgid "Update Failed"
 msgstr ""
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "Do you want to update the plugin now?"
-#| msgid_plural "Do you want to update the plugins now?"
 msgid "Failed to update the plugin."
-msgstr "Voulez‐vous mettre à jour le greffon maintenant ?"
+msgstr "Échec de la mise à jour du greffon."
 
 #: picard/ui/options/profiles.py:92
 msgid "Option Profiles"
@@ -9498,30 +9431,24 @@ msgid "Remove the profile"
 msgstr "Supprimer le profil"
 
 #: picard/ui/options/profiles.py:164
-#, fuzzy
-#| msgid "Export the script to a file"
 msgid "Export the profile to a file"
-msgstr "Exporter le script vers un fichier"
+msgstr "Exporter le profil vers un fichier"
 
 #: picard/ui/options/profiles.py:168
 msgid "Export unavailable, tomlkit is not installed"
-msgstr ""
+msgstr "Exportation indisponible, tomlkit n’est pas installé"
 
 #: picard/ui/options/profiles.py:174
-#, fuzzy
-#| msgid "Import a file as a new script"
 msgid "Import a profile from a file or clipboard"
-msgstr "Importer un fichier comme nouveau script"
+msgstr "Importer un profil depuis un fichier ou le presse-papiers"
 
 #: picard/ui/options/profiles.py:176
-#, fuzzy
-#| msgid "From CD ripper &log file…"
 msgid "From file…"
-msgstr "Depuis un &log d'extracteur de CD…"
+msgstr "Depuis un fichier…"
 
 #: picard/ui/options/profiles.py:177
 msgid "From clipboard"
-msgstr ""
+msgstr "Depuis le presse-papiers"
 
 #: picard/ui/options/profiles.py:264
 msgid "Settings to include in profile"
@@ -9532,52 +9459,36 @@ msgid "Unknown script"
 msgstr "Système d’écriture inconnu"
 
 #: picard/ui/options/profiles.py:339
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Renommer le script"
+msgstr "Aucun script activé"
 
 #: picard/ui/options/profiles.py:340
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "Activer les scripts de balisage"
+msgstr "Scripts activés :"
 
 #: picard/ui/options/profiles.py:345
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "Fournisseurs d’illustrations"
+msgstr "Aucun fournisseur activé"
 
 #: picard/ui/options/profiles.py:346
-#, fuzzy
-#| msgid "Enabled providers of %i listed:"
 msgid "Enabled providers:"
-msgstr "Fournisseurs activés pour %i listé(s) :"
+msgstr "Fournisseurs activés :"
 
 #: picard/ui/options/profiles.py:350
-#, fuzzy
-#| msgid "Locale Selector"
 msgid "No mode selected"
-msgstr "Sélecteur de locale"
+msgstr "Aucun mode sélectionné"
 
 #: picard/ui/options/profiles.py:354
-#, fuzzy
-#| msgid "Invalid fpcalc executable"
 msgid "Invalid mode selected"
-msgstr "Exécutable fpcalc invalide"
+msgstr "Mode sélectionné invalide"
 
 #: picard/ui/options/profiles.py:358
-#, fuzzy
-#| msgid "Locale Selector"
 msgid "No format selected"
-msgstr "Sélecteur de locale"
+msgstr "Aucun format sélectionné"
 
 #: picard/ui/options/profiles.py:362
-#, fuzzy
-#| msgid "Invalid fpcalc executable"
 msgid "Invalid format selected"
-msgstr "Exécutable fpcalc invalide"
+msgstr "Format sélectionné invalide"
 
 #: picard/ui/options/profiles.py:368
 msgid "None"
@@ -9602,120 +9513,97 @@ msgstr "Le titre du profil ne peut être vide."
 
 #: picard/ui/options/profiles.py:555
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Copier dans le presse-papiers"
 
 #: picard/ui/options/profiles.py:556
 #, python-format
 msgid "Profile '%s' copied to clipboard."
-msgstr ""
+msgstr "Le profil « %s » a été copié dans le presse-papiers."
 
 #: picard/ui/options/profiles.py:574
 msgid "Share (exclude sensitive data)"
-msgstr ""
+msgstr "Partager (exclure les données sensibles)"
 
 #: picard/ui/options/profiles.py:574
 msgid "Backup (include everything)"
-msgstr ""
+msgstr "Sauvegarde (tout inclure)"
 
 #: picard/ui/options/profiles.py:577 picard/ui/options/profiles.py:591
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Export Profile"
-msgstr "Profils d'options"
+msgstr "Exporter le profil"
 
 #: picard/ui/options/profiles.py:578
-#, fuzzy
-#| msgid "Export"
 msgid "Export mode:"
-msgstr "Exporter"
+msgstr "Mode d’exportation :"
 
 #: picard/ui/options/profiles.py:593 picard/ui/options/profiles.py:669
 #: picard/ui/options/profiles.py:790
-#, fuzzy
-#| msgid "Move files"
 msgid "TOML files"
-msgstr "Déplacer les fichiers"
+msgstr "Fichiers TOML"
 
 #: picard/ui/options/profiles.py:609
-#, fuzzy
-#| msgid "Script Error"
 msgid "Export Error"
-msgstr "Erreur de script"
+msgstr "Erreur d’exportation"
 
 #: picard/ui/options/profiles.py:609
-#, fuzzy, python-format
-#| msgid "Failed to save Log View to file"
+#, python-format
 msgid "Failed to write file: %s"
-msgstr "Échec de l’enregistrement de la vue du journal dans le fichier"
+msgstr "Échec de l’écriture du fichier : %s"
 
 #: picard/ui/options/profiles.py:612
-#, fuzzy
-#| msgid "Export Script"
 msgid "Export Complete"
-msgstr "Exporter le script"
+msgstr "Exportation terminée"
 
 #: picard/ui/options/profiles.py:612
-#, fuzzy, python-format
-#| msgid "Script successfully exported to %s"
+#, python-format
 msgid "Profile exported to: %s"
-msgstr "Script exporté avec succès vers %s"
+msgstr "Profil exporté vers : %s"
 
 #: picard/ui/options/profiles.py:620 picard/ui/options/profiles.py:633
 #: picard/ui/options/profiles.py:641
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from Clipboard"
-msgstr "Importé de %s"
+msgstr "Importer depuis le presse-papiers"
 
 #: picard/ui/options/profiles.py:621
-#, fuzzy
-#| msgid "The file was empty"
 msgid "The clipboard is empty."
-msgstr "Le fichier était vide"
+msgstr "Le presse-papiers est vide."
 
 #: picard/ui/options/profiles.py:634
 msgid "The clipboard does not contain a valid Picard profile."
-msgstr ""
+msgstr "Le presse-papiers ne contient pas de profil Picard valide."
 
 #: picard/ui/options/profiles.py:642 picard/ui/options/profiles.py:727
 msgid "Enable this profile after import?"
-msgstr ""
+msgstr "Activer ce profil après l’importation ?"
 
 #: picard/ui/options/profiles.py:667 picard/ui/options/profiles.py:726
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Import Profile"
-msgstr "Profils d'options"
+msgstr "Importer un profil"
 
 #: picard/ui/options/profiles.py:678 picard/ui/options/profiles.py:766
 #: picard/ui/options/profiles.py:799
-#, fuzzy
-#| msgid "Script Error"
 msgid "Import Error"
-msgstr "Erreur de script"
+msgstr "Erreur d’importation"
 
 #: picard/ui/options/profiles.py:678 picard/ui/options/profiles.py:799
-#, fuzzy, python-format
-#| msgid "Failed to load session"
+#, python-format
 msgid "Failed to read file: %s"
-msgstr "Échec de chargement de session"
+msgstr "Échec de la lecture du fichier : %s"
 
 #: picard/ui/options/profiles.py:694
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Profile Exists"
-msgstr "Profils d'options"
+msgstr "Le profil existe"
 
 #: picard/ui/options/profiles.py:696
-#, fuzzy, python-format
-#| msgid "Overwrite the file if it already exists"
+#, python-format
 msgid "A profile '%s' with the same ID already exists."
-msgstr "Écraser le fichier s’il existe déjà"
+msgstr "Un profil « %s » avec le même identifiant existe déjà."
 
 #: picard/ui/options/profiles.py:699
 #, python-format
 msgid "The existing profile '%s' has the same ID as the imported profile '%s'."
 msgstr ""
+"Le profil existant « %s » a le même identifiant que le profil importé « %s »."
 
 #: picard/ui/options/profiles.py:704
 msgid ""
@@ -9723,36 +9611,30 @@ msgid ""
 "scripts with the imported ones. Any data in the existing profile that is not "
 "in the imported file will be lost."
 msgstr ""
+"Le remplacement écrasera complètement les réglages et scripts du profil "
+"existant par ceux importés. Toute donnée du profil existant absente du "
+"fichier importé sera perdue."
 
 #: picard/ui/options/profiles.py:711
-#, fuzzy, python-format
-#| msgid "Replacement"
+#, python-format
 msgid "Replace '%s'"
-msgstr "Remplacement"
+msgstr "Remplacer « %s »"
 
 #: picard/ui/options/profiles.py:714
-#, fuzzy
-#| msgid "Create a new profile"
 msgid "Create new copy"
-msgstr "Créer un nouveau profil"
+msgstr "Créer une nouvelle copie"
 
 #: picard/ui/options/profiles.py:773
-#, fuzzy
-#| msgid "Warning"
 msgid "Import Warnings"
-msgstr "Attention"
+msgstr "Avertissements d’importation"
 
 #: picard/ui/options/profiles.py:788
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and Replace Profile"
-msgstr "&Importer un fichier de script"
+msgstr "Importer et remplacer le profil"
 
 #: picard/ui/options/profiles.py:805
-#, fuzzy
-#| msgid "Rename profile"
 msgid "Replace Profile"
-msgstr "Renommer le profil"
+msgstr "Remplacer le profil"
 
 #: picard/ui/options/profiles.py:807
 #, python-format
@@ -9762,6 +9644,10 @@ msgid ""
 "\n"
 "Continue?"
 msgstr ""
+"Cela remplacera complètement le profil « %s ». Tous les réglages et scripts "
+"existants dans ce profil seront écrasés.\n"
+"\n"
+"Continuer ?"
 
 #: picard/ui/options/ratings.py:36
 msgid "Ratings"
@@ -9772,10 +9658,8 @@ msgid "Preferred Releases"
 msgstr "Parutions préférées"
 
 #: picard/ui/options/releases.py:85
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Preferred release types (higher priority first)"
-msgstr "Type de parution préféré"
+msgstr "Types de parution préférés (priorité la plus élevée en premier)"
 
 #: picard/ui/options/releases.py:88
 msgid ""
@@ -9783,10 +9667,13 @@ msgid ""
 "<br>The top item gets the strongest preference.<br>Unlisted types are "
 "treated neutrally."
 msgstr ""
+"Lorsque plusieurs parutions correspondent à un fichier, les types listés ici "
+"obtiennent un meilleur score.<br>L’élément en tête reçoit la préférence la "
+"plus forte.<br>Les types non listés sont traités de façon neutre."
 
 #: picard/ui/options/releases.py:98
 msgid "Discouraged release types (avoided when matching)"
-msgstr ""
+msgstr "Types de parution déconseillés (évités lors de la correspondance)"
 
 #: picard/ui/options/releases.py:101
 msgid ""
@@ -9794,24 +9681,25 @@ msgid ""
 "chosen if no other release matches.<br>Useful for avoiding compilations, DJ-"
 "mixes, etc."
 msgstr ""
+"Les parutions de ces types sont pénalisées lors de la correspondance.<br>"
+"Elles ne seront choisies que si aucune autre parution ne correspond.<br>"
+"Utile pour éviter les compilations, les DJ-mixes, etc."
 
 #: picard/ui/options/releases.py:117
-#, fuzzy
-#| msgid "Preferred release countries"
 msgid "Preferred release countries (higher priority first)"
-msgstr "Pays préféré des parutions"
+msgstr "Pays de parution préférés (priorité la plus élevée en premier)"
 
 #: picard/ui/options/releases.py:120
 msgid ""
 "When multiple editions of a release exist, prefer those from countries "
 "listed here.<br>The top country gets the strongest preference."
 msgstr ""
+"Lorsque plusieurs éditions d’une parution existent, préférer celles des pays "
+"listés ici.<br>Le pays en tête reçoit la préférence la plus forte."
 
 #: picard/ui/options/releases.py:133
-#, fuzzy
-#| msgid "Preferred medium formats"
 msgid "Preferred medium formats (higher priority first)"
-msgstr "Formats de support préférés"
+msgstr "Formats de support préférés (priorité la plus élevée en premier)"
 
 #: picard/ui/options/releases.py:136
 msgid ""
@@ -9819,6 +9707,9 @@ msgid ""
 "here (e.g. CD over Digital Media).<br>The top format gets the strongest "
 "preference."
 msgstr ""
+"Lorsque plusieurs éditions d’une parution existent, préférer celles dans les "
+"formats listés ici (par exemple CD plutôt que support numérique).<br>Le "
+"format en tête reçoit la préférence la plus forte."
 
 #: picard/ui/options/renaming.py:62
 msgid "File Naming"
@@ -9833,19 +9724,16 @@ msgid "Compatibility"
 msgstr "Compatibilité"
 
 #: picard/ui/options/renaming_compat.py:127
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "Remplacer les séparateurs de répertoires avec :"
+msgstr "Remplacement de séparateur de répertoire invalide"
 
 #: picard/ui/options/renaming_compat.py:128
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
 msgstr ""
-"Caractère de remplacement à utiliser pour les séparateurs de répertoires"
+"Le remplacement des séparateurs de répertoires ne doit pas être lui-même un "
+"séparateur de répertoire."
 
 #: picard/ui/options/renaming_compat.py:137
 msgid ""
@@ -9888,21 +9776,16 @@ msgid "Script Error"
 msgstr "Erreur de script"
 
 #: picard/ui/options/sessions.py:45
-#, fuzzy
-#| msgid "Version"
 msgid "Sessions"
-msgstr "Version"
+msgstr "Sessions"
 
 #: picard/ui/options/sessions.py:114
-#, fuzzy
-#| msgid "Select all"
 msgid "Select Sessions Folder"
-msgstr "Tout sélectionner"
+msgstr "Sélectionner le dossier des sessions"
 
 #: picard/ui/options/startup.py:55
-#, fuzzy
 msgid "Startup"
-msgstr "Commencez"
+msgstr "Démarrage"
 
 #: picard/ui/options/tags_compatibility_aac.py:38
 msgid "AAC"
