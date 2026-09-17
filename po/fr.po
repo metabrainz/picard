@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 13:58+0000\n"
+"PO-Revision-Date: 2026-09-17 14:00+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -4674,21 +4674,19 @@ msgstr ""
 
 #: picard/ui/tutorial.py:150
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "Tutoriel de Picard"
 
 #: picard/ui/tutorial.py:173
 msgid "Learn more…"
-msgstr ""
+msgstr "En savoir plus…"
 
 #: picard/ui/tutorial.py:181
-#, fuzzy
-#| msgid "Don't show this warning again."
 msgid "Don't show tips again"
-msgstr "Ne plus montrer cette alerte."
+msgstr "Ne plus afficher les astuces"
 
 #: picard/ui/tutorial.py:185
 msgid "Got it"
-msgstr ""
+msgstr "J’ai compris"
 
 #: picard/ui/util.py:90
 msgid "Make It So!"
