@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 13:41+0000\n"
+"PO-Revision-Date: 2026-09-17 13:52+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -7037,10 +7037,8 @@ msgstr "Excellente correspondance"
 
 #: picard/ui/itemviews/__init__.py:361
 #: picard/ui/itemviews/custom_columns/shared.py:149
-#, fuzzy
-#| msgid "file view"
 msgid "File view"
-msgstr "affichage du fichier"
+msgstr "Affichage des fichiers"
 
 #: picard/ui/itemviews/__init__.py:362
 msgid "Contains unmatched files and clusters"
@@ -7048,10 +7046,8 @@ msgstr "Contient des fichiers et grappes sans concordance"
 
 #: picard/ui/itemviews/__init__.py:393
 #: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "album view"
 msgid "Album view"
-msgstr "affichage de l’album"
+msgstr "Affichage des albums"
 
 #: picard/ui/itemviews/__init__.py:394
 msgid "Contains albums and matched files"
@@ -7081,16 +7077,15 @@ msgstr "Album non modifié"
 
 #: picard/ui/itemviews/__init__.py:692
 msgid "There are no files matched to this track"
-msgstr ""
+msgstr "Aucun fichier ne correspond à cette piste"
 
 #: picard/ui/itemviews/__init__.py:694
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Fichiers sans concordance"
-msgstr[1] "Fichiers sans concordance"
-msgstr[2] "Fichiers sans concordance"
+msgstr[0] "%i fichier concordant"
+msgstr[1] "%i fichiers concordants"
+msgstr[2] "%i fichiers concordants"
 
 #: picard/ui/itemviews/__init__.py:725
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -7100,11 +7095,11 @@ msgstr ""
 
 #: picard/ui/itemviews/__init__.py:796
 msgid "File not found"
-msgstr ""
+msgstr "Fichier introuvable"
 
 #: picard/ui/itemviews/__init__.py:799
 msgid "File permission error"
-msgstr ""
+msgstr "Erreur de permission de fichier"
 
 #: picard/ui/itemviews/__init__.py:802
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -7176,13 +7171,11 @@ msgstr "Exécute&r des scripts"
 #: picard/ui/itemviews/basetreeview.py:781
 #, python-format
 msgid "Matches on: %s"
-msgstr ""
+msgstr "Correspond sur : %s"
 
 #: picard/ui/itemviews/basetreeview.py:783
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "No tags found for selected filters."
-msgstr "Charger &les fichiers sélectionnés"
+msgstr "Aucune balise trouvée pour les filtres sélectionnés."
 
 #: picard/ui/itemviews/columns.py:81
 #, fuzzy
@@ -7232,38 +7225,28 @@ msgid "ISWC"
 msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:178
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Taille :"
+msgstr "Taille"
 
 #: picard/ui/itemviews/columns.py:185
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Type de parution"
+msgstr "Type de fichier"
 
 #: picard/ui/itemviews/columns.py:188
-#, fuzzy
-#| msgid "Director"
 msgid "Directory"
-msgstr "Réalisateur"
+msgstr "Répertoire"
 
 #: picard/ui/itemviews/columns.py:190
-#, fuzzy
-#| msgid "The file was empty"
 msgid "File Extension"
-msgstr "Le fichier était vide"
+msgstr "Extension de fichier"
 
 #: picard/ui/itemviews/columns.py:193
 msgid "File Creation Time"
-msgstr ""
+msgstr "Date de création du fichier"
 
 #: picard/ui/itemviews/columns.py:197
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "Débit binaire :"
+msgstr "Débit binaire"
 
 #: picard/ui/itemviews/columns.py:205
 msgid "Genre"
@@ -7283,40 +7266,36 @@ msgstr "Illustration"
 
 #: picard/ui/itemviews/columns.py:213
 msgid "Cover Dimensions"
-msgstr ""
+msgstr "Dimensions de l’illustration"
 
 #: picard/ui/itemviews/match_quality_column.py:243
 #, python-format
 msgid "Match: %(matched)d/%(total)d (%(percent).1f%%)"
-msgstr ""
+msgstr "Correspondance : %(matched)d/%(total)d (%(percent).1f%%)"
 
 #: picard/ui/itemviews/match_quality_column.py:252
 #, python-format
 msgid "Missing tracks: %(count)d"
-msgstr ""
+msgstr "Pistes manquantes : %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:253
 #, python-format
 msgid "Duplicate files: %(count)d"
-msgstr ""
+msgstr "Fichiers en double : %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:254
-#, fuzzy, python-format
-#| msgid "{title} ({count})"
+#, python-format
 msgid "Extra files: %(count)d"
-msgstr "{title} ({count})"
+msgstr "Fichiers supplémentaires : %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:255
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "Fichiers sans concordance"
+msgstr "Fichiers sans concordance : %(count)d"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
-#, fuzzy
-#| msgid "Change audio volume"
 msgid "Manage Custom Columns"
-msgstr "Changer le volume audio"
+msgstr "Gérer les colonnes personnalisées"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:121
 #: picard/ui/options/profiles.py:142
@@ -7325,7 +7304,7 @@ msgstr "Nouveau"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:123
 msgid "Duplicate"
-msgstr ""
+msgstr "Doublon"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:124
 msgid "Delete"
@@ -7336,20 +7315,17 @@ msgid " px"
 msgstr " px"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:182
-#, fuzzy
-#| msgid "Scripting"
 msgid "Sorting"
-msgstr "Scripts"
+msgstr "Tri"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:183
-#, fuzzy
-#| msgid "Add Files"
 msgid "Add to views"
-msgstr "Ajouter des fichiers"
+msgstr "Ajouter aux affichages"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:259
 msgid "You have unsaved changes. Do you want to save them?"
 msgstr ""
+"Vous avez des modifications non enregistrées. Voulez-vous les enregistrer ?"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:498
 msgid ""
@@ -7358,64 +7334,58 @@ msgid ""
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:48
-#, fuzzy
-#| msgid "No Title"
 msgid "Column Title"
-msgstr "Sans titre"
+msgstr "Titre de la colonne"
 
 #: picard/ui/itemviews/custom_columns/shared.py:50
 msgid "Expression"
-msgstr ""
+msgstr "Expression"
 
 #: picard/ui/itemviews/custom_columns/shared.py:51
 msgid "Align"
-msgstr ""
+msgstr "Alignement"
 
 #: picard/ui/itemviews/custom_columns/shared.py:52
 msgid "Width"
-msgstr ""
+msgstr "Largeur"
 
 #: picard/ui/itemviews/custom_columns/shared.py:72
-#, fuzzy
-#| msgid "Title"
 msgid "Untitled"
-msgstr "Titre"
+msgstr "Sans titre"
 
 #: picard/ui/itemviews/custom_columns/shared.py:154
 msgid "Show this column in the Files view."
-msgstr ""
+msgstr "Afficher cette colonne dans l’affichage des fichiers."
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Albums view."
-msgstr ""
+msgstr "Afficher cette colonne dans l’affichage des albums."
 
 #: picard/ui/itemviews/custom_columns/shared.py:214
 #: picard/ui/itemviews/custom_columns/shared.py:254
 msgid "left"
-msgstr ""
+msgstr "gauche"
 
 #: picard/ui/itemviews/custom_columns/shared.py:214
 #: picard/ui/itemviews/custom_columns/shared.py:254
-#, fuzzy
-#| msgid "Light"
 msgid "right"
-msgstr "Clair"
+msgstr "droite"
 
 #: picard/ui/itemviews/custom_columns/shared.py:306
 msgid "Default alphabetical text sorting."
-msgstr ""
+msgstr "Tri alphabétique par défaut du texte."
 
 #: picard/ui/itemviews/custom_columns/shared.py:309
 msgid "Case insensitive"
-msgstr ""
+msgstr "Insensible à la casse"
 
 #: picard/ui/itemviews/custom_columns/shared.py:310
 msgid "Case insensitive alphabetical text sorting."
-msgstr ""
+msgstr "Tri alphabétique du texte insensible à la casse."
 
 #: picard/ui/itemviews/custom_columns/shared.py:313
 msgid "Numeric"
-msgstr ""
+msgstr "Numérique"
 
 #: picard/ui/itemviews/custom_columns/shared.py:314
 msgid ""
@@ -7425,7 +7395,7 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:317
 msgid "Natural number sorting"
-msgstr ""
+msgstr "Tri des nombres selon l’ordre naturel"
 
 #: picard/ui/itemviews/custom_columns/shared.py:318
 msgid ""
@@ -7435,37 +7405,35 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:321
 msgid "By value length"
-msgstr ""
+msgstr "Par longueur de la valeur"
 
 #: picard/ui/itemviews/custom_columns/shared.py:322
 msgid "Sort by string length."
-msgstr ""
+msgstr "Trier par longueur de la chaîne."
 
 #: picard/ui/itemviews/custom_columns/shared.py:325
-#, fuzzy
-#| msgid "Artist Website"
 msgid "Article insensitive"
-msgstr "Site Web de l’artiste"
+msgstr "Insensible aux articles"
 
 #: picard/ui/itemviews/custom_columns/shared.py:326
 msgid "Sort ignoring leading articles (e.g. a, an, the)."
-msgstr ""
+msgstr "Trier en ignorant les articles initiaux (par exemple a, an, the)."
 
 #: picard/ui/itemviews/custom_columns/shared.py:329
 msgid "Empty values first"
-msgstr ""
+msgstr "Valeurs vides en premier"
 
 #: picard/ui/itemviews/custom_columns/shared.py:330
 msgid "Empty/whitespace values sort first."
-msgstr ""
+msgstr "Les valeurs vides ou constituées d’espaces sont triées en premier."
 
 #: picard/ui/itemviews/custom_columns/shared.py:333
 msgid "Empty values last"
-msgstr ""
+msgstr "Valeurs vides en dernier"
 
 #: picard/ui/itemviews/custom_columns/shared.py:334
 msgid "Empty/whitespace values sort last."
-msgstr ""
+msgstr "Les valeurs vides ou constituées d’espaces sont triées en dernier."
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:53
 #: picard/ui/mainwindow/__init__.py:494
@@ -7473,10 +7441,8 @@ msgid "Unsaved Changes"
 msgstr "Modifications non enregistrées"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:71
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Confirm Discard"
-msgstr "Confirmation de la réinitialisation"
+msgstr "Confirmer l’abandon"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:72
 #, fuzzy
@@ -7494,44 +7460,39 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:111
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:133
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Confirm Delete"
-msgstr "Confirmation de la réinitialisation"
+msgstr "Confirmer la suppression"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:112
-#, fuzzy, python-brace-format
-#| msgid "Are you sure that you want to delete the script?"
+#, python-brace-format
 msgid "Are you sure you want to delete the custom column \"{title}\"?"
-msgstr "Êtes-vous certain de vouloir supprimer le script ?"
+msgstr ""
+"Êtes-vous sûr de vouloir supprimer la colonne personnalisée « {title} » ?"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:134
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to remove the selected option settings?"
+#, python-brace-format
 msgid "Are you sure you want to delete {n} selected custom columns?"
 msgstr ""
-"Êtes-vous certain de vouloir supprimer les paramètres d'options "
-"sélectionnés ?"
+"Êtes-vous sûr de vouloir supprimer les {n} colonnes personnalisées "
+"sélectionnées ?"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:151
 #, python-format
 msgid "Invalid column: %s"
-msgstr ""
+msgstr "Colonne invalide : %s"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:151
-#, fuzzy
-#| msgid "Invalid Title"
 msgid "Invalid column"
-msgstr "Titre invalide"
+msgstr "Colonne invalide"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:176
 msgid "Blank expression"
-msgstr ""
+msgstr "Expression vide"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:178
 #, python-format
 msgid "Blank expression for: %s"
-msgstr ""
+msgstr "Expression vide pour : %s"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:180
 #, python-format
@@ -7548,57 +7509,54 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:104
 msgid "Valid"
-msgstr ""
+msgstr "Valide"
 
 #: picard/ui/itemviews/custom_columns/validation.py:107
-#, fuzzy, python-format
-#| msgid "%s (Copy)"
+#, python-format
 msgid "%d error"
 msgid_plural "%d errors"
-msgstr[0] "%s (Copie)"
-msgstr[1] "%s (Copie)"
-msgstr[2] "%s (Copie)"
+msgstr[0] "%d erreur"
+msgstr[1] "%d erreurs"
+msgstr[2] "%d erreurs"
 
 #: picard/ui/itemviews/custom_columns/validation.py:109
-#, fuzzy, python-format
-#| msgid "Warning"
+#, python-format
 msgid "%d warning"
 msgid_plural "%d warnings"
-msgstr[0] "Attention"
-msgstr[1] "Attention"
-msgstr[2] "Attention"
+msgstr[0] "%d avertissement"
+msgstr[1] "%d avertissements"
+msgstr[2] "%d avertissements"
 
 #: picard/ui/itemviews/custom_columns/validation.py:142
 msgid "Title is required and cannot be empty"
-msgstr ""
+msgstr "Le titre est requis et ne peut pas être vide"
 
 #: picard/ui/itemviews/custom_columns/validation.py:148
 msgid "Key is required and cannot be empty"
-msgstr ""
+msgstr "La clé est requise et ne peut pas être vide"
 
 #: picard/ui/itemviews/custom_columns/validation.py:156
 msgid "Expression is blank; the column will display nothing"
-msgstr ""
+msgstr "L’expression est vide ; la colonne n’affichera rien"
 
 #: picard/ui/itemviews/custom_columns/validation.py:188
 msgid "Key must be a valid UUID"
-msgstr ""
+msgstr "La clé doit être un UUID valide"
 
 #: picard/ui/itemviews/custom_columns/validation.py:196
 #: picard/ui/itemviews/custom_columns/validation.py:215
 #, python-format
 msgid "Key \"%s\" already exists"
-msgstr ""
+msgstr "La clé « %s » existe déjà"
 
 #: picard/ui/itemviews/custom_columns/validation.py:208
 msgid "Key is required"
-msgstr ""
+msgstr "La clé est requise"
 
 #: picard/ui/itemviews/custom_columns/validation.py:242
-#, fuzzy, python-format
-#| msgid "Invalid Title"
+#, python-format
 msgid "Invalid field key: \"%s\""
-msgstr "Titre invalide"
+msgstr "Clé de champ invalide : « %s »"
 
 #: picard/ui/itemviews/custom_columns/validation.py:251
 msgid ""
@@ -7606,44 +7564,43 @@ msgid ""
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:265
-#, fuzzy, python-format
-#| msgid "Invalid script package"
+#, python-format
 msgid "Invalid script syntax: %s"
-msgstr "Package de script invalide"
+msgstr "Syntaxe de script invalide : %s"
 
 #: picard/ui/itemviews/custom_columns/validation.py:273
 msgid "Very long scripts may impact performance"
-msgstr ""
+msgstr "Les scripts très longs peuvent affecter les performances"
 
 #: picard/ui/itemviews/custom_columns/validation.py:288
 #, python-format
 msgid "Invalid base field for transform: \"%s\""
-msgstr ""
+msgstr "Champ de base invalide pour la transformation : « %s »"
 
 #: picard/ui/itemviews/custom_columns/validation.py:297
 msgid "Transform type is required when kind is TRANSFORM"
-msgstr ""
+msgstr "Le type de transformation est requis lorsque le genre est TRANSFORM"
 
 #: picard/ui/itemviews/custom_columns/validation.py:312
 msgid "Transform specified but kind is not TRANSFORM"
-msgstr ""
+msgstr "Transformation spécifiée mais le genre n’est pas TRANSFORM"
 
 #: picard/ui/itemviews/custom_columns/validation.py:319
 msgid "Width must be positive"
-msgstr ""
+msgstr "La largeur doit être positive"
 
 #: picard/ui/itemviews/custom_columns/validation.py:326
 msgid "Very wide columns may impact UI layout"
-msgstr ""
+msgstr "Les colonnes très larges peuvent affecter la disposition de l’interface"
 
 #: picard/ui/itemviews/custom_columns/validation.py:337
 msgid "Column will not be visible in any view"
-msgstr ""
+msgstr "La colonne ne sera visible dans aucun affichage"
 
 #: picard/ui/itemviews/custom_columns/validation.py:349
 #, python-format
 msgid "Unknown views in add_to: %s"
-msgstr ""
+msgstr "Affichages inconnus dans add_to : %s"
 
 #: picard/ui/mainwindow/__init__.py:495
 msgid "Are you sure you want to quit Picard?"
@@ -8427,7 +8384,7 @@ msgstr "Enregistrer la session actuelle dans le dernier fichier utilisé"
 
 #: picard/ui/mainwindow/actions.py:603
 msgid "&Load Session…"
-msgstr "C&harger une session…"
+msgstr "&Charger une session…"
 
 #: picard/ui/mainwindow/actions.py:604
 msgid "Load a session file"
