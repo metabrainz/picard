@@ -35,7 +35,7 @@ from picard.const.cover_processing import (
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
-    _,
+    gettext_constants,
 )
 
 from picard.ui.forms.ui_options_cover_processing import (
@@ -89,10 +89,14 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.apply_option_bounds(self.ui.cover_image_quality_value, 'cover_image_quality')
 
         for resize_mode in COVER_RESIZE_MODES:
-            self.ui.tags_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)
-            self.ui.file_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)
-            self.ui.tags_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
-            self.ui.file_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
+            self.ui.tags_resize_mode.addItem(gettext_constants(resize_mode.title), resize_mode.mode.value)
+            self.ui.file_resize_mode.addItem(gettext_constants(resize_mode.title), resize_mode.mode.value)
+            self.ui.tags_resize_mode.setItemData(
+                resize_mode.mode, gettext_constants(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole
+            )
+            self.ui.file_resize_mode.setItemData(
+                resize_mode.mode, gettext_constants(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole
+            )
 
         for item in list(ImageFormat):
             if item.can_convert and item.value in ALLOWED_QT_FORMATS:
