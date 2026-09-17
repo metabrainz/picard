@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 13:52+0000\n"
+"PO-Revision-Date: 2026-09-17 13:58+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -4422,10 +4422,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Erreur de script dans « %(script)s » : %(message)s"
 
 #: picard/ui/setupwizard.py:131
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "Bienvenue dans MusicBrainz Picard"
 
 #: picard/ui/setupwizard.py:151
 msgid ""
@@ -4436,16 +4434,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:163
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Read the documentation"
-msgstr "&Montrer la documentation"
+msgstr "Lire la documentation"
 
 #: picard/ui/setupwizard.py:179
-#, fuzzy
-#| msgid "Select all"
 msgid "File Organization"
-msgstr "Tout sélectionner"
+msgstr "Organisation des fichiers"
 
 #: picard/ui/setupwizard.py:180
 msgid ""
@@ -4455,6 +4449,8 @@ msgstr ""
 #: picard/ui/setupwizard.py:185
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr ""
+"Renommer les fichiers d’après les balises (par exemple « Artiste - Titre.mp3 "
+"»)"
 
 #: picard/ui/setupwizard.py:186
 msgid ""
@@ -4465,6 +4461,7 @@ msgstr ""
 #: picard/ui/setupwizard.py:191
 msgid "Move files to a folder structure based on tags"
 msgstr ""
+"Déplacer les fichiers dans une arborescence de dossiers basée sur les balises"
 
 #: picard/ui/setupwizard.py:192
 msgid ""
@@ -4479,10 +4476,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:236
-#, fuzzy
-#| msgid "Authentication required"
 msgid "Destination folder required"
-msgstr "Authentification requise"
+msgstr "Dossier de destination requis"
 
 #: picard/ui/setupwizard.py:237
 msgid ""
@@ -4491,20 +4486,16 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:249
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Select destination directory"
-msgstr "Dossier de destination"
+msgstr "Sélectionner le répertoire de destination"
 
 #: picard/ui/setupwizard.py:262
 msgid "Choose how Picard should handle album cover art."
-msgstr ""
+msgstr "Choisissez comment Picard doit gérer les illustrations d’album."
 
 #: picard/ui/setupwizard.py:267
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Intégrer les images de couverture dans les balises"
+msgstr "Intégrer les illustrations dans les fichiers audio"
 
 #: picard/ui/setupwizard.py:268
 msgid ""
@@ -4513,10 +4504,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:273
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
-msgstr "Enregistrer les images de couverture dans des fichiers séparés"
+msgstr "Enregistrer les illustrations dans des fichiers image séparés"
 
 #: picard/ui/setupwizard.py:274
 msgid ""
@@ -4525,10 +4514,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:279
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Prefer release group cover art"
-msgstr "Type de parution préféré"
+msgstr "Préférer les illustrations du groupe de parution"
 
 #: picard/ui/setupwizard.py:281
 msgid ""
@@ -4539,16 +4526,16 @@ msgstr ""
 #: picard/ui/setupwizard.py:289
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr ""
+"Vous pourrez modifier ces réglages plus tard dans Options → Options → "
+"Illustrations."
 
 #: picard/ui/setupwizard.py:370
-#, fuzzy
-#| msgid "Last Updated:"
 msgid "Updates"
-msgstr "Dernière mise à jour :"
+msgstr "Mises à jour"
 
 #: picard/ui/setupwizard.py:371
 msgid "Choose how Picard should check for updates."
-msgstr ""
+msgstr "Choisissez comment Picard doit vérifier les mises à jour."
 
 #: picard/ui/setupwizard.py:383
 msgid ""
@@ -4572,20 +4559,24 @@ msgstr ""
 #: picard/ui/setupwizard.py:405
 msgid "You can change these later under Options → General → Startup."
 msgstr ""
+"Vous pourrez modifier ces réglages plus tard dans Options → Général → "
+"Démarrage."
 
 #: picard/ui/setupwizard.py:439
-#, fuzzy
-#| msgid "Additional file patterns"
 msgid "Additional Metadata"
-msgstr "Schémas des fichiers additionnels"
+msgstr "Métadonnées supplémentaires"
 
 #: picard/ui/setupwizard.py:440
 msgid "Choose whether Picard should fetch extra details about each track."
 msgstr ""
+"Choisissez si Picard doit récupérer des détails supplémentaires sur chaque "
+"piste."
 
 #: picard/ui/setupwizard.py:445
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr ""
+"Récupérer les relations détaillées des pistes (interprètes, compositeurs, et "
+"plus)"
 
 #: picard/ui/setupwizard.py:447
 msgid ""
@@ -4602,12 +4593,12 @@ msgstr ""
 #: picard/ui/setupwizard.py:460
 msgid "You can change this later under Options → Options → Metadata."
 msgstr ""
+"Vous pourrez modifier ce réglage plus tard dans Options → Options → "
+"Métadonnées."
 
 #: picard/ui/setupwizard.py:486
-#, fuzzy
-#| msgid "Picard Update"
 msgid "Picard Setup"
-msgstr "Mise à jour de Picard"
+msgstr "Configuration de Picard"
 
 #: picard/ui/itemviews/columns.py:189 picard/ui/tagsfromfilenames.py:127
 #: picard/ui/tagsfromfilenames.py:138
