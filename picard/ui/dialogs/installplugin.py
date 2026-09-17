@@ -138,6 +138,9 @@ class InstallPluginDialog(PicardDialog):
 
         registry_layout.addWidget(self.plugin_table)
 
+        instructions = QtWidgets.QLabel(_("Double-click a plugin for detailed information."))
+        registry_layout.addWidget(instructions)
+
         self.tab_widget.addTab(registry_widget, _("Registry"))
 
         # URL tab
