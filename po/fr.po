@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-17 17:17+0000\n"
+"PO-Revision-Date: 2026-09-17 17:36+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -416,8 +416,6 @@ msgid "Debug"
 msgstr "Débogage"
 
 #: picard/oauth.py:216
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
 msgstr "Erreur de révocation du jeton inattendue"
 
@@ -720,8 +718,6 @@ msgid "Use genres from MusicBrainz"
 msgstr "Utiliser les genres venant de MusicBrainz"
 
 #: picard/options.py:415
-#, fuzzy
-#| msgid "Allow selection of multiple directories"
 msgid "Allow selecting multiple directories"
 msgstr "Autoriser la sélection de plusieurs répertoires"
 
@@ -1064,8 +1060,6 @@ msgid "Clear existing tags"
 msgstr "Effacer les balises existantes"
 
 #: picard/options.py:721
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Save tags to files"
 msgstr "Écrire les balises dans les fichiers"
 
@@ -1633,11 +1627,11 @@ msgstr "Cover Art Archive (archive d’illustrations)"
 
 #: picard/coverart/providers/caa.py:194
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive : parution"
+msgstr "Cover Art Archive : Parution"
 
 #: picard/coverart/providers/caa_release_group.py:41
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive : groupe de parution"
+msgstr "Cover Art Archive : Groupe de parution"
 
 #: picard/coverart/providers/local.py:61
 msgid "Test file name matching:"
@@ -1690,7 +1684,6 @@ msgid "Metadata"
 msgstr "Métadonnées"
 
 #: picard/plugin3/categories.py:34
-#, fuzzy
 msgid "Other"
 msgstr "Autre"
 
@@ -3845,7 +3838,6 @@ msgid "Errored entity"
 msgstr "Entité avec erreur"
 
 #: picard/ui/colors.py:44 picard/ui/colors.py:45 picard/ui/colors.py:46
-#, fuzzy
 msgid "Entities"
 msgstr "Entités"
 
@@ -4290,7 +4282,7 @@ msgstr "Alerte Enregistrement de fichier"
 #: picard/ui/scriptsmenu.py:62
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr "Erreur de script dans « %(script)s » : %(message)s"
+msgstr "Erreur de script dans « %(script)s » : %(message)s"
 
 #: picard/ui/setupwizard.py:131
 msgid "Welcome to MusicBrainz Picard"
@@ -4867,7 +4859,6 @@ msgid "Ref/Tag:"
 msgstr "Référence/Étiquette :"
 
 #: picard/ui/dialogs/installplugin.py:160
-#, fuzzy
 msgid "URL"
 msgstr "URL"
 
@@ -5168,7 +5159,7 @@ msgstr "État :"
 #: picard/ui/forms/ui_scripteditor_details.py:103
 #: picard/ui/widgets/plugindetailswidget.py:91
 msgid "Version:"
-msgstr "Version :"
+msgstr "Version :"
 
 #: picard/ui/dialogs/plugininfo.py:104
 msgid "API Version:"
@@ -5227,7 +5218,7 @@ msgstr "Gestion des versions :"
 #: picard/ui/dialogs/plugininfo.py:122
 #: picard/ui/forms/ui_scripteditor_details.py:107
 msgid "Description:"
-msgstr "Description :"
+msgstr "Description :"
 
 #: picard/ui/dialogs/plugininfo.py:245
 msgid "Official"
@@ -5557,8 +5548,6 @@ msgid "Never replace selected cover image types"
 msgstr "Ne jamais remplacer les types d’illustration sélectionnés"
 
 #: picard/ui/forms/ui_options_cover.py:131
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types…"
 msgstr "Sélectionner les types…"
 
@@ -6958,8 +6947,6 @@ msgid "No tags found for selected filters."
 msgstr "Aucune balise trouvée pour les filtres sélectionnés."
 
 #: picard/ui/itemviews/columns.py:81
-#, fuzzy
-#| msgid "Matching"
 msgid "Match"
 msgstr "Correspondance"
 
@@ -7000,7 +6987,6 @@ msgid "Media"
 msgstr "Support"
 
 #: picard/ui/itemviews/columns.py:174
-#, fuzzy
 msgid "ISWC"
 msgstr "ISWC"
 
@@ -7707,7 +7693,7 @@ msgstr "L'authentification a échouée"
 #: picard/ui/mainwindow/__init__.py:2117 picard/ui/options/general.py:131
 #, python-format
 msgid "Login failed: %s"
-msgstr "Échec de connexion : %s"
+msgstr "Échec de connexion : %s"
 
 #: picard/ui/mainwindow/__init__.py:2367
 msgid "No profiles configured"
@@ -8316,7 +8302,6 @@ msgid "ISRC extraction is not supported on this platform."
 msgstr "L’extraction des ISRC n’est pas prise en charge sur cette plateforme."
 
 #: picard/ui/options/cover_processing.py:52
-#, fuzzy
 msgid "Processing"
 msgstr "Traitement"
 
@@ -8961,8 +8946,6 @@ msgid "Plugins unavailable: {reason}."
 msgstr "Greffons indisponibles : {reason}."
 
 #: picard/ui/options/plugins.py:128
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin…"
 msgstr "Installer un greffon…"
 
@@ -9090,8 +9073,6 @@ msgid "Copy to a new profile"
 msgstr "Copier vers un nouveau profil"
 
 #: picard/ui/options/profiles.py:157
-#, fuzzy
-#| msgid "Remove profile"
 msgid "Remove the profile"
 msgstr "Supprimer le profil"
 
@@ -10179,8 +10160,6 @@ msgid "No Data"
 msgstr "Aucune donnée"
 
 #: picard/ui/widgets/pluginlistwidget.py:963
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Plugin"
 msgstr "Désinstaller le greffon"
 
