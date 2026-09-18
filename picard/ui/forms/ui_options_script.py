@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_script.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -17,7 +17,7 @@ from picard.i18n import gettext as _
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
         ScriptingOptionsPage.setObjectName("ScriptingOptionsPage")
-        ScriptingOptionsPage.resize(605, 551)
+        ScriptingOptionsPage.resize(645, 551)
         self.vboxlayout = QtWidgets.QVBoxLayout(ScriptingOptionsPage)
         self.vboxlayout.setContentsMargins(9, 9, 9, 0)
         self.vboxlayout.setSpacing(6)
@@ -109,11 +109,11 @@ class Ui_ScriptingOptionsPage(object):
         self.vboxlayout.addWidget(self.enable_tagger_scripts)
 
         self.retranslateUi(ScriptingOptionsPage)
-        self.add_button.clicked.connect(self.script_list.add_script)
-        self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check)
-        self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected)
-        self.remove_button.clicked.connect(self.script_list.remove_selected_script)
-        self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled)
+        self.add_button.clicked.connect(self.script_list.add_script) # type: ignore
+        self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check) # type: ignore
+        self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected) # type: ignore
+        self.remove_button.clicked.connect(self.script_list.remove_selected_script) # type: ignore
+        self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
         ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.script_list)
         ScriptingOptionsPage.setTabOrder(self.script_list, self.tagger_script)
@@ -128,9 +128,9 @@ class Ui_ScriptingOptionsPage(object):
         self.move_up_button.setToolTip(_("Move tagger script up"))
         self.move_down_button.setToolTip(_("Move tagger script down"))
         self.add_button.setToolTip(_("Add new tagger script"))
-        self.add_button.setText(_("Add new tagger script"))
+        self.add_button.setText(_("Add"))
         self.remove_button.setToolTip(_("Remove the selected tagger script"))
-        self.remove_button.setText(_("Remove tagger script"))
+        self.remove_button.setText(_("Delete"))
         self.import_button.setText(_("Import"))
         self.export_button.setText(_("Export"))
         self.scripting_documentation_button.setText(_("Documentation"))

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
+    <width>645</width>
     <height>551</height>
    </rect>
   </property>
@@ -61,7 +61,7 @@
          </sizepolicy>
         </property>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="childrenCollapsible">
          <bool>false</bool>
@@ -116,8 +116,7 @@
            <string>Move tagger script up</string>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-up.png">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme=":/images/16x16/go-up.png"/>
           </property>
          </widget>
         </item>
@@ -127,15 +126,14 @@
            <string>Move tagger script down</string>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-down.png">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme=":/images/16x16/go-down.png"/>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -151,7 +149,7 @@
            <string>Add new tagger script</string>
           </property>
           <property name="text">
-           <string>Add new tagger script</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
@@ -161,14 +159,14 @@
            <string>Remove the selected tagger script</string>
           </property>
           <property name="text">
-           <string>Remove tagger script</string>
+           <string>Delete</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -195,7 +193,7 @@
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -226,7 +224,7 @@
          <string/>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </item>
