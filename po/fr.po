@@ -41,7 +41,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-09-17 14:13+0000\n"
+"PO-Revision-Date: 2026-09-18 15:13+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/2/"
 "app/fr/>\n"
@@ -218,8 +218,6 @@ msgid "Debug"
 msgstr "Débogage"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
 msgstr "Erreur de révocation du jeton inattendue"
 
@@ -1009,11 +1007,11 @@ msgstr "Cover Art Archive (archive d’illustrations)"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive : parution"
+msgstr "Cover Art Archive : Parution"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive : groupe de parution"
+msgstr "Cover Art Archive : Groupe de parution"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -4034,7 +4032,7 @@ msgstr "L'authentification a échouée"
 #: picard/ui/mainwindow.py:1742 picard/ui/options/general.py:159
 #, python-format
 msgid "Login failed: %s"
-msgstr "Échec de connexion : %s"
+msgstr "Échec de connexion : %s"
 
 #: picard/ui/metadatabox.py:112
 #, python-format
@@ -4113,11 +4111,8 @@ msgstr[1] "Utiliser les valeurs d’origine"
 msgstr[2] "Utiliser les valeurs d’origine"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Fusionner les valeur d’origine"
+msgstr "Fusionner les valeurs d’origine"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -4482,10 +4477,8 @@ msgid "Empty / blank script"
 msgstr "Script vide"
 
 #: picard/ui/scripteditor.py:673
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Nouveau Script"
+msgstr "Nouveau script"
 
 #: picard/ui/scripteditor.py:766
 msgid ""
@@ -4585,7 +4578,7 @@ msgstr ""
 #: picard/ui/scriptsmenu.py:62
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr "Erreur de script dans « %(script)s » : %(message)s"
+msgstr "Erreur de script dans « %(script)s » : %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:137 picard/ui/tagsfromfilenames.py:148
 msgid "File Name"
@@ -4651,7 +4644,7 @@ msgstr "Déplacer la valeur sélectionnée vers le bas"
 
 #: picard/ui/ui_exception_script_selector.py:105
 msgid "Exception Language Script Selector"
-msgstr ""
+msgstr "Sélecteur des exceptions de système d’écriture"
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
@@ -5200,7 +5193,7 @@ msgstr "Dossier de destination :"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
-msgstr "Déplacer les fichiers supplémentaires (en ignorant la casse) :"
+msgstr "Déplacer les fichiers supplémentaires (insensible à la casse) :"
 
 #: picard/ui/ui_options_renaming.py:155
 msgid "Rename files when saving"
@@ -5500,7 +5493,7 @@ msgstr "Auteur :"
 
 #: picard/ui/ui_scripteditor_details.py:97
 msgid "Version:"
-msgstr "Version :"
+msgstr "Version :"
 
 #: picard/ui/ui_scripteditor_details.py:98
 msgid "License:"
@@ -5512,7 +5505,7 @@ msgstr "Licence sous laquelle le script de nommage de fichier est disponible."
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
-msgstr "Description :"
+msgstr "Description :"
 
 #: picard/ui/ui_scripteditor_details.py:102
 msgid ""
