@@ -21,7 +21,7 @@
 
 from picard.i18n import (
     N_,
-    gettext as _,
+    gettext_constants,
 )
 
 
@@ -41,4 +41,4 @@ SCRIPTS = {
 
 
 def scripts_sorted_by_localized_name():
-    yield from sorted([(k, _(v)) for k, v in SCRIPTS.items()], key=lambda i: i[1])
+    yield from sorted([(k, gettext_constants(v)) for k, v in SCRIPTS.items()], key=lambda i: i[1])

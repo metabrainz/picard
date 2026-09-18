@@ -351,7 +351,7 @@ class ProfilesOptionsPage(OptionsPage):
             return _("No mode selected")
         for mode in COVER_RESIZE_MODES:
             if mode.mode == value:
-                return _(mode.title)
+                return gettext_constants(mode.title)
         return _("Invalid mode selected")
 
     def _get_ca_convert_format(self, value):
