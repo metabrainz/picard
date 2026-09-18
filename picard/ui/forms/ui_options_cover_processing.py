@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_cover_processing.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -83,7 +83,7 @@ class Ui_CoverProcessingOptionsPage(object):
         self.resizing = QtWidgets.QGroupBox(parent=CoverProcessingOptionsPage)
         self.resizing.setCheckable(False)
         self.resizing.setObjectName("resizing")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.resizing)
+        self.horizontalLayout_7 = QtWidgets.QVBoxLayout(self.resizing)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.tags_scale_down = QtWidgets.QGroupBox(parent=self.resizing)
         self.tags_scale_down.setCheckable(True)
@@ -235,7 +235,7 @@ class Ui_CoverProcessingOptionsPage(object):
         self.converting = QtWidgets.QGroupBox(parent=CoverProcessingOptionsPage)
         self.converting.setCheckable(False)
         self.converting.setObjectName("converting")
-        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.converting)
+        self.horizontalLayout_12 = QtWidgets.QVBoxLayout(self.converting)
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.convert_tags = QtWidgets.QGroupBox(parent=self.converting)
         self.convert_tags.setCheckable(True)

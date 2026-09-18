@@ -142,7 +142,7 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <layout class="QVBoxLayout" name="horizontalLayout_7">
       <item>
        <widget class="QGroupBox" name="tags_scale_down">
         <property name="title">
@@ -456,7 +456,7 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <layout class="QVBoxLayout" name="horizontalLayout_12">
       <item>
        <widget class="QGroupBox" name="convert_tags">
         <property name="title">
