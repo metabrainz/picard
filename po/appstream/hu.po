@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2026-09-17 14:13+0000\n"
+"PO-Revision-Date: 2026-09-18 15:13+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/2/appstream/hu/>\n"
@@ -52,7 +52,7 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
-msgstr ""
+msgstr "Az audiofájlok címkézése még sosem volt ilyen egyszerű."
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
@@ -63,12 +63,17 @@ msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
+"Többféle formátum: Picard minden elterjedt zenei fájlt támogat, beleértve az "
+"MP3, FLAC, OGG, M4A, WMA, WAV és másokat."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
+"AcoustID: Picard az AcoustID hangujjlenyomatokat használja, amelyek lehetővé "
+"teszik a fájlok azonosítását hang alapján, még akkor is, ha azok nem "
+"tartalmaznak metaadatokat."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""

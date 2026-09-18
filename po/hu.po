@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-09-16 07:13+0000\n"
+"PO-Revision-Date: 2026-09-18 15:13+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/2/app/hu/>\n"
@@ -447,7 +447,7 @@ msgstr ""
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "A csoportosítások és a művek mentése iTunes-kompatibilis formában"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
@@ -2274,7 +2274,7 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:395
 msgid "Show more details"
-msgstr ""
+msgstr "További részletek"
 
 #: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
@@ -2854,7 +2854,7 @@ msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:582
 msgid "Close Window"
-msgstr ""
+msgstr "Ablak bezárása"
 
 #: picard/ui/mainwindow.py:583
 msgid "Ctrl+W"
@@ -2870,7 +2870,7 @@ msgstr "Kiválasztott fájlok mentése"
 
 #: picard/ui/mainwindow.py:601
 msgid "S&ubmit AcoustIDs"
-msgstr ""
+msgstr "AcoustID-k &beküldése"
 
 #: picard/ui/mainwindow.py:602
 msgid "Submit acoustic fingerprints"
@@ -3588,7 +3588,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:496
 msgid "Make It So!"
-msgstr ""
+msgstr "Akkor rajta!"
 
 #: picard/ui/scripteditor.py:568
 msgid "&Import a script file"
@@ -4543,7 +4543,7 @@ msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:123
 msgid "Join multiple ID3v2.3 tags with:"
-msgstr ""
+msgstr "Elválasztó több ID3v2.3 címke esetén:"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:124
 msgid ""
@@ -4551,10 +4551,13 @@ msgid ""
 "Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own. "
 "</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Az alapértelmezett érték „/”, hogy biztosítva legyen a "
+"korábbi Picard-kiadásokkal való kompatibilitás.</p><p>Új alternatívák: ';_', "
+"'_/_' vagy saját beírás. </p></body></html>"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:126
 msgid "Also include ID3v1 tags in the files"
-msgstr ""
+msgstr "A fájlokba az ID3v1-címkéket is rögzítse"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
@@ -4990,7 +4993,7 @@ msgstr "Keresés"
 
 #: picard/ui/options/interface_toolbar.py:88
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Lekérdezés böngészőben"
 
 #: picard/ui/options/interface_toolbar.py:92
 msgid "Save"
