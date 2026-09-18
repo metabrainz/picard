@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-11 09:09+0200\n"
-"PO-Revision-Date: 2026-09-16 07:13+0000\n"
+"PO-Revision-Date: 2026-09-18 18:13+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/hu/>\n"
@@ -51,10 +51,9 @@ msgid "[could not load album %s]"
 msgstr "[nem tölthető be az %s album]"
 
 #: picard/cluster.py:393
-#, fuzzy, python-format
-#| msgid "No matching releases for cluster %(album)s"
+#, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
-msgstr "Nincs megegyező kiadás a %(album)scsoportra"
+msgstr "A %(album)s csoport legjobb találata nem egyértelmű"
 
 #: picard/cluster.py:395
 #, python-format
@@ -153,7 +152,7 @@ msgstr "Elsődleges"
 
 #: picard/debug_opts.py:172
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Bővítmény teljes elérési útja"
 
 #: picard/debug_opts.py:172
 msgid "Log plugin full paths"
@@ -184,10 +183,8 @@ msgid "Log git backend method calls"
 msgstr ""
 
 #: picard/debug_opts.py:176
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Translations"
-msgstr "[albuminformáció betöltése]"
+msgstr "Bővítmény fordításai"
 
 #: picard/debug_opts.py:176
 msgid "Log plugin translation lookups and fallbacks"
@@ -222,10 +219,8 @@ msgid "Log similarity scores and match decisions"
 msgstr ""
 
 #: picard/debug_opts.py:180
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Development"
-msgstr "Bővítmények"
+msgstr "Bővítmény fejlesztés"
 
 #: picard/debug_opts.py:180
 msgid "Log plugin details typically only used during development"
@@ -4064,82 +4059,65 @@ msgstr ""
 
 #: picard/ui/util.py:90
 msgid "Make It So!"
-msgstr ""
+msgstr "Akkor rajta!"
 
 #: picard/ui/util.py:130
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #: picard/ui/util.py:152
 msgid "Select a file or a directory"
-msgstr ""
+msgstr "Válasszon ki egy fájlt vagy egy mappát"
 
 #: picard/ui/util.py:158
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select a target file"
-msgstr "Kiválasztott fájlok mentése"
+msgstr "Válasszon ki egy célfájlt"
 
 #: picard/ui/util.py:171
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select a file"
-msgstr "Kiválasztott fájlok mentése"
+msgstr "Válasszon ki egy fájlt"
 
 #: picard/ui/util.py:184
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select one or more files"
-msgstr "Kiválasztott fájlok mentése"
+msgstr "Válasszon ki egy vagy több fájlt"
 
 #: picard/ui/util.py:197
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select a directory"
-msgstr "Üres mappák törlése"
+msgstr "Válasszon ki egy mappát"
 
 #: picard/ui/util.py:213
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "Üres mappák törlése"
+msgstr "Válasszon ki egy vagy több mappát"
 
 #: picard/ui/util.py:341
-#, fuzzy
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Megváltoztatta a kezelőfelület nyelvét. Ahhoz hogy a változás életbe lépjen, "
-"indítsa újra a Picard-ot."
+msgstr "Ahhoz hogy a változás életbe lépjen, indítsa újra a Picard-ot."
 
 #: picard/ui/util.py:342
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "A módosítások csak az újraindítás után lépnek életbe"
 
 #: picard/ui/util.py:357
 msgid "Load Session"
-msgstr ""
+msgstr "Munkamenet betöltése"
 
 #: picard/ui/util.py:358
 #, python-format
 msgid "The session file \"%(path)s\" was not found."
-msgstr ""
+msgstr "Munkamenet fájl \"%(path)s\" nem található."
 
 #: picard/ui/coverartbox/__init__.py:131
 msgid "Show more details"
-msgstr ""
+msgstr "További részletek"
 
 #: picard/ui/coverartbox/__init__.py:133
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox/__init__.py:189 picard/ui/coverartbox/__init__.py:195
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Saved to File"
-msgstr "Cimkék írása a fájlokhoz"
+msgstr "Fájlba mentve"
 
 #: picard/ui/coverartbox/__init__.py:197
 msgid "New Cover Art"
@@ -5899,7 +5877,7 @@ msgstr "ISO-8859-1"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:129
 msgid "Join multiple ID3v2.3 tags with:"
-msgstr ""
+msgstr "Elválasztó több ID3v2.3 címke esetén:"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:130
 msgid ""
@@ -5907,14 +5885,17 @@ msgid ""
 "Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own. "
 "</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Az alapértelmezett érték „/”, hogy biztosítva legyen a "
+"korábbi Picard-kiadásokkal való kompatibilitás.</p><p>Új alternatívák: ';_', "
+"'_/_' vagy saját beírás. </p></body></html>"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "A csoportosítások és a művek mentése iTunes-kompatibilis formában"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
-msgstr ""
+msgstr "A fájlokba az ID3v1-címkéket is rögzítse"
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:62
 msgid "WAVE files"
@@ -7133,10 +7114,8 @@ msgid "&Options…"
 msgstr "&Beállítások…"
 
 #: picard/ui/mainwindow/actions.py:90
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "&Edit scripts…"
-msgstr "Zeneszámok értékelésének engedélyezése"
+msgstr "&Szkriptek szerkesztése…"
 
 #: picard/ui/mainwindow/actions.py:91
 msgid "Ctrl+Shift+S"
@@ -7192,7 +7171,7 @@ msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow/actions.py:174
 msgid "Close Window"
-msgstr ""
+msgstr "Ablak bezárása"
 
 #: picard/ui/mainwindow/actions.py:175
 msgid "Ctrl+W"
@@ -7208,7 +7187,7 @@ msgstr "Kiválasztott fájlok mentése"
 
 #: picard/ui/mainwindow/actions.py:196
 msgid "Move to &trash"
-msgstr ""
+msgstr "&Kukába helyezés"
 
 #: picard/ui/mainwindow/actions.py:198
 #, fuzzy
@@ -7218,7 +7197,7 @@ msgstr "Alt+Shift+A"
 
 #: picard/ui/mainwindow/actions.py:206
 msgid "S&ubmit AcoustIDs"
-msgstr ""
+msgstr "AcoustID-k &beküldése"
 
 #: picard/ui/mainwindow/actions.py:207
 msgid "Submit acoustic fingerprints"
@@ -7229,10 +7208,8 @@ msgid "Submit &ISRCs"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:216
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit ISRCs to MusicBrainz"
-msgstr "Értékelések beküldése a MusicBrainz-nek"
+msgstr "ISRC-k beküldése a MusicBrainz-nek"
 
 #: picard/ui/mainwindow/actions.py:224
 msgid "E&xit"
@@ -8036,7 +8013,7 @@ msgstr "Keresés"
 
 #: picard/ui/options/interface_toolbar.py:100
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Lekérdezés böngészőben"
 
 #: picard/ui/options/interface_toolbar.py:104
 msgid "Save"
