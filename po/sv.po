@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-11 09:09+0200\n"
+"POT-Creation-Date: 2026-09-18 22:25+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -148,7 +148,7 @@ msgstr "Slå samman"
 #: picard/config_upgrade_hooks.py:193
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
-#: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:156
+#: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
 #: picard/ui/widgets/preferencelistwidget.py:89
 msgid "Remove"
 msgstr "Ta bort"
@@ -208,7 +208,7 @@ msgstr ""
 "insticksmoduler"
 
 #: picard/debug_opts.py:178 picard/plugin3/categories.py:31
-#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:261
+#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:260
 msgid "Cover Art"
 msgstr "Omslagsbilder"
 
@@ -360,7 +360,7 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i bild saknas i vissa spår"
 msgstr[1] "%i olika bilder bland spåren"
 
-#: picard/log.py:93 picard/ui/dialogs/installplugin.py:657
+#: picard/log.py:93 picard/ui/dialogs/installplugin.py:660
 #: picard/ui/options/renaming.py:116 picard/ui/scripteditor/__init__.py:569
 #: picard/ui/scripteditor/__init__.py:572
 #: picard/ui/scripteditor/__init__.py:881
@@ -372,7 +372,7 @@ msgstr "Fel"
 msgid "Warning"
 msgstr "Varning"
 
-#: picard/log.py:95 picard/ui/dialogs/installplugin.py:471
+#: picard/log.py:95 picard/ui/dialogs/installplugin.py:474
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
@@ -792,7 +792,7 @@ msgstr "Likhet för matchning av filer mot spår"
 msgid "Translation locales"
 msgstr "Språkvarianter för översättning"
 
-#: picard/options.py:534
+#: picard/options.py:534 picard/ui/setupwizard.py:458
 msgid "Convert Unicode punctuation to ASCII"
 msgstr "Konvertera Unicode-interpunktion till ASCII"
 
@@ -990,7 +990,7 @@ msgstr "Windows-kompatibilitet"
 msgid "Windows long path support"
 msgstr "Stöd för långa sökvägar i Windows"
 
-#: picard/options.py:703
+#: picard/options.py:703 picard/ui/profile_tagger_scripts_dialog.py:87
 msgid "Enable tagger scripts"
 msgstr "Aktivera taggningsskript"
 
@@ -998,15 +998,15 @@ msgstr "Aktivera taggningsskript"
 msgid "Tagger scripts"
 msgstr "Taggningsskript"
 
-#: picard/options.py:709 picard/ui/setupwizard.py:398
+#: picard/options.py:709 picard/ui/setupwizard.py:397
 msgid "Check for documentation updates"
 msgstr "Sök efter dokumentationsuppdateringar"
 
-#: picard/options.py:710 picard/ui/setupwizard.py:390
+#: picard/options.py:710 picard/ui/setupwizard.py:389
 msgid "Check for plugin updates"
 msgstr "Sök efter uppdateringar av insticksmoduler"
 
-#: picard/options.py:711 picard/ui/setupwizard.py:382
+#: picard/options.py:711 picard/ui/setupwizard.py:381
 msgid "Check for program updates"
 msgstr "Sök efter programuppdateringar"
 
@@ -1149,18 +1149,18 @@ msgid "Unknown Plugin"
 msgstr "Okänd insticksmodul"
 
 #: picard/plugin.py:133 picard/ui/cdlookup.py:65
-#: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1214
+#: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1215
 msgid "Album"
 msgstr "Album"
 
 #: picard/plugin.py:135 picard/ui/cdlookup.py:229
-#: picard/ui/isrcsubmitdialog.py:50 picard/ui/mainwindow/__init__.py:1216
+#: picard/ui/isrcsubmitdialog.py:50 picard/ui/mainwindow/__init__.py:1217
 msgid "Track"
 msgstr "Spår"
 
 #: picard/coverart/utils.py:47 picard/plugin.py:137
 #: picard/ui/dialogs/plugininfo.py:240 picard/ui/dialogs/plugininfo.py:250
-#: picard/ui/options/profiles.py:691 picard/ui/widgets/pluginlistwidget.py:299
+#: picard/ui/options/profiles.py:692 picard/ui/widgets/pluginlistwidget.py:299
 msgid "Unknown"
 msgstr "Okänd"
 
@@ -1235,13 +1235,13 @@ msgstr "MusicBrainz-konto"
 msgid "Authorization code:"
 msgstr "Behörighetskod:"
 
-#: picard/tagger.py:784 picard/ui/mainwindow/__init__.py:1593
-#: picard/ui/mainwindow/__init__.py:1619
+#: picard/tagger.py:784 picard/ui/mainwindow/__init__.py:1594
+#: picard/ui/mainwindow/__init__.py:1620
 msgid "Failed to load session"
 msgstr "Det gick inte att läsa in sessionen"
 
-#: picard/tagger.py:785 picard/ui/mainwindow/__init__.py:1594
-#: picard/ui/mainwindow/__init__.py:1620
+#: picard/tagger.py:785 picard/ui/mainwindow/__init__.py:1595
+#: picard/ui/mainwindow/__init__.py:1621
 #, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
@@ -1335,7 +1335,7 @@ msgid "SCSI TOC file"
 msgstr "SCSI-TOC-fil"
 
 #: picard/script/serializer.py:383 picard/tagger.py:1377
-#: picard/ui/coverartbox/__init__.py:486 picard/ui/mainwindow/__init__.py:1325
+#: picard/ui/coverartbox/__init__.py:486 picard/ui/mainwindow/__init__.py:1326
 #: picard/ui/options/maintenance.py:212 picard/ui/options/scripting.py:139
 msgid "All files"
 msgstr "Alla filer"
@@ -1664,24 +1664,24 @@ msgstr "lokal-utveckling"
 msgid "{base} (current)"
 msgstr "{base} (aktuell)"
 
-#: picard/profiles/importer.py:115
+#: picard/profiles/importer.py:127
 #, python-format
 msgid "Invalid TOML: %s"
 msgstr "Ogiltig TOML: %s"
 
-#: picard/profiles/importer.py:120
+#: picard/profiles/importer.py:132
 msgid "Missing required [profile] section"
 msgstr "Den obligatoriska sektionen [profile] saknas"
 
-#: picard/profiles/importer.py:122
+#: picard/profiles/importer.py:134
 msgid "The [profile] section must be a table"
 msgstr "Sektionen [profile] måste vara en tabell"
 
-#: picard/profiles/importer.py:126
+#: picard/profiles/importer.py:138
 msgid "Missing required 'title' in [profile] section"
 msgstr "Det obligatoriska fältet ”title” saknas i sektionen [profile]"
 
-#: picard/profiles/importer.py:133
+#: picard/profiles/importer.py:145
 #, python-format
 msgid ""
 "Unsupported profile format version %s (this version of Picard supports "
@@ -1690,16 +1690,16 @@ msgstr ""
 "Profilformatversionen %s stöds inte (den här versionen av Picard stöder "
 "formatversion %s). Uppgradera Picard för att importera profilen."
 
-#: picard/profiles/importer.py:146
+#: picard/profiles/importer.py:158
 #, python-format
 msgid "No existing profile with id '%s' to replace"
 msgstr "Det finns ingen befintlig profil med ID:t ”%s” att ersätta"
 
-#: picard/profiles/importer.py:165
+#: picard/profiles/importer.py:177
 msgid "The [settings] section must be a table"
 msgstr "Sektionen [settings] måste vara en tabell"
 
-#: picard/profiles/importer.py:178
+#: picard/profiles/importer.py:190
 #, python-format
 msgid ""
 "Settings upgrade from Picard %s failed: %s. Some settings may not have been "
@@ -1708,26 +1708,26 @@ msgstr ""
 "Uppgraderingen av inställningar från Picard %s misslyckades: %s. Vissa "
 "inställningar kanske inte konverterades."
 
-#: picard/profiles/importer.py:210
+#: picard/profiles/importer.py:222
 msgid "The [scripts] section must be a table"
 msgstr "Sektionen [scripts] måste vara en tabell"
 
-#: picard/profiles/importer.py:214
+#: picard/profiles/importer.py:226
 msgid "The [scripts.naming] section must be a table"
 msgstr "Sektionen [scripts.naming] måste vara en tabell"
 
-#: picard/profiles/importer.py:223
+#: picard/profiles/importer.py:235
 msgid "The [[scripts.tagging]] section must be an array of tables"
 msgstr "Sektionen [[scripts.tagging]] måste vara en array av tabeller"
 
-#: picard/profiles/importer.py:234
+#: picard/profiles/importer.py:250
 #, python-format
 msgid "%d setting was not recognized and was skipped: %s"
 msgid_plural "%d settings were not recognized and were skipped: %s"
 msgstr[0] "%d inställning identifierades inte och hoppades över: %s"
 msgstr[1] "%d inställningar identifierades inte och hoppades över: %s"
 
-#: picard/profiles/importer.py:247
+#: picard/profiles/importer.py:263
 #, python-format
 msgid "%d setting had an out-of-range value and was corrected: %s"
 msgid_plural "%d settings had out-of-range values and were corrected: %s"
@@ -1738,24 +1738,24 @@ msgstr[1] ""
 "%d inställningar hade värden utanför det tillåtna intervallet och "
 "korrigerades: %s"
 
-#: picard/profiles/importer.py:259
+#: picard/profiles/importer.py:275
 #, python-format
 msgid "%d setting was automatically upgraded from Picard %s."
 msgid_plural "%d settings were automatically upgraded from Picard %s."
 msgstr[0] "%d inställning uppgraderades automatiskt från Picard %s."
 msgstr[1] "%d inställningar uppgraderades automatiskt från Picard %s."
 
-#: picard/profiles/importer.py:315
+#: picard/profiles/importer.py:331
 msgid "Naming script section missing 'script' or 'title' field, skipped."
 msgstr ""
 "Sektionen för namnskript saknar fältet ”script” eller ”title” och hoppades "
 "över."
 
-#: picard/profiles/importer.py:367
+#: picard/profiles/importer.py:391
 msgid "Each [[scripts.tagging]] entry must be a table"
 msgstr "Varje post i [[scripts.tagging]] måste vara en tabell"
 
-#: picard/profiles/importer.py:388
+#: picard/profiles/importer.py:412
 #, python-format
 msgid "%d duplicate script skipped (same title and content already exist)."
 msgid_plural ""
@@ -2155,8 +2155,8 @@ msgstr ""
 "\n"
 "Exempel:\n"
 "\n"
-"    $if($get_new(composer),,$set(composer,$if2"
-"(%lyricist%,%writer%,%arranger%)))\n"
+"    $if($get_new(composer),,$set(composer,$if2(%lyricist%,%writer%,"
+"%arranger%)))\n"
 "\n"
 "Detta anger kompositören utifrån andra fält endast om MusicBrainz inte "
 "tillhandahöll någon,\n"
@@ -3704,13 +3704,13 @@ msgid "C&lear all"
 msgstr "&Rensa alla"
 
 #: picard/ui/caa_types_selector.py:271
-#: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:312
+#: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:358
 #: picard/ui/options/renaming_compat.py:216
 msgid "Restore &Defaults"
 msgstr "Återställ &förvalda värden"
 
 #: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:145
-#: picard/ui/mainwindow/__init__.py:1215 picard/ui/searchdialog/album.py:160
+#: picard/ui/mainwindow/__init__.py:1216 picard/ui/searchdialog/album.py:160
 #: picard/ui/searchdialog/track.py:76
 msgid "Artist"
 msgstr "Artist"
@@ -3983,7 +3983,7 @@ msgstr "&Visa detaljer…"
 msgid "&Copy"
 msgstr "&Kopiera"
 
-#: picard/ui/itemviews/basetreeview.py:206 picard/ui/logview.py:181
+#: picard/ui/itemviews/basetreeview.py:207 picard/ui/logview.py:181
 msgid "Select &all"
 msgstr "Välj &alla"
 
@@ -4122,6 +4122,29 @@ msgstr "Röd: %s."
 msgid "Green: %s."
 msgstr "Grön: %s."
 
+#: picard/ui/profile_tagger_scripts_dialog.py:54
+#, fuzzy
+#| msgid "Enable Tagger Script(s)"
+msgid "Enable Tagger Scripts?"
+msgstr "Aktivera taggningsskript"
+
+#: picard/ui/profile_tagger_scripts_dialog.py:61
+#, python-format
+msgid ""
+"The imported profile \"%s\" contains tagger scripts. Tagger scripting is "
+"currently disabled for this profile.\n"
+"\n"
+"Enabling it will run the checked scripts when this profile is active. "
+"Uncheck any script you do not want to run, or cancel to import the scripts "
+"without enabling tagger scripting."
+msgstr ""
+
+#: picard/ui/profile_tagger_scripts_dialog.py:90
+#, fuzzy
+#| msgid "E&xit without saving"
+msgid "Import without enabling"
+msgstr "Avsluta &utan att spara"
+
 #: picard/ui/ratingwidget.py:98
 #, python-format
 msgid ""
@@ -4187,11 +4210,11 @@ msgstr "Varning vid filsparning"
 msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Skriptfel i \"%(script)s\": %(message)s"
 
-#: picard/ui/setupwizard.py:131
+#: picard/ui/setupwizard.py:130
 msgid "Welcome to MusicBrainz Picard"
 msgstr "Välkommen till MusicBrainz Picard"
 
-#: picard/ui/setupwizard.py:151
+#: picard/ui/setupwizard.py:150
 msgid ""
 "<p>Picard helps you tag and organize your music collection using the "
 "MusicBrainz database.</p><p>This wizard will help you configure a few "
@@ -4203,35 +4226,35 @@ msgstr ""
 "några viktiga inställningar innan du börjar. Du kan alltid ändra dem senare "
 "i dialogrutan Alternativ.</p>"
 
-#: picard/ui/setupwizard.py:163
+#: picard/ui/setupwizard.py:162
 msgid "Read the documentation"
 msgstr "Läs dokumentationen"
 
-#: picard/ui/setupwizard.py:179
+#: picard/ui/setupwizard.py:178
 msgid "File Organization"
 msgstr "Filorganisation"
 
-#: picard/ui/setupwizard.py:180
+#: picard/ui/setupwizard.py:179
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr "Välj om Picard ska byta namn på och flytta filer när taggar sparas."
 
-#: picard/ui/setupwizard.py:185
+#: picard/ui/setupwizard.py:184
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr "Byt namn på filer utifrån taggar (t.ex. ”Artist - Titel.mp3”)"
 
-#: picard/ui/setupwizard.py:186
+#: picard/ui/setupwizard.py:185
 msgid ""
 "When you save tagged files, their filenames will be updated based on the new "
 "tags."
 msgstr ""
 "När du sparar taggade filer uppdateras filnamnen utifrån de nya taggarna."
 
-#: picard/ui/setupwizard.py:191
+#: picard/ui/setupwizard.py:190
 msgid "Move files to a folder structure based on tags"
 msgstr "Flytta filer till en mappstruktur baserad på taggar"
 
-#: picard/ui/setupwizard.py:192
+#: picard/ui/setupwizard.py:191
 msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
@@ -4239,7 +4262,7 @@ msgstr ""
 "Sparade filer ordnas i undermappar (t.ex. Artist/Album/) i den mapp du "
 "väljer nedan."
 
-#: picard/ui/setupwizard.py:213
+#: picard/ui/setupwizard.py:212
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
@@ -4247,11 +4270,11 @@ msgstr ""
 "Du kan ändra detta senare på menyn Alternativ eller under Alternativ → "
 "Alternativ → Filnamngivning."
 
-#: picard/ui/setupwizard.py:236
+#: picard/ui/setupwizard.py:235
 msgid "Destination folder required"
 msgstr "Målmapp krävs"
 
-#: picard/ui/setupwizard.py:237
+#: picard/ui/setupwizard.py:236
 msgid ""
 "Please choose a destination folder for your music files, or uncheck the move "
 "files option."
@@ -4259,30 +4282,30 @@ msgstr ""
 "Välj en målmapp för musikfilerna eller avmarkera alternativet att flytta "
 "filer."
 
-#: picard/ui/setupwizard.py:249
+#: picard/ui/setupwizard.py:248
 msgid "Select destination directory"
 msgstr "Välj målmapp"
 
-#: picard/ui/setupwizard.py:262
+#: picard/ui/setupwizard.py:261
 msgid "Choose how Picard should handle album cover art."
 msgstr "Välj hur Picard ska hantera albumomslag."
 
-#: picard/ui/setupwizard.py:267
+#: picard/ui/setupwizard.py:266
 msgid "Embed cover art into audio files"
 msgstr "Bädda in omslagsbilder i ljudfiler"
 
-#: picard/ui/setupwizard.py:268
+#: picard/ui/setupwizard.py:267
 msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
 msgstr ""
 "Omslagsbilden lagras i själva ljudfilen så att den visas i alla musikspelare."
 
-#: picard/ui/setupwizard.py:273
+#: picard/ui/setupwizard.py:272
 msgid "Save cover art as separate image files"
 msgstr "Spara omslagsbilder som separata bildfiler"
 
-#: picard/ui/setupwizard.py:274
+#: picard/ui/setupwizard.py:273
 msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
@@ -4290,11 +4313,11 @@ msgstr ""
 "En omslagsbildfil (t.ex. cover.jpg) sparas tillsammans med ljudfilerna i "
 "samma mapp."
 
-#: picard/ui/setupwizard.py:279
+#: picard/ui/setupwizard.py:278
 msgid "Prefer release group cover art"
 msgstr "Föredra omslagsbilder för utgåvegruppen"
 
-#: picard/ui/setupwizard.py:281
+#: picard/ui/setupwizard.py:280
 msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
@@ -4303,20 +4326,20 @@ msgstr ""
 "bilder. Detta ger vanligtvis bilder av högre kvalitet, men de kanske inte "
 "matchar exakt din utgåva."
 
-#: picard/ui/setupwizard.py:289
+#: picard/ui/setupwizard.py:288
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr ""
 "Du kan ändra detta senare under Alternativ → Alternativ → Omslagsbilder."
 
-#: picard/ui/setupwizard.py:370
+#: picard/ui/setupwizard.py:369
 msgid "Updates"
 msgstr "Uppdateringar"
 
-#: picard/ui/setupwizard.py:371
+#: picard/ui/setupwizard.py:370
 msgid "Choose how Picard should check for updates."
 msgstr "Välj hur Picard ska söka efter uppdateringar."
 
-#: picard/ui/setupwizard.py:383
+#: picard/ui/setupwizard.py:382
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
@@ -4324,14 +4347,14 @@ msgstr ""
 "Sök efter en ny programversion på internet och visa en "
 "uppdateringsdialogruta om en finns."
 
-#: picard/ui/setupwizard.py:391
+#: picard/ui/setupwizard.py:390
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
 msgstr ""
 "Sök efter uppdateringar av insticksmoduler på internet och visa en avisering "
 "i statusfältet."
 
-#: picard/ui/setupwizard.py:399
+#: picard/ui/setupwizard.py:398
 msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
@@ -4339,23 +4362,23 @@ msgstr ""
 "Sök efter tillgängliga dokumentationsöversättningar så att onlinehjälpen kan "
 "visas på ditt språk."
 
-#: picard/ui/setupwizard.py:405
+#: picard/ui/setupwizard.py:404
 msgid "You can change these later under Options → General → Startup."
 msgstr "Du kan ändra detta senare under Alternativ → Allmänt → Start."
 
-#: picard/ui/setupwizard.py:439
+#: picard/ui/setupwizard.py:438
 msgid "Additional Metadata"
 msgstr "Ytterligare metadata"
 
-#: picard/ui/setupwizard.py:440
+#: picard/ui/setupwizard.py:439
 msgid "Choose whether Picard should fetch extra details about each track."
 msgstr "Välj om Picard ska hämta extra information om varje spår."
 
-#: picard/ui/setupwizard.py:445
+#: picard/ui/setupwizard.py:444
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr "Hämta detaljerade spårrelationer (utövare, kompositörer med mera)"
 
-#: picard/ui/setupwizard.py:447
+#: picard/ui/setupwizard.py:446
 msgid ""
 "For every track, Picard will also download extra credits such as the "
 "musicians who performed on it, the composer and lyricist, and related works. "
@@ -4377,10 +4400,20 @@ msgstr ""
 "inläsningstiden."
 
 #: picard/ui/setupwizard.py:460
+msgid ""
+"Replace typographic Unicode punctuation with plain ASCII equivalents in tags "
+"— mainly curly apostrophes (’) become straight single quotes ('). Curly "
+"double quotes (“ and ”) become straight quotes (\"), and dashes (—) become "
+"hyphens (-).\n"
+"\n"
+"Useful if your player or file system does not handle these characters well."
+msgstr ""
+
+#: picard/ui/setupwizard.py:472
 msgid "You can change this later under Options → Options → Metadata."
 msgstr "Du kan ändra detta senare under Alternativ → Alternativ → Metadata."
 
-#: picard/ui/setupwizard.py:486
+#: picard/ui/setupwizard.py:500
 msgid "Picard Setup"
 msgstr "Konfigurera Picard"
 
@@ -4580,7 +4613,7 @@ msgid "All supported image formats"
 msgstr "Alla bildformat som stöds"
 
 #: picard/ui/coverartbox/__init__.py:511
-#: picard/ui/itemviews/basetreeview.py:342
+#: picard/ui/itemviews/basetreeview.py:343
 msgid "Show &more details…"
 msgstr "Visa &fler detaljer…"
 
@@ -4694,7 +4727,7 @@ msgid "Search plugins…"
 msgstr "Sök efter insticksmoduler…"
 
 #: picard/ui/dialogs/installplugin.py:114
-#: picard/ui/dialogs/installplugin.py:341
+#: picard/ui/dialogs/installplugin.py:344
 msgid "All Categories"
 msgstr "Alla kategorier"
 
@@ -4712,45 +4745,51 @@ msgid "Categories"
 msgstr "Kategorier"
 
 #: picard/ui/dialogs/installplugin.py:141
+#, fuzzy
+#| msgid "Double-click to view detailed plugin information"
+msgid "Double-click a plugin for detailed information."
+msgstr "Dubbelklicka för att visa detaljerad information om insticksmodulen"
+
+#: picard/ui/dialogs/installplugin.py:144
 msgid "Registry"
 msgstr "Register"
 
-#: picard/ui/dialogs/installplugin.py:147
+#: picard/ui/dialogs/installplugin.py:150
 msgid "Install from URL"
 msgstr "Installera från URL"
 
-#: picard/ui/dialogs/installplugin.py:151
+#: picard/ui/dialogs/installplugin.py:154
 msgid "https://github.com/user/plugin"
 msgstr "https://github.com/user/plugin"
 
-#: picard/ui/dialogs/installplugin.py:152
+#: picard/ui/dialogs/installplugin.py:155
 msgid "Git URL:"
 msgstr "Git-URL:"
 
-#: picard/ui/dialogs/installplugin.py:155
-#: picard/ui/dialogs/installplugin.py:186
+#: picard/ui/dialogs/installplugin.py:158
+#: picard/ui/dialogs/installplugin.py:189
 msgid "main"
 msgstr "main"
 
-#: picard/ui/dialogs/installplugin.py:156
-#: picard/ui/dialogs/installplugin.py:187
+#: picard/ui/dialogs/installplugin.py:159
+#: picard/ui/dialogs/installplugin.py:190
 msgid "Ref/Tag:"
 msgstr "Referens/tagg:"
 
-#: picard/ui/dialogs/installplugin.py:160
+#: picard/ui/dialogs/installplugin.py:163
 msgid "URL"
 msgstr "URL"
 
-#: picard/ui/dialogs/installplugin.py:166
+#: picard/ui/dialogs/installplugin.py:169
 msgid "Install from Local Directory"
 msgstr "Installera från lokal mapp"
 
-#: picard/ui/dialogs/installplugin.py:172
+#: picard/ui/dialogs/installplugin.py:175
 msgid "/path/to/plugin/directory"
 msgstr "/sökväg/till/insticksmodulens/mapp"
 
-#: picard/ui/dialogs/installplugin.py:178
-#: picard/ui/dialogs/installplugin.py:179
+#: picard/ui/dialogs/installplugin.py:181
+#: picard/ui/dialogs/installplugin.py:182
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
 #: picard/ui/forms/ui_options_interface.py:131
 #: picard/ui/forms/ui_options_maintenance.py:149
@@ -4758,15 +4797,15 @@ msgstr "/sökväg/till/insticksmodulens/mapp"
 msgid "Select directory"
 msgstr "Välj mapp"
 
-#: picard/ui/dialogs/installplugin.py:183
+#: picard/ui/dialogs/installplugin.py:186
 msgid "Directory:"
 msgstr "Mapp:"
 
-#: picard/ui/dialogs/installplugin.py:189
+#: picard/ui/dialogs/installplugin.py:192
 msgid "Load in-place (ignore git)"
 msgstr "Läs in på plats (ignorera Git)"
 
-#: picard/ui/dialogs/installplugin.py:192
+#: picard/ui/dialogs/installplugin.py:195
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
@@ -4775,24 +4814,24 @@ msgstr ""
 "Git-funktioner (inga uppdateringar och inget byte av referens). Användbart "
 "vid aktiv utveckling."
 
-#: picard/ui/dialogs/installplugin.py:202 picard/ui/dialogs/plugininfo.py:238
+#: picard/ui/dialogs/installplugin.py:205 picard/ui/dialogs/plugininfo.py:238
 msgid "Local"
 msgstr "Lokal"
 
-#: picard/ui/dialogs/installplugin.py:223
+#: picard/ui/dialogs/installplugin.py:226
 msgid "Install…"
 msgstr "Installera…"
 
-#: picard/ui/dialogs/installplugin.py:287
-#: picard/ui/dialogs/installplugin.py:585
+#: picard/ui/dialogs/installplugin.py:290
+#: picard/ui/dialogs/installplugin.py:588
 msgid "The selected path is not a directory."
 msgstr "Den valda sökvägen är inte en mapp."
 
-#: picard/ui/dialogs/installplugin.py:293
+#: picard/ui/dialogs/installplugin.py:296
 msgid "The directory does not contain a MANIFEST.toml file."
 msgstr "Mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:305
+#: picard/ui/dialogs/installplugin.py:308
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
@@ -4800,7 +4839,7 @@ msgstr ""
 "Insticksmodulen hanteras inte av Git. Den installeras som en lokal "
 "insticksmodul utan Git, versionshantering eller uppdateringar."
 
-#: picard/ui/dialogs/installplugin.py:319
+#: picard/ui/dialogs/installplugin.py:322
 msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
@@ -4808,35 +4847,35 @@ msgstr ""
 "Git-funktioner (uppdateringar och referenser) inaktiveras. Insticksmodulen "
 "läses in direkt från den här mappen."
 
-#: picard/ui/dialogs/installplugin.py:375
+#: picard/ui/dialogs/installplugin.py:378
 msgid "Official plugin - reviewed by Picard team"
 msgstr "Officiell insticksmodul – granskad av Picard-teamet"
 
-#: picard/ui/dialogs/installplugin.py:376
+#: picard/ui/dialogs/installplugin.py:379
 msgid "Trusted plugin - from known developers"
 msgstr "Betrodd insticksmodul – från kända utvecklare"
 
-#: picard/ui/dialogs/installplugin.py:377
+#: picard/ui/dialogs/installplugin.py:380
 msgid "Community plugin - not reviewed"
 msgstr "Gemenskapsmodul – inte granskad"
 
-#: picard/ui/dialogs/installplugin.py:378
+#: picard/ui/dialogs/installplugin.py:381
 msgid "Unregistered plugin - not in official registry"
 msgstr "Oregistrerad insticksmodul – finns inte i det officiella registret"
 
-#: picard/ui/dialogs/installplugin.py:423
+#: picard/ui/dialogs/installplugin.py:426
 msgid "Double-click to view detailed plugin information"
 msgstr "Dubbelklicka för att visa detaljerad information om insticksmodulen"
 
-#: picard/ui/dialogs/installplugin.py:491
+#: picard/ui/dialogs/installplugin.py:494
 msgid "Select Plugin Directory"
 msgstr "Välj mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:511
+#: picard/ui/dialogs/installplugin.py:514
 msgid "Plugin not found in registry"
 msgstr "Insticksmodulen hittades inte i registret"
 
-#: picard/ui/dialogs/installplugin.py:522
+#: picard/ui/dialogs/installplugin.py:525
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
@@ -4844,7 +4883,7 @@ msgstr ""
 "Varning: Detta är en gemenskapsmodul. Gemenskapsmoduler granskas inte av "
 "Picard-teamet. Installera endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:531
+#: picard/ui/dialogs/installplugin.py:534
 msgid ""
 "Warning: This plugin is not in the official registry. Installing "
 "unregistered plugins may pose security risks. Only install plugins from "
@@ -4854,31 +4893,31 @@ msgstr ""
 "av oregistrerade insticksmoduler kan medföra säkerhetsrisker. Installera "
 "endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:579
+#: picard/ui/dialogs/installplugin.py:582
 msgid "No Directory Selected"
 msgstr "Ingen mapp har valts"
 
-#: picard/ui/dialogs/installplugin.py:579
+#: picard/ui/dialogs/installplugin.py:582
 msgid "Please select a local plugin directory."
 msgstr "Välj en lokal mapp för insticksmodulen."
 
-#: picard/ui/dialogs/installplugin.py:585
+#: picard/ui/dialogs/installplugin.py:588
 msgid "Invalid Directory"
 msgstr "Ogiltig mapp"
 
-#: picard/ui/dialogs/installplugin.py:593
+#: picard/ui/dialogs/installplugin.py:596
 msgid "Invalid Plugin Directory"
 msgstr "Ogiltig mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:594
+#: picard/ui/dialogs/installplugin.py:597
 msgid "The selected directory does not contain a MANIFEST.toml file."
 msgstr "Den valda mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:605
+#: picard/ui/dialogs/installplugin.py:608
 msgid "Plugin Not Managed by Git"
 msgstr "Insticksmodulen hanteras inte av Git"
 
-#: picard/ui/dialogs/installplugin.py:607
+#: picard/ui/dialogs/installplugin.py:610
 msgid ""
 "This plugin is not managed by git.\n"
 "\n"
@@ -4896,19 +4935,19 @@ msgstr ""
 "\n"
 "Vill du fortsätta?"
 
-#: picard/ui/dialogs/installplugin.py:657
+#: picard/ui/dialogs/installplugin.py:660
 msgid "Plugin has no repository URL"
 msgstr "Insticksmodulen saknar URL till kodförrådet"
 
-#: picard/ui/dialogs/installplugin.py:728
+#: picard/ui/dialogs/installplugin.py:731
 msgid "Plugin installed successfully"
 msgstr "Insticksmodulen installerades"
 
-#: picard/ui/dialogs/installplugin.py:733
+#: picard/ui/dialogs/installplugin.py:736
 msgid "Installation failed"
 msgstr "Installationen misslyckades"
 
-#: picard/ui/dialogs/installplugin.py:734 picard/ui/options/plugins.py:532
+#: picard/ui/dialogs/installplugin.py:737 picard/ui/options/plugins.py:532
 #: picard/ui/widgets/plugindetailswidget.py:243
 #: picard/ui/widgets/plugindetailswidget.py:406
 #: picard/ui/widgets/pluginlistwidget.py:733
@@ -4918,11 +4957,11 @@ msgstr "Installationen misslyckades"
 msgid "Unknown error"
 msgstr "Okänt fel"
 
-#: picard/ui/dialogs/installplugin.py:737
+#: picard/ui/dialogs/installplugin.py:740
 msgid "Installation Failed"
 msgstr "Installationen misslyckades"
 
-#: picard/ui/dialogs/installplugin.py:738
+#: picard/ui/dialogs/installplugin.py:741
 msgid "Failed to install the plugin."
 msgstr "Det gick inte att installera insticksmodulen."
 
@@ -5001,7 +5040,7 @@ msgid "Move selected plugin down"
 msgstr "Flytta den valda insticksmodulen nedåt"
 
 #: picard/ui/dialogs/plugin_order_selector.py:202
-#: picard/ui/options/dialog.py:964
+#: picard/ui/options/dialog.py:1030
 msgid "Confirm Reset"
 msgstr "Bekräfta återställning"
 
@@ -5116,7 +5155,7 @@ msgstr "Oregistrerad"
 msgid "About Picard"
 msgstr "Om Picard"
 
-#: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:275
+#: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:276
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -5154,8 +5193,8 @@ msgid ""
 "powered by the <a href=\"https://musicbrainz.org\">MusicBrainz</a> database."
 msgstr ""
 "Ett projekt från <a href=\"https://metabrainz.org\">MetaBrainz Foundation</"
-"a> som använder databasen <a href=\"https://musicbrainz.org\">MusicBrainz</a>"
-"."
+"a> som använder databasen <a href=\"https://musicbrainz.org\">MusicBrainz</"
+"a>."
 
 #: picard/ui/forms/ui_aboutdialog.py:251
 msgid ""
@@ -5381,7 +5420,7 @@ msgid "Load last saved session on startup"
 msgstr "Läs in den senast sparade sessionen vid start"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:67
-#: picard/ui/options/dialog.py:504
+#: picard/ui/options/dialog.py:550
 msgid "Profiles Attached to Options"
 msgstr "Profiler kopplade till inställningar"
 
@@ -6145,23 +6184,29 @@ msgid "Move tagger script down"
 msgstr "Flytta taggningsskriptet nedåt"
 
 #: picard/ui/forms/ui_options_script.py:130
-#: picard/ui/forms/ui_options_script.py:131
 msgid "Add new tagger script"
 msgstr "Lägg till nytt taggningsskript"
+
+#: picard/ui/forms/ui_options_script.py:131
+#, fuzzy
+#| msgid "Add…"
+msgid "Add"
+msgstr "Lägg till…"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
 msgstr "Ta bort det valda taggningsskriptet"
 
 #: picard/ui/forms/ui_options_script.py:133
-msgid "Remove tagger script"
-msgstr "Ta bort taggningsskript"
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:124
+msgid "Delete"
+msgstr "Ta bort"
 
-#: picard/ui/forms/ui_options_script.py:134 picard/ui/options/profiles.py:173
+#: picard/ui/forms/ui_options_script.py:134 picard/ui/options/profiles.py:174
 msgid "Import"
 msgstr "Importera"
 
-#: picard/ui/forms/ui_options_script.py:135 picard/ui/options/profiles.py:163
+#: picard/ui/forms/ui_options_script.py:135 picard/ui/options/profiles.py:164
 msgid "Export"
 msgstr "Exportera"
 
@@ -6365,7 +6410,7 @@ msgid "Windows-1252"
 msgstr "Windows-1252"
 
 #: picard/ui/forms/ui_passworddialog.py:67
-#: picard/ui/mainwindow/__init__.py:2082
+#: picard/ui/mainwindow/__init__.py:2083
 msgid "Authentication Required"
 msgstr "Autentisering krävs"
 
@@ -6736,49 +6781,49 @@ msgstr ""
 "Inget fingeravtryck beräknades för den här filen. Använd ”Skanna” eller "
 "”Generera AcoustID-fingeravtryck” för att beräkna det."
 
-#: picard/ui/itemviews/basetreeview.py:171
+#: picard/ui/itemviews/basetreeview.py:172
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Andra versioner (%d)"
 
-#: picard/ui/itemviews/basetreeview.py:202
+#: picard/ui/itemviews/basetreeview.py:203
 msgid "&Expand all"
 msgstr "&Fäll ut alla"
 
-#: picard/ui/itemviews/basetreeview.py:204
+#: picard/ui/itemviews/basetreeview.py:205
 msgid "&Collapse all"
 msgstr "Fäll i&n alla"
 
-#: picard/ui/itemviews/basetreeview.py:208
+#: picard/ui/itemviews/basetreeview.py:209
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews/basetreeview.py:335
+#: picard/ui/itemviews/basetreeview.py:336
 msgid "&Other versions"
 msgstr "&Andra versioner"
 
-#: picard/ui/itemviews/basetreeview.py:347
+#: picard/ui/itemviews/basetreeview.py:348
 msgid "Loading…"
 msgstr "Läser in…"
 
-#: picard/ui/itemviews/basetreeview.py:374
+#: picard/ui/itemviews/basetreeview.py:375
 msgid "Collections"
 msgstr "Samlingar"
 
-#: picard/ui/itemviews/basetreeview.py:378
+#: picard/ui/itemviews/basetreeview.py:379
 msgid "P&lugins"
 msgstr "&Insticksmoduler"
 
-#: picard/ui/itemviews/basetreeview.py:404
+#: picard/ui/itemviews/basetreeview.py:395
 msgid "&Run scripts"
 msgstr "&Kör skript"
 
-#: picard/ui/itemviews/basetreeview.py:781
+#: picard/ui/itemviews/basetreeview.py:772
 #, python-format
 msgid "Matches on: %s"
 msgstr "Matchar på: %s"
 
-#: picard/ui/itemviews/basetreeview.py:783
+#: picard/ui/itemviews/basetreeview.py:774
 msgid "No tags found for selected filters."
 msgstr "Inga taggar hittades för de valda filtren."
 
@@ -6900,17 +6945,13 @@ msgid "Manage Custom Columns"
 msgstr "Hantera anpassade kolumner"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:121
-#: picard/ui/options/profiles.py:142
+#: picard/ui/options/profiles.py:143
 msgid "New"
 msgstr "Ny"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:123
 msgid "Duplicate"
 msgstr "Duplicera"
-
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:124
-msgid "Delete"
-msgstr "Ta bort"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:154
 msgid " px"
@@ -7041,16 +7082,16 @@ msgstr "Tomma värden sist"
 msgid "Empty/whitespace values sort last."
 msgstr "Tomma värden och värden som bara innehåller blanksteg sorteras sist."
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:53
-#: picard/ui/mainwindow/__init__.py:494
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:56
+#: picard/ui/mainwindow/__init__.py:495
 msgid "Unsaved Changes"
 msgstr "Osparade ändringar"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:71
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:74
 msgid "Confirm Discard"
 msgstr "Bekräfta kassering"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:72
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:75
 msgid ""
 "You have unsaved changes that will be lost. Do you want to continue without "
 "saving?"
@@ -7058,40 +7099,40 @@ msgstr ""
 "Du har osparade ändringar som kommer att gå förlorade. Vill du fortsätta "
 "utan att spara?"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:111
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:133
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:114
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:136
 msgid "Confirm Delete"
 msgstr "Bekräfta borttagning"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:112
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:115
 #, python-brace-format
 msgid "Are you sure you want to delete the custom column \"{title}\"?"
 msgstr "Vill du ta bort den anpassade kolumnen ”{title}”?"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:134
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:137
 #, python-brace-format
 msgid "Are you sure you want to delete {n} selected custom columns?"
 msgstr "Vill du ta bort de {n} valda anpassade kolumnerna?"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:151
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:154
 #, python-format
 msgid "Invalid column: %s"
 msgstr "Ogiltig kolumn: %s"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:151
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:154
 msgid "Invalid column"
 msgstr "Ogiltig kolumn"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:176
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:179
 msgid "Blank expression"
 msgstr "Tomt uttryck"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:178
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:181
 #, python-format
 msgid "Blank expression for: %s"
 msgstr "Tomt uttryck för: %s"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:180
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:183
 #, python-format
 msgid ""
 "The expression for \"%s\" is blank. The column will display nothing. Do you "
@@ -7100,7 +7141,7 @@ msgstr ""
 "Uttrycket för ”%s” är tomt. Kolumnen kommer inte att visa något. Vill du "
 "fortsätta?"
 
-#: picard/ui/itemviews/custom_columns/user_dialog_service.py:184
+#: picard/ui/itemviews/custom_columns/user_dialog_service.py:187
 msgid ""
 "The expression is blank. The column will display nothing. Do you want to "
 "continue?"
@@ -7200,11 +7241,11 @@ msgstr "Kolumnen kommer inte att visas i någon vy"
 msgid "Unknown views in add_to: %s"
 msgstr "Okända vyer i add_to: %s"
 
-#: picard/ui/mainwindow/__init__.py:495
+#: picard/ui/mainwindow/__init__.py:496
 msgid "Are you sure you want to quit Picard?"
 msgstr "Är du säker på att du vill avsluta Picard?"
 
-#: picard/ui/mainwindow/__init__.py:498
+#: picard/ui/mainwindow/__init__.py:499
 #, python-format
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
@@ -7216,45 +7257,45 @@ msgstr[1] ""
 "Det finns %d osparade filer. Om Picard stängs går alla osparade ändringar "
 "förlorade."
 
-#: picard/ui/mainwindow/__init__.py:507
+#: picard/ui/mainwindow/__init__.py:508
 msgid "&Quit Picard"
 msgstr "&Avsluta Picard"
 
-#: picard/ui/mainwindow/__init__.py:540
+#: picard/ui/mainwindow/__init__.py:541
 msgid "Close Session"
 msgstr "Stäng session"
 
-#: picard/ui/mainwindow/__init__.py:541
+#: picard/ui/mainwindow/__init__.py:542
 msgid "Do you want to save the current session before continuing?"
 msgstr "Vill du spara den aktuella sessionen innan du fortsätter?"
 
-#: picard/ui/mainwindow/__init__.py:542
+#: picard/ui/mainwindow/__init__.py:543
 msgid ""
 "Closing the session will clear all files, clusters and albums from the view."
 msgstr "När sessionen stängs tas alla filer, kluster och album bort från vyn."
 
-#: picard/ui/mainwindow/__init__.py:544 picard/ui/mainwindow/actions.py:595
+#: picard/ui/mainwindow/__init__.py:545 picard/ui/mainwindow/actions.py:595
 msgid "&Save Session"
 msgstr "&Spara session"
 
-#: picard/ui/mainwindow/__init__.py:545
+#: picard/ui/mainwindow/__init__.py:546
 msgid "Do&n't Save"
 msgstr "Spara i&nte"
 
-#: picard/ui/mainwindow/__init__.py:574 picard/ui/mainwindow/__init__.py:1556
+#: picard/ui/mainwindow/__init__.py:575 picard/ui/mainwindow/__init__.py:1557
 #, python-format
 msgid "Session saved to \"%(path)s\""
 msgstr "Sessionen sparades i ”%(path)s”"
 
-#: picard/ui/mainwindow/__init__.py:577 picard/ui/mainwindow/__init__.py:1553
+#: picard/ui/mainwindow/__init__.py:578 picard/ui/mainwindow/__init__.py:1554
 msgid "Failed to save session"
 msgstr "Det gick inte att spara sessionen"
 
-#: picard/ui/mainwindow/__init__.py:614
+#: picard/ui/mainwindow/__init__.py:615
 msgid "Ready"
 msgstr "Klar"
 
-#: picard/ui/mainwindow/__init__.py:623
+#: picard/ui/mainwindow/__init__.py:624
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
@@ -7264,7 +7305,7 @@ msgstr ""
 "väljer ”Sök” eller ”Öppna i webbläsare” i Picard kan du klicka på knappen "
 "”Tagger” på webbsidan för att läsa in utgåvan i Picard."
 
-#: picard/ui/mainwindow/__init__.py:641
+#: picard/ui/mainwindow/__init__.py:642
 msgid ""
 "There are updates available for installed plugins. Click to open the plugin "
 "manager."
@@ -7272,20 +7313,20 @@ msgstr ""
 "Det finns uppdateringar för installerade insticksmoduler. Klicka för att "
 "öppna hanteraren för insticksmoduler."
 
-#: picard/ui/mainwindow/__init__.py:670
+#: picard/ui/mainwindow/__init__.py:671
 #, python-format
 msgid "Listening on port %(port)d"
 msgstr "Lyssnar på port %(port)d"
 
-#: picard/ui/mainwindow/__init__.py:680
+#: picard/ui/mainwindow/__init__.py:681
 msgid "Stopped by user"
 msgstr "Stoppades av användaren"
 
-#: picard/ui/mainwindow/__init__.py:745
+#: picard/ui/mainwindow/__init__.py:746
 msgid "AcoustID submission not configured"
 msgstr "Sändning till AcoustID är inte konfigurerad"
 
-#: picard/ui/mainwindow/__init__.py:746
+#: picard/ui/mainwindow/__init__.py:747
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
@@ -7293,147 +7334,147 @@ msgstr ""
 "Du behöver konfigurera din AcoustID API-nyckel innan du kan skicka in "
 "fingeravtryck."
 
-#: picard/ui/mainwindow/__init__.py:748
+#: picard/ui/mainwindow/__init__.py:749
 msgid "Open AcoustID options"
 msgstr "Öppna AcoustID-alternativen"
 
-#: picard/ui/mainwindow/__init__.py:798
+#: picard/ui/mainwindow/__init__.py:799
 msgid "Lookup by…"
 msgstr "Slå upp via…"
 
-#: picard/ui/mainwindow/__init__.py:807 picard/ui/mainwindow/actions.py:406
+#: picard/ui/mainwindow/__init__.py:808 picard/ui/mainwindow/actions.py:406
 msgid "Lookup &CD…"
 msgstr "Slå upp &CD…"
 
-#: picard/ui/mainwindow/__init__.py:817
+#: picard/ui/mainwindow/__init__.py:818
 msgid "Recent Sessions"
 msgstr "Senaste sessioner"
 
-#: picard/ui/mainwindow/__init__.py:855
+#: picard/ui/mainwindow/__init__.py:856
 msgid "Recent sessions cleared"
 msgstr "Senaste sessioner har rensats"
 
-#: picard/ui/mainwindow/__init__.py:874
+#: picard/ui/mainwindow/__init__.py:875
 msgid "Empty"
 msgstr "Tom"
 
-#: picard/ui/mainwindow/__init__.py:890 picard/ui/mainwindow/actions.py:619
+#: picard/ui/mainwindow/__init__.py:891 picard/ui/mainwindow/actions.py:619
 msgid "Clear Recent Sessions"
 msgstr "Rensa senaste sessioner"
 
-#: picard/ui/mainwindow/__init__.py:993 picard/ui/scripteditor/__init__.py:244
+#: picard/ui/mainwindow/__init__.py:994 picard/ui/scripteditor/__init__.py:244
 msgid "&File"
 msgstr "&Arkiv"
 
-#: picard/ui/mainwindow/__init__.py:1017
+#: picard/ui/mainwindow/__init__.py:1018
 msgid "&Edit"
 msgstr "&Redigera"
 
-#: picard/ui/mainwindow/__init__.py:1026 picard/ui/scripteditor/__init__.py:310
+#: picard/ui/mainwindow/__init__.py:1027 picard/ui/scripteditor/__init__.py:310
 msgid "&View"
 msgstr "&Visa"
 
-#: picard/ui/mainwindow/__init__.py:1037
+#: picard/ui/mainwindow/__init__.py:1038
 msgid "File naming &scripts"
 msgstr "Filnamns&skript"
 
-#: picard/ui/mainwindow/__init__.py:1044
+#: picard/ui/mainwindow/__init__.py:1045
 msgid "&Profiles"
 msgstr "&Profiler"
 
-#: picard/ui/mainwindow/__init__.py:1050
+#: picard/ui/mainwindow/__init__.py:1051
 msgid "&Quick settings"
 msgstr "&Snabbinställningar"
 
-#: picard/ui/mainwindow/__init__.py:1054
+#: picard/ui/mainwindow/__init__.py:1055
 msgid "&Options"
 msgstr "A&lternativ"
 
-#: picard/ui/mainwindow/__init__.py:1065
+#: picard/ui/mainwindow/__init__.py:1066
 msgid "&Tools"
 msgstr "Ver&ktyg"
 
-#: picard/ui/mainwindow/__init__.py:1080
+#: picard/ui/mainwindow/__init__.py:1081
 msgid "&Plugin Tools"
 msgstr "Verktyg för &insticksmoduler"
 
-#: picard/ui/mainwindow/__init__.py:1087 picard/ui/scripteditor/__init__.py:331
+#: picard/ui/mainwindow/__init__.py:1088 picard/ui/scripteditor/__init__.py:331
 msgid "&Help"
 msgstr "&Hjälp"
 
-#: picard/ui/mainwindow/__init__.py:1155
+#: picard/ui/mainwindow/__init__.py:1156
 msgid "Actions"
 msgstr "Åtgärder"
 
-#: picard/ui/mainwindow/__init__.py:1203 picard/ui/mainwindow/actions.py:398
+#: picard/ui/mainwindow/__init__.py:1204 picard/ui/mainwindow/actions.py:398
 #: picard/ui/searchdialog/__init__.py:62
 msgid "Search"
 msgstr "Sök"
 
-#: picard/ui/mainwindow/__init__.py:1233
+#: picard/ui/mainwindow/__init__.py:1234
 msgid "&Advanced search"
 msgstr "&Avancerad sökning"
 
-#: picard/ui/mainwindow/__init__.py:1234
+#: picard/ui/mainwindow/__init__.py:1235
 msgid "&Builtin search"
 msgstr "&Inbyggd sökning"
 
-#: picard/ui/mainwindow/__init__.py:1324
+#: picard/ui/mainwindow/__init__.py:1325
 msgid "All supported formats"
 msgstr "Alla format som stöds"
 
-#: picard/ui/mainwindow/__init__.py:1362
+#: picard/ui/mainwindow/__init__.py:1363
 #, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
 msgstr "Lägger till flera mappar från ”%(directory)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1367
+#: picard/ui/mainwindow/__init__.py:1368
 #, python-format
 msgid "Adding directory: \"%(directory)s\" …"
 msgstr "Lägger till mapp: ”%(directory)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1453
+#: picard/ui/mainwindow/__init__.py:1454
 #, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
 msgstr[0] "Flytta ”{filename}” till papperskorgen?"
 msgstr[1] "Flytta {count} filer till papperskorgen?"
 
-#: picard/ui/mainwindow/__init__.py:1459 picard/ui/mainwindow/actions.py:197
+#: picard/ui/mainwindow/__init__.py:1460 picard/ui/mainwindow/actions.py:197
 msgid "Move files to trash"
 msgstr "Flytta filer till papperskorgen"
 
-#: picard/ui/mainwindow/__init__.py:1545 picard/ui/mainwindow/__init__.py:1577
+#: picard/ui/mainwindow/__init__.py:1546 picard/ui/mainwindow/__init__.py:1578
 #, python-format
 msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr "MusicBrainz Picard-session (%s);;Alla filer (*)"
 
-#: picard/ui/mainwindow/__init__.py:1583 picard/ui/mainwindow/__init__.py:1608
+#: picard/ui/mainwindow/__init__.py:1584 picard/ui/mainwindow/__init__.py:1609
 #, python-format
 msgid "Loading session from \"%(path)s\" …"
 msgstr "Läser in session från ”%(path)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1599 picard/ui/mainwindow/__init__.py:1626
+#: picard/ui/mainwindow/__init__.py:1600 picard/ui/mainwindow/__init__.py:1627
 #, python-format
 msgid "Session loaded from \"%(path)s\""
 msgstr "Sessionen lästes in från ”%(path)s”"
 
-#: picard/ui/mainwindow/__init__.py:1702
+#: picard/ui/mainwindow/__init__.py:1703
 msgid "Configuration Required"
 msgstr "Konfigurering krävs"
 
-#: picard/ui/mainwindow/__init__.py:1703
+#: picard/ui/mainwindow/__init__.py:1704
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 "Ljudfingeravtryck har ännu inte konfigurerats. Vill du konfigurera dem nu?"
 
-#: picard/ui/mainwindow/__init__.py:1844
+#: picard/ui/mainwindow/__init__.py:1845
 msgid "Browser integration not enabled"
 msgstr "Webbläsarintegreringen är inte aktiverad"
 
-#: picard/ui/mainwindow/__init__.py:1846
+#: picard/ui/mainwindow/__init__.py:1847
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
@@ -7441,91 +7482,91 @@ msgstr ""
 "För att skicka utgåvor till MusicBrainz måste webbläsarintegreringen vara "
 "aktiverad. Vill du aktivera den nu?"
 
-#: picard/ui/mainwindow/__init__.py:1959
+#: picard/ui/mainwindow/__init__.py:1960
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (fel: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1965
+#: picard/ui/mainwindow/__init__.py:1966
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow/__init__.py:1974
+#: picard/ui/mainwindow/__init__.py:1975
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (fel: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1981
+#: picard/ui/mainwindow/__init__.py:1982
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow/__init__.py:2066
+#: picard/ui/mainwindow/__init__.py:2067
 msgid "personal ratings"
 msgstr "personliga betyg"
 
-#: picard/ui/mainwindow/__init__.py:2068
+#: picard/ui/mainwindow/__init__.py:2069
 msgid "collections"
 msgstr "samlingar"
 
-#: picard/ui/mainwindow/__init__.py:2070
+#: picard/ui/mainwindow/__init__.py:2071
 msgid "personal genres/tags"
 msgstr "personliga genrer/taggar"
 
-#: picard/ui/mainwindow/__init__.py:2074
+#: picard/ui/mainwindow/__init__.py:2075
 msgid "Your current settings require logging in to MusicBrainz to access:"
 msgstr ""
 "Dina nuvarande inställningar kräver att du loggar in på MusicBrainz för att "
 "få åtkomst till:"
 
-#: picard/ui/mainwindow/__init__.py:2078
+#: picard/ui/mainwindow/__init__.py:2079
 msgid "A feature you are using requires logging in to MusicBrainz."
 msgstr "En funktion som du använder kräver att du loggar in på MusicBrainz."
 
-#: picard/ui/mainwindow/__init__.py:2079
+#: picard/ui/mainwindow/__init__.py:2080
 msgid "Would you like to log in now?"
 msgstr "Vill du logga in nu?"
 
-#: picard/ui/mainwindow/__init__.py:2089
+#: picard/ui/mainwindow/__init__.py:2090
 msgid "Waiting for MusicBrainz authentication…"
 msgstr "Väntar på autentisering hos MusicBrainz…"
 
-#: picard/ui/mainwindow/__init__.py:2095
+#: picard/ui/mainwindow/__init__.py:2096
 msgid "MusicBrainz authentication declined"
 msgstr "Autentiseringen hos MusicBrainz nekades"
 
-#: picard/ui/mainwindow/__init__.py:2103
+#: picard/ui/mainwindow/__init__.py:2104
 msgid "Successfully authenticated with MusicBrainz"
 msgstr "Autentiseringen hos MusicBrainz lyckades"
 
-#: picard/ui/mainwindow/__init__.py:2109
+#: picard/ui/mainwindow/__init__.py:2110
 #, python-format
 msgid "MusicBrainz authentication failed: %(error)s"
 msgstr "Autentiseringen hos MusicBrainz misslyckades: %(error)s"
 
-#: picard/ui/mainwindow/__init__.py:2116
+#: picard/ui/mainwindow/__init__.py:2117
 msgid "Authentication failed"
 msgstr "Autentiseringen misslyckades"
 
-#: picard/ui/mainwindow/__init__.py:2117 picard/ui/options/general.py:131
+#: picard/ui/mainwindow/__init__.py:2118 picard/ui/options/general.py:131
 #, python-format
 msgid "Login failed: %s"
 msgstr "Inloggningen misslyckades: %s"
 
-#: picard/ui/mainwindow/__init__.py:2367
+#: picard/ui/mainwindow/__init__.py:2364
 msgid "No profiles configured"
 msgstr "Inga profiler har konfigurerats"
 
-#: picard/ui/mainwindow/__init__.py:2372
+#: picard/ui/mainwindow/__init__.py:2369
 msgid "Configure profiles…"
 msgstr "Konfigurera profiler…"
 
-#: picard/ui/mainwindow/__init__.py:2439
+#: picard/ui/mainwindow/__init__.py:2437
 msgid "No quick settings configured"
 msgstr "Inga snabbinställningar har konfigurerats"
 
-#: picard/ui/mainwindow/__init__.py:2444
+#: picard/ui/mainwindow/__init__.py:2442
 msgid "Configure quick settings…"
 msgstr "Konfigurera snabbinställningar…"
 
@@ -7892,7 +7933,7 @@ msgstr "Tolka filnamn…"
 msgid "Set tags based on the file names"
 msgstr "Ange taggar utifrån filnamnen"
 
-#: picard/ui/mainwindow/actions.py:505 picard/ui/widgets/scripttextedit.py:440
+#: picard/ui/mainwindow/actions.py:505 picard/ui/widgets/scripttextedit.py:439
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
@@ -8112,16 +8153,16 @@ msgstr "Extrahering av ISRC-koder stöds inte på den här plattformen."
 msgid "Processing"
 msgstr "Bearbetar"
 
-#: picard/ui/options/dialog.py:137
+#: picard/ui/options/dialog.py:138
 msgid "This page failed to initialize"
 msgstr "Den här sidan kunde inte initieras"
 
-#: picard/ui/options/dialog.py:139
+#: picard/ui/options/dialog.py:140
 #, python-format
 msgid "Error while initializing option page \"%s\":"
 msgstr "Fel när inställningssidan ”%s” initierades:"
 
-#: picard/ui/options/dialog.py:153
+#: picard/ui/options/dialog.py:154
 #, python-format
 msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
@@ -8130,32 +8171,32 @@ msgstr ""
 "Se <a href=\"%s\">felsökningsdokumentationen</a> och rapportera vid behov "
 "ett fel."
 
-#: picard/ui/options/dialog.py:306
+#: picard/ui/options/dialog.py:352
 msgid "Display help regarding option profiles"
 msgstr "Visa hjälp om inställningsprofiler"
 
-#: picard/ui/options/dialog.py:310
+#: picard/ui/options/dialog.py:356
 msgid "&Restore all Defaults"
 msgstr "Återställ alla &förvalda värden"
 
-#: picard/ui/options/dialog.py:311
+#: picard/ui/options/dialog.py:357
 msgid "Reset all of Picard's settings"
 msgstr "Återställ alla Picard-inställningar"
 
-#: picard/ui/options/dialog.py:313
+#: picard/ui/options/dialog.py:359
 msgid "Reset all settings for current option page"
 msgstr "Återställ alla inställningar på den aktuella inställningssidan"
 
-#: picard/ui/options/dialog.py:328 picard/ui/options/dialog.py:983
+#: picard/ui/options/dialog.py:374 picard/ui/options/dialog.py:1049
 msgid "Attached Profiles"
 msgstr "Kopplade profiler"
 
-#: picard/ui/options/dialog.py:329
+#: picard/ui/options/dialog.py:375
 msgid "Show which profiles are attached to the options on this page"
 msgstr ""
 "Visa vilka profiler som är kopplade till inställningarna på den här sidan"
 
-#: picard/ui/options/dialog.py:505
+#: picard/ui/options/dialog.py:551
 msgid ""
 "The options on this page are not currently available to be managed using "
 "profiles."
@@ -8163,48 +8204,60 @@ msgstr ""
 "Inställningarna på den här sidan kan för närvarande inte hanteras med "
 "profiler."
 
-#: picard/ui/options/dialog.py:621 picard/ui/options/dialog.py:643
-#, python-format
-msgid "This option is tracked by profile: %s"
-msgstr "Den här inställningen följs av profilen: %s"
-
-#: picard/ui/options/dialog.py:640
+#: picard/ui/options/dialog.py:677
 #, python-format
 msgid "This option is overridden by profile: %s"
 msgstr "Den här inställningen åsidosätts av profilen: %s"
 
-#: picard/ui/options/dialog.py:730
+#: picard/ui/options/dialog.py:680
+#, python-format
+msgid "This option is tracked by profile: %s"
+msgstr "Den här inställningen följs av profilen: %s"
+
+#: picard/ui/options/dialog.py:786
 #, python-format
 msgid "The highlighted settings on this page are overridden by %s"
 msgstr "De markerade inställningarna på den här sidan åsidosätts av %s"
 
-#: picard/ui/options/dialog.py:732
+#: picard/ui/options/dialog.py:788
 #, python-format
 msgid "Some settings on this page are overridden by %s"
 msgstr "Vissa inställningar på den här sidan åsidosätts av %s"
 
-#: picard/ui/options/dialog.py:906
+#: picard/ui/options/dialog.py:791
+#, fuzzy, python-format
+#| msgid "The highlighted settings on this page are overridden by %s"
+msgid "The highlighted settings on this page are tracked by %s"
+msgstr "De markerade inställningarna på den här sidan åsidosätts av %s"
+
+#: picard/ui/options/dialog.py:793
+#, fuzzy, python-format
+#| msgid "Some settings on this page are overridden by %s"
+msgid "Some settings on this page are tracked by %s"
+msgstr "Vissa inställningar på den här sidan åsidosätts av %s"
+
+#: picard/ui/options/dialog.py:972
 msgid "Unexpected error"
 msgstr "Oväntat fel"
 
-#: picard/ui/options/dialog.py:953
+#: picard/ui/options/dialog.py:1019
 msgid "You are about to reset your options for this page."
 msgstr "Du håller på att återställa inställningarna på den här sidan."
 
-#: picard/ui/options/dialog.py:957
+#: picard/ui/options/dialog.py:1023
 msgid "Warning! This will reset all of your settings."
 msgstr "Varning! Detta återställer alla dina inställningar."
 
-#: picard/ui/options/dialog.py:965
+#: picard/ui/options/dialog.py:1031
 msgid "Are you sure?"
 msgstr "Är du säker?"
 
-#: picard/ui/options/dialog.py:1000
+#: picard/ui/options/dialog.py:1066
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Profiler kopplade till inställningar i avsnittet %s"
 
-#: picard/ui/options/dialog.py:1030
+#: picard/ui/options/dialog.py:1096
 #, python-format
 msgid ""
 "Hover an option to see which profiles contain it.\n"
@@ -8214,7 +8267,7 @@ msgstr ""
 "den.\n"
 "%s = inställningen finns i profilen, %s = inställningen finns inte i profilen"
 
-#: picard/ui/options/dialog.py:1118
+#: picard/ui/options/dialog.py:1184
 msgid ""
 "This option is in the selected profile(s).\n"
 "Click to remove it from them."
@@ -8222,7 +8275,7 @@ msgstr ""
 "Den här inställningen finns i de valda profilerna.\n"
 "Klicka för att ta bort den från dem."
 
-#: picard/ui/options/dialog.py:1125
+#: picard/ui/options/dialog.py:1191
 #, python-format
 msgid ""
 "This option is in: %s\n"
@@ -8231,7 +8284,7 @@ msgstr ""
 "Den här inställningen finns i: %s\n"
 "Klicka för att lägga till den i de valda profilerna."
 
-#: picard/ui/options/dialog.py:1127
+#: picard/ui/options/dialog.py:1193
 msgid ""
 "This option is not in any profile.\n"
 "Click to add it to the selected profile(s)."
@@ -8442,7 +8495,7 @@ msgid "Cover Art Box"
 msgstr "Omslagsbildsruta"
 
 #: picard/ui/options/interface_quick_menu.py:82
-#: picard/ui/options/profiles.py:269
+#: picard/ui/options/profiles.py:270
 msgid "title"
 msgstr "titel"
 
@@ -8853,202 +8906,202 @@ msgstr "Uppdateringen misslyckades"
 msgid "Failed to update the plugin."
 msgstr "Det gick inte att uppdatera insticksmodulen."
 
-#: picard/ui/options/profiles.py:92
+#: picard/ui/options/profiles.py:93
 msgid "Option Profiles"
 msgstr "Inställningsprofiler"
 
-#: picard/ui/options/profiles.py:143
+#: picard/ui/options/profiles.py:144
 msgid "Create a new profile"
 msgstr "Skapa en ny profil"
 
-#: picard/ui/options/profiles.py:149 picard/ui/scripteditor/__init__.py:957
+#: picard/ui/options/profiles.py:150 picard/ui/scripteditor/__init__.py:957
 msgid "Copy"
 msgstr "Kopiera"
 
-#: picard/ui/options/profiles.py:150
+#: picard/ui/options/profiles.py:151
 msgid "Copy to a new profile"
 msgstr "Kopiera till en ny profil"
 
-#: picard/ui/options/profiles.py:157
+#: picard/ui/options/profiles.py:158
 msgid "Remove the profile"
 msgstr "Ta bort profilen"
 
-#: picard/ui/options/profiles.py:164
+#: picard/ui/options/profiles.py:165
 msgid "Export the profile to a file"
 msgstr "Exportera profilen till en fil"
 
-#: picard/ui/options/profiles.py:168
+#: picard/ui/options/profiles.py:169
 msgid "Export unavailable, tomlkit is not installed"
 msgstr "Export är inte tillgänglig eftersom tomlkit inte är installerat"
 
-#: picard/ui/options/profiles.py:174
+#: picard/ui/options/profiles.py:175
 msgid "Import a profile from a file or clipboard"
 msgstr "Importera en profil från en fil eller urklipp"
 
-#: picard/ui/options/profiles.py:176
+#: picard/ui/options/profiles.py:177
 msgid "From file…"
 msgstr "Från fil…"
 
-#: picard/ui/options/profiles.py:177
+#: picard/ui/options/profiles.py:178
 msgid "From clipboard"
 msgstr "Från urklipp"
 
-#: picard/ui/options/profiles.py:264
+#: picard/ui/options/profiles.py:265
 msgid "Settings to include in profile"
 msgstr "Inställningar som ska ingå i profilen"
 
-#: picard/ui/options/profiles.py:334
+#: picard/ui/options/profiles.py:335
 msgid "Unknown script"
 msgstr "Okänt skript"
 
-#: picard/ui/options/profiles.py:339
+#: picard/ui/options/profiles.py:340
 msgid "No enabled scripts"
 msgstr "Inga aktiverade skript"
 
-#: picard/ui/options/profiles.py:340
+#: picard/ui/options/profiles.py:341
 msgid "Enabled scripts:"
 msgstr "Aktiverade skript:"
 
-#: picard/ui/options/profiles.py:345
+#: picard/ui/options/profiles.py:346
 msgid "No enabled providers"
 msgstr "Inga aktiverade leverantörer"
 
-#: picard/ui/options/profiles.py:346
+#: picard/ui/options/profiles.py:347
 msgid "Enabled providers:"
 msgstr "Aktiverade leverantörer:"
 
-#: picard/ui/options/profiles.py:350
+#: picard/ui/options/profiles.py:351
 msgid "No mode selected"
 msgstr "Inget läge har valts"
 
-#: picard/ui/options/profiles.py:354
+#: picard/ui/options/profiles.py:355
 msgid "Invalid mode selected"
 msgstr "Ett ogiltigt läge har valts"
 
-#: picard/ui/options/profiles.py:358
+#: picard/ui/options/profiles.py:359
 msgid "No format selected"
 msgstr "Inget format har valts"
 
-#: picard/ui/options/profiles.py:362
+#: picard/ui/options/profiles.py:363
 msgid "Invalid format selected"
 msgstr "Ett ogiltigt format har valts"
 
-#: picard/ui/options/profiles.py:368
+#: picard/ui/options/profiles.py:369
 msgid "None"
 msgstr "Ingen"
 
-#: picard/ui/options/profiles.py:384
+#: picard/ui/options/profiles.py:385
 #, python-format
 msgid "List of %i items"
 msgstr "Lista med %i objekt"
 
-#: picard/ui/options/profiles.py:385
+#: picard/ui/options/profiles.py:386
 msgid "Unknown value format"
 msgstr "Okänt värdeformat"
 
-#: picard/ui/options/profiles.py:457
+#: picard/ui/options/profiles.py:458
 msgid "Invalid Title"
 msgstr "Ogiltig titel"
 
-#: picard/ui/options/profiles.py:458
+#: picard/ui/options/profiles.py:459
 msgid "The profile title cannot be blank."
 msgstr "Profilens titel får inte vara tom."
 
-#: picard/ui/options/profiles.py:555
+#: picard/ui/options/profiles.py:556
 msgid "Copy to Clipboard"
 msgstr "Kopiera till urklipp"
 
-#: picard/ui/options/profiles.py:556
+#: picard/ui/options/profiles.py:557
 #, python-format
 msgid "Profile '%s' copied to clipboard."
 msgstr "Profilen ”%s” kopierades till urklipp."
 
-#: picard/ui/options/profiles.py:574
+#: picard/ui/options/profiles.py:575
 msgid "Share (exclude sensitive data)"
 msgstr "Dela (utelämna känsliga data)"
 
-#: picard/ui/options/profiles.py:574
+#: picard/ui/options/profiles.py:575
 msgid "Backup (include everything)"
 msgstr "Säkerhetskopiera (inkludera allt)"
 
-#: picard/ui/options/profiles.py:577 picard/ui/options/profiles.py:591
+#: picard/ui/options/profiles.py:578 picard/ui/options/profiles.py:592
 msgid "Export Profile"
 msgstr "Exportera profil"
 
-#: picard/ui/options/profiles.py:578
+#: picard/ui/options/profiles.py:579
 msgid "Export mode:"
 msgstr "Exportläge:"
 
-#: picard/ui/options/profiles.py:593 picard/ui/options/profiles.py:669
-#: picard/ui/options/profiles.py:790
+#: picard/ui/options/profiles.py:594 picard/ui/options/profiles.py:670
+#: picard/ui/options/profiles.py:825
 msgid "TOML files"
 msgstr "TOML-filer"
 
-#: picard/ui/options/profiles.py:609
+#: picard/ui/options/profiles.py:610
 msgid "Export Error"
 msgstr "Exportfel"
 
-#: picard/ui/options/profiles.py:609
+#: picard/ui/options/profiles.py:610
 #, python-format
 msgid "Failed to write file: %s"
 msgstr "Det gick inte att skriva filen: %s"
 
-#: picard/ui/options/profiles.py:612
+#: picard/ui/options/profiles.py:613
 msgid "Export Complete"
 msgstr "Exporten är klar"
 
-#: picard/ui/options/profiles.py:612
+#: picard/ui/options/profiles.py:613
 #, python-format
 msgid "Profile exported to: %s"
 msgstr "Profilen exporterades till: %s"
 
-#: picard/ui/options/profiles.py:620 picard/ui/options/profiles.py:633
-#: picard/ui/options/profiles.py:641
+#: picard/ui/options/profiles.py:621 picard/ui/options/profiles.py:634
+#: picard/ui/options/profiles.py:642
 msgid "Import from Clipboard"
 msgstr "Importera från urklipp"
 
-#: picard/ui/options/profiles.py:621
+#: picard/ui/options/profiles.py:622
 msgid "The clipboard is empty."
 msgstr "Urklipp är tomt."
 
-#: picard/ui/options/profiles.py:634
+#: picard/ui/options/profiles.py:635
 msgid "The clipboard does not contain a valid Picard profile."
 msgstr "Urklipp innehåller ingen giltig Picard-profil."
 
-#: picard/ui/options/profiles.py:642 picard/ui/options/profiles.py:727
+#: picard/ui/options/profiles.py:643 picard/ui/options/profiles.py:728
 msgid "Enable this profile after import?"
 msgstr "Vill du aktivera profilen efter importen?"
 
-#: picard/ui/options/profiles.py:667 picard/ui/options/profiles.py:726
+#: picard/ui/options/profiles.py:668 picard/ui/options/profiles.py:727
 msgid "Import Profile"
 msgstr "Importera profil"
 
-#: picard/ui/options/profiles.py:678 picard/ui/options/profiles.py:766
-#: picard/ui/options/profiles.py:799
+#: picard/ui/options/profiles.py:679 picard/ui/options/profiles.py:767
+#: picard/ui/options/profiles.py:834
 msgid "Import Error"
 msgstr "Importfel"
 
-#: picard/ui/options/profiles.py:678 picard/ui/options/profiles.py:799
+#: picard/ui/options/profiles.py:679 picard/ui/options/profiles.py:834
 #, python-format
 msgid "Failed to read file: %s"
 msgstr "Det gick inte att läsa filen: %s"
 
-#: picard/ui/options/profiles.py:694
+#: picard/ui/options/profiles.py:695
 msgid "Profile Exists"
 msgstr "Profilen finns redan"
 
-#: picard/ui/options/profiles.py:696
+#: picard/ui/options/profiles.py:697
 #, python-format
 msgid "A profile '%s' with the same ID already exists."
 msgstr "En profil med namnet ”%s” och samma ID finns redan."
 
-#: picard/ui/options/profiles.py:699
+#: picard/ui/options/profiles.py:700
 #, python-format
 msgid "The existing profile '%s' has the same ID as the imported profile '%s'."
 msgstr ""
 "Den befintliga profilen ”%s” har samma ID som den importerade profilen ”%s”."
 
-#: picard/ui/options/profiles.py:704
+#: picard/ui/options/profiles.py:705
 msgid ""
 "Replacing will completely overwrite the existing profile's settings and "
 "scripts with the imported ones. Any data in the existing profile that is not "
@@ -9058,28 +9111,28 @@ msgstr ""
 "fullständigt med de importerade. Alla data i den befintliga profilen som "
 "inte finns i den importerade filen går förlorade."
 
-#: picard/ui/options/profiles.py:711
+#: picard/ui/options/profiles.py:712
 #, python-format
 msgid "Replace '%s'"
 msgstr "Ersätt ”%s”"
 
-#: picard/ui/options/profiles.py:714
+#: picard/ui/options/profiles.py:715
 msgid "Create new copy"
 msgstr "Skapa en ny kopia"
 
-#: picard/ui/options/profiles.py:773
+#: picard/ui/options/profiles.py:774
 msgid "Import Warnings"
 msgstr "Importvarningar"
 
-#: picard/ui/options/profiles.py:788
+#: picard/ui/options/profiles.py:823
 msgid "Import and Replace Profile"
 msgstr "Importera och ersätt profil"
 
-#: picard/ui/options/profiles.py:805
+#: picard/ui/options/profiles.py:840
 msgid "Replace Profile"
 msgstr "Ersätt profil"
 
-#: picard/ui/options/profiles.py:807
+#: picard/ui/options/profiles.py:842
 #, python-format
 msgid ""
 "This will completely replace profile '%s'. All existing settings and scripts "
@@ -9110,9 +9163,9 @@ msgid ""
 "<br>The top item gets the strongest preference.<br>Unlisted types are "
 "treated neutrally."
 msgstr ""
-"När flera utgåvor matchar en fil får typerna i den här listan högre "
-"poäng.<br>Den översta typen prioriteras högst.<br>Typer som inte finns i "
-"listan behandlas neutralt."
+"När flera utgåvor matchar en fil får typerna i den här listan högre poäng."
+"<br>Den översta typen prioriteras högst.<br>Typer som inte finns i listan "
+"behandlas neutralt."
 
 #: picard/ui/options/releases.py:98
 msgid "Discouraged release types (avoided when matching)"
@@ -10096,7 +10149,7 @@ msgstr "Ta bort skript"
 msgid "Are you sure you want to remove this script?"
 msgstr "Är du säker på att du vill ta bort det här skriptet?"
 
-#: picard/ui/widgets/scripttextedit.py:357
+#: picard/ui/widgets/scripttextedit.py:358
 #, python-format
 msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
@@ -10105,23 +10158,23 @@ msgstr ""
 "<em>Funktionen <code>$%s</code> finns inte.<br><br>Saknas en insticksmodul?</"
 "em>"
 
-#: picard/ui/widgets/scripttextedit.py:428
+#: picard/ui/widgets/scripttextedit.py:427
 msgid "&Word wrap script"
 msgstr "&Radbryt skriptet"
 
-#: picard/ui/widgets/scripttextedit.py:429
+#: picard/ui/widgets/scripttextedit.py:428
 msgid "Word wrap long lines in the editor"
 msgstr "Radbryt långa rader i redigeraren"
 
-#: picard/ui/widgets/scripttextedit.py:431
+#: picard/ui/widgets/scripttextedit.py:430
 msgid "Ctrl+Shift+W"
 msgstr "Ctrl+Shift+W"
 
-#: picard/ui/widgets/scripttextedit.py:437
+#: picard/ui/widgets/scripttextedit.py:436
 msgid "Show help &tooltips"
 msgstr "Visa &hjälptexter"
 
-#: picard/ui/widgets/scripttextedit.py:438
+#: picard/ui/widgets/scripttextedit.py:437
 msgid "Show tooltips for script elements"
 msgstr "Visa hjälptexter för skriptelement"
 
@@ -10272,6 +10325,9 @@ msgstr ""
 "Fel när en webbläsare startades:\n"
 "\n"
 "%s"
+
+#~ msgid "Remove tagger script"
+#~ msgstr "Ta bort taggningsskript"
 
 #, python-brace-format
 #~ msgid ""
