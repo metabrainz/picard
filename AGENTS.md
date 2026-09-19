@@ -330,6 +330,46 @@ class ManifestTranslations:
 - Translations managed via [Weblate](https://translations.metabrainz.org/projects/picard/)
 - See `po/README.md` for details
 
+#### Gotcha: `picard/const/` uses a separate gettext domain
+
+Picard has **four** gettext domains (see `picard/i18n/gettext.py`), not one.
+Strings are extracted per source location, and each domain must be looked up
+with its **own** translation function at runtime:
+
+| Where the string is defined | `N_()`-marked into | Translate at runtime with |
+|---|---|---|
+| Anywhere **except** `picard/const/` | `po/picard.pot` (`main`) | `gettext()` / `_()` |
+| `picard/const/` (e.g. `tags.py`, `scripts.py`, `cover_processing.py`, `languages.py`, `locales.py`, `defaults.py`) | `po/constants/` (`constants`) | `gettext_constants()` |
+| `picard/const/countries.py` (`RELEASE_COUNTRIES`) | `po/countries/` (`countries`) | `gettext_countries()` |
+| `picard/const/attributes.py` (`MB_ATTRIBUTES`) | `po/attributes/` (`attributes`) | `pgettext_attributes()` / `gettext_attributes()` |
+
+`setup.py` deliberately excludes `const` from the main pot and extracts it
+into `po/constants/constants.pot`. So a `const/`-sourced string translated
+with the plain `_()` is looked up in the **wrong** domain, silently misses,
+and renders in English even though a translation exists.
+
+```python
+from picard.i18n import gettext as _
+from picard.i18n import gettext_constants
+
+# TagVar.longdesc / shortdesc, SCRIPTS[...], CoverResizeMode.title,
+# DEFAULT_SCRIPT_NAME, ... all originate in picard/const/
+
+# ❌ Wrong domain — always English, even in fr/de/... UI
+title = _(tagvar.shortdesc)
+name = _(DEFAULT_SCRIPT_NAME)  # or storing the raw N_() string
+
+# ✅ Constants domain
+title = gettext_constants(tagvar.shortdesc)
+name = gettext_constants(DEFAULT_SCRIPT_NAME)
+```
+
+Rule of thumb: **if the string's `N_()` lives in `picard/const/`, translate it
+with `gettext_constants()`** (or the countries/attributes helper). This bug is
+easy to reintroduce — it has recurred across PRs #3453 and #3457 (PICARD-3448).
+When touching translated `const/` strings, verify the msgid resolves against
+`po/constants/*.po` (or `po/countries/`, `po/attributes/`).
+
 ### Qt UI Files
 ```bash
 # ❌ Don't edit picard/ui/ui_*.py directly (auto-generated)
