@@ -723,6 +723,24 @@ class SettingConfigSection(ProfileConfigSection):
             self.settings_override = saved_settings
 
 
+# Options removed from the codebase, purged from existing config files on save
+# (see Config.sync) once the upgrade hooks have run. Unlike the versioned hooks
+# in config_upgrade_hooks.py — which convert old values on load — this removes
+# leftover keys regardless of the config's version (e.g. options that only ever
+# existed during a beta/dev cycle, which a released build never revisits).
+#
+# List only exact core option keys, never plugin/namespaced ones, so a
+# not-yet-migrated plugin's settings can't be removed. Each entry is a
+# (section, name) tuple; removal is a silent no-op when the key is absent.
+OBSOLETE_OPTIONS: tuple[tuple[str, str], ...] = (
+    # release_type_scores was superseded in 3.0.0b8 by preferred_release_types
+    # and discouraged_release_types.
+    ('setting', 'release_type_scores'),
+    # rating_steps was never user-configurable and became a fixed constant.
+    ('setting', 'rating_steps'),
+)
+
+
 class Config(QtCore.QSettings):
     """Main configuration class based on QSettings.
 
@@ -741,6 +759,8 @@ class Config(QtCore.QSettings):
         :meth:`from_file`."""
 
         self.setAtomicSyncRequired(False)  # See comment in event()
+        # Fail-safe gate for the obsolete-options cleaner (see _remove_obsolete_options).
+        self._upgrade_hooks_ran = False
         self.application: ConfigSection = ConfigSection(self, 'application')
         self.profiles: ConfigSection = ConfigSection(self, 'profiles')
         self.setting: SettingConfigSection = SettingConfigSection(self, 'setting')
@@ -791,6 +811,16 @@ class Config(QtCore.QSettings):
         return this
 
     def run_upgrade_hooks(self, hooks):
+        """Executes passed hooks to upgrade config version to the latest.
+
+        Enables the obsolete-options cleaner only on success: if a hook raises,
+        _upgrade_hooks_ran stays False and no purge happens.
+        """
+        self._run_upgrade_hooks(hooks)
+        self._upgrade_hooks_ran = True
+        self.sync()  # purge obsolete options now that the config is migrated
+
+    def _run_upgrade_hooks(self, hooks):
         """Executes passed hooks to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
@@ -858,6 +888,26 @@ class Config(QtCore.QSettings):
         self._version = new_version
         self.application['version'] = str(self._version)
         self.sync()
+
+    def _remove_obsolete_options(self):
+        """Purge OBSOLETE_OPTIONS keys, but only once upgrades have run.
+
+        No-op until _upgrade_hooks_ran is True, so a sync before or during
+        migration never removes an option a hook may still need. Uses raw
+        QSettings keys, so it works even before __initialize().
+        """
+        if not getattr(self, '_upgrade_hooks_ran', False):
+            return
+        for section, name in OBSOLETE_OPTIONS:
+            key = '%s/%s' % (section, name)
+            if self.contains(key):
+                log.debug("Removing obsolete config option %s", key)
+                self.remove(key)
+
+    def sync(self):
+        """Write to disk, first purging obsolete options (see _remove_obsolete_options)."""
+        self._remove_obsolete_options()
+        super().sync()
 
     def _versioned_config_filename(self, version=None):
         if not version:
