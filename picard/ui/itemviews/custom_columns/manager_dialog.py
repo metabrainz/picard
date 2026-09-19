@@ -143,7 +143,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         self._title = QtWidgets.QLineEdit(self._editor_panel)
         # Set "New Custom Column" as ALWAYS the placeholder
-        self._title.setPlaceholderText(DEFAULT_NEW_COLUMN_NAME)
+        self._title.setPlaceholderText(_(DEFAULT_NEW_COLUMN_NAME))
         self._expression = ScriptTextEdit(self._editor_panel)
         self._expression.setPlaceholderText("%artist% - %title%")
         self._width = QtWidgets.QSpinBox(self._editor_panel)

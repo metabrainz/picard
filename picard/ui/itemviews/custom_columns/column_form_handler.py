@@ -27,6 +27,8 @@ from contextlib import suppress
 
 from PyQt6 import QtWidgets
 
+from picard.i18n import gettext as _
+
 from picard.ui.itemviews.custom_columns.shared import (
     ALIGN_LEFT_NAME,
     DEFAULT_ADD_TO,
@@ -148,7 +150,7 @@ class ColumnFormHandler:
         """
         self.set_enabled(True)
         self._title_input.clear()
-        self._title_input.setText(DEFAULT_NEW_COLUMN_NAME)
+        self._title_input.setText(_(DEFAULT_NEW_COLUMN_NAME))
         self._title_input.setFocus()
         self._expression_input.setPlainText("")
         self._width_input.setValue(default_width)
