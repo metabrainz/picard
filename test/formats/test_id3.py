@@ -253,6 +253,11 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_always_read_grp1(self):
+            # File written with the iTunes-compatible option enabled has both a
+            # GRP1 frame (grouping) and a TIT1 frame (work). When such a file is
+            # read back with the option disabled, the presence of GRP1 marks it
+            # as using the modern iTunes convention, so TIT1 must be read as work
+            # (not grouping) and neither value is lost or duplicated.
             metadata = self.itunes_grouping_metadata
 
             config.setting['itunes_compatible_grouping'] = True
@@ -260,9 +265,27 @@ class CommonId3Tests:
             config.setting['itunes_compatible_grouping'] = False
             loaded_metadata = load_metadata(self.format_registry, self.filename)
 
-            self.assertIn(metadata['grouping'], loaded_metadata['grouping'])
-            self.assertIn(metadata['work'], loaded_metadata['grouping'])
-            self.assertEqual(loaded_metadata['work'], '')
+            self.assertEqual(loaded_metadata['grouping'], metadata['grouping'])
+            self.assertEqual(loaded_metadata['work'], metadata['work'])
+
+        @skipUnlessTestfile
+        def test_read_modern_itunes_grp1_and_tit1(self):
+            # A file tagged by modern iTunes stores grouping in GRP1 and work in
+            # TIT1. With the option disabled (default), TIT1 would normally be
+            # read as grouping, but the presence of GRP1 disambiguates the layout
+            # so TIT1 is read as work instead.
+            grouping = 'The Grouping'
+            work = 'The Work'
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.GRP1(encoding=3, text=[grouping]))
+            tags.add(mutagen.id3.TIT1(encoding=3, text=[work]))
+            save_raw(self.filename, tags)
+
+            config.setting['itunes_compatible_grouping'] = False
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
+
+            self.assertEqual(loaded_metadata['grouping'], grouping)
+            self.assertEqual(loaded_metadata['work'], work)
 
         @skipUnlessTestfile
         def test_always_read_txxx_work(self):
