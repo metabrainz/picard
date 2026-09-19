@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-18 22:25+0200\n"
-"PO-Revision-Date: 2026-09-17 17:36+0000\n"
+"PO-Revision-Date: 2026-09-19 12:25+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -4213,10 +4213,8 @@ msgid "Green: %s."
 msgstr "Vert : %s."
 
 #: picard/ui/profile_tagger_scripts_dialog.py:54
-#, fuzzy
-#| msgid "Enable Tagger Script(s)"
 msgid "Enable Tagger Scripts?"
-msgstr "Activer le(s) script(s) de balisage"
+msgstr "Activer les scripts de balisage ?"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:61
 #, python-format
@@ -4228,12 +4226,16 @@ msgid ""
 "Uncheck any script you do not want to run, or cancel to import the scripts "
 "without enabling tagger scripting."
 msgstr ""
+"Le profil importé « %s » contient des scripts de balisage. Le balisage par "
+"script est actuellement désactivé pour ce profil.\n"
+"\n"
+"L’activer exécutera les scripts cochés lorsque ce profil est actif. Décochez "
+"tout script que vous ne voulez pas exécuter, ou annulez pour importer les "
+"scripts sans activer le balisage par script."
 
 #: picard/ui/profile_tagger_scripts_dialog.py:90
-#, fuzzy
-#| msgid "E&xit without saving"
 msgid "Import without enabling"
-msgstr "Sortir sans sau&ver"
+msgstr "Importer sans activer"
 
 #: picard/ui/ratingwidget.py:98
 #, python-format
@@ -4523,6 +4525,14 @@ msgid ""
 "\n"
 "Useful if your player or file system does not handle these characters well."
 msgstr ""
+"Remplacer la ponctuation typographique Unicode par ses équivalents ASCII "
+"simples dans les balises — principalement, les apostrophes courbes (’) "
+"deviennent des apostrophes droites ('). Les guillemets doubles courbes (“ et "
+"”) deviennent des guillemets droits (\"), et les tirets (—) deviennent des "
+"traits d’union (-).\n"
+"\n"
+"Utile si votre lecteur ou votre système de fichiers ne gère pas bien ces "
+"caractères."
 
 #: picard/ui/setupwizard.py:472
 msgid "You can change this later under Options → Options → Metadata."
@@ -4870,10 +4880,8 @@ msgid "Categories"
 msgstr "Catégories"
 
 #: picard/ui/dialogs/installplugin.py:141
-#, fuzzy
-#| msgid "Double-click to view detailed plugin information"
 msgid "Double-click a plugin for detailed information."
-msgstr "Double-cliquez pour afficher les informations détaillées du greffon"
+msgstr "Double-cliquez sur un greffon pour obtenir des informations détaillées."
 
 #: picard/ui/dialogs/installplugin.py:144
 msgid "Registry"
@@ -6339,10 +6347,8 @@ msgid "Add new tagger script"
 msgstr "Ajouter un nouveau script de balisage"
 
 #: picard/ui/forms/ui_options_script.py:131
-#, fuzzy
-#| msgid "Add…"
 msgid "Add"
-msgstr "Ajouter…"
+msgstr "Ajouter"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
@@ -8421,16 +8427,14 @@ msgid "Some settings on this page are overridden by %s"
 msgstr "Certains réglages sur cette page sont remplacés par %s"
 
 #: picard/ui/options/dialog.py:791
-#, fuzzy, python-format
-#| msgid "The highlighted settings on this page are overridden by %s"
+#, python-format
 msgid "The highlighted settings on this page are tracked by %s"
-msgstr "Les réglages en surbrillance sur cette page sont remplacés par %s"
+msgstr "Les réglages en surbrillance sur cette page sont suivis par %s"
 
 #: picard/ui/options/dialog.py:793
-#, fuzzy, python-format
-#| msgid "Some settings on this page are overridden by %s"
+#, python-format
 msgid "Some settings on this page are tracked by %s"
-msgstr "Certains réglages sur cette page sont remplacés par %s"
+msgstr "Certains réglages sur cette page sont suivis par %s"
 
 #: picard/ui/options/dialog.py:972
 msgid "Unexpected error"
