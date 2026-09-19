@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-18 22:25+0200\n"
+"POT-Creation-Date: 2026-09-19 14:24+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
@@ -100,11 +100,11 @@ msgstr[0] "\"%(name)s\" 컬렉션에서 %(count)i 개의 릴리즈가 제거됨"
 msgid "Error loading collections: %(error)s"
 msgstr "컬렉션 로드 오류: %(error)s"
 
-#: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
+#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
 msgid "Various Artists file naming scheme removal"
 msgstr "알 수 없는 아티스트 파일 명명 규칙 제거"
 
-#: picard/config_upgrade_hooks.py:165
+#: picard/config_upgrade_hooks.py:173
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -115,7 +115,7 @@ msgstr ""
 "제거되었습니다.\n"
 "파일 명명 규칙이 단일 아티스트 앨범의 명명 규칙으로 자동 병합됩니다."
 
-#: picard/config_upgrade_hooks.py:183
+#: picard/config_upgrade_hooks.py:191
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -129,11 +129,11 @@ msgstr ""
 "현재 이 옵션을 사용하지 않지만, 별도 파일 명명 규칙이 정의되어 있습니다.\n"
 "단일 아티스트 앨범의 파일 명명 규칙과 병합하거나 제거하시겠습니까?"
 
-#: picard/config_upgrade_hooks.py:192
+#: picard/config_upgrade_hooks.py:200
 msgid "Merge"
 msgstr "병합"
 
-#: picard/config_upgrade_hooks.py:193
+#: picard/config_upgrade_hooks.py:201
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
@@ -141,7 +141,7 @@ msgstr "병합"
 msgid "Remove"
 msgstr "제거"
 
-#: picard/config_upgrade_hooks.py:529
+#: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
 msgstr "초기 파일 이름 생성 스크립트"
 
@@ -3197,32 +3197,36 @@ msgid "multi-value variable"
 msgstr ""
 
 #: picard/tags/tagvar.py:79
-msgid "preserved read-only"
+msgid "read-only"
 msgstr ""
 
 #: picard/tags/tagvar.py:80
+msgid "preserved"
+msgstr ""
+
+#: picard/tags/tagvar.py:81
 #, fuzzy
 #| msgid "Rename script"
 msgid "not for use in scripts"
 msgstr "스크립트 이름 변경"
 
-#: picard/tags/tagvar.py:81
+#: picard/tags/tagvar.py:82
 msgid "calculated"
 msgstr ""
 
-#: picard/tags/tagvar.py:82
+#: picard/tags/tagvar.py:83
 msgid "info from audio file"
 msgstr ""
 
-#: picard/tags/tagvar.py:83
+#: picard/tags/tagvar.py:84
 msgid "not provided from MusicBrainz data"
 msgstr ""
 
-#: picard/tags/tagvar.py:84
+#: picard/tags/tagvar.py:85
 msgid "not populated by stock Picard"
 msgstr ""
 
-#: picard/tags/tagvar.py:324
+#: picard/tags/tagvar.py:340
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr ""

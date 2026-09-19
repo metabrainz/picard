@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-18 22:25+0200\n"
+"POT-Creation-Date: 2026-09-19 14:24+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
@@ -99,11 +99,11 @@ msgstr[1] "Elimináronse %(count)i lanzamentos da colección \"%(name)s\""
 msgid "Error loading collections: %(error)s"
 msgstr "Erro ao cargar as coleccións: %(error)s"
 
-#: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
+#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
 msgid "Various Artists file naming scheme removal"
 msgstr "Eliminación do esquema de nomeado de ficheiros de Artistas Varios"
 
-#: picard/config_upgrade_hooks.py:165
+#: picard/config_upgrade_hooks.py:173
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -115,7 +115,7 @@ msgstr ""
 "O teu esquema de nomeado de ficheiros foi automaticamente combinado co de "
 "álbums de artista único."
 
-#: picard/config_upgrade_hooks.py:183
+#: picard/config_upgrade_hooks.py:191
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -131,11 +131,11 @@ msgstr ""
 "Queres eliminalo ou combinálo co teu esquema de nomeado de ficheiros para "
 "álbums de artista único?"
 
-#: picard/config_upgrade_hooks.py:192
+#: picard/config_upgrade_hooks.py:200
 msgid "Merge"
 msgstr "Combinar"
 
-#: picard/config_upgrade_hooks.py:193
+#: picard/config_upgrade_hooks.py:201
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
@@ -143,7 +143,7 @@ msgstr "Combinar"
 msgid "Remove"
 msgstr "Borrar"
 
-#: picard/config_upgrade_hooks.py:529
+#: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
 msgstr "Script principal de nomeado de ficheiros"
 
@@ -4926,30 +4926,38 @@ msgid "multi-value variable"
 msgstr "variable con múltiples valores"
 
 #: picard/tags/tagvar.py:79
-msgid "preserved read-only"
+#, fuzzy
+#| msgid "preserved read-only"
+msgid "read-only"
 msgstr "preservado só de lectura"
 
 #: picard/tags/tagvar.py:80
+#, fuzzy
+#| msgid "preserved read-only"
+msgid "preserved"
+msgstr "preservado só de lectura"
+
+#: picard/tags/tagvar.py:81
 msgid "not for use in scripts"
 msgstr "non para uso en scripts"
 
-#: picard/tags/tagvar.py:81
+#: picard/tags/tagvar.py:82
 msgid "calculated"
 msgstr "calculado"
 
-#: picard/tags/tagvar.py:82
+#: picard/tags/tagvar.py:83
 msgid "info from audio file"
 msgstr "información do ficheiro de audio"
 
-#: picard/tags/tagvar.py:83
+#: picard/tags/tagvar.py:84
 msgid "not provided from MusicBrainz data"
 msgstr "non fornecido polos datos de MusicBrainz"
 
-#: picard/tags/tagvar.py:84
+#: picard/tags/tagvar.py:85
 msgid "not populated by stock Picard"
 msgstr "non cuberto polo Picard predeterminado"
 
-#: picard/tags/tagvar.py:324
+#: picard/tags/tagvar.py:340
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"

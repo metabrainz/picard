@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-18 22:25+0200\n"
+"POT-Creation-Date: 2026-09-19 14:24+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
@@ -110,11 +110,11 @@ msgstr[1] "Poistettiin %(count)i julkaisua kokoelmasta \"%(name)s\""
 msgid "Error loading collections: %(error)s"
 msgstr "Virhe ladattaessa kokoelmia: %(error)s"
 
-#: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
+#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
 msgid "Various Artists file naming scheme removal"
 msgstr "Tiedostojen nimeämissäännön poisto useiden artistien julkaisuille"
 
-#: picard/config_upgrade_hooks.py:165
+#: picard/config_upgrade_hooks.py:173
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -126,7 +126,7 @@ msgstr ""
 "Nykyinen nimeämissääntö on yhdistetty automaattisesti yksittäisten artistien "
 "julkaisujen sääntöön."
 
-#: picard/config_upgrade_hooks.py:183
+#: picard/config_upgrade_hooks.py:191
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -141,11 +141,11 @@ msgstr ""
 "Poistetaanko se, vai yhdistetäänkö yksittäisten artistien julkaisujen "
 "sääntöön?"
 
-#: picard/config_upgrade_hooks.py:192
+#: picard/config_upgrade_hooks.py:200
 msgid "Merge"
 msgstr "Yhdistä"
 
-#: picard/config_upgrade_hooks.py:193
+#: picard/config_upgrade_hooks.py:201
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
@@ -153,7 +153,7 @@ msgstr "Yhdistä"
 msgid "Remove"
 msgstr "Poista"
 
-#: picard/config_upgrade_hooks.py:529
+#: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
 msgstr "Ensisijainen tiedostonnimeämiskomentosarja"
 
@@ -4771,34 +4771,38 @@ msgid "multi-value variable"
 msgstr ""
 
 #: picard/tags/tagvar.py:79
-msgid "preserved read-only"
+msgid "read-only"
 msgstr ""
 
 #: picard/tags/tagvar.py:80
+msgid "preserved"
+msgstr ""
+
+#: picard/tags/tagvar.py:81
 #, fuzzy
 #| msgid "Rename script"
 msgid "not for use in scripts"
 msgstr "Nimeä komentosarja uudelleen"
 
-#: picard/tags/tagvar.py:81
+#: picard/tags/tagvar.py:82
 msgid "calculated"
 msgstr ""
 
-#: picard/tags/tagvar.py:82
+#: picard/tags/tagvar.py:83
 msgid "info from audio file"
 msgstr ""
 
-#: picard/tags/tagvar.py:83
+#: picard/tags/tagvar.py:84
 #, fuzzy
 #| msgid "Use genres from MusicBrainz"
 msgid "not provided from MusicBrainz data"
 msgstr "Käytä MusicBrainzin tyylilajeja"
 
-#: picard/tags/tagvar.py:84
+#: picard/tags/tagvar.py:85
 msgid "not populated by stock Picard"
 msgstr ""
 
-#: picard/tags/tagvar.py:324
+#: picard/tags/tagvar.py:340
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr ""

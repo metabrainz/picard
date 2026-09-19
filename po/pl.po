@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-18 22:25+0200\n"
+"POT-Creation-Date: 2026-09-19 14:24+0200\n"
 "PO-Revision-Date: 2026-08-09 10:07+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -119,11 +119,11 @@ msgstr[3] "Usunięto %(count)i wydań z kolekcji \"%(name)s\""
 msgid "Error loading collections: %(error)s"
 msgstr "Błąd podczas ładowania kolekcji: %(error)s"
 
-#: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
+#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
 msgid "Various Artists file naming scheme removal"
 msgstr "Usuwanie schematu nazewnictwa dla Różnych Wykonawców"
 
-#: picard/config_upgrade_hooks.py:165
+#: picard/config_upgrade_hooks.py:173
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -135,7 +135,7 @@ msgstr ""
 "Twój stary schemat został scalony ze schematem dla wydań pojedynczych "
 "wykonawców."
 
-#: picard/config_upgrade_hooks.py:183
+#: picard/config_upgrade_hooks.py:191
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -150,11 +150,11 @@ msgstr ""
 "Chcesz ją usunąć czy też wolisz scalić ze schematem dla wydań pojedynczych "
 "wykonawców?"
 
-#: picard/config_upgrade_hooks.py:192
+#: picard/config_upgrade_hooks.py:200
 msgid "Merge"
 msgstr "Scal"
 
-#: picard/config_upgrade_hooks.py:193
+#: picard/config_upgrade_hooks.py:201
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
@@ -162,7 +162,7 @@ msgstr "Scal"
 msgid "Remove"
 msgstr "Usuń"
 
-#: picard/config_upgrade_hooks.py:529
+#: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
 msgstr "Główny skrypt nazywania plików"
 
@@ -4840,30 +4840,38 @@ msgid "multi-value variable"
 msgstr "zmienna wielowartościowa"
 
 #: picard/tags/tagvar.py:79
-msgid "preserved read-only"
+#, fuzzy
+#| msgid "preserved read-only"
+msgid "read-only"
 msgstr "zachowane tylko do odczytu"
 
 #: picard/tags/tagvar.py:80
+#, fuzzy
+#| msgid "preserved read-only"
+msgid "preserved"
+msgstr "zachowane tylko do odczytu"
+
+#: picard/tags/tagvar.py:81
 msgid "not for use in scripts"
 msgstr "nie do użytku w skryptach"
 
-#: picard/tags/tagvar.py:81
+#: picard/tags/tagvar.py:82
 msgid "calculated"
 msgstr "obliczony"
 
-#: picard/tags/tagvar.py:82
+#: picard/tags/tagvar.py:83
 msgid "info from audio file"
 msgstr "informacje z pliku audio"
 
-#: picard/tags/tagvar.py:83
+#: picard/tags/tagvar.py:84
 msgid "not provided from MusicBrainz data"
 msgstr "dane spoza MusicBrainz"
 
-#: picard/tags/tagvar.py:84
+#: picard/tags/tagvar.py:85
 msgid "not populated by stock Picard"
 msgstr "niekopiowane przez Picard-a"
 
-#: picard/tags/tagvar.py:324
+#: picard/tags/tagvar.py:340
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"

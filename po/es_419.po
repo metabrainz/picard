@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-18 22:25+0200\n"
+"POT-Creation-Date: 2026-09-19 14:24+0200\n"
 "PO-Revision-Date: 2026-09-16 07:13+0000\n"
 "Last-Translator: MichTheOcelot <mich352@dondohub.com>\n"
 "Language-Team: Spanish (Latin America) <https://translations.metabrainz.org/"
@@ -97,11 +97,11 @@ msgstr[1] "Eliminadas %(count)i publicaciónes de la colección \"%(name)s\""
 msgid "Error loading collections: %(error)s"
 msgstr "Error al cargar las colecciones: %(error)s"
 
-#: picard/config_upgrade_hooks.py:163 picard/config_upgrade_hooks.py:180
+#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
 msgid "Various Artists file naming scheme removal"
 msgstr "Borrado del método de nombrado de archivos de múltiples artistas"
 
-#: picard/config_upgrade_hooks.py:165
+#: picard/config_upgrade_hooks.py:173
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -113,7 +113,7 @@ msgstr ""
 "Su método de nombrado ha sido combinado automáticamente con el de álbumes de "
 "un solo artista."
 
-#: picard/config_upgrade_hooks.py:183
+#: picard/config_upgrade_hooks.py:191
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -128,11 +128,11 @@ msgstr ""
 "caso. \n"
 "¿Desea eliminarlo o combinarlo con el método para álbumes de un solo artista?"
 
-#: picard/config_upgrade_hooks.py:192
+#: picard/config_upgrade_hooks.py:200
 msgid "Merge"
 msgstr "Combinar"
 
-#: picard/config_upgrade_hooks.py:193
+#: picard/config_upgrade_hooks.py:201
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox/__init__.py:722
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
@@ -140,7 +140,7 @@ msgstr "Combinar"
 msgid "Remove"
 msgstr "Eliminar"
 
-#: picard/config_upgrade_hooks.py:529
+#: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
 msgstr ""
 
@@ -3046,30 +3046,34 @@ msgid "multi-value variable"
 msgstr ""
 
 #: picard/tags/tagvar.py:79
-msgid "preserved read-only"
+msgid "read-only"
 msgstr ""
 
 #: picard/tags/tagvar.py:80
-msgid "not for use in scripts"
+msgid "preserved"
 msgstr ""
 
 #: picard/tags/tagvar.py:81
-msgid "calculated"
+msgid "not for use in scripts"
 msgstr ""
 
 #: picard/tags/tagvar.py:82
-msgid "info from audio file"
+msgid "calculated"
 msgstr ""
 
 #: picard/tags/tagvar.py:83
-msgid "not provided from MusicBrainz data"
+msgid "info from audio file"
 msgstr ""
 
 #: picard/tags/tagvar.py:84
+msgid "not provided from MusicBrainz data"
+msgstr ""
+
+#: picard/tags/tagvar.py:85
 msgid "not populated by stock Picard"
 msgstr ""
 
-#: picard/tags/tagvar.py:324
+#: picard/tags/tagvar.py:340
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr ""
