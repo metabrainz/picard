@@ -20,7 +20,7 @@ repos:
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.39
+    rev: v0.9.40
     hooks:
       - id: pymarkdown
   - repo: https://github.com/astral-sh/uv-pre-commit

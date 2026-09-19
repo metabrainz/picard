@@ -65,6 +65,9 @@ uv pip install -e .
 picard
 ```
 
+> **Running from source** (`python tagger.py`) instead of installing? Also run
+> `python setup.py build_locales` so translations appear — see [po/README.md](po/README.md).
+
 For development workflow, testing, code quality tools, and more details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Method 2: Using pip
@@ -98,7 +101,8 @@ source .venv/bin/activate
 pip install -r requirements.txt -r requirements-build.txt -r requirements-dev.txt
 
 # Build and run
-python3 setup.py build          # Compiles translations and prepares build files
+python3 setup.py build          # Prepares build files (compiles translations into build/ for packaging)
+python3 setup.py build_locales  # Compiles translations into the source tree (needed to run from source)
 python3 setup.py build_ext -i   # Builds C extensions in-place for development
 python3 tagger.py
 ```

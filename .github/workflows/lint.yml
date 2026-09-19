@@ -46,17 +46,20 @@ jobs:
         id: changes
         uses: dorny/paths-filter@v4
         with:
+          list-files: shell
           filters: |
             src:
               - '.github/workflows/lint.yml'
-              - 'pyproject.toml'
+              - '.pre-commit-config.yaml'
               - '**/*.md'
-      - name: Install pymarkdownlnt
+            md:
+              - '**/*.md'
+      - name: Install uv
         if: steps.changes.outputs.src == 'true'
-        run: pip install pymarkdownlnt
-      - name: Run pymarkdownlnt
-        if: steps.changes.outputs.src == 'true'
-        run: pymarkdownlnt scan -r .
+        uses: astral-sh/setup-uv@v10.0.1
+      - name: Run pymarkdown
+        if: steps.changes.outputs.md == 'true'
+        run: uvx pre-commit run pymarkdown --files ${{ steps.changes.outputs.md_files }}
 
   check-keys:
     runs-on: ubuntu-latest

@@ -84,12 +84,15 @@ source .venv/bin/activate  # macOS/Linux
 uv sync
 
 # Build the project
-python setup.py build          # Compiles translations and prepares build files
+python setup.py build          # Prepares build files (compiles translations into build/ for packaging)
 python setup.py build_ext -i   # Builds C extensions in-place for development
 
 # Install in editable mode
 uv pip install -e .
 ```
+
+> **Running from source** (`python ./tagger.py`) instead of installing? Also run
+> `python setup.py build_locales` so translations appear — see [po/README.md](po/README.md).
 
 ### 4. Run Picard
 
@@ -167,7 +170,7 @@ pip install -r requirements-build.txt
 pip install -r requirements-dev.txt
 
 # Build and install
-python setup.py build          # Compiles translations and prepares build files
+python setup.py build          # Prepares build files (compiles translations into build/ for packaging)
 python setup.py build_ext -i   # Builds C extensions in-place for development
 pip install -e .
 ```
