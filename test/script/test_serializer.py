@@ -59,6 +59,26 @@ class ScriptSerializerTest(PicardTestCase):
             {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"},
         )
 
+    def test_default_title_uses_constants_domain(self):
+        # Regression test: when no title is given, the default script name is
+        # defined in picard/const/ and must be translated via the
+        # "picard-constants" gettext domain, not stored raw.
+        with patch("picard.script.serializer.gettext_constants", return_value='Titre traduit') as mock_constants:
+            test_script = ScriptSerializer(script='Script text')
+        mock_constants.assert_called_once()
+        self.assertEqual(test_script.title, 'Titre traduit')
+
+    def test_default_title_translated_for_subclass(self):
+        with patch("picard.script.serializer.gettext_constants", return_value='Titre traduit'):
+            test_script = FileNamingScriptInfo(script='Script text')
+        self.assertEqual(test_script.title, 'Titre traduit')
+
+    def test_explicit_title_not_translated(self):
+        # An explicitly provided title must be used verbatim.
+        with patch("picard.script.serializer.gettext_constants", return_value='Titre traduit'):
+            test_script = ScriptSerializer(title='My own title', script='Script text')
+        self.assertEqual(test_script.title, 'My own title')
+
     def test_script_object_2(self):
         # Check updating values directly so as not to modify `last_updated`.
         test_script = ScriptSerializer(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26')
