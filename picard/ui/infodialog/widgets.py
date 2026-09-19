@@ -35,7 +35,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui.util import (
     apply_removal_overlay,
@@ -102,9 +105,10 @@ class ArtworkTable(QtWidgets.QTableWidget):
         v_header = self.verticalHeader()
         v_header.setDefaultSectionSize(self.V_SIZE)
 
-        self.setHorizontalHeaderLabels(self._labels)
+        self.setHorizontalHeaderLabels([_(label) for label in self._labels])
         for colname, index in self._columns.items():
-            self.horizontalHeaderItem(index).setToolTip(self._tooltips.get(colname, None))
+            tooltip = self._tooltips.get(colname, None)
+            self.horizontalHeaderItem(index).setToolTip(_(tooltip) if tooltip else None)
 
     def get_column_index(self, name):
         return self._columns[name]
@@ -130,13 +134,13 @@ class ArtworkTableNew(ArtworkTableSimple):
         'external',
     )
     _labels = (
-        _("Type"),
-        _("New Embedded"),
-        _("New Exported"),
+        N_("Type"),
+        N_("New Embedded"),
+        N_("New Exported"),
     )
     _tooltips: ClassVar[dict[str, str]] = {
-        'new': _("New cover art embedded into tags"),
-        'external': _("New cover art saved as a separate file"),
+        'new': N_("New cover art embedded into tags"),
+        'external': N_("New cover art saved as a separate file"),
     }
 
 
@@ -149,9 +153,9 @@ class ArtworkTableOriginal(ArtworkTableSimple):
     }
 
     artwork_columns = ('new',)
-    _labels = (_("Type"), _("Existing Cover"))
+    _labels = (N_("Type"), N_("Existing Cover"))
     _tooltips: ClassVar[dict[str, str]] = {
-        'new': _("Existing cover art already embedded into tags"),
+        'new': N_("Existing cover art already embedded into tags"),
     }
 
 
@@ -171,13 +175,13 @@ class ArtworkTableExisting(ArtworkTable):
         'external',
     )
     _labels = (
-        _("Existing Cover"),
-        _("Type"),
-        _("New Embedded"),
-        _("New Exported"),
+        N_("Existing Cover"),
+        N_("Type"),
+        N_("New Embedded"),
+        N_("New Exported"),
     )
     _tooltips: ClassVar[dict[str, str]] = {
-        'orig': _("Existing cover art already embedded into tags"),
-        'new': _("New cover art embedded into tags"),
-        'external': _("New cover art saved as a separate file"),
+        'orig': N_("Existing cover art already embedded into tags"),
+        'new': N_("New cover art embedded into tags"),
+        'external': N_("New cover art saved as a separate file"),
     }
