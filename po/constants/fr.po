@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-09-18 18:13+0000\n"
+"PO-Revision-Date: 2026-09-19 16:32+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "constants/fr/>\n"
@@ -4355,6 +4355,9 @@ msgid ""
 "This hidden variable is retained for backward compatibility with existing "
 "scripts. It is never written to files; use the \"albumartists\" tag instead."
 msgstr ""
+"Cette variable cachée est conservée pour des raisons de compatibilité avec "
+"les scripts existants. Elle n'est jamais écrite dans les fichiers ; utilisez "
+"plutôt la balise « albumartists »."
 
 #: picard/const/tags.py:106
 msgid "Album Artists Countries"
@@ -4378,38 +4381,33 @@ msgid ""
 "are two other credited artists from Canada, the value would be \"GB; CA; "
 "CA\"."
 msgstr ""
+"Par exemple, si le premier artiste crédité vient de Grande-Bretagne et que "
+"deux autres artistes crédités viennent du Canada, la valeur serait « GB; CA; "
+"CA »."
 
 #: picard/const/tags.py:123
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artists Comments"
-msgstr "Pays des artistes de l’album"
+msgstr "Commentaires des artistes de l’album"
 
 #: picard/const/tags.py:125
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comments for all of the credited album artists, in the "
 "same order as the artists."
 msgstr ""
-"Le commentaire de désambiguïsation de l’enregistrement associé à une piste."
+"Les commentaires de désambiguïsation de tous les artistes crédités de "
+"l’album, dans le même ordre que les artistes."
 
 #: picard/const/tags.py:133
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artist Comment"
-msgstr "Pays des artistes de l’album"
+msgstr "Commentaire de l’artiste de l’album"
 
 #: picard/const/tags.py:135
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comment for the album artist. This is only set if there "
 "is a single album artist."
 msgstr ""
-"Le commentaire de désambiguïsation de l’enregistrement associé à une piste."
+"Le commentaire de désambiguïsation de l’artiste de l’album. Il n’est défini "
+"que s’il y a un seul artiste de l’album."
 
 #: picard/const/tags.py:142
 msgid "Album Artist Sort Order"
@@ -4507,36 +4505,28 @@ msgstr ""
 "service web, le code « XX » sera utilisé pour indiquer un pays inconnu."
 
 #: picard/const/tags.py:212
-#, fuzzy
-#| msgid "Artists Countries"
 msgid "Artists Comments"
-msgstr "Pays des artistes"
+msgstr "Commentaires des artistes"
 
 #: picard/const/tags.py:214
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comments for all of the credited track artists, in the "
 "same order as the artists."
 msgstr ""
-"Le commentaire de désambiguïsation de l’enregistrement associé à une piste."
+"Les commentaires de désambiguïsation de tous les artistes crédités de la "
+"piste, dans le même ordre que les artistes."
 
 #: picard/const/tags.py:222
-#, fuzzy
-#| msgid "RG Series Comment"
 msgid "Artist Comment"
-msgstr "Commentaire des séries du GP"
+msgstr "Commentaire de l’artiste"
 
 #: picard/const/tags.py:224
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comment for the track artist. This is only set if there "
 "is a single track artist."
 msgstr ""
-"Le commentaire de désambiguïsation de l’enregistrement associé à une piste."
+"Le commentaire de désambiguïsation de l’artiste de la piste. Il n’est défini "
+"que s’il y a un seul artiste de la piste."
 
 #: picard/const/tags.py:231
 msgid "Artist Sort Order"
@@ -4873,12 +4863,14 @@ msgstr "Taille du fichier en octets."
 
 #: picard/const/tags.py:510
 msgid "MusicBrainz folksonomy tags"
-msgstr ""
+msgstr "Tags folksonomiques MusicBrainz"
 
 #: picard/const/tags.py:511
 msgid ""
 "Unfiltered list of all non-genre folksonomy tags loaded from MusicBrainz."
 msgstr ""
+"Liste non filtrée de tous les tags folksonomiques (hors genres) chargés "
+"depuis MusicBrainz."
 
 #: picard/const/tags.py:520
 msgid "File Format"
@@ -4910,13 +4902,11 @@ msgstr "Les informations de genre spécifiées depuis MusicBrainz."
 
 #: picard/const/tags.py:544
 msgid "Unfiltered MusicBrainz genres"
-msgstr ""
+msgstr "Genres MusicBrainz non filtrés"
 
 #: picard/const/tags.py:545
-#, fuzzy
-#| msgid "The specified genre information from MusicBrainz."
 msgid "Unfiltered list of all genres loaded from MusicBrainz."
-msgstr "Les informations de genre spécifiées depuis MusicBrainz."
+msgstr "Liste non filtrée de tous les genres chargés depuis MusicBrainz."
 
 #: picard/const/tags.py:555
 msgid "Grouping"
@@ -4942,13 +4932,15 @@ msgstr ""
 
 #: picard/const/tags.py:571
 msgid "iTunes CDDB 1"
-msgstr ""
+msgstr "iTunes CDDB 1"
 
 #: picard/const/tags.py:573
 msgid ""
 "An iTunes-specific tag containing a code that uniquely identifies a CD based "
 "on the number of tracks and their lengths."
 msgstr ""
+"Un tag spécifique à iTunes contenant un code qui identifie de manière unique "
+"un CD en fonction du nombre de pistes et de leur durée."
 
 #: picard/const/tags.py:580
 msgid "Key"
@@ -5224,16 +5216,12 @@ msgstr ""
 "L’identifiant MusicBrainz (MBID) de l’œuvre si une œuvre associée existe."
 
 #: picard/const/tags.py:769
-#, fuzzy
-#| msgid "Composer"
 msgid "Composer MBID"
-msgstr "Compositeur"
+msgstr "MBID du compositeur"
 
 #: picard/const/tags.py:770
-#, fuzzy
-#| msgid "The MusicBrainz Identifier (MBID) for the recording."
 msgid "The MusicBrainz Identifier (MBID) for the composer(s)."
-msgstr "L’identifiant MusicBrainz (MBID) de l’enregistrement."
+msgstr "L’identifiant MusicBrainz (MBID) du ou des compositeurs."
 
 #: picard/const/tags.py:775
 msgid "MusicIP Fingerprint"
@@ -6032,10 +6020,8 @@ msgstr "Les noms de tri des auteurs de l’œuvre."
 
 #: picard/const/tags.py:1352
 msgid "Broadcast Date"
-msgstr ""
+msgstr "Date de diffusion"
 
 #: picard/const/tags.py:1353
-#, fuzzy
-#| msgid "The associated URL if the recording is a podcast."
 msgid "The date the recording was broadcast."
-msgstr "L’URL associée si l’enregistrement est un podcast."
+msgstr "La date à laquelle l’enregistrement a été diffusé."
