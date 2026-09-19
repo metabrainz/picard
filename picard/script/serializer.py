@@ -42,6 +42,7 @@ from picard.const.defaults import DEFAULT_SCRIPT_NAME
 from picard.i18n import (
     N_,
     gettext as _,
+    gettext_constants,
 )
 from picard.util import (
     make_filename_from_title,
@@ -115,7 +116,7 @@ class ScriptSerializer:
             id (str): ID code for the script. Defaults to a system generated uuid.
             last_updated (str): The UTC date and time when the script was last updated. Defaults to current date/time.
         """
-        self.title = title if title else DEFAULT_SCRIPT_NAME
+        self.title = title if title else gettext_constants(DEFAULT_SCRIPT_NAME)
         self.script = script
         if not id:
             self._set_new_id()
