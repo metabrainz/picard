@@ -42,7 +42,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-19 12:25+0000\n"
+"PO-Revision-Date: 2026-09-19 13:17+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -3660,16 +3660,12 @@ msgid "multi-value variable"
 msgstr "variable à valeurs multiples"
 
 #: picard/tags/tagvar.py:79
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "read-only"
-msgstr "préservée en lecture seule"
+msgstr "lecture seule"
 
 #: picard/tags/tagvar.py:80
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "preserved"
-msgstr "préservée en lecture seule"
+msgstr "préservée"
 
 #: picard/tags/tagvar.py:81
 msgid "not for use in scripts"
