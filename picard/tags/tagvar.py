@@ -33,6 +33,7 @@ import html
 from picard.i18n import (
     N_,
     gettext as _,
+    gettext_constants,
 )
 from picard.options import get_option_title
 
@@ -292,7 +293,7 @@ class TagVars(MutableSequence[TagVar]):
         name, tagdesc, search_name, item = self.item_from_name(name)
 
         if item and item.shortdesc:
-            title = _(item.shortdesc)
+            title = gettext_constants(item.shortdesc)
         else:
             title = search_name
         if tagdesc:
@@ -317,7 +318,7 @@ class TagVars(MutableSequence[TagVar]):
         if not item.doc_links:
             return
         for doclink in item.doc_links:
-            translated_title = html.escape(_(doclink.title))
+            translated_title = html.escape(gettext_constants(doclink.title))
             yield f"<a href='{doclink.link}'>{translated_title}</a>"
 
     def see_alsos(self, item: TagVar):
@@ -333,7 +334,7 @@ class TagVars(MutableSequence[TagVar]):
         yield item.plugin_name
 
     def _base_description(self, item: TagVar):
-        return _markdown(_(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION))
+        return _markdown(gettext_constants(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION))
 
     def _add_sections(self, item, include_sections):
         # Note: format has to be translatable, for languages not using left-to-right for example
@@ -362,7 +363,7 @@ class TagVars(MutableSequence[TagVar]):
 
         # Append additional description
         if item.additionaldesc:
-            content += _markdown(_(item.additionaldesc))
+            content += _markdown(gettext_constants(item.additionaldesc))
 
         # Append additional sections as required
         include_sections = (Section.notes, Section.options, Section.links, Section.see_also, Section.plugin_info)

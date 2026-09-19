@@ -147,7 +147,7 @@ class Filter(QtWidgets.QWidget):
             return None
 
         if len(selected_filters) == 1:
-            return _(ALL_TAGS.display_name(list(selected_filters)[0]))
+            return ALL_TAGS.display_name(list(selected_filters)[0])
 
         return _("{num} filters").format(num=len(selected_filters))
 

@@ -45,6 +45,13 @@ def _translate_patch(s):
     return f"_({s})"
 
 
+def _translate_constants_patch(s):
+    # Simulate the separate "picard-constants" translation domain used for
+    # strings defined in picard/const/ (tag short/long/additional descriptions
+    # and documentation link titles).
+    return f"C_({s})"
+
+
 class TagVarTest(PicardTestCase):
     def test_basic_properties(self):
         tv = TagVar('name')
@@ -313,8 +320,20 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_name('only_sd:'), 'only_sd_shortdesc')
         self.assertEqual(tagvars.display_name('only_sd:xxx'), 'only_sd_shortdesc [xxx]')
 
-        with mock.patch("picard.tags.tagvar._", return_value='translated'):
+        with mock.patch("picard.tags.tagvar.gettext_constants", return_value='translated'):
             self.assertEqual(tagvars.display_name('only_sd'), 'translated')
+
+    def test_tagvars_display_name_uses_constants_domain(self):
+        # Regression test for PICARD-3448 (follow-up to PR #3453): tag
+        # descriptions live in the separate "picard-constants" gettext domain
+        # and must be translated with gettext_constants(), not the main
+        # gettext() (_).
+        tagvars = TagVars(self.tagvar_only_sd)
+        with (
+            mock.patch("picard.tags.tagvar._", side_effect=_translate_patch),
+            mock.patch("picard.tags.tagvar.gettext_constants", side_effect=_translate_constants_patch),
+        ):
+            self.assertEqual(tagvars.display_name('only_sd'), 'C_(only_sd_shortdesc)')
 
     def test_script_variable_tag_names(self):
         tagvars = TagVars(
@@ -356,21 +375,24 @@ class TagVarsTest(PicardTestCase):
         result = '<p>notes3_ld</p><p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         self.assertEqual(tagvars.tooltip_content(self.tagvar_notes3), result)
 
+    @mock.patch("picard.tags.tagvar.gettext_constants", side_effect=_translate_constants_patch)
     @mock.patch("picard.tags.tagvar._", side_effect=_translate_patch)
-    def test_tagvars_tooltip_content_translate(self, mock):
+    def test_tagvars_tooltip_content_translate(self, mock_gettext, mock_constants):
         tagvars = TagVars(
             self.tagvar_nodesc,
             self.tagvar_only_sd,
             self.tagvar_hidden_sd,
             self.tagvar_notes1,
         )
-        self.assertEqual(tagvars.tooltip_content(self.tagvar_nodesc), '<p>_(nodesc)</p>')
+        # Descriptions (longdesc/shortdesc) come from the constants domain (C_),
+        # while section titles and notes come from the main domain (_).
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_nodesc), '<p>C_(nodesc)</p>')
         self.assertEqual(
             tagvars.tooltip_content(self.tagvar_only_sd),
-            '<p>_(only_sd_shortdesc)</p>',
+            '<p>C_(only_sd_shortdesc)</p>',
         )
 
-        result = '<p>_(notes1_ld)</p><p dir="rtl"><strong>_(Notes):</strong> _(read-only); _(preserved); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
+        result = '<p>C_(notes1_ld)</p><p dir="rtl"><strong>_(Notes):</strong> _(read-only); _(preserved); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
         self.assertEqual(tagvars.tooltip_content(self.tagvar_notes1), result)
 
     def test_tagvars_full_description_content(self):
@@ -392,3 +414,29 @@ class TagVarsTest(PicardTestCase):
             '<p><strong>See Also:</strong> <a href="#_hidden_sd">%_hidden_sd%</a>; <a href="#sd_ld">%sd_ld%</a>.</p>'
         )
         self.assertEqual(tagvars.full_description_content(self.tagvar_everything), result)
+
+    @mock.patch("picard.tags.tagvar.gettext_constants", side_effect=_translate_constants_patch)
+    @mock.patch("picard.tags.tagvar._", side_effect=_translate_patch)
+    def test_tagvars_full_description_content_uses_constants_domain(self, mock_gettext, mock_constants):
+        # Regression test: longdesc, additionaldesc and documentation link
+        # titles are defined in picard/const/ and must be translated via the
+        # "picard-constants" domain (C_), while notes/section titles/option
+        # titles/see-also come from the main domain (_).
+        tagvars = TagVars(
+            self.tagvar_everything,
+            self.tagvar_hidden_sd,
+            self.tagvar_sd_ld,
+        )
+        profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
+        content = tagvars.full_description_content(self.tagvar_everything)
+
+        # Descriptions and link titles go through the constants domain.
+        self.assertIn('<p>C_(everything ld.)</p>', content)
+        self.assertIn('<p>C_(Test additional description.)</p>', content)
+        self.assertIn('C_(Test link)', content)
+
+        # Notes, section titles and option titles go through the main domain.
+        self.assertIn('_(Notes)', content)
+        self.assertIn('_(multi-value variable)', content)
+        self.assertIn('_(Option Settings)', content)
+        self.assertIn('_(Everything test setting)', content)
