@@ -58,7 +58,6 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
             'embed_only_one_front_image': False,
             'remove_images_from_tags': False,
             'rating_user_email': '',
-            'rating_steps': 6,
         }
     )
     return None

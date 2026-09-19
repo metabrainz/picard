@@ -28,6 +28,7 @@ from PyQt6 import (
 
 from picard import log, tagger_instance
 from picard.config import get_config
+from picard.const import RATING_STEPS
 from picard.i18n import N_
 
 
@@ -35,8 +36,7 @@ class RatingWidget(QtWidgets.QWidget):
     def __init__(self, track, parent=None):
         super().__init__(parent=parent)
         self._track = track
-        config = get_config()
-        self._maximum = config.setting['rating_steps'] - 1
+        self._maximum = RATING_STEPS - 1
         try:
             self._rating = int(track.metadata['~rating'] or 0)
         except ValueError:

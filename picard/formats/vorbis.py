@@ -47,6 +47,7 @@ from picard import (
     tagger_instance,
 )
 from picard.config import get_config
+from picard.const import RATING_STEPS
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -180,7 +181,7 @@ class VCommentFile(File):
                         continue
                     name = '~rating'
                     try:
-                        value = str(round(float(value) * (config.setting['rating_steps'] - 1)))
+                        value = str(round(float(value) * (RATING_STEPS - 1)))
                     except ValueError:
                         log.warning('Invalid rating value in %r: %s', filename, value)
                 elif name == 'unsyncedlyrics' or name.startswith('unsyncedlyrics:'):
@@ -306,7 +307,7 @@ class VCommentFile(File):
                     name = 'rating:%s' % user_email
                 else:
                     name = 'rating'
-                value = str(float(value) / (config.setting['rating_steps'] - 1))
+                value = str(float(value) / (RATING_STEPS - 1))
             # don't save private tags
             elif name.startswith("~") or not self.supports_tag(name):
                 continue

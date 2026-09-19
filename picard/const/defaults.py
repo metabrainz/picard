@@ -38,8 +38,6 @@ from PyQt6.QtCore import QStandardPaths
 
 from picard.const import (
     CACHE_SIZE_DISPLAY_UNIT,
-    RELEASE_PRIMARY_GROUPS,
-    RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.cover_processing import (
     ImageFormat,
@@ -71,11 +69,6 @@ DEFAULT_WIN_COMPAT_REPLACEMENTS = {
 }
 
 DEFAULT_MUSIC_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
-
-DEFAULT_RELEASE_SCORE = 0.5
-DEFAULT_RELEASE_TYPE_SCORES = [
-    (g, DEFAULT_RELEASE_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())
-]
 
 
 DEFAULT_CAA_IMAGE_SIZE = 500

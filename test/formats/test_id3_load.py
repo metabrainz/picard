@@ -37,6 +37,7 @@ from mutagen.id3 import (
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
+    subtest_cases,
 )
 
 from picard.formats.id3 import ID3File
@@ -185,23 +186,27 @@ class TestID3Load(PicardTestCase):
         self.id3_file._load_apic_frame(frame, metadata, config_params)
         self.assertEqual(len(metadata.images), 1)
 
-    def test_load_popm_frame(self):
+    @subtest_cases(
+        "id3_rating,expected",
+        [
+            # ID3 stores ratings in a 0-255 range; Picard maps them onto the
+            # fixed 0..(RATING_STEPS - 1) scale via round(rating / 255 * 5).
+            (0, '0'),  # round(0.000) -> 0
+            (127, '2'),  # round(2.490) -> 2 (just below the midpoint)
+            (128, '3'),  # round(2.510) -> 3 (just above the midpoint)
+            (255, '5'),  # round(5.000) -> 5 (top of the scale)
+        ],
+    )
+    def test_load_popm_frame(self, id3_rating, expected):
         frame = MagicMock(spec=POPM)
         frame.FrameID = 'POPM'
         frame.email = 'user@example.com'
-        frame.rating = 127
+        frame.rating = id3_rating
         metadata = Metadata()
-        config_params = {'rating_user_email': 'user@example.com', 'rating_steps': 5}
+        config_params = {'rating_user_email': 'user@example.com'}
         self.id3_file._load_popm_frame(frame, metadata, config_params)
         self.assertIn('~rating', metadata)
-        self.assertEqual(metadata['~rating'], '2')
-
-        # Test with another rating_steps value
-        metadata = Metadata()
-        config_params = {'rating_user_email': 'user@example.com', 'rating_steps': 10}
-        self.id3_file._load_popm_frame(frame, metadata, config_params)
-        self.assertIn('~rating', metadata)
-        self.assertEqual(metadata['~rating'], '4')
+        self.assertEqual(metadata['~rating'], expected)
 
     def test_load_standard_text_frame_COMM(self):
         frame = MagicMock(spec=COMM)
