@@ -119,10 +119,10 @@ class TestUpgradeSettingsDecorator(PicardTestCase):
             pass
 
         self.assertEqual(len(_UPGRADES_REGISTRY), original_len + 1)
-        version, utype, func = _UPGRADES_REGISTRY[-1]
-        self.assertEqual(version, Version(99, 0, 0, 'dev', 1))
-        self.assertEqual(utype, _UpgradeType.SETTINGS)
-        self.assertEqual(func, _test_upgrade)
+        entry = _UPGRADES_REGISTRY[-1]
+        self.assertEqual(entry.version, Version(99, 0, 0, 'dev', 1))
+        self.assertEqual(entry.upgrade_type, _UpgradeType.SETTINGS)
+        self.assertEqual(entry.func, _test_upgrade)
 
         # Clean up
         _UPGRADES_REGISTRY.pop()
@@ -157,13 +157,28 @@ class TestUpgradeConfigDecorator(PicardTestCase):
             pass
 
         self.assertEqual(len(_UPGRADES_REGISTRY), original_len + 1)
-        version, utype, func = _UPGRADES_REGISTRY[-1]
-        self.assertEqual(version, Version(99, 0, 0, 'dev', 1))
-        self.assertEqual(utype, _UpgradeType.CONFIG)
-        self.assertEqual(func, _test_config_hook)
+        entry = _UPGRADES_REGISTRY[-1]
+        self.assertEqual(entry.version, Version(99, 0, 0, 'dev', 1))
+        self.assertEqual(entry.upgrade_type, _UpgradeType.CONFIG)
+        self.assertEqual(entry.func, _test_config_hook)
+        self.assertFalse(entry.interactive)
 
         # Clean up
         _UPGRADES_REGISTRY.pop()
+
+    def test_decorator_marks_interactive(self):
+        original_len = len(_UPGRADES_REGISTRY)
+
+        @upgrade_config('99.0.0dev3', interactive=True)
+        def _test_interactive_hook(config, interactive=True):
+            """Test interactive config hook."""
+            pass
+
+        try:
+            self.assertEqual(len(_UPGRADES_REGISTRY), original_len + 1)
+            self.assertTrue(_UPGRADES_REGISTRY[-1].interactive)
+        finally:
+            _UPGRADES_REGISTRY.pop()
 
 
 class TestApplySettingsUpgradesForImport(PicardTestCase):

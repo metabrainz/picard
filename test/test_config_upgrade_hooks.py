@@ -60,10 +60,10 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             return any(m == expected or m.startswith(expected + '_') for m in test_methods)
 
         all_test_methods = {m for m in dir(self) if m.startswith('test_')}
-        for version, _utype, func in _UPGRADES_REGISTRY:
+        for entry in _UPGRADES_REGISTRY:
             self.assertTrue(
-                has_test(all_test_methods, func.__name__),
-                f"No test found for {func.__name__} (version {version})",
+                has_test(all_test_methods, entry.func.__name__),
+                f"No test found for {entry.func.__name__} (version {entry.version})",
             )
 
     def test_merge_va_file_naming_A(self):
@@ -93,6 +93,26 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('va_file_naming_format', self.config.setting)
         self.assertNotIn('use_va_format', self.config.setting)
         self.assertNotIn('file_naming_format', self.config.setting)
+
+    def test_merge_va_file_naming_noninteractive_autodefaults_to_merge(self):
+        # Branch 2: VA scheme disabled but a non-default custom VA format exists.
+        # Non-interactively (no explicit merge arg) the hook must keep the
+        # user's data (merge) and warn that it made an automatic choice.
+        TextOption('setting', 'file_naming_format', 'MAIN')
+        self.config.setting['va_file_naming_format'] = 'CUSTOM-VA'
+        self.config.setting['use_va_format'] = ""
+
+        with patch.object(hooks.log, 'warning') as warning:
+            hooks.merge_va_file_naming(self.config, interactive=False)
+
+        # Non-destructive default: the custom VA format was merged in, not lost.
+        self.assertNotIn('va_file_naming_format', self.config.setting)
+        self.assertNotIn('use_va_format', self.config.setting)
+        self.assertIn('CUSTOM-VA', self.config.setting['file_naming_format'])
+        self.assertIn('MAIN', self.config.setting['file_naming_format'])
+        # The automatic decision is recorded via a warning.
+        warning.assert_called_once()
+        self.assertIn('automatically merged', warning.call_args.args[0])
 
     def test_rename_windows_compatible_filenames(self):
         BoolOption('setting', 'windows_compatibility', False)
@@ -887,3 +907,71 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             (15, 's16', True, '$copymerge(lyrics::foo,comment::lyrics)'),
         ]
         self.assertEqual(expected_settings, settings['list_of_scripts'])
+
+
+class TestRunConfigUpgradesInteractive(TestPicardConfigCommon):
+    """run_config_upgrades threads the interactive flag to hooks that accept it."""
+
+    def _run(self, interactive):
+        from picard.config_upgrade import (
+            _UpgradeEntry,
+            _UpgradeType,
+            run_config_upgrades,
+        )
+        from picard.version import Version
+
+        record = {}
+
+        def spy_interactive_hook(config, interactive=True):
+            """Spy hook recording the interactive flag."""
+            record['interactive'] = interactive
+            record['called'] = True
+
+        # Isolate: run only our spy hook, not the full real upgrade chain.
+        isolated = [
+            _UpgradeEntry(Version.from_string('2.5.0'), _UpgradeType.CONFIG, spy_interactive_hook, interactive=True)
+        ]
+
+        # Config version below the hook version so the hook is applicable.
+        self.config._version = Version.from_string('2.0.0')
+        self.config.application['version'] = '2.0.0'
+
+        with patch('picard.config_upgrade._UPGRADES_REGISTRY', isolated):
+            run_config_upgrades(self.config, interactive=interactive)
+        return record
+
+    def test_interactive_false_is_threaded_to_hook(self):
+        record = self._run(interactive=False)
+        self.assertTrue(record.get('called'))
+        self.assertIs(record['interactive'], False)
+
+    def test_interactive_true_is_default_and_threaded(self):
+        record = self._run(interactive=True)
+        self.assertTrue(record.get('called'))
+        self.assertIs(record['interactive'], True)
+
+    def test_non_interactive_hook_called_without_flag(self):
+        # A CONFIG hook not marked interactive must be called with config only,
+        # so plain hooks (which take no interactive kwarg) are never passed one.
+        from picard.config_upgrade import (
+            _UpgradeEntry,
+            _UpgradeType,
+            run_config_upgrades,
+        )
+        from picard.version import Version
+
+        record = {}
+
+        def plain_hook(config):
+            """Plain config hook that accepts no interactive kwarg."""
+            record['called'] = True
+
+        isolated = [_UpgradeEntry(Version.from_string('2.5.0'), _UpgradeType.CONFIG, plain_hook)]
+        self.config._version = Version.from_string('2.0.0')
+        self.config.application['version'] = '2.0.0'
+
+        with patch('picard.config_upgrade._UPGRADES_REGISTRY', isolated):
+            # Would raise TypeError if the runner passed interactive= to plain_hook.
+            run_config_upgrades(self.config, interactive=False)
+
+        self.assertTrue(record.get('called'))

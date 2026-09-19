@@ -86,6 +86,8 @@ class _UpgradeEntry(NamedTuple):
     version: Version
     upgrade_type: _UpgradeType
     func: Callable
+    # True for @upgrade_config hooks that may prompt the user (see run_config_upgrades).
+    interactive: bool = False
 
 
 # Single registry populated by both decorators. Entries are stored in
@@ -120,12 +122,15 @@ def upgrade_settings(version_str: str) -> Callable[[SettingsUpgradeFunc], None]:
     return decorator
 
 
-def upgrade_config(version_str: str) -> Callable[[ConfigUpgradeFunc], None]:
+def upgrade_config(version_str: str, interactive: bool = False) -> Callable[[ConfigUpgradeFunc], None]:
     """Decorator to register a config upgrade function (non-settings operations).
 
     The decorated function receives the full Config object. Use this for
     operations that need persist, allKeys(), interactive dialogs, or other
     non-settings Config access.
+
+    Set interactive=True for hooks that can prompt the user; see the
+    INTERACTIVE HOOKS notes in config_upgrade_hooks.py.
 
     WARNING: These functions do NOT run on profile override dicts or imported
     profile data. If you need to transform a settings key, use
@@ -142,7 +147,7 @@ def upgrade_config(version_str: str) -> Callable[[ConfigUpgradeFunc], None]:
 
     def decorator(func):
         version = Version.from_string(version_str)
-        _UPGRADES_REGISTRY.append(_UpgradeEntry(version, _UpgradeType.CONFIG, func))
+        _UPGRADES_REGISTRY.append(_UpgradeEntry(version, _UpgradeType.CONFIG, func, interactive))
         return func
 
     return decorator
@@ -322,8 +327,14 @@ def temp_option(option_type: type[Option], section: str, name: str, default: Con
     opt.unregister()
 
 
-def run_config_upgrades(config: Config) -> None:
-    """Execute all registered upgrade hooks."""
+def run_config_upgrades(config: Config, interactive: bool = True) -> None:
+    """Execute all registered upgrade hooks.
+
+    Args:
+        config: The Config object to upgrade.
+        interactive: When False, hooks that can prompt run without dialogs.
+            Headless callers (e.g. the CLI) must pass False to avoid blocking.
+    """
     # Ensure hooks module is imported so decorators have populated the registry
     import picard.config_upgrade_hooks  # noqa: F401
 
@@ -341,6 +352,8 @@ def run_config_upgrades(config: Config) -> None:
                     )
                 if entry.upgrade_type == _UpgradeType.SETTINGS:
                     _run_settings_upgrade_on_config(config, entry.func)
+                elif entry.interactive:
+                    entry.func(config, interactive=interactive)
                 else:
                     entry.func(config)
 
