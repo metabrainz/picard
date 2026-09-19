@@ -345,7 +345,7 @@ class TagVarsTest(PicardTestCase):
 
         self.assertEqual(tagvars.tooltip_content(self.tagvar_only_sd), '<p>only_sd_shortdesc</p>')
 
-        result = '<p>notes1_ld</p><p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
+        result = '<p>notes1_ld</p><p><strong>Notes:</strong> read-only; preserved; not for use in scripts; calculated; info from audio file.</p>'
         self.assertEqual(tagvars.tooltip_content(self.tagvar_notes1), result)
 
         result = (
@@ -370,7 +370,7 @@ class TagVarsTest(PicardTestCase):
             '<p>_(only_sd_shortdesc)</p>',
         )
 
-        result = '<p>_(notes1_ld)</p><p dir="rtl"><strong>_(Notes):</strong> _(preserved read-only); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
+        result = '<p>_(notes1_ld)</p><p dir="rtl"><strong>_(Notes):</strong> _(read-only); _(preserved); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
         self.assertEqual(tagvars.tooltip_content(self.tagvar_notes1), result)
 
     def test_tagvars_full_description_content(self):
@@ -384,7 +384,7 @@ class TagVarsTest(PicardTestCase):
         result = (
             '<p>everything ld.</p>'
             '<p>Test additional description.</p>'
-            '<p><strong>Notes:</strong> multi-value variable; preserved read-only; not for use in scripts; '
+            '<p><strong>Notes:</strong> multi-value variable; read-only; preserved; not for use in scripts; '
             'calculated; info from audio file; not provided from MusicBrainz data; not populated by stock '
             'Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test setting.</p>'

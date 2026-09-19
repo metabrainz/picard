@@ -64,7 +64,7 @@ class UtilTagsDocsTest(PicardTestCase):
         # Hidden tag with notes, testing both prefixes '~' and '_'.
         result = (
             '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>'
-            '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
+            '<p><strong>Notes:</strong> read-only; preserved; info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('_bitrate'), result)
         self.assertEqual(display_tag_tooltip('~bitrate'), result)
