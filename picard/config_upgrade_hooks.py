@@ -43,6 +43,7 @@ from picard.config import (
     IntOption,
     ListOption,
     TextOption,
+    obsolete_options,
 )
 from picard.config_upgrade import (
     get_option_value,
@@ -836,6 +837,14 @@ def convert_release_type_scores_to_lists(settings):
     write_option(settings, 'discouraged_release_types', discouraged)
 
 
+# Retired in 3.0.0b8: release_type_scores is converted by the hook above (its
+# value is read there before the key is purged).
+obsolete_options(
+    '3.0.0b8',
+    ('setting', 'release_type_scores'),
+)
+
+
 @upgrade_settings('3.0.0b9')
 def clamp_browser_integration_port(settings):
     def _clamp_port(value):
@@ -881,3 +890,12 @@ def upgrade_scripts_lyrics_comments(settings):
         return [(pos, name, enabled, convert_script(content)) for pos, name, enabled, content in scripts]
 
     upgrade_option_value(settings, 'list_of_scripts', convert_list_of_scripts)
+
+
+# Retired in 3.0.0rc4: rating_steps became a fixed constant. It has no value
+# conversion, so (unlike release_type_scores) there is no upgrade hook; the
+# key is simply purged for configs older than rc4.
+obsolete_options(
+    '3.0.0rc4',
+    ('setting', 'rating_steps'),
+)

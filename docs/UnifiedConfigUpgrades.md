@@ -132,6 +132,32 @@ a version — no implicit "settings before config" rule.
 
 Exposed as `apply_settings_upgrades_for_import(settings, from_version_str)`.
 
+### Retiring obsolete options
+
+Upgrade hooks *convert* values at a version boundary; they can't clean up a key
+that was introduced and removed within one dev/beta cycle (nothing crosses a
+boundary for it). Use `obsolete_options()` (in `picard/config_upgrade_hooks.py`)
+to declare such keys for removal, independently of the config version:
+
+```python
+# With a value converter: declare next to the hook that supersedes it.
+obsolete_options('3.0.0b8', ('setting', 'release_type_scores'))
+
+# Without a converter (the key is simply dropped): no hook needed.
+obsolete_options('3.0.0rc4', ('setting', 'rating_steps'))
+```
+
+The purge runs once from `Config.run_upgrade_hooks()`, after all upgrade hooks
+have completed — not from `Config.sync()`, so it never fires on the many runtime
+saves. A key is removed only for configs whose *original* version (captured
+before any hook ran) predates the given version; this is a plain threshold
+comparison, so it also cleans configs already at the latest version and versions
+that were skipped or never released. Because the purge is reached only after the
+hooks return normally, a failed or partial migration never purges. A
+currently-registered option is never removed (a reused name is live). List exact
+core keys only. Use this to *drop* a removed key; use the `@upgrade_*` hooks to
+*convert* a value.
+
 ---
 
 ## Future: Plugin Upgrade Support
