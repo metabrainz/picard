@@ -44,12 +44,15 @@ class ColumnIndex(IntEnum):
 
 
 # Public headers for specs-related UIs (manager table, dialogs, etc.)
+# Marked with N_() for extraction only; these are module-level constants
+# evaluated once at import (before the UI locale is active), so they must be
+# translated with _() at the point of use to reflect the active locale.
 COLUMN_INPUT_FIELD_NAMES: dict[ColumnIndex, str] = {
-    ColumnIndex.TITLE: _("Column Title"),
-    ColumnIndex.TYPE: _("Type"),
-    ColumnIndex.EXPRESSION: _("Expression"),
-    ColumnIndex.ALIGN: _("Align"),
-    ColumnIndex.WIDTH: _("Width"),
+    ColumnIndex.TITLE: N_("Column Title"),
+    ColumnIndex.TYPE: N_("Type"),
+    ColumnIndex.EXPRESSION: N_("Expression"),
+    ColumnIndex.ALIGN: N_("Align"),
+    ColumnIndex.WIDTH: N_("Width"),
 }
 
 
@@ -69,7 +72,9 @@ _ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
     ALIGN_RIGHT_NAME: ColumnAlign.RIGHT,
 }
 
-DEFAULT_NEW_COLUMN_NAME: str = _("Untitled")
+# Marked with N_() for extraction; translate with _() at the point of use
+# (module-level constant, evaluated at import before the UI locale is active).
+DEFAULT_NEW_COLUMN_NAME: str = N_("Untitled")
 
 
 def parse_add_to(add_to: str | None) -> set[str]:

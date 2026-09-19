@@ -33,6 +33,7 @@ from collections.abc import Iterable
 from dataclasses import replace
 
 from picard.config import get_config
+from picard.i18n import gettext as _
 
 from picard.ui.itemviews.custom_columns.shared import (
     ALIGN_LEFT_NAME,
@@ -148,10 +149,11 @@ class ColumnSpecService:
             existing_titles = {spec.title for spec in current_specs if spec.title}
 
         # Use base title if it doesn't exist, otherwise generate incremented title
-        if DEFAULT_NEW_COLUMN_NAME not in existing_titles:
-            unique_title = DEFAULT_NEW_COLUMN_NAME
+        default_title = _(DEFAULT_NEW_COLUMN_NAME)
+        if default_title not in existing_titles:
+            unique_title = default_title
         else:
-            unique_title = next_incremented_title(DEFAULT_NEW_COLUMN_NAME, existing_titles)
+            unique_title = next_incremented_title(default_title, existing_titles)
         return CustomColumnSpec(
             title=unique_title,
             key=ColumnSpecService.allocate_new_key(),
