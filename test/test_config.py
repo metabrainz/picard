@@ -26,16 +26,21 @@ import logging
 import os
 import shutil
 from typing import ClassVar
+from unittest import mock
 
 from test.picardtestcase import (
     PicardTestCase,
     subtest_cases,
 )
 
-from picard import config
+from picard import (
+    PICARD_VERSION,
+    config,
+)
 from picard.config import (
     BoolOption,
     Config,
+    ConfigUpgradeError,
     FloatOption,
     IntOption,
     ListOption,
@@ -46,6 +51,12 @@ from picard.config import (
     get_quick_menu_items,
     register_quick_menu_item,
 )
+
+# Imported for its registration side effect: populates config._OBSOLETE_OPTIONS
+# via obsolete_options() so tests using the real registry (e.g.
+# release_type_scores) are deterministic regardless of test ordering.
+import picard.config_upgrade_hooks  # noqa: F401,E402
+from picard.version import Version
 
 
 class TestPicardConfigCommon(PicardTestCase):
@@ -1293,3 +1304,166 @@ class TestRestoreDefaults(TestPicardConfigCommon):
         # Base value untouched
         with self.config.setting.no_profile():
             self.assertEqual(section['opt'], 'plug_base')
+
+
+class TestObsoleteOptionsCleanup(TestPicardConfigCommon):
+    """Removal of options declared via obsolete_options.
+
+    The purge runs once from run_upgrade_hooks() after all upgrade hooks have
+    completed (not from sync()), so tests either call _remove_obsolete_options()
+    directly or drive it through run_upgrade_hooks().
+    """
+
+    ENTRY = ('setting', 'dev_only_option', Version(3, 0, 0, 'b', 8))
+
+    def _purge_with_registry(self, entries):
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', list(entries)):
+            self.config._remove_obsolete_options()
+
+    def test_removed_when_original_version_older(self):
+        # Original version predates obsoleted_in -> purge.
+        self.config._original_version = Version(2, 0, 0)
+        self.config.setValue('setting/dev_only_option', 'stale')
+        self._purge_with_registry([self.ENTRY])
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+
+    def test_plain_sync_does_not_purge(self):
+        # The purge is wired to run_upgrade_hooks(), not sync(): a plain sync()
+        # (as happens repeatedly at runtime) must never drop an obsolete key.
+        self.config._original_version = Version(2, 0, 0)
+        self.config.setValue('setting/dev_only_option', 'stale')
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', [self.ENTRY]):
+            self.config.sync()
+        self.assertTrue(self.config.contains('setting/dev_only_option'))
+
+    def test_only_listed_keys_removed(self):
+        # Absent keys are a no-op; similarly-named/unlisted keys are preserved.
+        self.config._original_version = Version(2, 0, 0)
+        self.config.setValue('setting/dev_only_option', 'x')
+        self.config.setValue('setting/dev_only_option_plugin', 'keep')
+        self.config.setValue('persist/window_geometry', 'keep')
+        self._purge_with_registry([self.ENTRY, ('setting', 'absent', Version(3, 0, 0))])
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+        self.assertTrue(self.config.contains('setting/dev_only_option_plugin'))
+        self.assertTrue(self.config.contains('persist/window_geometry'))
+
+    @subtest_cases(
+        "original_version,expected_removed",
+        {
+            'older than obsoleted_in -> remove': (Version(3, 0, 0, 'b', 7), True),
+            'equal to obsoleted_in -> keep': (Version(3, 0, 0, 'b', 8), False),
+            'newer than obsoleted_in -> keep': (Version(3, 1, 0), False),
+        },
+    )
+    def test_version_guard(self, original_version, expected_removed):
+        self.config._original_version = original_version
+        self.config.setValue('setting/dev_only_option', 'value')
+        self._purge_with_registry([self.ENTRY])
+        self.assertEqual(not self.config.contains('setting/dev_only_option'), expected_removed)
+
+    def test_version_guard_uses_original_not_upgraded_version(self):
+        # Upgrade hooks advance _version; the guard must use the original.
+        self.config._original_version = Version(2, 0, 0)
+        self.config._version = PICARD_VERSION  # as an upgrade pass would leave it
+        self.config.setValue('setting/dev_only_option', 'stale')
+        self._purge_with_registry([self.ENTRY])
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+
+    def test_purged_when_obsoleted_version_is_skipped(self):
+        # The purge is decoupled from upgrade hooks: an option obsoleted in a
+        # version that has NO hook and is never a step in the migration (here
+        # b8, while the config jumps b7 -> b9) is still purged, because the
+        # guard is a plain original_version < obsoleted_in comparison.
+        entry = ('setting', 'dev_only_option', Version(3, 0, 0, 'b', 8))
+        self.config._original_version = Version(3, 0, 0, 'b', 7)
+        self.config._version = Version(3, 0, 0, 'b', 7)
+        self.config.setValue('setting/dev_only_option', 'stale')
+        ran = []
+        # Only a b9 hook exists; nothing at b8 (the obsoleted-in version).
+        hooks = {Version(3, 0, 0, 'b', 9): lambda _c: ran.append('b9')}
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', [entry]):
+            self.config.run_upgrade_hooks(hooks)
+        self.assertEqual(ran, ['b9'])  # b8 was never a migration step
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+
+    def test_option_survives_until_converter_runs_then_purged_once(self):
+        # A to-be-converted option must still be present when its converter
+        # (here b8) runs, and be purged exactly once after the whole upgrade
+        # loop. Because the purge is wired to run_upgrade_hooks() (not sync()),
+        # the per-hook syncs inside the loop cannot drop it early.
+        self.config._original_version = Version(3, 0, 0, 'b', 6)
+        self.config._version = Version(3, 0, 0, 'b', 6)
+        self.config.setValue('setting/dev_only_option', 'stale')
+        seen = {}
+        hooks = {
+            Version(3, 0, 0, 'b', 7): lambda c: seen.__setitem__('b7', c.contains('setting/dev_only_option')),
+            Version(3, 0, 0, 'b', 8): lambda c: seen.__setitem__('b8', c.contains('setting/dev_only_option')),
+        }
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', [self.ENTRY]):
+            self.config.run_upgrade_hooks(hooks)
+        self.assertTrue(seen.get('b7'))
+        self.assertTrue(seen.get('b8'))
+        self.assertFalse(self.config.contains('setting/dev_only_option'))
+
+    def test_not_purged_on_partial_migration(self):
+        # Partial migration: an earlier hook (b7) succeeds and bumps the
+        # version, a later hook (b8, the converter for the obsolete option)
+        # raises. run_upgrade_hooks() re-raises before the purge, so the
+        # to-be-converted option must survive for a later, complete run.
+        self.config._original_version = Version(3, 0, 0, 'b', 6)
+        self.config._version = Version(3, 0, 0, 'b', 6)
+        self.config.setValue('setting/dev_only_option', 'stale')
+        ran = []
+
+        def ok(_c):
+            ran.append('b7')
+
+        def boom(_c):
+            raise RuntimeError("converter failure")
+
+        hooks = {
+            Version(3, 0, 0, 'b', 7): ok,
+            Version(3, 0, 0, 'b', 8): boom,
+        }
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', [self.ENTRY]):
+            with self.assertRaises(ConfigUpgradeError):
+                self.config.run_upgrade_hooks(hooks)
+        self.assertEqual(ran, ['b7'])  # first hook did run and bump the version
+        self.assertGreaterEqual(self.config._version, Version(3, 0, 0, 'b', 7))
+        self.assertTrue(self.config.contains('setting/dev_only_option'))
+
+    def test_registered_option_is_kept_and_warns(self):
+        # A live registered Option with the same name must never be purged.
+        self.config._original_version = Version(2, 0, 0)
+        self.config.setValue('setting/dev_only_option', 'live-value')
+        TextOption('setting', 'dev_only_option', 'default')
+        with (
+            mock.patch.object(config, '_OBSOLETE_OPTIONS', [self.ENTRY]),
+            mock.patch.object(config.log, 'warning') as mock_warning,
+        ):
+            self.config._remove_obsolete_options()
+        self.assertEqual(self.config.value('setting/dev_only_option'), 'live-value')
+        mock_warning.assert_called_once()
+
+    def test_declared_registry_is_valid(self):
+        # The real obsolete_options() declarations (populated by importing
+        # config_upgrade_hooks above) must include the expected entries and
+        # never name a live registered option (which would silently prevent
+        # purging). self.old_registry holds the real registry saved by setUp.
+        entries = {(s, n): v for s, n, v in config._OBSOLETE_OPTIONS}
+        self.assertEqual(entries.get(('setting', 'release_type_scores')), Version(3, 0, 0, 'b', 8))
+        self.assertEqual(entries.get(('setting', 'rating_steps')), Version(3, 0, 0, 'rc', 4))
+        self.assertGreater(len(self.old_registry), 100)  # guard against vacuous pass
+        collisions = [(s, n) for (s, n) in entries if (s, n) in self.old_registry]
+        self.assertEqual(collisions, [], msg="obsolete_options names a live option: %s" % collisions)
+
+    def test_obsolete_options_helper_appends_with_version(self):
+        with mock.patch.object(config, '_OBSOLETE_OPTIONS', []):
+            config.obsolete_options('3.0.0b8', ('setting', 'foo'), ('persist', 'bar'))
+            self.assertEqual(
+                config._OBSOLETE_OPTIONS,
+                [
+                    ('setting', 'foo', Version(3, 0, 0, 'b', 8)),
+                    ('persist', 'bar', Version(3, 0, 0, 'b', 8)),
+                ],
+            )

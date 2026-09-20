@@ -723,6 +723,33 @@ class SettingConfigSection(ProfileConfigSection):
             self.settings_override = saved_settings
 
 
+# Registry of core options removed from the codebase, purged from existing
+# config files when upgrade hooks run (see Config._remove_obsolete_options).
+# Populated by obsolete_options() calls in config_upgrade_hooks.py, kept here
+# to avoid a config -> config_upgrade import cycle. Each entry is (section,
+# name, obsoleted_in); see obsolete_options() for the semantics.
+_OBSOLETE_OPTIONS: list[tuple[str, str, Version]] = []
+
+
+def obsolete_options(version_str: str, *options: tuple[str, str]) -> None:
+    """Register core option keys that became obsolete in ``version_str``.
+
+    The keys are purged from the config when its upgrade hooks run, if its
+    original version predates ``version_str`` (see
+    :meth:`Config._remove_obsolete_options`). Unlike a versioned upgrade hook —
+    which runs once for configs crossing that boundary — this also cleans
+    configs already stamped at the latest version (e.g. a key that only ever
+    existed during a beta/dev cycle).
+
+    Declare these (from config_upgrade_hooks.py) next to the migration that
+    superseded the option. Each ``options`` argument is a ``(section, name)``
+    tuple naming an exact core option key, never a plugin/namespaced one.
+    """
+    version = Version.from_string(version_str)
+    for section, name in options:
+        _OBSOLETE_OPTIONS.append((section, name, version))
+
+
 class Config(QtCore.QSettings):
     """Main configuration class based on QSettings.
 
@@ -749,6 +776,9 @@ class Config(QtCore.QSettings):
         if 'version' not in self.application or not self.application['version']:
             TextOption('application', 'version', '0.0.0dev0')
         self._version = Version.from_string(self.application['version'])
+        # Version before any upgrade hook runs; the obsolete-options cleaner's
+        # version guard compares against this (hooks advance self._version).
+        self._original_version = self._version
 
     @classmethod
     def from_app(cls, parent):
@@ -791,6 +821,23 @@ class Config(QtCore.QSettings):
         return this
 
     def run_upgrade_hooks(self, hooks):
+        """Executes passed hooks to upgrade config version to the latest.
+
+        The obsolete-options purge is confined to this method and runs only
+        after _run_upgrade_hooks() returns normally. If any hook raises,
+        _run_upgrade_hooks() re-raises it as ConfigUpgradeError before the purge
+        line is reached, so a failed or partial migration never purges. Because
+        this is the sole caller of _remove_obsolete_options(), a partially
+        migrated config left by an earlier failed run is only ever purged once a
+        later run completes every hook.
+        """
+        self._run_upgrade_hooks(hooks)
+        # The config is now fully migrated (every applicable hook ran, and any
+        # value conversion completed): purge options retired in the meantime.
+        self._remove_obsolete_options()
+        self.sync()
+
+    def _run_upgrade_hooks(self, hooks):
         """Executes passed hooks to upgrade config version to the latest"""
         if self._version == Version(0, 0, 0, 'dev', 0):
             # This is a freshly created config
@@ -858,6 +905,41 @@ class Config(QtCore.QSettings):
         self._version = new_version
         self.application['version'] = str(self._version)
         self.sync()
+
+    def _remove_obsolete_options(self):
+        """Purge _OBSOLETE_OPTIONS keys from the config.
+
+        Called once from run_upgrade_hooks() after all upgrade hooks have run,
+        so a to-be-converted option is never dropped before its converter runs,
+        and a failed migration (hook raised) never reaches this point. Two
+        guards remain, each covering a distinct case:
+
+        - version: only remove a key when the config's *original* version
+          (before any upgrade hook ran) predates the version in which the
+          option was obsoleted, so a config old enough to still use the option
+          keeps it.
+        - registry: never remove a currently-registered Option; a
+          (re)registered name is live and holds a valid value. Such a collision
+          is a programming error (caught by the test suite); skip and warn if
+          one reaches a released build.
+        """
+        for section, name, obsoleted_in in _OBSOLETE_OPTIONS:
+            if (section, name) in Option.registry:
+                log.warning(
+                    "Not removing obsolete config option %s/%s: a live option "
+                    "with the same name is registered; remove it from "
+                    "the obsolete_options() declaration",
+                    section,
+                    name,
+                )
+                continue
+            # Skip keys the config is too old to have obsoleted yet.
+            if self._original_version >= obsoleted_in:
+                continue
+            key = '%s/%s' % (section, name)
+            if self.contains(key):
+                log.debug("Removing obsolete config option %s", key)
+                self.remove(key)
 
     def _versioned_config_filename(self, version=None):
         if not version:
