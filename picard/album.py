@@ -104,6 +104,12 @@ from picard.util import (
 )
 from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
+from picard.util.memprofile import (
+    deep_getsizeof,
+    format_bytes,
+    log_object_counts,
+    should_run,
+)
 from picard.util.textencoding import asciipunct
 from picard.webservice import PendingRequest
 
@@ -861,6 +867,38 @@ class Album(MetadataItem):
         if self.ui_item and self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
             self.tagger.window.cover_art_box.update_metadata()
+        self._memprofile_loaded()
+
+    def _memprofile_loaded(self):
+        """Log an opt-in memory footprint for this album (DebugOpt.MEMORY).
+
+        No-op unless memory profiling is enabled. Reports the album's own
+        deep size (metadata + tracks, deduplicated) and, throttled to at most
+        once every few seconds, a session-wide live object-type summary so
+        per-album accumulation is visible during a large collection load.
+
+        Cover-art binary data is intentionally not counted here: it lives in
+        temp files (DataHash), so the in-memory image objects are tiny.
+        """
+        if not DebugOpt.MEMORY.enabled:
+            return
+        # Deduplicate shared references (e.g. album/track metadata) so shared
+        # objects are counted once for this album.
+        seen: set[int] = set()
+        size = deep_getsizeof(self.metadata, seen)
+        size += deep_getsizeof(self.orig_metadata, seen)
+        for track in self.tracks:
+            size += deep_getsizeof(track, seen)
+        log.debug(
+            "memprofile[album load]: %r: %d tracks, deep size %s",
+            self.metadata['album'] or self.id,
+            len(self.tracks),
+            format_bytes(size),
+        )
+        # Throttled session-wide summary so bulk loads show the running total
+        # without O(N) work on every album.
+        if should_run("album-load-summary", min_interval=5.0):
+            log_object_counts("albums loaded so far")
 
     def _finalize_loading(self, error):
         if self.loaded:

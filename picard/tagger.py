@@ -182,6 +182,12 @@ from picard.util import (
 )
 from picard.util.checkupdate import UpdateCheckManager
 from picard.util.datahash import DataHash
+from picard.util.memprofile import (
+    MemorySampler,
+    log_object_growth,
+    memory_snapshot,
+    object_counts_baseline,
+)
 from picard.util.qt import process_events_iter
 from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
@@ -480,6 +486,10 @@ class Tagger(QtWidgets.QApplication):
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""
         self._pending_files_count = 0
+        self._load_mem_sampler = None
+        self._load_mem_baseline = None
+        self._session_mem_sampler = None
+        self._session_mem_baseline = None
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
@@ -756,11 +766,22 @@ class Tagger(QtWidgets.QApplication):
                     save_session_to_path(self, path)
 
         log.debug("Picard stopping")
+        # Stop the whole-session memory sampler now so it does not sample during
+        # teardown (no-op unless DebugOpt.MEMORY is set).
+        if self._session_mem_sampler is not None:
+            self._session_mem_sampler.stop()
+            self._session_mem_sampler = None
         with DebugOpt.TIMINGS.timing("run_cleanup"):
             self.run_cleanup()
         with DebugOpt.TIMINGS.timing("DataHash.remove_all_files"):
             DataHash.remove_all_files()
         QtCore.QCoreApplication.processEvents()
+        # Report which object types survived teardown, measured after cleanup so
+        # objects still held here are genuinely retained (not merely uncollected
+        # or still wired into a live app). log_object_growth() runs gc.collect()
+        # itself. No-op unless DebugOpt.MEMORY is set.
+        log_object_growth("session (surviving teardown)", self._session_mem_baseline)
+        self._session_mem_baseline = None
         if sys.stdout:
             sys.stdout.flush()
         if sys.stderr:
@@ -793,6 +814,13 @@ class Tagger(QtWidgets.QApplication):
     def run(self):
         # Setup autosave if configured
         config = get_config()
+        # Opt-in whole-session memory tracking (--debug-opts=memory): a
+        # low-frequency sampler for the full start->exit RSS/traced curve, plus
+        # a baseline to report which object types grew over the session at exit.
+        # No-op unless DebugOpt.MEMORY is enabled.
+        self._session_mem_baseline = object_counts_baseline()
+        self._session_mem_sampler = MemorySampler(label="session", interval=5.0, track_objects=True)
+        self._session_mem_sampler.start()
         interval_min = int(config.setting['session_autosave_interval_min'])
         if interval_min > 0:
             self._session_autosave_timer = QtCore.QTimer(self)
@@ -923,6 +951,7 @@ class Tagger(QtWidgets.QApplication):
         if self._pending_files_count == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
                 self.window.suspend_while_loading_exit()
+            self._stop_load_mem_sampler()
 
         if remove_file:
             file.remove()
@@ -1056,9 +1085,31 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
             self.window.suspend_while_loading_enter()
+            self._start_load_mem_sampler()
             self._pending_files_count += len(new_files)
             unmatched_files = []
             self._load_files_batch(new_files, target, unmatched_files)
+
+    def _start_load_mem_sampler(self):
+        """Start a memory sampler for the bulk load, if DebugOpt.MEMORY is enabled.
+
+        Shared across overlapping add_files() batches; stopped in _file_loaded()
+        once all pending files have loaded. No-op when profiling is disabled.
+        """
+        if not DebugOpt.MEMORY.enabled or self._load_mem_sampler is not None:
+            return
+        self._load_mem_baseline = object_counts_baseline()
+        self._load_mem_sampler = MemorySampler(label="bulk load", track_objects=True)
+        self._load_mem_sampler.start()
+
+    def _stop_load_mem_sampler(self):
+        """Stop the bulk-load sampler and log which object types accumulated."""
+        if self._load_mem_sampler is None:
+            return
+        self._load_mem_sampler.stop()
+        self._load_mem_sampler = None
+        log_object_growth("load", self._load_mem_baseline)
+        self._load_mem_baseline = None
 
     def _load_files_batch(self, files: list, target: object, unmatched_files: list) -> None:
         """Dispatch file loads using time-budgeted batching."""
@@ -1165,8 +1216,38 @@ class Tagger(QtWidgets.QApplication):
 
     def save(self, objects):
         """Save the specified objects."""
-        for file in iter_files_from_objects(objects, save=True):
-            file.save()
+        # Opt-in memory profiling of the bulk save path (--debug-opts=memory).
+        # When disabled every profiling call is a no-op and the loop below is
+        # the original lazy iteration.
+        baseline = object_counts_baseline()
+        count = 0
+        with memory_snapshot("save: enqueue"):
+            for file in iter_files_from_objects(objects, save=True):
+                file.save()
+                count += 1
+        self._memprofile_bulk_save_drain(count, baseline)
+
+    def _memprofile_bulk_save_drain(self, count, baseline):
+        """Sample memory while the save pool drains, if DebugOpt.MEMORY is enabled.
+
+        Once the single-threaded save pool finishes, logs which object types
+        accumulated over the whole save so per-save retention is visible.
+        No-op when profiling is disabled.
+        """
+        if not DebugOpt.MEMORY.enabled:
+            return
+        sampler = MemorySampler(label="bulk save", track_objects=True)
+        sampler.start()
+
+        def wait_and_report():
+            # Wait for the single-threaded save pool to drain off the main thread.
+            self.save_thread_pool.waitForDone()
+
+        def finished(result=None, error=None):
+            sampler.stop()
+            log_object_growth("save (%d files)" % count, baseline)
+
+        thread.run_task(wait_and_report, finished)
 
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()

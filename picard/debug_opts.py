@@ -183,3 +183,8 @@ class DebugOpt(DebugOptEnum):
     RATECONTROL = 12, N_('Rate Control'), N_('Log request throttling, congestion window, and backoff details')
     THEME = 13, N_('Theme'), N_('Log theme switching diagnostics, palette colors, and color scheme details')
     BROWSER = 14, N_('Browser Integration'), N_('Log browser integration HTTP requests')
+    MEMORY = (
+        15,
+        N_('Memory Profiling'),
+        N_('Log opt-in memory profiling: allocations, object counts, and usage over time'),
+    )
