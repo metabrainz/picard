@@ -46,6 +46,7 @@ def find_rcc():
     for path in (
         '/usr/lib64/qt6/libexec',
         '/usr/lib/qt6/libexec',
+        '/system/lib/Qt6',  # Haiku
     ):
         rcc_path = which(rcc, path=path)
         if rcc_path:
