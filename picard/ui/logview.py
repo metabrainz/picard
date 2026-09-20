@@ -39,7 +39,10 @@ from PyQt6 import (
 
 from picard import log
 from picard.debug_opts import DebugOpt
-from picard.i18n import gettext as _
+from picard.i18n import (
+    gettext as _,
+    sort_key,
+)
 from picard.util.qt import reconnect
 
 from picard.ui import (
@@ -317,9 +320,9 @@ class DebugOptsMenu(QtWidgets.QMenu):
         super().__init__(parent=parent)
         self.setToolTipsVisible(True)
         self.action_map = {}
-        for debug_opt in DebugOpt:
+        for debug_opt in sorted(DebugOpt, key=lambda o: sort_key(_(o.title))):
             action = QtGui.QAction(_(debug_opt.title), self, checkable=True, checked=debug_opt.enabled)
-            action.setToolTip(_(debug_opt.description))
+            action.setToolTip(f"{_(debug_opt.description)} [{debug_opt.optname}]")
             action.triggered.connect(partial(self.debug_opt_changed, debug_opt))
             self.addAction(action)
             self.action_map[debug_opt] = action
