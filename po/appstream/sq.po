@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-12 10:31+0200\n"
+"POT-Creation-Date: 2026-09-20 14:26+0200\n"
 "PO-Revision-Date: 2026-01-27 15:49+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:2
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -135,15 +135,15 @@ msgstr ""
 "License 2.0 ose të mëvonshme, dhe strehohet në GitHub, ku zhvillohet në "
 "mënyrë aktive nga disa programues të mrekullueshëm."
 
-#: org.musicbrainz.Picard.appdata.xml.in:111
+#: org.musicbrainz.Picard.appdata.xml.in:112
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz Foundation"
 
-#: org.musicbrainz.Picard.desktop.in:4
+#: org.musicbrainz.Picard.desktop.in:3
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr "Etiketoni muzikën tuaj me brezin e ardhshëm të etiketuesit MusicBrainz"
 
-#: org.musicbrainz.Picard.desktop.in:16
+#: org.musicbrainz.Picard.desktop.in:15
 msgid "New Window"
 msgstr "Dritare e Re"
 

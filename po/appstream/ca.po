@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-12 10:31+0200\n"
+"POT-Creation-Date: 2026-09-20 14:26+0200\n"
 "PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.4\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:2
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -132,17 +132,17 @@ msgstr ""
 "GNU 2.0 o posterior i s'allotja a GitHub, on té un desenvolupament actiu "
 "gràcies a un equip de desenvolupament fantàstic."
 
-#: org.musicbrainz.Picard.appdata.xml.in:111
+#: org.musicbrainz.Picard.appdata.xml.in:112
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz Foundation"
 
-#: org.musicbrainz.Picard.desktop.in:4
+#: org.musicbrainz.Picard.desktop.in:3
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr ""
 "Etiqueteu la vostra música amb l'editor d'etiquetes d'última generació de "
 "MusicBrainz"
 
-#: org.musicbrainz.Picard.desktop.in:16
+#: org.musicbrainz.Picard.desktop.in:15
 msgid "New Window"
 msgstr "Finestra nova"
 

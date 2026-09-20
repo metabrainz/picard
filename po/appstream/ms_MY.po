@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-12 10:31+0200\n"
+"POT-Creation-Date: 2026-09-20 14:26+0200\n"
 "PO-Revision-Date: 2026-06-26 20:12+0000\n"
 "Last-Translator: Jeluang <adli98@yahoo.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/3/"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2026.6.1\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:2
 msgid "MusicBrainz Picard"
 msgstr "Picard MusicBrainz"
 
@@ -135,15 +135,15 @@ msgstr ""
 "terkemudian. Picard juga dihoskan di GitHub serta sedang giat dibangunkan "
 "oleh pembangun-pembangun yang hebat."
 
-#: org.musicbrainz.Picard.appdata.xml.in:111
+#: org.musicbrainz.Picard.appdata.xml.in:112
 msgid "MetaBrainz Foundation"
 msgstr "Yayasan MetaBrainz"
 
-#: org.musicbrainz.Picard.desktop.in:4
+#: org.musicbrainz.Picard.desktop.in:3
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr "Tandakan muzik anda dengan penanda MusicBrainz generasi seterusnya"
 
-#: org.musicbrainz.Picard.desktop.in:16
+#: org.musicbrainz.Picard.desktop.in:15
 msgid "New Window"
 msgstr "Tetingkap Baharu"
 

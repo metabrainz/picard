@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-12 10:31+0200\n"
+"POT-Creation-Date: 2026-09-20 14:26+0200\n"
 "PO-Revision-Date: 2025-04-12 09:40+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.4\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:2
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -136,15 +136,15 @@ msgstr ""
 "höher) lizenziert und wird auf GitHub von großartigen Entwicklern "
 "weiterentwickelt."
 
-#: org.musicbrainz.Picard.appdata.xml.in:111
+#: org.musicbrainz.Picard.appdata.xml.in:112
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz Foundation"
 
-#: org.musicbrainz.Picard.desktop.in:4
+#: org.musicbrainz.Picard.desktop.in:3
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr "Tagge deine Musik mit dem MusicBrainz-Tagger der nächsten Generation"
 
-#: org.musicbrainz.Picard.desktop.in:16
+#: org.musicbrainz.Picard.desktop.in:15
 msgid "New Window"
 msgstr "Neues Fenster"
 

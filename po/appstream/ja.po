@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-12 10:31+0200\n"
+"POT-Creation-Date: 2026-09-20 14:26+0200\n"
 "PO-Revision-Date: 2026-09-14 10:14+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -27,7 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2026.9.1\n"
 
-#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
+#: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:2
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -36,8 +36,8 @@ msgstr "MusicBrainz Picard"
 msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
-"Picardは、MusicBrainzデータベースを搭載したクロスプラットフォームの音楽"
-"タッガーです。"
+"Picardは、MusicBrainzデータベースを搭載したクロスプラットフォームの音楽タッ"
+"ガーです。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
@@ -123,8 +123,8 @@ msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
-"Picardは、あなたのアルバムの正しいカバーアートを見つけてダウンロードできます"
-"。"
+"Picardは、あなたのアルバムの正しいカバーアートを見つけてダウンロードできま"
+"す。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
@@ -136,15 +136,15 @@ msgstr ""
 "素晴らしい開発者によってアクティブに開発されている GitHub 上でホスティングさ"
 "れています。"
 
-#: org.musicbrainz.Picard.appdata.xml.in:111
+#: org.musicbrainz.Picard.appdata.xml.in:112
 msgid "MetaBrainz Foundation"
 msgstr "MetaBrainz Foundation"
 
-#: org.musicbrainz.Picard.desktop.in:4
+#: org.musicbrainz.Picard.desktop.in:3
 msgid "Tag your music with the next generation MusicBrainz tagger"
 msgstr ""
 
-#: org.musicbrainz.Picard.desktop.in:16
+#: org.musicbrainz.Picard.desktop.in:15
 msgid "New Window"
 msgstr ""
 
