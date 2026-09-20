@@ -38,10 +38,10 @@ from picard.i18n import (
 from picard.options import get_option_title
 
 
-markdown: Callable[[str], str] | None = None
+Markdown: Callable[..., object] | None = None
 
 try:
-    from markdown import markdown  # type: ignore[unresolved-import,no-redef]
+    from markdown import Markdown  # type: ignore[unresolved-import,no-redef]
 except ImportError:
     pass
 
@@ -49,11 +49,20 @@ except ImportError:
 DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 
 
+# A single reusable Markdown instance. The module-level ``markdown.markdown()``
+# convenience function builds a brand-new Markdown object (with its full
+# processor registry and parser) on every call, which is expensive when tag
+# tooltips are rendered repeatedly (e.g. rebuilding the metadata box for many
+# files). Reusing one instance and calling reset() before each convert() avoids
+# that per-call construction cost.
+_md_instance = Markdown() if Markdown is not None else None
+
+
 def _markdown(text: str):
     text = html.escape(text)
-    if markdown is None:
+    if _md_instance is None:
         return '<p>' + text.replace('\n', '<br />') + '</p>'
-    return markdown(text)
+    return _md_instance.reset().convert(text)
 
 
 class Section(IntEnum):
