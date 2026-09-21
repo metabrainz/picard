@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2026-09-14 04:14+0000\n"
+"PO-Revision-Date: 2026-09-21 15:13+0000\n"
 "Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/2/constants/zh_Hant/>\n"
@@ -207,11 +207,11 @@ msgstr "烏克蘭語"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr "漢語（中國）"
+msgstr "中文（中國）"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr "漢語（台灣）"
+msgstr "中文（台灣）"
 
 #: picard/const/locales.py:27
 msgid "Afar"
