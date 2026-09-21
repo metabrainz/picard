@@ -23,6 +23,7 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.options import Option
+from picard.tags import tagvar
 from picard.tags.docs import (
     display_tag_full_description,
     display_tag_tooltip,
@@ -30,7 +31,6 @@ from picard.tags.docs import (
 from picard.tags.tagvar import (
     DocumentLink,
     TagVar,
-    markdown,
 )
 
 
@@ -79,7 +79,7 @@ class UtilTagsDocsTest(PicardTestCase):
                 '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
                 '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
             )
-            if markdown is not None
+            if tagvar.Markdown is not None
             else (
                 '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
                 '<br /><br />'
@@ -149,7 +149,7 @@ class UtilTagsDocsTest(PicardTestCase):
                 '<li>Bar</li>\n'
                 '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
             )
-            if markdown is not None
+            if tagvar.Markdown is not None
             else (
                 '<p>Description of **My Var**:<br /><br />'
                 '- Foo<br />'
@@ -165,3 +165,50 @@ class UtilTagsDocsTest(PicardTestCase):
         item._longdesc = None
         expected = '<p>my_var</p>'
         self.assertEqual(display_tag_full_description(item), expected)
+
+
+class TagTooltipCachingTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        # Isolate the module-level cache between tests.
+        display_tag_tooltip.cache_clear()
+
+    def tearDown(self):
+        display_tag_tooltip.cache_clear()
+        super().tearDown()
+
+    def test_display_tag_tooltip_is_cached(self):
+        # The tooltip for a given tag is deterministic and should be memoized:
+        # a second call must return the identical cached object.
+        first = display_tag_tooltip('album')
+        info_before = display_tag_tooltip.cache_info()
+        second = display_tag_tooltip('album')
+        info_after = display_tag_tooltip.cache_info()
+
+        self.assertIs(first, second)
+        # The second call is a cache hit (hits increased, misses did not).
+        self.assertEqual(info_after.hits, info_before.hits + 1)
+        self.assertEqual(info_after.misses, info_before.misses)
+
+    def test_distinct_tags_are_cached_separately(self):
+        album = display_tag_tooltip('album')
+        albumsort = display_tag_tooltip('albumsort')
+        self.assertNotEqual(album, albumsort)
+        self.assertEqual(display_tag_tooltip.cache_info().currsize, 2)
+
+
+class MarkdownReuseTest(PicardTestCase):
+    def test_markdown_reuses_single_instance(self):
+        # _markdown must not build a new Markdown object on every call.
+        if tagvar._md_instance is None:
+            self.skipTest("markdown library not installed")
+        before = tagvar._md_instance
+        tagvar._markdown("some **text**")
+        tagvar._markdown("other _text_")
+        self.assertIs(tagvar._md_instance, before)
+
+    def test_markdown_output_stable_across_calls(self):
+        # Reusing the instance (with reset()) must give identical output when
+        # rendering the same input repeatedly.
+        text = "A **bold** thing with a list:\n\n- one\n- two"
+        self.assertEqual(tagvar._markdown(text), tagvar._markdown(text))

@@ -18,6 +18,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from functools import cache
+
 from picard.const.tags import ALL_TAGS
 from picard.i18n import gettext as _
 from picard.tags.tagvar import (
@@ -27,6 +29,7 @@ from picard.tags.tagvar import (
 )
 
 
+@cache
 def display_tag_tooltip(tagname):
     name, item, tagdesc = _get_tagvar_item(tagname)
     content = ALL_TAGS.tooltip_content(item) if item else None
