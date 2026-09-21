@@ -29,6 +29,7 @@ from collections.abc import (
 )
 from enum import IntEnum
 import html
+import threading
 
 from picard.i18n import (
     N_,
@@ -57,12 +58,19 @@ DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 # that per-call construction cost.
 _md_instance = Markdown() if Markdown is not None else None
 
+# The shared ``_md_instance`` carries mutable per-conversion state, so the
+# reset()/convert() pair must run atomically. Picard currently renders tag
+# documentation from the UI thread only, but guarding access with a lock keeps
+# ``_markdown()`` safe if it is ever called concurrently from multiple threads.
+_md_lock = threading.Lock()
+
 
 def _markdown(text: str):
     text = html.escape(text)
     if _md_instance is None:
         return '<p>' + text.replace('\n', '<br />') + '</p>'
-    return _md_instance.reset().convert(text)
+    with _md_lock:
+        return _md_instance.reset().convert(text)
 
 
 class Section(IntEnum):

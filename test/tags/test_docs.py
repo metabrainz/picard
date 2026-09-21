@@ -20,6 +20,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import threading
+
 from test.picardtestcase import PicardTestCase
 
 from picard.options import Option
@@ -212,3 +214,50 @@ class MarkdownReuseTest(PicardTestCase):
         # rendering the same input repeatedly.
         text = "A **bold** thing with a list:\n\n- one\n- two"
         self.assertEqual(tagvar._markdown(text), tagvar._markdown(text))
+
+    def test_markdown_is_thread_safe(self):
+        # The single shared Markdown instance carries mutable per-conversion
+        # state, so concurrent reset()/convert() calls must be serialized by the
+        # module lock. Without the lock, parallel calls corrupt each other's
+        # state and produce wrong (or exceptional) output. Render several
+        # distinct inputs from many threads at once and verify every result
+        # matches the single-threaded reference rendering.
+        if tagvar._md_instance is None:
+            self.skipTest("markdown library not installed")
+
+        inputs = [
+            "A **bold** thing with a list:\n\n- one\n- two",
+            "Some _emphasis_ and `code`.",
+            "Heading style:\n\n- alpha\n- beta\n- gamma",
+            "Plain paragraph without markup.",
+        ]
+        # Reference output rendered serially (no concurrency).
+        expected = {text: tagvar._markdown(text) for text in inputs}
+
+        results = []
+        results_lock = threading.Lock()
+        errors = []
+        barrier = threading.Barrier(len(inputs) * 8)
+
+        def worker(text):
+            try:
+                # Release all threads at once to maximize contention.
+                barrier.wait()
+                for _i in range(50):
+                    out = tagvar._markdown(text)
+                    with results_lock:
+                        results.append((text, out))
+            except Exception as exc:  # pragma: no cover - failure path
+                with results_lock:
+                    errors.append(exc)
+
+        threads = [threading.Thread(target=worker, args=(text,)) for text in inputs for _n in range(8)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+        self.assertEqual(errors, [])
+        self.assertTrue(results)
+        for text, out in results:
+            self.assertEqual(out, expected[text])
