@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-18 18:13+0000\n"
+"PO-Revision-Date: 2026-09-21 06:52+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/hu/>\n"
@@ -255,7 +255,7 @@ msgstr ""
 
 #: picard/debug_opts.py:184
 msgid "Theme"
-msgstr ""
+msgstr "Téma"
 
 #: picard/debug_opts.py:184
 msgid ""
@@ -264,7 +264,7 @@ msgstr ""
 
 #: picard/debug_opts.py:185 picard/ui/forms/ui_options_network.py:185
 msgid "Browser Integration"
-msgstr ""
+msgstr "Böngésző integráció"
 
 #: picard/debug_opts.py:185
 msgid "Log browser integration HTTP requests"
@@ -272,11 +272,11 @@ msgstr ""
 
 #: picard/file.py:335
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "A fájl mentése nem sikerült: a fájl már nem létezik."
 
 #: picard/file.py:339
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "A fájl mentése nem sikerült: hozzáférés megtagadva."
 
 #: picard/file.py:344
 msgid ""
@@ -287,22 +287,19 @@ msgstr ""
 "fájl formátum."
 
 #: picard/file.py:1174 picard/file.py:1191
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks for file \"%(filename)s\""
-msgstr "Nincs megegyező zeneszám a '%(filename)s' fájlhoz"
+msgstr "Nincs megegyező zeneszám a \"%(filename)s\" fájlhoz"
 
 #: picard/file.py:1177
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr "Nincs megegyező zeneszám a '%(filename)s' fájlhoz"
+msgstr "A \"%(filename)s\" fájlhoz tartozó legjobb találat nem egyértelmű"
 
 #: picard/file.py:1179
-#, fuzzy, python-format
-#| msgid "File '%(filename)s' identified!"
+#, python-format
 msgid "File \"%(filename)s\" identified!"
-msgstr "Fájl '%(filename)s' azonosítva!"
+msgstr "Fájl \"%(filename)s\" azonosítva!"
 
 #: picard/file.py:1259
 #, python-format
@@ -363,7 +360,7 @@ msgstr "Hiba"
 
 #: picard/log.py:94
 msgid "Warning"
-msgstr ""
+msgstr "Figyelmeztetés"
 
 #: picard/log.py:95 picard/ui/dialogs/installplugin.py:474
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
@@ -377,32 +374,28 @@ msgstr ""
 
 #: picard/oauth.py:216
 msgid "Unexpected token revocation error"
-msgstr ""
+msgstr "Váratlan token-visszavonási hiba"
 
 #: picard/oauth.py:401 picard/oauth.py:429
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Váratlan hitelesítési hiba"
 
 #: picard/oauth.py:441
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Váratlan kéréshiba(request) (HTTP-kód: %s)"
 
 #: picard/options.py:108 picard/ui/forms/ui_provider_options_caa.py:82
 msgid "Download only approved images"
-msgstr ""
+msgstr "Csak jóváhagyott képeket letöltése"
 
 #: picard/options.py:109
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Cover art image size"
-msgstr "&Rejtett fájlok megjelenítése"
+msgstr ""
 
 #: picard/options.py:111
-#, fuzzy
-#| msgid "Convert File Names to Tags"
 msgid "Cover art image types"
-msgstr "Fájlnevek átalakítása cimkévé"
+msgstr ""
 
 #: picard/options.py:117
 #, fuzzy
