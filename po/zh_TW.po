@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-13 08:07+0000\n"
+"PO-Revision-Date: 2026-09-21 06:52+0000\n"
 "Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/app/zh_Hant/>\n"
@@ -357,7 +357,7 @@ msgstr "資訊"
 
 #: picard/log.py:96
 msgid "Debug"
-msgstr "除錯"
+msgstr "偵錯"
 
 #: picard/oauth.py:216
 msgid "Unexpected token revocation error"
@@ -365,7 +365,7 @@ msgstr "撤銷權杖時發生非預期的錯誤"
 
 #: picard/oauth.py:401 picard/oauth.py:429
 msgid "Unexpected authentication error"
-msgstr "非預期的認證錯誤"
+msgstr "非預期的驗證錯誤"
 
 #: picard/oauth.py:441
 #, python-format
@@ -414,7 +414,7 @@ msgstr "完整性檢查忽略：無聲音軌"
 
 #: picard/options.py:188
 msgid "Completeness ignore: Video tracks"
-msgstr "完整性檢查忽略：視訊音軌"
+msgstr "完整性檢查忽略：影片音軌"
 
 #: picard/options.py:190 picard/ui/forms/ui_options_advanced.py:53
 msgid "Ignore hidden files"
@@ -442,7 +442,7 @@ msgstr "CD 查詢裝置"
 
 #: picard/options.py:219
 msgid "Cover art providers"
-msgstr "封面圖來源"
+msgstr "封面圖提供者"
 
 #: picard/options.py:221
 msgid "File name for images"
@@ -610,7 +610,7 @@ msgstr "伺服器位址"
 
 #: picard/options.py:381
 msgid "Port"
-msgstr "埠"
+msgstr "連接埠"
 
 #: picard/options.py:382
 msgid "Submit to configured server"
@@ -679,7 +679,7 @@ msgstr "儲存時確認"
 
 #: picard/options.py:427
 msgid "Confirm quit if unsaved changes"
-msgstr "有未儲存的修改時確認離開"
+msgstr "有未儲存的變更時確認結束"
 
 #: picard/options.py:428 picard/ui/forms/ui_options_interface.py:120
 msgid "Show icons in menus"
@@ -1123,7 +1123,7 @@ msgstr "外掛程式沒有簡介。"
 
 #: picard/plugin.py:130
 msgid "Unknown Plugin"
-msgstr "不明外掛程式"
+msgstr "未知外掛程式"
 
 #: picard/plugin.py:133 picard/ui/cdlookup.py:65
 #: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1215
@@ -1319,7 +1319,7 @@ msgstr "所有檔案"
 #: picard/tagger.py:1403
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
-msgstr "解析擷取日誌檔案「%s」失敗"
+msgstr "剖析擷取日誌檔案「%s」失敗"
 
 #: picard/tagger.py:1423 picard/tagger.py:1438
 msgid "Disc information could not be found"
@@ -2729,7 +2729,7 @@ msgid ""
 "\n"
 "_Since Picard 2.2_"
 msgstr ""
-"如果正在處理的檔案是視訊檔案，回傳真值。\n"
+"如果正在處理的檔案是影片檔案，回傳真值。\n"
 "\n"
 "_從 Picard 2.2 開始支援_"
 
@@ -3437,16 +3437,12 @@ msgid "multi-value variable"
 msgstr "多值變數"
 
 #: picard/tags/tagvar.py:79
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "read-only"
-msgstr "保留的唯讀"
+msgstr "唯讀"
 
 #: picard/tags/tagvar.py:80
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "preserved"
-msgstr "保留的唯讀"
+msgstr "保留"
 
 #: picard/tags/tagvar.py:81
 msgid "not for use in scripts"
@@ -3569,7 +3565,7 @@ msgstr "清除全部(&L)"
 #: picard/ui/dialogs/cover_types_selector.py:65 picard/ui/options/dialog.py:358
 #: picard/ui/options/renaming_compat.py:216
 msgid "Restore &Defaults"
-msgstr "恢復預設值(&D)"
+msgstr "還原預設值(&D)"
 
 #: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:145
 #: picard/ui/mainwindow/__init__.py:1216 picard/ui/searchdialog/album.py:160
@@ -3687,7 +3683,7 @@ msgstr "標籤"
 
 #: picard/ui/colors.py:56
 msgid "Tag changed"
-msgstr "已修改標籤"
+msgstr "標籤已變更"
 
 #: picard/ui/colors.py:57
 msgid "Tag removed"
@@ -3753,7 +3749,7 @@ msgstr "自訂欄位"
 
 #: picard/ui/filebrowser.py:55
 msgid "&Load selected files"
-msgstr "載入已選檔案(&L)"
+msgstr "載入所選檔案(&L)"
 
 #: picard/ui/filebrowser.py:58
 msgid "&Move tagged files here"
@@ -3790,7 +3786,7 @@ msgstr "選擇 / 清除所有篩選器"
 
 #: picard/ui/infostatus.py:67
 msgid "Stop all pending network requests"
-msgstr "停止所有等待中的網路請求"
+msgstr "停止所有待處理的網路請求"
 
 #: picard/ui/infostatus.py:78
 msgid "Estimated Time"
@@ -3980,10 +3976,8 @@ msgid "Green: %s."
 msgstr "綠色：%s。"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:54
-#, fuzzy
-#| msgid "Enable Tagger Script(s)"
 msgid "Enable Tagger Scripts?"
-msgstr "啟用標籤腳本"
+msgstr "啟用標籤腳本？"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:61
 #, python-format
@@ -3995,12 +3989,14 @@ msgid ""
 "Uncheck any script you do not want to run, or cancel to import the scripts "
 "without enabling tagger scripting."
 msgstr ""
+"匯入的設定檔「%s」包含標籤腳本。此設定檔目前已停用標籤腳本功能。\n"
+"\n"
+"啟用後，當此設定檔生效時，將會執行已勾選的腳本。請取消勾選您不想執行的腳本，"
+"或按「取消」以匯入腳本但不啟用標籤腳本功能。"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:90
-#, fuzzy
-#| msgid "E&xit without saving"
 msgid "Import without enabling"
-msgstr "不儲存直接離開(&X)"
+msgstr "匯入但不啟用"
 
 #: picard/ui/ratingwidget.py:98
 #, python-format
@@ -4239,6 +4235,11 @@ msgid ""
 "\n"
 "Useful if your player or file system does not handle these characters well."
 msgstr ""
+"將標籤中的排版用 Unicode 標點符號取代為對應的純 ASCII 字元：主要是彎引號（’）"
+"會變成直的單引號（'），彎雙引號（“ 與 ”）會變成直的雙引號（\"），而破折號（—"
+"）會變成連字號（-）。\n"
+"\n"
+"如果您的播放器或檔案系統無法妥善處理這些字元，此選項會很有用。"
 
 #: picard/ui/setupwizard.py:472
 msgid "You can change this later under Options → Options → Metadata."
@@ -4283,8 +4284,8 @@ msgid ""
 "Picard is looking up your selection on MusicBrainz. Matched albums will "
 "appear in the right pane. You can then review the metadata before saving."
 msgstr ""
-"Picard 正在 MusicBrainz 上查詢您的選擇。配對到的專輯將顯示在右側窗格中。您可"
-"以在儲存前檢閱詮釋資料。"
+"Picard 正在 MusicBrainz 上查詢您所選的項目。配對到的專輯將顯示在右側窗格中。"
+"您可以在儲存前檢閱詮釋資料。"
 
 #: picard/ui/tutorial.py:84
 msgid ""
@@ -4562,10 +4563,8 @@ msgid "Categories"
 msgstr "分類"
 
 #: picard/ui/dialogs/installplugin.py:141
-#, fuzzy
-#| msgid "Double-click to view detailed plugin information"
 msgid "Double-click a plugin for detailed information."
-msgstr "按兩下以檢視詳細的外掛程式資訊"
+msgstr "按兩下外掛程式以檢視詳細資訊。"
 
 #: picard/ui/dialogs/installplugin.py:144
 msgid "Registry"
@@ -4841,11 +4840,11 @@ msgstr "外掛程式模組中被呼叫的方法或函式"
 
 #: picard/ui/dialogs/plugin_order_selector.py:118
 msgid "Move selected plugin up"
-msgstr "向上移動已選外掛程式"
+msgstr "向上移動所選外掛程式"
 
 #: picard/ui/dialogs/plugin_order_selector.py:125
 msgid "Move selected plugin down"
-msgstr "向下移動已選外掛程式"
+msgstr "向下移動所選外掛程式"
 
 #: picard/ui/dialogs/plugin_order_selector.py:202
 #: picard/ui/options/dialog.py:1030
@@ -4972,7 +4971,7 @@ msgstr "支援的格式"
 
 #: picard/ui/forms/ui_aboutdialog.py:246
 msgid "Please donate"
-msgstr "請捐獻"
+msgstr "請捐款"
 
 #: picard/ui/forms/ui_aboutdialog.py:247
 msgid ""
@@ -4982,12 +4981,12 @@ msgid ""
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
 "感謝您使用 Picard。Picard 依賴於 MusicBrainz 資料庫，它是由 MetaBrainz 基金會"
-"在數千名志工的幫助下運作。如果您喜歡這個程式，可考慮捐獻給 MetaBrainz 基金會"
-"來幫助維持服務運作。"
+"在數千名志工的協助下運作。如果您喜歡這個程式，可考慮捐款給 MetaBrainz 基金會"
+"來協助維持服務運作。"
 
 #: picard/ui/forms/ui_aboutdialog.py:248
 msgid "Donate now!"
-msgstr "立即捐獻！"
+msgstr "立即捐款！"
 
 #: picard/ui/forms/ui_aboutdialog.py:249
 msgid "Credits"
@@ -5031,7 +5030,7 @@ msgstr "提交碟片 ID"
 
 #: picard/ui/forms/ui_cdlookup.py:95
 msgid "&Load into Picard"
-msgstr "載入到 Picard 裡(&L)"
+msgstr "載入至 Picard(&L)"
 
 #: picard/ui/forms/ui_cdlookup.py:96
 msgid "&Submit disc ID"
@@ -5060,12 +5059,12 @@ msgstr "移除值"
 #: picard/ui/forms/ui_edittagdialog.py:124
 #: picard/ui/forms/ui_edittagdialog.py:125
 msgid "Move selected value up"
-msgstr "向上移動已選值"
+msgstr "向上移動所選值"
 
 #: picard/ui/forms/ui_edittagdialog.py:126
 #: picard/ui/forms/ui_edittagdialog.py:127
 msgid "Move selected value down"
-msgstr "向下移動已選值"
+msgstr "向下移動所選值"
 
 #: picard/ui/forms/ui_exception_script_selector.py:111
 msgid "Exception Language Script Selector"
@@ -5073,27 +5072,27 @@ msgstr "例外語言文字系統選擇器"
 
 #: picard/ui/forms/ui_exception_script_selector.py:112
 msgid "Selected Scripts"
-msgstr "已選的文字系統"
+msgstr "所選文字系統"
 
 #: picard/ui/forms/ui_exception_script_selector.py:113
 msgid "Selected language script match threshold:"
-msgstr "已選語言文字系統的比對門檻："
+msgstr "所選語言文字系統的比對閾值："
 
 #: picard/ui/forms/ui_exception_script_selector.py:114
 msgid "Move selected language script up"
-msgstr "向上移動已選語言文字系統"
+msgstr "向上移動所選語言文字系統"
 
 #: picard/ui/forms/ui_exception_script_selector.py:115
 msgid "Add to selected language scripts"
-msgstr "新增至選取的語言文字系統"
+msgstr "新增至所選語言文字系統"
 
 #: picard/ui/forms/ui_exception_script_selector.py:116
 msgid "Remove selected language script"
-msgstr "移除已選的語言文字系統"
+msgstr "移除所選語言文字系統"
 
 #: picard/ui/forms/ui_exception_script_selector.py:117
 msgid "Move selected language script down"
-msgstr "向下移動已選語言文字系統"
+msgstr "向下移動所選語言文字系統"
 
 #: picard/ui/forms/ui_exception_script_selector.py:118
 msgid "Available Language Scripts"
@@ -5130,23 +5129,23 @@ msgstr "區域語言設定選擇工具"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:92
 msgid "Selected Locales"
-msgstr "已選的區域語言設定"
+msgstr "所選區域語言設定"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:93
 msgid "Move selected locale up"
-msgstr "向上移動已選區域語言設定"
+msgstr "向上移動所選區域語言設定"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:94
 msgid "Add to selected locales"
-msgstr "新增至選取的區域語言設定"
+msgstr "新增至所選區域語言設定"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:95
 msgid "Remove selected locale"
-msgstr "移除已選的區域語言設定"
+msgstr "移除所選區域語言設定"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:96
 msgid "Move selected locale down"
-msgstr "向下移動已選區域語言設定"
+msgstr "向下移動所選區域語言設定"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:97
 msgid "Available Locales"
@@ -5184,7 +5183,7 @@ msgid ""
 msgstr ""
 "Picard 可以透過主「檔案」選單，將您目前的工作區狀態儲存為工作階段檔案並加以還"
 "原。工作階段會保留檔案的位置（未叢集、叢集、專輯、特定音軌與獨立錄音）、您手"
-"動編輯的詮釋資料，以及選定的設定選項，讓您之後能繼續工作。\n"
+"動編輯的詮釋資料，以及所選的設定選項，讓您之後能繼續工作。\n"
 "\n"
 "這些設定決定工作階段檔案的管理方式。"
 
@@ -5256,7 +5255,7 @@ msgstr "永不以較小的封面圖片取代"
 
 #: picard/ui/forms/ui_options_cover.py:130
 msgid "Never replace selected cover image types"
-msgstr "永不取代所選的封面圖片類型"
+msgstr "永不取代所選封面圖片類型"
 
 #: picard/ui/forms/ui_options_cover.py:131
 msgid "Select Types…"
@@ -5264,11 +5263,11 @@ msgstr "選擇類型…"
 
 #: picard/ui/forms/ui_options_cover.py:132
 msgid "Save cover images as separate files"
-msgstr "將封面圖片儲存為分開的檔案"
+msgstr "將封面圖片儲存為獨立檔案"
 
 #: picard/ui/forms/ui_options_cover.py:133
 msgid "Use the following file name for images:"
-msgstr "對圖片使用以下檔名："
+msgstr "對圖片使用以下檔案名稱："
 
 #: picard/ui/forms/ui_options_cover.py:134
 msgid "Overwrite the file if it already exists"
@@ -5276,7 +5275,7 @@ msgstr "檔案存在時取代"
 
 #: picard/ui/forms/ui_options_cover.py:135
 msgid "Save only a single front image as separate file"
-msgstr "只將一個正面圖片儲存為分開的檔案"
+msgstr "只將一個正面圖片儲存為獨立檔案"
 
 #: picard/ui/forms/ui_options_cover.py:136
 msgid "Always use the primary image type as the file name for non-front images"
@@ -5303,17 +5302,17 @@ msgstr "封面圖提供者"
 
 #: picard/ui/forms/ui_options_cover.py:141
 msgid "Reorder Priority:"
-msgstr "調整優先度："
+msgstr "調整優先順序："
 
 #: picard/ui/forms/ui_options_cover.py:142
 #: picard/ui/forms/ui_options_interface_toolbar.py:83
 msgid "Move selected item up"
-msgstr "向上移動已選項目"
+msgstr "向上移動所選項目"
 
 #: picard/ui/forms/ui_options_cover.py:143
 #: picard/ui/forms/ui_options_interface_toolbar.py:84
 msgid "Move selected item down"
-msgstr "向下移動已選項目"
+msgstr "向下移動所選項目"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 msgid "Discard images if below the given size"
@@ -5477,7 +5476,7 @@ msgstr "回退使用專輯創作者的流派"
 
 #: picard/ui/forms/ui_options_genres.py:123
 msgid "Minimal genre usage:"
-msgstr "最低流派利用："
+msgstr "最低流派使用率："
 
 #: picard/ui/forms/ui_options_genres.py:124
 #: picard/ui/forms/ui_options_matching.py:136
@@ -5492,7 +5491,7 @@ msgstr "流派總數上限："
 
 #: picard/ui/forms/ui_options_genres.py:126
 msgid "Join multiple genres with:"
-msgstr "串接流派用的分隔符號："
+msgstr "串接多個流派時使用："
 
 #: picard/ui/forms/ui_options_genres.py:127
 #: picard/ui/forms/ui_options_network.py:182
@@ -5530,7 +5529,7 @@ msgstr "啟動 Picard 時顯示新使用者對話框"
 
 #: picard/ui/forms/ui_options_interface.py:126
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "有未儲存的修改時，顯示離開確認對話框"
+msgstr "有未儲存的變更時，顯示結束確認對話框"
 
 #: picard/ui/forms/ui_options_interface.py:127
 msgid "Show a confirmation dialog when saving files"
@@ -5659,7 +5658,7 @@ msgstr "全選"
 
 #: picard/ui/forms/ui_options_maintenance.py:153
 msgid "Remove selected options"
-msgstr "移除已選選項"
+msgstr "移除所選選項"
 
 #: picard/ui/forms/ui_options_matching.py:135
 msgid "Minimum similarity:"
@@ -5684,7 +5683,7 @@ msgstr "判斷發行品是否完整時忽略以下音軌："
 
 #: picard/ui/forms/ui_options_matching.py:143
 msgid "Video tracks"
-msgstr "視訊音軌"
+msgstr "影片音軌"
 
 #: picard/ui/forms/ui_options_matching.py:144
 msgid "Pre-gap tracks"
@@ -5753,7 +5752,7 @@ msgstr "對這些語言文字系統忽略名稱翻譯："
 
 #: picard/ui/forms/ui_options_metadata.py:212
 msgid "Custom Fields"
-msgstr "自訂欄位"
+msgstr "自訂名稱"
 
 #: picard/ui/forms/ui_options_metadata.py:213
 msgid "Various artists:"
@@ -5814,7 +5813,7 @@ msgstr "清除快取"
 
 #: picard/ui/forms/ui_options_network.py:186
 msgid "Default listening port:"
-msgstr "預設的聆聽連接埠："
+msgstr "預設監聽連接埠："
 
 #: picard/ui/forms/ui_options_player.py:59
 msgid "ListenBrainz user name"
@@ -5902,7 +5901,7 @@ msgstr "儲存時移動檔案"
 
 #: picard/ui/forms/ui_options_renaming.py:137
 msgid "Destination directory:"
-msgstr "目標資料夾："
+msgstr "目的地資料夾："
 
 #: picard/ui/forms/ui_options_renaming.py:139
 msgid "Move additional files (case insensitive):"
@@ -5977,14 +5976,12 @@ msgid "Add new tagger script"
 msgstr "新增標籤腳本"
 
 #: picard/ui/forms/ui_options_script.py:131
-#, fuzzy
-#| msgid "Add…"
 msgid "Add"
-msgstr "新增…"
+msgstr "新增"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
-msgstr "移除選取的標籤腳本"
+msgstr "移除所選標籤腳本"
 
 #: picard/ui/forms/ui_options_script.py:133
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:124
@@ -6058,7 +6055,7 @@ msgstr "修正 FLAC 檔案遺失的搜尋點"
 #: picard/ui/forms/ui_options_tags.py:102
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr "保留以下標籤不會被清除，或是被 MusicBrainz 資料覆蓋："
+msgstr "保留以下標籤不會被清除，或是被 MusicBrainz 資料覆寫："
 
 #: picard/ui/forms/ui_options_tags.py:104
 msgid "Do not sanitize dates for these tag formats:"
@@ -6199,7 +6196,7 @@ msgstr "需要驗證"
 
 #: picard/ui/forms/ui_provider_options_caa.py:79
 msgid "Download only selected image types"
-msgstr "只下載所選的圖片類型"
+msgstr "只下載所選圖片類型"
 
 #: picard/ui/forms/ui_provider_options_caa.py:80
 msgid "Select types…"
@@ -6279,7 +6276,7 @@ msgstr "腳本說明文件"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:59
 msgid "Convert File Names to Tags"
-msgstr "轉換檔名為標籤"
+msgstr "轉換檔案名稱為標籤"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:60
 msgid "Replace underscores with spaces"
@@ -6357,7 +6354,7 @@ msgstr "缺少暫存檔案"
 
 #: picard/ui/infodialog/utils.py:47
 msgid "Filename:"
-msgstr "檔名："
+msgstr "檔案名稱："
 
 #: picard/ui/infodialog/utils.py:49
 msgid "Format:"
@@ -6385,7 +6382,7 @@ msgstr "取樣率："
 
 #: picard/ui/infodialog/utils.py:64
 msgid "Bits per sample:"
-msgstr "樣本位元數："
+msgstr "每取樣位元數："
 
 #: picard/ui/infodialog/utils.py:68
 msgid "Mono"
@@ -6442,11 +6439,11 @@ msgstr "儲存為獨立檔案的新封面圖"
 
 #: picard/ui/infodialog/widgets.py:152 picard/ui/infodialog/widgets.py:174
 msgid "Existing Cover"
-msgstr "現有的封面"
+msgstr "既有封面"
 
 #: picard/ui/infodialog/widgets.py:154 picard/ui/infodialog/widgets.py:180
 msgid "Existing cover art already embedded into tags"
-msgstr "已嵌入標籤中的現有封面圖"
+msgstr "已嵌入標籤中的既有封面圖"
 
 #: picard/ui/itemviews/__init__.py:290
 msgid "Bad match"
@@ -6542,7 +6539,7 @@ msgstr "音軌已儲存"
 
 #: picard/ui/itemviews/__init__.py:810 picard/ui/itemviews/__init__.py:817
 msgid "Pending"
-msgstr "等待中"
+msgstr "待處理"
 
 #: picard/ui/itemviews/__init__.py:828
 msgid "Fingerprint has already been submitted"
@@ -6883,7 +6880,7 @@ msgstr "您確定要刪除自訂欄位「{title}」嗎？"
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:137
 #, python-brace-format
 msgid "Are you sure you want to delete {n} selected custom columns?"
-msgstr "您確定要刪除 {n} 個已選的自訂欄位嗎？"
+msgstr "您確定要刪除 {n} 個所選的自訂欄位嗎？"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:154
 #, python-format
@@ -7009,7 +7006,7 @@ msgstr "add_to 中有未知的檢視：%s"
 
 #: picard/ui/mainwindow/__init__.py:496
 msgid "Are you sure you want to quit Picard?"
-msgstr "您確定要離開 Picard 嗎？"
+msgstr "您確定要結束 Picard 嗎？"
 
 #: picard/ui/mainwindow/__init__.py:499
 #, python-format
@@ -7020,7 +7017,7 @@ msgstr[0] "仍有 %d 個未儲存的檔案。關閉 Picard 將會失去所有未
 
 #: picard/ui/mainwindow/__init__.py:508
 msgid "&Quit Picard"
-msgstr "離開 Picard(&Q)"
+msgstr "結束 Picard(&Q)"
 
 #: picard/ui/mainwindow/__init__.py:541
 msgid "Close Session"
@@ -7351,7 +7348,7 @@ msgstr "關於(&A)…"
 
 #: picard/ui/mainwindow/actions.py:132
 msgid "&Donate…"
-msgstr "捐獻(&D)…"
+msgstr "捐款(&D)…"
 
 #: picard/ui/mainwindow/actions.py:139
 msgid "&Report a Bug…"
@@ -7395,7 +7392,7 @@ msgstr "儲存(&S)"
 
 #: picard/ui/mainwindow/actions.py:185
 msgid "Save selected files"
-msgstr "儲存已選擇的檔案"
+msgstr "儲存所選檔案"
 
 #: picard/ui/mainwindow/actions.py:196
 msgid "Move to &trash"
@@ -7435,7 +7432,7 @@ msgstr "移除(&R)"
 
 #: picard/ui/mainwindow/actions.py:235
 msgid "Remove selected files/albums"
-msgstr "移除已選擇的檔案或專輯"
+msgstr "移除所選檔案或專輯"
 
 #: picard/ui/mainwindow/actions.py:243 picard/ui/metadatabox/__init__.py:808
 msgid "Lookup in &Browser"
@@ -7443,7 +7440,7 @@ msgstr "以瀏覽器查詢(&B)"
 
 #: picard/ui/mainwindow/actions.py:244
 msgid "Lookup selected item on MusicBrainz website"
-msgstr "在 MusicBrainz 網站中查詢已選擇的項目"
+msgstr "在 MusicBrainz 網站中查詢所選項目"
 
 #: picard/ui/mainwindow/actions.py:247
 msgid "Ctrl+Shift+L"
@@ -7455,7 +7452,7 @@ msgstr "以 ISRC 查詢(&I)"
 
 #: picard/ui/mainwindow/actions.py:255
 msgid "Lookup selected item by ISRC"
-msgstr "以 ISRC 查詢已選擇的項目"
+msgstr "以 ISRC 查詢所選項目"
 
 #: picard/ui/mainwindow/actions.py:264
 msgid "Submit cluster as release…"
@@ -7616,11 +7613,11 @@ msgstr "產生指紋"
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
-msgstr "對已選取的檔案產生 AcoustID 音訊指紋，但是不查詢這些檔案"
+msgstr "對所選檔案產生 AcoustID 音訊指紋，但是不查詢這些檔案"
 
 #: picard/ui/mainwindow/actions.py:452
 msgid "Generate the AcoustID audio fingerprints for the selected files"
-msgstr "對已選取的檔案產生 AcoustID 音訊指紋"
+msgstr "對所選檔案產生 AcoustID 音訊指紋"
 
 #: picard/ui/mainwindow/actions.py:453
 msgid "Ctrl+Shift+Y"
@@ -7644,7 +7641,7 @@ msgstr "查詢(&L)"
 
 #: picard/ui/mainwindow/actions.py:472
 msgid "Lookup selected items in MusicBrainz"
-msgstr "在 MusicBrainz 中查詢已選擇的項目"
+msgstr "在 MusicBrainz 中查詢所選項目"
 
 #: picard/ui/mainwindow/actions.py:477
 msgid "Ctrl+L"
@@ -7668,7 +7665,7 @@ msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow/actions.py:502
 msgid "Tags From &File Names…"
-msgstr "從檔名產生標籤(&F)…"
+msgstr "從檔案名稱產生標籤(&F)…"
 
 #: picard/ui/mainwindow/actions.py:503
 #: picard/ui/options/interface_toolbar.py:152
@@ -7713,7 +7710,7 @@ msgstr "播放(&P)"
 
 #: picard/ui/mainwindow/actions.py:541 picard/ui/player/toolbar.py:69
 msgid "Play selected files"
-msgstr "播放選擇的檔案"
+msgstr "播放所選檔案"
 
 #: picard/ui/mainwindow/actions.py:543
 msgid "Ctrl+Shift+P"
@@ -7781,7 +7778,7 @@ msgstr "詮釋資料檢視"
 
 #: picard/ui/metadatabox/__init__.py:321
 msgid "Displays original and new tags for the selected files"
-msgstr "顯示選擇的檔案中原來與修改後的標籤"
+msgstr "顯示所選檔案中原來與修改後的標籤"
 
 #: picard/ui/metadatabox/__init__.py:323
 msgid "Tag"
@@ -7801,7 +7798,7 @@ msgstr "新增標籤…"
 
 #: picard/ui/metadatabox/__init__.py:349
 msgid "Show Changes First"
-msgstr "先顯示更改"
+msgstr "先顯示變更"
 
 #: picard/ui/metadatabox/__init__.py:354
 msgid "Alt+Shift+A"
@@ -7817,7 +7814,7 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:498
 msgid "Unable to copy current selection."
-msgstr "無法複製目前的選擇。"
+msgstr "無法複製目前的選取範圍。"
 
 #: picard/ui/metadatabox/__init__.py:582
 msgid "No valid data in clipboard to paste"
@@ -7918,7 +7915,7 @@ msgstr "顯示關於選項設定檔的說明"
 
 #: picard/ui/options/dialog.py:356
 msgid "&Restore all Defaults"
-msgstr "全部恢復預設值(&R)"
+msgstr "全部還原預設值(&R)"
 
 #: picard/ui/options/dialog.py:357
 msgid "Reset all of Picard's settings"
@@ -7963,16 +7960,14 @@ msgid "Some settings on this page are overridden by %s"
 msgstr "此頁面上的部分設定被 %s 覆寫"
 
 #: picard/ui/options/dialog.py:791
-#, fuzzy, python-format
-#| msgid "The highlighted settings on this page are overridden by %s"
+#, python-format
 msgid "The highlighted settings on this page are tracked by %s"
-msgstr "此頁面上標示的設定被 %s 覆寫"
+msgstr "此頁面上標示的設定由 %s 追蹤"
 
 #: picard/ui/options/dialog.py:793
-#, fuzzy, python-format
-#| msgid "Some settings on this page are overridden by %s"
+#, python-format
 msgid "Some settings on this page are tracked by %s"
-msgstr "此頁面上的部分設定被 %s 覆寫"
+msgstr "此頁面上的部分設定由 %s 追蹤"
 
 #: picard/ui/options/dialog.py:972
 msgid "Unexpected error"
@@ -8101,7 +8096,7 @@ msgid ""
 msgstr ""
 "<html><head/><body>\n"
 "<p>非以 <b>-</b> 或 <b>+</b> 開頭的行將被忽略。</p>\n"
-"<p>一行一個表達式，不分大小寫</p>\n"
+"<p>一行一個運算式，不分大小寫</p>\n"
 "<p>例：</p>\n"
 "<p><b>\n"
 "#註解<br/>\n"
@@ -8282,7 +8277,7 @@ msgstr "播放"
 
 #: picard/ui/options/interface_toolbar.py:144
 msgid "Open in Player"
-msgstr "以播放器開啟"
+msgstr "在播放器中開啟"
 
 #: picard/ui/options/interface_toolbar.py:148
 msgid "Lookup CD…"
@@ -8290,7 +8285,7 @@ msgstr "查詢 CD…"
 
 #: picard/ui/options/interface_toolbar.py:200
 msgid "Drag and Drop to re-order"
-msgstr "透過拖拉來調整順序"
+msgstr "透過拖放來調整順序"
 
 #: picard/ui/options/interface_toolbar.py:294
 msgid "Select an action"
@@ -8329,8 +8324,8 @@ msgstr ""
 "日後重新安裝該外掛程式時可能會想使用的設定。屬於已安裝但目前停用的外掛程式的"
 "選項不會被列為可移除的項目。\n"
 "\n"
-"要移除一個或多個設定，請勾選要移除的設定旁的核取方塊來選擇，並勾選「移除已選"
-"選項」方塊來啟用移除。當您按下「就這麼辦！」儲存選項設定時，選取的項目就會被"
+"要移除一個或多個設定，請勾選要移除的設定旁的核取方塊來選擇，並勾選「移除所選"
+"選項」方塊來啟用移除。當您按下「就這麼辦！」儲存選項設定時，所選的項目就會被"
 "移除。"
 
 #: picard/ui/options/maintenance.py:103
@@ -8452,7 +8447,7 @@ msgstr "確認移除"
 
 #: picard/ui/options/maintenance.py:369
 msgid "Are you sure you want to remove the selected option settings?"
-msgstr "您確定要移除選取的選項設定嗎？"
+msgstr "您確定要移除所選的選項設定嗎？"
 
 #: picard/ui/options/metadata.py:127
 msgid "Do not standardize artist names"
@@ -8483,11 +8478,11 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"每個已選的文字系統都包含一個比對門檻值，用來決定是否採用該文字系統。當評估某"
-"個創作者名稱是否符合您所選的文字系統時，會先解析名稱以判斷其中包含哪些文字系"
-"統，以及名稱中屬於各文字系統的加權百分比。接著會逐一檢查您所選的文字系統，如"
-"果名稱中含有屬於該文字系統的字元，且該文字系統字元在名稱中的百分比達到或超過"
-"為其指定的比對門檻，則該創作者名稱將不會被翻譯。"
+"每個所選的文字系統都包含一個比對閾值，用來決定是否採用該文字系統。當評估某個"
+"創作者名稱是否符合您所選的文字系統時，會先剖析名稱以判斷其中包含哪些文字系統"
+"，以及名稱中屬於各文字系統的加權百分比。接著會逐一檢查您所選的文字系統，如果"
+"名稱中含有屬於該文字系統的字元，且該文字系統字元在名稱中的百分比達到或超過為"
+"其指定的比對閾值，則該創作者名稱將不會被翻譯。"
 
 #: picard/ui/options/network.py:44
 msgid "Network"
@@ -8664,7 +8659,7 @@ msgstr "要包含在設定檔裡的設定"
 
 #: picard/ui/options/profiles.py:335
 msgid "Unknown script"
-msgstr "不明腳本"
+msgstr "未知腳本"
 
 #: picard/ui/options/profiles.py:340
 msgid "No enabled scripts"
@@ -9039,7 +9034,7 @@ msgstr "%1.1f 倍"
 
 #: picard/ui/player/toolbar.py:246
 msgid "Change playback speed"
-msgstr "更改播放速度"
+msgstr "變更播放速度"
 
 #: picard/ui/player/toolbar.py:252
 msgid "Playback speed"
@@ -9052,7 +9047,7 @@ msgstr "%d%%"
 
 #: picard/ui/player/toolbar.py:308
 msgid "Change audio volume"
-msgstr "更改音量"
+msgstr "變更音量"
 
 #: picard/ui/player/toolbar.py:313
 msgid "Volume up"
@@ -9184,7 +9179,7 @@ msgstr "在側邊欄檢視腳本撰寫說明文件"
 
 #: picard/ui/scripteditor/__init__.py:339
 msgid "&Scripting documentation…"
-msgstr "腳本撰寫說明文件(&S)…"
+msgstr "腳本說明文件(&S)…"
 
 #: picard/ui/scripteditor/__init__.py:340
 msgid "Open the scripting documentation in your browser"
@@ -9239,7 +9234,7 @@ msgstr "已經有使用該標題的腳本。"
 #: picard/ui/scripteditor/__init__.py:881
 #: picard/ui/scripteditor/__init__.py:1111
 msgid "The script title must not be empty."
-msgstr "腳本標題不能為空值。"
+msgstr "腳本標題不能為空。"
 
 #: picard/ui/scripteditor/__init__.py:686
 msgid "Activate script?"
@@ -9293,7 +9288,7 @@ msgstr "覆寫"
 
 #: picard/ui/scripteditor/__init__.py:1001
 msgid "The file naming format must not be empty."
-msgstr "檔案命名格式不能為空值。"
+msgstr "檔案命名格式不能為空。"
 
 #: picard/ui/scripteditor/__init__.py:1040
 msgid "Script Details"
@@ -9333,7 +9328,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
-msgstr "從主視窗中所選的檔案隨機重新載入最多 %u 個項目"
+msgstr "從主視窗中所選檔案隨機重新載入最多 %u 個項目"
 
 #: picard/ui/searchdialog/__init__.py:106
 #, python-brace-format
@@ -9369,7 +9364,7 @@ msgstr "<strong>找不到結果。請嘗試不同的搜尋條件。</strong>"
 #: picard/ui/searchdialog/album.py:159 picard/ui/searchdialog/artist.py:46
 #: picard/ui/searchdialog/track.py:67
 msgid "Comment"
-msgstr "註釋"
+msgstr "註解"
 
 #: picard/ui/searchdialog/album.py:168
 msgid "Language"
@@ -9539,7 +9534,7 @@ msgstr "全部更新"
 #: picard/ui/widgets/pluginlistwidget.py:102
 #, python-brace-format
 msgid "Update Selected ({count})"
-msgstr "更新已選項目（{count}）"
+msgstr "更新所選項目（{count}）"
 
 #: picard/ui/widgets/pluginlistwidget.py:148
 msgid "Enabled"
@@ -9863,7 +9858,7 @@ msgstr "Ctrl+Shift+W"
 
 #: picard/ui/widgets/scripttextedit.py:436
 msgid "Show help &tooltips"
-msgstr "顯示幫助工具提示(&T)"
+msgstr "顯示說明工具提示(&T)"
 
 #: picard/ui/widgets/scripttextedit.py:437
 msgid "Show tooltips for script elements"

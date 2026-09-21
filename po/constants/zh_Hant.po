@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-09-13 08:07+0000\n"
+"PO-Revision-Date: 2026-09-21 06:52+0000\n"
 "Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/constants/zh_Hant/>\n"
@@ -284,11 +284,11 @@ msgstr "烏克蘭語"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr "漢語（中國）"
+msgstr "中文（中國）"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr "漢語（台灣）"
+msgstr "中文（台灣）"
 
 #: picard/const/locales.py:27
 msgid "Afar"
@@ -4337,6 +4337,8 @@ msgid ""
 "This hidden variable is retained for backward compatibility with existing "
 "scripts. It is never written to files; use the \"albumartists\" tag instead."
 msgstr ""
+"此隱藏變數是為了與既有腳本回溯相容而保留。它永遠不會寫入檔案；請改用「"
+"albumartists」標籤。"
 
 #: picard/const/tags.py:106
 msgid "Album Artists Countries"
@@ -4359,36 +4361,28 @@ msgid ""
 "are two other credited artists from Canada, the value would be \"GB; CA; "
 "CA\"."
 msgstr ""
+"例如，如果第一位署名創作者來自英國，而另外兩位署名創作者來自加拿大，則值會是"
+"「GB; CA; CA」。"
 
 #: picard/const/tags.py:123
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artists Comments"
-msgstr "專輯創作者國家"
+msgstr "專輯創作者消歧義說明（多值）"
 
 #: picard/const/tags.py:125
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comments for all of the credited album artists, in the "
 "same order as the artists."
-msgstr "與音軌關聯之錄音的消歧義註釋。"
+msgstr "所有署名專輯創作者的消歧義說明，順序與創作者相同。"
 
 #: picard/const/tags.py:133
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artist Comment"
-msgstr "專輯創作者國家"
+msgstr "專輯創作者消歧義說明"
 
 #: picard/const/tags.py:135
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comment for the album artist. This is only set if there "
 "is a single album artist."
-msgstr "與音軌關聯之錄音的消歧義註釋。"
+msgstr "專輯創作者的消歧義說明。只有在專輯創作者只有一位時才會設定。"
 
 #: picard/const/tags.py:142
 msgid "Album Artist Sort Order"
@@ -4452,7 +4446,7 @@ msgstr ""
 
 #: picard/const/tags.py:186
 msgid "Artists"
-msgstr "創作者"
+msgstr "創作者（多值）"
 
 #: picard/const/tags.py:188
 msgid ""
@@ -4479,34 +4473,24 @@ msgstr ""
 "知國家。"
 
 #: picard/const/tags.py:212
-#, fuzzy
-#| msgid "Artists Countries"
 msgid "Artists Comments"
-msgstr "創作者國家"
+msgstr "創作者消歧義說明（多值）"
 
 #: picard/const/tags.py:214
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comments for all of the credited track artists, in the "
 "same order as the artists."
-msgstr "與音軌關聯之錄音的消歧義註釋。"
+msgstr "所有署名音軌創作者的消歧義說明，順序與創作者相同。"
 
 #: picard/const/tags.py:222
-#, fuzzy
-#| msgid "RG Series Comment"
 msgid "Artist Comment"
-msgstr "發行組系列註釋"
+msgstr "創作者消歧義說明"
 
 #: picard/const/tags.py:224
-#, fuzzy
-#| msgid ""
-#| "The disambiguation comment for the recording associated with a track."
 msgid ""
 "The disambiguation comment for the track artist. This is only set if there "
 "is a single track artist."
-msgstr "與音軌關聯之錄音的消歧義註釋。"
+msgstr "音軌創作者的消歧義說明。只有在音軌創作者只有一位時才會設定。"
 
 #: picard/const/tags.py:231
 msgid "Artist Sort Order"
@@ -4601,14 +4585,13 @@ msgstr "檔案中的音訊聲道數。"
 
 #: picard/const/tags.py:309
 msgid "Comment"
-msgstr "註釋"
+msgstr "註解"
 
 #: picard/const/tags.py:311
 msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
-msgstr ""
-"為了協助區分不同發行品而輸入的消歧義註釋（例如：附 2 首額外音軌的豪華版）。"
+msgstr "為了協助區分不同發行品而輸入的消歧義說明（例如：附 2 首額外音軌的豪華版）。"
 
 #: picard/const/tags.py:319
 msgid "Compilation (iTunes)"
@@ -4825,12 +4808,12 @@ msgstr "檔案大小，單位為位元組。"
 
 #: picard/const/tags.py:510
 msgid "MusicBrainz folksonomy tags"
-msgstr ""
+msgstr "MusicBrainz 分眾分類標籤"
 
 #: picard/const/tags.py:511
 msgid ""
 "Unfiltered list of all non-genre folksonomy tags loaded from MusicBrainz."
-msgstr ""
+msgstr "從 MusicBrainz 載入的所有非流派分眾分類標籤的未篩選清單。"
 
 #: picard/const/tags.py:520
 msgid "File Format"
@@ -4860,13 +4843,11 @@ msgstr "來自 MusicBrainz 的指定流派資訊。"
 
 #: picard/const/tags.py:544
 msgid "Unfiltered MusicBrainz genres"
-msgstr ""
+msgstr "未篩選的 MusicBrainz 流派"
 
 #: picard/const/tags.py:545
-#, fuzzy
-#| msgid "The specified genre information from MusicBrainz."
 msgid "Unfiltered list of all genres loaded from MusicBrainz."
-msgstr "來自 MusicBrainz 的指定流派資訊。"
+msgstr "從 MusicBrainz 載入的所有流派的未篩選清單。"
 
 #: picard/const/tags.py:555
 msgid "Grouping"
@@ -4891,13 +4872,13 @@ msgstr ""
 
 #: picard/const/tags.py:571
 msgid "iTunes CDDB 1"
-msgstr ""
+msgstr "iTunes CDDB 1"
 
 #: picard/const/tags.py:573
 msgid ""
 "An iTunes-specific tag containing a code that uniquely identifies a CD based "
 "on the number of tracks and their lengths."
-msgstr ""
+msgstr "iTunes 專用的標籤，包含一組依據音軌數量及其長度來唯一識別 CD 的代碼。"
 
 #: picard/const/tags.py:580
 msgid "Key"
@@ -4951,7 +4932,7 @@ msgstr "關聯作品的作詞者名稱。"
 
 #: picard/const/tags.py:619
 msgid "Lyricist Sort"
-msgstr "作詞者排序"
+msgstr "作詞者排序名稱"
 
 #: picard/const/tags.py:620
 msgid "The sort names of the lyricists for the associated work."
@@ -5161,16 +5142,12 @@ msgid ""
 msgstr "若有關聯作品，則為該作品的 MusicBrainz 識別碼（MBID）。"
 
 #: picard/const/tags.py:769
-#, fuzzy
-#| msgid "Composer"
 msgid "Composer MBID"
-msgstr "作曲者"
+msgstr "作曲者 MBID"
 
 #: picard/const/tags.py:770
-#, fuzzy
-#| msgid "The MusicBrainz Identifier (MBID) for the recording."
 msgid "The MusicBrainz Identifier (MBID) for the composer(s)."
-msgstr "錄音的 MusicBrainz 識別碼（MBID）。"
+msgstr "作曲者的 MusicBrainz 識別碼（MBID）。"
 
 #: picard/const/tags.py:775
 msgid "MusicIP Fingerprint"
@@ -5228,7 +5205,7 @@ msgstr ""
 
 #: picard/const/tags.py:815
 msgid "Original Filename"
-msgstr "原始檔名"
+msgstr "原始檔案名稱"
 
 #: picard/const/tags.py:816
 msgid "The original name of the audio file."
@@ -5378,11 +5355,11 @@ msgstr "與錄音關聯的系列標題。"
 
 #: picard/const/tags.py:924
 msgid "Recording Series Comment"
-msgstr "錄音系列註釋"
+msgstr "錄音系列消歧義說明"
 
 #: picard/const/tags.py:925
 msgid "The series disambiguation comments associated with the recording."
-msgstr "與錄音關聯的系列消歧義註釋。"
+msgstr "與錄音關聯的系列消歧義說明。"
 
 #: picard/const/tags.py:931
 msgid "Recording Series MBID"
@@ -5403,11 +5380,11 @@ msgstr "與錄音關聯的系列編號。"
 
 #: picard/const/tags.py:945
 msgid "Recording Comment"
-msgstr "錄音註釋"
+msgstr "錄音消歧義說明"
 
 #: picard/const/tags.py:946
 msgid "The disambiguation comment for the recording associated with a track."
-msgstr "與音軌關聯之錄音的消歧義註釋。"
+msgstr "與音軌關聯之錄音的消歧義說明。"
 
 #: picard/const/tags.py:952
 msgid "Recording Title"
@@ -5420,19 +5397,19 @@ msgstr "錄音標題 - 通常與音軌標題相同，但也可能不同。"
 
 #: picard/const/tags.py:959
 msgid "Release Annotation"
-msgstr "發行品註釋"
+msgstr "發行品註解"
 
 #: picard/const/tags.py:960
 msgid "The annotation comment for the release."
-msgstr "發行品的註釋。"
+msgstr "發行品的註解。"
 
 #: picard/const/tags.py:966
 msgid "Release Comment"
-msgstr "發行品註釋"
+msgstr "發行品消歧義說明"
 
 #: picard/const/tags.py:967
 msgid "The disambiguation comment for the release."
-msgstr "發行品的消歧義註釋。"
+msgstr "發行品的消歧義說明。"
 
 #: picard/const/tags.py:973
 msgid "Release Countries"
@@ -5502,11 +5479,11 @@ msgstr "與發行組關聯的系列標題。"
 
 #: picard/const/tags.py:1028
 msgid "RG Series Comment"
-msgstr "發行組系列註釋"
+msgstr "發行組系列消歧義說明"
 
 #: picard/const/tags.py:1029
 msgid "The series disambiguation comments associated with the release group."
-msgstr "與發行組關聯的系列消歧義註釋。"
+msgstr "與發行組關聯的系列消歧義說明。"
 
 #: picard/const/tags.py:1035
 msgid "RG Series MBID"
@@ -5527,11 +5504,11 @@ msgstr "與發行組關聯的系列編號。"
 
 #: picard/const/tags.py:1049
 msgid "RG Comment"
-msgstr "發行組註釋"
+msgstr "發行組消歧義說明"
 
 #: picard/const/tags.py:1050
 msgid "The disambiguation comment for the release group."
-msgstr "發行組的消歧義註釋。"
+msgstr "發行組的消歧義說明。"
 
 #: picard/const/tags.py:1056
 msgid "Release Language"
@@ -5551,11 +5528,11 @@ msgstr "與發行品關聯的系列標題。"
 
 #: picard/const/tags.py:1070
 msgid "Release Series Comment"
-msgstr "發行品系列註釋"
+msgstr "發行品系列消歧義說明"
 
 #: picard/const/tags.py:1071
 msgid "The series disambiguation comments associated with the release."
-msgstr "與發行品關聯的系列消歧義註釋。"
+msgstr "與發行品關聯的系列消歧義說明。"
 
 #: picard/const/tags.py:1077
 msgid "Release Series MBID"
@@ -5849,11 +5826,11 @@ msgstr "與作品關聯的系列標題。"
 
 #: picard/const/tags.py:1307
 msgid "Work Series Comment"
-msgstr "作品系列註釋"
+msgstr "作品系列消歧義說明"
 
 #: picard/const/tags.py:1308
 msgid "The series disambiguation comments associated with the work."
-msgstr "與作品關聯的系列消歧義註釋。"
+msgstr "與作品關聯的系列消歧義說明。"
 
 #: picard/const/tags.py:1314
 msgid "Work Series MBID"
@@ -5873,11 +5850,11 @@ msgstr "與作品關聯的系列編號。"
 
 #: picard/const/tags.py:1328
 msgid "Work Comment"
-msgstr "作品註釋"
+msgstr "作品消歧義說明"
 
 #: picard/const/tags.py:1329
 msgid "The disambiguation comment associated with the work."
-msgstr "與作品關聯的消歧義註釋。"
+msgstr "與作品關聯的消歧義說明。"
 
 #: picard/const/tags.py:1334
 msgid "Writer"
@@ -5897,7 +5874,7 @@ msgstr "您可以用類似 `$copymerge(composer,writer)` 的腳本將它與作�
 
 #: picard/const/tags.py:1345
 msgid "Writer Sort"
-msgstr "詞曲作者排序"
+msgstr "詞曲作者排序名稱"
 
 #: picard/const/tags.py:1346
 msgid "The sort names of the writers for the work."
@@ -5905,10 +5882,8 @@ msgstr "作品詞曲作者的排序名稱。"
 
 #: picard/const/tags.py:1352
 msgid "Broadcast Date"
-msgstr ""
+msgstr "播出日期"
 
 #: picard/const/tags.py:1353
-#, fuzzy
-#| msgid "The associated URL if the recording is a podcast."
 msgid "The date the recording was broadcast."
-msgstr "如果錄音是 Podcast，則為關聯的網址。"
+msgstr "錄音播出的日期。"
