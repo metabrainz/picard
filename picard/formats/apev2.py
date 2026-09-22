@@ -28,6 +28,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from functools import lru_cache
 from os.path import isfile
 import re
 from types import MappingProxyType
@@ -76,6 +77,7 @@ UNSUPPORTED_TAGS = {
 }
 
 
+@lru_cache(maxsize=1024)
 def is_valid_key(key):
     """
     Return true if a string is a valid APE tag key.
@@ -84,6 +86,10 @@ def is_valid_key(key):
     Not allowed are the following keys: ID3, TAG, OggS and MP+.
 
     See http://wiki.hydrogenaud.io/index.php?title=APE_key
+
+    The result is memoized: this predicate is called once per tag name for
+    every file when the metadata box rebuilds its tag diff or files are saved,
+    and the set of distinct tag names is small and bounded.
     """
     if not key:
         return False

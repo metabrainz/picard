@@ -32,6 +32,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from functools import lru_cache
 import re
 from types import MappingProxyType
 
@@ -60,9 +61,14 @@ _VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
 UNSUPPORTED_TAGS = {'syncedlyrics', 'r128_album_gain', 'r128_track_gain'}
 
 
+@lru_cache(maxsize=1024)
 def _is_valid_key(key):
     """
     Return true if a string is a valid name for a custom tag.
+
+    Memoized: called once per tag name for every file when the metadata box
+    rebuilds its tag diff or files are saved; the set of distinct tag names is
+    small and bounded.
     """
     return bool(_VALID_KEY_CHARS.match(key))
 
