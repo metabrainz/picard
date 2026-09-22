@@ -82,7 +82,7 @@ class ReleasesOptionsPage(OptionsPage):
 
         # Preferred release types
         self._preferred_release_types = self._create_preference_group(
-            title=N_("Preferred release types (higher priority first)"),
+            title=_("Preferred release types (higher priority first)"),
             object_name='preferred_release_types_group',
             tooltip=_(
                 "When multiple releases match a file, types listed here are scored higher.<br>"
@@ -95,7 +95,7 @@ class ReleasesOptionsPage(OptionsPage):
 
         # Discouraged release types
         self._discouraged_release_types = self._create_preference_group(
-            title=N_("Discouraged release types (avoided when matching)"),
+            title=_("Discouraged release types (avoided when matching)"),
             object_name='discouraged_release_types_group',
             tooltip=_(
                 "Releases with these types are penalized when matching.<br>"
@@ -114,7 +114,7 @@ class ReleasesOptionsPage(OptionsPage):
         # Preferred release countries
         preferred_release_country_items = {key: gettext_countries(name) for key, name in RELEASE_COUNTRIES.items()}
         self._preferred_release_countries = self._create_preference_group(
-            title=N_("Preferred release countries (higher priority first)"),
+            title=_("Preferred release countries (higher priority first)"),
             object_name='preferred_release_countries_group',
             tooltip=_(
                 "When multiple editions of a release exist, "
@@ -130,7 +130,7 @@ class ReleasesOptionsPage(OptionsPage):
             key: pgettext_attributes('medium_format', name) for key, name in RELEASE_FORMATS.items()
         }
         self._preferred_release_formats = self._create_preference_group(
-            title=N_("Preferred medium formats (higher priority first)"),
+            title=_("Preferred medium formats (higher priority first)"),
             object_name='preferred_release_formats_group',
             tooltip=_(
                 "When multiple editions of a release exist, "
