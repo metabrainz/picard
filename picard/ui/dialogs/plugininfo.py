@@ -224,7 +224,7 @@ class PluginInfoDialog(PicardDialog):
         """Get trust level."""
         if self._is_installable_plugin():
             trust_level = getattr(self.plugin_data, 'trust_level', '')
-            return trust_level.title() if trust_level else ''
+            return self._format_trust_level(trust_level)
         else:
             # For installed plugins, use the plugin manager to get trust level
             try:
