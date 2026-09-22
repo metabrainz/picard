@@ -103,6 +103,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.setFlat(True)
         self.item = None
         self._removal_predicted = False
+        # Set when update_metadata() is skipped because the box is hidden, so
+        # the (potentially expensive) refresh is performed once the box is
+        # shown again instead of repeatedly while hidden (e.g. during a batch
+        # save with the cover-art panel collapsed).
+        self._pending_metadata_update = False
         # Snapshot of the last image known to be exported to an external file,
         # kept so the box can still show it once remove_images_from_tags has
         # cleared it from orig_metadata.images (see update_metadata).
@@ -253,6 +258,15 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def update_metadata(self):
         if not self.item:
             return
+
+        # When the cover-art box is not visible (e.g. the metadata view is
+        # collapsed), skip the expensive removal prediction and thumbnail
+        # refresh; defer it until the box is shown again. This avoids repeated
+        # work while hidden, notably during a batch save.
+        if not self.isVisible():
+            self._pending_metadata_update = True
+            return
+        self._pending_metadata_update = False
 
         metadata = self.item.metadata
         orig_metadata = None
@@ -504,6 +518,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.item.keep_original_images()
         self.cover_art.set_metadata(self.item.metadata)
         self.show()
+
+    def showEvent(self, a0):
+        super().showEvent(a0)
+        # Perform any refresh that was deferred while the box was hidden.
+        if self._pending_metadata_update:
+            self.update_metadata()
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
