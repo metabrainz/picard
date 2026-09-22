@@ -1285,7 +1285,7 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Removing %r", cluster)
             files = list(cluster.files)
             cluster.files = []
-            cluster.clear_lookup_task()
+            cluster.clear()
             self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
             self.cluster_removed.emit(cluster)

@@ -55,6 +55,7 @@ from picard.i18n import (
 from picard.item import (
     FileListItem,
     Item,
+    ListOfMetadataItems,
 )
 from picard.matching import (
     SimMatchRelease,
@@ -105,6 +106,12 @@ class FileList(FileListItem):
                 file.metadata_images_changed.connect(self.update_metadata_images)
             self.update_metadata_images_from_children()
 
+    def clear(self):
+        """Remove all files and disconnect signals."""
+        for file in self.files:
+            file.metadata_images_changed.disconnect(self.update_metadata_images)
+        self.files = ListOfMetadataItems()
+
     def update(self, signal=True):
         pass
 
@@ -123,6 +130,10 @@ class Cluster(FileList):
         self.hide_if_empty = hide_if_empty
         self.album = related_album
         self._lookup_task = None
+
+    def clear(self):
+        super().clear()
+        self._clear_lookup_task()
 
     @property
     def album(self) -> 'Album | None':
@@ -468,7 +479,7 @@ class Cluster(FileList):
             limit=config.setting['query_limit'],
         )
 
-    def clear_lookup_task(self):
+    def _clear_lookup_task(self):
         if self._lookup_task:
             self.tagger.webservice.abort_task(self._lookup_task)
             self._lookup_task = None
@@ -507,6 +518,13 @@ class Cluster(FileList):
                 cluster_list[token].add(album, artist or various_artists, file)
 
         yield from cluster_list.values()
+
+
+class TempFileList(FileListItem):
+    """A temporary file list used for display purposes only.
+
+    If this becomes unused `clear` should be called to free up resources.
+    """
 
 
 class UnclusteredFiles(Cluster):

@@ -70,7 +70,7 @@ from picard.album import Album
 from picard.browser import addrelease
 from picard.cluster import (
     Cluster,
-    FileList,
+    TempFileList,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -1988,7 +1988,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         elif coverart_visible and new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
             files = list(iter_files_from_objects(objects))
-            obj = FileList(files)
+            obj = TempFileList(files)
 
         if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)
