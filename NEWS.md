@@ -1,5 +1,23 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0rc4 - 2026-09-22
+
+### Bugfixes
+- [PICARD-3438](https://tickets.metabrainz.org/browse/PICARD-3438) - Plugin action `MENU` setting not honored in "Plugin Tools" on main menu bar
+- [PICARD-3439](https://tickets.metabrainz.org/browse/PICARD-3439) - Unexpected font change in script editors after pasting
+- [PICARD-3442](https://tickets.metabrainz.org/browse/PICARD-3442) - Track duration tolerance (ignore_track_duration_difference_under) no longer suppresses the ~length diff in the Metadata box
+- [PICARD-3446](https://tickets.metabrainz.org/browse/PICARD-3446) - CLI does not run config upgrade hooks, leaving old config files unmigrated
+- [PICARD-3448](https://tickets.metabrainz.org/browse/PICARD-3448) - Some constants aren't properly translated, though translations are available
+- [PICARD-3450](https://tickets.metabrainz.org/browse/PICARD-3450) - Button titles on scripting options page are compressed
+- [PICARD-3453](https://tickets.metabrainz.org/browse/PICARD-3453) - Metadata box tag tooltips re-render Markdown per row, causing severe CPU load during save/selection
+
+### Improvements
+- [PICARD-3441](https://tickets.metabrainz.org/browse/PICARD-3441) - Clarify read-only non-tag values in the metadata box (length, filepath)
+- [PICARD-3444](https://tickets.metabrainz.org/browse/PICARD-3444) - Bundle sqlite3 in packaged builds
+- [PICARD-3449](https://tickets.metabrainz.org/browse/PICARD-3449) - Rework Cover Art → Processing options layout to stack Tags/Files vertically
+- [PICARD-3452](https://tickets.metabrainz.org/browse/PICARD-3452) - Sort debug options by translated name and show CLI name in tooltip
+
+
 ## Version 3.0.0rc3 - 2026-09-13
 
 ### Bugfixes
