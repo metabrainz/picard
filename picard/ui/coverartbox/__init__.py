@@ -51,7 +51,10 @@ from picard import (
     log,
     tagger_instance,
 )
-from picard.cluster import Cluster
+from picard.cluster import (
+    Cluster,
+    TempFileList,
+)
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
@@ -243,6 +246,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         if self.item is not item:
             self._exported_images = None
+            if isinstance(self.item, TempFileList):
+                self.item.clear()
         if self.item and hasattr(self.item, 'metadata_images_changed'):
             self.item.metadata_images_changed.disconnect(self.update_metadata)
         self.item = item
