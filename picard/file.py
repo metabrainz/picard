@@ -479,6 +479,10 @@ class File(MetadataItem):
             self._release_file_from_player(self.filename)
         metadata = Metadata()
         metadata.copy(self.metadata)
+        # Track in-flight saves so _saving_finished can coalesce the expensive
+        # selection/metadata-box refresh to once per batch (see PICARD
+        # batch-save memory profiling).
+        self.tagger._saving_files_count += 1
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
@@ -613,6 +617,12 @@ class File(MetadataItem):
             return self.orig_metadata.images.copy()
 
     def _saving_finished(self, result=None, error=None):
+        # This save task has finished; decrement the in-flight counter so the
+        # selection/metadata-box refresh can be coalesced to run only once,
+        # when the last file of a batch save completes.
+        if self.tagger._saving_files_count > 0:
+            self.tagger._saving_files_count -= 1
+        batch_done = self.tagger._saving_files_count == 0
         # Handle file removed before save
         # Result is None if save was skipped
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
@@ -655,8 +665,11 @@ class File(MetadataItem):
             run_file_post_save_processors(self)
 
         self._file_identity = FileIdentity(self.filename)
-        # Force update to ensure file status icon changes immediately after save
-        self.update()
+        # Force update to ensure file status icon changes immediately after
+        # save. During a batch save only refresh the (expensive)
+        # selection-wide tag diff once, when the last file finishes; the
+        # per-file item icon/text is always updated.
+        self.update(update_selection=batch_done)
 
         if self.state != File.State.REMOVED:
             del self.tagger.files[old_filename]
@@ -959,7 +972,7 @@ class File(MetadataItem):
                 continue
             yield name
 
-    def update(self, signal=True):
+    def update(self, signal=True, update_selection=True):
         if not (self.state == File.State.ERROR and self.errors):
             config = get_config()
             clear_existing_tags = config.setting['clear_existing_tags']
@@ -984,7 +997,7 @@ class File(MetadataItem):
                         self.state = File.State.NORMAL
         if signal:
             log.debug("Updating file %r", self)
-            self.update_item()
+            self.update_item(update_selection=update_selection)
 
     @property
     def can_save(self) -> bool:

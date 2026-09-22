@@ -886,6 +886,62 @@ class FileSavingFinishedImagesTest(PicardTestCase):
         self.assertEqual([True], received)
 
 
+class FileBatchSaveCoalesceTest(PicardTestCase):
+    """During a batch save the expensive selection/metadata-box refresh must be
+    coalesced: only the last file to finish saving triggers a selection-wide
+    update, while every file still updates its own tree item."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.set_config_values(
+            {
+                'clear_existing_tags': False,
+                'preserve_images': False,
+                'embed_only_one_front_image': False,
+                'enabled_plugins': [],
+                'enable_tag_saving': False,
+                'rename_files': False,
+                'move_files': False,
+                'save_images_to_files': False,
+                'delete_empty_dirs': False,
+                'preserve_timestamps': False,
+            }
+        )
+
+    def _make_file(self, path):
+        f = FakeMp3File(path)
+        self.tagger.files[f.filename] = f
+        # Observe update_item calls without touching a real UI item.
+        f.update_item = MagicMock()
+        return f
+
+    def test_only_last_finished_save_refreshes_selection(self):
+        f1 = self._make_file('a.mp3')
+        f2 = self._make_file('b.mp3')
+        # Simulate two saves dispatched (as File.save() would).
+        self.tagger._saving_files_count = 2
+
+        f1._saving_finished(result=f1.filename)
+        # First file finishing must NOT trigger a selection refresh.
+        f1.update_item.assert_called_once_with(update_selection=False)
+        self.assertEqual(1, self.tagger._saving_files_count)
+
+        f2._saving_finished(result=f2.filename)
+        # Last file finishing DOES trigger the selection refresh.
+        f2.update_item.assert_called_once_with(update_selection=True)
+        self.assertEqual(0, self.tagger._saving_files_count)
+
+    def test_single_save_refreshes_selection(self):
+        f = self._make_file('a.mp3')
+        self.tagger._saving_files_count = 1
+
+        f._saving_finished(result=f.filename)
+
+        f.update_item.assert_called_once_with(update_selection=True)
+        self.assertEqual(0, self.tagger._saving_files_count)
+
+
 class FileCopyMetadataTest(PicardTestCase):
     def setUp(self):
         super().setUp()

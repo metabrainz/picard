@@ -121,6 +121,7 @@ def MockTagger():
     tagger.get_release_group_by_id = MagicMock(side_effect=lambda rg_id: ReleaseGroup(rg_id))
     tagger.stopping = False
     tagger.files = {}
+    tagger._saving_files_count = 0
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     return tagger

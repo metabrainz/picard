@@ -480,6 +480,10 @@ class Tagger(QtWidgets.QApplication):
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""
         self._pending_files_count = 0
+        # Number of file save tasks currently queued or running. Used to
+        # coalesce the (expensive) selection/metadata-box refresh so it runs
+        # once when a batch save finishes rather than once per saved file.
+        self._saving_files_count = 0
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
