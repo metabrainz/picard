@@ -290,9 +290,9 @@ colorama==0.4.6 ; sys_platform == 'win32' \
     --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
     --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
     # via pytest
-comtypes==1.4.16 ; sys_platform == 'win32' \
-    --hash=sha256:cd66d1add01265cface4df51ba1e31cd1657e04463c281c802e737e79e1ba93c \
-    --hash=sha256:e18d85179ff12955524c5a8c3bc09cb3c0d890f1da4d7123d14244c7b78f84c8
+comtypes==1.4.17 ; sys_platform == 'win32' \
+    --hash=sha256:3d9c1e92ad8daf7600d371e76ee16161a627a5fb70c3144f6e52e78af6034363 \
+    --hash=sha256:4e0a221dde2c589b82977bed802efd71cd5eb67a380347b732e02735e597f586
     # via picard (pyproject.toml)
 discid==1.4.2 \
     --hash=sha256:0cbb4b96949c68cbc63c9fc4585ef9b7ec2b9d39e23bce0b4db5d61c6f7b81e6 \
