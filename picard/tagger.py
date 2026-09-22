@@ -484,6 +484,10 @@ class Tagger(QtWidgets.QApplication):
         # coalesce the (expensive) selection/metadata-box refresh so it runs
         # once when a batch save finishes rather than once per saved file.
         self._saving_files_count = 0
+        # Parent containers (clusters/tracks/albums) whose cover-art image
+        # aggregation was deferred during a batch save; each is refreshed once
+        # when the batch completes (see File._saving_finished).
+        self._saving_dirty_image_parents = set()
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}

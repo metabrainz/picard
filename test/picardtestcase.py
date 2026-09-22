@@ -122,6 +122,7 @@ def MockTagger():
     tagger.stopping = False
     tagger.files = {}
     tagger._saving_files_count = 0
+    tagger._saving_dirty_image_parents = set()
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     return tagger

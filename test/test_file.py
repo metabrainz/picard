@@ -941,6 +941,50 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
         f.update_item.assert_called_once_with(update_selection=True)
         self.assertEqual(0, self.tagger._saving_files_count)
 
+    def _make_image_changing_file(self, path):
+        """A file whose embedded image changes on save (so _saving_finished
+        detects images_changed)."""
+        f = self._make_file(path)
+        old_image = create_image(b'a', types=['front'], support_types=True)
+        new_image = create_image(b'b', types=['front'], support_types=True)
+        f.orig_metadata.images = ImageList([old_image])
+        f.metadata.images = ImageList([new_image])
+        return f
+
+    def test_batch_save_defers_image_aggregation_to_end(self):
+        self.set_config_values(
+            {
+                'save_images_to_tags': True,
+                'remove_images_from_tags': False,
+            }
+        )
+        parent = MagicMock()
+        f1 = self._make_image_changing_file('a.mp3')
+        f2 = self._make_image_changing_file('b.mp3')
+        # Both files share a parent container (e.g. a cluster/album).
+        f1.parent_item = parent
+        f2.parent_item = parent
+        # parent_item.album -> None so the chain ends at the parent.
+        parent.album = None
+        f1_emitted = []
+        f2_emitted = []
+        f1.metadata_images_changed.connect(lambda: f1_emitted.append(True))
+        f2.metadata_images_changed.connect(lambda: f2_emitted.append(True))
+
+        self.tagger._saving_files_count = 2
+
+        f1._saving_finished(result=f1.filename)
+        # Intermediate save: no per-file image emit, parent marked dirty,
+        # parent NOT yet rebuilt.
+        self.assertEqual([], f1_emitted)
+        self.assertIn(parent, self.tagger._saving_dirty_image_parents)
+        parent.update_metadata_images.assert_not_called()
+
+        f2._saving_finished(result=f2.filename)
+        # Last save flushes: parent rebuilt exactly once, dirty set cleared.
+        parent.update_metadata_images.assert_called_once_with()
+        self.assertEqual(set(), self.tagger._saving_dirty_image_parents)
+
 
 class FileCopyMetadataTest(PicardTestCase):
     def setUp(self):
