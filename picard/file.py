@@ -629,7 +629,7 @@ class File(MetadataItem):
             # Still flush any deferred image aggregation if this was the last
             # file of the batch, so earlier files' parents are not left stale.
             if batch_done:
-                self._flush_saving_image_parents()
+                self.tagger.flush_saving_image_parents()
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -688,7 +688,7 @@ class File(MetadataItem):
             self.tagger.files[new_filename] = self
 
         if batch_done:
-            self._flush_saving_image_parents()
+            self.tagger.flush_saving_image_parents()
 
         if self.tagger.stopping:
             log.debug("Save of %r completed before stopping Picard", self.filename)
@@ -707,20 +707,6 @@ class File(MetadataItem):
             # Both Cluster and Track expose the containing album via .album
             # (None when there is none), so the chain ends at the album.
             parent = getattr(parent, 'album', None)
-
-    def _flush_saving_image_parents(self):
-        """Rebuild cover-art image aggregation once for each container that had
-        a deferred update during the batch save, then clear the set."""
-        parents = self.tagger._saving_dirty_image_parents
-        if not parents:
-            return
-        # Copy and clear first: update_metadata_images() may emit signals that
-        # trigger further updates; we don't want to iterate a mutating set.
-        self.tagger._saving_dirty_image_parents = set()
-        for parent in parents:
-            update = getattr(parent, 'update_metadata_images', None)
-            if update is not None:
-                update()
 
     def _save(self, filename: str, metadata: Metadata) -> None:
         """Save the metadata."""

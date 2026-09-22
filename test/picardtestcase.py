@@ -123,6 +123,9 @@ def MockTagger():
     tagger.files = {}
     tagger._saving_files_count = 0
     tagger._saving_dirty_image_parents = set()
+    # Use the real implementation so batch-save image-aggregation coalescing
+    # behaves correctly in tests (it operates on _saving_dirty_image_parents).
+    tagger.flush_saving_image_parents = MagicMock(side_effect=lambda: Tagger.flush_saving_image_parents(tagger))
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     return tagger

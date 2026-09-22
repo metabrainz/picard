@@ -1176,6 +1176,27 @@ class Tagger(QtWidgets.QApplication):
         for file in iter_files_from_objects(objects, save=True):
             file.save()
 
+    def flush_saving_image_parents(self):
+        """Rebuild cover-art image aggregation once for each container whose
+        update was deferred during a batch save, then clear the set.
+
+        During a batch save, files register their parent containers (clusters,
+        tracks, albums) in ``_saving_dirty_image_parents`` instead of emitting
+        ``metadata_images_changed`` per file (which would rebuild each parent's
+        image list over all children once per saved file). This performs that
+        rebuild a single time when the batch completes.
+        """
+        parents = self._saving_dirty_image_parents
+        if not parents:
+            return
+        # Copy and clear first: update_metadata_images() may emit signals that
+        # trigger further updates; we don't want to iterate a mutating set.
+        self._saving_dirty_image_parents = set()
+        for parent in parents:
+            update = getattr(parent, 'update_metadata_images', None)
+            if update is not None:
+                update()
+
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()
         if type == 'album':
