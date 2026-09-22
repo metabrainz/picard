@@ -31,6 +31,7 @@
 
 
 import base64
+from functools import lru_cache
 import re
 from types import MappingProxyType
 
@@ -82,7 +83,23 @@ def is_valid_key(key):
     Valid characters for Vorbis comment field names are
     ASCII 0x20 through 0x7D, 0x3D ('=') excluded.
     """
-    return key and INVALID_CHARS.search(key) is None
+    if not key:
+        return False
+    return _is_valid_key_cached(key)
+
+
+@lru_cache(maxsize=1024)
+def _is_valid_key_cached(key):
+    """Cached validity check for a non-empty Vorbis comment key.
+
+    ``is_valid_key`` is called once per tag name for every file whenever the
+    metadata box rebuilds its tag diff or a file is saved, so the same small
+    set of tag names is validated many thousands of times during a batch
+    operation.  The set of distinct tag names is bounded, so memoizing the
+    regex search avoids a large amount of redundant work and allocation
+    (see PICARD batch-save memory profiling).
+    """
+    return INVALID_CHARS.search(key) is None
 
 
 def flac_sort_pics_after_tags(metadata_blocks):

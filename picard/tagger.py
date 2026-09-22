@@ -480,6 +480,14 @@ class Tagger(QtWidgets.QApplication):
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""
         self._pending_files_count = 0
+        # Number of file save tasks currently queued or running. Used to
+        # coalesce the (expensive) selection/metadata-box refresh so it runs
+        # once when a batch save finishes rather than once per saved file.
+        self._saving_files_count = 0
+        # Parent containers (clusters/tracks/albums) whose cover-art image
+        # aggregation was deferred during a batch save; each is refreshed once
+        # when the batch completes (see File._saving_finished).
+        self._saving_dirty_image_parents = set()
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
@@ -1167,6 +1175,27 @@ class Tagger(QtWidgets.QApplication):
         """Save the specified objects."""
         for file in iter_files_from_objects(objects, save=True):
             file.save()
+
+    def flush_saving_image_parents(self):
+        """Rebuild cover-art image aggregation once for each container whose
+        update was deferred during a batch save, then clear the set.
+
+        During a batch save, files register their parent containers (clusters,
+        tracks, albums) in ``_saving_dirty_image_parents`` instead of emitting
+        ``metadata_images_changed`` per file (which would rebuild each parent's
+        image list over all children once per saved file). This performs that
+        rebuild a single time when the batch completes.
+        """
+        parents = self._saving_dirty_image_parents
+        if not parents:
+            return
+        # Copy and clear first: update_metadata_images() may emit signals that
+        # trigger further updates; we don't want to iterate a mutating set.
+        self._saving_dirty_image_parents = set()
+        for parent in parents:
+            update = getattr(parent, 'update_metadata_images', None)
+            if update is not None:
+                update()
 
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()

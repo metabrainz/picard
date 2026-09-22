@@ -194,6 +194,12 @@ class _RemovalBox:
         self.cover_art = _RemovalThumb()
         self.orig_cover_art = _RemovalThumb()
         self._exported_images = None
+        self._pending_metadata_update = False
+
+    def isVisible(self) -> bool:
+        # The removal-prediction logic under test only runs when the box is
+        # visible; the double is always considered visible.
+        return True
 
     def update_display(self, force: bool = False) -> None:
         pass
@@ -328,3 +334,40 @@ def test_setting_changed_triggers_update_metadata(removal_settings, monkeypatch)
     call_log.clear()
     on_setting_changed('some_other_setting', None, None)
     assert call_log == []
+
+
+class _HiddenRemovalBox(_RemovalBox):
+    def isVisible(self) -> bool:
+        return False
+
+
+def test_update_metadata_deferred_while_hidden(removal_settings) -> None:
+    """While the cover-art box is not visible, update_metadata must skip the
+    (expensive) removal prediction and thumbnail refresh and instead mark the
+    update as pending, so it can be flushed once the box is shown again."""
+    image = FakeImage()
+    box = _HiddenRemovalBox(_make_item([image], [image]))
+    # Default state before any update.
+    box._removal_predicted = False
+
+    box.update_metadata()
+
+    assert box._pending_metadata_update is True
+    # No thumbnail refresh happened while hidden.
+    assert box.cover_art.data is None
+    assert box.orig_cover_art.data is None
+    # Removal prediction was not (re)computed.
+    assert box._removal_predicted is False
+
+
+def test_update_metadata_clears_pending_when_visible(removal_settings) -> None:
+    """When visible, update_metadata performs the work and clears the pending
+    flag."""
+    image = FakeImage()
+    box = _RemovalBox(_make_item([image], [image]))
+    box._pending_metadata_update = True
+
+    box.update_metadata()
+
+    assert box._pending_metadata_update is False
+    assert box._removal_predicted
