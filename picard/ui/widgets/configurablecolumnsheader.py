@@ -57,6 +57,7 @@ from picard.ui.columns import (
     ImageColumn,
 )
 from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
+from picard.ui.util import context_menu_global_pos
 from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
 from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
@@ -267,7 +268,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         lock_checkbox.toggled.disconnect()
         lock_checkbox.toggled.connect(lock_toggle_callback)
 
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
         event.accept()
 
     def get_columns_state(self) -> dict[str, dict]:

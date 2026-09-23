@@ -420,3 +420,93 @@ def flash_busy_cursor(msecs: int | None = None) -> None:
         msecs = BUSY_CURSOR_FLASH_DELAY_MS
     busy_cursor_start()
     QtCore.QTimer.singleShot(msecs, busy_cursor_stop)
+
+
+def is_keyboard_context_menu_event(event: QtGui.QContextMenuEvent) -> bool:
+    """Return whether a ``QContextMenuEvent`` was triggered by the keyboard.
+
+    The keyboard "context menu"/"menu" key (and Shift+F10) makes Qt synthesize a
+    :class:`~PyQt6.QtGui.QContextMenuEvent` whose position does **not** track the
+    mouse cursor. Callers use this to decide whether to anchor the menu at the
+    current selection instead of at ``event.pos()``.
+    """
+    return event.reason() == QtGui.QContextMenuEvent.Reason.Keyboard
+
+
+def context_menu_item(
+    view: QtWidgets.QListWidget | QtWidgets.QTreeWidget | QtWidgets.QTableWidget,
+    event: QtGui.QContextMenuEvent,
+):
+    """Return the item a ``contextMenuEvent`` targets on an item-based widget.
+
+    For mouse events this is the item under ``event.pos()``. For keyboard events
+    the position is meaningless, so the current item is used instead (otherwise
+    ``itemAt()`` would miss the selected row and the menu would not appear).
+    """
+    if is_keyboard_context_menu_event(event):
+        return view.currentItem()
+    return view.itemAt(event.pos())
+
+
+def keyboard_menu_anchor_global_pos(widget: QtWidgets.QWidget) -> QtCore.QPoint:
+    """Compute a sensible global anchor position for a keyboard-triggered menu.
+
+    Given the widget the context menu belongs to, return the global point where
+    the menu should be shown when triggered by the keyboard. The anchor is chosen
+    based on the widget's current state, in order of preference:
+
+    - Header views (:class:`QHeaderView`): just below the header's top-left, so
+      the menu drops down from the header.
+    - Item views (:class:`QAbstractItemView`): the bottom-left of the current
+      item's rectangle, so the menu drops down from the selected row/cell. Falls
+      back to the viewport's top-left when there is no current item.
+    - Text edits exposing ``cursorRect()`` (e.g. :class:`QPlainTextEdit`,
+      :class:`QTextEdit`): the bottom-left of the text cursor rectangle.
+    - Any other widget: the widget's top-left corner.
+
+    Args:
+        widget: The widget receiving the context-menu request.
+
+    Returns:
+        The global :class:`~PyQt6.QtCore.QPoint` to pass to ``QMenu.exec()``.
+    """
+    # Header views come first because QHeaderView is a QAbstractItemView subclass
+    # but has no meaningful "current" item for keyboard navigation.
+    if isinstance(widget, QtWidgets.QHeaderView):
+        return widget.mapToGlobal(QtCore.QPoint(0, widget.height()))
+
+    # Item views: anchor at the current item (or the viewport origin if none).
+    if isinstance(widget, QtWidgets.QAbstractItemView):
+        viewport = widget.viewport() or widget
+        index = widget.currentIndex()
+        anchor = widget.visualRect(index).bottomLeft() if index.isValid() else QtCore.QPoint(0, 0)
+        return viewport.mapToGlobal(anchor)
+
+    # Text edits: anchor at the caret. cursorRect() is in viewport coordinates.
+    cursor_rect = getattr(widget, 'cursorRect', None)
+    if callable(cursor_rect):
+        viewport = getattr(widget, 'viewport', lambda: widget)() or widget
+        return viewport.mapToGlobal(cursor_rect().bottomLeft())
+
+    # Fallback: top-left corner of the widget.
+    return widget.mapToGlobal(QtCore.QPoint(0, 0))
+
+
+def context_menu_global_pos(widget: QtWidgets.QWidget, event: QtGui.QContextMenuEvent) -> QtCore.QPoint:
+    """Return the global position to show a context menu for ``event``.
+
+    For mouse-triggered events this is ``event.globalPos()``. For keyboard-triggered
+    events (the context-menu/menu key) the mouse position is meaningless, so the
+    menu is anchored at the widget's current selection via
+    :func:`keyboard_menu_anchor_global_pos`.
+
+    Args:
+        widget: The widget whose ``contextMenuEvent`` is being handled.
+        event: The :class:`~PyQt6.QtGui.QContextMenuEvent` received.
+
+    Returns:
+        The global :class:`~PyQt6.QtCore.QPoint` to pass to ``QMenu.exec()``.
+    """
+    if is_keyboard_context_menu_event(event):
+        return keyboard_menu_anchor_global_pos(widget)
+    return event.globalPos()

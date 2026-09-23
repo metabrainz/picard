@@ -62,6 +62,7 @@ from picard.tags.docs import display_tag_tooltip
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
 from picard.ui.theme import theme
+from picard.ui.util import context_menu_global_pos
 from picard.ui.widgets.completion_provider import CompletionChoicesProvider
 from picard.ui.widgets.context_detector import (
     TAG_NAME_FIRST_ARG_FUNCTIONS,
@@ -452,7 +453,7 @@ class ScriptTextEdit(PlainTextEdit):
         menu.addSeparator()
         menu.addAction(self.wordwrap_action)
         menu.addAction(self.show_tooltips_action)
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
 
     def mouseMoveEvent(self, event):
         if self._show_tooltips:

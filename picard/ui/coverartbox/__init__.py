@@ -79,6 +79,7 @@ from .imageurldialog import ImageURLDialog
 
 from picard.ui.util import (
     FileDialog,
+    context_menu_global_pos,
     strikethrough_removal_text,
 )
 
@@ -573,5 +574,5 @@ class CoverArtBox(QtWidgets.QGroupBox):
             action.setChecked(True)
         menu.addAction(action)
 
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
         event.accept()
