@@ -520,7 +520,7 @@ class Cluster(FileList):
         yield from cluster_list.values()
 
 
-class TempFileList(FileListItem):
+class TempFileList(FileList):
     """A temporary file list used for display purposes only.
 
     If this becomes unused `clear` should be called to free up resources.
