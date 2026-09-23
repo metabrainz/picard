@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-07 12:13+0000\n"
+"PO-Revision-Date: 2026-09-23 16:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -278,10 +278,8 @@ msgid "Browser Integration"
 msgstr "Browserintegratie"
 
 #: picard/debug_opts.py:185
-#, fuzzy
-#| msgid "Browser integration not enabled"
 msgid "Log browser integration HTTP requests"
-msgstr "Browserintegratie niet ingeschakeld"
+msgstr "Http-verzoeken voor de browserintegratie registreren"
 
 #: picard/file.py:335
 msgid "Cannot save file: the file no longer exists."
@@ -482,11 +480,11 @@ msgstr "Afbeeldingen nooit door kleinere vervangen"
 
 #: picard/options.py:232
 msgid "Never replace images of selected types"
-msgstr "Afbeeldingen van de geselecteerde typen nooit vervangen"
+msgstr "Afbeeldingen van de geselecteerde types nooit vervangen"
 
 #: picard/options.py:238
 msgid "Never replace images of these types"
-msgstr "Afbeeldingen van deze typen nooit vervangen"
+msgstr "Afbeeldingen van deze types nooit vervangen"
 
 #: picard/options.py:245
 msgid "Primary image type as the file name"
@@ -820,10 +818,8 @@ msgid "Standardize artist names"
 msgstr "Standaariseer artiestennamen"
 
 #: picard/options.py:550 picard/ui/forms/ui_options_metadata.py:195
-#, fuzzy
-#| msgid "Use standardized vocal credits"
 msgid "Always standardize multi-valued artist tags"
-msgstr "Gebruik gestandaardiseerde namen van soorten vocalen"
+msgstr "Standaardiseer altijd meervoudige artiesttags"
 
 #: picard/options.py:553 picard/ui/forms/ui_options_metadata.py:196
 msgid "Use standardized instrument credits"
@@ -1243,7 +1239,7 @@ msgstr "Machtigingscode:"
 #: picard/tagger.py:784 picard/ui/mainwindow/__init__.py:1594
 #: picard/ui/mainwindow/__init__.py:1620
 msgid "Failed to load session"
-msgstr "Kon sessie niet laden"
+msgstr "Sessie laden mislukt"
 
 #: picard/tagger.py:785 picard/ui/mainwindow/__init__.py:1595
 #: picard/ui/mainwindow/__init__.py:1621
@@ -1301,7 +1297,7 @@ msgstr "Verwijdert de uitgave %(id)s: %(artist)s - %(album)s"
 #: picard/tagger.py:1335
 #, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
-msgstr "Kon ‘%(filename)s’ niet naar prullenbak verplaatsen"
+msgstr "‘%(filename)s’ naar de prullenbak verplaatsen mislukt"
 
 #: picard/tagger.py:1340
 #, python-format
@@ -1366,7 +1362,7 @@ msgstr ""
 #: picard/tagger.py:1463
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
-msgstr "Kon mediuminformatie niet uit tags parseren: %s"
+msgstr "Mediuminformatie uit tags parseren mislukt: %s"
 
 #: picard/tagger.py:1472
 msgid "Looking up disc from tags…"
@@ -1681,17 +1677,15 @@ msgstr "Ongeldige TOML: %s"
 
 #: picard/profiles/importer.py:132
 msgid "Missing required [profile] section"
-msgstr "Vereist gedeelte [profiel] ontbreekt"
+msgstr "Vereist gedeelte [profile] ontbreekt"
 
 #: picard/profiles/importer.py:134
-#, fuzzy
-#| msgid "The profile title cannot be blank."
 msgid "The [profile] section must be a table"
-msgstr "De naam van het profiel kan niet leeg zijn."
+msgstr "Het gedeelte [profile] moet een tabel zijn"
 
 #: picard/profiles/importer.py:138
 msgid "Missing required 'title' in [profile] section"
-msgstr "Vereist titel in gedeelte [profiel] ontbreekt"
+msgstr "Vereiste titel title in gedeelte [profile] ontbreekt"
 
 #: picard/profiles/importer.py:145
 #, python-format
@@ -1710,7 +1704,7 @@ msgstr "Geen bestaand profiel met ID ‘%s’ om te vervangen"
 
 #: picard/profiles/importer.py:177
 msgid "The [settings] section must be a table"
-msgstr ""
+msgstr "Het gedeelte [settings] moet een tabel zijn"
 
 #: picard/profiles/importer.py:190
 #, python-format
@@ -1722,18 +1716,16 @@ msgstr ""
 "mogelijk niet geconverteerd."
 
 #: picard/profiles/importer.py:222
-#, fuzzy
-#| msgid "The script title must not be empty."
 msgid "The [scripts] section must be a table"
-msgstr "De naam van het script mag niet leeg zijn."
+msgstr "Het gedeelte [scripts] moet een tabel zijn"
 
 #: picard/profiles/importer.py:226
 msgid "The [scripts.naming] section must be a table"
-msgstr ""
+msgstr "Het gedeelte [scripts.naming] moet een tabel zijn"
 
 #: picard/profiles/importer.py:235
 msgid "The [[scripts.tagging]] section must be an array of tables"
-msgstr ""
+msgstr "Het gedeelte [[scripts.tagging]] moet een array met tabellen zijn"
 
 #: picard/profiles/importer.py:250
 #, python-format
@@ -1743,13 +1735,13 @@ msgstr[0] "%d instelling werd niet herkend en is overgeslagen: %s"
 msgstr[1] "%d instellingen werden niet herkend en zijn overgeslagen: %s"
 
 #: picard/profiles/importer.py:263
-#, fuzzy, python-format
-#| msgid "%d setting was not recognized and was skipped: %s"
-#| msgid_plural "%d settings were not recognized and were skipped: %s"
+#, python-format
 msgid "%d setting had an out-of-range value and was corrected: %s"
 msgid_plural "%d settings had out-of-range values and were corrected: %s"
-msgstr[0] "%d instelling werd niet herkend en is overgeslagen: %s"
-msgstr[1] "%d instellingen werden niet herkend en zijn overgeslagen: %s"
+msgstr[0] ""
+"De instelling %d had een waarde buiten het bereik en is gecorrigeerd: %s"
+msgstr[1] ""
+"De instellingen %d hadden waarden buiten het bereik en zijn gecorrigeerd: %s"
 
 #: picard/profiles/importer.py:275
 #, python-format
@@ -1764,7 +1756,7 @@ msgstr "Bestandsnamenscript mist veld ‘script’ of ‘titel’, overgeslagen.
 
 #: picard/profiles/importer.py:391
 msgid "Each [[scripts.tagging]] entry must be a table"
-msgstr ""
+msgstr "Elke ingang in [[scripts.tagging]] moet een tabel zijn"
 
 #: picard/profiles/importer.py:412
 #, python-format
@@ -3577,16 +3569,12 @@ msgid "multi-value variable"
 msgstr "meervoudige variabele"
 
 #: picard/tags/tagvar.py:79
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "read-only"
-msgstr "behouden, alleen lezen"
+msgstr "alleen lezen"
 
 #: picard/tags/tagvar.py:80
-#, fuzzy
-#| msgid "preserved read-only"
 msgid "preserved"
-msgstr "behouden, alleen lezen"
+msgstr "behouden"
 
 #: picard/tags/tagvar.py:81
 msgid "not for use in scripts"
@@ -4133,10 +4121,8 @@ msgid "Green: %s."
 msgstr "Groen: %s."
 
 #: picard/ui/profile_tagger_scripts_dialog.py:54
-#, fuzzy
-#| msgid "Enable Tagger Script(s)"
 msgid "Enable Tagger Scripts?"
-msgstr "Tagscript(s) inschakelen"
+msgstr "Tagscripts inschakelen?"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:61
 #, python-format
@@ -4148,12 +4134,16 @@ msgid ""
 "Uncheck any script you do not want to run, or cancel to import the scripts "
 "without enabling tagger scripting."
 msgstr ""
+"Het geïmporteerde profiel %s bevat tagscripts. Op dit moment zijn tagscripts "
+"voor dit profiel uitgeschakeld.\n"
+"\n"
+"Als je dit inschakelt, worden de aangevinkte scripts uitgevoerd als dit "
+"profiel actief is. Vink de scripts die je niet wil uitvoeren uit of annuleer "
+"om de scripts te importeren zonder tagscripts in te schakelen."
 
 #: picard/ui/profile_tagger_scripts_dialog.py:90
-#, fuzzy
-#| msgid "E&xit without saving"
 msgid "Import without enabling"
-msgstr "&Sluiten zonder opslaan"
+msgstr "Importeer zonder in te schakelen"
 
 #: picard/ui/ratingwidget.py:98
 #, python-format
@@ -4256,7 +4246,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:184
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
-msgstr "Bestanden op basis van de tags hernoemen (bijv. ‘Artiest - Titel.mp3’)"
+msgstr "Hernoem bestanden op basis van de tags (bijv. ‘Artiest - Titel.mp3’)"
 
 #: picard/ui/setupwizard.py:185
 msgid ""
@@ -4268,7 +4258,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:190
 msgid "Move files to a folder structure based on tags"
-msgstr "Bestanden op basis van de tags naar een map verplaatsen"
+msgstr "Verplaats bestanden op basis van de tags naar een map"
 
 #: picard/ui/setupwizard.py:191
 msgid ""
@@ -4307,7 +4297,7 @@ msgstr "Selecteer wat Picard met hoesafbeeldingen moet doen."
 
 #: picard/ui/setupwizard.py:266
 msgid "Embed cover art into audio files"
-msgstr "Hoesafbeeldingen in audiobestanden opslaan"
+msgstr "Sla hoesafbeeldingen in audiobestanden op"
 
 #: picard/ui/setupwizard.py:267
 msgid ""
@@ -4319,7 +4309,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:272
 msgid "Save cover art as separate image files"
-msgstr "Hoesafbeeldingen als aparte bestanden opstaan"
+msgstr "Sla hoesafbeeldingen als aparte bestanden op"
 
 #: picard/ui/setupwizard.py:273
 msgid ""
@@ -4331,7 +4321,7 @@ msgstr ""
 
 #: picard/ui/setupwizard.py:278
 msgid "Prefer release group cover art"
-msgstr "Hoesafbeeldingen van de uitgavegroep gebruiken"
+msgstr "Gebruik hoesafbeeldingen van de uitgavegroep"
 
 #: picard/ui/setupwizard.py:280
 msgid ""
@@ -4392,8 +4382,8 @@ msgstr "Selecteer of Picard voor elk nummer extra informatie moet ophalen."
 #: picard/ui/setupwizard.py:444
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr ""
-"Gedetailleerde informatie over relaties (uitvoerende artiesten, componisten "
-"enz. ophalen)"
+"Haal gedetailleerde informatie over relaties op (uitvoerende artiesten, "
+"componisten enz.)"
 
 #: picard/ui/setupwizard.py:446
 msgid ""
@@ -4411,7 +4401,7 @@ msgstr ""
 "composities. Zo krijg je veel uitgebreidere tags.\n"
 "\n"
 "Dit is standaard uitgeschakeld, omdat hiervoor meer gegevens van de "
-"MusicBrainz-servers moet worden opgehaald, waardoor het laden van uitgaven "
+"MusicBrainz-servers moeten worden opgehaald, waardoor het laden van uitgaven "
 "wat langer duurt en onze servers zwaarder worden belast. Schakel dit in als "
 "je de meest complete tags wil hebben en je het niet vervelend vindt om "
 "langer te wachten."
@@ -4425,6 +4415,13 @@ msgid ""
 "\n"
 "Useful if your player or file system does not handle these characters well."
 msgstr ""
+"Vervang typografische Unicode-interpunctie door hun ASCII-equivalenten. Het "
+"gaat vooral om kromme apostrofs (’) die worden vervangen door rechte ('), "
+"kromme dubbele aanhalingstekens (“ en ”) die worden vervangen door rechte "
+"(\") en kastlijntjes (— en –) die worden vervangen door koppeltekens (-).\n"
+"\n"
+"Dit is handig als de speler of het bestandssysteem niet goed met deze tekens "
+"overweg kunnen."
 
 #: picard/ui/setupwizard.py:472
 msgid "You can change this later under Options → Options → Metadata."
@@ -4769,10 +4766,8 @@ msgid "Categories"
 msgstr "Categorieën"
 
 #: picard/ui/dialogs/installplugin.py:141
-#, fuzzy
-#| msgid "Double-click to view detailed plugin information"
 msgid "Double-click a plugin for detailed information."
-msgstr "Dubbelklik om details over de plug-in weer te geven"
+msgstr "Dubbelklik op een plug-in voor meer informatie."
 
 #: picard/ui/dialogs/installplugin.py:144
 msgid "Registry"
@@ -4987,36 +4982,33 @@ msgid "Installation Failed"
 msgstr "Installatie mislukt"
 
 #: picard/ui/dialogs/installplugin.py:741
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to install the plugin."
-msgstr "Kon plug-in niet verwijderen: {errmsg}"
+msgstr "Plug-in installeren mislukt."
 
 #: picard/ui/dialogs/plugin_error.py:169
 #, python-format
 msgid "If this looks like a plugin problem, report it to the plugin author: %s"
 msgstr ""
+"Als het erop lijkt dat dit een probleem met een plug-in is, kan je het "
+"melden aan de auteur: %s"
 
 #: picard/ui/dialogs/plugin_error.py:173
 #, python-format
 msgid "Please report this issue on the %s."
-msgstr ""
+msgstr "Meld dit probleem in de %s."
 
 #: picard/ui/dialogs/plugin_error.py:174
-#, fuzzy
-#| msgid "MusicBrainz Track Id"
 msgid "MusicBrainz bug tracker"
-msgstr "MusicBrainz-ID nummer"
+msgstr "MusicBrainz-bugtracker"
 
 #: picard/ui/dialogs/plugin_error.py:182
-#, fuzzy, python-format
-#| msgid "Plugin: %s"
+#, python-format
 msgid "Plugin \"%s\":"
-msgstr "Plug-in: %s"
+msgstr "Plug-in ʻ%sʼ:"
 
 #: picard/ui/dialogs/plugin_error.py:187
 msgid "Error reported by the plugin:"
-msgstr ""
+msgstr "Door de plug-in gemelde fout:"
 
 #: picard/ui/dialogs/plugin_order_selector.py:62
 msgid "Plugin Execution Order"
@@ -5489,7 +5481,7 @@ msgstr "Vervang nooit afbeeldingen door kleinere afbeeldingen"
 
 #: picard/ui/forms/ui_options_cover.py:130
 msgid "Never replace selected cover image types"
-msgstr "Vervang nooit afbeeldingen van deze typen"
+msgstr "Vervang nooit afbeeldingen van deze types"
 
 #: picard/ui/forms/ui_options_cover.py:131
 msgid "Select Types…"
@@ -5514,8 +5506,8 @@ msgstr "Sla slechts één afbeelding van de voorkant op als los bestand"
 #: picard/ui/forms/ui_options_cover.py:136
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
-"Bij afbeeldingen die niet van de voorkant zijn altijd het eerste type "
-"afbeelding als bestandsnaam gebruiken"
+"Bij afbeeldingen die niet van de voorkant zijn, wordt altijd het eerste type "
+"afbeelding als bestandsnaam gebruikt"
 
 #: picard/ui/forms/ui_options_cover.py:137
 msgid "Use the primary image type as the file name"
@@ -6231,8 +6223,6 @@ msgid "Add new tagger script"
 msgstr "Nieuw tagscript"
 
 #: picard/ui/forms/ui_options_script.py:131
-#, fuzzy
-#| msgid "Add…"
 msgid "Add"
 msgstr "Toevoegen"
 
@@ -6462,7 +6452,7 @@ msgstr "Aanmelding vereist"
 
 #: picard/ui/forms/ui_provider_options_caa.py:79
 msgid "Download only selected image types"
-msgstr "Download alleen de geselecteerde typen afbeeldingen"
+msgstr "Download alleen de geselecteerde types afbeeldingen"
 
 #: picard/ui/forms/ui_provider_options_caa.py:80
 msgid "Select types…"
@@ -7350,7 +7340,7 @@ msgstr "Sessie opgeslagen naar ‘%(path)s’"
 
 #: picard/ui/mainwindow/__init__.py:578 picard/ui/mainwindow/__init__.py:1554
 msgid "Failed to save session"
-msgstr "Kon sessie niet opslaan"
+msgstr "Sessie opslaan mislukt"
 
 #: picard/ui/mainwindow/__init__.py:615
 msgid "Ready"
@@ -8286,16 +8276,14 @@ msgid "Some settings on this page are overridden by %s"
 msgstr "Sommige instellingen op deze pagina worden overschreven door %s"
 
 #: picard/ui/options/dialog.py:791
-#, fuzzy, python-format
-#| msgid "The highlighted settings on this page are overridden by %s"
+#, python-format
 msgid "The highlighted settings on this page are tracked by %s"
-msgstr "De gemarkeerde instellingen op deze pagina worden overschreven door %s"
+msgstr "De gemarkeerde instellingen op deze pagina worden beheerst door %s"
 
 #: picard/ui/options/dialog.py:793
-#, fuzzy, python-format
-#| msgid "Some settings on this page are overridden by %s"
+#, python-format
 msgid "Some settings on this page are tracked by %s"
-msgstr "Sommige instellingen op deze pagina worden overschreven door %s"
+msgstr "Sommige instellingen op deze pagina worden beheerst door %s"
 
 #: picard/ui/options/dialog.py:972
 msgid "Unexpected error"
@@ -8449,13 +8437,13 @@ msgstr ""
 "op een willekeurig teken<br/>\n"
 "<b>+woor[dk]</b>: gebruik alle genres die beginnen met <i>woor</i> en "
 "eindigen op <i>d</i> of <i>k</i><br/>\n"
-"<b>-w*rd</b>: sluit alle genres die beginnen met <i>w</i> en eindigen op "
-"<i>rd</i> uit\n"
+"<b>-w*rd</b>: sluit alle genres uit die beginnen met <i>w</i> en eindigen op "
+"<i>rd</i>\n"
 "</p>\n"
 "<p><u>Met reguliere expressies filteren (Python-re-syntaxis):</u></p>\n"
 "<p><b>-/^w.rd+/</b>: sluit alle genres uit die beginnen met <i>w</i> gevolgd "
-"door een willekeurig teken, dan <i>r</i> gevolgd door ten minste één <i>d</"
-"i>\n"
+"door een willekeurig teken, dan <i>r</i> gevolgd door ten minste één <i>d</i>"
+"\n"
 "</p>\n"
 "</body></html>"
 
@@ -8718,8 +8706,9 @@ msgid ""
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Configuratiebestand opslaan naar %s mislukt. Zie het logboek voor meer "
-"informatie."
+"Configuratiebestand opslaan naar %s mislukt.\n"
+"\n"
+"Zie het logboek voor meer informatie."
 
 #: picard/ui/options/maintenance.py:240 picard/ui/options/maintenance.py:249
 msgid "Backup Configuration File"
@@ -8965,10 +8954,8 @@ msgid "Update Failed"
 msgstr "Bijwerken mislukt"
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to update the plugin."
-msgstr "Kon plug-in niet bijwerken: {errmsg}"
+msgstr "Plug-in bijwerken mislukt."
 
 #: picard/ui/options/profiles.py:93
 msgid "Option Profiles"
@@ -9108,7 +9095,7 @@ msgstr "Exportfout"
 #: picard/ui/options/profiles.py:610
 #, python-format
 msgid "Failed to write file: %s"
-msgstr "Schrijven naar bestand mislukt: %s"
+msgstr "Bestand schrijven mislukt: %s"
 
 #: picard/ui/options/profiles.py:613
 msgid "Export Complete"
@@ -9148,7 +9135,7 @@ msgstr "Importfout"
 #: picard/ui/options/profiles.py:679 picard/ui/options/profiles.py:834
 #, python-format
 msgid "Failed to read file: %s"
-msgstr "Kon bestand niet lezen: %s"
+msgstr "Bestand lezen mislukt: %s"
 
 #: picard/ui/options/profiles.py:695
 msgid "Profile Exists"
@@ -9230,7 +9217,7 @@ msgid ""
 msgstr ""
 "Als een bestand met meerdere uitgaven overeenkomt, krijgen types uitgaven in "
 "deze lijst een hogere score.<br>Het bovenste type krijgt de sterkste "
-"voorkeur.<br>Types die niet in de lijst zijn, worden neutraal behandeld."
+"voorkeur.<br>Types die niet in de lijst staan, worden neutraal behandeld."
 
 #: picard/ui/options/releases.py:98
 msgid "Discouraged release types (avoided when matching)"
@@ -9867,10 +9854,8 @@ msgstr "Verwijderen mislukt"
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:740
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to uninstall the plugin."
-msgstr "Kon plug-in niet verwijderen: {errmsg}"
+msgstr "Plug-in verwijderen mislukt."
 
 #: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
@@ -9993,20 +9978,12 @@ msgid "Plugin Error"
 msgstr "Plug-infout"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
-#, fuzzy
-#| msgid ""
-#| "Failed to enable plugin \"{name}\":\n"
-#| "{errmsg}"
 msgid "Failed to enable the plugin."
-msgstr ""
-"Kon plug-in ‘{name}’ niet inschakelen:\n"
-"{errmsg}"
+msgstr "Plug-in inschakelen mislukt."
 
 #: picard/ui/widgets/pluginlistwidget.py:687
-#, fuzzy
-#| msgid "Failed to update plugin: {errmsg}"
 msgid "Failed to disable the plugin."
-msgstr "Kon plug-in niet bijwerken: {errmsg}"
+msgstr "Plug-in uitschakelen mislukt."
 
 #: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
@@ -10014,7 +9991,7 @@ msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
-"Kon plug-in ‘{name}’ niet opnieuw installeren:\n"
+"Plug-in ‘{name}’ opnieuw installeren mislukt:\n"
 "{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:782
@@ -10051,7 +10028,7 @@ msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
-"Kon plug-in ‘{name}’ niet naar andere ref wijzigen:\n"
+"Plug-in ‘{name}’ naar andere ref wijzigen mislukt:\n"
 "{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:895
