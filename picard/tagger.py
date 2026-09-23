@@ -1011,7 +1011,10 @@ class Tagger(QtWidgets.QApplication):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
-        with self.window.suspend_while_loading, self.window.metadata_box.ignore_updates:
+        with (
+            self.window.suspend_while_loading,
+            self.window.ignore_selection_changes,
+        ):
             if isinstance(target, Cluster):
                 for file in process_events_iter(files):
                     file.move(target)
