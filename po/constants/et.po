@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-08-17 14:12+0000\n"
+"PO-Revision-Date: 2026-09-23 16:13+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:182
@@ -577,15 +577,15 @@ msgstr "basaa (Kamerun)"
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
-msgstr "Valgevene"
+msgstr "valgevene"
 
 #: picard/const/locales.py:104
 msgid "Belarusian (Belarus)"
-msgstr "Valgevene (Valgevene)"
+msgstr "valgevene (Valgevene)"
 
 #: picard/const/locales.py:105
 msgid "Belarusian (Taraskievica orthography)"
-msgstr ""
+msgstr "valgevene (Taraškievica ehk valgevene klassikaline ortograafia)"
 
 #: picard/const/locales.py:106
 msgid "Bemba"
@@ -593,23 +593,23 @@ msgstr "bemba"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
-msgstr ""
+msgstr "bemba (Sambia)"
 
 #: picard/const/locales.py:108
 msgid "Bena"
-msgstr ""
+msgstr "bena"
 
 #: picard/const/locales.py:109
 msgid "Bena (Tanzania)"
-msgstr ""
+msgstr "bena (tansaania)"
 
 #: picard/const/locales.py:110
 msgid "Bulgarian"
-msgstr "Bulgaaria"
+msgstr "bulgaaria"
 
 #: picard/const/locales.py:111
 msgid "Bulgarian (Bulgaria)"
-msgstr "Bulgaaria (Bulgaaria)"
+msgstr "bulgaaria (Bulgaaria)"
 
 #: picard/const/locales.py:112
 msgid "Haryanvi"
@@ -621,27 +621,27 @@ msgstr ""
 
 #: picard/const/locales.py:114
 msgid "Western Balochi"
-msgstr ""
+msgstr "läänebelutši"
 
 #: picard/const/locales.py:115
 msgid "Western Balochi (United Arab Emirates)"
-msgstr ""
+msgstr "läänebelutši (Araabia ühednemiraadid)"
 
 #: picard/const/locales.py:116
 msgid "Western Balochi (Afghanistan)"
-msgstr ""
+msgstr "läänebelutši (Afganistan)"
 
 #: picard/const/locales.py:117
 msgid "Western Balochi (Iran)"
-msgstr ""
+msgstr "läänebelutši (Iraan)"
 
 #: picard/const/locales.py:118
 msgid "Western Balochi (Oman)"
-msgstr ""
+msgstr "läänebelutši (Omaan)"
 
 #: picard/const/locales.py:119
 msgid "Western Balochi (Pakistan)"
-msgstr ""
+msgstr "läänebelutši (Pakistan)"
 
 #: picard/const/locales.py:120
 msgid "Bhojpuri"
@@ -649,91 +649,91 @@ msgstr "bhodžpuri"
 
 #: picard/const/locales.py:121
 msgid "Bhojpuri (India)"
-msgstr ""
+msgstr "bhodžpuri (India)"
 
 #: picard/const/locales.py:122
 msgid "Tai Dam"
-msgstr ""
+msgstr "tai-dami keel"
 
 #: picard/const/locales.py:123
 msgid "Tai Dam (Vietnam)"
-msgstr ""
+msgstr "tai-dami keel (Vietnam)"
 
 #: picard/const/locales.py:124
 msgid "Bambara"
-msgstr "bambara"
+msgstr "bambara keel"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
-msgstr ""
+msgstr "bambara keel (Mali)"
 
 #: picard/const/locales.py:126
 msgid "Bambara (N’Ko)"
-msgstr ""
+msgstr "bambara keel (N’Ko tähestik)"
 
 #: picard/const/locales.py:127
 msgid "Bambara (N’Ko) (Mali)"
-msgstr ""
+msgstr "bambara keel (N’Ko tähestik) (Mali)"
 
 #: picard/const/locales.py:128
 msgid "Bangla"
-msgstr ""
+msgstr "bengali keel"
 
 #: picard/const/locales.py:129
 msgid "Bangla (Bangladesh)"
-msgstr ""
+msgstr "bengali keel (Bangladesh)"
 
 #: picard/const/locales.py:130
 msgid "Bangla (India)"
-msgstr ""
+msgstr "bengali keel (India)"
 
 #: picard/const/locales.py:131
 msgid "Tibetan"
-msgstr "Tiibeti"
+msgstr "tiibeti keel"
 
 #: picard/const/locales.py:132
 msgid "Tibetan (China)"
-msgstr "Tiibeti (Hiina)"
+msgstr "tiibeti keel (Hiina)"
 
 #: picard/const/locales.py:133
 msgid "Tibetan (India)"
-msgstr "Tiibeti (India)"
+msgstr "tiibeti keel (India)"
 
 #: picard/const/locales.py:134
 msgid "Breton"
-msgstr "bretooni"
+msgstr "bretooni keel"
 
 #: picard/const/locales.py:135
 msgid "Breton (France)"
-msgstr ""
+msgstr "bretooni keel (Prantsumaa)"
 
 #: picard/const/locales.py:136
 msgid "Bodo"
-msgstr ""
+msgstr "bodo keel"
 
 #: picard/const/locales.py:137
 msgid "Bodo (India)"
-msgstr "bodo (India)"
+msgstr "bodo keel (India)"
 
 #: picard/const/locales.py:138
 msgid "Bosnian"
-msgstr "Bosnia"
+msgstr "bosnia keel"
 
 #: picard/const/locales.py:139
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "bosnia keel (kirillitsa)"
 
 #: picard/const/locales.py:140
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "bosnia keel (kirillitsa) (Bosnia ja Hertsegoviina)"
 
 #: picard/const/locales.py:141
 msgid "Bosnian (Latin)"
-msgstr ""
+msgstr "bosnia keel (ladina)"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "bosnia keel (ladina) (Bosnia ja Hertsegoviina)"
 
 #: picard/const/locales.py:143
 msgid "Akoose"
@@ -4334,10 +4334,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:123
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album Artists Comments"
-msgstr "Albumi esitaja"
+msgstr "Albumi esitajate kommentaarid"
 
 #: picard/const/tags.py:125
 msgid ""
@@ -4346,10 +4344,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:133
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album Artist Comment"
-msgstr "Albumi esitaja"
+msgstr "Albumi esitaja kommentaar"
 
 #: picard/const/tags.py:135
 msgid ""
@@ -4437,10 +4433,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:212
-#, fuzzy
-#| msgid "Artists"
 msgid "Artists Comments"
-msgstr "Esitajad"
+msgstr "Esitajate kommentaarid"
 
 #: picard/const/tags.py:214
 msgid ""
@@ -4449,10 +4443,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:222
-#, fuzzy
-#| msgid "Comment"
 msgid "Artist Comment"
-msgstr "Kommentaar"
+msgstr "Esitaja kommentaar"
 
 #: picard/const/tags.py:224
 msgid ""
@@ -5087,10 +5079,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:769
-#, fuzzy
-#| msgid "Composer"
 msgid "Composer MBID"
-msgstr "Helilooja"
+msgstr "Helilooja MBID"
 
 #: picard/const/tags.py:770
 msgid "The MusicBrainz Identifier (MBID) for the composer(s)."
