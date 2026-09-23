@@ -188,6 +188,7 @@ from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
     find_starting_directory,
+    is_keyboard_context_menu_event,
     menu_builder,
     open_local_path,
     show_session_not_found_dialog,
@@ -196,6 +197,43 @@ from picard.ui.widgets.checkboxmenuitem import create_checkable_menu_item
 
 
 SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
+
+
+# Toggleable search options shown in the search button's context menu.
+_SEARCH_OPTIONS = {
+    'use_adv_search_syntax': N_("&Advanced search"),
+    'builtin_search': N_("&Builtin search"),
+}
+
+
+class SearchButton(QtWidgets.QToolButton):
+    """Search toolbar button with a context menu to toggle search options.
+
+    Handling ``contextMenuEvent`` gives access to the event, so keyboard
+    requests drop the menu below the button while mouse requests use the click
+    position.
+    """
+
+    def contextMenuEvent(self, event):
+        config = get_config()
+        menu = QtWidgets.QMenu(self)
+
+        def toggle_opt(opt, checked):
+            config.setting[opt] = checked
+
+        for opt, label in _SEARCH_OPTIONS.items():
+            action = QtGui.QAction(_(label), menu)
+            action.setCheckable(True)
+            action.setChecked(config.setting[opt])
+            action.triggered.connect(partial(toggle_opt, opt))
+            menu.addAction(action)
+
+        if is_keyboard_context_menu_event(event):
+            global_pos = self.mapToGlobal(self.rect().bottomLeft())
+        else:
+            global_pos = event.globalPos()
+        menu.exec(global_pos)
+        event.accept()
 
 
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
@@ -1200,7 +1238,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.player_toolbar = toolbar
 
     def _create_search_toolbar(self):
-        config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.action_map[MainAction.SEARCH_TOOLBAR_TOGGLE] = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName('search_toolbar')
@@ -1221,33 +1258,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_edit.returnPressed.connect(self._trigger_search_action)
         self.search_edit.textChanged.connect(self._toggle_search)
         hbox.addWidget(self.search_edit, 0)
-        self.search_button = QtWidgets.QToolButton(search_panel)
+        self.search_button = SearchButton(search_panel)
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.action_map[MainAction.SEARCH])
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_button.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
-
-        # search button contextual menu, shortcut to toggle search options
-        def search_button_menu(position):
-            menu = QtWidgets.QMenu()
-            opts = {
-                'use_adv_search_syntax': N_("&Advanced search"),
-                'builtin_search': N_("&Builtin search"),
-            }
-
-            def toggle_opt(opt, checked):
-                config.setting[opt] = checked
-
-            for opt, label in opts.items():
-                action = QtGui.QAction(_(label), menu)
-                action.setCheckable(True)
-                action.setChecked(config.setting[opt])
-                action.triggered.connect(partial(toggle_opt, opt))
-                menu.addAction(action)
-            menu.exec(self.search_button.mapToGlobal(position))
-
-        self.search_button.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-        self.search_button.customContextMenuRequested.connect(search_button_menu)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 

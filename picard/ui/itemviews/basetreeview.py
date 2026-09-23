@@ -104,7 +104,11 @@ from picard.ui.itemviews.custom_columns.shared import get_recognized_view_column
 from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
-from picard.ui.util import menu_builder
+from picard.ui.util import (
+    context_menu_global_pos,
+    context_menu_item,
+    menu_builder,
+)
 from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
 
 
@@ -239,7 +243,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         super().changeEvent(event)
 
     def contextMenuEvent(self, event):
-        item = self.itemAt(event.pos())
+        item = context_menu_item(self, event)
         if not item:
             return
         config = get_config()
@@ -407,7 +411,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
 
         add_actions(self.select_all_action)
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
         event.accept()
 
     @restore_method

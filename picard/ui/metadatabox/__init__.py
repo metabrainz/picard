@@ -89,6 +89,7 @@ from picard.ui.metadatabox.tagdiffhtml import (
     highlight_full,
 )
 from picard.ui.theme import theme
+from picard.ui.util import context_menu_global_pos
 
 
 # Custom data role for storing diff HTML on table items
@@ -790,7 +791,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             menu.addSeparator()
         # Always add "Show Changes First" action
         menu.addAction(self.changes_first_action)
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
         event.accept()
 
     def _add_lookup_action(self, menu, tag, column, single_tag, item):

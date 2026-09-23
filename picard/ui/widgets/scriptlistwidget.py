@@ -36,6 +36,10 @@ from picard.script import TaggingScriptSetting
 from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
+from picard.ui.util import (
+    context_menu_global_pos,
+    context_menu_item,
+)
 
 
 class ScriptListWidget(QtWidgets.QListWidget):
@@ -49,7 +53,7 @@ class ScriptListWidget(QtWidgets.QListWidget):
         self.bad_row = -1
 
     def contextMenuEvent(self, event):
-        item = self.itemAt(event.x(), event.y())
+        item = context_menu_item(self, event)
         if item:
             menu = QtWidgets.QMenu(self)
             rename_action = QtGui.QAction(_("Rename script"), self)
@@ -58,7 +62,7 @@ class ScriptListWidget(QtWidgets.QListWidget):
             remove_action = QtGui.QAction(_("Remove script"), self)
             remove_action.triggered.connect(partial(self.remove_script, item))
             menu.addAction(remove_action)
-            menu.exec(event.globalPos())
+            menu.exec(context_menu_global_pos(self, event))
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Delete):

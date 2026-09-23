@@ -36,6 +36,10 @@ from picard.profiles.exporter import export_available
 from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
+from picard.ui.util import (
+    context_menu_global_pos,
+    context_menu_item,
+)
 
 
 class ProfileListWidget(QtWidgets.QListWidget):
@@ -45,7 +49,7 @@ class ProfileListWidget(QtWidgets.QListWidget):
     import_from_clipboard_requested = QtCore.pyqtSignal()
 
     def contextMenuEvent(self, event):
-        item = self.itemAt(event.x(), event.y())
+        item = context_menu_item(self, event)
         if item:
             menu = QtWidgets.QMenu(self)
             rename_action = QtGui.QAction(_("Rename profile"), self)
@@ -69,7 +73,7 @@ class ProfileListWidget(QtWidgets.QListWidget):
             import_clipboard_action = QtGui.QAction(_("Import from clipboard"), self)
             import_clipboard_action.triggered.connect(self.import_from_clipboard_requested.emit)
             menu.addAction(import_clipboard_action)
-            menu.exec(event.globalPos())
+            menu.exec(context_menu_global_pos(self, event))
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Delete):

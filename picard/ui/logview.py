@@ -57,7 +57,10 @@ from picard.ui.logviewmodel import (
     LogItemModel,
 )
 from picard.ui.theme import theme
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    context_menu_global_pos,
+)
 
 
 class LogHighlighter(QtGui.QSyntaxHighlighter):
@@ -149,6 +152,22 @@ class LogHighlighter(QtGui.QSyntaxHighlighter):
                     self.setFormat(match.start(), match.end() - match.start(), fmt)
 
 
+class LogListView(QtWidgets.QListView):
+    """List view that resolves the position for context menus.
+
+    Handling ``contextMenuEvent`` gives access to the event, so both mouse and
+    keyboard requests are anchored consistently via
+    :func:`~picard.ui.util.context_menu_global_pos`.
+    """
+
+    #: Emitted with the global position when a context menu is requested.
+    context_menu_requested = QtCore.pyqtSignal(QtCore.QPoint)
+
+    def contextMenuEvent(self, event):
+        self.context_menu_requested.emit(context_menu_global_pos(self, event))
+        event.accept()
+
+
 class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
     modality = QtCore.Qt.WindowModality.NonModal
@@ -159,14 +178,13 @@ class LogViewDialog(PicardDialog):
         self.set_window_title(title)
         self.vbox = QtWidgets.QVBoxLayout()
         self.setLayout(self.vbox)
-        self.list_view = QtWidgets.QListView()
+        self.list_view = LogListView()
         self.list_view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.list_view.setFont(QtGui.QFont(FONT_FAMILY_MONOSPACE))
         self.list_view.setWordWrap(False)
         self.list_view.setUniformItemSizes(True)
         self.list_view.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.list_view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-        self.list_view.customContextMenuRequested.connect(self._show_context_menu)
+        self.list_view.context_menu_requested.connect(self._show_context_menu)
         self.list_view.activated.connect(self._show_detail)
         self.vbox.addWidget(self.list_view)
 
@@ -186,11 +204,11 @@ class LogViewDialog(PicardDialog):
         select_all_action.triggered.connect(self._select_all)
         self.list_view.addAction(select_all_action)
 
-    def _show_context_menu(self, pos):
+    def _show_context_menu(self, global_pos):
         menu = QtWidgets.QMenu(self.list_view)
         for action in self.list_view.actions():
             menu.addAction(action)
-        menu.exec(self.list_view.viewport().mapToGlobal(pos))
+        menu.exec(global_pos)
 
     def _get_selected_text(self):
         indexes = self.list_view.selectionModel().selectedIndexes()

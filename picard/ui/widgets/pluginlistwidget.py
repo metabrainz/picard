@@ -53,7 +53,11 @@ from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.formattedtextdelegate import FormattedTextDelegate
-from picard.ui.util import font_scaled_size
+from picard.ui.util import (
+    context_menu_global_pos,
+    context_menu_item,
+    font_scaled_size,
+)
 from picard.ui.widgets.pluginformat import (
     commit_date_display,
     html_ref_format,
@@ -123,6 +127,25 @@ class UpdatePanel(QtWidgets.QWidget):
         self.update_selected_plugins.emit([])
 
 
+class PluginTreeWidget(QtWidgets.QTreeWidget):
+    """Tree widget that resolves the target item and position for context menus.
+
+    Handling ``contextMenuEvent`` gives access to the event, so both mouse and
+    keyboard requests are resolved consistently via
+    :func:`~picard.ui.util.context_menu_item` and
+    :func:`~picard.ui.util.context_menu_global_pos`.
+    """
+
+    #: Emitted with (item, global_pos) when a context menu is requested.
+    context_menu_requested = QtCore.pyqtSignal(object, QtCore.QPoint)
+
+    def contextMenuEvent(self, event):
+        item = context_menu_item(self, event)
+        if item is not None:
+            self.context_menu_requested.emit(item, context_menu_global_pos(self, event))
+        event.accept()
+
+
 class PluginListWidget(QtWidgets.QWidget):
     """Widget for displaying and managing plugins."""
 
@@ -144,13 +167,12 @@ class PluginListWidget(QtWidgets.QWidget):
         layout.setSpacing(0)
 
         # Create tree widget
-        self.tree_widget = QtWidgets.QTreeWidget()
+        self.tree_widget = PluginTreeWidget()
         self.tree_widget.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("New Version")])
         self.tree_widget.setRootIsDecorated(False)
         self.tree_widget.setAlternatingRowColors(True)
         self.tree_widget.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.tree_widget.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.tree_widget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
 
         # Set column sizing
         header = self.tree_widget.header()
@@ -175,7 +197,7 @@ class PluginListWidget(QtWidgets.QWidget):
         # Connect tree widget signals
         self.tree_widget.itemSelectionChanged.connect(self._on_selection_changed)
         self.tree_widget.itemClicked.connect(self._on_item_clicked)
-        self.tree_widget.customContextMenuRequested.connect(self._show_context_menu)
+        self.tree_widget.context_menu_requested.connect(self._show_context_menu)
         self.tree_widget.installEventFilter(self)
 
         # Cache tagger instance for performance
@@ -594,12 +616,8 @@ class PluginListWidget(QtWidgets.QWidget):
         else:
             self.plugin_manager.disable_plugin(plugin)
 
-    def _show_context_menu(self, position):
+    def _show_context_menu(self, item, global_pos):
         """Show context menu for plugin list."""
-        item = self.tree_widget.itemAt(position)
-        if not item:
-            return
-
         plugin = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if not plugin:
             return
@@ -669,7 +687,7 @@ class PluginListWidget(QtWidgets.QWidget):
         order_action.triggered.connect(self._show_execution_order_editor)
 
         # Show menu
-        menu.exec(self.tree_widget.mapToGlobal(position))
+        menu.exec(global_pos)
 
     def _enable_error_dialog(self, plugin, errmsg):
         show_plugin_error(

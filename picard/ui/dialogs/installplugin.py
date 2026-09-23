@@ -45,7 +45,11 @@ from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.theme import theme
-from picard.ui.util import font_scaled_size
+from picard.ui.util import (
+    context_menu_global_pos,
+    context_menu_item,
+    font_scaled_size,
+)
 
 
 render_markdown: Callable[[str], str] | None = None
@@ -60,6 +64,25 @@ except ImportError:
 TAB_REGISTRY = 0
 TAB_URL = 1
 TAB_LOCAL = 2
+
+
+class PluginTableWidget(QtWidgets.QTableWidget):
+    """Table widget that resolves the target item and position for context menus.
+
+    Handling ``contextMenuEvent`` gives access to the event, so both mouse and
+    keyboard requests are resolved consistently via
+    :func:`~picard.ui.util.context_menu_item` and
+    :func:`~picard.ui.util.context_menu_global_pos`.
+    """
+
+    #: Emitted with (item, global_pos) when a context menu is requested.
+    context_menu_requested = QtCore.pyqtSignal(object, QtCore.QPoint)
+
+    def contextMenuEvent(self, event):
+        item = context_menu_item(self, event)
+        if item is not None:
+            self.context_menu_requested.emit(item, context_menu_global_pos(self, event))
+        event.accept()
 
 
 class InstallPluginDialog(PicardDialog):
@@ -118,15 +141,14 @@ class InstallPluginDialog(PicardDialog):
         registry_layout.addLayout(search_layout)
 
         # Plugin table
-        self.plugin_table = QtWidgets.QTableWidget()
+        self.plugin_table = PluginTableWidget()
         self.plugin_table.setColumnCount(3)
         self.plugin_table.setHorizontalHeaderLabels([_("Trust"), _("Name"), _("Categories")])
         self.plugin_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.plugin_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.plugin_table.setAlternatingRowColors(True)
         self.plugin_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.plugin_table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-        self.plugin_table.customContextMenuRequested.connect(self._show_context_menu)
+        self.plugin_table.context_menu_requested.connect(self._show_context_menu)
         self.plugin_table.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.plugin_table.itemSelectionChanged.connect(self._validate_input)
 
@@ -467,13 +489,12 @@ class InstallPluginDialog(PicardDialog):
             # Double-click on other columns installs the plugin
             self._install_selected_plugin()
 
-    def _show_context_menu(self, position):
+    def _show_context_menu(self, item, global_pos):
         """Show context menu for plugin table."""
-        if self.plugin_table.itemAt(position):
-            menu = QtWidgets.QMenu(self)
-            info_action = menu.addAction(_("Info"))
-            info_action.triggered.connect(self._show_plugin_info)
-            menu.exec(self.plugin_table.mapToGlobal(position))
+        menu = QtWidgets.QMenu(self)
+        info_action = menu.addAction(_("Info"))
+        info_action.triggered.connect(self._show_plugin_info)
+        menu.exec(global_pos)
 
     def _show_plugin_info(self):
         """Show detailed plugin information dialog."""

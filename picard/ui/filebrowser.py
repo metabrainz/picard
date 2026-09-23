@@ -45,6 +45,8 @@ from picard.util.macos import (
     strip_root_volume_path,
 )
 
+from picard.ui.util import context_menu_global_pos
+
 
 class FileBrowser(QtWidgets.QTreeView):
     def __init__(self, parent=None):
@@ -82,7 +84,7 @@ class FileBrowser(QtWidgets.QTreeView):
         menu.addAction(self.move_files_here_action)
         menu.addAction(self.toggle_hidden_action)
         menu.addAction(self.set_as_starting_directory_action)
-        menu.exec(event.globalPos())
+        menu.exec(context_menu_global_pos(self, event))
         event.accept()
 
     def _set_model(self):
