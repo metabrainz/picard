@@ -70,6 +70,12 @@ class _DummyThumb:
     def __eq__(self, other: object) -> bool:
         return self.current_pixmap_key == getattr(other, 'current_pixmap_key', None)
 
+    def set_metadata(self, metadata: object) -> None:  # noqa: N802 (not Qt, but keep style)
+        self.data = None if metadata is None else [metadata]
+
+    def set_marked_for_removal(self, marked: bool) -> None:
+        self.marked_for_removal = bool(marked)
+
 
 class _DummyLabel:
     def __init__(self) -> None:
@@ -125,6 +131,9 @@ class CoverArtBoxLite:
     def update_display(self, force: bool = False) -> None:
         # Delegate to real implementation using our lightweight attributes
         CoverArtBox.update_display(self, force=force)
+
+    set_item = CoverArtBox.set_item
+    _release_current_item = CoverArtBox._release_current_item
 
 
 @pytest.fixture
@@ -301,6 +310,65 @@ def test_update_display_both_visible_headers_and_info(cover_art_box: CoverArtBox
     assert not cover_art_box.orig_cover_art_info_label.isVisible()
     assert cover_art_box.cover_art_info_label.text() == ""
     assert cover_art_box.orig_cover_art_info_label.text() == ""
+
+
+def _setup_new_vs_original(box: CoverArtBox) -> None:
+    box.cover_art.related_images = [DummyImage("Front", 2000, 10, 10, "image/png")]
+    box.orig_cover_art.related_images = [DummyImage("Back", 3000, 20, 20, "image/jpeg")]
+    box.cover_art.data = [_ImgLikeNew()]
+    box.orig_cover_art.data = [_ImgLike()]
+    box.cover_art.current_pixmap_key = 1
+    box.orig_cover_art.current_pixmap_key = 2
+
+
+class _Viewable:
+    can_view_info = True
+
+
+class _NotViewable:
+    can_view_info = False
+
+
+def test_details_button_hidden_for_multi_selection(cover_art_box: CoverArtBox) -> None:
+    """PICARD-3461: with a New/Original split, the details button must still be
+    hidden for a multi-object selection (a temporary aggregate whose
+    can_view_info is False), since the details dialog would do nothing."""
+    _setup_new_vs_original(cover_art_box)
+    cover_art_box.item = _NotViewable()
+
+    cover_art_box.show()
+    cover_art_box.update_display(force=True)
+
+    assert not cover_art_box.show_details_button.isVisible()
+
+
+def test_details_button_shown_for_viewable_item(cover_art_box: CoverArtBox) -> None:
+    """A single viewable item with a New/Original split still shows the
+    details button."""
+    _setup_new_vs_original(cover_art_box)
+    cover_art_box.item = _Viewable()
+
+    cover_art_box.show()
+    cover_art_box.update_display(force=True)
+
+    assert cover_art_box.show_details_button.isVisible()
+
+
+class _NoCoverArtItem:
+    can_show_coverart = False
+
+
+def test_set_item_resets_stale_item_when_no_coverart(cover_art_box: CoverArtBox) -> None:
+    """Selecting something that cannot show cover art (e.g. an empty cluster
+    list) must drop the previous item reference so the details button is hidden
+    and cannot open the previously selected item's info."""
+    # Simulate a previous viewable selection.
+    cover_art_box.item = _Viewable()
+
+    cover_art_box.set_item(_NoCoverArtItem())
+
+    assert cover_art_box.item is None
+    assert not cover_art_box.show_details_button.isVisible()
 
 
 def test_update_display_marked_for_removal_tooltip(cover_art_box: CoverArtBox) -> None:
