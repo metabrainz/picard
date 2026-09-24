@@ -917,16 +917,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     @throttle(100)
     def update(self, drop_album_caches=False):
         new_selection = self.selection_dirty
-        # Skip while editing, or during a bulk selection operation (e.g. moving
-        # many files between containers): update_selection() is suppressed via
-        # the window's ignore_selection_changes context and performs a single
-        # refresh when the operation completes, so the direct refresh triggered
-        # by refresh_metadatabox() must be skipped too. The window may not exist
-        # yet during early startup (see _update_selection).
-        window = getattr(self.tagger, 'window', None)
-        if self.editing or (window is not None and window.ignore_selection_changes):
-            return
-        if self.ignore_updates and not new_selection:
+        if self.editing or (self.ignore_updates and not new_selection):
             return
         if new_selection:
             self._update_selection()

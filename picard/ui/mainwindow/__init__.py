@@ -2027,6 +2027,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._update_script_editor_example_files()
 
     def refresh_metadatabox(self):
+        # During a bulk selection operation (e.g. moving many files between
+        # containers) update_selection() is suppressed via
+        # ignore_selection_changes and runs a single refresh when the operation
+        # completes. The per-item refreshes triggered here by track/album
+        # finalization must be skipped too, so both paths coalesce into that
+        # one final refresh.
+        if self.ignore_selection_changes:
+            return
         self.tagger.window.metadata_box.selection_dirty = True
         self.tagger.window.metadata_box.update()
 
