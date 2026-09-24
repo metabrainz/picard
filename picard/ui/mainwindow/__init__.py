@@ -236,6 +236,13 @@ class SearchButton(QtWidgets.QToolButton):
         event.accept()
 
 
+class MainWindowSignaller(QtCore.QObject):
+    plugin_tools_menu_complete = QtCore.pyqtSignal()
+
+
+main_window_signaller = MainWindowSignaller()
+
+
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     defaultsize = QtCore.QSize(780, 560)
     selection_updated = QtCore.pyqtSignal(object)
@@ -2413,10 +2420,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         plugin_tools_menu = self.plugin_tools_menu
         if plugin_tools_menu is None:
             return
+
         plugin_tools_menu.clear()
 
         if not actions:
             plugin_tools_menu.menuAction().setVisible(False)
+            main_window_signaller.plugin_tools_menu_complete.emit()
             return
 
         plugin_tools_menu.menuAction().setVisible(True)
@@ -2428,6 +2437,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 add_action_to_menu(ActionClass, plugin_tools_menu, plugin_menus)
             except Exception as ex:
                 log.error("Error adding plugin action", exc_info=ex)
+
+        main_window_signaller.plugin_tools_menu_complete.emit()
 
     def _make_quick_settings_menu(self):
         """Update the quick settings submenu."""
