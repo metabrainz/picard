@@ -56,6 +56,7 @@ from picard.item import (
     FileListItem,
     Item,
     ListOfMetadataItems,
+    MetadataItem,
 )
 from picard.matching import (
     SimMatchRelease,
@@ -66,6 +67,7 @@ from picard.track import Track
 from picard.util import (
     album_artist_from_path,
     format_time,
+    iter_files_from_objects,
 )
 
 from picard.ui.enums import MainAction
@@ -520,11 +522,48 @@ class Cluster(FileList):
         yield from cluster_list.values()
 
 
-class TempFileList(FileList):
-    """A temporary file list used for display purposes only.
+class TempItemList(MetadataItem):
+    """A temporary, display-only aggregate over an arbitrary set of items
+    (files, tracks and/or albums).
 
-    If this becomes unused `clear` should be called to free up resources.
+    Used by the cover-art box for a multi-object selection: its cover-art
+    images are aggregated from all selected items (not only their files), so an
+    album that carries cover art but has no linked files still contributes its
+    image (PICARD-3461). File operations (e.g. dropping cover art) still act on
+    the underlying files via ``iterfiles()``.
+
+    ``clear()`` must be called when the instance becomes unused so its signal
+    connections are dropped and it can be garbage collected.
     """
+
+    def __init__(self, obj_id=None, items=None):
+        super().__init__(obj_id)
+        self._items = ListOfMetadataItems(items or [])
+        self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
+        if self._items and self.can_show_coverart:
+            for item in self._items:
+                item.metadata_images_changed.connect(self.update_metadata_images)
+            self.update_metadata_images_from_children()
+
+    @property
+    def can_show_coverart(self) -> bool:
+        return True
+
+    def update(self, signal=True):
+        # Display-only aggregate; nothing to update in the tree.
+        pass
+
+    def iterfiles(self, save=False):
+        yield from iter_files_from_objects(self._items, save=save)
+
+    def children_metadata_items(self):
+        yield from self._items
+
+    def clear(self):
+        """Remove all items and disconnect signals."""
+        for item in self._items:
+            item.metadata_images_changed.disconnect(self.update_metadata_images)
+        self._items = ListOfMetadataItems()
 
 
 class UnclusteredFiles(Cluster):

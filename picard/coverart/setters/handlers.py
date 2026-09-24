@@ -24,7 +24,10 @@ from functools import singledispatch
 
 from picard import log
 from picard.album import Album
-from picard.cluster import Cluster
+from picard.cluster import (
+    Cluster,
+    TempItemList,
+)
 from picard.file import File
 from picard.item import (
     FileListItem,
@@ -134,6 +137,12 @@ def _handle_filelist(filelist: FileListItem, setter) -> bool:
 
     filelist.update()
     return True
+
+
+# A TempItemList (multi-object selection aggregate) is not a FileListItem but
+# supports the same interface used here (iterfiles/suspend/update), so cover-art
+# drops on a multi-selection apply to all underlying files and their parents.
+_set_coverart_dispatch.register(TempItemList, _handle_filelist)
 
 
 @_set_coverart_dispatch.register

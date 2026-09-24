@@ -70,7 +70,7 @@ from picard.album import Album
 from picard.browser import addrelease
 from picard.cluster import (
     Cluster,
-    TempFileList,
+    TempItemList,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -2001,9 +2001,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None, history=None)
         elif coverart_visible and new_selection:
-            # Create a temporary file list which allows changing cover art for all selected files
-            files = list(iter_files_from_objects(objects))
-            obj = TempFileList(files)
+            # A temporary aggregate over all selected items so the cover-art box
+            # shows images from every selected object (albums/tracks/files), not
+            # only their linked files (PICARD-3461). Cover-art drops still apply
+            # to the underlying files via iterfiles().
+            obj = TempItemList(items=objects)
 
         if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)

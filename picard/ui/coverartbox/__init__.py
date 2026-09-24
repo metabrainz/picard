@@ -53,7 +53,7 @@ from picard import (
 )
 from picard.cluster import (
     Cluster,
-    TempFileList,
+    TempItemList,
 )
 from picard.config import get_config
 from picard.coverart.image import (
@@ -197,7 +197,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
             # No header above cover art when only one
             self.cover_art_label.setText(_('Saved to File') if showing_exported_only else '')
         else:
-            self.show_details_button.setVisible(True)
+            # The details dialog only works for a single viewable item; for a
+            # multi-object selection (a temporary aggregate) can_view_info is
+            # False and the button would do nothing (PICARD-3461).
+            self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(True)
             # Show headers above when both are visible
             if same_data and removal_predicted:
@@ -241,6 +244,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
     def set_item(self, item):
         if not item.can_show_coverart:
+            # The selection cannot show cover art (e.g. an empty cluster list).
+            # Clear the box and drop the reference to any previous item, so the
+            # details button is hidden and does not act on a stale selection.
+            self._release_current_item()
             self.cover_art.set_metadata(None)
             self.orig_cover_art.set_metadata(None)
             self.cover_art.set_marked_for_removal(False)
@@ -252,14 +259,25 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         if self.item is not item:
             self._exported_images = None
-            if isinstance(self.item, TempFileList):
-                self.item.clear()
-        if self.item and hasattr(self.item, 'metadata_images_changed'):
-            self.item.metadata_images_changed.disconnect(self.update_metadata)
+        self._release_current_item()
         self.item = item
         if hasattr(self.item, 'metadata_images_changed'):
             self.item.metadata_images_changed.connect(self.update_metadata)
         self.update_metadata()
+
+    def _release_current_item(self):
+        """Disconnect our slot from the current item and free it if it is a
+        temporary aggregate, so it can be garbage collected.
+
+        Only the box's own ``metadata_images_changed`` connection is dropped;
+        the item keeps any other connections (e.g. a real album/cluster's own
+        wiring to its children).
+        """
+        if self.item and hasattr(self.item, 'metadata_images_changed'):
+            self.item.metadata_images_changed.disconnect(self.update_metadata)
+        if isinstance(self.item, TempItemList):
+            self.item.clear()
+        self.item = None
 
     def update_metadata(self):
         if not self.item:
