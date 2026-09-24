@@ -106,6 +106,9 @@ class CoverArtSetter:
         bool
             True if the image was set
         """
+        if not obj.can_show_coverart:
+            return True
+
         attrs_to_update = ['metadata']
         # Update original metadata, if requested, but not for files unless they
         # are the source object.

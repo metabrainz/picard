@@ -43,7 +43,7 @@ from picard.coverart.setters import (
     CoverArtSetterMode,
 )
 from picard.coverart.setters.handlers import (
-    _iter_file_parents,
+    _iter_item_parents,
     _set_coverart_dispatch,
 )
 
@@ -231,17 +231,17 @@ class TestCoverArtSetter:
             (None, None, []),
         ],
     )
-    def test_iter_file_parents(
+    def test_iter_item_parents(
         self, parent_type: str | None, parent_attr: str | None, expected_parents: list[str]
     ) -> None:
-        """Test _iter_file_parents function with different parent types."""
+        """Test _iter_item_parents function with different parent types."""
         from picard.file import File
 
         mock_file = Mock(spec=File)
 
         if parent_type is None:
             mock_file.parent_item = None
-            parents = list(_iter_file_parents(mock_file))
+            parents = list(_iter_item_parents(mock_file))
             assert parents == []
             return
 
@@ -259,7 +259,7 @@ class TestCoverArtSetter:
 
         mock_file.parent_item = parent
 
-        parents = list(_iter_file_parents(mock_file))
+        parents = list(_iter_item_parents(mock_file))
 
         # Convert expected_parents to actual mock objects
         expected = [parent]

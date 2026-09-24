@@ -152,6 +152,16 @@ class Item:
     def clear_errors(self):
         self._errors = []
 
+    def update(self, signal: bool = True):
+        """
+        Update the UI item if it exists and signal is True.
+
+        Subclasses should implement this method to perform any necessary updates
+        when the UI needs to be refreshed.
+        """
+        if signal and self.ui_item:
+            self.ui_item.update()
+
 
 class ImageListState:
     def __init__(self):
@@ -384,7 +394,7 @@ class MetadataItem(QtCore.QObject, Item):
         return require_authentication
 
 
-class ListOfMetadataItems(UserList):
+class ListOfMetadataItems(UserList[MetadataItem]):
     """
     UserList with length attribute equals to the sum of items metadata lengths.
     """
