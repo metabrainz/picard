@@ -322,9 +322,26 @@ def write_option(
 
 @contextmanager
 def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
+    """Temporarily register an option for value conversion during upgrades.
+
+    Creating an Option registers it in the global ``Option.registry`` keyed by
+    ``(section, name)``. If an option with the same key was already registered
+    (e.g. the real option declared in ``picard/options.py`` at startup),
+    creating the temporary one overwrites that entry. Unconditionally calling
+    ``unregister()`` on exit would then delete the *real* registration, leaving
+    ``Option.get(section, name)`` returning ``None`` for the rest of the
+    session. To avoid clobbering a pre-existing option, we restore the previous
+    registry entry on exit (and only unregister when there was none).
+    """
+    previous = Option.registry.get((section, name))
     opt = option_type(section, name, default)
-    yield opt
-    opt.unregister()
+    try:
+        yield opt
+    finally:
+        if previous is not None:
+            Option.registry[(section, name)] = previous
+        else:
+            opt.unregister()
 
 
 def run_config_upgrades(config: Config, interactive: bool = True) -> None:
