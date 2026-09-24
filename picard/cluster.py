@@ -114,9 +114,6 @@ class FileList(FileListItem):
             file.metadata_images_changed.disconnect(self.update_metadata_images)
         self.files = ListOfMetadataItems()
 
-    def update(self, signal=True):
-        pass
-
     @property
     def can_show_coverart(self) -> bool:
         return True
@@ -538,10 +535,10 @@ class TempItemList(MetadataItem):
 
     def __init__(self, obj_id=None, items=None):
         super().__init__(obj_id)
-        self._items = ListOfMetadataItems(items or [])
+        self.items = ListOfMetadataItems(items or [])
         self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
-        if self._items and self.can_show_coverart:
-            for item in self._items:
+        if self.items and self.can_show_coverart:
+            for item in self.items:
                 item.metadata_images_changed.connect(self.update_metadata_images)
             self.update_metadata_images_from_children()
 
@@ -554,16 +551,16 @@ class TempItemList(MetadataItem):
         pass
 
     def iterfiles(self, save=False):
-        yield from iter_files_from_objects(self._items, save=save)
+        yield from iter_files_from_objects(self.items, save=save)
 
     def children_metadata_items(self):
-        yield from self._items
+        yield from self.items
 
     def clear(self):
         """Remove all items and disconnect signals."""
-        for item in self._items:
+        for item in self.items:
             item.metadata_images_changed.disconnect(self.update_metadata_images)
-        self._items = ListOfMetadataItems()
+        self.items = ListOfMetadataItems()
 
 
 class UnclusteredFiles(Cluster):
