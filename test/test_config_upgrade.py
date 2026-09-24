@@ -42,6 +42,7 @@ from picard.config_upgrade import (
     get_option_value,
     remove_option,
     rename_option,
+    temp_option,
     upgrade_config,
     upgrade_option_value,
     upgrade_settings,
@@ -360,3 +361,64 @@ class TestWriteOption(PicardTestCase):
         settings = {'key': 'old'}
         write_option(settings, 'key', 'new')
         self.assertEqual(settings, {'key': 'new'})
+
+
+class TestTempOptionPreservesRegisteredOption(PicardTestCase):
+    """Regression tests for PICARD-3464.
+
+    ``temp_option`` (used by ``get_option_value`` on the ConfigSection path)
+    must not unregister an option that was already registered before it created
+    its temporary one.
+
+    The concrete bug: at startup ``picard/options.py`` registers
+    ``BoolOption('setting', 'standardize_instruments', True)``. During the
+    2.13.3 -> 3.0 config upgrade, the ``copy_standardize_instruments_to_vocals``
+    hook calls ``get_option_value(config.setting, 'standardize_instruments',
+    BoolOption, False)``. That uses ``temp_option`` which, on exit, calls
+    ``unregister()`` and deletes the *real* registry entry (same key). From then
+    on ``Option.get('setting', 'standardize_instruments')`` returns ``None`` and
+    ``config.setting['standardize_instruments']`` yields ``None``, which crashes
+    ``MetadataOptionsPage.load()`` (``QCheckBox.setChecked(None)`` -> TypeError)
+    and greys out the Metadata options page.
+    """
+
+    def setUp(self):
+        super().setUp()
+        # Isolate the global Option registry so this test can register a real
+        # option and assert on its presence without leaking into other tests.
+        self._saved_registry = dict(Option.registry)
+        Option.registry.clear()
+        self.addCleanup(self._restore_registry)
+
+    def _restore_registry(self):
+        Option.registry.clear()
+        Option.registry.update(self._saved_registry)
+
+    def test_temp_option_does_not_unregister_preexisting_option(self):
+        # A real option is registered (as picard/options.py does at import).
+        real = BoolOption('setting', 'standardize_instruments', True)
+        self.assertIs(Option.get('setting', 'standardize_instruments'), real)
+
+        # Using temp_option for the SAME (section, name) must not destroy it.
+        with temp_option(BoolOption, 'setting', 'standardize_instruments', False):
+            pass
+
+        self.assertTrue(
+            Option.exists('setting', 'standardize_instruments'),
+            "temp_option unregistered a pre-existing option",
+        )
+        self.assertIs(
+            Option.get('setting', 'standardize_instruments'),
+            real,
+            "temp_option did not restore the original registered option",
+        )
+
+    def test_temp_option_unregisters_when_no_preexisting_option(self):
+        # When no option was registered before, temp_option must still clean up.
+        self.assertFalse(Option.exists('setting', 'temporary_only'))
+        with temp_option(BoolOption, 'setting', 'temporary_only', False):
+            self.assertTrue(Option.exists('setting', 'temporary_only'))
+        self.assertFalse(
+            Option.exists('setting', 'temporary_only'),
+            "temp_option leaked a temporary option into the registry",
+        )
