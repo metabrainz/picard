@@ -31,6 +31,7 @@ from picard.cluster import (
 from picard.file import File
 from picard.item import (
     FileListItem,
+    Item,
     MetadataItem,
 )
 from picard.track import Track
@@ -122,7 +123,7 @@ def _handle_filelist(filelist: FileListItem, setter) -> bool:
         setter._set_image(filelist)
 
         for file in filelist.iterfiles():
-            for parent in _iter_file_parents(file):
+            for parent in _iter_item_parents(file):
                 stack.enter_context(parent.suspend_metadata_images_update)
                 parents.add(parent)
 
@@ -139,10 +140,49 @@ def _handle_filelist(filelist: FileListItem, setter) -> bool:
     return True
 
 
-# A TempItemList (multi-object selection aggregate) is not a FileListItem but
-# supports the same interface used here (iterfiles/suspend/update), so cover-art
-# drops on a multi-selection apply to all underlying files and their parents.
-_set_coverart_dispatch.register(TempItemList, _handle_filelist)
+@_set_coverart_dispatch.register
+def _handle_tempitemlist(itemlist: TempItemList, setter) -> bool:
+    """
+    Handle TempItemList (multi-object selection aggregate) objects in the single dispatch pattern.
+
+    Set cover art on all items in the temporary item list.
+
+    Parameters
+    ----------
+    itemlist : TempItemList
+        The file list item to set cover art on
+    setter
+        The CoverArtSetter instance
+
+    Returns
+    -------
+    bool
+        True if cover art was set successfully
+    """
+    log.debug("set_coverart_tempitemlist %r", itemlist)
+
+    items = set(itemlist.items)
+    parents = set()
+    with ExitStack() as stack:
+        stack.enter_context(itemlist.suspend_metadata_images_update)
+        setter._set_image(itemlist)
+
+        for item in items:
+            for parent in _iter_item_parents(item):
+                if parent not in items:
+                    stack.enter_context(parent.suspend_metadata_images_update)
+                    parents.add(parent)
+
+            if setter._set_image(item):
+                item.update()
+
+        for parent in parents:
+            if isinstance(parent, Album):
+                parent.update(update_tracks=False)
+            else:
+                parent.update()
+
+    return True
 
 
 @_set_coverart_dispatch.register
@@ -171,7 +211,7 @@ def _handle_file(file: File, setter) -> bool:
     return True
 
 
-def _iter_file_parents(file: File) -> Iterator[MetadataItem]:
+def _iter_item_parents(item: Item) -> Iterator[MetadataItem]:
     """
     Iterate over the parent objects of a file.
 
@@ -185,8 +225,12 @@ def _iter_file_parents(file: File) -> Iterator[MetadataItem]:
     object
         Parent objects of the file
     """
-    parent = file.parent_item
+    parent = None
+    if isinstance(item, File):
+        parent = item.parent_item
+    if isinstance(item, (Track, Cluster)) or isinstance(item, Cluster):
+        parent = item.album
     if parent:
-        yield parent
-        if (isinstance(parent, Track) or isinstance(parent, Cluster)) and parent.album:
-            yield parent.album
+        if parent.can_show_coverart:
+            yield parent
+        yield from _iter_item_parents(parent)

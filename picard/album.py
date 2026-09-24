@@ -1001,8 +1001,8 @@ class Album(MetadataItem):
             self.error_append(reason)
         self._finalize_loading(error=True)
 
-    def update(self, update_tracks=True, update_selection=True):
-        if self.ui_item:
+    def update(self, signal: bool = True, update_tracks: bool = True, update_selection: bool = True):
+        if signal and self.ui_item:
             self.ui_item.update(update_tracks, update_selection=update_selection)
 
     def add_file(self, track, file, new_album=True):

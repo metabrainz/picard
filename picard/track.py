@@ -248,10 +248,6 @@ class Track(FileListItem):
             if strip_whitespace:
                 metadata.strip_whitespace()
 
-    def update(self):
-        if self.ui_item:
-            self.ui_item.update()
-
     def is_linked(self):
         return self.num_linked_files > 0
 
