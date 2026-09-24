@@ -94,7 +94,10 @@ from picard.extension_points.metadata_tag_actions import (
     register_metadata_tag_action,
 )
 from picard.extension_points.options_pages import register_options_page
-from picard.extension_points.plugin_tools_menu import register_tools_menu_action
+from picard.extension_points.plugin_tools_menu import (
+    register_tools_menu_action,
+    signaler as _plugin_tools_menu_signaler,
+)
 from picard.extension_points.script_functions import register_script_function
 from picard.extension_points.script_variables import (
     register_script_variable,
@@ -1617,6 +1620,48 @@ class PluginApi:
         """
         action.api = self
         return register_tools_menu_action(action)
+
+    def connect_plugin_tools_menu_rebuilt(self, callback: Callable[[], None]) -> None:
+        """Connect a callback to fire whenever the Plugin Tools menu is rebuilt.
+
+        The Plugin Tools menu is rebuilt whenever a tools-menu action is
+        registered or a plugin is enabled or disabled. Each rebuild creates a
+        brand-new action instance in its default (enabled) state, so any
+        per-action state a plugin applies — for example disabling an action
+        based on the user's settings — is lost on the next rebuild.
+
+        Connect here to reapply that state after every rebuild. The callback
+        is invoked after the menu has finished being (re)built, including when
+        the menu ends up empty (and therefore hidden). It takes no arguments.
+
+        Because a fresh action instance is created on each rebuild, have the
+        action record itself so the callback can reach the current instance:
+
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Action"
+                current = None
+
+                def __init__(self, parent=None):
+                    super().__init__(parent)
+                    MyAction.current = self
+
+                def callback(self, objs):
+                    ...
+
+            def enable(api):
+                def reapply_state():
+                    if MyAction.current is not None:
+                        MyAction.current.setEnabled(api.plugin_config['active'])
+
+                api.register_tools_menu_action(MyAction)
+                api.connect_plugin_tools_menu_rebuilt(reapply_state)
+
+        Args:
+            callback: A zero-argument callable invoked after each rebuild.
+        """
+        _plugin_tools_menu_signaler.plugin_tools_rebuilt.connect(callback)
 
     def register_metadata_tag_action(self, action: type[MetadataTagAction]) -> None:
         """Register a context menu action for metadata tags.

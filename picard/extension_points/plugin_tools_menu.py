@@ -28,7 +28,13 @@ from picard.plugin import ExtensionPoint
 
 
 class Signaler(QObject):
+    # Emitted when a plugin tools menu action is registered, i.e. when the
+    # menu needs to be (re)built.
     plugin_tools_updated = pyqtSignal()
+    # Emitted after the plugin tools menu has finished being (re)built,
+    # whether it ended up populated or empty. Plugins can connect to this to
+    # reapply per-action state (e.g. enabled/disabled) that a rebuild resets.
+    plugin_tools_rebuilt = pyqtSignal()
 
 
 signaler = Signaler()

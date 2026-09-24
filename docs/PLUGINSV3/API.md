@@ -1050,6 +1050,44 @@ arranged like:
     - Action 3
     - Action 4
 
+#### React to the Plugin Tools menu being rebuilt
+
+The Plugin Tools menu is rebuilt whenever a tools-menu action is registered or a
+plugin is enabled or disabled. Each rebuild recreates every action in its default
+(enabled) state, so any per-action state a plugin applies — for example disabling
+an action based on the user's settings — is lost on the next rebuild.
+
+Use `connect_plugin_tools_menu_rebuilt(callback)` to reapply that state after every
+rebuild. The callback takes no arguments and is invoked once the menu has finished
+being (re)built, including when the menu ends up empty (and therefore hidden).
+
+Because a fresh action instance is created on each rebuild, have the action record
+itself so the callback can reach the current instance:
+
+```python
+from picard.plugin3.api import BaseAction
+
+
+class MyAction(BaseAction):
+    TITLE = "My Action"
+    current = None
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        MyAction.current = self
+
+    def callback(self, objs): ...
+
+
+def enable(api):
+    def reapply_state():
+        if MyAction.current is not None:
+            MyAction.current.setEnabled(api.plugin_config['active'])
+
+    api.register_tools_menu_action(MyAction)
+    api.connect_plugin_tools_menu_rebuilt(reapply_state)
+```
+
 ---
 
 ### Metadata Tag Actions
