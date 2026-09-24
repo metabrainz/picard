@@ -2414,6 +2414,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if plugin_tools_menu is None:
             return
 
+        # This method runs on every rebuild (see the plugin_tools_updated and
+        # plugin_state_changed connections in setup), so clear the menu first to
+        # avoid accumulating duplicate actions across rebuilds.
         plugin_tools_menu.clear()
 
         if not actions:
