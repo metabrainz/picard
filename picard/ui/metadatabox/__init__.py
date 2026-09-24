@@ -59,6 +59,7 @@ from picard.i18n import (
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.script.parser import ScriptError
 from picard.tags import display_tag_name
 from picard.tags.docs import display_tag_tooltip
 from picard.tags.preserved import UserPreservedTags
@@ -1002,7 +1003,16 @@ class MetadataBox(QtWidgets.QTableWidget):
             # Add filepath tag if only one file
             if len(files) == 1:
                 if settings['rename_files'] or settings['move_files']:
-                    new_filename = file.make_filename(file.filename, new_metadata)
+                    try:
+                        new_filename = file.make_filename(file.filename, new_metadata)
+                    except ScriptError as why:
+                        # An invalid file naming script (e.g. one referencing an
+                        # unknown function) must not blank the whole metadata
+                        # box. Log the problem and fall back to the current
+                        # filename for the informational ~filepath preview so
+                        # the real tags are still shown.
+                        log.warning("Cannot compute file naming preview for %r: %s", file.filename, why)
+                        new_filename = file.filename
                 else:
                     new_filename = file.filename
                 tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
