@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-23 16:13+0000\n"
+"PO-Revision-Date: 2026-09-25 06:13+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -53,10 +53,9 @@ msgid "[could not load album %s]"
 msgstr "[albumi \"%s\" laadimine polnud võimalik]"
 
 #: picard/cluster.py:393
-#, fuzzy, python-format
-#| msgid "No matching releases for cluster %(album)s"
+#, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
-msgstr "Rühmale \"%(album)s\" vastavaid väljalaskeid pole"
+msgstr "Parim vaste rühmale „%(album)s“ on mitmetähenduslik"
 
 #: picard/cluster.py:395
 #, python-format
@@ -249,10 +248,8 @@ msgid "Log ISRC processing, submission, and lookup details"
 msgstr "Logi ISRC-koodide töötlemise, edastamise ja otsingu üksikasjad"
 
 #: picard/debug_opts.py:183
-#, fuzzy
-#| msgid "Release Country"
 msgid "Rate Control"
-msgstr "Väljalaskemaa"
+msgstr "Päringusageduse haldus"
 
 #: picard/debug_opts.py:183
 msgid "Log request throttling, congestion window, and backoff details"
@@ -274,10 +271,8 @@ msgid "Browser Integration"
 msgstr "Brauserilõiming"
 
 #: picard/debug_opts.py:185
-#, fuzzy
-#| msgid "Browser integration"
 msgid "Log browser integration HTTP requests"
-msgstr "Brauserilõiming"
+msgstr "Logi brauserilõimingu HTTP-päringuid"
 
 #: picard/file.py:335
 msgid "Cannot save file: the file no longer exists."
@@ -455,10 +450,8 @@ msgid "Include sub-folders when adding files"
 msgstr "Failide lisamisel kaasa alamkaustad"
 
 #: picard/options.py:215
-#, fuzzy
-#| msgid "CD Lookup"
 msgid "CD lookup device"
-msgstr "CD päring"
+msgstr "CD-päringu seade"
 
 #: picard/options.py:219
 msgid "Cover art providers"
@@ -501,10 +494,8 @@ msgid "Embed images into tags"
 msgstr "Lõimi pildid failide siltidesse"
 
 #: picard/options.py:251
-#, fuzzy
-#| msgid "Embed images into tags"
 msgid "Remove images from tags"
-msgstr "Lõimi pildid failide siltidesse"
+msgstr "Eemalda siltidesse lõimitud pildid"
 
 #: picard/options.py:252
 msgid "Save only one front image"
@@ -1451,10 +1442,9 @@ msgid "Add file as recording…"
 msgstr "Lisa fail salvestisena…"
 
 #: picard/browser/auth_responses.py:142
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication successful — %s"
-msgstr "Autentimine ei õnnestunud"
+msgstr "Autentimine ei õnnestunud - %s"
 
 #: picard/browser/auth_responses.py:143
 msgid "Authentication successful."
@@ -1523,20 +1513,18 @@ msgid "Picard has not been authorized."
 msgstr ""
 
 #: picard/browser/auth_responses.py:195
-#, fuzzy, python-format
-#| msgid "Authentication failed"
+#, python-format
 msgid "Authentication cancelled — %s"
-msgstr "Autentimine ei õnnestunud"
+msgstr "Autentimine on tühistatud - %s"
 
 #: picard/browser/auth_responses.py:196
 msgid "Authentication cancelled."
 msgstr "Autentimine on katkestatud."
 
 #: picard/browser/auth_responses.py:211
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication error — %s"
-msgstr "Nõutakse autentimist"
+msgstr "Autentimisviga - %s"
 
 #: picard/browser/auth_responses.py:212
 msgid "Authentication error."
@@ -3660,10 +3648,8 @@ msgid "Green: %s."
 msgstr "Roheline: %s."
 
 #: picard/ui/profile_tagger_scripts_dialog.py:54
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enable Tagger Scripts?"
-msgstr "Kasuta sildistusskripte"
+msgstr "Kas kasutad sildistusskripte?"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:61
 #, python-format
@@ -4232,10 +4218,8 @@ msgid "Categories"
 msgstr "Kategooriad"
 
 #: picard/ui/dialogs/installplugin.py:141
-#, fuzzy
-#| msgid "Double-click to view detailed plugin information"
 msgid "Double-click a plugin for detailed information."
-msgstr "Lisamooduli üksikasjaliku teabe vaatamiseks topeltklõpsa"
+msgstr "Lisamooduli üksikasjaliku teabe vaatamiseks topeltklõpsa."
 
 #: picard/ui/dialogs/installplugin.py:144
 msgid "Registry"
@@ -4438,10 +4422,8 @@ msgid "Installation Failed"
 msgstr "Paigaldamine ei õnnestunud"
 
 #: picard/ui/dialogs/installplugin.py:741
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to install the plugin."
-msgstr "Lisamooduli eemaldamine ei õnnestunud: {errmsg}"
+msgstr "Lisamooduli paigaldamine ei õnnestunud."
 
 #: picard/ui/dialogs/plugin_error.py:169
 #, python-format
@@ -4454,16 +4436,13 @@ msgid "Please report this issue on the %s."
 msgstr ""
 
 #: picard/ui/dialogs/plugin_error.py:174
-#, fuzzy
-#| msgid "MusicBrainz Track Id"
 msgid "MusicBrainz bug tracker"
-msgstr "Raja ID MusicBrainzis"
+msgstr "MusicBrainzi veahaldus"
 
 #: picard/ui/dialogs/plugin_error.py:182
-#, fuzzy, python-format
-#| msgid "Plugin: %s"
+#, python-format
 msgid "Plugin \"%s\":"
-msgstr "Lisamoodul: %s"
+msgstr "„%s“ lisamoodul:"
 
 #: picard/ui/dialogs/plugin_error.py:187
 msgid "Error reported by the plugin:"
@@ -5254,51 +5233,43 @@ msgid "Colors"
 msgstr "Värvid"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Show cover art details in cover art view"
-msgstr "Kaanepildid salvestatakse eraldi failidena"
+msgstr "Näita kaanepildi vaates üksikasju"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
-msgstr ""
+msgstr "Näita tüüpi (esikaas, tagakaas, jne)"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show file size"
-msgstr "Näita &peidetud faile"
+msgstr "Näita failisuurust"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:54
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show dimensions"
-msgstr "Näita &peidetud faile"
+msgstr "Näita faili mõõte"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
-msgstr ""
+msgstr "Näita MIME-tüüpi"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:49
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Kiirseadistuste menüü"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
-msgstr ""
+msgstr "Palun vali seadistused, mis oleks leidtavad kiirseadistuste menüüst."
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Available Option Settings"
-msgstr "Kodeerija seadistused"
+msgstr "Valikute saadaval seadistused"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
-msgstr "Tööriistariba kohandamine"
+msgstr "Kohanada tööriistariba"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:79
 msgid "Add a new button to Toolbar"
@@ -5325,22 +5296,20 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr "Näita siin määratud silte metaandmete vaates enne muid silte"
 
 #: picard/ui/forms/ui_options_lookup.py:85
-#, fuzzy
-#| msgid "File Naming"
 msgid "File Loading"
-msgstr "Failinimed"
+msgstr "Fail on laadimisel"
 
 #: picard/ui/forms/ui_options_lookup.py:89
 msgid "Query"
-msgstr ""
+msgstr "Päring"
 
 #: picard/ui/forms/ui_options_lookup.py:90
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "MusicBrainzi päringuga laaditavata kirjete ülempiir"
 
 #: picard/ui/forms/ui_options_lookup.py:91
 msgid "Use builtin search rather than looking in browser"
-msgstr "Brauseris otsimise asemel eelistatakse sisseehitatud otsingut"
+msgstr "Sisseehitatud otsingu asemel eelista brauseris otsimist"
 
 #: picard/ui/forms/ui_options_lookup.py:92
 #: picard/ui/searchdialog/__init__.py:99
@@ -5361,13 +5330,11 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_maintenance.py:150
 msgid "Load backup…"
-msgstr ""
+msgstr "Laadi varukoopia…"
 
 #: picard/ui/forms/ui_options_maintenance.py:151
-#, fuzzy
-#| msgid "Save As…"
 msgid "Save backup…"
-msgstr "Salvesta kui…"
+msgstr "Salvesta varukoopia…"
 
 #: picard/ui/forms/ui_options_maintenance.py:152
 msgid "Select all"
@@ -5375,17 +5342,15 @@ msgstr "Vali kõik"
 
 #: picard/ui/forms/ui_options_maintenance.py:153
 msgid "Remove selected options"
-msgstr ""
+msgstr "Eemalda valitud valikud"
 
 #: picard/ui/forms/ui_options_matching.py:135
-#, fuzzy
-#| msgid "Minimal similarity for file lookups:"
 msgid "Minimum similarity:"
-msgstr "Vähim sarnasus faili päringu jaoks:"
+msgstr "Vähim sarnasus:"
 
 #: picard/ui/forms/ui_options_matching.py:137
 msgid "Minimum margin between best and second-best match:"
-msgstr ""
+msgstr "Väikseim erinevus esimese ja paremuselt teise vaste vahel:"
 
 #: picard/ui/forms/ui_options_matching.py:139
 msgid "Minimal similarity for matching files to tracks:"
@@ -5440,34 +5405,27 @@ msgstr "Kasutatakse lugude seoseid"
 #: picard/ui/forms/ui_options_metadata.py:201
 msgid "Guess track number and title from filename if empty"
 msgstr ""
+"Kui väärtus on tühi, ürita tuvastada raja number ja pealkiri failinimest"
 
 #: picard/ui/forms/ui_options_metadata.py:202
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Translations"
-msgstr "[albumi teabe laadimine…]"
+msgstr "Tõlked"
 
 #: picard/ui/forms/ui_options_metadata.py:203
 msgid "Translate names when available:"
-msgstr ""
+msgstr "Tõlfi nimed, kui on saadaval:"
 
 #: picard/ui/forms/ui_options_metadata.py:204
-#, fuzzy
-#| msgid "Artists"
 msgid "Artist names"
-msgstr "Esitajad"
+msgstr "Esitajate nimed"
 
 #: picard/ui/forms/ui_options_metadata.py:205
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album titles"
-msgstr "Albumi esitaja"
+msgstr "Albumite pealkirjad"
 
 #: picard/ui/forms/ui_options_metadata.py:206
-#, fuzzy
-#| msgid "Tracks"
 msgid "Track titles"
-msgstr "Lood"
+msgstr "Lugude pealkirjad"
 
 #: picard/ui/forms/ui_options_metadata.py:207
 msgid "Preferred locales:"
@@ -5476,11 +5434,11 @@ msgstr "Eelistatud lokaadid:"
 #: picard/ui/forms/ui_options_metadata.py:208
 #: picard/ui/forms/ui_options_metadata.py:210
 msgid "Select…"
-msgstr ""
+msgstr "Vali…"
 
 #: picard/ui/forms/ui_options_metadata.py:209
 msgid "Ignore name translation for these language scripts:"
-msgstr ""
+msgstr "Eira nimede tõlget nende kirjasüsteemide puhul:"
 
 #: picard/ui/forms/ui_options_metadata.py:212
 msgid "Custom Fields"
@@ -5524,10 +5482,8 @@ msgid "Password:"
 msgstr "Salasõna:"
 
 #: picard/ui/forms/ui_options_network.py:179
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Võrk"
+msgstr "Võrguvalikud"
 
 #: picard/ui/forms/ui_options_network.py:180
 msgid "Request timeout in seconds:"
@@ -5542,10 +5498,8 @@ msgid " MB"
 msgstr " MB"
 
 #: picard/ui/forms/ui_options_network.py:184
-#, fuzzy
-#| msgid "C&lear all"
 msgid "Clear cache"
-msgstr "Puhasta kõik"
+msgstr "Kustuta puhverdatud andmed"
 
 #: picard/ui/forms/ui_options_network.py:186
 msgid "Default listening port:"
@@ -5560,18 +5514,16 @@ msgid "Enable audio player \"now playing\" notifications"
 msgstr ""
 
 #: picard/ui/forms/ui_options_player.py:61
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit listens to ListenBrainz"
-msgstr "Hinded edastatakse MusicBrainzi"
+msgstr "Edasta kuulamised ListenBrainzi teenusele"
 
 #: picard/ui/forms/ui_options_player.py:62
 msgid "Submit only tagged files"
-msgstr ""
+msgstr "Edasta vaid sildistatud failide teave"
 
 #: picard/ui/forms/ui_options_player.py:63
 msgid "ListenBrainz user token:"
-msgstr ""
+msgstr "ListenBrainzi kasutaja tunnusluba:"
 
 #: picard/ui/forms/ui_options_player.py:65
 msgid ""
@@ -5579,10 +5531,13 @@ msgid ""
 "listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
 "color:#308cc6;\">ListenBrainz settings</span></a>.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Sinu tunnusluba on saadaval <a href=\"https://"
+"listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
+"color:#308cc6;\">ListenBrainzi seadistustes</span></a>.</p></body></html>"
 
 #: picard/ui/forms/ui_options_profiles.py:81
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Valiku profiil(id)"
 
 #: picard/ui/forms/ui_options_profiles.py:82
 msgid "Move profile up"
@@ -5593,10 +5548,8 @@ msgid "Move profile down"
 msgstr "Liiguta profiil allapoole"
 
 #: picard/ui/forms/ui_options_ratings.py:55
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "Enable track ratings (requires login)"
-msgstr "Lubatakse lugude hindamine"
+msgstr "Kasuta lugude hindamist (eeldab sisselogimist)"
 
 #: picard/ui/forms/ui_options_ratings.py:58
 msgid ""
@@ -5642,10 +5595,8 @@ msgid "Destination directory:"
 msgstr "Sihtkataloog:"
 
 #: picard/ui/forms/ui_options_renaming.py:139
-#, fuzzy
-#| msgid "Move additional files (case insensitive):"
 msgid "Move additional files (case insensitive):"
-msgstr "Liigutatakse ka lisafailid (tõstutundetu):"
+msgstr "Liiguta ka lisafailid (tõstutundetu):"
 
 #: picard/ui/forms/ui_options_renaming.py:142
 msgid "Rename files when saving"
@@ -5664,7 +5615,7 @@ msgstr ""
 #: picard/ui/forms/ui_options_renaming.py:145
 #: picard/ui/forms/ui_scripteditor.py:217
 msgid "Files will be named like this:"
-msgstr ""
+msgstr "Failid nimetatakse järgnevalt:"
 
 #: picard/ui/forms/ui_options_renaming.py:146
 #: picard/ui/forms/ui_scripteditor.py:218
@@ -5678,11 +5629,11 @@ msgstr "Pärast"
 
 #: picard/ui/forms/ui_options_renaming_compat.py:97
 msgid "Customize…"
-msgstr ""
+msgstr "Kohenda…"
 
 #: picard/ui/forms/ui_options_renaming_compat.py:98
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "Luba kasutada 259-st tähemärgist pikemaid asukohti"
 
 #: picard/ui/forms/ui_options_renaming_compat.py:100
 msgid "Replace directory separators with:"
@@ -5715,10 +5666,8 @@ msgid "Add new tagger script"
 msgstr ""
 
 #: picard/ui/forms/ui_options_script.py:131
-#, fuzzy
-#| msgid "Add…"
 msgid "Add"
-msgstr "Lisa…"
+msgstr "Lisa"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
@@ -7917,11 +7866,11 @@ msgstr "Sisesta testitavad žanri- või folksonoomiamärgendid, üks rea kohta."
 
 #: picard/ui/options/genres.py:101
 msgid "the tag will be kept"
-msgstr ""
+msgstr "silt jäetakse alles"
 
 #: picard/ui/options/genres.py:102
 msgid "the tag will be skipped"
-msgstr ""
+msgstr "silt jäetakse vahele"
 
 #: picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -7954,7 +7903,7 @@ msgstr "Süsteemi vaikeväärtus"
 
 #: picard/ui/options/interface.py:143
 msgid "Reset tutorial and setup wizard…"
-msgstr ""
+msgstr "Lähtesta juhend- ja seadistusviisard…"
 
 #: picard/ui/options/interface.py:198
 msgid "You have changed the interface language."
@@ -7990,23 +7939,17 @@ msgid "Choose a color"
 msgstr "Värvi valimine"
 
 #: picard/ui/options/interface_colors.py:182
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "Taasta algsed veerud"
+msgstr "Taasta algsed värvid"
 
 #: picard/ui/options/interface_cover_art_box.py:40
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Kaanepilt"
+msgstr "Kaanepildi kast"
 
 #: picard/ui/options/interface_quick_menu.py:82
 #: picard/ui/options/profiles.py:270
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Pealkiri"
+msgstr "pealkiri"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -8049,16 +7992,12 @@ msgid "Submit AcoustIDs"
 msgstr "Edasta AcoustID-d"
 
 #: picard/ui/options/interface_toolbar.py:128
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "CD päring…"
+msgstr "Otsi sisukorra silti…"
 
 #: picard/ui/options/interface_toolbar.py:132
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD log file…"
-msgstr "CD päring…"
+msgstr "Otsi CD logifaili…"
 
 #: picard/ui/options/interface_toolbar.py:140 picard/ui/player/toolbar.py:68
 msgid "Play"
@@ -8077,9 +8016,8 @@ msgid "Drag and Drop to re-order"
 msgstr "Järjestuse muutmiseks lohista"
 
 #: picard/ui/options/interface_toolbar.py:294
-#, fuzzy
 msgid "Select an action"
-msgstr "V&ali kõik"
+msgstr "Vali tegevus"
 
 #: picard/ui/options/interface_top_tags.py:35
 msgid "Top Tags"
@@ -8152,6 +8090,10 @@ msgid ""
 "\n"
 "Please see the logs for more details."
 msgstr ""
+"Seadistuste faili salvestamine siia asukohta ei õnnestunud:\n"
+"%s\n"
+"\n"
+"Üksikasjalikumat teavet leiad logifailidest."
 
 #: picard/ui/options/maintenance.py:240 picard/ui/options/maintenance.py:249
 msgid "Backup Configuration File"
@@ -8216,20 +8158,16 @@ msgid "Are you sure you want to remove the selected option settings?"
 msgstr ""
 
 #: picard/ui/options/metadata.py:127
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Do not standardize artist names"
-msgstr "Kasutatakse standardiseeritud esitajanimesid"
+msgstr "Ära standardiseeri esitajanimesid"
 
 #: picard/ui/options/metadata.py:129
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist name variations only"
-msgstr "Kasutatakse standardiseeritud esitajanimesid"
+msgstr "Standardiseeri vaid esitajanimede variatsioone"
 
 #: picard/ui/options/metadata.py:132
 msgid "Standardize artist name variations and name changes"
-msgstr ""
+msgstr "Standardiseeri esitajanimede variatsioone ja nimemuudatusi"
 
 #: picard/ui/options/metadata.py:297
 #, python-brace-format
@@ -8269,10 +8207,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/player.py:36
-#, fuzzy
-#| msgid "Player"
 msgid "Audio Player"
-msgstr "&Muusikamängija"
+msgstr "Pleier"
 
 #: picard/ui/options/plugins.py:108
 #, python-brace-format
@@ -8307,14 +8243,14 @@ msgstr "Üksikasjad"
 
 #: picard/ui/options/plugins.py:143
 msgid "Show/hide plugin details panel"
-msgstr ""
+msgstr "Näita/peida lisamoodulite riba"
 
 #: picard/ui/options/plugins.py:225
 #, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Paigaldatud on {plugin_count:,d} lisamoodul"
+msgstr[1] "Paigaldatud on {plugin_count:,d} lisamoodulit"
 
 #: picard/ui/options/plugins.py:234
 #, python-brace-format
@@ -8328,18 +8264,20 @@ msgstr "Andmed on uuendamisel…"
 #: picard/ui/options/plugins.py:240
 msgid "Refreshing plugin registry, list, and checking for updates…"
 msgstr ""
+"Lisamoodulite register ja loend on uuendamisel ning uuenduste olemasolu "
+"kontrollimisel…"
 
 #: picard/ui/options/plugins.py:246 picard/ui/options/plugins.py:272
 #, python-brace-format
 msgid "Error refreshing: {}"
-msgstr ""
+msgstr "Viga andmete uuendamisel: {}"
 
 #: picard/ui/options/plugins.py:260
 #, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{plugin_count:,d} lisamoodul"
+msgstr[1] "{plugin_count:,d} lisamoodulit"
 
 #: picard/ui/options/plugins.py:264
 #, python-brace-format
@@ -8385,17 +8323,15 @@ msgstr ""
 #: picard/ui/options/plugins.py:535
 #: picard/ui/widgets/plugindetailswidget.py:407
 msgid "Update Failed"
-msgstr ""
+msgstr "Uuendamine ei õnnestunud"
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "Failed to save Log View to file"
 msgid "Failed to update the plugin."
-msgstr "Logifaili salvestamine nurjus"
+msgstr "Lisamooduli uuendamine ei õnnestunud."
 
 #: picard/ui/options/profiles.py:93
 msgid "Option Profiles"
-msgstr ""
+msgstr "Valikute profiil(id)"
 
 #: picard/ui/options/profiles.py:144
 msgid "Create a new profile"
@@ -8410,9 +8346,8 @@ msgid "Copy to a new profile"
 msgstr "Kopeeri uude profiili"
 
 #: picard/ui/options/profiles.py:158
-#, fuzzy
 msgid "Remove the profile"
-msgstr "Liiguta fail ülespoole"
+msgstr "Eemalda profiil"
 
 #: picard/ui/options/profiles.py:165
 msgid "Export the profile to a file"
@@ -8427,10 +8362,8 @@ msgid "Import a profile from a file or clipboard"
 msgstr "Impordi profiil failist või lõikelaualt"
 
 #: picard/ui/options/profiles.py:177
-#, fuzzy
-#| msgid "Tags From &File Names…"
 msgid "From file…"
-msgstr "Sildid &failinime põhjal…"
+msgstr "Failist…"
 
 #: picard/ui/options/profiles.py:178
 msgid "From clipboard"
@@ -9259,10 +9192,8 @@ msgstr "Eemaldamine ei õnnestunud"
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
 #: picard/ui/widgets/pluginlistwidget.py:740
-#, fuzzy
-#| msgid "Failed to uninstall plugin: {errmsg}"
 msgid "Failed to uninstall the plugin."
-msgstr "Lisamooduli eemaldamine ei õnnestunud: {errmsg}"
+msgstr "Lisamooduli eemaldamine ei õnnestunud."
 
 #: picard/ui/widgets/plugindetailswidget.py:285
 msgid "N/A"
@@ -9384,16 +9315,12 @@ msgid "Plugin Error"
 msgstr "Lisamooduli viga"
 
 #: picard/ui/widgets/pluginlistwidget.py:678
-#, fuzzy
-#| msgid "The name of the plugin"
 msgid "Failed to enable the plugin."
-msgstr "Lisamooduli nimi"
+msgstr "Lisamooduli sisselülitamine ei õnnestunud."
 
 #: picard/ui/widgets/pluginlistwidget.py:687
-#, fuzzy
-#| msgid "Failed to save Log View to file"
 msgid "Failed to disable the plugin."
-msgstr "Logifaili salvestamine nurjus"
+msgstr "Lisamooduli väljalülitamine ei õnnestunud."
 
 #: picard/ui/widgets/pluginlistwidget.py:772
 #, python-brace-format
