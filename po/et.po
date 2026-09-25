@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-31 19:12+0000\n"
+"PO-Revision-Date: 2026-09-25 06:13+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jmmbrz@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Estonian <https://translations.metabrainz.org/projects/picard/"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -320,6 +320,7 @@ msgstr "Kasutata lugude ja väljalasete seoseid"
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
 msgstr ""
+"Kui väärtus on tühi, ürita tuvastada raja number ja pealkiri failinimest"
 
 #: picard/profile.py:74
 msgid "Various Artists name"
@@ -600,7 +601,7 @@ msgstr "Mitme kataloogi valimise võimalus"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
-msgstr "Brauseris otsimise asemel eelistatakse sisseehitatud otsingut"
+msgstr "Sisseehitatud otsingu asemel eelista brauseris otsimist"
 
 #: picard/profile.py:192
 msgid "Use advanced search syntax"
@@ -668,7 +669,7 @@ msgstr ""
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "MusicBrainzi päringuga laaditavata kirjete ülempiir"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
@@ -4258,7 +4259,7 @@ msgstr "Värvid"
 
 #: picard/ui/ui_options_interface_toolbar.py:72
 msgid "Customize Action Toolbar"
-msgstr "Tööriistariba kohandamine"
+msgstr "Kohanada tööriistariba"
 
 #: picard/ui/ui_options_interface_toolbar.py:73
 msgid "Add a new button to Toolbar"
@@ -4302,7 +4303,7 @@ msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
-msgstr ""
+msgstr "Eemalda valitud valikud"
 
 #: picard/ui/ui_options_maintenance.py:91
 msgid "Select all"
@@ -4330,7 +4331,7 @@ msgstr "Võimalusel tõlgi esitajate nimed sellesse lokaati:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
-msgstr ""
+msgstr "Vali…"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
@@ -4422,7 +4423,7 @@ msgstr "Üksikasjad"
 
 #: picard/ui/ui_options_profiles.py:75
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Valiku profiil(id)"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
@@ -4473,7 +4474,7 @@ msgstr "Sihtkataloog:"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
-msgstr "Liigutatakse ka lisafailid (tõstutundetu):"
+msgstr "Liiguta ka lisafailid (tõstutundetu):"
 
 #: picard/ui/ui_options_renaming.py:155
 msgid "Rename files when saving"
@@ -4489,7 +4490,7 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
-msgstr ""
+msgstr "Failid nimetatakse järgnevalt:"
 
 #: picard/ui/ui_options_renaming.py:159 picard/ui/ui_scripteditor.py:212
 msgid "Before"
@@ -4505,11 +4506,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:91
 msgid "Customize…"
-msgstr ""
+msgstr "Kohenda…"
 
 #: picard/ui/ui_options_renaming_compat.py:92
 msgid "Allow paths longer than 259 characters"
-msgstr ""
+msgstr "Luba kasutada 259-st tähemärgist pikemaid asukohti"
 
 #: picard/ui/ui_options_renaming_compat.py:94
 msgid "Replace directory separators with:"
@@ -5329,7 +5330,7 @@ msgstr "Proovi palun hiljem uuesti."
 
 #: picard/ui/options/profiles.py:56
 msgid "Option Profiles"
-msgstr ""
+msgstr "Valikute profiil(id)"
 
 #: picard/ui/options/profiles.py:115
 msgid "New"
