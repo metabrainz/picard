@@ -1222,13 +1222,20 @@ class NatAlbum(Album):
     def update(self, update_tracks=True, update_selection=True):
         config = get_config()
         old_album_title = self.metadata['album']
-        self.metadata['album'] = config.setting['nat_name']
-        with self.suspend_metadata_images_update:
-            for track in self.tracks:
-                if old_album_title == track.metadata['album']:
-                    track.metadata['album'] = self.metadata['album']
-                for file in track.files:
-                    track.update_file_metadata(file)
+        new_album_title = config.setting['nat_name']
+        self.metadata['album'] = new_album_title
+        # Propagating the album title to every track (and refreshing each file's
+        # metadata) is only needed when the title actually changed. Loading many
+        # standalone recordings finishes each one with a NatAlbum.update(); doing
+        # this O(N) loop on every completion made loading O(N^2) and froze the UI
+        # (PICARD-2530). On steady-state updates the title is unchanged, so skip.
+        if old_album_title != new_album_title:
+            with self.suspend_metadata_images_update:
+                for track in self.tracks:
+                    if old_album_title == track.metadata['album']:
+                        track.metadata['album'] = new_album_title
+                    for file in track.files:
+                        track.update_file_metadata(file)
         super().update(update_tracks=update_tracks, update_selection=update_selection)
 
     def _finalize_loading(self, error):

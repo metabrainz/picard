@@ -447,7 +447,7 @@ class NonAlbumTrack(Track):
         self.loaded = False
         if self.album:
             self.metadata.copy(self.album.metadata, copy_images=False)
-            self.album.update(update_tracks=True)
+            self._refresh_item_and_album()
         config = get_config()
         require_authentication = False
         inc = {
@@ -496,8 +496,7 @@ class NonAlbumTrack(Track):
     def _set_error(self, error):
         self.error_append(error)
         self.status = _("[could not load recording %s]") % self.id
-        if self.album:
-            self.album.update(update_tracks=True)
+        self._refresh_item_and_album()
 
     def _parse_recording(self, recording):
         m = self.metadata
@@ -511,8 +510,20 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
+        self._refresh_item_and_album()
+
+    def _refresh_item_and_album(self):
+        """Refresh this track's item and the album row after a metadata change.
+
+        Deliberately uses update_tracks=False so the whole NAT album's track
+        list is not re-rendered on every recording. Loading many standalone
+        recordings calls this once per recording; a full update_tracks refresh
+        each time was O(N^2) and froze the UI (PICARD-2530). New track items are
+        still inserted via load_nat()'s nats.update(update_tracks=True).
+        """
         if self.album:
-            self.album.update(update_tracks=True)
+            self.update()
+            self.album.update(update_tracks=False)
 
     def _customize_metadata(self):
         super()._customize_metadata()

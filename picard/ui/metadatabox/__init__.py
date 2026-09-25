@@ -812,18 +812,20 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.addAction(lookup_action)
 
     def _apply_update_funcs(self, funcs):
+        objects_to_update = set()
         with self.tagger.window.ignore_selection_changes:
             for f in funcs:
-                f()
+                objects_to_update.update(f())
+        self._update_objects(objects_to_update)
         self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
     def _use_orig_tags(self, obj, tag, extra_objects=None):
         orig_values = list(obj.orig_metadata.getall(tag)) or [""]
-        self._set_tag_values_extra(tag, orig_values, obj, extra_objects)
+        return self._set_tag_values_extra_delayed_updates(tag, orig_values, obj, extra_objects)
 
     def _merge_orig_tags(self, obj, tag, extra_objects=None):
         values = merge_values(obj.orig_metadata.getall(tag), obj.metadata.getall(tag))
-        self._set_tag_values_extra(tag, values, obj, extra_objects)
+        return self._set_tag_values_extra_delayed_updates(tag, values, obj, extra_objects)
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
@@ -839,11 +841,20 @@ class MetadataBox(QtWidgets.QTableWidget):
         config.persist['show_changes_first'] = checked
         self.update()
 
-    def _set_tag_values_extra(self, tag, values, obj, extra_objects):
+    def _set_tag_values_extra_delayed_updates(self, tag, values, obj, extra_objects):
+        """Set tag values on an object (and any extra objects), yielding each
+        affected object instead of updating it eagerly.
+
+        The "Use/Merge Original Values" actions build one func per
+        (object, tag) pair. Updating inside each func refreshed an object once
+        per changed tag (O(objects * tags) File.update() calls, the multi-minute
+        freeze in PICARD-2530). Yielding lets _apply_update_funcs update each
+        object exactly once.
+        """
         objects = [obj]
         if extra_objects:
             objects.extend(extra_objects)
-        self._set_tag_values(tag, values, objects=objects)
+        yield from self._set_tag_values_delayed_updates(tag, values, objects=objects)
 
     def _set_tag_values_delayed_updates(self, tag, values, objects=None):
         if objects is None:
