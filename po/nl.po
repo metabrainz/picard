@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-09-23 17:13+0000\n"
+"PO-Revision-Date: 2026-09-26 08:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -294,7 +294,7 @@ msgstr "Metadata"
 
 #: picard/profile.py:64
 msgid "Translate artist names"
-msgstr "Artiestennamen vertalen"
+msgstr "Vertaal artiestennamen"
 
 #: picard/profile.py:65
 msgid "Translation locales"
@@ -364,7 +364,7 @@ msgstr "Gebruik alleen mijn genres"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
-msgstr "Genre van de uitgaveartiest gebruiken"
+msgstr "Gebruik het genre van de uitgaveartiest"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
@@ -452,7 +452,7 @@ msgstr "Sla iTunes-groeperingen en -composities op"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
-msgstr "ID3v1-tags opslaan"
+msgstr "Sla ID3v1-tags op"
 
 #: picard/profile.py:124
 msgid "Save APEv2 tags to AAC"
@@ -504,7 +504,7 @@ msgstr "Bestandsnaam voor afbeeldingen"
 
 #: picard/profile.py:145
 msgid "Overwrite existing image files"
-msgstr "Bestaande afbeeldingsbestanden overschrijven"
+msgstr "Overschrijf bestaande afbeeldingsbestanden"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
@@ -526,7 +526,7 @@ msgstr "Bestandsnamen"
 
 #: picard/profile.py:156
 msgid "Move files"
-msgstr "Bestanden verplaatsen"
+msgstr "Verplaats bestanden"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -534,7 +534,7 @@ msgstr "Doelmap"
 
 #: picard/profile.py:158
 msgid "Move additional files"
-msgstr "Extra bestanden verplaatsen"
+msgstr "Verplaats extra bestanden"
 
 #: picard/profile.py:159
 msgid "Additional file patterns"
@@ -546,7 +546,7 @@ msgstr "Verwijder lege mappen"
 
 #: picard/profile.py:161
 msgid "Rename files"
-msgstr "Bestanden hernoemen"
+msgstr "Hernoem bestanden"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -583,7 +583,7 @@ msgstr "Scripts"
 
 #: picard/profile.py:177
 msgid "Enable tagger scripts"
-msgstr "Tagscripts inschakelen"
+msgstr "Schakel tagscripts in"
 
 #: picard/profile.py:178
 msgid "Tagger scripts"
@@ -641,7 +641,7 @@ msgstr "Pas de horizontale positie in de verkenner automatisch aan"
 
 #: picard/profile.py:197
 msgid "Begin browsing in a specific directory"
-msgstr "Met bladeren in een specifieke map beginnen"
+msgstr "Begin met bladeren in een specifieke map"
 
 #: picard/profile.py:198
 msgid "Directory to begin browsing"
@@ -710,7 +710,7 @@ msgstr "Bij het vergelijken te negeren tags"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
-msgstr "Een webproxyserver gebruiken"
+msgstr "Gebruik een webproxyserver"
 
 #: picard/profile.py:239
 msgid "type of proxy server"
@@ -4766,7 +4766,7 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:201
 msgid "Submit data to the configured server"
-msgstr "Data bij de geconfigureerde server indienen"
+msgstr "Dien data bij de geconfigureerde server in"
 
 #: picard/ui/ui_options_general.py:202 picard/ui/ui_options_network.py:135
 msgid "Port:"
@@ -4920,11 +4920,11 @@ msgstr "Back-up opslaan"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
-msgstr "Geselecteerde opties verwijderen"
+msgstr "Verwijder de geselecteerde opties"
 
 #: picard/ui/ui_options_maintenance.py:91
 msgid "Select all"
-msgstr "Alles selecteren"
+msgstr "Selecteer alles"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
