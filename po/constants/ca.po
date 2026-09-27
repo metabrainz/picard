@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-09-14 10:14+0000\n"
+"PO-Revision-Date: 2026-09-27 18:13+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -4361,10 +4361,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:123
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artists Comments"
-msgstr "Països dels artistes de l'àlbum"
+msgstr "Comentaris dels artistes de l'àlbum"
 
 #: picard/const/tags.py:125
 #, fuzzy
@@ -4375,10 +4373,8 @@ msgid ""
 msgstr "Comentari de desambiguació del grup de publicacions."
 
 #: picard/const/tags.py:133
-#, fuzzy
-#| msgid "Album Artists Countries"
 msgid "Album Artist Comment"
-msgstr "Països dels artistes de l'àlbum"
+msgstr "Comentari de l'artista de l'àlbum"
 
 #: picard/const/tags.py:135
 msgid ""
@@ -4466,10 +4462,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:212
-#, fuzzy
-#| msgid "Artists Countries"
 msgid "Artists Comments"
-msgstr "Països dels artistes"
+msgstr "Comentaris dels artistes"
 
 #: picard/const/tags.py:214
 #, fuzzy
@@ -4482,10 +4476,8 @@ msgstr ""
 "Comentaris de desambiguació de les sèries associades al grup de publicacions."
 
 #: picard/const/tags.py:222
-#, fuzzy
-#| msgid "RG Series Comment"
 msgid "Artist Comment"
-msgstr "Comentari de les sèries del grup de publicacions"
+msgstr "Comentari de l'artista"
 
 #: picard/const/tags.py:224
 msgid ""
@@ -5120,17 +5112,12 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:769
-#, fuzzy
-#| msgid "Composer"
 msgid "Composer MBID"
-msgstr "Compositor"
+msgstr "MBID del compositor"
 
 #: picard/const/tags.py:770
-#, fuzzy
-#| msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
 msgid "The MusicBrainz Identifier (MBID) for the composer(s)."
-msgstr ""
-"Identificadors de MusicBrainz (MBID) de les sèries associades a l'obra."
+msgstr "Identificador de MusicBrainz (MBID) del compositor."
 
 #: picard/const/tags.py:775
 msgid "MusicIP Fingerprint"
