@@ -60,6 +60,7 @@ from picard.item import (
 )
 from picard.matching import (
     SimMatchRelease,
+    _format_sim_breakdown,
     compare_to_release,
     find_best_match_with_margin,
 )
@@ -418,22 +419,38 @@ class Cluster(FileList):
         all_matches = [compare_to_release(self.metadata, release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
-        log.debug_if(
-            DebugOpt.MATCHING,
-            "match_to_release: cluster=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
-            self.metadata.get('album', '?'),
-            len(all_matches),
-            min_similarity,
-            min_margin,
-        )
         if dbg := log.debug_if(DebugOpt.MATCHING):
+            dbg(
+                "match_to_release: cluster=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
+                self.metadata.get('album', '?'),
+                len(all_matches),
+                min_similarity,
+                min_margin,
+            )
+            dbg(
+                "  cluster meta: album=%r albumartist=%r date=%r totaltracks=%r barcode=%r catno=%r",
+                self.metadata.get('album', ''),
+                self.metadata.get('albumartist', ''),
+                self.metadata.get('date', ''),
+                self.metadata.get('~totalalbumtracks') or self.metadata.get('totaltracks', ''),
+                self.metadata.get('barcode', ''),
+                self.metadata.get('catalognumber', ''),
+            )
+            prefs = get_config().setting
+            dbg(
+                "  prefs: countries=%s formats=%s types=%s discouraged=%s",
+                prefs['preferred_release_countries'],
+                prefs['preferred_release_formats'],
+                prefs['preferred_release_types'],
+                prefs['discouraged_release_types'],
+            )
             for i, m in enumerate(all_matches[:5]):
                 title = '?'
                 mbid = '?'
                 if m.release:
                     title = m.release.get('title', '?')
                     mbid = m.release.get('id', '?')
-                dbg("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
+                dbg("  #%d %s  %r (%s)", i + 1, _format_sim_breakdown(m), title, mbid)
 
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match_with_margin(

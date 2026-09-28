@@ -35,9 +35,11 @@ from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.matching import (
     _SKIP_RELEASE_WEIGHT,
     ReleaseMatchParts,
+    SimMatchRelease,
     _catno_label_score,
     _compare_to_release_parts,
     _date_score,
+    _format_sim_breakdown,
     _get_weighted_release_parts,
     _isrcs_score,
     _trackcount_score,
@@ -97,6 +99,19 @@ class CompareToReleaseTest(PicardTestCase):
             release['score'] = score
             match_ = compare_to_release(metadata, release, CLUSTER_COMPARISON_WEIGHTS)
             self.assertEqual(sim, match_.similarity)
+
+    def test_compare_to_release_similarity_breakdown(self):
+        # The debug-only base_similarity field must be populated; the final
+        # similarity is base_similarity * get_score(). This separates the
+        # intrinsic field comparison from the search-relevance multiplier.
+        release = load_test_json('release.json')
+        metadata = Metadata()
+        release_to_metadata(release, metadata)
+        for score, expected_mult in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
+            release['score'] = score
+            match_ = compare_to_release(metadata, release, CLUSTER_COMPARISON_WEIGHTS)
+            self.assertIsNotNone(match_.base_similarity)
+            self.assertAlmostEqual(match_.similarity, match_.base_similarity * expected_mult)
 
     def test_compare_to_release_parts_totaltracks(self):
         release = load_test_json('release_multidisc.json')
@@ -212,6 +227,18 @@ class CompareToTrackTest(PicardTestCase):
             else:
                 self.assertGreater(match_.similarity, 0.5)
 
+    def test_compare_to_track_similarity_breakdown(self):
+        # base_similarity must be populated; similarity is base_similarity *
+        # get_score() for the release-bearing path.
+        track_json = load_test_json('track.json')
+        track = Track(track_json['id'])
+        track_to_metadata(track_json, track)
+        for score, expected_mult in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
+            track_json['score'] = score
+            match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
+            self.assertIsNotNone(match_.base_similarity)
+            self.assertAlmostEqual(match_.similarity, match_.base_similarity * expected_mult)
+
     def test_compare_to_track_is_video(self):
         recording = load_test_json('recording_video_null.json')
         m = Metadata()
@@ -267,6 +294,10 @@ class CompareToTrackTest(PicardTestCase):
             m2.similarity,
             'Matching score for release with recordings must be higher then for release without',
         )
+        # Both the release-bearing (m1) and no-releases (m2) paths must expose
+        # the base_similarity breakdown.
+        for m in (m1, m2):
+            self.assertIsNotNone(m.base_similarity)
 
 
 class ReleaseMatchPartsTest(PicardTestCase):
@@ -396,6 +427,20 @@ class ScoreHelpersTest(PicardTestCase):
         self.assertEqual(0.5, _isrcs_score(['ISRC1'], []))
         self.assertEqual(0.5, _isrcs_score([], []))
         self.assertEqual(0.5, _isrcs_score([], ['ISRC1', 'ISRC2']))
+
+    def test_format_sim_breakdown(self):
+        # Explicit "sim = base x score" breakdown for MATCHING debug lines.
+        m = SimMatchRelease(similarity=0.1826, release=None, base_similarity=0.6764)
+        self.assertEqual("sim=0.1826 = base 0.6764 x score 0.27", _format_sim_breakdown(m))
+        # score derives to 1.00 when base == similarity
+        m = SimMatchRelease(similarity=0.9810, release=None, base_similarity=0.9810)
+        self.assertEqual("sim=0.9810 = base 0.9810 x score 1.00", _format_sim_breakdown(m))
+        # base None (e.g. no-match sentinel) -> similarity only, no division
+        m = SimMatchRelease(similarity=-1, release=None)
+        self.assertEqual("sim=-1.0000", _format_sim_breakdown(m))
+        # base 0 -> guarded, no ZeroDivisionError
+        m = SimMatchRelease(similarity=0.0, release=None, base_similarity=0.0)
+        self.assertEqual("sim=0.0000 = base 0.0000 x score 0.00", _format_sim_breakdown(m))
 
 
 class PreferredWeightsTest(PicardTestCase):
