@@ -285,11 +285,13 @@ class Tagger(QtWidgets.QApplication):
 
     def _setup_app_icon(self):
         icon = QtGui.QIcon()
-        for size in (16, 24, 32, 48, 128, 256):
-            if IS_MACOS:
-                icon_name = f"macos_icon_{size}"
-            else:
-                icon_name = PICARD_APP_ID
+        if IS_MACOS:
+            sizes = (16, 32, 128, 256, 512)
+            icon_name = 'macos_icon'
+        else:
+            sizes = (16, 24, 32, 48, 128, 256, 512)
+            icon_name = PICARD_APP_ID
+        for size in sizes:
             icon.addFile(
                 f":/images/{size}x{size}/{icon_name}.png",
                 QtCore.QSize(size, size),

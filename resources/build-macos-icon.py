@@ -46,7 +46,7 @@ def copy_icon(size: int, iconset_path: Path) -> None:
     for suffix in ('', '@2x'):
         filename = f'icon_{size}{suffix}.png'
         print(f'Copying {filename}...')
-        source_file = image_path / f'{size}x{size}' / f'macos_{filename}'
+        source_file = image_path / f'{size}x{size}' / f'macos_icon{suffix}.png'
         dest_file = iconset_path / filename
         shutil.copy(source_file, dest_file)
 
