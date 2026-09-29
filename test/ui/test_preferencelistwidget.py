@@ -21,6 +21,8 @@
 import os
 import sys
 
+from picard.i18n import setup_i18n
+
 import pytest
 
 
@@ -58,6 +60,13 @@ def widget(qapp):
     w = PreferenceListWidget()
     w.set_available_items(SAMPLE_ITEMS)
     return w
+
+
+@pytest.fixture(autouse=True)
+def i18n_locale() -> None:
+    # Ensure sorting works across platforms.
+    # Specifically sorting will not work for the C locale on macOS.
+    setup_i18n(None, 'en')
 
 
 @needs_display
