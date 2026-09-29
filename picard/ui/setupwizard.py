@@ -51,10 +51,15 @@ class WizardCheckbox(QtWidgets.QWidget):
         assert style
 
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self._apply_hover_style()
         theme.theme_changed.connect(self._apply_hover_style)
 
         layout = QtWidgets.QVBoxLayout(self)
+        layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         self._checkbox = QtWidgets.QCheckBox(title)
         font = self._checkbox.font()
@@ -69,13 +74,14 @@ class WizardCheckbox(QtWidgets.QWidget):
 
         self._inner_layout = QtWidgets.QVBoxLayout()
         self._inner_layout.setContentsMargins(widget_indent, 0, 0, 0)
+        self._inner_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         layout.addLayout(self._inner_layout)
 
         hint = QtWidgets.QLabel(description)
         hint.setWordWrap(True)
         hint.setSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred,
-            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Fixed,
         )
         self._inner_layout.addWidget(hint)
 
