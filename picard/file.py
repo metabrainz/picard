@@ -90,6 +90,7 @@ from picard.i18n import (
 from picard.item import MetadataItem
 from picard.matching import (
     SimMatchTrack,
+    _format_sim_breakdown,
     compare_to_track,
     find_best_match_with_margin,
 )
@@ -1246,22 +1247,36 @@ class File(MetadataItem):
         all_matches = [compare_to_track(self.metadata, track, FILE_COMPARISON_WEIGHTS) for track in tracks]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
-        log.debug_if(
-            DebugOpt.MATCHING,
-            "match_to_track: file=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
-            self.filename,
-            len(all_matches),
-            min_similarity,
-            min_margin,
-        )
         if dbg := log.debug_if(DebugOpt.MATCHING):
+            dbg(
+                "match_to_track: file=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
+                self.filename,
+                len(all_matches),
+                min_similarity,
+                min_margin,
+            )
+            dbg(
+                "  file meta: title=%r artist=%r tracknumber=%r length=%r",
+                self.metadata.get('title', ''),
+                self.metadata.get('artist', ''),
+                self.metadata.get('tracknumber', ''),
+                self.metadata.length,
+            )
+            prefs = get_config().setting
+            dbg(
+                "  prefs: countries=%s formats=%s types=%s discouraged=%s",
+                prefs['preferred_release_countries'],
+                prefs['preferred_release_formats'],
+                prefs['preferred_release_types'],
+                prefs['discouraged_release_types'],
+            )
             for i, m in enumerate(all_matches[:5]):
                 title = '?'
                 mbid = '?'
                 if m.track:
                     title = m.track.get('title', '?')
                     mbid = m.track.get('id', '?')
-                dbg("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
+                dbg("  #%d %s  %r (%s)", i + 1, _format_sim_breakdown(m), title, mbid)
 
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match_with_margin(

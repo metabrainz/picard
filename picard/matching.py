@@ -103,6 +103,11 @@ class SimMatchTrack:
     releasegroup: dict | None
     release: dict | None
     track: dict | None
+    # Debug-only: combine_tiers() before the search-relevance multiplier
+    # (get_score). The final ``similarity`` is base_similarity * score; keeping
+    # base_similarity lets logs separate intrinsic field match from search rank.
+    # Defaults to None so existing constructors (e.g. the sentinel) stay valid.
+    base_similarity: float | None = None
 
 
 @dataclass
@@ -111,6 +116,11 @@ class SimMatchRelease:
 
     similarity: float
     release: dict | None
+    # Debug-only: combine_tiers() before the search-relevance multiplier
+    # (get_score). The final ``similarity`` is base_similarity * score; keeping
+    # base_similarity lets logs separate intrinsic field match from search rank.
+    # Defaults to None so existing constructors (e.g. the sentinel) stay valid.
+    base_similarity: float | None = None
 
 
 # Generic type variable that implements the Similar protocol.
@@ -203,8 +213,25 @@ def compare_to_release(metadata: 'Metadata', release: dict, weights: TieredWeigh
     """
     config = get_config()
     parts = _compare_to_release_parts(metadata, release, weights, config)
-    sim = parts.combine_tiers() * get_score(release)
-    return SimMatchRelease(similarity=sim, release=release)
+    base = parts.combine_tiers()
+    return SimMatchRelease(similarity=base * get_score(release), release=release, base_similarity=base)
+
+
+def _format_sim_breakdown(match) -> str:
+    """Render a MATCHING-debug similarity breakdown for a SimMatch* result.
+
+    The final similarity is ``base_similarity * get_score()``. Showing all
+    three makes the log self-explanatory: it is obvious at a glance whether the
+    intrinsic field comparison (base) or the search-relevance score drove the
+    result, without the reader having to divide sim by base.
+
+    Example: ``sim=0.1826 = base 0.6764 x score 0.27``
+    """
+    base = match.base_similarity
+    if base is None:
+        return "sim=%.4f" % match.similarity
+    score = match.similarity / base if base else 0.0
+    return "sim=%.4f = base %.4f x score %.2f" % (match.similarity, base, score)
 
 
 def _compare_to_release_parts(
@@ -363,18 +390,31 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
             # release-level weights, ensuring tracks with releases are preferred.
             release_parts = _get_weighted_release_parts(weights, 0.5)
             track_parts = track_parts.merged_with(release_parts)
-            sim = track_parts.combine_tiers() * search_score
-            return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
+            base = track_parts.combine_tiers()
+            return SimMatchTrack(
+                similarity=base * search_score,
+                releasegroup=None,
+                release=None,
+                track=track,
+                base_similarity=base,
+            )
 
     result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
     config = get_config()
     for release in releases:
         release_parts = _compare_to_release_parts(metadata, release, weights, config)
         combined = track_parts.merged_with(release_parts)
-        sim = combined.combine_tiers() * search_score
+        base = combined.combine_tiers()
+        sim = base * search_score
         if sim > result.similarity:
             rg = release['release-group'] if "release-group" in release else None
-            result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
+            result = SimMatchTrack(
+                similarity=sim,
+                releasegroup=rg,
+                release=release,
+                track=track,
+                base_similarity=base,
+            )
     return result
 
 
