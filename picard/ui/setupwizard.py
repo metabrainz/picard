@@ -41,6 +41,24 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.ui.theme import theme
 
 
+class WrappedLabel(QtWidgets.QLabel):
+    def __init__(self, text: str, parent: QtWidgets.QWidget | None = None):
+        super().__init__(text, parent=parent)
+        self.setWordWrap(True)
+        self.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
+
+    def minimumSizeHint(self) -> QtCore.QSize:
+        size = super().minimumSizeHint()
+        parent = self.parent()
+        if isinstance(parent, QtWidgets.QWidget):
+            size.setHeight(self.heightForWidth(parent.width()))
+        return size
+
+
 class WizardCheckbox(QtWidgets.QWidget):
     toggled = QtCore.pyqtSignal(bool)
 
@@ -51,10 +69,15 @@ class WizardCheckbox(QtWidgets.QWidget):
         assert style
 
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self._apply_hover_style()
         theme.theme_changed.connect(self._apply_hover_style)
 
         layout = QtWidgets.QVBoxLayout(self)
+        layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         self._checkbox = QtWidgets.QCheckBox(title)
         font = self._checkbox.font()
@@ -69,14 +92,10 @@ class WizardCheckbox(QtWidgets.QWidget):
 
         self._inner_layout = QtWidgets.QVBoxLayout()
         self._inner_layout.setContentsMargins(widget_indent, 0, 0, 0)
+        self._inner_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         layout.addLayout(self._inner_layout)
 
-        hint = QtWidgets.QLabel(description)
-        hint.setWordWrap(True)
-        hint.setSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        hint = WrappedLabel(description)
         self._inner_layout.addWidget(hint)
 
     def _apply_hover_style(self):
@@ -499,7 +518,7 @@ class SetupWizard(QtWidgets.QWizard):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        self.setMinimumSize(620, 480)
+        self.setMinimumSize(640, 520)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
 
