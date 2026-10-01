@@ -56,7 +56,7 @@ jobs:
               - '**/*.md'
       - name: Install uv
         if: steps.changes.outputs.src == 'true'
-        uses: astral-sh/setup-uv@v10.0.1
+        uses: astral-sh/setup-uv@v10.2.0
       - name: Run pymarkdown
         if: steps.changes.outputs.md == 'true'
         run: uvx pre-commit run pymarkdown --files ${{ steps.changes.outputs.md_files }}
