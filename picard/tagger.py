@@ -78,7 +78,6 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     acoustid,
-    config as _cfg,
     log,
 )
 from picard.acoustid.manager import AcoustIDManager
@@ -157,7 +156,6 @@ from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import (
-    export_session as _export_session,
     load_session_from_path,
     save_session_to_path,
 )
@@ -620,18 +618,6 @@ class Tagger(QtWidgets.QApplication):
         yield from self.unclustered_files.files
         yield from self.iter_album_files()
         yield from self.clusters.iterfiles()
-
-    # ==============================
-    # Session export / import
-    # ==============================
-    def export_session(self) -> dict:
-        # Expose config on self for session helpers
-        self.config = _cfg
-        return _export_session(self)
-
-    def import_session(self, data: dict) -> None:
-        # This method expects a file path usually; keep a convenience for future extensions
-        raise NotImplementedError
 
     def clear_session(self) -> None:
         """Remove all files, clusters and albums from current UI state."""
