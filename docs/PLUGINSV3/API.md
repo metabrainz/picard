@@ -915,8 +915,10 @@ Unregister a single script variable previously registered by this plugin.
 ```python
 def enable(api):
     api.register_script_variable("my_var", "My variable")
+    api.register_script_variable("_my_hidden_var", "My hidden variable")
     # Later, when the variable is no longer needed:
     api.unregister_script_variable("my_var")
+    api.unregister_script_variable("_my_hidden_var")
 ```
 
 **Parameters**:
