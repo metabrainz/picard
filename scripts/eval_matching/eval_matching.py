@@ -363,6 +363,62 @@ SCENARIOS = [
         ],
         "scenario": "rerecording_different_artists",
     },
+    # Placeholder catalog number vs real catno (see forum thread "Picard 3
+    # matching algorithm", PR #3478). The correct Kachkin release carries the
+    # literal placeholder catalog-number "[none]" with the "[no label]" special
+    # label; the wrong NanoStorm release has no label-info at all. When the file
+    # has a real catalog number (KACH001), the placeholder "[none]" is scored as
+    # a hard identifier *mismatch* (0.0), capping the correct release's base
+    # score, while the no-label-info distractor escapes any catno penalty. The
+    # 12-track/2011/Kachkin target should still win over the 9-track/2017/
+    # NanoStorm distractor; see the placeholder_catno degradation below.
+    {
+        "target": "eval_release_c77683e6.json",  # Kachkin - World of Illusions (catno "[none]")
+        "distractors": [
+            "eval_release_c3b5c508.json",  # NanoStorm - World of Illusions (no label-info)
+        ],
+        "scenario": "placeholder_catno",
+    },
+    {
+        "target": "eval_release_c3b5c508.json",  # NanoStorm - World of Illusions (no label-info)
+        "distractors": [
+            "eval_release_c77683e6.json",  # Kachkin - World of Illusions (catno "[none]")
+        ],
+        "scenario": "placeholder_catno",
+    },
+    # Three-way catalog-number states for the same album title, "World of
+    # Illusions" (follow-up to the forum thread / PR #3478). The three editions
+    # differ in how they record a catalog number:
+    #   - Eversor (target):   a real catno "Day 07" on "Day After Records"
+    #   - Kachkin (distractor): the placeholder "[none]" (asserts "no catno")
+    #   - NanoStorm (distractor): no label-info at all ("we don't know")
+    # These carry different information and must rank match > unknown >
+    # placeholder when the file has a real catalog number. With the catno_match
+    # degradation the file positively matches the Eversor catno, so the target
+    # must win decisively; other degradations exercise the title/track-count
+    # discriminators (the three editions have 7, 12 and 9 tracks respectively).
+    {
+        "target": "eval_release_7097817a.json",  # Eversor - World of illusions (catno "Day 07")
+        "distractors": [
+            "eval_release_c77683e6.json",  # Kachkin - World of Illusions (catno "[none]")
+            "eval_release_c3b5c508.json",  # NanoStorm - World of Illusions (no label-info)
+        ],
+        "scenario": "catno_three_way",
+    },
+    # Real-but-mistyped catalog number. The file carries a genuine catno (the
+    # correct release's own) but with a one-character typo, so it contradicts
+    # every candidate. A contradicting identifier must not veto an otherwise
+    # strong album/artist/track-count match: the correct Weezer "Blue" album
+    # (same artist, different album than "Green") must still win despite the
+    # mistyped catno. Exercises the softened identifier-mismatch handling.
+    {
+        "target": "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue, catno "DGCD-24629")
+        "distractors": [
+            "eval_release_a9897d0b.json",  # Weezer - Weezer (Green, different album)
+            "eval_release_b072b162.json",  # Weezer - Weezer (Blue, DE edition)
+        ],
+        "scenario": "mistyped_catno",
+    },
 ]
 
 
@@ -432,6 +488,74 @@ def wrong_track_count(metadata, release):
 def wrong_barcode(metadata, release):
     """Replace barcode with an incorrect value."""
     metadata["barcode"] = "9999999999999"
+
+
+def real_catno(metadata, release):
+    """Give the file a real catalog number (and label).
+
+    Simulates the forum case where a user's files carry a genuine catalog
+    number (e.g. a netlabel's "KACH001") while the matching MusicBrainz
+    release records only the placeholder "[none]" catalog number under the
+    special "[no label]" label. A real file catno must not be scored as a hard
+    mismatch against such a placeholder — otherwise the correct release is
+    unfairly penalized while a distractor with no label-info escapes untouched.
+    """
+    metadata["catalognumber"] = "KACH001"
+    metadata["label"] = "KACH Records"
+
+
+def _first_real_catno(release):
+    """Return (catno, label) of the first real catalog number on a release.
+
+    Skips the MusicBrainz "[none]" placeholder. Returns (None, None) if the
+    release has no real catalog number.
+    """
+    for li in release.get("label-info") or []:
+        cat = (li.get("catalog-number") or "").strip()
+        if cat and cat.lower() != "[none]":
+            label = (li.get("label") or {}).get("name", "") or ""
+            return cat, label
+    return None, None
+
+
+def catno_typo(metadata, release):
+    """Mistype the file's (real) catalog number by one character.
+
+    The file carries a genuine catalog number — the release's own — but with a
+    single-character error, as happens with hand-entered or OCR'd tags. A real
+    but mistyped catno contradicts every candidate's catno, so it must *not*
+    veto an otherwise strong album/artist/track-count match: the softened
+    identifier-mismatch handling should let the correct release still win.
+    """
+    catno, label = _first_real_catno(release)
+    if not catno:
+        return
+    # Alter a single alphanumeric character (skip separators/spaces) so the
+    # result is a realistic one-character typo rather than a separator change.
+    alnum_positions = [j for j, ch in enumerate(catno) if ch.isalnum()]
+    if not alnum_positions:
+        return
+    i = alnum_positions[len(alnum_positions) // 2]
+    orig = catno[i]
+    repl = "0" if orig.lower() != "0" else "1"
+    metadata["catalognumber"] = catno[:i] + repl + catno[i + 1 :]
+    if label:
+        metadata["label"] = label
+
+
+def catno_match(metadata, release):
+    """Give the file the release's real catalog number and label (exact match).
+
+    Used by the three-way placeholder scenario: the file positively matches the
+    target's catalog number, so the target (real catno) must outrank a
+    distractor that only asserts "[none]" and one that has no label-info.
+    """
+    catno, label = _first_real_catno(release)
+    if not catno:
+        return
+    metadata["catalognumber"] = catno
+    if label:
+        metadata["label"] = label
 
 
 def wrong_isrc(metadata, release):
@@ -531,6 +655,9 @@ DEGRADATIONS = [
     ("extra_artist_suffix", extra_artist_suffix),
     ("wrong_track_count", wrong_track_count),
     ("wrong_barcode", wrong_barcode),
+    ("real_catno", real_catno),
+    ("catno_typo", catno_typo),
+    ("catno_match", catno_match),
     ("wrong_isrc", wrong_isrc),
     ("less_isrcs", less_isrcs),
     ("length_small_diff", length_small_diff),

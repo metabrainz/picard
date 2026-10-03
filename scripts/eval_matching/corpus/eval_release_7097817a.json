@@ -1,0 +1,434 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": "IT",
+        "disambiguation": "Italian punk band",
+        "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+        "name": "Eversor",
+        "sort-name": "Eversor",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+      },
+      "joinphrase": "",
+      "name": "Eversor"
+    }
+  ],
+  "asin": null,
+  "barcode": "",
+  "country": "CZ",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": false,
+    "count": 1,
+    "darkened": false,
+    "front": true
+  },
+  "date": "1995",
+  "disambiguation": "",
+  "id": "7097817a-634d-4033-add3-cf77b9d440bb",
+  "label-info": [
+    {
+      "catalog-number": "Day 07",
+      "label": {
+        "disambiguation": "",
+        "id": "d733b1b9-5418-4cb7-a9b8-5498d4c8967c",
+        "label-code": null,
+        "name": "Day After Records",
+        "sort-name": "Day After Records",
+        "type": "Original Production",
+        "type-id": "7aaa37fe-2def-3476-b359-80245850062d"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "10abf229-3737-3946-bef5-2c372db527ce",
+      "position": 1,
+      "title": "",
+      "track-count": 7,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "7d071d88-6c7e-4d14-82ab-30051e936575",
+          "length": 205000,
+          "number": "1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995",
+            "id": "b5868b31-4393-4465-8c13-996f85806dae",
+            "isrcs": [],
+            "length": 205000,
+            "title": "Matter of Attention",
+            "video": false
+          },
+          "title": "Matter of Attention"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "9ccc9491-74e8-4632-a234-474dd50c4859",
+          "length": 206160,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995",
+            "id": "8fa1a140-0cf4-42b0-be5b-e837703ec9ec",
+            "isrcs": [],
+            "length": 206000,
+            "title": "Mine",
+            "video": false
+          },
+          "title": "Mine"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "1857c194-6fe1-450e-b6e9-24021d64f6b8",
+          "length": 264266,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995",
+            "id": "acd9ff58-1e08-42d3-9511-524982599a5c",
+            "isrcs": [],
+            "length": 264000,
+            "title": "Today",
+            "video": false
+          },
+          "title": "Today"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "0cafdd0a-97cd-40d0-8bc5-ca5ffb33ea68",
+          "length": 157666,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995-01",
+            "id": "43044f7e-3251-4b73-b067-4093aa6cd973",
+            "isrcs": [],
+            "length": 157666,
+            "title": "Time Goes By",
+            "video": false
+          },
+          "title": "Time Goes By"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "02b55d50-785c-4de7-afe6-01e185293d65",
+          "length": 196173,
+          "number": "5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995-01",
+            "id": "323bc83a-53a2-46bf-ba8a-9db2a873040f",
+            "isrcs": [],
+            "length": 196000,
+            "title": "Destiny",
+            "video": false
+          },
+          "title": "Destiny"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "483329f7-891d-4132-8e16-b7dfafefd05a",
+          "length": 184933,
+          "number": "6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995-01",
+            "id": "4ca9702a-1860-4d1b-bdec-0b20e8316c6d",
+            "isrcs": [],
+            "length": 184933,
+            "title": "Angel",
+            "video": false
+          },
+          "title": "Angel"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "IT",
+                "disambiguation": "Italian punk band",
+                "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                "name": "Eversor",
+                "sort-name": "Eversor",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eversor"
+            }
+          ],
+          "id": "22fe15c0-9da3-47a6-87f5-31451f455602",
+          "length": 175293,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "IT",
+                  "disambiguation": "Italian punk band",
+                  "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+                  "name": "Eversor",
+                  "sort-name": "Eversor",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eversor"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1995",
+            "id": "f51d36df-9c0a-4468-8c4a-d492174e1ff9",
+            "isrcs": [],
+            "length": 175293,
+            "title": "The Godfather",
+            "video": false
+          },
+          "title": "The Godfather"
+        }
+      ]
+    }
+  ],
+  "packaging": "Jewel Case",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "51d34c28-61bf-3d21-849f-7492672a9d44",
+        "iso-3166-1-codes": [
+          "CZ"
+        ],
+        "name": "Czechia",
+        "sort-name": "Czechia",
+        "type": null,
+        "type-id": null
+      },
+      "date": "1995"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": "IT",
+          "disambiguation": "Italian punk band",
+          "id": "a18cd406-5de9-4000-a39a-a067cf40cb61",
+          "name": "Eversor",
+          "sort-name": "Eversor",
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        },
+        "joinphrase": "",
+        "name": "Eversor"
+      }
+    ],
+    "disambiguation": "compilation",
+    "first-release-date": "1995",
+    "id": "e5ea5e33-2a36-4dc2-a76c-5b9660e90549",
+    "primary-type": "EP",
+    "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "title": "World of Illusions"
+  },
+  "status": "Official",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "World of illusions"
+}
