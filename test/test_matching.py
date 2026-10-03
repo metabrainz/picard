@@ -37,6 +37,7 @@ from picard.matching import (
     ReleaseMatchParts,
     SimMatchRelease,
     _catno_label_score,
+    _catno_similarity,
     _compare_to_release_parts,
     _date_score,
     _format_sim_breakdown,
@@ -412,6 +413,45 @@ class ScoreHelpersTest(PicardTestCase):
         self.assertEqual(
             0.0, _catno_label_score('R-456', 'Foo', [{'catalog-number': 'R-123', 'label': {'name': 'Foo'}}])
         )
+        # "[none]" placeholders are ignored on both sides (PICARD / PR #3478).
+        self.assertEqual(
+            0.5, _catno_label_score('R-123', 'Foo', [{'catalog-number': '[none]', 'label': {'name': '[no label]'}}])
+        )
+        self.assertEqual(0.5, _catno_label_score('R-123', 'Foo', [{'catalog-number': '[NONE]'}]))
+        self.assertEqual(0.5, _catno_label_score('[none]', 'Foo', [{'catalog-number': 'R-123'}]))
+        self.assertEqual(0.5, _catno_label_score('R-123', 'Foo', [{'label': {'name': 'Foo'}}]))
+        # A real catno alongside a placeholder still matches.
+        self.assertEqual(
+            1.0, _catno_label_score('R-123', 'Foo', [{'catalog-number': '[none]'}, {'catalog-number': 'R-123'}])
+        )
+        # Near-miss (typo / differing separator) earns partial credit, capped at 0.75.
+        self.assertEqual(0.75, _catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'DGCD-04629'}]))
+        self.assertGreater(_catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'DGCD 24629'}]), 0.6)
+        self.assertGreater(_catno_label_score('KRANK 043', 'Foo', [{'catalog-number': 'KRANK043'}]), 0.6)
+        # A genuinely different catno stays a hard mismatch.
+        self.assertEqual(0.0, _catno_label_score('Day 07', 'Foo', [{'catalog-number': 'DGCD-24629'}]))
+        # Ordering: exact match > near-miss typo > genuinely different.
+        self.assertGreater(
+            _catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'DGCD-24629'}]),
+            _catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'DGCD-04629'}]),
+        )
+        self.assertGreater(
+            _catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'DGCD-04629'}]),
+            _catno_label_score('DGCD-24629', 'Foo', [{'catalog-number': 'ZZZZ-99999'}]),
+        )
+
+    def test_catno_similarity(self):
+        # Case/separator differences and one-character typos score high.
+        self.assertGreater(_catno_similarity('DGCD-24629', 'dgcd 24629'), 0.6)
+        self.assertGreater(_catno_similarity('KRANK 043', 'KRANK043'), 0.6)
+        self.assertGreater(_catno_similarity('DGCD-24629', 'DGCD-04629'), 0.6)
+        self.assertGreater(_catno_similarity('Day 07', 'Dey 07'), 0.6)
+        # Genuinely different catalog numbers score low.
+        self.assertLess(_catno_similarity('Day 07', 'DGCD-24629'), 0.6)
+        # Unicode is preserved, not stripped (a CJK/symbol typo stays similar).
+        self.assertGreater(_catno_similarity('PRO-电子-01', 'PRO-电子-02'), 0.6)
+        self.assertEqual(0.0, _catno_similarity('', 'R-123'))
+        self.assertEqual(0.0, _catno_similarity('   ', 'R-123'))
 
     def test_trackcount_score(self):
         self.assertEqual(1.0, _trackcount_score(5, 5))

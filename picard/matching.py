@@ -56,6 +56,7 @@ from picard.util import (
     extract_year_from_date,
     linear_combination_of_weights,
 )
+from picard.util.astrcmp import astrcmp
 
 
 if TYPE_CHECKING:
@@ -510,16 +511,56 @@ def _date_score(release: dict, metadata: 'Metadata') -> float:
     return _DATE_MATCH_FACTORS['differed']
 
 
+# A non-exact catalog number that is a near-miss (one-character typo, differing
+# separator) scores much higher than a genuinely different one. Catalog numbers
+# are short identifier strings, so a character-level similarity (astrcmp) is
+# used; only similarities at or above the threshold earn credit, capped below an
+# exact match.
+_CATNO_NEAR_MISS_THRESHOLD = 0.6
+_CATNO_NEAR_MISS_CEILING = 0.75
+
+
+def _catno_similarity(a: str, b: str) -> float:
+    """Character-level similarity of two catalog numbers in [0.0, 1.0].
+
+    The raw strings are compared (lower-cased, whitespace-trimmed) via astrcmp;
+    characters are not stripped, as MusicBrainz catalog numbers may contain
+    arbitrary Unicode and stripping "non-alphanumeric" characters would be lossy.
+    """
+    a = a.strip().lower()
+    b = b.strip().lower()
+    if not a or not b:
+        return 0.0
+    return astrcmp(a, b)
+
+
+def _is_placeholder_catno(value: str) -> bool:
+    """Return True for the MusicBrainz "[none]" placeholder catalog number.
+
+    The catalog-number field is mandatory, so editors enter the literal "[none]"
+    to assert a release has no catalog number. It must be ignored, not matched
+    against. Compared case-insensitively.
+    """
+    return value.strip().lower() == '[none]'
+
+
 def _catno_label_score(file_catno: str, file_label: str, release_label_info: list[dict]) -> float:
     """Score catalog number + label match against release label-info.
 
     Returns 1.0 for exact catno match (with matching or absent label),
     0.0 for catno mismatch when release has catalog numbers.
+
+    A near-miss (typo or differing separator) earns partial credit (<=0.75)
+    scaled by a character-level similarity. MusicBrainz "[none]" placeholders
+    are ignored on both sides (treated as no catalog number).
     """
+    if _is_placeholder_catno(file_catno):
+        return 0.5
+
     release_catnos = []
     for li in release_label_info:
         cat = li.get('catalog-number', '')
-        if cat:
+        if cat and not _is_placeholder_catno(cat):
             label_name = ''
             if label := li.get('label', None):
                 label_name = label.get('name', '')
@@ -530,8 +571,10 @@ def _catno_label_score(file_catno: str, file_label: str, release_label_info: lis
 
     file_catno = file_catno.strip().lower()
     file_label = file_label.strip().lower()
+    best_sim = 0.0
     for release_catno, release_label in release_catnos:
-        if file_catno == release_catno.strip().lower():
+        release_catno_norm = release_catno.strip().lower()
+        if file_catno == release_catno_norm:
             # Catno matches; if file also has label, check it too
             if not file_label or not release_label:
                 return 1.0
@@ -539,7 +582,10 @@ def _catno_label_score(file_catno: str, file_label: str, release_label_info: lis
                 return 1.0
             # Catno matches but label differs — still a good signal
             return 0.8
-    # File has a catno but it doesn't match any on this release
+        best_sim = max(best_sim, _catno_similarity(file_catno, release_catno_norm))
+    # Near-miss earns partial credit; a genuinely different catno stays 0.0.
+    if best_sim >= _CATNO_NEAR_MISS_THRESHOLD:
+        return min(_CATNO_NEAR_MISS_CEILING, best_sim)
     return 0.0
 
 
