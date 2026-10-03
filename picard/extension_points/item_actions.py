@@ -40,6 +40,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import abstractmethod
+
 from PyQt6 import (
     QtGui,
     QtWidgets,
@@ -89,8 +91,8 @@ class BaseAction(QtGui.QAction, HasDisplayTitle, HasMenuItems):
                 plugin_id = None
             log.error("Error in action %s (plugin: %s):", self.display_title(), plugin_id, exc_info=True)
 
-    def callback(self, objs):
-        raise NotImplementedError
+    @abstractmethod
+    def callback(self, objs): ...
 
 
 def add_action_to_menu(

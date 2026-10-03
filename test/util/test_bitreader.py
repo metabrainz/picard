@@ -86,4 +86,5 @@ class LsbBitReaderTest(PicardTestCase):
         self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xff')).bytes, 2)
 
     def test_bits_no_default_implementation(self):
-        self.assertRaises(NotImplementedError, _BitReader(BytesIO(b'')).bits, 0)
+        with self.assertRaises(TypeError):
+            _BitReader(BytesIO(b''))

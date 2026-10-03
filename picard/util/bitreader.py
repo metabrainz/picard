@@ -23,6 +23,10 @@
 # https://github.com/quodlibet/mutagen/blob/master/mutagen/tak.py
 
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from typing import BinaryIO
 
 
@@ -30,20 +34,21 @@ class BitReaderError(Exception):
     pass
 
 
-class _BitReader:
+class _BitReader(ABC):
     def __init__(self, fileobj: BinaryIO):
         self._fileobj = fileobj
         self._buffer = 0
         self._bits = 0
         self._pos = fileobj.tell()
 
+    @abstractmethod
     def bits(self, count: int) -> int:
         """Reads `count` bits and returns an uint.
 
         May raise BitReaderError if not enough data could be read or
         IOError by the underlying file object.
         """
-        raise NotImplementedError
+        ...
 
     def bytes(self, count: int) -> bytes:
         """Returns a bytearray of length `count`. Works unaligned."""

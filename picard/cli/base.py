@@ -1,6 +1,6 @@
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025-2026 Philipp Wolfer
 # Copyright (C) 2025-2026 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -19,6 +19,10 @@
 
 """Base class and exit codes for Picard CLI subcommand handlers."""
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from enum import IntEnum
 import traceback
 
@@ -34,7 +38,7 @@ class ExitCode(IntEnum):
     CANCELLED = 130
 
 
-class BaseCLI:
+class BaseCLI(ABC):
     """Base class for CLI subcommand handlers.
 
     Provides common infrastructure: output, debug mode detection,
@@ -85,9 +89,10 @@ class BaseCLI:
             self._handle_exception(e)
             return ExitCode.ERROR
 
+    @abstractmethod
     def _dispatch(self):
         """Dispatch to the appropriate command handler.
 
         Subclasses must override this method.
         """
-        raise NotImplementedError
+        ...

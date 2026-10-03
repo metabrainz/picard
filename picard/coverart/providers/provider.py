@@ -21,6 +21,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import (
+    ABCMeta,
+    abstractmethod,
+)
 from enum import Enum
 import traceback
 from typing import TYPE_CHECKING
@@ -67,7 +71,7 @@ class ProviderOptions(OptionsPage):
             self.ui.setupUi(self)
 
 
-class CoverArtProviderMetaClass(type):
+class CoverArtProviderMetaClass(type, metaclass=ABCMeta):
     """Provide default properties name & title for CoverArtProvider
     It is recommended to use those in place of NAME and TITLE that might not be defined
     """
@@ -109,10 +113,11 @@ class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
     def enabled(self):
         return not self.coverart.front_image_found
 
+    @abstractmethod
     def queue_images(self) -> QueueState:
         # this method has to return CoverArtProvider.QueueState.FINISHED or
         # CoverArtProvider.QueueState.WAIT
-        raise NotImplementedError
+        ...
 
     def error(self, msg):
         self.coverart.album.error_append(msg)

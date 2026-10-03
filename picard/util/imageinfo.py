@@ -20,6 +20,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from collections.abc import Iterator
 from dataclasses import dataclass
 from io import BytesIO
@@ -55,7 +59,7 @@ class UnexpectedError(IdentificationError):
     pass
 
 
-class IdentifyImageType:
+class IdentifyImageType(ABC):
     w = -1
     h = -1
     format_info: ImageFormat | None = None
@@ -78,11 +82,11 @@ class IdentifyImageType:
             format_info=self.format_info,
         )
 
-    def match(self) -> bool:
-        raise NotImplementedError
+    @abstractmethod
+    def match(self) -> bool: ...
 
-    def _read(self):
-        raise NotImplementedError
+    @abstractmethod
+    def _read(self) -> None: ...
 
 
 class IdentifyJPEG(IdentifyImageType):

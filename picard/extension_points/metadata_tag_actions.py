@@ -17,18 +17,23 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import (
+    ABCMeta,
+    abstractmethod,
+)
+
 from picard.item import MetadataItem
 from picard.plugin import ExtensionPoint
 from picard.util.display_title_base import HasDisplayTitle
 
 
-class MetadataTagAction(HasDisplayTitle):
+class MetadataTagAction(HasDisplayTitle, metaclass=ABCMeta):
     """Base class for metadata tag context menu actions."""
 
     TITLE: str | tuple[str, str, str] = ""
 
-    def callback(self, tags: list[str], objects: set[MetadataItem]) -> None:
-        raise NotImplementedError
+    @abstractmethod
+    def callback(self, tags: list[str], objects: set[MetadataItem]) -> None: ...
 
     def is_visible(self, tags: list[str], objects: set[MetadataItem]) -> bool:
         return True
