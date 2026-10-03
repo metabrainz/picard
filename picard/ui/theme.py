@@ -92,6 +92,7 @@ LIGHT_PALETTE_COLORS = {
     QtGui.QPalette.ColorRole.ToolTipBase: QtGui.QColor(255, 255, 220),
     QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.black,
     QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.black,
+    QtGui.QPalette.ColorRole.PlaceholderText: QtCore.Qt.GlobalColor.lightGray,
     QtGui.QPalette.ColorRole.Button: LIGHT_BG_COLOR,
     QtGui.QPalette.ColorRole.ButtonText: QtCore.Qt.GlobalColor.black,
     QtGui.QPalette.ColorRole.BrightText: QtCore.Qt.GlobalColor.red,
