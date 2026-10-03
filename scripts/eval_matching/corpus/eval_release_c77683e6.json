@@ -1,0 +1,660 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": "RU",
+        "disambiguation": "",
+        "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+        "name": "Kachkin",
+        "sort-name": "Kachkin",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+      },
+      "joinphrase": "",
+      "name": "Kachkin"
+    }
+  ],
+  "asin": null,
+  "barcode": "",
+  "country": "XW",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": false,
+    "count": 1,
+    "darkened": false,
+    "front": true
+  },
+  "date": "2011-03-20",
+  "disambiguation": "",
+  "id": "c77683e6-9c0b-441e-989a-2480d68f075e",
+  "label-info": [
+    {
+      "catalog-number": "[none]",
+      "label": {
+        "disambiguation": "Special purpose label \u2013 white labels, self-published releases and other \u201cno label\u201d releases",
+        "id": "157afde4-4bf5-4039-8ad2-5a15acc85176",
+        "label-code": null,
+        "name": "[no label]",
+        "sort-name": "[no label]",
+        "type": "Production",
+        "type-id": "a2426aab-2dd4-339c-b47d-b4923a241678"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "Digital Media",
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
+      "id": "edf8054e-5265-3109-82ea-7adeff9826e7",
+      "position": 1,
+      "title": "",
+      "track-count": 12,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "ec968f76-1eed-34dc-b95b-90f89a340e17",
+          "length": 164153,
+          "number": "1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "3fa428c9-76ae-404a-b9e1-5cb15d3fb426",
+            "isrcs": [],
+            "length": 164153,
+            "title": "Intro",
+            "video": false
+          },
+          "title": "Intro"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "f376f956-f47d-3f5a-a412-fa83b4126d30",
+          "length": 273867,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "d0b4cf49-f4c9-4b85-a7dd-c90a4eec6a27",
+            "isrcs": [],
+            "length": 273867,
+            "title": "Sound Crystals",
+            "video": false
+          },
+          "title": "Sound Crystals"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "8c2e6098-b856-33a5-b455-aa809c5d03e6",
+          "length": 271464,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "a267cbf8-4413-49ec-8899-cb08c2230d06",
+            "isrcs": [],
+            "length": 271464,
+            "title": "People Need People (album version)",
+            "video": false
+          },
+          "title": "People Need People (album version)"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "2149aa6c-36d1-34ec-ade3-0db26051fa0c",
+          "length": 179853,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "98b1ef0d-cd38-466d-95a1-c8745069ca40",
+            "isrcs": [],
+            "length": 179853,
+            "title": "Causes",
+            "video": false
+          },
+          "title": "Causes"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "4db74a4f-f6e6-34c8-bcfb-42b846f1bc46",
+          "length": 347036,
+          "number": "5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "bb32c4e6-6918-46cb-8248-e2dceebece77",
+            "isrcs": [],
+            "length": 347036,
+            "title": "Acoustic Hallucinations",
+            "video": false
+          },
+          "title": "Acoustic Hallucinations"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "e548cb2b-d2c8-36b6-a1fb-a9ee985946db",
+          "length": 214413,
+          "number": "6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "98ed0cd3-ede5-4249-aa70-3e062d4aeefa",
+            "isrcs": [],
+            "length": 214413,
+            "title": "Sensible Universe (overture)",
+            "video": false
+          },
+          "title": "Sensible Universe (overture)"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "311deab6-9fdc-36bc-ae28-e5891fce2ac7",
+          "length": 265769,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "6d24e2e3-8fe2-4734-bc52-d532a04bb592",
+            "isrcs": [],
+            "length": 265769,
+            "title": "Sensible Universe",
+            "video": false
+          },
+          "title": "Sensible Universe"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "c46fa560-6c9d-3398-b6d6-bc738e7a646b",
+          "length": 183275,
+          "number": "8",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "05669e79-9e76-4473-88b8-18dae368e06a",
+            "isrcs": [],
+            "length": 183275,
+            "title": "Shift",
+            "video": false
+          },
+          "title": "Shift"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "482389e2-323e-3d02-ad94-b4506a77bc53",
+          "length": 357485,
+          "number": "9",
+          "position": 9,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "e8e8b535-032d-4a8c-a8ef-beae3f052da5",
+            "isrcs": [],
+            "length": 357485,
+            "title": "Dreams of Beloved",
+            "video": false
+          },
+          "title": "Dreams of Beloved"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "62b7df2b-6ec8-3bee-9c7b-9bf6edf2ba18",
+          "length": 281312,
+          "number": "10",
+          "position": 10,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "938b948d-f3c3-4e59-89d5-7eb3b48bcc7a",
+            "isrcs": [],
+            "length": 281312,
+            "title": "Rising",
+            "video": false
+          },
+          "title": "Rising"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "b16f52d1-2578-3018-80e8-a72189922c4c",
+          "length": 280006,
+          "number": "11",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "fde0b3fd-ab0e-4d9a-9f12-ae832f21effb",
+            "isrcs": [],
+            "length": 280006,
+            "title": "Threads",
+            "video": false
+          },
+          "title": "Threads"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "RU",
+                "disambiguation": "",
+                "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                "name": "Kachkin",
+                "sort-name": "Kachkin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Kachkin"
+            }
+          ],
+          "id": "6e0775c4-d1bb-395a-956d-6b8a3f2ae632",
+          "length": 124708,
+          "number": "12",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "RU",
+                  "disambiguation": "",
+                  "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+                  "name": "Kachkin",
+                  "sort-name": "Kachkin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Kachkin"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2011-03-20",
+            "id": "dd1279df-54e9-47b6-89dc-567e671bff42",
+            "isrcs": [],
+            "length": 124708,
+            "title": "Outro",
+            "video": false
+          },
+          "title": "Outro"
+        }
+      ]
+    }
+  ],
+  "packaging": "None",
+  "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+        "iso-3166-1-codes": [
+          "XW"
+        ],
+        "name": "[Worldwide]",
+        "sort-name": "[Worldwide]",
+        "type": null,
+        "type-id": null
+      },
+      "date": "2011-03-20"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": "RU",
+          "disambiguation": "",
+          "id": "ec386298-5686-4368-9534-23a4b1e91faf",
+          "name": "Kachkin",
+          "sort-name": "Kachkin",
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "joinphrase": "",
+        "name": "Kachkin"
+      }
+    ],
+    "disambiguation": "",
+    "first-release-date": "2011-03-20",
+    "id": "d5df76cd-97d5-47e6-9cca-78c03ad8373a",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "secondary-types": [],
+    "title": "World of Illusions"
+  },
+  "status": "Official",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "World of Illusions"
+}

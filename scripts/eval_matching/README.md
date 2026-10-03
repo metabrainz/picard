@@ -130,6 +130,18 @@ tied candidates:
 | `non_latin_editions` | 椎名林檎 三毒史 — digital vs CD, identical metadata |
 | `live_vs_studio` | Nirvana Nevermind vs MTV Unplugged |
 | `same_compilation_different_country` | Black Sabbath Dio Years — DE vs AU, only barcode differs |
+| `placeholder_catno` | Kachkin vs NanoStorm — correct release has placeholder "[none]" catno |
+| `catno_three_way` | "World of Illusions" ×3 — real catno (Eversor) vs placeholder "[none]" (Kachkin) vs no label-info (NanoStorm) |
+| `mistyped_catno` | Weezer Blue — file has the release's own catno with a one-character typo |
+
+### Catalog-number handling (`catno_three_way`)
+
+The three "World of Illusions" editions differ in catalog-number state: a real
+catno (Eversor), the "[none]" placeholder (Kachkin, ignored) and no label-info
+(NanoStorm). `catno_match` and `catno_typo` pick the real-catno target (a typo
+is a near-miss, not a mismatch). The one expected failure is `real_catno`, which
+substitutes an unrelated real catno — a genuine mismatch, so with identical
+titles and no barcode the no-catno distractor wins the tie.
 
 ## Degradation Patterns
 
@@ -147,6 +159,9 @@ Each scenario is tested with all degradations applied to the file metadata:
 | `extra_artist_suffix` | Artist has "feat. Someone" appended |
 | `wrong_track_count` | Track count off by one |
 | `wrong_barcode` | Barcode present but incorrect |
+| `real_catno` | File has a real catno/label (release may store placeholder "[none]") |
+| `catno_typo` | File has the release's own catno with a one-character typo (contradicts every candidate) |
+| `catno_match` | File is given the release's real catno + label (exact match; no-op if the release has none) |
 | `length_small_diff` | Track duration off by 3 seconds |
 | `length_large_diff` | Track duration off by 15 seconds |
 | `title_remaster_suffix` | Track title has "(Remastered)" appended |
