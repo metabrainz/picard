@@ -20,11 +20,12 @@
 # PS <weblate@wp.pl>, 2025.
 # Echelon <weblate@wp.pl>, 2025.
 # Denatura <kowalskaewelina34@gmail.com>, 2026.
+# Mildriei <cellist.bread.4c@icloud.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-07-14 23:12+0000\n"
-"Last-Translator: Denatura <kowalskaewelina34@gmail.com>\n"
+"PO-Revision-Date: 2026-10-01 10:13+0000\n"
+"Last-Translator: Mildriei <cellist.bread.4c@icloud.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/pl/>\n"
 "Language: pl\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1190,17 +1191,17 @@ msgstr "As-dur"
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "As-moll"
 
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "Ais-dur"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "Ais-moll"
 
 #: DB:work_attribute_type/name:57
 #, fuzzy

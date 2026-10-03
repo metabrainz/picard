@@ -20,11 +20,12 @@
 # dumbbird <dumbbirdvip@gmail.com>, 2026.
 # AgenticCommonsBot <wiki-bot@agentic-commons.org>, 2026.
 # JerryBest <jerry.for.gml@gmail.com>, 2026.
+# scientists360 <scientists360@outlook.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-07-25 19:12+0000\n"
-"Last-Translator: JerryBest <jerry.for.gml@gmail.com>\n"
+"PO-Revision-Date: 2026-10-02 16:13+0000\n"
+"Last-Translator: scientists360 <scientists360@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -32,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.10\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -618,9 +619,9 @@ msgid ""
 "href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
 "performance</a> without staging)."
 msgstr ""
-"以舞台形式在舞台上演出一部或多部戏剧、音乐剧、歌剧、芭蕾或其他类似作品(与不演"
-"出的<a href=\"https://en.wikipedia.org/wiki/Concert_performance\">音乐会演出"
-"</a>相反)。"
+"舞台上的一部或多部戏剧、音乐剧、歌剧、芭蕾舞或其他类似作品的表演，以舞台形式"
+"呈现（而非没有舞台布景的<a href=\"https://en.wikipedia.org/wiki/"
+"Concert_performance\">音乐会演出</a>）。"
 
 #. name:Pressing plant
 #: DB:place_type/description:8
@@ -882,12 +883,9 @@ msgstr "一系列的系列作品（例如播客和音乐节）荣获同一个奖
 
 #. name:Series series
 #: DB:series_type/description:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "A series of events."
 msgctxt "series_type"
 msgid "A series of series."
-msgstr "一系列的系列作品。"
+msgstr "一系列的活动。"
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5600,10 +5598,9 @@ msgid "Live"
 msgstr "现场的"
 
 #: DB:event_art_archive.art_type/name:12
-#, fuzzy
 msgctxt "event_art_type"
 msgid "Logo"
-msgstr "Logo"
+msgstr "徽标"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -7774,12 +7771,9 @@ msgid "Series name"
 msgstr "系列名称"
 
 #: DB:series_type/name:16
-#, fuzzy
-#| msgctxt "series_type"
-#| msgid "Artist series"
 msgctxt "series_type"
 msgid "Series series"
-msgstr "艺术家系列"
+msgstr "系列类型"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
@@ -9157,7 +9151,7 @@ msgstr "Zirefkend"
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
-msgstr "ambiguous"
+msgstr "不明确"
 
 #: DB:medium_format/name:164
 msgctxt "medium_format"

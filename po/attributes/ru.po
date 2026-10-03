@@ -32,7 +32,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-08-16 18:12+0000\n"
+"PO-Revision-Date: 2026-09-27 11:13+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
@@ -44,7 +44,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -8538,6 +8538,8 @@ msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
 msgstr ""
+"CD-сторона VinylDisc типа \"винил + CD\". Винил-сторону нужно добавить как "
+"отдельный носитель."
 
 #. name:CED
 #: DB:medium_format/description:60
@@ -8579,7 +8581,7 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DVD-сторона DVDplus. CD-сторону нужно добавить как отдельный носитель."
 
 #. name:DualDisc (DVD-Video side)
 #: DB:medium_format/description:66
@@ -8599,6 +8601,8 @@ msgid ""
 "Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
 msgstr ""
+"DVD-слой DualDisc, когда неочевидно, должен ли он быть DVD-Audio или DVD-"
+"Video (или оба). CD-слой должен быть добавлен как отдельный носитель."
 
 #. name:VinylDisc (DVD side)
 #: DB:medium_format/description:80
@@ -8625,7 +8629,7 @@ msgid ""
 "The bottom of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and below front, back and "
 "spines)."
-msgstr ""
+msgstr "Дно коробки или другой похожей упаковки."
 
 #. name:Panel
 #: DB:cover_art_archive.art_type/description:81
@@ -8635,7 +8639,7 @@ msgid ""
 "digipak or cassette inlay (don't use this for folded booklets nor posters)."
 msgstr ""
 "Отдельные сегменты сложенной упаковки, например, обложка gatefold, digipak "
-"или вкладыш для кассеты (не используйте это слово для сложенных буклетов или "
+"или вкладыш для кассеты (не используйте этот тип для сложенных буклетов или "
 "постеров)."
 
 #. name:Madrigal
@@ -8669,6 +8673,8 @@ msgid ""
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
 msgstr ""
+"Секция компакт-диска, пластинки или прочих носителей, содержащих такие "
+"данные, как матричные цифры."
 
 #. name:Top
 #: DB:cover_art_archive.art_type/description:48
@@ -8939,7 +8945,7 @@ msgstr "UMD"
 #: DB:medium_format/name:26
 msgctxt "medium_format"
 msgid "USB Flash Drive"
-msgstr "USB Флэш-накопитель"
+msgstr "USB флэш-накопитель"
 
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
@@ -9252,7 +9258,7 @@ msgstr "Список желаний"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr ""
+msgstr "Снятый"
 
 #: DB:series_type/name:46
 msgctxt "series_type"
