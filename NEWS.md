@@ -435,7 +435,6 @@
 ### Improvements
 - [PICARD-237](https://tickets.metabrainz.org/browse/PICARD-237) - Allow embedding cover art with lower resolution
 - [PICARD-271](https://tickets.metabrainz.org/browse/PICARD-271) - Avoid overwriting additional files when moving into folders that already have same file
-- [PICARD-442](https://tickets.metabrainz.org/browse/PICARD-442) - Allow sorting by whether release is complete
 - [PICARD-489](https://tickets.metabrainz.org/browse/PICARD-489) - Add extra field for ALL folksonomy tags in Picard
 - [PICARD-1092](https://tickets.metabrainz.org/browse/PICARD-1092) - Add support for preserving the SYLT tag, for synchronised lyrics
 - [PICARD-1241](https://tickets.metabrainz.org/browse/PICARD-1241) - Resize cover art to the new size configured in a new option
