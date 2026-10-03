@@ -103,11 +103,10 @@ class TestPluginManifestReading(PicardTestCase):
 
 class TestPluginSource(PicardTestCase):
     def test_plugin_source_base_not_implemented(self):
-        """Test PluginSource.sync() raises NotImplementedError."""
-        source = PluginSource()
+        """Test PluginSource cannot be instantiated directly."""
 
-        with self.assertRaises(NotImplementedError):
-            source.sync(Path('/tmp'))
+        with self.assertRaises(TypeError):
+            PluginSource()
 
 
 class TestPluginSourceGitInit(PicardTestCase):

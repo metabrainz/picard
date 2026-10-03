@@ -17,6 +17,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from enum import Enum
 import hashlib
 import importlib.util
@@ -103,11 +107,11 @@ class PluginAlreadyDisabledError(Exception):
         super().__init__(f"Plugin {plugin_id} is already disabled")
 
 
-class PluginSource:
+class PluginSource(ABC):
     """Abstract class for plugin sources"""
 
-    def sync(self, target_directory: Path):
-        raise NotImplementedError
+    @abstractmethod
+    def sync(self, target_directory: Path): ...
 
 
 class PluginSourceGit(PluginSource):
