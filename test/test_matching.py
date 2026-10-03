@@ -31,6 +31,7 @@ from picard.acoustid.json_helpers import (
     parse_recording as acoustid_parse_recording,
 )
 from picard.cluster import CLUSTER_COMPARISON_WEIGHTS
+from picard.const import VARIOUS_ARTISTS_ID
 from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.matching import (
     _SKIP_RELEASE_WEIGHT,
@@ -42,6 +43,7 @@ from picard.matching import (
     _date_score,
     _format_sim_breakdown,
     _get_weighted_release_parts,
+    _is_various_artists,
     _isrcs_score,
     _trackcount_score,
     _weights_from_preferred_countries,
@@ -75,6 +77,7 @@ settings = {
     'standardize_vocals': False,
     'translate_artist_names': False,
     'release_ars': True,
+    'va_name': 'Various Artists',
 }
 
 
@@ -199,6 +202,65 @@ class CompareToReleaseTest(PicardTestCase):
         match_with = compare_to_release(metadata, release_with_barcode, CLUSTER_COMPARISON_WEIGHTS)
         match_without = compare_to_release(metadata, release_without_barcode, CLUSTER_COMPARISON_WEIGHTS)
         self.assertGreater(match_with.similarity, match_without.similarity)
+
+    def _release(self, title, artist, ntracks):
+        return {
+            'title': title,
+            'artist-credit': [{'name': artist, 'artist': {'name': artist, 'sort-name': artist}}],
+            'media': [{'track-count': ntracks, 'tracks': [{} for _ in range(ntracks)]}],
+            'track-count': ntracks,
+        }
+
+    def test_discriminator_penalty_wrong_artist_matching_tracks(self):
+        """Same title + same track count but a different artist is penalized.
+
+        A matching album title (and a coincidentally equal track count) must not
+        carry a match when the artist clearly contradicts.
+        """
+        weights = {"similarity": {"album": 17, "albumartist": 6, "totalalbumtracks": 5}}
+        metadata = Metadata({'album': 'World of Illusions', 'albumartist': 'Kachkin', '~totalalbumtracks': '12'})
+        collision = self._release('World of Illusions', 'NanoStorm', 12)  # same title + tracks, other artist
+        correct = self._release('World of Illusions', 'Kachkin', 12)
+        parts_collision = _compare_to_release_parts(metadata, collision, weights)
+        parts_correct = _compare_to_release_parts(metadata, correct, weights)
+        self.assertLess(parts_collision.discriminator_penalty, 1.0)
+        self.assertEqual(parts_correct.discriminator_penalty, 1.0)
+        self.assertGreater(parts_correct.combine_tiers(), parts_collision.combine_tiers())
+
+    def test_discriminator_penalty_not_applied_to_same_artist_edition(self):
+        """Same title + same artist but a different track count is NOT penalized.
+
+        A different track count alone (e.g. a deluxe/bonus-track edition by the
+        same artist) is a legitimate alternate edition, not a wrong album.
+        """
+        weights = {"similarity": {"album": 17, "albumartist": 6, "totalalbumtracks": 5}}
+        metadata = Metadata({'album': 'World of Illusions', 'albumartist': 'Kachkin', '~totalalbumtracks': '12'})
+        edition = self._release('World of Illusions', 'Kachkin', 9)  # same artist, fewer tracks
+        parts = _compare_to_release_parts(metadata, edition, weights)
+        self.assertEqual(parts.discriminator_penalty, 1.0)
+
+    def test_discriminator_penalty_not_applied_to_swapped_tags(self):
+        """Swapped artist/album tags are not penalized (the title does not match)."""
+        weights = {"similarity": {"album": 17, "albumartist": 6, "totalalbumtracks": 5}}
+        # File has artist and album swapped: album tag holds the artist name.
+        metadata = Metadata({'album': 'Kachkin', 'albumartist': 'World of Illusions', '~totalalbumtracks': '12'})
+        correct = self._release('World of Illusions', 'Kachkin', 12)
+        parts = _compare_to_release_parts(metadata, correct, weights)
+        self.assertEqual(parts.discriminator_penalty, 1.0)
+
+    def test_discriminator_penalty_not_applied_to_various_artists(self):
+        """A Various Artists compilation is exempt from the artist penalty.
+
+        Its album artist legitimately differs from any single release artist, so
+        a low artist similarity must not be penalized. Common VA conventions and
+        the configured va_name are all recognised.
+        """
+        weights = {"similarity": {"album": 17, "albumartist": 6, "totalalbumtracks": 5}}
+        release = self._release('Summer Hits', 'Some Artist', 20)
+        for va in ('Various Artists', 'various artists', 'VA', 'Various'):
+            metadata = Metadata({'album': 'Summer Hits', 'albumartist': va, '~totalalbumtracks': '20'})
+            parts = _compare_to_release_parts(metadata, release, weights)
+            self.assertEqual(parts.discriminator_penalty, 1.0, msg='albumartist=%r' % va)
 
 
 class CompareToTrackTest(PicardTestCase):
@@ -360,6 +422,21 @@ class ReleaseMatchPartsTest(PicardTestCase):
         )
         self.assertGreater(parts_a.combine_tiers(), parts_b.combine_tiers())
 
+    def test_combine_tiers_discriminator_penalty(self):
+        """A matching title cannot carry a wrong artist + wrong tracklist.
+
+        discriminator_penalty halves the similarity tier, so a title-only match
+        (e.g. a same-title release by a different artist with a different track
+        count) scores far below the same parts without the penalty.
+        """
+        sim = [(1.0, 17), (0.08, 6), (0.0, 5)]  # album match, artist/tracks mismatch
+        no_penalty = ReleaseMatchParts(similarity=sim)
+        with_penalty = ReleaseMatchParts(similarity=sim, discriminator_penalty=0.5)
+        self.assertLess(with_penalty.combine_tiers(), no_penalty.combine_tiers())
+        # No identifiers → score is sim_score*0.9 + 0.5*0.1; penalty halves sim_score.
+        sim_score = (1.0 * 17 + 0.08 * 6 + 0.0 * 5) / 28
+        self.assertAlmostEqual(with_penalty.combine_tiers(), sim_score * 0.5 * 0.9 + 0.5 * 0.1, places=4)
+
 
 class ScoreHelpersTest(PicardTestCase):
     def setUp(self):
@@ -452,6 +529,38 @@ class ScoreHelpersTest(PicardTestCase):
         self.assertGreater(_catno_similarity('PRO-电子-01', 'PRO-电子-02'), 0.6)
         self.assertEqual(0.0, _catno_similarity('', 'R-123'))
         self.assertEqual(0.0, _catno_similarity('   ', 'R-123'))
+
+    def test_is_various_artists(self):
+        # Default set recognises common conventions and localized forms,
+        # case/space-insensitive.
+        for name in (
+            'Various Artists',
+            'various artists',
+            '  VA ',
+            'V.A.',
+            'V/A',
+            'Various',
+            'Various Artist',
+            'Verschiedene Interpreten',
+            'Varios Artistas',
+            'Artisti vari',
+            '群星',
+            '여러 아티스트',
+            'Разные артисты',
+        ):
+            self.assertTrue(_is_various_artists(name), msg=name)
+        # Real artists, non-generic names and empty values are not VA.
+        for name in ('ABBA', 'The Various Band', 'Various Composers', '', None):
+            self.assertFalse(_is_various_artists(name), msg=repr(name))
+        # A caller-supplied name set (e.g. a localized va_name) is honoured.
+        self.assertTrue(_is_various_artists('Mi Nombre VA', va_names=frozenset({'mi nombre va'})))
+        self.assertFalse(_is_various_artists('Various Artists', va_names=frozenset({'mi nombre va'})))
+        # When an album-artist MBID is known it is authoritative: the special
+        # Various Artists MBID is VA regardless of name...
+        self.assertTrue(_is_various_artists('Anything', albumartist_id=VARIOUS_ARTISTS_ID))
+        # ...and a real artist merely *named* "Various Artists" (a known band) is
+        # NOT treated as a compilation when its own MBID is present.
+        self.assertFalse(_is_various_artists('Various Artists', albumartist_id='8e107957-c443-45b4-84f7-8b054499ef78'))
 
     def test_trackcount_score(self):
         self.assertEqual(1.0, _trackcount_score(5, 5))

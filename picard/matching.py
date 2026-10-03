@@ -49,6 +49,7 @@ from typing import (
 )
 
 from picard.config import Config, get_config
+from picard.const import VARIOUS_ARTISTS_ID
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
 from picard.util import (
@@ -82,6 +83,16 @@ _DATE_MATCH_FACTORS = {
     'no_release_date': 0.25,
     'differed': 0.0,
 }
+
+# A matching album title must not carry a match when the artist clearly
+# contradicts (a different artist almost always means a different album). The
+# penalty multiplies the similarity tier; it only applies when the title matches
+# (>= title threshold) and the artist is below the mismatch threshold, and is
+# stronger when the track count also contradicts.
+_DISCRIMINATOR_TITLE_MATCH_THRESHOLD = 0.8
+_DISCRIMINATOR_MISMATCH_THRESHOLD = 0.4
+_DISCRIMINATOR_ARTIST_PENALTY = 0.6
+_DISCRIMINATOR_BOTH_PENALTY = 0.5
 
 # Similarity keys that are on release-level. Keep in sync with compare_to_release_parts.
 _RELEASE_WEIGHT_KEYS = {
@@ -161,6 +172,10 @@ class ReleaseMatchParts:
     identifiers: list[ScoreWeightPair] = field(default_factory=list)
     similarity: list[ScoreWeightPair] = field(default_factory=list)
     preferences: list[ScoreWeightPair] = field(default_factory=list)
+    # Multiplier (<=1.0) applied to the similarity tier when the album title
+    # matches but the artist clearly contradicts: a matching title alone must not
+    # outweigh a wrong artist (and a wrong tracklist). 1.0 means no penalty.
+    discriminator_penalty: float = 1.0
 
     def merged_with(self, other: 'ReleaseMatchParts') -> 'ReleaseMatchParts':
         """Return a new ReleaseMatchParts combining self and other."""
@@ -168,6 +183,7 @@ class ReleaseMatchParts:
             identifiers=self.identifiers + other.identifiers,
             similarity=self.similarity + other.similarity,
             preferences=self.preferences + other.preferences,
+            discriminator_penalty=self.discriminator_penalty * other.discriminator_penalty,
         )
 
     def combine_tiers(self) -> float:
@@ -180,6 +196,8 @@ class ReleaseMatchParts:
         - Otherwise: similarity drives the score, preferences act as tiebreaker.
         """
         sim_score = linear_combination_of_weights(self.similarity) if self.similarity else None
+        if sim_score is not None:
+            sim_score *= self.discriminator_penalty
         pref_score = linear_combination_of_weights(self.preferences) if self.preferences else 0.5
 
         if not self.identifiers:
@@ -235,6 +253,134 @@ def _format_sim_breakdown(match) -> str:
     return "sim=%.4f = base %.4f x score %.2f" % (match.similarity, base, score)
 
 
+# Common "Various Artists" album-artist names (lower-cased). A file tagged with
+# any of these denotes a compilation whose album artist legitimately differs
+# from the individual track artists, so it is exempt from the artist penalty.
+# This is a curated set of generic terms: the standard English forms and
+# abbreviations, plus the canonical per-locale names from MusicBrainz's "Various
+# Artists" aliases. It deliberately excludes typos, search hints, and names that
+# are not generic (radio stations, labels, specific compilation titles). The
+# user-configured ``va_name`` is always added on top (see _va_names_from_config),
+# so a locale not listed here is still covered.
+_VARIOUS_ARTISTS_NAMES = frozenset(
+    {
+        # English and common abbreviations
+        'various artists',
+        'various artist',
+        'various',
+        'va',
+        'v.a.',
+        'v/a',
+        'vv aa',
+        'va.',
+        'v. a.',
+        # German
+        'verschiedene interpreten',
+        'verschiedene künstler',
+        'verschiedene',
+        'diverse interpreten',
+        'diverse',
+        # French
+        'multi-interprètes',
+        'artistes variés',
+        'divers',
+        'collectif',
+        # Spanish
+        'varios artistas',
+        'varios',
+        # Italian
+        'artisti vari',
+        'vari',
+        'aa.vv.',
+        'vv.aa.',
+        # Portuguese
+        'vários artistas',
+        'vários',
+        'vários intérpretes',
+        'coletânea',
+        # Dutch
+        'diverse artiesten',
+        # Nordic
+        'blandade artister',  # sv
+        'diverse artister',  # nb
+        'diverse artistar',  # nn
+        'div. kunstnere',  # da
+        'eri esittäjiä',  # fi
+        # Polish / Czech / Slovak
+        'różni wykonawcy',
+        'różni artyści',
+        'různí interpreti',
+        # Russian / Ukrainian / Belarusian / Bulgarian / Macedonian
+        'разные артисты',
+        'различные исполнители',
+        'різні виконавці',
+        'розныя выканаўцы',
+        'различни изпълнители',
+        'разни изведувачи',
+        # Greek / Turkish / Hebrew / Arabic / Persian
+        'διάφοροι καλλιτέχνες',
+        'çeşitli sanatçılar',
+        'אמנים שונים',
+        'مختلف الفنانين',
+        'هنرمندان مختلف',
+        # CJK and Korean
+        '群星',  # zh
+        'ヴァリアス・アーティスト',  # ja
+        'オムニバス',  # ja (omnibus)
+        '여러 아티스트',  # ko
+        # Thai / Vietnamese
+        'รวมศิลปิน',
+        'nhiều nghệ sĩ',
+        'nhiều ca sĩ',
+        # Other
+        'pluraj artistoj',  # eo
+        'diversos artistes',  # ca
+        'hainbat artista',  # eu
+        'įvairūs atlikėjai',  # lt
+        'erinevad esitajad',  # et
+    }
+)
+
+
+def _is_various_artists(
+    albumartist: str | None,
+    albumartist_id: str | None = None,
+    va_names: 'frozenset[str]' = _VARIOUS_ARTISTS_NAMES,
+) -> bool:
+    """Return True if an album artist should be treated as "Various Artists".
+
+    A Various Artists compilation legitimately has an album artist that differs
+    from any individual track artist, so it must be exempt from the discriminator
+    penalty.
+
+    When an album-artist MBID is known it is authoritative: it is True only for
+    the special Various Artists MBID, which correctly excludes a real artist that
+    merely happens to be *named* "Various Artists" (such bands exist).
+
+    When no MBID is available (common for clustered, un-looked-up files) this is
+    necessarily a heuristic guess from the name alone, compared case-insensitively
+    against ``va_names``. The guess deliberately errs toward "compilation": a file
+    tagged "Various Artists" is far more often a real compilation than a release by
+    a like-named artist, and a false positive is cheap — it only skips the artist
+    penalty for that candidate and can never turn a correct match into a wrong one
+    (a genuinely matching artist still scores highest).
+    """
+    if albumartist_id:
+        return albumartist_id == VARIOUS_ARTISTS_ID
+    if not albumartist:
+        return False
+    return albumartist.strip().lower() in va_names
+
+
+def _va_names_from_config(config: Config) -> 'frozenset[str]':
+    """Recognised Various Artists names (lower-cased): the common conventions
+    plus the user-configured ``va_name``."""
+    va_name = config.setting['va_name']
+    if va_name and isinstance(va_name, str):
+        return _VARIOUS_ARTISTS_NAMES | {va_name.strip().lower()}
+    return _VARIOUS_ARTISTS_NAMES
+
+
 def _compare_to_release_parts(
     metadata: 'Metadata', release: dict, weights: TieredWeights, config: Config | None = None
 ) -> ReleaseMatchParts:
@@ -263,15 +409,24 @@ def _compare_to_release_parts(
                 result.identifiers.append((score, id_w['catno']))
 
     # Tier 2: Similarity — fuzzy matching core
+    album_sim = None
+    artist_sim = None
+    file_albumartist = None
+    file_albumartist_id = None
+    trackcount_sim = None
     with metadata._lock.lock_for_read():
         if 'album' in metadata and 'album' in sim_w:
             b = release['title']
-            result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
+            album_sim = similarity2(metadata['album'], b)
+            result.similarity.append((album_sim, sim_w['album']))
 
         if 'albumartist' in metadata and 'albumartist' in sim_w:
             a = metadata['albumartist']
+            file_albumartist = a
+            file_albumartist_id = metadata.get('musicbrainz_albumartistid', '')
             b = artist_credit_from_node(release['artist-credit']).name
-            result.similarity.append((similarity2(a, b), sim_w['albumartist']))
+            artist_sim = similarity2(a, b)
+            result.similarity.append((artist_sim, sim_w['albumartist']))
 
         if 'totaltracks' in sim_w:
             try:
@@ -286,6 +441,7 @@ def _compare_to_release_parts(
                 else:
                     b = release['track-count']
                     score = _trackcount_score(a, b)
+                trackcount_sim = score
                 result.similarity.append((score, sim_w['totaltracks']))
             except (ValueError, KeyError):
                 pass
@@ -298,6 +454,7 @@ def _compare_to_release_parts(
                 else:
                     b = sum(m.get('track-count', 0) for m in release.get('media', []))
                 score = _trackcount_score(a, b)
+                trackcount_sim = score
                 result.similarity.append((score, sim_w['totalalbumtracks']))
             except (ValueError, KeyError):
                 pass
@@ -306,9 +463,33 @@ def _compare_to_release_parts(
         if 'date' in sim_w:
             result.similarity.append((_date_score(release, metadata), sim_w['date']))
 
-    # Tier 3: Preferences — tie-breaking discriminators
     if config is None:
         config = get_config()
+
+    # A matching album title must not carry the match when the artist clearly
+    # contradicts: a different artist almost always means a different album, even
+    # with a shared (often generic) title and a coincidentally equal track count.
+    # Scoped to release-level matching: artist_sim is only set when 'albumartist'
+    # is a weighted signal, which is the case for cluster→release matching but
+    # not file→track matching (file weights use the track 'artist' instead), so
+    # the penalty never fires on the file/track path. Only applies when the title
+    # actually matches — otherwise a swapped artist/album tag (low title too)
+    # would be penalized wrongly — and is skipped for Various Artists releases,
+    # whose album artist legitimately differs from any single track artist. The
+    # penalty is stronger when the track count also contradicts.
+    if (
+        album_sim is not None
+        and album_sim >= _DISCRIMINATOR_TITLE_MATCH_THRESHOLD
+        and artist_sim is not None
+        and artist_sim < _DISCRIMINATOR_MISMATCH_THRESHOLD
+        and not _is_various_artists(file_albumartist, file_albumartist_id, _va_names_from_config(config))
+    ):
+        tracks_also_mismatch = trackcount_sim is not None and trackcount_sim < _DISCRIMINATOR_MISMATCH_THRESHOLD
+        result.discriminator_penalty = (
+            _DISCRIMINATOR_BOTH_PENALTY if tracks_also_mismatch else _DISCRIMINATOR_ARTIST_PENALTY
+        )
+
+    # Tier 3: Preferences — tie-breaking discriminators
     if 'releasecountry' in pref_w:
         _weights_from_preferred_countries(
             result.preferences,

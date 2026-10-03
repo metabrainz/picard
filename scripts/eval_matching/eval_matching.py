@@ -419,6 +419,19 @@ SCENARIOS = [
         ],
         "scenario": "mistyped_catno",
     },
+    # Title collision: a shared album title must not win on its own when the
+    # artist and track count both contradict. The file is Kachkin's 12-track
+    # "World of Illusions"; the NanoStorm distractor shares only the title (a
+    # different artist, 9 tracks, different year). The correct Kachkin release
+    # must win comfortably — a matching title alone must not carry a wrong
+    # artist and a wrong tracklist (see the forum thread / PR #3478).
+    {
+        "target": "eval_release_c77683e6.json",  # Kachkin - World of Illusions (12 tracks)
+        "distractors": [
+            "eval_release_c3b5c508.json",  # NanoStorm - World of Illusions (9 tracks, different artist)
+        ],
+        "scenario": "title_collision",
+    },
 ]
 
 
@@ -1242,6 +1255,7 @@ def _make_config(profile_name):
     """Create a mock config from a named profile."""
     profile = CONFIG_PROFILES[profile_name]
     settings = defaultdict(lambda: False)
+    settings['va_name'] = 'Various Artists'
     settings.update(profile)
     mock = MagicMock()
     mock.setting = settings
