@@ -1,5 +1,27 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0 - 2026-10-04
+
+### Bugfixes
+- [PICARD-2172](https://tickets.metabrainz.org/browse/PICARD-2172) - Using "Use original values" on a large number of recordings will skyrocket memory usage
+- [PICARD-2530](https://tickets.metabrainz.org/browse/PICARD-2530) - Extremely high CPU usage and slow performance working on standalone recordings
+- [PICARD-3455](https://tickets.metabrainz.org/browse/PICARD-3455) - Headers on Preferred Releases page not translated
+- [PICARD-3456](https://tickets.metabrainz.org/browse/PICARD-3456) - "Trusted" on plugin details page not translated
+- [PICARD-3457](https://tickets.metabrainz.org/browse/PICARD-3457) - High memory use and low performance when saving many files
+- [PICARD-3458](https://tickets.metabrainz.org/browse/PICARD-3458) - Context menu key isn't always handled, and/or context menu doesn't appear where it should
+- [PICARD-3459](https://tickets.metabrainz.org/browse/PICARD-3459) - Memory for "Other versions" in the release context menu not freed
+- [PICARD-3461](https://tickets.metabrainz.org/browse/PICARD-3461) - Cover art composition when multiple albums are selected is replaced by placeholder
+- [PICARD-3463](https://tickets.metabrainz.org/browse/PICARD-3463) - Setup wizard has cropped text on macOS
+- [PICARD-3464](https://tickets.metabrainz.org/browse/PICARD-3464) - Metadata options page greys out on click after upgrading from Picard 2.13.3
+- [PICARD-3466](https://tickets.metabrainz.org/browse/PICARD-3466) - Selecting a track shows an empty metadata panel after upgrading from Picard 2 when the naming script uses a missing plugin function
+- [PICARD-3468](https://tickets.metabrainz.org/browse/PICARD-3468) - macOS dock shows different app icon when Picard is running
+- [PICARD-3473](https://tickets.metabrainz.org/browse/PICARD-3473) - Input placeholder text hard to read in light theme
+- [PICARD-3474](https://tickets.metabrainz.org/browse/PICARD-3474) - Can't unregister a hidden script variable from a plugin
+
+### Improvements
+- [PICARD-3472](https://tickets.metabrainz.org/browse/PICARD-3472) - Cluster matching picks the wrong release when the correct one has a placeholder catalog number, or when a wrong-artist release shares the album title
+
+
 ## Version 3.0.0rc4 - 2026-09-22
 
 ### Bugfixes
