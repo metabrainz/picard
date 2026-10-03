@@ -361,6 +361,15 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         unregister_script_variable('var1', api)
         self.assertEqual({'var2'}, self._registered_variable_names())
 
+    def test_unregister_hidden_script_variable(self):
+        """Unregistering a hidden variable should remove only that variable."""
+        api = self._make_api()
+        register_script_variable('_var1', 'Docs 1', api)
+        register_script_variable('var2', 'Docs 2', api)
+        self.assertEqual({'var1', 'var2'}, self._registered_variable_names())
+        unregister_script_variable('_var1', api)
+        self.assertEqual({'var2'}, self._registered_variable_names())
+
     def test_unregister_script_variable_nonexistent(self):
         """Unregistering a variable that doesn't exist should not raise."""
         api = self._make_api()

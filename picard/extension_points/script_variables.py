@@ -167,7 +167,7 @@ def unregister_script_variable(name: str, api: 'PluginApi') -> None:
     api : PluginApi
         The plugin API instance (identifies which plugin's registration to remove)
     """
-    ext_point_script_variables.unregister(api.module_path, lambda item: item.name == name)
+    ext_point_script_variables.unregister(api.module_path, lambda item: item.script_name() == name)
 
 
 def unregister_all_script_variables(api: 'PluginApi') -> None:
