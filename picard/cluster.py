@@ -550,7 +550,7 @@ class TempItemList(MetadataItem):
     connections are dropped and it can be garbage collected.
     """
 
-    def __init__(self, obj_id=None, items=None):
+    def __init__(self, obj_id=None, items: Iterable[MetadataItem] | None = None):
         super().__init__(obj_id)
         self.items = ListOfMetadataItems(items or [])
         self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}

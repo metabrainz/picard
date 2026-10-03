@@ -98,7 +98,10 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
-from picard.item import Item
+from picard.item import (
+    Item,
+    MetadataItem,
+)
 from picard.options import (
     Option,
     get_option_title,
@@ -2005,7 +2008,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             # shows images from every selected object (albums/tracks/files), not
             # only their linked files (PICARD-3461). Cover-art drops still apply
             # to the underlying files via iterfiles().
-            obj = TempItemList(items=objects)
+            metadata_items = (obj for obj in objects if isinstance(obj, MetadataItem))
+            obj = TempItemList(items=metadata_items)
 
         if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)
