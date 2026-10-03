@@ -19,6 +19,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
+
 from picard import log
 from picard.const.sys import (
     IS_HAIKU,
@@ -39,7 +44,7 @@ class ProgressStatus:
         self.progress = progress
 
 
-class AbstractProgressStatusIndicator:
+class AbstractProgressStatusIndicator(ABC):
     def __init__(self):
         self._max_pending = 0
         self._last_pending = 0
@@ -67,11 +72,11 @@ class AbstractProgressStatusIndicator:
     def is_available(self) -> bool:
         return True
 
-    def hide_progress(self):
-        raise NotImplementedError
+    @abstractmethod
+    def hide_progress(self) -> None: ...
 
-    def set_progress(self, progress: float):
-        raise NotImplementedError
+    @abstractmethod
+    def set_progress(self, progress: float) -> None: ...
 
 
 if IS_WIN:
