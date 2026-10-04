@@ -1392,9 +1392,9 @@ class PluginApi:
 
         Args:
             name: The variable name as it appears between ``%`` symbols in
-                scripts. Names starting with ``_`` are treated as hidden
-                variables (they won't appear in tag dropdowns but are
-                available in scripts).
+                scripts. A leading ``_`` marks the variable as hidden: it
+                still appears in script autocomplete and documentation, but
+                not in the tag dropdowns and tag list editor.
             documentation: Optional help text shown for the variable.
             title: Optional display title for the metadata box (e.g.,
                 "Caller"). If provided, the tag shows this title
@@ -1430,14 +1430,21 @@ class PluginApi:
     def unregister_script_variable(self, name: str) -> None:
         """Unregister a single script variable previously registered by this plugin.
 
+        The spelling must match the variable's hidden status: prefix hidden
+        variables with ``_`` and leave visible ones unprefixed. A mismatch
+        raises ``ValueError``; unregistering an unknown name is a no-op.
+
         Args:
-            name: The variable name to unregister.
+            name: The variable name to unregister (prefix with ``_``
+                if, and only if, the variable is hidden).
 
         Example:
             def enable(api):
                 api.register_script_variable("my_var", "My variable")
-                # Later, when the variable is no longer needed:
+                api.register_script_variable("_my_hidden_var", "Hidden")
+                # Later, when the variables are no longer needed:
                 api.unregister_script_variable("my_var")
+                api.unregister_script_variable("_my_hidden_var")
         """
         return unregister_script_variable(name, self)
 
