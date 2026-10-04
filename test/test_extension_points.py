@@ -296,30 +296,43 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         self.assertEqual('~hidden_var', str(var))
         self.assertEqual('_hidden_var', var.script_name())
 
-    def test_register_same_name_hidden_and_non_hidden(self):
-        """Registering the same base name as both hidden and non-hidden should be rejected."""
+    def test_register_same_name_non_hidden_then_hidden_rejected(self):
+        """Registering a hidden var after a non-hidden one with the same base name is rejected."""
         api = self._make_api()
         register_script_variable('my_var', 'Non-hidden docs', api)
 
-        with self.assertRaises(ValueError, msg="Cannot register '_my_var'"):
+        with self.assertRaises(ValueError):
             register_script_variable('_my_var', 'Hidden docs', api)
 
         # Original registration should remain unchanged
+        self.assertEqual({'my_var'}, self._registered_variable_names())
         var = self._get_tagvar_by_name('my_var')
         self.assertFalse(var.is_hidden)
         self.assertEqual('Non-hidden docs', var._longdesc)
 
     def test_register_same_name_hidden_then_non_hidden_rejected(self):
-        """Registering non-hidden after hidden with same base name should be rejected."""
-        register_script_variable('_my_var', 'Hidden docs')
+        """Registering a non-hidden var after a hidden one with the same base name is rejected."""
+        api = self._make_api()
+        register_script_variable('_my_var', 'Hidden docs', api)
 
-        with self.assertRaises(ValueError, msg="Cannot register 'my_var'"):
-            register_script_variable('my_var', 'Non-hidden docs')
+        with self.assertRaises(ValueError):
+            register_script_variable('my_var', 'Non-hidden docs', api)
 
         # Original hidden registration should remain unchanged
+        self.assertEqual({'my_var'}, self._registered_variable_names())
         var = self._get_tagvar_by_name('my_var')
         self.assertTrue(var.is_hidden)
         self.assertEqual('Hidden docs', var._longdesc)
+
+    def test_register_same_name_same_hidden_status_updates(self):
+        """Re-registering with the same hidden status replaces, not duplicates or raises."""
+        api = self._make_api()
+        register_script_variable('_my_var', 'First docs', api)
+        register_script_variable('_my_var', 'Updated docs', api)
+        self.assertEqual({'my_var'}, self._registered_variable_names())
+        var = self._get_tagvar_by_name('my_var')
+        self.assertTrue(var.is_hidden)
+        self.assertEqual('Updated docs', var._longdesc)
 
     def test_register_script_variable_is_multi_value(self):
         """is_multi_value parameter should be passed through to the TagVar."""
@@ -361,10 +374,39 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         unregister_script_variable('var1', api)
         self.assertEqual({'var2'}, self._registered_variable_names())
 
+    def test_unregister_hidden_script_variable(self):
+        """Unregistering a hidden variable should remove only that variable."""
+        api = self._make_api()
+        register_script_variable('_var1', 'Docs 1', api)
+        register_script_variable('var2', 'Docs 2', api)
+        self.assertEqual({'var1', 'var2'}, self._registered_variable_names())
+        unregister_script_variable('_var1', api)
+        self.assertEqual({'var2'}, self._registered_variable_names())
+
+    def test_unregister_prefixed_name_not_hidden_rejected(self):
+        """Using a _ prefix to unregister a non-hidden variable is rejected."""
+        api = self._make_api()
+        register_script_variable('var1', 'Docs 1', api)
+        with self.assertRaises(ValueError):
+            unregister_script_variable('_var1', api)
+        # The variable must remain registered
+        self.assertEqual({'var1'}, self._registered_variable_names())
+
+    def test_unregister_bare_name_hidden_rejected(self):
+        """Using a bare name to unregister a hidden variable is rejected."""
+        api = self._make_api()
+        register_script_variable('_var1', 'Docs 1', api)
+        with self.assertRaises(ValueError):
+            unregister_script_variable('var1', api)
+        # The variable must remain registered
+        self.assertEqual({'var1'}, self._registered_variable_names())
+
     def test_unregister_script_variable_nonexistent(self):
         """Unregistering a variable that doesn't exist should not raise."""
         api = self._make_api()
         unregister_script_variable('nonexistent', api)
+        # A prefixed, nonexistent name is also a no-op (nothing to contradict).
+        unregister_script_variable('_nonexistent', api)
 
     def test_unregister_all_script_variables(self):
         """Unregistering all variables should remove all variables from a plugin."""

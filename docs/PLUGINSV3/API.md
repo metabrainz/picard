@@ -861,9 +861,9 @@ Registered variables become available in:
 - The tag list editor in options pages (for non-hidden variables)
 - The scripting documentation panel
 
-If the same variable name has already been registered by this plugin, the
-existing entry is replaced (no duplicate is created). This allows plugins to
-safely re-register variables without needing to unregister first.
+Re-registering a name with the same hidden status replaces the existing entry,
+so plugins can re-register safely without unregistering first. Re-registering
+with a *different* hidden status is rejected (see **Raises**).
 
 ```python
 def enable(api):
@@ -889,9 +889,9 @@ def enable(api):
 ```
 
 **Parameters**:
-- `name`: The variable name as it appears between `%` symbols in scripts.
-  Names starting with `_` are treated as hidden variables (they won't appear
-  in tag dropdowns but are available in scripts).
+- `name`: The variable name as it appears between `%` symbols in scripts. A
+  leading `_` marks the variable as hidden (available in scripts but not shown
+  in tag dropdowns). A base name is either hidden or visible, not both.
 - `documentation`: Optional help text shown in the scripting documentation panel.
 - `title`: Optional display title for the metadata box (e.g., "Caller"). If
   provided, the tag shows this human-readable title instead of the raw name in
@@ -910,17 +910,25 @@ def enable(api):
 
 #### `unregister_script_variable(name)`
 
-Unregister a single script variable previously registered by this plugin.
+Unregister a single script variable previously registered by this plugin. The
+spelling must match the variable's hidden status, as for `register_script_variable`.
 
 ```python
 def enable(api):
     api.register_script_variable("my_var", "My variable")
-    # Later, when the variable is no longer needed:
-    api.unregister_script_variable("my_var")
+    api.register_script_variable("_my_hidden_var", "My hidden variable")
+    # Later, when the variables are no longer needed:
+    api.unregister_script_variable("my_var")  # visible -> no prefix
+    api.unregister_script_variable("_my_hidden_var")  # hidden  -> prefix
 ```
 
 **Parameters**:
-- `name`: The variable name to unregister
+- `name`: The variable name to unregister. Prefix with `_` if (and only if)
+  the variable is hidden.
+
+**Raises**: `ValueError` if a variable with the given base name is registered
+but its hidden status does not match the spelling (prefix present/absent).
+Unregistering a name that is not registered is a no-op.
 
 **Note**: Only removes the variable registered by this plugin. If another plugin
 has registered the same variable name, that registration is unaffected.
