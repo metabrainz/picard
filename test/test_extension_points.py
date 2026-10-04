@@ -296,6 +296,14 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         self.assertEqual('~hidden_var', str(var))
         self.assertEqual('_hidden_var', var.script_name())
 
+    def test_register_double_underscore_strips_only_the_prefix(self):
+        """Only the hidden-marker ``_`` is stripped; extra underscores stay in the name."""
+        register_script_variable('__hidden_var', 'docs')
+        var = self._get_tagvar_by_name('_hidden_var')
+        self.assertTrue(var.is_hidden)
+        # In scripts the variable is spelled with the hidden prefix restored.
+        self.assertEqual('__hidden_var', var.script_name())
+
     def test_register_same_name_non_hidden_then_hidden_rejected(self):
         """Registering a hidden var after a non-hidden one with the same base name is rejected."""
         api = self._make_api()
@@ -382,6 +390,14 @@ class TestExtensionPointsScriptVariable(PicardTestCase):
         self.assertEqual({'var1', 'var2'}, self._registered_variable_names())
         unregister_script_variable('_var1', api)
         self.assertEqual({'var2'}, self._registered_variable_names())
+
+    def test_unregister_double_underscore_roundtrip(self):
+        """A ``__name`` variable round-trips: it is removed by the same spelling."""
+        api = self._make_api()
+        register_script_variable('__var1', 'Docs 1', api)
+        self.assertEqual({'_var1'}, self._registered_variable_names())
+        unregister_script_variable('__var1', api)
+        self.assertEqual(set(), self._registered_variable_names())
 
     def test_unregister_prefixed_name_not_hidden_rejected(self):
         """Using a _ prefix to unregister a non-hidden variable is rejected."""

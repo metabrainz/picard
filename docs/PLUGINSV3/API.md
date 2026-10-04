@@ -874,7 +874,7 @@ def enable(api):
         title="My Variable",
     )
 
-    # Hidden variable — available in scripts only, not in tag dropdowns
+    # Hidden variable — in scripts, autocomplete and docs, but not tag dropdowns
     api.register_script_variable(
         "_my_hidden_var",
         documentation="A computed value for use in scripts",
@@ -890,8 +890,9 @@ def enable(api):
 
 **Parameters**:
 - `name`: The variable name as it appears between `%` symbols in scripts. A
-  leading `_` marks the variable as hidden (available in scripts but not shown
-  in tag dropdowns). A base name is either hidden or visible, not both.
+  leading `_` marks the variable as hidden: it still appears in script
+  autocomplete and the scripting documentation, but not in the tag dropdowns
+  and tag list editor. A base name is either hidden or visible, not both.
 - `documentation`: Optional help text shown in the scripting documentation panel.
 - `title`: Optional display title for the metadata box (e.g., "Caller"). If
   provided, the tag shows this human-readable title instead of the raw name in

@@ -102,8 +102,9 @@ def register_script_variable(
     ----------
     name : str
         The variable name as it appears between percent signs in scripts.
-        A leading ``_`` marks the variable as hidden (available in scripts
-        but not shown in tag dropdowns).
+        A leading ``_`` marks the variable as hidden: it still appears in
+        script autocomplete and the scripting documentation, but not in the
+        tag dropdowns and tag list editor.
     documentation : str, optional
         Optional documentation for the variable
     api : PluginApi, optional

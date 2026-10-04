@@ -1392,8 +1392,9 @@ class PluginApi:
 
         Args:
             name: The variable name as it appears between ``%`` symbols in
-                scripts. A leading ``_`` marks the variable as hidden
-                (available in scripts but not shown in tag dropdowns).
+                scripts. A leading ``_`` marks the variable as hidden: it
+                still appears in script autocomplete and documentation, but
+                not in the tag dropdowns and tag list editor.
             documentation: Optional help text shown for the variable.
             title: Optional display title for the metadata box (e.g.,
                 "Caller"). If provided, the tag shows this title
