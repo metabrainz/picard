@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-09-27 18:13+0000\n"
+"PO-Revision-Date: 2026-10-04 16:43+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:182
@@ -4365,12 +4365,12 @@ msgid "Album Artists Comments"
 msgstr "Comentaris dels artistes de l'àlbum"
 
 #: picard/const/tags.py:125
-#, fuzzy
-#| msgid "The disambiguation comment for the release group."
 msgid ""
 "The disambiguation comments for all of the credited album artists, in the "
 "same order as the artists."
-msgstr "Comentari de desambiguació del grup de publicacions."
+msgstr ""
+"Comentaris de desambiguació de tots els artistes de l'àlbum amb crèdits, en "
+"el mateix ordre que els artistes."
 
 #: picard/const/tags.py:133
 msgid "Album Artist Comment"
@@ -4466,14 +4466,12 @@ msgid "Artists Comments"
 msgstr "Comentaris dels artistes"
 
 #: picard/const/tags.py:214
-#, fuzzy
-#| msgid ""
-#| "The series disambiguation comments associated with the release group."
 msgid ""
 "The disambiguation comments for all of the credited track artists, in the "
 "same order as the artists."
 msgstr ""
-"Comentaris de desambiguació de les sèries associades al grup de publicacions."
+"Comentaris de desambiguació de tots els artistes de les pistes amb crèdits, "
+"en el mateix ordre que els artistes."
 
 #: picard/const/tags.py:222
 msgid "Artist Comment"
