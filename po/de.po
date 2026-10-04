@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-10-04 16:43+0000\n"
+"PO-Revision-Date: 2026-10-04 16:55+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -4301,10 +4301,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Skriptfehler in „%(script)s“: %(message)s"
 
 #: picard/ui/setupwizard.py:130
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "Willkommen zu MusicBrainz Picard"
 
 #: picard/ui/setupwizard.py:150
 msgid ""
@@ -4314,21 +4312,17 @@ msgid ""
 "in the Options dialog.</p>"
 msgstr ""
 "<p>Picard hilft dabei, die Musiksammlung mit Hilfe der MusicBrainz-Datenbank "
-"zu taggen und organisieren.</p><p>Diese Assistent hilft, vor dem Start "
+"zu taggen und zu organisieren.</p><p>Diese Assistent hilft, vor dem Start "
 "einige wichtige Einstellungen zu machen. Diese können später jederzeit im "
 "Einstellungs-Dialog geändert werden.</p>"
 
 #: picard/ui/setupwizard.py:162
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Read the documentation"
-msgstr "&Dokumentation anzeigen"
+msgstr "Dokumentation lesen"
 
 #: picard/ui/setupwizard.py:178
-#, fuzzy
-#| msgid "Select an action"
 msgid "File Organization"
-msgstr "Aktion auswählen"
+msgstr "Datei-Organisation"
 
 #: picard/ui/setupwizard.py:179
 msgid ""
@@ -4391,10 +4385,8 @@ msgid "Choose how Picard should handle album cover art."
 msgstr "Wie soll Picard Cover-Bilder handhaben?"
 
 #: picard/ui/setupwizard.py:266
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Cover-Bilder in Tags einbetten"
+msgstr "Cover-Bilder in Audiodateien einbetten"
 
 #: picard/ui/setupwizard.py:267
 msgid ""
@@ -4405,10 +4397,8 @@ msgstr ""
 "in jedem Musikspieler angezeigt wird."
 
 #: picard/ui/setupwizard.py:272
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
-msgstr "Cover-Bilder als separate Dateien speichern"
+msgstr "Cover-Bilder als separate Bilddateien speichern"
 
 #: picard/ui/setupwizard.py:273
 msgid ""
@@ -4419,10 +4409,8 @@ msgstr ""
 "gleichen Verzeichnis gespeichert."
 
 #: picard/ui/setupwizard.py:278
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Prefer release group cover art"
-msgstr "Bevorzugte Veröffentlichungstypen"
+msgstr "Cover-Bild der Veröffentlichungsgruppe bevorzugen"
 
 #: picard/ui/setupwizard.py:280
 msgid ""
@@ -4539,10 +4527,8 @@ msgstr ""
 "Metadaten geändert werden."
 
 #: picard/ui/setupwizard.py:500
-#, fuzzy
-#| msgid "Picard Update"
 msgid "Picard Setup"
-msgstr "Picard-Update"
+msgstr "Picard-Einrichtung"
 
 #: picard/ui/itemviews/columns.py:189 picard/ui/tagsfromfilenames.py:127
 #: picard/ui/tagsfromfilenames.py:138
@@ -5341,6 +5327,8 @@ msgid ""
 "Translated by the MusicBrainz community. Thank you to everyone who helps "
 "make Picard available in more languages!"
 msgstr ""
+"Übersetzt durch die MusicBrainz-Gemeinschaft. Danke an alle, die dabei "
+"helfen Picard in mehr Sprachen verfügbar zu machen!"
 
 #: picard/ui/forms/ui_aboutdialog.py:252
 #, fuzzy
@@ -8180,7 +8168,7 @@ msgstr "Auf &Update prüfen …"
 
 #: picard/ui/mainwindow/actions.py:579
 msgid "Show Setup &Wizard…"
-msgstr ""
+msgstr "&Einstellungs-Assistent anzeigen …"
 
 #: picard/ui/mainwindow/actions.py:587
 msgid "Save Session &As…"
