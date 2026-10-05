@@ -44,6 +44,7 @@
 
 from PyQt6 import QtCore
 
+from picard import log
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -55,6 +56,7 @@ from picard.ui.columns import (
     ColumnSortType,
 )
 from picard.ui.itemviews.custom_columns.factory import (
+    make_callable_column,
     make_delegate_column,
     make_duration_field_column,
     make_field_column,
@@ -108,6 +110,64 @@ def create_fingerprint_status_column():
         icon_height=16,
         border=1,
         column_group=ColumnGroup.FILE,
+    )
+    return column
+
+
+def create_is_modified_column():
+    """Create a modified custom column with proper sorting.
+
+    Returns
+    -------
+    CustomColumn
+        The column indicating if the album has been modified.
+    """
+
+    def is_modified(obj) -> str:
+        is_modified_method = getattr(obj, "is_modified", None)
+        if not callable(is_modified_method):
+            log.debug(
+                "%s missing callable 'is_modified' method; returning empty",
+                type(obj).__name__,
+            )
+            return ""
+        return str(int(is_modified_method()))
+
+    column = make_callable_column(
+        N_("Modified"),
+        '~modified',
+        is_modified,
+        sort_type=ColumnSortType.NAT,
+        column_group=ColumnGroup.MISC,
+    )
+    return column
+
+
+def create_is_complete_column():
+    """Create a complete custom column with proper sorting.
+
+    Returns
+    -------
+    CustomColumn
+        The column indicating if the album is complete.
+    """
+
+    def is_complete(obj) -> str:
+        is_complete_method = getattr(obj, "is_complete", None)
+        if not callable(is_complete_method):
+            log.debug(
+                "%s missing callable 'is_complete' method; returning empty",
+                type(obj).__name__,
+            )
+            return ""
+        return str(int(is_complete_method()))
+
+    column = make_callable_column(
+        N_("Complete"),
+        '~complete',
+        is_complete,
+        sort_type=ColumnSortType.NAT,
+        column_group=ColumnGroup.MISC,
     )
     return column
 
@@ -255,3 +315,9 @@ FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 _match_quality_column = create_match_quality_column()
 ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
+# Insert `_modified` after `_match_quality_column`
+_is_modified_column = create_is_modified_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~match_quality') + 1, _is_modified_column)
+# Insert `_complete` after `_modified`
+_is_complete_column = create_is_complete_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~modified') + 1, _is_complete_column)
