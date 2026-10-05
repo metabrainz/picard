@@ -108,12 +108,12 @@ def test_predicate_only_called_when_applicable() -> None:
 
     provider = BooleanAlbumColumnProvider(predicate=predicate, applies=_applies_fake)
     # Non-applicable object: predicate must not be invoked.
-    provider.evaluate(object())
+    assert provider.evaluate(object()) == ""
     provider.sort_key(object())
     assert calls == []
     # Applicable object: predicate is used.
     album = _FakeAlbum()
-    provider.evaluate(album)
+    assert provider.evaluate(album) == BoolColumnState.NO.display
     assert calls == [album]
 
 
