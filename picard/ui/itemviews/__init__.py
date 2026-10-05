@@ -597,6 +597,8 @@ class AlbumItem(TreeItem):
     def update(self, update_tracks=True, update_selection=True):
         album = self.obj
         selection_changed = self.isSelected()
+        modified_column = self.columns.pos('~modified')
+        complete_column = self.columns.pos('~complete')
         if update_tracks:
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
@@ -649,6 +651,9 @@ class AlbumItem(TreeItem):
         else:
             self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
             self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
+
+        self.setToolTip(modified_column, _("Album is modified") if album.is_modified() else _("Album is unchanged"))
+        self.setToolTip(complete_column, _("Album is complete") if album.is_complete() else _("Album is incomplete"))
         self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.panel.update_current_view()

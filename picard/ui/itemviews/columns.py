@@ -44,7 +44,7 @@
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard.album import Album
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -124,14 +124,9 @@ def create_is_modified_column():
     """
 
     def is_modified(obj) -> str:
-        is_modified_method = getattr(obj, "is_modified", None)
-        if not callable(is_modified_method):
-            log.debug(
-                "%s missing callable 'is_modified' method; returning empty",
-                type(obj).__name__,
-            )
+        if not isinstance(obj, Album):
             return ""
-        return str(int(is_modified_method()))
+        return "Yes" if obj.is_modified() else "No"
 
     column = make_callable_column(
         N_("Modified"),
@@ -153,14 +148,9 @@ def create_is_complete_column():
     """
 
     def is_complete(obj) -> str:
-        is_complete_method = getattr(obj, "is_complete", None)
-        if not callable(is_complete_method):
-            log.debug(
-                "%s missing callable 'is_complete' method; returning empty",
-                type(obj).__name__,
-            )
+        if not isinstance(obj, Album):
             return ""
-        return str(int(is_complete_method()))
+        return "Yes" if obj.is_complete() else "No"
 
     column = make_callable_column(
         N_("Complete"),
