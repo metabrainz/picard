@@ -824,6 +824,11 @@ def convert_release_type_scores_to_lists(settings):
     if 'release_type_scores' not in settings:
         return
     scores = get_option_value(settings, 'release_type_scores', ListOption, [])
+    if not scores:
+        # The key may be present with a None/empty value (e.g. a profile
+        # override dict that attaches the option without a stored value,
+        # PICARD-3480). Nothing to convert.
+        return
     preferred = []
     discouraged = []
     for release_type, score in scores:

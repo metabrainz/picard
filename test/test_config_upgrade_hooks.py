@@ -838,6 +838,15 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('preferred_release_types', settings)
         self.assertNotIn('discouraged_release_types', settings)
 
+    def test_convert_release_type_scores_to_lists_none(self):
+        # PICARD-3480: a profile override dict can contain the key with a None
+        # value (the option is attached to the profile but has no stored value).
+        # The hook must treat it like a missing key, not crash on iteration.
+        settings = {'release_type_scores': None}
+        hooks.convert_release_type_scores_to_lists(settings)
+        self.assertNotIn('preferred_release_types', settings)
+        self.assertNotIn('discouraged_release_types', settings)
+
     def test_convert_release_type_scores_to_lists_all_default(self):
         settings = {
             'release_type_scores': [
