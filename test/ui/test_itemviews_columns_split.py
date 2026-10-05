@@ -42,6 +42,8 @@ def file_keys() -> list[str]:
     ("key", "expected_present"),
     [
         ("~match_quality", True),
+        ("~modified", True),
+        ("~complete", True),
         ("title", True),
         ("albumartist", True),
     ],
@@ -54,6 +56,8 @@ def test_album_view_expected_columns(album_keys: list[str], key: str, expected_p
     ("key", "expected_present"),
     [
         ("~match_quality", False),
+        ("~modified", False),
+        ("~complete", False),
         ("title", True),
         ("albumartist", True),
     ],
@@ -77,6 +81,18 @@ def test_album_view_match_is_delegate_column_type() -> None:
     keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
     idx_match: int = _index_of(keys, "~match_quality")
     assert isinstance(ALBUMVIEW_COLUMNS[idx_match], DelegateColumn)
+
+
+def test_album_view_modified_is_after_match_quality(album_keys: list[str]) -> None:
+    idx_albumartist: int = _index_of(album_keys, "~match_quality")
+    idx_match: int = _index_of(album_keys, "~modified")
+    assert idx_match == idx_albumartist + 1
+
+
+def test_album_view_complete_is_after_modified(album_keys: list[str]) -> None:
+    idx_albumartist: int = _index_of(album_keys, "~modified")
+    idx_match: int = _index_of(album_keys, "~complete")
+    assert idx_match == idx_albumartist + 1
 
 
 class _DummyObj:

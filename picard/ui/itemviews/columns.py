@@ -42,8 +42,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Callable
+
 from PyQt6 import QtCore
 
+from picard.album import Album
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -54,12 +57,17 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
+from picard.ui.itemviews.custom_columns.boolean_providers import (
+    BoolColumnState,
+    BooleanAlbumColumnProvider,
+)
 from picard.ui.itemviews.custom_columns.factory import (
     make_delegate_column,
     make_duration_field_column,
     make_field_column,
     make_icon_header_column,
     make_numeric_field_column,
+    make_provider_column,
 )
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
@@ -110,6 +118,52 @@ def create_fingerprint_status_column():
         column_group=ColumnGroup.FILE,
     )
     return column
+
+
+def _create_bool_album_column(title: str, key: str, predicate: Callable[[object], BoolColumnState]):
+    """Create an album-level boolean column (translated Yes/No, stable sort).
+
+    Display shows a translated ``Yes``/``No`` while sorting uses a stable,
+    language-independent key (see `BooleanAlbumColumnProvider`). The predicate
+    is only evaluated for `Album` rows; other rows render empty and sort apart.
+
+    Parameters
+    ----------
+    title
+        Column header (wrapped with ``N_`` by the caller for extraction).
+    key
+        Internal column key.
+    predicate
+        Callable returning the boolean state of an album.
+
+    Returns
+    -------
+    CustomColumn
+        The configured column.
+    """
+    provider = BooleanAlbumColumnProvider(
+        predicate=predicate,
+        applies=lambda obj: isinstance(obj, Album),
+    )
+    return make_provider_column(title, key, provider, column_group=ColumnGroup.MISC)
+
+
+def create_is_modified_column():
+    """Create the "Modified" album column."""
+    return _create_bool_album_column(
+        N_("Modified"),
+        '~modified',
+        lambda obj: BoolColumnState.YES if obj.is_modified() else BoolColumnState.NO,
+    )
+
+
+def create_is_complete_column():
+    """Create the "Complete" album column."""
+    return _create_bool_album_column(
+        N_("Complete"),
+        '~complete',
+        lambda obj: BoolColumnState.YES if obj.is_complete() else BoolColumnState.NO,
+    )
 
 
 def create_common_columns() -> tuple[Column, ...]:
@@ -255,3 +309,9 @@ FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 _match_quality_column = create_match_quality_column()
 ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
+# Insert `_modified` after `_match_quality_column`
+_is_modified_column = create_is_modified_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~match_quality') + 1, _is_modified_column)
+# Insert `_complete` after `_modified`
+_is_complete_column = create_is_complete_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~modified') + 1, _is_complete_column)
