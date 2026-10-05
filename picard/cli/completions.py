@@ -25,6 +25,12 @@ Usage:
     picard-cli completions <shell>
 """
 
+from argparse import ArgumentParser
+
+from picard.cli.base import ExitCode
+from picard.cli.subcommand import Subcommand
+
+
 try:
     import shtab
 
@@ -33,27 +39,34 @@ except ImportError:
     shtab = None  # type: ignore[assignment]
     SUPPORTED_SHELLS = ()
 
-from picard.cli.base import ExitCode
 
+class CompletionsSubcommand(Subcommand):
+    def __init__(self):
+        super().__init__(
+            name='completions',
+            help='generate shell completion scripts',
+            examples=(
+                'completions bash',
+                'completions zsh',
+            ),
+        )
 
-def setup_parser(completions_parser):
-    """Configure the 'completions' subcommand parser."""
-    if SUPPORTED_SHELLS:
-        shell_list = ', '.join(SUPPORTED_SHELLS)
-    else:
-        shell_list = '(shtab not installed)'
+    def setup_parser(self, parser: ArgumentParser):
+        """Configure the 'completions' subcommand parser."""
+        if SUPPORTED_SHELLS:
+            shell_list = ', '.join(SUPPORTED_SHELLS)
+        else:
+            shell_list = '(shtab not installed)'
 
-    completions_parser.description = (
-        f'Generate shell completion scripts for picard-cli. Supported shells: {shell_list}.'
-    )
+        parser.description = f'Generate shell completion scripts for picard-cli. Supported shells: {shell_list}.'
 
-    completions_parser.add_argument(
-        'shell',
-        choices=SUPPORTED_SHELLS or None,
-        metavar='SHELL',
-        help=f'target shell ({shell_list})',
-    )
-    completions_parser.set_defaults(run_command=_run_completions)
+        parser.add_argument(
+            'shell',
+            choices=SUPPORTED_SHELLS or None,
+            metavar='SHELL',
+            help=f'target shell ({shell_list})',
+        )
+        parser.set_defaults(run_command=_run_completions)
 
 
 def _run_completions(args):

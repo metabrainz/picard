@@ -28,8 +28,6 @@ Commands:
 """
 
 import argparse
-from collections import namedtuple
-from importlib import import_module
 import sys
 
 from picard import (
@@ -37,42 +35,18 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
 )
+from picard.cli.completions import CompletionsSubcommand
+from picard.cli.plugins import PluginsSubcommand
+from picard.cli.profiles import ProfilesSubcommand
 from picard.util import versions
 
 
 # Subcommand registry.
 # Adding an entry here automatically updates both picard-cli and picard --help.
-# Each module_path must contain a register_subcommand(subparsers) function.
-Subcommand = namedtuple('Subcommand', ('name', 'help', 'module_path', 'examples'))
-
 SUBCOMMANDS = (
-    Subcommand(
-        name='completions',
-        help='generate shell completion scripts',
-        module_path='picard.cli.completions',
-        examples=(
-            'completions bash',
-            'completions zsh',
-        ),
-    ),
-    Subcommand(
-        name='plugins',
-        help='manage Picard plugins',
-        module_path='picard.cli.plugins',
-        examples=(
-            'plugins list',
-            'plugins --help',
-        ),
-    ),
-    Subcommand(
-        name='profiles',
-        help='manage Picard profiles',
-        module_path='picard.cli.profiles',
-        examples=(
-            'profiles list',
-            'profiles export "My Profile" -o profile.toml',
-        ),
-    ),
+    CompletionsSubcommand(),
+    PluginsSubcommand(),
+    ProfilesSubcommand(),
 )
 
 
@@ -172,9 +146,8 @@ def _register_subcommand(subparsers, cmd):
     to the module's setup_parser() to populate arguments and verbs.
     Sets a default run_command that prints help when no verb is given.
     """
-    module = import_module(cmd.module_path)
     parser = subparsers.add_parser(cmd.name, help=cmd.help)
-    module.setup_parser(parser)
+    cmd.setup_parser(parser)
     # If no verb is given, print this subcommand's help.
     # Only set the fallback if setup_parser() didn't already set run_command.
     if not parser.get_default('run_command'):

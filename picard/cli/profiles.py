@@ -25,6 +25,7 @@ Usage:
     picard-cli profiles import <file> [--enable] [--replace <profile>]
 """
 
+from argparse import ArgumentParser
 from dataclasses import (
     dataclass,
     field,
@@ -32,6 +33,7 @@ from dataclasses import (
 import os
 
 from picard.cli.base import ExitCode
+from picard.cli.subcommand import Subcommand
 from picard.config import get_config
 from picard.profiles.exporter import (
     export_available,
@@ -85,50 +87,61 @@ def _print_resolve_error(query: str, result: ResolveResult, output):
             output.info(f"{p['title']} (id: {p['id']})")
 
 
-def setup_parser(profiles_parser):
-    """Configure the 'profiles' subcommand parser with all its verbs."""
-    profiles_parser.description = 'Export, import, and list Picard profiles.'
+class ProfilesSubcommand(Subcommand):
+    def __init__(self):
+        super().__init__(
+            name='profiles',
+            help='manage Picard profiles',
+            examples=(
+                'profiles list',
+                'profiles export "My Profile" -o profile.toml',
+            ),
+        )
 
-    # Profile sub-subcommands (verbs)
-    verb_parsers = profiles_parser.add_subparsers(
-        dest='verb',
-        title='profile commands',
-        metavar='<command>',
-    )
+    def setup_parser(self, parser: ArgumentParser):
+        """Configure the 'profiles' subcommand parser with all its verbs."""
+        parser.description = 'Export, import, and list Picard profiles.'
 
-    # --- list ---
-    p_list = verb_parsers.add_parser('list', help='list all configured profiles')
-    p_list.set_defaults(run_command=_run_profiles)
+        # Profile sub-subcommands (verbs)
+        verb_parsers = parser.add_subparsers(
+            dest='verb',
+            title='profile commands',
+            metavar='<command>',
+        )
 
-    # --- export ---
-    p_export = verb_parsers.add_parser('export', help='export a profile to TOML')
-    p_export.add_argument('profile', metavar='TITLE_OR_ID', help="profile title or UUID (partial match allowed)")
-    p_export.add_argument('-o', '--output', metavar='FILE', help="output file (default: stdout)")
-    p_export.add_argument(
-        '--mode',
-        choices=['share', 'backup'],
-        default='share',
-        help="export mode (default: share)",
-    )
-    p_export.set_defaults(run_command=_run_profiles)
+        # --- list ---
+        p_list = verb_parsers.add_parser('list', help='list all configured profiles')
+        p_list.set_defaults(run_command=_run_profiles)
 
-    # --- import ---
-    p_import = verb_parsers.add_parser('import', help='import a profile from a TOML file')
-    p_import.add_argument('file', metavar='FILE', help="TOML file to import")
-    p_import.add_argument('--enable', action='store_true', help="enable the profile after import")
-    p_import.add_argument(
-        '--no-enable-tagger-scripts',
-        dest='enable_tagger_scripts',
-        action='store_false',
-        help="import tagger scripts from a shared profile without enabling tagger scripting "
-        "(otherwise you are prompted; use --yes to enable without prompting)",
-    )
-    p_import.add_argument(
-        '--replace',
-        metavar='TITLE_OR_ID',
-        help="replace an existing profile (match by title or UUID, partial allowed)",
-    )
-    p_import.set_defaults(run_command=_run_profiles, enable_tagger_scripts=True)
+        # --- export ---
+        p_export = verb_parsers.add_parser('export', help='export a profile to TOML')
+        p_export.add_argument('profile', metavar='TITLE_OR_ID', help="profile title or UUID (partial match allowed)")
+        p_export.add_argument('-o', '--output', metavar='FILE', help="output file (default: stdout)")
+        p_export.add_argument(
+            '--mode',
+            choices=['share', 'backup'],
+            default='share',
+            help="export mode (default: share)",
+        )
+        p_export.set_defaults(run_command=_run_profiles)
+
+        # --- import ---
+        p_import = verb_parsers.add_parser('import', help='import a profile from a TOML file')
+        p_import.add_argument('file', metavar='FILE', help="TOML file to import")
+        p_import.add_argument('--enable', action='store_true', help="enable the profile after import")
+        p_import.add_argument(
+            '--no-enable-tagger-scripts',
+            dest='enable_tagger_scripts',
+            action='store_false',
+            help="import tagger scripts from a shared profile without enabling tagger scripting "
+            "(otherwise you are prompted; use --yes to enable without prompting)",
+        )
+        p_import.add_argument(
+            '--replace',
+            metavar='TITLE_OR_ID',
+            help="replace an existing profile (match by title or UUID, partial allowed)",
+        )
+        p_import.set_defaults(run_command=_run_profiles, enable_tagger_scripts=True)
 
 
 def cmd_list(output):
