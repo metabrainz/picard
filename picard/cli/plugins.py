@@ -41,6 +41,7 @@ Usage:
 """
 
 from argparse import ArgumentParser
+from typing import cast
 
 from picard.cli.argparse_grouped import (
     GroupedHelpFormatter,
@@ -82,12 +83,18 @@ class PluginsSubcommand(Subcommand):
             help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')",
         )
 
-        # Plugin sub-subcommands (verbs)
-        verb_parsers = parser.add_subparsers(
-            dest='verb',
-            title='plugin commands',
-            metavar='<command>',
-            action=GroupedSubParsersAction,
+        # Plugin sub-subcommands (verbs).
+        # add_subparsers() returns the configured action instance at runtime,
+        # but the type stubs declare the base _SubParsersAction. Cast so the
+        # GroupedSubParsersAction.start_group() call below type-checks.
+        verb_parsers = cast(
+            GroupedSubParsersAction,
+            parser.add_subparsers(
+                dest='verb',
+                title='plugin commands',
+                metavar='<command>',
+                action=GroupedSubParsersAction,
+            ),
         )
 
         # --- list ---
