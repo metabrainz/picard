@@ -31,11 +31,36 @@ concurrency:
   cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
 jobs:
+  package-check:
+    runs-on: ubuntu-latest
+    env:
+      UV_FROZEN: 1
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.14'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v10.2.0
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install gettext libegl1
+        uv sync --group build
+    - name: Check picard-cli bundles its subcommands
+      run: |
+        uv run python setup.py build --disable-locales
+        uv run python setup.py build_locales
+        uv run python scripts/package/check-cli-bundle.py
+
   package-macos:
+    needs: package-check
     uses: ./.github/workflows/package-macos.yml
     secrets: inherit
 
   package-windows:
+    needs: package-check
     uses: ./.github/workflows/package-windows.yml
     secrets: inherit
     permissions:
@@ -79,6 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     needs:
+      - package-check
       - package-macos
       - package-windows
     permissions:
