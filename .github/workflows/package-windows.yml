@@ -83,6 +83,7 @@ jobs:
           & .\scripts\package\win-build-fixes.ps1 dist\picard
           Copy-Item .\resources\win10\* .\dist\picard
           dist\picard\_internal\fpcalc -version
+          dist\picard\picard-cli.exe --help
         }
       env:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
