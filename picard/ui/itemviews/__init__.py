@@ -450,6 +450,17 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         # Return a safe default to avoid crashes; once attached, the view columns apply
         return FILEVIEW_COLUMNS
 
+    def _column_pos(self, key):
+        """Return the index of a column by key, or ``-1`` if it is not present.
+
+        Unlike ``Columns.pos`` (which raises ``KeyError``), this is safe to call
+        for optional columns that may be absent from the current view.
+        """
+        try:
+            return self.columns.pos(key)
+        except KeyError:
+            return -1
+
     @property
     def obj(self):
         return self._obj
@@ -597,8 +608,6 @@ class AlbumItem(TreeItem):
     def update(self, update_tracks=True, update_selection=True):
         album = self.obj
         selection_changed = self.isSelected()
-        modified_column = self.columns.pos('~modified')
-        complete_column = self.columns.pos('~complete')
         if update_tracks:
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
@@ -638,22 +647,32 @@ class AlbumItem(TreeItem):
             self.setToolTip(
                 self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Album Info dialog")
             )
-        elif album.is_complete():
-            if album.is_modified():
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(self.columns.status_icon_column, _("Album modified and complete"))
-            else:
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved)
-                self.setToolTip(self.columns.status_icon_column, _("Album unchanged and complete"))
-        elif album.is_modified():
-            self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
-            self.setToolTip(self.columns.status_icon_column, _("Album modified"))
         else:
-            self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
-            self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
+            # Compute once; reused for the status icon and the column tooltips
+            # below to avoid repeated (non-trivial) scans over tracks/files.
+            is_complete = album.is_complete()
+            is_modified = album.is_modified()
+            if is_complete:
+                if is_modified:
+                    self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved_modified)
+                    self.setToolTip(self.columns.status_icon_column, _("Album modified and complete"))
+                else:
+                    self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved)
+                    self.setToolTip(self.columns.status_icon_column, _("Album unchanged and complete"))
+            elif is_modified:
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
+                self.setToolTip(self.columns.status_icon_column, _("Album modified"))
+            else:
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
+                self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
 
-        self.setToolTip(modified_column, _("Album is modified") if album.is_modified() else _("Album is unchanged"))
-        self.setToolTip(complete_column, _("Album is complete") if album.is_complete() else _("Album is incomplete"))
+            modified_column = self._column_pos('~modified')
+            if modified_column >= 0:
+                self.setToolTip(modified_column, _("Album is modified") if is_modified else _("Album is unchanged"))
+            complete_column = self._column_pos('~complete')
+            if complete_column >= 0:
+                self.setToolTip(complete_column, _("Album is complete") if is_complete else _("Album is incomplete"))
+
         self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.panel.update_current_view()

@@ -55,13 +55,14 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
+from picard.ui.itemviews.custom_columns.boolean_providers import BooleanAlbumColumnProvider
 from picard.ui.itemviews.custom_columns.factory import (
-    make_callable_column,
     make_delegate_column,
     make_duration_field_column,
     make_field_column,
     make_icon_header_column,
     make_numeric_field_column,
+    make_provider_column,
 )
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
@@ -114,52 +115,42 @@ def create_fingerprint_status_column():
     return column
 
 
-def create_is_modified_column():
-    """Create a modified custom column with proper sorting.
+def _create_bool_album_column(title: str, key: str, predicate):
+    """Create an album-level boolean column (translated Yes/No, stable sort).
+
+    Display shows a translated ``Yes``/``No`` while sorting uses a stable,
+    language-independent key (see `BooleanAlbumColumnProvider`). The predicate
+    is only evaluated for `Album` rows; other rows render empty and sort apart.
+
+    Parameters
+    ----------
+    title
+        Column header (wrapped with ``N_`` by the caller for extraction).
+    key
+        Internal column key.
+    predicate
+        Callable returning the boolean state of an album.
 
     Returns
     -------
     CustomColumn
-        The column indicating if the album has been modified.
+        The configured column.
     """
-
-    def is_modified(obj) -> str:
-        if not isinstance(obj, Album):
-            return ""
-        return "Yes" if obj.is_modified() else "No"
-
-    column = make_callable_column(
-        N_("Modified"),
-        '~modified',
-        is_modified,
-        sort_type=ColumnSortType.NAT,
-        column_group=ColumnGroup.MISC,
+    provider = BooleanAlbumColumnProvider(
+        predicate=predicate,
+        applies=lambda obj: isinstance(obj, Album),
     )
-    return column
+    return make_provider_column(title, key, provider, column_group=ColumnGroup.MISC)
+
+
+def create_is_modified_column():
+    """Create the "Modified" album column."""
+    return _create_bool_album_column(N_("Modified"), '~modified', lambda obj: obj.is_modified())
 
 
 def create_is_complete_column():
-    """Create a complete custom column with proper sorting.
-
-    Returns
-    -------
-    CustomColumn
-        The column indicating if the album is complete.
-    """
-
-    def is_complete(obj) -> str:
-        if not isinstance(obj, Album):
-            return ""
-        return "Yes" if obj.is_complete() else "No"
-
-    column = make_callable_column(
-        N_("Complete"),
-        '~complete',
-        is_complete,
-        sort_type=ColumnSortType.NAT,
-        column_group=ColumnGroup.MISC,
-    )
-    return column
+    """Create the "Complete" album column."""
+    return _create_bool_album_column(N_("Complete"), '~complete', lambda obj: obj.is_complete())
 
 
 def create_common_columns() -> tuple[Column, ...]:
