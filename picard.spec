@@ -24,6 +24,7 @@ from picard import (
     PICARD_VERSION,
     __version__,
 )
+from picard.cli import SUBCOMMANDS
 from picard.env import parse_bool_env
 
 
@@ -177,7 +178,9 @@ else:
             pathex=['picard'],
             binaries=[],
             datas=[],
-            hiddenimports=['cffi', 'sqlite3'],
+            # Subcommands are loaded with importlib.import_module(), which
+            # PyInstaller cannot detect (PICARD-3478).
+            hiddenimports=['cffi', 'sqlite3', *(cmd.module_path for cmd in SUBCOMMANDS)],
             hookspath=None,
             runtime_hooks=[],
             excludes=excludes,
