@@ -18,7 +18,7 @@
     <Logo>Square70x70Logo.png</Logo>
 
     <!-- Disable full AppData virtualization (Windows 10 version 1903 before version 21H1) -->
-    <desktop6:FileSystemWriteVirtualization>disabled</desktop6:FileSystemWriteVirtualization>
+    <!-- <desktop6:FileSystemWriteVirtualization>disabled</desktop6:FileSystemWriteVirtualization> -->
 
     <!-- Exclude configuration folder from virtualization (Windows 10 version 21H1 and later, the above settings will be ignored) -->
     <virtualization:FileSystemWriteVirtualization>
@@ -50,7 +50,7 @@
   </Dependencies>
   <Capabilities>
     <rescap:Capability Name="runFullTrust"/>
-    <rescap:Capability Name="unvirtualizedResources"/>
+    <!-- <rescap:Capability Name="unvirtualizedResources"/> -->
   </Capabilities>
   <Applications>
     <Application Id="Picard" Executable="picard.exe" EntryPoint="Windows.FullTrustApplication">
