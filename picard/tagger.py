@@ -256,6 +256,7 @@ class Tagger(QtWidgets.QApplication):
         theme.setup(self)
         check_io_encoding()
 
+        # Must be before config upgrade because upgrade dialogs need to be translated.
         self._init_gettext(config, localedir)
 
         run_config_upgrades(config)
@@ -411,7 +412,6 @@ class Tagger(QtWidgets.QApplication):
             # files, as gettext expects a path to a directory for localedir.
             basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
             localedir = os.path.join(basedir, 'locale')
-        # Must be before config upgrade because upgrade dialogs need to be translated.
         setup_i18n(localedir, config.setting['ui_language'], log.debug)
 
     def _init_webservice(self):
