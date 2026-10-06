@@ -241,6 +241,7 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
         fix_colors = {
             role: DARK_PALETTE_COLORS[role]
             for role in (
+                QtGui.QPalette.ColorRole.AlternateBase,
                 QtGui.QPalette.ColorRole.ButtonText,
                 (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText),
             )
