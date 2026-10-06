@@ -182,6 +182,12 @@ def _create_status_album_column(
     column = make_provider_column(
         title, key, provider, status_icon=True, is_default=True, always_visible=True, column_group=ColumnGroup.MISC
     )
+    # The status column holds the tree expand arrows and the status icon, so
+    # its required width depends on the tree's expand state. The view sizes it
+    # with Qt's ResizeToContents mode (see BaseTreeView.restore_default_columns
+    # and ConfigurableColumnsHeader.restore_columns_state), so it must not be a
+    # user-resizable, fixed-width column.
+    column.resizeable = False
     return column
 
 
