@@ -155,6 +155,14 @@ class TestTryEncodingsLocales(PicardTestCase):
         locale_nomalize_mock.assert_has_calls(calls)
 
     @patch('locale.normalize', autospec=True)
+    def test_try_locales_with_existing_encoding(self, locale_nomalize_mock, locale_getpreferredencoding_mock):
+        locale_getpreferredencoding_mock.return_value = 'ISO-8859-1'
+        locale_nomalize_mock.return_value = 'en_US.ISO-8859-1'
+        result = tuple(_try_locales('en_US.UTF-8'))
+        expected = ('en_US.UTF-8', 'en_US.ISO-8859-1', 'en_US')
+        self.assertEqual(expected, result)
+
+    @patch('locale.normalize', autospec=True)
     def test_try_locales_iso_en(self, locale_nomalize_mock, locale_getpreferredencoding_mock):
         locale_getpreferredencoding_mock.return_value = 'ISO-8859-1'
         locale_nomalize_mock.side_effect = lambda x: x.lower()

@@ -201,11 +201,14 @@ def _try_encodings():
 
 def _try_locales(language):
     """Try setting the locale from language with preferred/UTF-8/no encoding"""
+    locale_str, _sep, given_encoding = language.partition('.')
+    if given_encoding:
+        yield language
     for encoding in _try_encodings():
-        if encoding:
-            yield locale.normalize(language + '.' + encoding)
-        else:
-            yield language
+        if encoding is None:
+            yield locale_str
+        elif encoding != given_encoding:
+            yield locale.normalize(locale_str + '.' + encoding)
 
 
 def _load_translation(domain, localedir, language):
