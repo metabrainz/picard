@@ -11,7 +11,7 @@
 # CatQuest, The Endeavouring Cat, 2013
 # CatQuest, The Endeavouring Cat, 2014
 # "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
-# "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024.
+# "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024, 2026.
 # "ApeKattQuest, MonkeyPython" <ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
@@ -19,16 +19,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-09-14 10:13+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-10-06 07:13+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
+"<monkeypython+inst@yepmail.net>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
-"projects/picard/3/app/nb_NO/>\n"
+"projects/picard/3/app/nb/>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -152,39 +153,39 @@ msgstr "Fjern"
 
 #: picard/config_upgrade_hooks.py:545
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Primært filnavnskript"
 
 #: picard/debug_opts.py:172
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Plugin-modulens fullstendige bane"
 
 #: picard/debug_opts.py:172
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Logg plugin-modulens fullstendige bane"
 
 #: picard/debug_opts.py:173
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "POST-data for netttjenester"
 
 #: picard/debug_opts.py:173
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Loggdata for POST-forespørsler til netttjenesteinnlegg"
 
 #: picard/debug_opts.py:174
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Svar fra nettjenester"
 
 #: picard/debug_opts.py:174
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Logg innholdet i svar fra nettjenester"
 
 #: picard/debug_opts.py:175
 msgid "Git Backend"
-msgstr ""
+msgstr "Git backend"
 
 #: picard/debug_opts.py:175
 msgid "Log git backend method calls"
-msgstr ""
+msgstr "logg metodanrop til git-backenden"
 
 #: picard/debug_opts.py:176
 #, fuzzy
