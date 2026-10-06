@@ -89,6 +89,7 @@ from picard.util import (
     tracknum_and_title_from_filename,
     tracknum_from_filename,
     uniqify,
+    unset_env_vars,
     wildcards_to_regex_pattern,
     win_prefix_longpath,
 )
@@ -1213,3 +1214,32 @@ class URLsTest(PicardTestCase):
             key,
             test_text,
         )
+
+
+class UnsetEnvVarsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.original_environ = dict(os.environ)
+        os.environ['TEST_FOO'] = 'foo'
+        os.environ['TEST_BAR'] = 'bar'
+
+    def tearDown(self):
+        super().tearDown()
+        del os.environ['TEST_FOO']
+        del os.environ['TEST_BAR']
+        for var, value in self.original_environ.items():
+            os.environ[var] = value
+
+    def test_unset_env_vars(self):
+        with unset_env_vars('TEST_FOO'):
+            self.assertNotIn('TEST_FOO', os.environ)
+            self.assertEqual(os.environ['TEST_BAR'], 'bar')
+        self.assertEqual(os.environ['TEST_FOO'], 'foo')
+        self.assertEqual(os.environ['TEST_BAR'], 'bar')
+
+    def test_unset_env_vars_multiple(self):
+        with unset_env_vars('TEST_FOO', 'TEST_BAR'):
+            self.assertNotIn('TEST_FOO', os.environ)
+            self.assertNotIn('TEST_BAR', os.environ)
+        self.assertEqual(os.environ['TEST_FOO'], 'foo')
+        self.assertEqual(os.environ['TEST_BAR'], 'bar')
