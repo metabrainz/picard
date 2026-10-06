@@ -62,5 +62,5 @@ repos:
         entry: python3 scripts/tools/check_settings.py
         args: [--errors-only]
         language: system
+        types: [python]
         pass_filenames: false
-        always_run: true
