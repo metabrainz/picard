@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2018 Sambhav Kothari
 # Copyright (C) 2018, 2020-2025 Laurent Monin
-# Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,16 +18,27 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Callable
 from functools import partial
 
 from PyQt6 import (
     QtCore,
     QtWidgets,
 )
+from PyQt6.QtWidgets import (
+    QAbstractButton,
+    QListWidget,
+)
 
 
 class MoveableListView:
-    def __init__(self, list_widget, up_button, down_button, callback=None):
+    def __init__(
+        self,
+        list_widget: QListWidget,
+        up_button: QAbstractButton,
+        down_button: QAbstractButton,
+        callback: Callable[[], None] | None = None,
+    ):
         self.list_widget = list_widget
         self.up_button = up_button
         self.down_button = down_button
@@ -38,7 +49,7 @@ class MoveableListView:
         self.list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.DragDrop)
         self.list_widget.setDefaultDropAction(QtCore.Qt.DropAction.MoveAction)
 
-    def move_item(self, offset):
+    def move_item(self, offset: int) -> None:
         current_index = self.list_widget.currentRow()
         offset_index = current_index - offset
         offset_item = self.list_widget.item(offset_index)
@@ -48,7 +59,7 @@ class MoveableListView:
             self.list_widget.setCurrentItem(current_item)
             self.update_buttons()
 
-    def update_buttons(self):
+    def update_buttons(self) -> None:
         current_row = self.list_widget.currentRow()
         self.up_button.setEnabled(current_row > 0)
         self.down_button.setEnabled(current_row < self.list_widget.count() - 1)
