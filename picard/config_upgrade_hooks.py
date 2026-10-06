@@ -900,42 +900,32 @@ def upgrade_scripts_lyrics_comments(settings):
 @upgrade_config('3.0.2final0')
 def set_column_as_leftmost_column(config):
     """Move the status column to be the left most column on upgrade."""
-    album_view_header_columns = config.persist['album_view_header_columns']
-    if isinstance(album_view_header_columns, dict):
-        header_columns_pos_order = sorted(album_view_header_columns.items(), key=lambda elem: elem[1].get("position"))
-        # Set the status column to 0 and all other columns to increment from index 1
+
+    def _ensure_status_column_first(header_columns):
+        """Ensure ``~status`` is at position 0, shifting other columns right."""
+        if not isinstance(header_columns, dict):
+            return header_columns
+        columns_by_pos = sorted(
+            header_columns.items(),
+            key=lambda elem: elem[1].get('position', 0),
+        )
         status_found = False
         pos_index = 1
-        for col_key, col_pos_state in header_columns_pos_order:
+        for col_key, col_state in columns_by_pos:
             if col_key == '~status':
-                col_pos_state["position"] = 0
+                col_state['position'] = 0
                 status_found = True
             else:
-                col_pos_state["position"] = pos_index
+                col_state['position'] = pos_index
                 pos_index += 1
-
-        # Add in a default entry for the status field
         if not status_found:
-            header_columns_pos_order.append(('~status', {'position': 0, 'visible': True}))
-        config.persist['album_view_header_columns'] = dict(header_columns_pos_order)
+            columns_by_pos.append(('~status', {'position': 0, 'visible': True}))
+        return dict(columns_by_pos)
 
-    file_view_header_columns = config.persist['file_view_header_columns']
-    if isinstance(file_view_header_columns, dict):
-        header_columns_pos_order = sorted(file_view_header_columns.items(), key=lambda elem: elem[1].get("position"))
-        # Set the status column to 0 and all other columns to increment from index 1
-        status_found = False
-        pos_index = 1
-        for col_key, col_pos_state in header_columns_pos_order:
-            if col_key == '~status':
-                col_pos_state["position"] = 0
-                status_found = True
-            else:
-                col_pos_state["position"] = pos_index
-                pos_index += 1
-
-        if not status_found:
-            header_columns_pos_order.append(('~status', {'position': 0, 'visible': True}))
-        config.persist['file_view_header_columns'] = dict(header_columns_pos_order)
+    config.persist['album_view_header_columns'] = _ensure_status_column_first(
+        config.persist['album_view_header_columns']
+    )
+    config.persist['file_view_header_columns'] = _ensure_status_column_first(config.persist['file_view_header_columns'])
 
 
 # Retired in 3.0.0rc4: rating_steps became a fixed constant. It has no value

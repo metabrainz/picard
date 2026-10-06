@@ -960,6 +960,23 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
                 self.assertIn('~status', self.config.persist['file_view_header_columns'])
                 self.assertEqual(0, self.config.persist['file_view_header_columns']['~status']['position'])
 
+    def test_set_column_as_leftmost_column_missing_position(self):
+        """Entries that lack a 'position' key must not cause a TypeError."""
+        Option('persist', 'album_view_header_columns', {})
+        Option('persist', 'file_view_header_columns', {})
+
+        # Simulate a corrupt / partial config entry with no 'position' key.
+        self.config.persist['album_view_header_columns'] = {
+            'title': {'visible': True},
+            'artist': {'position': 1},
+        }
+        self.config.persist['file_view_header_columns'] = {}
+
+        hooks.set_column_as_leftmost_column(self.config)
+        self.assertEqual(0, self.config.persist['album_view_header_columns']['~status']['position'])
+        # 'title' had no position (defaults to 0 during sort) and should be renumbered.
+        self.assertIn('title', self.config.persist['album_view_header_columns'])
+
 
 class TestRunConfigUpgradesInteractive(TestPicardConfigCommon):
     """run_config_upgrades threads the interactive flag to hooks that accept it."""
