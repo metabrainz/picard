@@ -1893,6 +1893,12 @@ def main(localedir=None, autoupdate=True):
 
     setup_dbus()
 
+    # On macOS the LANG environment variable set to a full country locale causes UI issues
+    # if set when QApplication is being initialized, see PICARD-2509 and PICARD-3411.
+    # As on macOS we read the locale using system libraries later on, unset LANG here.
+    if IS_MACOS and 'LANG' in os.environ:
+        del os.environ['LANG']
+
     # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
