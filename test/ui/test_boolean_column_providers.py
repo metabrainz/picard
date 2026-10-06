@@ -45,7 +45,10 @@ def _applies_fake(obj: object) -> bool:
 
 @pytest.fixture
 def modified_provider() -> BooleanAlbumColumnProvider:
-    return BooleanAlbumColumnProvider(predicate=lambda o: o.is_modified(), applies=_applies_fake)
+    return BooleanAlbumColumnProvider(
+        predicate=lambda o: BoolColumnState(BoolColumnState.YES if o.is_modified() else BoolColumnState.NO),
+        applies=_applies_fake,
+    )
 
 
 def test_display_is_yes_no_for_album(modified_provider: BooleanAlbumColumnProvider) -> None:
@@ -102,9 +105,9 @@ def test_sort_key_independent_of_display_language(
 def test_predicate_only_called_when_applicable() -> None:
     calls: list[object] = []
 
-    def predicate(obj: object) -> bool:
+    def predicate(obj: object) -> BoolColumnState:
         calls.append(obj)
-        return True
+        return BoolColumnState(BoolColumnState.YES)
 
     provider = BooleanAlbumColumnProvider(predicate=predicate, applies=_applies_fake)
     # Non-applicable object: predicate must not be invoked.
@@ -113,7 +116,7 @@ def test_predicate_only_called_when_applicable() -> None:
     assert calls == []
     # Applicable object: predicate is used.
     album = _FakeAlbum()
-    assert provider.evaluate(album) == BoolColumnState.NO.display
+    assert provider.evaluate(album) == BoolColumnState(BoolColumnState.YES).display()
     assert calls == [album]
 
 
@@ -122,9 +125,9 @@ def test_state_is_single_source_of_truth(modified_provider: BooleanAlbumColumnPr
     # checkbox renderer can rely on it without re-deriving from text.
     yes_album = _FakeAlbum(modified=True)
     no_album = _FakeAlbum(modified=False)
-    assert modified_provider.state(yes_album) is BoolColumnState.YES
-    assert modified_provider.state(no_album) is BoolColumnState.NO
-    assert modified_provider.state(object()) is BoolColumnState.NOT_APPLICABLE
+    assert modified_provider.state(yes_album).value() == BoolColumnState.YES
+    assert modified_provider.state(no_album).value() == BoolColumnState.NO
+    assert modified_provider.state(object()).value() == BoolColumnState.NOT_APPLICABLE
     # evaluate() / sort_key() stay consistent with state().
-    assert modified_provider.evaluate(yes_album) == BoolColumnState.YES.display
+    assert modified_provider.evaluate(yes_album) == BoolColumnState(BoolColumnState.YES).display()
     assert modified_provider.sort_key(no_album) == int(BoolColumnState.NO)

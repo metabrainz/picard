@@ -42,6 +42,9 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Callable
+from typing import override
+
 from PyQt6 import QtCore
 
 from picard.album import Album
@@ -55,7 +58,7 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns.boolean_providers import BooleanAlbumColumnProvider
+from picard.ui.itemviews.custom_columns.boolean_providers import BoolColumnState, BooleanAlbumColumnProvider
 from picard.ui.itemviews.custom_columns.factory import (
     make_delegate_column,
     make_duration_field_column,
@@ -64,6 +67,7 @@ from picard.ui.itemviews.custom_columns.factory import (
     make_numeric_field_column,
     make_provider_column,
 )
+from picard.ui.itemviews.custom_columns.multi_state_providers import MultiColumnStateBase, MultiStateAlbumColumnProvider
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
 from picard.ui.itemviews.custom_columns.utils import parse_bitrate
@@ -115,7 +119,73 @@ def create_fingerprint_status_column():
     return column
 
 
-def _create_bool_album_column(title: str, key: str, predicate):
+def _create_status_album_column(
+    title: str,
+    key: str,
+):
+    """Create an album-level status column that maps the status icon into sortable state.
+
+    Display the icons with the following (increasing) priority:
+        silver (incomplete, unmodified)
+        silver + star (incomplete, modified)
+        gold (complete, unmodified)
+        gold + star (complete, modified)
+
+    The predicateis only evaluated for `Album` rows; other rows render empty and sort apart.
+
+    Parameters
+    ----------
+    title
+        Column header (wrapped with ``N_`` by the caller for extraction).
+    key
+        Internal column key.
+    predicate
+        Callable returning the boolean state of an album.
+
+    Returns
+    -------
+    CustomColumn
+        The configured column.
+    """
+
+    class StatusColumnState(MultiColumnStateBase):
+        SILVER = 0
+        SILVER_STAR = 5
+        GOLD = 10
+        GOLD_STAR = 15
+
+        @override
+        def display(self) -> str:
+            """Returns empty
+            Due to this column having status_icon=True
+            it automatically gets populated with the correct status
+            icons in the AlbumItem.update method
+            """
+            return ""
+
+    def predicate(obj) -> StatusColumnState:
+        is_modified = obj.is_modified()
+        is_complete = obj.is_complete()
+        if not is_modified and not is_complete:
+            return StatusColumnState(StatusColumnState.SILVER)
+        elif is_modified and not is_complete:
+            return StatusColumnState(StatusColumnState.SILVER_STAR)
+        elif not is_modified and is_complete:
+            return StatusColumnState(StatusColumnState.GOLD)
+        else:
+            return StatusColumnState(StatusColumnState.GOLD_STAR)
+
+    provider = MultiStateAlbumColumnProvider(
+        predicate=predicate,
+        applies=lambda obj: isinstance(obj, Album),
+    )
+    column = make_provider_column(
+        title, key, provider, status_icon=True, is_default=True, always_visible=True, column_group=ColumnGroup.MISC
+    )
+    return column
+
+
+def _create_bool_album_column(title: str, key: str, predicate: Callable[[object], BoolColumnState]):
     """Create an album-level boolean column (translated Yes/No, stable sort).
 
     Display shows a translated ``Yes``/``No`` while sorting uses a stable,
@@ -145,12 +215,20 @@ def _create_bool_album_column(title: str, key: str, predicate):
 
 def create_is_modified_column():
     """Create the "Modified" album column."""
-    return _create_bool_album_column(N_("Modified"), '~modified', lambda obj: obj.is_modified())
+    return _create_bool_album_column(
+        N_("Modified"),
+        '~modified',
+        lambda obj: BoolColumnState(BoolColumnState.YES if obj.is_modified() else BoolColumnState.NO),
+    )
 
 
 def create_is_complete_column():
     """Create the "Complete" album column."""
-    return _create_bool_album_column(N_("Complete"), '~complete', lambda obj: obj.is_complete())
+    return _create_bool_album_column(
+        N_("Complete"),
+        '~complete',
+        lambda obj: BoolColumnState(BoolColumnState.YES if obj.is_complete() else BoolColumnState.NO),
+    )
 
 
 def create_common_columns() -> tuple[Column, ...]:
@@ -161,14 +239,15 @@ def create_common_columns() -> tuple[Column, ...]:
     tuple
         Tuple of configured column objects for both views.
     """
-    # Title (status icon column)
+    # Status icon column (No column text)
+    status_icon_col = _create_status_album_column("", '~status')
+    # Title
     title_col = make_field_column(
         N_("Title"),
         'title',
         sort_type=ColumnSortType.NAT,
         width=250,
         always_visible=True,
-        status_icon=True,
         is_default=True,
         column_group=ColumnGroup.MISC,
     )
@@ -254,6 +333,7 @@ def create_common_columns() -> tuple[Column, ...]:
     coverdims = make_field_column(N_("Cover Dimensions"), 'coverdimensions', column_group=ColumnGroup.IMAGE)
 
     return (
+        status_icon_col,
         title_col,
         length_col,
         artist_col,
