@@ -175,6 +175,7 @@ from picard.util import (
     resolve_fs_path,
     system_supports_long_paths,
     thread,
+    unset_env_vars,
     versions,
     webbrowser2,
 )
@@ -235,7 +236,11 @@ class Tagger(QtWidgets.QApplication):
 
     def __init__(self, cmdline_args, localedir, autoupdate, pipe_handler=None):
         self._bootstrap()
-        super().__init__(sys.argv)
+        # On macOS the LANG environment variable set to a full country locale causes UI issues
+        # if set when QApplication is being initialized, see PICARD-2509 and PICARD-3411.
+        # As on macOS we read the locale using system libraries later on, unset LANG here.
+        with unset_env_vars(*(('LANG',) if IS_MACOS else ())):
+            super().__init__(sys.argv)
         self.__class__.__instance = self
         self._setup_app_icon()
         self._init_properties_from_args_or_env(cmdline_args)

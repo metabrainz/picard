@@ -67,7 +67,10 @@ from collections.abc import (
     Mapping,
     Sequence,
 )
-from contextlib import suppress
+from contextlib import (
+    contextmanager,
+    suppress,
+)
 from datetime import (
     date,
     datetime,
@@ -1265,3 +1268,22 @@ def atomic_write(path: str, data: bytes) -> None:
             with suppress(OSError, PermissionError):
                 temp_path.unlink()
         raise
+
+
+@contextmanager
+def unset_env_vars(*args: str):
+    """Run code with specific environment variables unset.
+
+    Example:
+
+        with unset_env_vars('LANG', 'LOCALE'):
+            do_something()
+    """
+    preserved_vars = {}
+    for var in args:
+        if var in os.environ:
+            preserved_vars[var] = os.environ[var]
+            del os.environ[var]
+    yield
+    for var, value in preserved_vars.items():
+        os.environ[var] = value

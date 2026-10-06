@@ -191,20 +191,24 @@ else:
 
 
 def _try_encodings():
-    """Generate encodings to try, starting with preferred encoding if possible"""
+    """Generate encodings to try, starting with UTF-8 encoding if possible"""
+    yield 'UTF-8'
     preferred_encoding = locale.getpreferredencoding()
     if preferred_encoding != 'UTF-8':
         yield preferred_encoding
-    yield from ('UTF-8', None)
+    yield None
 
 
 def _try_locales(language):
     """Try setting the locale from language with preferred/UTF-8/no encoding"""
+    locale_str, _sep, given_encoding = language.partition('.')
+    if given_encoding:
+        yield language
     for encoding in _try_encodings():
-        if encoding:
-            yield locale.normalize(language + '.' + encoding)
-        else:
-            yield language
+        if encoding is None:
+            yield locale_str
+        elif encoding != given_encoding:
+            yield locale.normalize(locale_str + '.' + encoding)
 
 
 def _load_translation(domain, localedir, language):
@@ -240,7 +244,7 @@ def setup_gettext(localedir: str | None, ui_language: str | None, logger: Callab
 
     default_locale = _get_default_locale()
     if default_locale:
-        try_locales.append(default_locale)
+        try_locales += _try_locales(default_locale)
 
     _logger("Trying locales: %r", try_locales)
 
