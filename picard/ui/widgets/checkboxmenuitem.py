@@ -148,4 +148,5 @@ def create_checkable_menu_item(
         action.setDefaultWidget(checkbox)
 
     action.setChecked(checked)
+    action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
     return action

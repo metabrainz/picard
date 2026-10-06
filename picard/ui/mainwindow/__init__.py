@@ -956,6 +956,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             shortcut_drive = config.setting['cd_lookup_device'].split(",")[0] if len(drives) > 1 else ""
             for drive in drives:
                 action = self.cd_lookup_menu.addAction(drive)
+                action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
                 action.triggered.connect(self.lookup_cd)
                 action.setData(drive)
                 if drive == shortcut_drive:
@@ -2303,6 +2304,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         def _add_menu_item(title, id, script_text):
             script_action = QtGui.QAction(title, self.file_naming_scripts_menu)
+            script_action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
             script_action.triggered.connect(partial(self._select_new_naming_script, id))
             script_action.setCheckable(True)
             script_action.setChecked(id == selected_script_id)
