@@ -34,15 +34,17 @@ therefore unit-testable in isolation).
 """
 
 from collections.abc import Callable
-from typing import override
 
 from picard.i18n import gettext as _
 from picard.item import Item
 
-from picard.ui.itemviews.custom_columns.multi_state_providers import MultiColumnStateBase, MultiStateAlbumColumnProvider
+from picard.ui.itemviews.custom_columns.multi_state_providers import (
+    MultiColumnState,
+    MultiStateAlbumColumnProvider,
+)
 
 
-class BoolColumnState(MultiColumnStateBase):
+class BoolColumnState(MultiColumnState):
     """Tri-state used by boolean album columns.
 
     The integer values define the sort order (ascending): rows that are not
@@ -51,19 +53,19 @@ class BoolColumnState(MultiColumnStateBase):
     translatable text.
     """
 
-    NO: int = 0
-    YES: int = 1
+    NOT_APPLICABLE = -1
+    NO = 0
+    YES = 1
 
-    @override
     def display(self) -> str:
         """Return the translated label for display in a cell.
 
         Plain ``_()`` both marks the msgid for extraction and translates at
         call time, so the label follows the current UI language.
         """
-        if self._current_value == BoolColumnState.YES:
+        if self is BoolColumnState.YES:
             return _("Yes")
-        if self._current_value == BoolColumnState.NO:
+        if self is BoolColumnState.NO:
             return _("No")
         return super().display()
 
@@ -87,4 +89,4 @@ class BooleanAlbumColumnProvider(MultiStateAlbumColumnProvider):
     """
 
     def __init__(self, predicate: Callable[[Item], BoolColumnState], applies: Callable[[Item], bool]):
-        super().__init__(predicate, applies)
+        super().__init__(predicate, applies, not_applicable=BoolColumnState.NOT_APPLICABLE)

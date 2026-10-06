@@ -21,19 +21,23 @@
 The design keeps three concerns independent so the presentation can change
 later without touching sorting or the data source:
 
-- **state**  : the semantic state which supports 2 or more states (`MultiColumnState`) — the single source
-  of truth. Everything else is derived from it.
-- **display**: a translated ``Yes``/``No`` label, derived from the state.
-- **sort**   : a stable, language-independent integer, derived from the state.
+- **state**  : a semantic ``IntEnum`` member (``MultiColumnState`` subclass) —
+  the single source of truth.  Everything else is derived from it.
+- **display**: a human-readable, translatable label, derived from the state
+  via ``state.display()``.
+- **sort**   : a stable, language-independent integer, derived from the state
+  via ``int(state)``.
 
 A future renderer (e.g. icons or a read-only checkbox) only needs the *state*;
-it can call `MultiStateAlbumColumnProvider.state()` and map the enum as needed,
-without depending on the displayed text or the numeric sort key. The module has
-no Qt dependency, so it stays usable without a running ``QApplication`` (and
-therefore unit-testable in isolation).
+it can call ``MultiStateAlbumColumnProvider.state()`` and map the enum as
+needed, without depending on the displayed text or the numeric sort key.
+
+The module has no Qt dependency, so it stays usable without a running
+``QApplication`` (and therefore unit-testable in isolation).
 """
 
 from collections.abc import Callable
+from enum import IntEnum
 
 from picard.item import Item
 
@@ -43,33 +47,27 @@ from picard.ui.itemviews.custom_columns.protocols import (
 )
 
 
-class MultiColumnStateBase:
-    """Multi-state used by album columns.
+class MultiColumnState(IntEnum):
+    """Abstract ``IntEnum`` base for multi-state column values.
 
-    The integer values define the sort order (ascending):
-    The amount of values that are sortable can be chosen by the implementerrows that are not
-    applicable (e.g. non-album rows) sort before ``NO`` which sorts before
-    ``YES``. Values are intentionally stable and independent of any displayed,
+    Subclasses define the concrete members (including a ``NOT_APPLICABLE``
+    sentinel) and override :meth:`display` to return a translated label.
+
+    The integer values define the sort order (ascending): rows that are not
+    applicable (e.g. non-album rows) should sort before every meaningful
+    state.  Values are intentionally stable and independent of any displayed,
     translatable text.
     """
-
-    NOT_APPLICABLE: int = -1
-    _current_value: int
-
-    def __init__(self, value: int = NOT_APPLICABLE):
-        self._current_value = value
-
-    def value(
-        self,
-    ) -> int:
-        """Return the current value represented by the cell."""
-        return self._current_value
 
     def display(self) -> str:
         """Return the translated label for display in a cell.
 
-        Plain ``_()`` both marks the msgid for extraction and translates at
-        call time, so the label follows the current UI language.
+        The default implementation returns an empty string, which is
+        appropriate for the ``NOT_APPLICABLE`` sentinel and for columns
+        that render an icon instead of text.
+
+        Subclasses should override this method to provide translated
+        labels for their meaningful states.
         """
         return ""
 
@@ -77,33 +75,44 @@ class MultiColumnStateBase:
 class MultiStateAlbumColumnProvider(ColumnValueProvider, SortKeyProvider):
     """Provide state, display and sort for an album-level multi-state predicate.
 
-    The provider exposes the semantic `state` so alternative renderers (icons,
-    a tri-state checkbox, etc..) can be added later by reading the value directly,
-    without depending on the displayed text or the numeric sort key.
+    The provider exposes the semantic ``state()`` so alternative renderers
+    (icons, a tri-state checkbox, etc.) can be added later by reading the
+    enum value directly, without depending on the displayed text or the
+    numeric sort key.
 
     Parameters
     ----------
     predicate
-        Callable returning the multi state of an album-like item. It is only
-        invoked for items for which ``applies`` returns ``True``.
+        Callable that receives an album-like item and returns a concrete
+        ``MultiColumnState`` enum member.  It is only invoked for items
+        for which *applies* returns ``True``.
     applies
-        Callable deciding whether ``predicate`` is meaningful for the item.
-        Items that do not apply resolve to ``NOT_APPLICABLE`` (empty display,
+        Callable deciding whether *predicate* is meaningful for the item.
+        Items that do not apply resolve to *not_applicable* (empty display,
         sorted apart).
+    not_applicable
+        The ``NOT_APPLICABLE`` enum member of the concrete state class.
+        Returned for items where *applies* is ``False``.
     """
 
-    def __init__(self, predicate: Callable[[Item], MultiColumnStateBase], applies: Callable[[Item], bool]):
+    def __init__(
+        self,
+        predicate: Callable[[Item], MultiColumnState],
+        applies: Callable[[Item], bool],
+        not_applicable: MultiColumnState,
+    ):
         self._predicate = predicate
         self._applies = applies
+        self._not_applicable = not_applicable
 
-    def state(self, obj: Item) -> MultiColumnStateBase:
-        """Return the semantic tri-state for the item.
+    def state(self, obj: Item) -> MultiColumnState:
+        """Return the semantic state for the item.
 
-        This is the single source of truth; `evaluate` and `sort_key` (and any
-        future icon/checkbox renderer) derive their result from it.
+        This is the single source of truth; ``evaluate`` and ``sort_key``
+        (and any future icon/checkbox renderer) derive their result from it.
         """
         if not self._applies(obj):
-            return MultiColumnStateBase()
+            return self._not_applicable
         return self._predicate(obj)
 
     def evaluate(self, obj: Item) -> str:
@@ -112,4 +121,4 @@ class MultiStateAlbumColumnProvider(ColumnValueProvider, SortKeyProvider):
 
     def sort_key(self, obj: Item) -> int:
         """Return a stable, language-independent integer sort key."""
-        return self.state(obj).value()
+        return int(self.state(obj))

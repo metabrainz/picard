@@ -43,7 +43,6 @@
 
 
 from collections.abc import Callable
-from typing import override
 
 from PyQt6 import QtCore
 
@@ -58,7 +57,10 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns.boolean_providers import BoolColumnState, BooleanAlbumColumnProvider
+from picard.ui.itemviews.custom_columns.boolean_providers import (
+    BoolColumnState,
+    BooleanAlbumColumnProvider,
+)
 from picard.ui.itemviews.custom_columns.factory import (
     make_delegate_column,
     make_duration_field_column,
@@ -67,7 +69,10 @@ from picard.ui.itemviews.custom_columns.factory import (
     make_numeric_field_column,
     make_provider_column,
 )
-from picard.ui.itemviews.custom_columns.multi_state_providers import MultiColumnStateBase, MultiStateAlbumColumnProvider
+from picard.ui.itemviews.custom_columns.multi_state_providers import (
+    MultiColumnState,
+    MultiStateAlbumColumnProvider,
+)
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
 from picard.ui.itemviews.custom_columns.utils import parse_bitrate
@@ -119,6 +124,35 @@ def create_fingerprint_status_column():
     return column
 
 
+class StatusColumnState(MultiColumnState):
+    """Four-state enum for the album status icon column.
+
+    The integer values define the sort order (ascending): incomplete and
+    unmodified sorts first, complete and modified sorts last.  Display
+    returns an empty string because the column renders icons (set by
+    ``AlbumItem.update``), not text.
+    """
+
+    NOT_APPLICABLE = -1
+    SILVER = 0
+    SILVER_STAR = 5
+    GOLD = 10
+    GOLD_STAR = 15
+
+
+def _status_predicate(obj) -> StatusColumnState:
+    """Map an album's modified/complete flags to a ``StatusColumnState``."""
+    is_modified = obj.is_modified()
+    is_complete = obj.is_complete()
+    if is_complete:
+        if is_modified:
+            return StatusColumnState.GOLD_STAR
+        return StatusColumnState.GOLD
+    if is_modified:
+        return StatusColumnState.SILVER_STAR
+    return StatusColumnState.SILVER
+
+
 def _create_status_album_column(
     title: str,
     key: str,
@@ -131,7 +165,8 @@ def _create_status_album_column(
         gold (complete, unmodified)
         gold + star (complete, modified)
 
-    The predicateis only evaluated for `Album` rows; other rows render empty and sort apart.
+    The predicate is only evaluated for ``Album`` rows; other rows render
+    empty and sort apart.
 
     Parameters
     ----------
@@ -139,45 +174,16 @@ def _create_status_album_column(
         Column header (wrapped with ``N_`` by the caller for extraction).
     key
         Internal column key.
-    predicate
-        Callable returning the boolean state of an album.
 
     Returns
     -------
     CustomColumn
         The configured column.
     """
-
-    class StatusColumnState(MultiColumnStateBase):
-        SILVER = 0
-        SILVER_STAR = 5
-        GOLD = 10
-        GOLD_STAR = 15
-
-        @override
-        def display(self) -> str:
-            """Returns empty
-            Due to this column having status_icon=True
-            it automatically gets populated with the correct status
-            icons in the AlbumItem.update method
-            """
-            return ""
-
-    def predicate(obj) -> StatusColumnState:
-        is_modified = obj.is_modified()
-        is_complete = obj.is_complete()
-        if not is_modified and not is_complete:
-            return StatusColumnState(StatusColumnState.SILVER)
-        elif is_modified and not is_complete:
-            return StatusColumnState(StatusColumnState.SILVER_STAR)
-        elif not is_modified and is_complete:
-            return StatusColumnState(StatusColumnState.GOLD)
-        else:
-            return StatusColumnState(StatusColumnState.GOLD_STAR)
-
     provider = MultiStateAlbumColumnProvider(
-        predicate=predicate,
+        predicate=_status_predicate,
         applies=lambda obj: isinstance(obj, Album),
+        not_applicable=StatusColumnState.NOT_APPLICABLE,
     )
     column = make_provider_column(
         title, key, provider, status_icon=True, is_default=True, always_visible=True, column_group=ColumnGroup.MISC
@@ -224,7 +230,7 @@ def create_is_modified_column():
     return _create_bool_album_column(
         N_("Modified"),
         '~modified',
-        lambda obj: BoolColumnState(BoolColumnState.YES if obj.is_modified() else BoolColumnState.NO),
+        lambda obj: BoolColumnState.YES if obj.is_modified() else BoolColumnState.NO,
     )
 
 
@@ -233,7 +239,7 @@ def create_is_complete_column():
     return _create_bool_album_column(
         N_("Complete"),
         '~complete',
-        lambda obj: BoolColumnState(BoolColumnState.YES if obj.is_complete() else BoolColumnState.NO),
+        lambda obj: BoolColumnState.YES if obj.is_complete() else BoolColumnState.NO,
     )
 
 
