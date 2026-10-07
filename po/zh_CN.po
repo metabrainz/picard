@@ -45,13 +45,15 @@
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
 # KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
+# scientists360 <scientists360@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-08-09 13:12+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-10-07 09:13+0000\n"
+"Last-Translator: scientists360 "
+"<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/2/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -59,7 +61,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.10\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -290,7 +292,7 @@ msgstr "载入新文件时忽略 MBID"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr "启动时检查插件更新"
+msgstr "在启动时检查插件更新"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
@@ -1726,6 +1728,7 @@ msgstr ""
 "返回`text` 的第一个字符。\n"
 "若 `text` 不是以字母字符开头，则恢复 `nonalpha`。\n"
 "若未指定 `nonalpha`，则使用默认值 \"#\" 。\n"
+"\n"
 "_Picard 0.12起_"
 
 #: picard/script/functions.py:876
@@ -2557,12 +2560,12 @@ msgstr "脚本已成功导出到%s"
 #: picard/script/serializer.py:243
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr "导入 \"%(filename)s\" 时发生了错误。%(error)s。"
+msgstr "导入 \"%(filename)s\" 时发生了错误：%(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr "解码 \"%(filename)s\" 时发生了错误。%(error)s。"
+msgstr "解码 \"%(filename)s\" 时发生了错误：%(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
@@ -3058,15 +3061,15 @@ msgstr "碟片副标题"
 
 #: picard/ui/itemviews.py:167
 msgid "Track No."
-msgstr "No. 音轨"
+msgstr "音轨编号"
 
 #: picard/ui/itemviews.py:168
 msgid "Disc No."
-msgstr "No. 唱片"
+msgstr "唱片编号"
 
 #: picard/ui/itemviews.py:169
 msgid "Catalog No."
-msgstr "No. 目录"
+msgstr "目录编号"
 
 #: picard/ui/itemviews.py:171 picard/util/tags.py:76
 msgid "Media"
@@ -3086,7 +3089,7 @@ msgstr "首发日期"
 
 #: picard/ui/itemviews.py:176 picard/util/tags.py:107
 msgid "Release Date"
-msgstr "发布日期"
+msgstr "发行日期"
 
 #: picard/ui/itemviews.py:279
 msgid "Bad match"
@@ -3940,7 +3943,7 @@ msgstr ""
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
-msgstr "下次您启动 Picard 的时候再次显示这条消息"
+msgstr "下次您启动 Picard 的时候再次显示这条消息。"
 
 #: picard/ui/newuserdialog.py:54
 msgid "New User Warning"
@@ -4307,7 +4310,7 @@ msgid ""
 msgstr ""
 "脚本 \"{script_name}\" 已存在.\n"
 "\n"
-"覆盖已有文件, 添加为新副本或取消"
+"您要覆盖它、添加为副本，还是取消？"
 
 #: picard/ui/scripteditor.py:1268
 msgid "Overwrite"
@@ -4360,7 +4363,7 @@ msgstr "MusicBrainz 上的以下专辑与该 CD 匹配:"
 
 #: picard/ui/ui_cdlookup.py:87
 msgid "No matching releases found for this disc."
-msgstr "找不到与此唱片匹配的发行版"
+msgstr "找不到与此唱片匹配的发行版。"
 
 #: picard/ui/ui_cdlookup.py:88
 msgid "Submit disc ID"
@@ -4581,7 +4584,7 @@ msgstr "将AcoustID 指纹另存为文件标签"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
-msgstr "指纹计算最大并发线程数"
+msgstr "指纹计算可使用的最大线程数："
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
@@ -4937,7 +4940,7 @@ msgstr "目标目录:"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
-msgstr "移动额外的文件（不区分大小写）:"
+msgstr "移动其他文件（不区分大小写）："
 
 #: picard/ui/ui_options_renaming.py:155
 msgid "Rename files when saving"
@@ -5394,7 +5397,7 @@ msgstr "已登录为 <b>%s</b>。"
 
 #: picard/ui/options/general.py:182
 msgid "Logout error"
-msgstr "登出错误"
+msgstr "注销错误"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -5926,13 +5929,13 @@ msgstr "兼容性"
 
 #: picard/ui/options/renaming_compat.py:135
 msgid "Invalid directory separator replacement"
-msgstr "无效的目录分隔符替换"
+msgstr "目录分隔符替换无效"
 
 #: picard/ui/options/renaming_compat.py:136
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "目录分隔符的替换字符不能本身也是目录分隔符。"
+msgstr "目录分隔符的替代字符本身不得是目录分隔符。"
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
@@ -6452,7 +6455,7 @@ msgstr "播客"
 
 #: picard/util/tags.py:101
 msgid "Podcast URL"
-msgstr "播客URL"
+msgstr "播客 URL"
 
 #: picard/util/tags.py:102
 msgid "Producer"
@@ -6464,11 +6467,11 @@ msgstr "R128 专辑增益"
 
 #: picard/util/tags.py:104
 msgid "R128 Track Gain"
-msgstr "R128 音轨增益"
+msgstr "R128 曲目增益"
 
 #: picard/util/tags.py:105
 msgid "Rating"
-msgstr "评分"
+msgstr "拉丁语"
 
 #: picard/util/tags.py:106
 msgid "Release Country"
@@ -6504,19 +6507,19 @@ msgstr "回放增益参考响度"
 
 #: picard/util/tags.py:115
 msgid "ReplayGain Track Gain"
-msgstr "回放增益音轨增益"
+msgstr "回放增益曲目增益"
 
 #: picard/util/tags.py:116
 msgid "ReplayGain Track Peak"
-msgstr "回放增益音轨峰值"
+msgstr "回放增益曲目峰值"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Track Range"
-msgstr "回放增益音轨范围"
+msgstr "回放增益曲目范围"
 
 #: picard/util/tags.py:118
 msgid "Script"
-msgstr "文字"
+msgstr "我的脚本"
 
 #: picard/util/tags.py:119
 msgid "Show Name"
@@ -6544,11 +6547,11 @@ msgstr "总碟数"
 
 #: picard/util/tags.py:126
 msgid "Total Tracks"
-msgstr "总音轨数"
+msgstr "总曲目数"
 
 #: picard/util/tags.py:127
 msgid "Track Number"
-msgstr "音轨号"
+msgstr "曲目号"
 
 #: picard/util/tags.py:128
 msgid "Artist Website"
