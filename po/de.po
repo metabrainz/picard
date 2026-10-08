@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-10-08 09:02+0000\n"
+"PO-Revision-Date: 2026-10-08 09:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -9101,14 +9101,12 @@ msgid "Import a profile from a file or clipboard"
 msgstr "Datei als neues Skript importieren"
 
 #: picard/ui/options/profiles.py:177
-#, fuzzy
-#| msgid "Type to filter…"
 msgid "From file…"
-msgstr "Tippen, um zu filtern …"
+msgstr "Aus Datei …"
 
 #: picard/ui/options/profiles.py:178
 msgid "From clipboard"
-msgstr ""
+msgstr "Aus Zwischenablage"
 
 #: picard/ui/options/profiles.py:265
 msgid "Settings to include in profile"
@@ -9238,10 +9236,8 @@ msgstr "Skript erfolgreich nach %s exportiert"
 
 #: picard/ui/options/profiles.py:621 picard/ui/options/profiles.py:634
 #: picard/ui/options/profiles.py:642
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from Clipboard"
-msgstr "Importiert von %s"
+msgstr "Aus Zwischenablage importieren"
 
 #: picard/ui/options/profiles.py:622
 msgid "The clipboard is empty."
@@ -9344,7 +9340,7 @@ msgstr "Bevorzugte Veröffentlichungen"
 
 #: picard/ui/options/releases.py:85
 msgid "Preferred release types (higher priority first)"
-msgstr "Bevorzugte Veröffentlichungstypen (höher Priorität zuerst)"
+msgstr "Bevorzugte Veröffentlichungstypen (höhere Priorität zuerst)"
 
 #: picard/ui/options/releases.py:88
 msgid ""
@@ -9375,10 +9371,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/releases.py:133
-#, fuzzy
-#| msgid "Preferred medium formats"
 msgid "Preferred medium formats (higher priority first)"
-msgstr "Bevorzugte Medien-Formate"
+msgstr "Bevorzugte Medien-Formate (höhere Priorität zuerst)"
 
 #: picard/ui/options/releases.py:136
 msgid ""
