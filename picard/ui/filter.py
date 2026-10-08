@@ -20,7 +20,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from enum import IntEnum
+from dataclasses import dataclass
 from typing import ClassVar
 
 from PyQt6 import (
@@ -47,28 +47,22 @@ from picard.ui.util import (
 )
 
 
-class AlbumStatusState(IntEnum):
-    """Stores Enum representing the filter status of an album modified or complete state.
+@dataclass
+class StatusFilters:
+    modified: bool = True
+    unmodified: bool = True
+    complete: bool = True
+    incomplete: bool = True
 
-    Values
-    ----------
-    NOT_APPLICABLE
-        Filtering on the album status state is not applicable and should not be applied
-    FALSE
-        Filtering on the album status state only allows status which are False
-        i.e unmodified or incomplete
-    TRUE : bool
-        Filtering on the album status state only allows status which are True
-        i.e modified or complete
-    """
-
-    NOT_APPLICABLE = -1
-    FALSE = 0
-    TRUE = 1
+    def all_active(self) -> bool:
+        """
+        Return true if all the filters are true
+        """
+        return self.modified and self.unmodified and self.complete and self.incomplete
 
 
 class Filter(QtWidgets.QWidget):
-    filterChanged = QtCore.pyqtSignal(str, set, AlbumStatusState, AlbumStatusState)
+    filterChanged = QtCore.pyqtSignal(str, set, StatusFilters)
     filterable_tags: ClassVar[set[str]] = set()
     instances: ClassVar[set] = set()
     suspended = False
@@ -178,9 +172,7 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.setText(label)
 
     def _query_changed(self, text):
-        self.filterChanged.emit(
-            text, self.selected_filters, AlbumStatusState.NOT_APPLICABLE, AlbumStatusState.NOT_APPLICABLE
-        )
+        self.filterChanged.emit(text, self.selected_filters, StatusFilters(True, True, True, True))
 
     def clear(self):
         self.filter_query_box.clear()

@@ -39,7 +39,7 @@ from picard.tags.tagvar import (
     TagVars,
 )
 
-from picard.ui.filter import AlbumStatusState
+from picard.ui.filter import StatusFilters
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
 
@@ -110,7 +110,7 @@ class AlbumFilterTestFiltering(PicardTestCase):
     """Test filtering of AlbumTreeView items"""
 
     TestConditions = namedtuple('TestConditions', ['text', 'filters', 'has_tags', 'matches'])
-    StatusConditions = namedtuple('TestConditions', ['test_item', 'status_tuple', 'applies', 'filter_passes'])
+    StatusConditions = namedtuple('TestConditions', ['test_item', 'status_filter', 'filter_passes'])
 
     def test_album_filter_with_file_filters(self):
         """Verify the base class file-related filters still work"""
@@ -313,366 +313,61 @@ class AlbumFilterTestFiltering(PicardTestCase):
 
         # Now add the combinations of album status
         test_combo_list: list[AlbumFilterTestFiltering.StatusConditions] = []
-        for filter_func_combo in [
-            (AlbumStatusState.NOT_APPLICABLE, 'is_modified'),
-            (AlbumStatusState.NOT_APPLICABLE, 'is_complete'),
-            (AlbumStatusState.TRUE, 'is_modified'),
-            (AlbumStatusState.TRUE, 'is_complete'),
-            (AlbumStatusState.FALSE, 'is_modified'),
-            (AlbumStatusState.FALSE, 'is_complete'),
+        for status_filter in [
+            StatusFilters(False, False, False, False),
+            StatusFilters(False, False, False, True),
+            StatusFilters(False, False, True, False),
+            StatusFilters(False, False, True, True),
+            StatusFilters(False, True, False, False),
+            StatusFilters(False, True, False, True),
+            StatusFilters(False, True, True, False),
+            StatusFilters(False, True, True, True),
+            StatusFilters(True, False, False, False),
+            StatusFilters(True, False, False, True),
+            StatusFilters(True, False, True, False),
+            StatusFilters(True, False, True, True),
+            StatusFilters(True, True, False, False),
+            StatusFilters(True, True, False, True),
+            StatusFilters(True, True, True, False),
+            StatusFilters(True, True, True, True),
         ]:
             for modified_state, complete_state in [(False, False), (False, True), (True, False), (True, True)]:
-                filter_passes = False
-                if filter_func_combo[0] == AlbumStatusState.NOT_APPLICABLE:
-                    filter_passes = False
-                elif filter_func_combo[1] == 'is_modified' and (
-                    modified_state
-                    and filter_func_combo[0] == AlbumStatusState.TRUE
-                    or not modified_state
-                    and filter_func_combo[0] == AlbumStatusState.FALSE
-                ):
-                    filter_passes = True
-                elif filter_func_combo[1] == 'is_complete' and (
-                    complete_state
-                    and filter_func_combo[0] == AlbumStatusState.TRUE
-                    or not complete_state
-                    and filter_func_combo[0] == AlbumStatusState.FALSE
-                ):
-                    filter_passes = True
+                filter_fails = False
+                if not status_filter.modified:
+                    filter_fails = modified_state
+                if not filter_fails and not status_filter.unmodified:
+                    filter_fails = not modified_state
+                if not filter_fails and not status_filter.complete:
+                    filter_fails = complete_state
+                if not filter_fails and not status_filter.incomplete:
+                    filter_fails = not complete_state
 
                 status_test = AlbumFilterTestFiltering.StatusConditions(
                     test_item=create_fake_album(modified_state, complete_state),
-                    status_tuple=filter_func_combo,
-                    applies=bool(filter_func_combo[0] != AlbumStatusState.NOT_APPLICABLE),
-                    filter_passes=filter_passes,
+                    status_filter=status_filter,
+                    filter_passes=not filter_fails,
                 )
                 test_combo_list.append(status_test)
 
         for test in test_combo_list:
-            with self.subTest(
-                f"Item={vars(test.test_item)}",
-                item=vars(test.test_item),
-            ):
-                (status_filter, status_func) = test.status_tuple
-                with self.subTest(
-                    f"Result of function {status_func} is being checked against filter {status_filter.name}",
-                    filter=status_filter.name,
-                    func=status_func,
-                ):
-                    text = f"Error testing: item={vars(test.test_item)}, filter={test.status_tuple}"
-                    applies, filter_matches = BaseTreeView._matches_album_state(
-                        test.test_item, status_filter, status_func
-                    )
-                    self.assertEqual(applies, test.applies, text)
-                    self.assertEqual(filter_matches, test.filter_passes, text)
+            with self.subTest(item=vars(test.test_item), filter=test.status_filter):
+                text = f"Error testing: item={vars(test.test_item)}, filter={test.status_filter}"
+                filter_matches = BaseTreeView._matches_status_filters(test.test_item, test.status_filter)
+                self.assertEqual(filter_matches, test.filter_passes, text)
 
-    def test_album_filter_with_item_without_status_func_is_not_applicable(self):
+    def test_album_filter_with_non_album_item_passes(self):
         """Test that items that don't have a is_modified / is_complete func are not applicable"""
 
-        tests = [
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.NOT_APPLICABLE, 'is_modified')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.NOT_APPLICABLE, 'is_complete')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[
-                    (AlbumStatusState.NOT_APPLICABLE, 'is_modified'),
-                    (AlbumStatusState.NOT_APPLICABLE, 'is_complete'),
-                ],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.TRUE, 'is_modified')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.TRUE, 'is_complete')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.TRUE, 'is_modified'), (AlbumStatusState.TRUE, 'is_complete')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[
-                    (AlbumStatusState.FALSE, 'is_modified'),
-                ],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.FALSE, 'is_complete')],
-                applies=False,
-                filter_passes=False,
-            ),
-            self.StatusConditions(
-                test_item=MultiMetadataProxy(Metadata()),
-                status_tuple=[(AlbumStatusState.FALSE, 'is_modified'), (AlbumStatusState.FALSE, 'is_complete')],
-                applies=False,
-                filter_passes=False,
-            ),
-        ]
-
-        for test in tests:
-            with self.subTest(
-                item=vars(test.test_item),
-            ):
-                for status_filter, status_func in test.status_tuple:
-                    with self.subTest(
-                        f"Result of function {status_func} is being checked against filter {status_filter}",
-                        filter=status_filter.name,
-                        func=status_func,
-                    ):
-                        text = f"Error testing: item={vars(test.test_item)}, filter={test.status_tuple}"
-                        applies, filter_matches = BaseTreeView._matches_album_state(
-                            test.test_item, status_filter, status_func
-                        )
-                        self.assertEqual(applies, test.applies, text)
-                        self.assertEqual(filter_matches, test.filter_passes, text)
-
-    def test_album_filter_with_both_status_and_text_filters__text_empty(self):
-        """Test the status filters (modified / complete) alongside the test filters
-        to validate they work in concert without issue
-
-        Test with an empty text field and no text filters
-        """
-
-        test_metadata = {
-            'title': 'test_title',
-            'artist': 'test_artist',
-        }
-        test_album = create_fake_album(True, False)
-        test_album.metadata = MultiMetadataProxy(Metadata(test_metadata))
-
-        mock_album_item = MagicMock()
-        mock_album_item.obj = test_album
-        mock_album_item.childCount.return_value = 0
-        mock_parent = MagicMock()
-        mock_parent.childCount.return_value = 1
-        mock_parent.child.return_value = mock_album_item
-
-        # Modified/Complete filter = N/A, Text filter = empty, text=""
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = TRUE, Text filter = empty, text=""
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = FALSE, Text filter = empty, text=""
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = N/A, Text filter = empty, text=""
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = FALSE, Text filter = empty, text=""
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = TRUE, Text filter = empty, text=""
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = N/A, Text filter = empty, text=""
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = TRUE, Text filter = empty, text=""
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = FALSE, Text filter = empty, text=""
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
+        status_test = AlbumFilterTestFiltering.StatusConditions(
+            test_item=MultiMetadataProxy(Metadata()),
+            status_filter=StatusFilters(False, False, False, False),
+            filter_passes=True,
         )
 
-    def test_album_filter_with_both_status_and_text_filters___text_not_empty(self):
-        """Test the status filters (modified / complete) alongside the test filters
-        to validate they work in concert without issue
+        filter_matches = BaseTreeView._matches_status_filters(status_test.test_item, status_test.status_filter)
+        self.assertEqual(filter_matches, status_test.filter_passes)
 
-        Test a filled text field, but no text filters
-        """
-
-        test_metadata = {
-            'title': 'test_title',
-            'artist': 'test_artist',
-        }
-        test_album = create_fake_album(True, False)
-        test_album.metadata = MultiMetadataProxy(Metadata(test_metadata))
-
-        mock_album_item = MagicMock()
-        mock_album_item.obj = test_album
-        mock_album_item.childCount.return_value = 0
-        mock_parent = MagicMock()
-        mock_parent.childCount.return_value = 1
-        mock_parent.child.return_value = mock_album_item
-
-        # Modified/Complete filter = N/A, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = TRUE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = N/A, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = TRUE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = N/A, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = TRUE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters=set(),
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-
-    def test_album_filter_with_both_status_and_text_filters___text_filters_exist_match(self):
+    def test_album_filter_with_both_status_and_text_filters(self):
         """Test the status filters (modified / complete) alongside the test filters
         to validate they work in concert without issue
 
@@ -693,205 +388,23 @@ class AlbumFilterTestFiltering(PicardTestCase):
         mock_parent.childCount.return_value = 1
         mock_parent.child.return_value = mock_album_item
 
-        # Modified/Complete filter = N/A, Text filter = empty, text="test"
         self.assertTrue(
             BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
+                mock_parent, "test", filters={'title'}, status_filters=StatusFilters(True, True, True, True)
             )
         )
-        # Modified filter = N/A, Complete filter = TRUE, Text filter = empty, text="test"
         self.assertFalse(
             BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.TRUE,
+                mock_parent, "test", filters={'title'}, status_filters=StatusFilters(False, True, True, True)
             )
         )
-        # Modified filter = N/A, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = N/A, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertTrue(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = TRUE, Text filter = empty, text="test"
         self.assertFalse(
             BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.TRUE,
+                mock_parent, "test", filters={'title'}, status_filters=StatusFilters(True, True, True, False)
             )
         )
-        # Modified filter = FALSE, Complete filter = N/A, Text filter = empty, text="test"
         self.assertFalse(
             BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = TRUE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = FALSE, Text filter = empty, text="test"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "test",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-
-    def test_album_filter_with_both_status_and_text_filters___text_filters_exist_no_match(self):
-        """Test the status filters (modified / complete) alongside the test filters
-        to validate they work in concert without issue
-
-        Test a populated text field that fails the text filters
-        """
-
-        test_metadata = {
-            'title': 'test_title',
-            'artist': 'test_artist',
-        }
-        test_album = create_fake_album(True, False)
-        test_album.metadata = MultiMetadataProxy(Metadata(test_metadata))
-
-        mock_album_item = MagicMock()
-        mock_album_item.obj = test_album
-        mock_album_item.childCount.return_value = 0
-        mock_parent = MagicMock()
-        mock_parent.childCount.return_value = 1
-        mock_parent.child.return_value = mock_album_item
-
-        # Modified/Complete filter = N/A, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = TRUE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = N/A, Complete filter = FALSE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.NOT_APPLICABLE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = N/A, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = FALSE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.FALSE,
-            )
-        )
-        # Modified filter = TRUE, Complete filter = TRUE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.TRUE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = N/A, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.NOT_APPLICABLE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = TRUE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.TRUE,
-            )
-        )
-        # Modified filter = FALSE, Complete filter = FALSE, Text filter = empty, text="not_match"
-        self.assertFalse(
-            BaseTreeView._filter_tree_items(
-                mock_parent,
-                "not_match",
-                filters={'title'},
-                modified_state_filter=AlbumStatusState.FALSE,
-                complete_state_filter=AlbumStatusState.FALSE,
+                mock_parent, "not matched", filters={'title'}, status_filters=StatusFilters(True, True, True, True)
             )
         )

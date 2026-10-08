@@ -97,7 +97,7 @@ from picard.ui.album_filter import create_filter_for_tree_view
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.columns import Columns
 from picard.ui.enums import MainAction
-from picard.ui.filter import AlbumStatusState
+from picard.ui.filter import StatusFilters
 from picard.ui.itemviews.custom_columns import (
     DelegateColumn,
     IconColumn,
@@ -756,22 +756,16 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         return self.filter_box
 
-    def filter_items(self, text, filters, modified_status_filter, complete_state_filter):
-        # When text or filters is empty, show all items, unless state filter is set
-        if (
-            (not text or not filters)
-            and modified_status_filter == AlbumStatusState.NOT_APPLICABLE
-            and complete_state_filter == AlbumStatusState.NOT_APPLICABLE
-        ):
+    def filter_items(self, text, filters, status_filters):
+        # When text or filters is empty, show all items, unless any status filter is False
+        if (not text or not filters) and status_filters.all_active():
             self._restore_all_items()
             return
 
-        __class__._filter_tree_items(
-            self.invisibleRootItem(), text, filters, modified_status_filter, complete_state_filter
-        )
+        __class__._filter_tree_items(self.invisibleRootItem(), text, filters, status_filters)
 
     @staticmethod
-    def _filter_tree_items(parent, text, filters, modified_state_filter, complete_state_filter):
+    def _filter_tree_items(parent, text, filters, status_filters):
         text = text.lower()
         match_found = False
 
@@ -782,13 +776,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             if hasattr(child, 'obj'):
                 obj = child.obj
 
-                modified_applies, match_modified_filter = __class__._matches_album_state(
-                    obj, modified_state_filter, "is_modified"
-                )
-                complete_applies, match_complete_filter = __class__._matches_album_state(
-                    obj, complete_state_filter, "is_complete"
-                )
-                if (not modified_applies or match_modified_filter) and (not complete_applies or match_complete_filter):
+                matches_status_filter = __class__._matches_status_filters(obj, status_filters)
+
+                if matches_status_filter:
                     text_filters_match = __class__._match_text_filters(child, text, filters)
 
             # Hide/show based on match
@@ -817,9 +807,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if child.childCount() > 0:
             # Only the top level Album modified/complete state needs to be checked
-            child_match |= __class__._filter_tree_items(
-                child, text, filters, AlbumStatusState.NOT_APPLICABLE, AlbumStatusState.NOT_APPLICABLE
-            )
+            child_match |= __class__._filter_tree_items(child, text, filters, StatusFilters(True, True, True, True))
 
         if not child_match and not child_tags:
             child_match = True
@@ -836,13 +824,21 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return child_match
 
     @staticmethod
-    def _matches_album_state(obj, status_filter: AlbumStatusState, status_func_name: str) -> tuple[bool, bool]:
-        if status_filter == AlbumStatusState.NOT_APPLICABLE:
-            return False, False
-        if not isinstance(obj, Album) or not hasattr(obj, status_func_name):
-            return False, False
-        state = getattr(obj, status_func_name)()
-        return True, bool(status_filter == AlbumStatusState.TRUE if state else status_filter == AlbumStatusState.FALSE)
+    def _matches_status_filters(obj, status_filters: StatusFilters) -> bool:
+        if not isinstance(obj, Album):
+            return True
+
+        is_modified = obj.is_modified()
+        is_complete = obj.is_complete()
+        if not status_filters.modified and is_modified:
+            return False
+        if not status_filters.unmodified and not is_modified:
+            return False
+        if not status_filters.complete and is_complete:
+            return False
+        if not status_filters.incomplete and not is_complete:
+            return False
+        return True
 
     @staticmethod
     def _matches_file_properties(obj, text: str, filters: set):

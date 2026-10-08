@@ -339,15 +339,21 @@ class ConfigurableColumnsHeader(LockableHeaderView):
 
             self.show_column(i, column_state.get('visible', column.always_visible))
 
-            resize_mode = column_state.get('resize_mode', QtWidgets.QHeaderView.ResizeMode.Interactive.value)
-            self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode(resize_mode))
+            if column.status_icon:
+                # The status-icon column (tree arrows + icon) must always
+                # auto-size to its contents, independent of any width or
+                # resize mode persisted by an older version.
+                self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+            else:
+                resize_mode = column_state.get('resize_mode', QtWidgets.QHeaderView.ResizeMode.Interactive.value)
+                self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode(resize_mode))
 
-            # Only set width for Fixed and Interactive modes
-            if resize_mode in {
-                QtWidgets.QHeaderView.ResizeMode.Fixed.value,
-                QtWidgets.QHeaderView.ResizeMode.Interactive.value,
-            }:
-                self.resizeSection(i, column_state.get('width', 0) or column.width or 100)
+                # Only set width for Fixed and Interactive modes
+                if resize_mode in {
+                    QtWidgets.QHeaderView.ResizeMode.Fixed.value,
+                    QtWidgets.QHeaderView.ResizeMode.Interactive.value,
+                }:
+                    self.resizeSection(i, column_state.get('width', 0) or column.width or 100)
 
             # Sort indicator uses logical index, independent of visual positioning
             if 'sorted' in column_state:
