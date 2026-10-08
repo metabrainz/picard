@@ -16,12 +16,13 @@
 # claybiockiller <clay0305@hotmail.com>, 2023.
 # xuanqidongjim <xuanqidongjim@gmail.com>, 2023.
 # silentbird <silentbird@users.noreply.translations.metabrainz.org>, 2025.
+# scientists360 <scientists360@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-05-26 23:20+0000\n"
-"Last-Translator: silentbird "
-"<silentbird@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-10-06 15:13+0000\n"
+"Last-Translator: scientists360 "
+"<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/countries/zh_Hans/>\n"
 "Language: zh\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 2026.10\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -549,7 +550,7 @@ msgstr "洪都拉斯"
 #. iso.code:HK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:96
 msgid "Hong Kong"
-msgstr "香港"
+msgstr "中国香港"
 
 #. iso.code:HU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:97
@@ -699,7 +700,7 @@ msgstr "卢森堡"
 #. iso.code:MO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:125
 msgid "Macao"
-msgstr "澳门"
+msgstr "中国澳门"
 
 #. iso.code:MG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:127
@@ -1149,7 +1150,7 @@ msgstr "叙利亚"
 #. iso.code:TW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:205
 msgid "Taiwan"
-msgstr "台湾"
+msgstr "中国台湾"
 
 #. iso.code:TJ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:206

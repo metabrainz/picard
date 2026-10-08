@@ -21,11 +21,13 @@
 # AgenticCommonsBot <wiki-bot@agentic-commons.org>, 2026.
 # JerryBest <jerry.for.gml@gmail.com>, 2026.
 # scientists360 <scientists360@outlook.com>, 2026.
+# scientists360 <scientists360@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-10-02 16:13+0000\n"
-"Last-Translator: scientists360 <scientists360@outlook.com>\n"
+"PO-Revision-Date: 2026-10-06 15:13+0000\n"
+"Last-Translator: scientists360 "
+"<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -4500,7 +4502,7 @@ msgstr "洪都拉斯著作权协会AACIMH ID"
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr "香港著作权协会CASH(香港作曲家及作词家协会) ID"
+msgstr "中国香港著作权协会CASH(香港作曲家及作词家协会) ID"
 
 #. name:ARTISJUS ID
 #: DB:work_attribute_type/description:48
@@ -4692,7 +4694,7 @@ msgstr "瑞士著作权协会SUISA ID"
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr "台湾著作权协会MÜST(社团法人中华音乐著作权协会) ID"
+msgstr "中国台湾著作权协会MÜST(社团法人中华音乐著作权协会) ID"
 
 #. name:MCT ID
 #: DB:work_attribute_type/description:72

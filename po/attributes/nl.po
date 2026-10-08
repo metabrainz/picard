@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-08-19 12:12+0000\n"
+"PO-Revision-Date: 2026-10-05 14:13+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.10\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -559,7 +559,7 @@ msgstr ""
 #: DB:place_type/description:43
 msgctxt "place_type"
 msgid "A large, permanent outdoor stage, typically with a fixed seating area."
-msgstr "Een groot, permanent openluchtpodium, meestal met vaste zitplekken."
+msgstr "Een groot en permanent openluchtpodium, meestal met vaste zitplekken."
 
 #. name:Setlist
 #: DB:event_art_archive.art_type/description:3
@@ -2731,7 +2731,7 @@ msgstr "Concert"
 #: DB:place_type/name:44
 msgctxt "place_type"
 msgid "Concert hall / Theatre"
-msgstr "Concertgebouw / Theater"
+msgstr "Concertgebouw/theater"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
