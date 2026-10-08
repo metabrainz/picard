@@ -309,7 +309,7 @@ EXPECTED_DARK_PALETTE_COLORS = {
     QtGui.QPalette.ColorRole.Window: QtGui.QColor(51, 51, 51),
     QtGui.QPalette.ColorRole.WindowText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.Base: QtGui.QColor(31, 31, 31),
-    QtGui.QPalette.ColorRole.AlternateBase: QtGui.QColor(51, 51, 51),
+    QtGui.QPalette.ColorRole.AlternateBase: QtGui.QColor(38, 38, 38),
     QtGui.QPalette.ColorRole.ToolTipBase: QtGui.QColor(51, 51, 51),
     QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.white,

@@ -64,7 +64,7 @@ DARK_PALETTE_COLORS = {
     QtGui.QPalette.ColorRole.Window: DARK_BG_COLOR,
     QtGui.QPalette.ColorRole.WindowText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.Base: QtGui.QColor(31, 31, 31),
-    QtGui.QPalette.ColorRole.AlternateBase: DARK_BG_COLOR,
+    QtGui.QPalette.ColorRole.AlternateBase: QtGui.QColor(38, 38, 38),
     QtGui.QPalette.ColorRole.ToolTipBase: DARK_BG_COLOR,
     QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.white,
@@ -241,6 +241,7 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette) -> None:
         fix_colors = {
             role: DARK_PALETTE_COLORS[role]
             for role in (
+                QtGui.QPalette.ColorRole.AlternateBase,
                 QtGui.QPalette.ColorRole.ButtonText,
                 (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText),
             )

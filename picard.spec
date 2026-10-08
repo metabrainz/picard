@@ -212,6 +212,9 @@ else:
             'NSHighResolutionCapable': True,
             'NSPrincipalClass': 'NSApplication',
             'NSRequiresAquaSystemAppearance': False,
+            # Opt-out of the macOS 26 "Liquid Glass" design, as it causes
+            # rendering issues with checkboxes in a QTreeWidget.
+            'UIDesignRequiresCompatibility': True,
             'CFBundleDocumentTypes': [
                 {
                     # Add UTIs understood by macOS
