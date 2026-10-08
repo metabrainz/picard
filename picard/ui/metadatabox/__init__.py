@@ -1183,9 +1183,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             # background tint using the system's alternate-base color.
             if is_readonly:
                 bg = self.palette().color(QtGui.QPalette.ColorRole.AlternateBase)
-                tag_item.setBackground(bg)
-                orig_item.setBackground(bg)
-                new_item.setBackground(bg)
+            else:
+                bg = QtGui.QBrush()
+            tag_item.setBackground(bg)
+            orig_item.setBackground(bg)
+            new_item.setBackground(bg)
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
