@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2026-10-07 09:14+0000\n"
+"PO-Revision-Date: 2026-10-08 13:13+0000\n"
 "Last-Translator: scientists360 "
 "<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -4165,7 +4165,7 @@ msgstr "汉语（繁体）（澳门）"
 
 #: picard/const/locales.py:1052
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr "汉语（繁体）（台湾）"
+msgstr "汉语（繁体）（中国台湾）"
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
