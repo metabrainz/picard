@@ -93,10 +93,11 @@ from picard.util import (
 )
 from picard.util.qt import cancel_on_destroyed
 
+from picard.ui.album_filter import create_filter_for_tree_view
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.columns import Columns
 from picard.ui.enums import MainAction
-from picard.ui.filter import Filter
+from picard.ui.filter import AlbumStatusState
 from picard.ui.itemviews.custom_columns import (
     DelegateColumn,
     IconColumn,
@@ -748,62 +749,100 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return None
 
     def setup_filter_box(self):
-        self.filter_box = Filter(self)
+        self.filter_box = create_filter_for_tree_view(self)
         self.filter_box.filterChanged.connect(self.filter_items)
 
         self.filter_box.hide()  # Hide the filter box initially
 
         return self.filter_box
 
-    def filter_items(self, text, filters):
-        if not text or not filters:  # When text or filters is empty, show all items
+    def filter_items(self, text, filters, modified_status_filter, complete_state_filter):
+        # When text or filters is empty, show all items, unless state filter is set
+        if (
+            (not text or not filters)
+            and modified_status_filter == AlbumStatusState.NOT_APPLICABLE
+            and complete_state_filter == AlbumStatusState.NOT_APPLICABLE
+        ):
             self._restore_all_items()
             return
 
-        self._filter_tree_items(self.invisibleRootItem(), text, filters)
+        __class__._filter_tree_items(
+            self.invisibleRootItem(), text, filters, modified_status_filter, complete_state_filter
+        )
 
-    def _filter_tree_items(self, parent, text, filters):
+    @staticmethod
+    def _filter_tree_items(parent, text, filters, modified_state_filter, complete_state_filter):
         text = text.lower()
         match_found = False
 
         for i in range(parent.childCount()):
             child = parent.child(i)
-            child_match = False
-            child_tags = False
+            text_filters_match = False
 
             if hasattr(child, 'obj'):
                 obj = child.obj
-                matched_filters = set()
 
-                for matcher in [self._matches_file_properties, self._matches_metadata]:
-                    has_tags, matches = matcher(obj, text, filters)
-                    child_tags |= has_tags
-                    if matches:
-                        child_match = True
-                        matched_filters = matched_filters.union(matches)
-
-            if child.childCount() > 0:
-                child_match |= self._filter_tree_items(child, text, filters)
-
-            if not child_match and not child_tags:
-                child_match = True
-
-            if child_match and child.filterable:
-                self._set_item_tooltip(
-                    item=child,
-                    text=(
-                        _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
-                        if matched_filters
-                        else _('No tags found for selected filters.')
-                    ),
+                modified_applies, match_modified_filter = __class__._matches_album_state(
+                    obj, modified_state_filter, "is_modified"
                 )
+                complete_applies, match_complete_filter = __class__._matches_album_state(
+                    obj, complete_state_filter, "is_complete"
+                )
+                if (not modified_applies or match_modified_filter) and (not complete_applies or match_complete_filter):
+                    text_filters_match = __class__._match_text_filters(child, text, filters)
 
             # Hide/show based on match
             if child.filterable:
-                child.setHidden(not child_match)
-            match_found |= child_match
+                child.setHidden(not text_filters_match)
+            match_found |= text_filters_match
 
         return match_found
+
+    @staticmethod
+    def _match_text_filters(child, text, filters) -> bool:
+        if not hasattr(child, 'obj'):
+            return False
+
+        obj = child.obj
+        matched_filters = set()
+        child_match = False
+        child_tags = False
+
+        for matcher in [__class__._matches_file_properties, __class__._matches_metadata]:
+            has_tags, matches = matcher(obj, text, filters)
+            child_tags |= has_tags
+            if matches:
+                child_match = True
+                matched_filters = matched_filters.union(matches)
+
+        if child.childCount() > 0:
+            # Only the top level Album modified/complete state needs to be checked
+            child_match |= __class__._filter_tree_items(
+                child, text, filters, AlbumStatusState.NOT_APPLICABLE, AlbumStatusState.NOT_APPLICABLE
+            )
+
+        if not child_match and not child_tags:
+            child_match = True
+
+        if child_match and child.filterable:
+            __class__._set_item_tooltip(
+                item=child,
+                text=(
+                    _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
+                    if matched_filters
+                    else _('No tags found for selected filters.')
+                ),
+            )
+        return child_match
+
+    @staticmethod
+    def _matches_album_state(obj, status_filter: AlbumStatusState, status_func_name: str) -> tuple[bool, bool]:
+        if status_filter == AlbumStatusState.NOT_APPLICABLE:
+            return False, False
+        if not isinstance(obj, Album) or not hasattr(obj, status_func_name):
+            return False, False
+        state = getattr(obj, status_func_name)()
+        return True, bool(status_filter == AlbumStatusState.TRUE if state else status_filter == AlbumStatusState.FALSE)
 
     @staticmethod
     def _matches_file_properties(obj, text: str, filters: set):
@@ -844,7 +883,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         return has_tags, matches
 
-    def _set_item_tooltip(self, item: QtWidgets.QTreeWidgetItem, text: str):
+    @staticmethod
+    def _set_item_tooltip(item: QtWidgets.QTreeWidgetItem, text: str):
         for i in range(item.columnCount()):
             item.setToolTip(i, text)
 
