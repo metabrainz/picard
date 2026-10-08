@@ -55,7 +55,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-10-07 11:16+0000\n"
+"PO-Revision-Date: 2026-10-08 09:02+0000\n"
 "Last-Translator: scientists360 "
 "<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -1567,7 +1567,7 @@ msgstr "正在从 %(host)s 为 %(albumid)s 下载类型为“%(type)s”的封�
 #: picard/coverart/__init__.py:318
 #, python-format
 msgid "Cover art of type \"%(type)s\" downloaded for %(albumid)s from %(host)s"
-msgstr "已从 %(host)s 下载 %(albumid)s 的“%(type)s”类型封面图"
+msgstr "标题为“%(type)s”的封面图，于 从%(albumid)s 下载 %(host)s"
 
 #: picard/coverart/providers/caa.py:76
 msgid "250 px"
@@ -4095,7 +4095,7 @@ msgstr[0] "即将保存 {file_count:,d} 份文件，将执行以下操作："
 
 #: picard/ui/savewarningdialog.py:59
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr "<strong>这个操作无法撤销。</strong>您是否想要继续？"
+msgstr "<strong>这个操作无法撤销。</strong>您想要继续吗？"
 
 #: picard/ui/savewarningdialog.py:62
 #, python-brace-format
@@ -8064,7 +8064,7 @@ msgid ""
 "%s = option is in this profile, %s = option is not in this profile"
 msgstr ""
 "将鼠标悬停在某个选项上，即可查看哪些配置文件包含该选项。\n"
-"%s= 该选项包含在此配置文件中，%s= 该选项不包含在此配置文件中"
+"%s= 该选项包含在此配置文件中， %s= 该选项不包含在此配置文件中"
 
 #: picard/ui/options/dialog.py:1184
 msgid ""
@@ -9738,7 +9738,7 @@ msgid ""
 "\n"
 "The plugin is currently disabled."
 msgstr ""
-"插件 \"{name}\" 已成功更新/切换，但无法重新启用：\n"
+"插件“{name}”已成功更新/切换，但无法重新启用：\n"
 "{error}\n"
 "\n"
 "该插件当前处于禁用状态。"

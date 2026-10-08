@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 18:04+0200\n"
-"PO-Revision-Date: 2026-10-07 11:16+0000\n"
+"PO-Revision-Date: 2026-10-08 09:02+0000\n"
 "Last-Translator: scientists360 "
 "<scientists360@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -4245,7 +4245,7 @@ msgstr "汉语（繁体）（澳门）"
 
 #: picard/const/locales.py:1052
 msgid "Chinese (Traditional) (Taiwan)"
-msgstr "汉语（繁体）（台湾）"
+msgstr "汉语（繁体）（中国台湾）"
 
 #: picard/const/locales.py:1053
 msgid "Zulu"
@@ -4273,7 +4273,7 @@ msgstr "片假名"
 
 #: picard/const/tags.py:37
 msgid "Absolute Track No."
-msgstr "绝对音轨编号"
+msgstr "绝对曲目编号"
 
 #: picard/const/tags.py:39
 msgid ""
@@ -4308,8 +4308,8 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
-"与音轨关联的 AcoustID。AcoustID 是根据音频文件的声学指纹，为其分配的标识符。"
-"如果多个指纹足够相似，则可能会被分配相同的 AcoustID。"
+"与该曲目关联的 AcoustID。AcoustID 是根据音频文件的声学指纹分配给该文件的标识"
+"符。如果多个指纹足够相似，则可能被分配相同的 AcoustID。"
 
 #: picard/const/tags.py:70
 msgid "Album Artist"
@@ -5041,7 +5041,7 @@ msgstr "歌曲艺术家的 MusicBrainz 标识符（MBID）。"
 
 #: picard/const/tags.py:697
 msgid "MusicBrainz DiscID"
-msgstr "MusicBrainz 碟片 ID"
+msgstr "MusicBrainz DiscID"
 
 #: picard/const/tags.py:699
 msgid ""
@@ -5067,8 +5067,8 @@ msgid ""
 "A list of all of the disc ids attached to the selected release. The list "
 "provided for each medium only includes the disc ids attached to that medium."
 msgstr ""
-"所选发行品关联的所有碟片 ID 的列表。针对每种介质提供的列表仅包含与该介质关联"
-"的碟片 ID。"
+"所选发行版关联的所有光盘 ID 的列表。针对每种介质提供的列表仅包含与该介质关联"
+"的光盘 ID。"
 
 #: picard/const/tags.py:715
 msgid ""
@@ -5625,7 +5625,7 @@ msgstr "回放增益曲目增益"
 
 #: picard/const/tags.py:1145
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
-msgstr "根据对该曲目的 ReplayGain 分析结果设定的曲目增益。"
+msgstr "根据对该曲目的 ReplayGain 分析结果设置的曲目增益。"
 
 #: picard/const/tags.py:1151
 msgid "ReplayGain Track Peak"
