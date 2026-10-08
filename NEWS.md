@@ -1,5 +1,15 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.1 - 2026-10-08
+
+### Bugfixes
+- [PICARD-2509](https://tickets.metabrainz.org/browse/PICARD-2509) - macOS: No check marks in Options menu in languages other than English
+- [PICARD-3411](https://tickets.metabrainz.org/browse/PICARD-3411) - macOS: Checkboxes not displaying properly in plugin list and profile settings
+- [PICARD-3475](https://tickets.metabrainz.org/browse/PICARD-3475) - Windows Store release blocked by "unvirtualizedResources" capability
+- [PICARD-3478](https://tickets.metabrainz.org/browse/PICARD-3478) - picard-cli crashes with ModuleNotFoundError: No module named 'picard.cli.completions' in packaged builds
+- [PICARD-3480](https://tickets.metabrainz.org/browse/PICARD-3480) - Picard won't launch after upgrade from v2 with error in config migration
+
+
 ## Version 3.0 - 2026-10-04
 
 ### Bugfixes
