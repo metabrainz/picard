@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-10-04 16:55+0000\n"
+"PO-Revision-Date: 2026-10-08 09:02+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -663,10 +663,8 @@ msgid "Read ISRCs from CD"
 msgstr "ISRCs von CD auslesen"
 
 #: picard/options.py:384
-#, fuzzy
-#| msgid "Enable saving tags to files"
 msgid "Enable managing user collections"
-msgstr "Aktiviere Schreiben von Tags in Dateien"
+msgstr "Verwaltung von Benutzersammlungen aktivieren"
 
 #: picard/options.py:389 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
@@ -964,10 +962,8 @@ msgid "Preferred release types"
 msgstr "Bevorzugte Veröffentlichungstypen"
 
 #: picard/options.py:654
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Discouraged release types"
-msgstr "Bevorzugte Veröffentlichungstypen"
+msgstr "Unerwünschte Veröffentlichungstypen"
 
 #: picard/options.py:658 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
@@ -1139,10 +1135,8 @@ msgid "Write RIFF INFO tags to WAVE"
 msgstr "RIFF INFO-Tags in WAVE schreiben"
 
 #: picard/options.py:759
-#, fuzzy
-#| msgid "Selected file naming script"
 msgid "Active file naming script"
-msgstr "Ausgewähltes Dateibenennungsskript"
+msgstr "Aktives Dateibenennungsskript"
 
 #: picard/options.py:767 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
@@ -5789,10 +5783,8 @@ msgid "Log out"
 msgstr "Abmelden"
 
 #: picard/ui/forms/ui_options_general.py:138
-#, fuzzy
-#| msgid "Enable saving tags to files"
 msgid "Enable managing user collections (requires login)"
-msgstr "Aktiviere Schreiben von Tags in Dateien"
+msgstr "Verwaltung von Benutzersammlungen aktivieren (Anmeldung erforderlich)"
 
 #: picard/ui/forms/ui_options_genres.py:120
 #, fuzzy
@@ -6061,10 +6053,8 @@ msgid "Guess track number and title from filename if empty"
 msgstr "Errate Tracknummer und -titel, falls leer"
 
 #: picard/ui/forms/ui_options_metadata.py:202
-#, fuzzy
-#| msgid "Plugin Translations"
 msgid "Translations"
-msgstr "Plugin-Übersetzungen"
+msgstr "Übersetzungen"
 
 #: picard/ui/forms/ui_options_metadata.py:203
 msgid "Translate names when available:"
@@ -6263,16 +6253,16 @@ msgid "Rename files when saving"
 msgstr "Dateien beim Speichern umbenennen"
 
 #: picard/ui/forms/ui_options_renaming.py:143
-#, fuzzy
-#| msgid "Selected file naming script:"
 msgid "Active file naming script:"
-msgstr "Dateibenennungsskript auswählen:"
+msgstr "Aktives Dateibenennungsskript:"
 
 #: picard/ui/forms/ui_options_renaming.py:144
 msgid ""
 "To edit scripts, use the script editor from Options > File naming scripts in "
 "the main menu bar."
 msgstr ""
+"Den Dateibenennungsskripteditor im Hauptmenü unter Einstellungen > "
+"Dateibenennungsskripte verwenden, um Skripte zu bearbeiten."
 
 #: picard/ui/forms/ui_options_renaming.py:145
 #: picard/ui/forms/ui_scripteditor.py:217
@@ -7491,11 +7481,11 @@ msgstr "&CD abfragen …"
 
 #: picard/ui/mainwindow/__init__.py:818
 msgid "Recent Sessions"
-msgstr ""
+msgstr "Kürzlich verwendete Sitzungen"
 
 #: picard/ui/mainwindow/__init__.py:856
 msgid "Recent sessions cleared"
-msgstr ""
+msgstr "Kürzlich verwendete Sitzungen geleert"
 
 #: picard/ui/mainwindow/__init__.py:875
 msgid "Empty"
@@ -7503,7 +7493,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:891 picard/ui/mainwindow/actions.py:619
 msgid "Clear Recent Sessions"
-msgstr ""
+msgstr "Kürzlich verwendete Sitzungen leeren"
 
 #: picard/ui/mainwindow/__init__.py:994 picard/ui/scripteditor/__init__.py:244
 msgid "&File"
@@ -7518,16 +7508,12 @@ msgid "&View"
 msgstr "&Ansicht"
 
 #: picard/ui/mainwindow/__init__.py:1038
-#, fuzzy
-#| msgid "File naming script editor"
 msgid "File naming &scripts"
-msgstr "Dateibenennungsskripteditor"
+msgstr "Dateibenennungs&skripte"
 
 #: picard/ui/mainwindow/__init__.py:1045
-#, fuzzy
-#| msgid "Profiles"
 msgid "&Profiles"
-msgstr "Profile"
+msgstr "&Profile"
 
 #: picard/ui/mainwindow/__init__.py:1051
 msgid "&Quick settings"
@@ -7707,10 +7693,8 @@ msgid "Login failed: %s"
 msgstr "Anmeldung fehlgeschlagen: %s"
 
 #: picard/ui/mainwindow/__init__.py:2364
-#, fuzzy
-#| msgid "Move profile down"
 msgid "No profiles configured"
-msgstr "Profil nach unten verschieben"
+msgstr "Keine Profile konfiguriert"
 
 #: picard/ui/mainwindow/__init__.py:2369
 msgid "Configure profiles…"
@@ -7731,10 +7715,8 @@ msgid "&Options…"
 msgstr "&Einstellungen …"
 
 #: picard/ui/mainwindow/actions.py:90
-#, fuzzy
-#| msgid "Edit file naming script…"
 msgid "&Edit scripts…"
-msgstr "Dateibenennungsskript bearbeiten …"
+msgstr "Skripte &bearbeiten …"
 
 #: picard/ui/mainwindow/actions.py:91
 msgid "Ctrl+Shift+S"
@@ -7821,10 +7803,8 @@ msgid "Submit acoustic fingerprints"
 msgstr "Akustische Fingerabdrücke übermitteln"
 
 #: picard/ui/mainwindow/actions.py:215
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit &ISRCs"
-msgstr "AcoustIDs übermitteln"
+msgstr "&ISRCs übermitteln"
 
 #: picard/ui/mainwindow/actions.py:216
 #, fuzzy
@@ -8168,7 +8148,7 @@ msgstr "Auf &Update prüfen …"
 
 #: picard/ui/mainwindow/actions.py:579
 msgid "Show Setup &Wizard…"
-msgstr "&Einstellungs-Assistent anzeigen …"
+msgstr "&Einrichtungsassistent anzeigen …"
 
 #: picard/ui/mainwindow/actions.py:587
 msgid "Save Session &As…"
@@ -8346,7 +8326,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:352
 msgid "Display help regarding option profiles"
-msgstr ""
+msgstr "Hilfe zu Einstellungsprofilen anzeigen"
 
 #: picard/ui/options/dialog.py:356
 msgid "&Restore all Defaults"
@@ -8436,6 +8416,10 @@ msgid ""
 "Hover an option to see which profiles contain it.\n"
 "%s = option is in this profile, %s = option is not in this profile"
 msgstr ""
+"Mauszeiger über eine Option bewegen, um zu sehen, in welchen Profilen sie "
+"enthalten ist.\n"
+"%s = Option ist in diesem Profil enthalten, %s = Option ist in diesem Profil "
+"nicht enthalten"
 
 #: picard/ui/options/dialog.py:1184
 msgid ""
@@ -8612,7 +8596,7 @@ msgstr "Systemvoreinstellung"
 
 #: picard/ui/options/interface.py:143
 msgid "Reset tutorial and setup wizard…"
-msgstr ""
+msgstr "Tutorial und Einrichtungsassistent zurücksetzen …"
 
 #: picard/ui/options/interface.py:198
 msgid "You have changed the interface language."
@@ -8647,6 +8631,8 @@ msgid ""
 "This will reset the tutorial and setup wizard so they are shown again. "
 "Continue?"
 msgstr ""
+"Das wird das Tutorial und den Einrichtungsassistenten zurücksetzen und "
+"erneut anzeigen. Fortfahren?"
 
 #: picard/ui/options/interface_colors.py:77
 msgid "Choose a color"
@@ -8903,20 +8889,16 @@ msgid "Are you sure you want to remove the selected option settings?"
 msgstr "Soll diese Options-Einstellung wirklich entfernt werden?"
 
 #: picard/ui/options/metadata.py:127
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Do not standardize artist names"
-msgstr "Standardisierte Künstlernamen verwenden"
+msgstr "Künstlernamen nicht standardisieren"
 
 #: picard/ui/options/metadata.py:129
-#, fuzzy
-#| msgid "Use standardized artist names"
 msgid "Standardize artist name variations only"
-msgstr "Standardisierte Künstlernamen verwenden"
+msgstr "Nur Namensvariationen standardisieren"
 
 #: picard/ui/options/metadata.py:132
 msgid "Standardize artist name variations and name changes"
-msgstr ""
+msgstr "Namensvariationen und Namensänderungen standardisieren"
 
 #: picard/ui/options/metadata.py:297
 #, python-brace-format
@@ -9082,7 +9064,7 @@ msgstr "Plugin-Aktualisierung fehlgeschlagen."
 
 #: picard/ui/options/profiles.py:93
 msgid "Option Profiles"
-msgstr "Einstellungs-Profile"
+msgstr "Einstellungsprofile"
 
 #: picard/ui/options/profiles.py:144
 msgid "Create a new profile"
@@ -9361,10 +9343,8 @@ msgid "Preferred Releases"
 msgstr "Bevorzugte Veröffentlichungen"
 
 #: picard/ui/options/releases.py:85
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Preferred release types (higher priority first)"
-msgstr "Bevorzugte Veröffentlichungstypen"
+msgstr "Bevorzugte Veröffentlichungstypen (höher Priorität zuerst)"
 
 #: picard/ui/options/releases.py:88
 msgid ""
@@ -9375,7 +9355,7 @@ msgstr ""
 
 #: picard/ui/options/releases.py:98
 msgid "Discouraged release types (avoided when matching)"
-msgstr ""
+msgstr "Unerwünschte Veröffentlichungstypen (beim Abgleich vermieden)"
 
 #: picard/ui/options/releases.py:101
 msgid ""
@@ -9385,10 +9365,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/releases.py:117
-#, fuzzy
-#| msgid "Preferred release countries"
 msgid "Preferred release countries (higher priority first)"
-msgstr "Bevorzugte Veröffentlichungsländer"
+msgstr "Bevorzugte Veröffentlichungsländer (höhere Priorität zuerst)"
 
 #: picard/ui/options/releases.py:120
 msgid ""
@@ -9666,14 +9644,13 @@ msgid "Delete the script"
 msgstr "Skript löschen"
 
 #: picard/ui/scripteditor/__init__.py:303
-#, fuzzy
-#| msgid "&Delete the current script"
 msgid "Rese&t current script"
-msgstr "Aktuelles Skript &löschen"
+msgstr "Aktuelles Skript zu&rücksetzen"
 
 #: picard/ui/scripteditor/__init__.py:304
 msgid "Discard changes and reset to the last saved version"
 msgstr ""
+"Änderungen verwerfen und auf die zuletzt gespeicherte Version zurücksetzen"
 
 #: picard/ui/scripteditor/__init__.py:313
 msgid "&Reload random example files"
@@ -9758,6 +9735,8 @@ msgid ""
 "The script \"%s\" is not the active file naming script. Do you want to make "
 "it active?"
 msgstr ""
+"Das Skript „%s“ ist nicht das aktive Dateibenennungsskript. Soll es "
+"aktiviert werden?"
 
 #: picard/ui/scripteditor/__init__.py:832
 msgid "Error Deleting Script"
@@ -10250,19 +10229,15 @@ msgstr ""
 
 #: picard/ui/widgets/preferencelistwidget.py:32
 msgid "Add…"
-msgstr ""
+msgstr "Hinzufügen …"
 
 #: picard/ui/widgets/preferencelistwidget.py:87
-#, fuzzy
-#| msgid "Move tag up"
 msgid "Move up"
-msgstr "Tag nach oben verschieben"
+msgstr "Nach oben verschieben"
 
 #: picard/ui/widgets/preferencelistwidget.py:88
-#, fuzzy
-#| msgid "Move tag down"
 msgid "Move down"
-msgstr "Tag nach unten verschieben"
+msgstr "Nach unten verschieben"
 
 #: picard/ui/widgets/profilelistwidget.py:51
 msgid "Rename profile"
@@ -10278,17 +10253,15 @@ msgstr "Profil exportieren …"
 
 #: picard/ui/widgets/profilelistwidget.py:62
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "In Zwischenablage kopieren"
 
 #: picard/ui/widgets/profilelistwidget.py:66
 msgid "Import and replace…"
 msgstr "Importieren und ersetzen …"
 
 #: picard/ui/widgets/profilelistwidget.py:69
-#, fuzzy
-#| msgid "Imported from %s"
 msgid "Import from clipboard"
-msgstr "Importiert von %s"
+msgstr "Aus Zwischenablage importieren"
 
 #: picard/ui/widgets/profilelistwidget.py:106
 msgid "Are you sure you want to remove this profile?"
