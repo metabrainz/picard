@@ -539,7 +539,7 @@ class StatusButtonLabelTest(PicardTestCase):
 
 
 class ClearAllStatusFiltersTest(PicardTestCase):
-    """Test the 'Clear all' menu action resetting status filters to all-active."""
+    """Test the 'Show all' menu action resetting status filters to all-active."""
 
     def _make_fake_filter(self, status_filters):
         """A stand-in AlbumFilter exposing just what _clear_all_status_filters uses.

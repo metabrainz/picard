@@ -171,7 +171,7 @@ class AlbumFilter(Filter):
             self._status_checkboxes[state] = checkbox
 
         menu.addSeparator()
-        self._clear_all_action = QAction(_("Clear all"), self)
+        self._clear_all_action = QAction(_("Show all"), self)
         self._clear_all_action.setToolTip(_("Enable all status filters (show everything)"))
         self._clear_all_action.triggered.connect(self._clear_all_status_filters)
         menu.addAction(self._clear_all_action)
