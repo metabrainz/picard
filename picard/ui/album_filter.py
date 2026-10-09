@@ -146,7 +146,10 @@ class AlbumFilter(Filter):
         self._status_checkboxes = {}
         menu = QtWidgets.QMenu()
         menu.setTitle(_("Status Filters"))
-        menu.setTearOffEnabled(True)
+        # Tear-off is intentionally not enabled: a QWidgetAction's default widget
+        # (the per-status QCheckBox) does not render in the torn-off copy, since a
+        # QWidgetAction owns a single widget instance that cannot appear in both
+        # the dropdown and the tear-off window.
 
         for state, desc in STATUS_FILTER_DESCRIPTORS.items():
             # A QCheckBox in a QWidgetAction shows the native check indicator,
