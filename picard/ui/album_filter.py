@@ -165,7 +165,11 @@ class AlbumFilter(Filter):
 
         self._status_button.setMenu(menu)
 
-        layout.addWidget(self._status_button)
+        # Locate base Filter class filter button in order to insert status button before it
+        filter_button_idx = layout.indexOf(self.filter_button)
+        filter_button_idx = filter_button_idx if filter_button_idx != -1 else 0
+
+        layout.insertWidget(filter_button_idx, self._status_button)
 
         self.initializing = False
 
