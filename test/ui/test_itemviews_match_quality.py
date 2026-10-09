@@ -745,17 +745,17 @@ class TestItemViewsIntegration:
         """Test that the match quality column is immediately after the Album Artist column in album view."""
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
 
-        idx_albumartist = ALBUMVIEW_COLUMNS.pos("albumartist")
+        idx_status = ALBUMVIEW_COLUMNS.pos("~status")
         idx_match = ALBUMVIEW_COLUMNS.pos("~match_quality")
 
-        assert idx_match == idx_albumartist + 1
+        assert idx_match == idx_status + 1
 
         match_quality_column = ALBUMVIEW_COLUMNS[idx_match]
         assert isinstance(match_quality_column, DelegateColumn)
         assert match_quality_column.key == "~match_quality"
 
-        album_artist_column = ALBUMVIEW_COLUMNS[idx_albumartist]
-        assert album_artist_column.key == "albumartist"
+        status_column = ALBUMVIEW_COLUMNS[idx_status]
+        assert status_column.key == "~status"
 
     def test_numeric_sorting_with_provider(self) -> None:
         """Test that the provider uses numeric sorting correctly."""
