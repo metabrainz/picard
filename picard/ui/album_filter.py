@@ -196,15 +196,12 @@ class AlbumFilter(Filter):
 
     def _get_saved_status_filters(self) -> StatusFilters:
         config = get_config()
-        temp = config.persist[self._saved_status_key]
-        if isinstance(temp, StatusFilters):
-            return temp
-        return StatusFilters(True, True, True, True)
+        return StatusFilters.from_dict(config.persist[self._saved_status_key])
 
     def _status_checkbox_toggled(self, status_key, checked: bool):
         setattr(self.status_filters, status_key, checked)
         config = get_config()
-        config.persist[self._saved_status_key] = self.status_filters
+        config.persist[self._saved_status_key] = self.status_filters.to_dict()
         self._query_changed(self.filter_query_box.text())
 
 

@@ -21,6 +21,7 @@
 
 
 from collections import namedtuple
+import os
 from unittest.mock import MagicMock
 
 from test.picardtestcase import (
@@ -29,6 +30,10 @@ from test.picardtestcase import (
 )
 
 from picard.album import Album
+from picard.config import (
+    Config,
+    Option,
+)
 from picard.file import File
 from picard.metadata import (
     Metadata,
@@ -408,3 +413,57 @@ class AlbumFilterTestFiltering(PicardTestCase):
                 mock_parent, "not matched", filters={'title'}, status_filters=StatusFilters(True, True, True, True)
             )
         )
+
+
+class AlbumStatusFilterPersistenceTest(PicardTestCase):
+    """Verify the album status filter actually round-trips through the config.
+
+    This is a regression test: the status filter was previously stored as a
+    raw StatusFilters dataclass under an unregistered persist key, so the value
+    never survived a write/read cycle and always fell back to the default.
+    """
+
+    STATUS_KEY = 'filters_status_AlbumTreeView'
+
+    def setUp(self):
+        super().setUp()
+        self.tmp_directory = self.mktmpdir()
+        self.configpath = os.path.join(self.tmp_directory, 'test.ini')
+        # Preserve the global option registry; Config does not reset it.
+        self.old_registry = dict(Option.registry)
+        self.addCleanup(self._restore_registry)
+
+    def _restore_registry(self):
+        Option.registry = self.old_registry
+
+    def _new_config(self) -> Config:
+        config = Config.from_file(None, self.configpath)
+        self.addCleanup(self._cleanup_config, config)
+        return config
+
+    @staticmethod
+    def _cleanup_config(config: Config):
+        config.sync()
+
+    def test_status_filter_option_is_registered(self):
+        """The persist key used by AlbumFilter must be a registered option."""
+        self.assertTrue(Option.exists('persist', self.STATUS_KEY))
+
+    def test_status_filter_roundtrips_across_config_instances(self):
+        """A stored StatusFilters survives a write, sync and fresh read."""
+        status = StatusFilters(modified=False, unmodified=True, complete=False, incomplete=True)
+
+        config = self._new_config()
+        config.persist[self.STATUS_KEY] = status.to_dict()
+        config.sync()
+
+        # A fresh Config reading the same file must yield the same filters.
+        reloaded = self._new_config()
+        restored = StatusFilters.from_dict(reloaded.persist[self.STATUS_KEY])
+        self.assertEqual(restored, status)
+
+    def test_default_when_never_stored(self):
+        """With nothing stored, the filter defaults to all-active."""
+        config = self._new_config()
+        restored = StatusFilters.from_dict(config.persist[self.STATUS_KEY])
+        self.assertEqual(restored, StatusFilters())
