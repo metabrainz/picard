@@ -21,7 +21,13 @@
 
 
 from collections import namedtuple
-from unittest.mock import MagicMock
+import os
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
+
+from PyQt6.QtWidgets import QCheckBox
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -29,7 +35,12 @@ from test.picardtestcase import (
 )
 
 from picard.album import Album
+from picard.config import (
+    Config,
+    Option,
+)
 from picard.file import File
+from picard.i18n import gettext as _
 from picard.metadata import (
     Metadata,
     MultiMetadataProxy,
@@ -39,6 +50,7 @@ from picard.tags.tagvar import (
     TagVars,
 )
 
+from picard.ui.album_filter import AlbumFilter
 from picard.ui.filter import StatusFilters
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
@@ -408,3 +420,168 @@ class AlbumFilterTestFiltering(PicardTestCase):
                 mock_parent, "not matched", filters={'title'}, status_filters=StatusFilters(True, True, True, True)
             )
         )
+
+
+class AlbumStatusFilterPersistenceTest(PicardTestCase):
+    """Verify the album status filter actually round-trips through the config.
+
+    This is a regression test: the status filter was previously stored as a
+    raw StatusFilters dataclass under an unregistered persist key, so the value
+    never survived a write/read cycle and always fell back to the default.
+    """
+
+    STATUS_KEY = 'filters_status_AlbumTreeView'
+
+    def setUp(self):
+        super().setUp()
+        self.tmp_directory = self.mktmpdir()
+        self.configpath = os.path.join(self.tmp_directory, 'test.ini')
+        # Preserve the global option registry; Config does not reset it.
+        self.old_registry = dict(Option.registry)
+        self.addCleanup(self._restore_registry)
+
+    def _restore_registry(self):
+        Option.registry = self.old_registry
+
+    def _new_config(self) -> Config:
+        config = Config.from_file(None, self.configpath)
+        self.addCleanup(self._cleanup_config, config)
+        return config
+
+    @staticmethod
+    def _cleanup_config(config: Config):
+        config.sync()
+
+    def test_status_filter_option_is_registered(self):
+        """The persist key used by AlbumFilter must be a registered option."""
+        self.assertTrue(Option.exists('persist', self.STATUS_KEY))
+
+    def test_status_filter_roundtrips_across_config_instances(self):
+        """A stored StatusFilters survives a write, sync and fresh read."""
+        status = StatusFilters(modified=False, unmodified=True, complete=False, incomplete=True)
+
+        config = self._new_config()
+        config.persist[self.STATUS_KEY] = status.to_dict()
+        config.sync()
+
+        # A fresh Config reading the same file must yield the same filters.
+        reloaded = self._new_config()
+        restored = StatusFilters.from_dict(reloaded.persist[self.STATUS_KEY])
+        self.assertEqual(restored, status)
+
+    def test_default_when_never_stored(self):
+        """With nothing stored, the filter defaults to all-active."""
+        config = self._new_config()
+        restored = StatusFilters.from_dict(config.persist[self.STATUS_KEY])
+        self.assertEqual(restored, StatusFilters())
+
+
+class FilterItemsGuardTest(PicardTestCase):
+    """Test the BaseTreeView.filter_items early-return guard.
+
+    With empty text or no tag filters, items are only restored (shown) when
+    every status filter is active. If a status filter is disabled, filtering
+    must still run so the status filter takes effect.
+    """
+
+    def _call_filter_items(self, text, filters, status_filters):
+        """Invoke filter_items on a stand-in self, returning (fake_self, walked).
+
+        The recursive _filter_tree_items helper is patched out so the test only
+        observes which branch of the guard ran, not the tree walk itself.
+        """
+        fake_self = MagicMock()
+        with patch.object(BaseTreeView, '_filter_tree_items') as mock_walk:
+            BaseTreeView.filter_items(fake_self, text, filters, status_filters)
+        return fake_self, mock_walk
+
+    def test_restores_all_when_empty_and_all_active(self):
+        fake_self, mock_walk = self._call_filter_items('', set(), StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_empty_text_but_status_filter_active(self):
+        """Empty text with a disabled status filter must still filter."""
+        fake_self, mock_walk = self._call_filter_items('', set(), StatusFilters(modified=False))
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()
+
+    def test_restores_all_when_empty_text_and_default_status(self):
+        fake_self, mock_walk = self._call_filter_items('', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_text_present(self):
+        fake_self, mock_walk = self._call_filter_items('abc', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()
+
+
+class StatusButtonLabelTest(PicardTestCase):
+    """Test the Status button label reflecting how many filters are active."""
+
+    def test_label_all_active(self):
+        """All filters active means no filtering, so just the plain label."""
+        self.assertEqual(AlbumFilter.make_status_button_text(StatusFilters()), _('Status'))
+
+    def test_label_subset_active(self):
+        """A subset active shows the active/total count."""
+        self.assertEqual(
+            AlbumFilter.make_status_button_text(StatusFilters(modified=False)),
+            _('Status (%(active)d/%(total)d)') % {'active': 3, 'total': 4},
+        )
+        self.assertEqual(
+            AlbumFilter.make_status_button_text(
+                StatusFilters(modified=False, unmodified=False, complete=False, incomplete=False)
+            ),
+            _('Status (%(active)d/%(total)d)') % {'active': 0, 'total': 4},
+        )
+
+
+class ClearAllStatusFiltersTest(PicardTestCase):
+    """Test the 'Show all' menu action resetting status filters to all-active."""
+
+    def _make_fake_filter(self, status_filters):
+        """A stand-in AlbumFilter exposing just what _clear_all_status_filters uses.
+
+        Real QCheckBoxes are used so the real _sync_status_checkboxes can set their
+        checked state.
+        """
+        fake = MagicMock()
+        fake.status_filters = status_filters
+        fake._saved_status_key = 'filters_status_AlbumTreeView'
+        fake._syncing_status = False
+        fake._status_checkboxes = {state: QCheckBox() for state in ('modified', 'unmodified', 'complete', 'incomplete')}
+        # Use the real persistence and sync helpers against this fake.
+        fake._save_status_filters.side_effect = lambda: AlbumFilter._save_status_filters(fake)
+        fake._sync_status_checkboxes.side_effect = lambda: AlbumFilter._sync_status_checkboxes(fake)
+        return fake
+
+    def test_clear_all_resets_to_active_and_persists(self):
+        fake = self._make_fake_filter(StatusFilters(modified=False, unmodified=True, complete=False, incomplete=True))
+        with patch('picard.ui.album_filter.get_config') as mock_get_config:
+            config = MagicMock()
+            config.persist = {}
+            mock_get_config.return_value = config
+            AlbumFilter._clear_all_status_filters(fake)
+
+        # Filters reset to all-active.
+        self.assertEqual(fake.status_filters, StatusFilters())
+        # Persisted as the all-active dict.
+        self.assertEqual(config.persist['filters_status_AlbumTreeView'], StatusFilters().to_dict())
+        # Every menu item ends up checked.
+        self.assertTrue(all(checkbox.isChecked() for checkbox in fake._status_checkboxes.values()))
+        # Re-emits the filter query so the view refreshes.
+        fake._query_changed.assert_called_once()
+
+    def test_clear_all_is_noop_when_already_all_active(self):
+        """Nothing changes and no re-filtering is triggered when already cleared."""
+        fake = self._make_fake_filter(StatusFilters())
+        with patch('picard.ui.album_filter.get_config') as mock_get_config:
+            config = MagicMock()
+            config.persist = {}
+            mock_get_config.return_value = config
+            AlbumFilter._clear_all_status_filters(fake)
+
+        self.assertEqual(fake.status_filters, StatusFilters())
+        fake._query_changed.assert_not_called()

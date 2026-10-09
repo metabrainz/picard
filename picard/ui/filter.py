@@ -60,6 +60,32 @@ class StatusFilters:
         """
         return self.modified and self.unmodified and self.complete and self.incomplete
 
+    def to_dict(self) -> dict[str, bool]:
+        """Return a plain dict suitable for storage in the config (QSettings)."""
+        return {
+            'modified': self.modified,
+            'unmodified': self.unmodified,
+            'complete': self.complete,
+            'incomplete': self.incomplete,
+        }
+
+    @classmethod
+    def from_dict(cls, data) -> 'StatusFilters':
+        """Build a StatusFilters from a stored dict.
+
+        Unknown or non-dict values (e.g. a missing or legacy config entry) and
+        missing keys fall back to the all-active default, so a filter is only
+        disabled when it was explicitly stored as such.
+        """
+        if not isinstance(data, dict):
+            return cls()
+        return cls(
+            modified=bool(data.get('modified', True)),
+            unmodified=bool(data.get('unmodified', True)),
+            complete=bool(data.get('complete', True)),
+            incomplete=bool(data.get('incomplete', True)),
+        )
+
 
 class Filter(QtWidgets.QWidget):
     filterChanged = QtCore.pyqtSignal(str, set, StatusFilters)
@@ -172,7 +198,8 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.setText(label)
 
     def _query_changed(self, text):
-        self.filterChanged.emit(text, self.selected_filters, StatusFilters(True, True, True, True))
+        # The base Filter has no status filtering; emit the all-active default.
+        self.filterChanged.emit(text, self.selected_filters, StatusFilters())
 
     def clear(self):
         self.filter_query_box.clear()

@@ -46,7 +46,7 @@ class AlbumStatusFilterDescriptor:
     icon_provider : Callable
         Functor used to create the icon used for the Tool Button in the UI.
     text : str
-        Text to place next to the icon (Not used in this case to save UI space).
+        Label shown next to the icon for the status filter's menu action.
     tooltip : str
         Tooltip explaining the current filter state for the album status.
     """
@@ -81,9 +81,9 @@ STATUS_FILTER_DESCRIPTORS: dict[str, AlbumStatusFilterDescriptor] = {
 }
 
 
-# There is a bug where the menu Arrow typecannot be removed from a QToolButton
+# There is a bug where the menu arrow type cannot be removed from a QToolButton
 # https://qt-project.atlassian.net/browse/QTBUG-2036
-class NoArrawToolButton(QtWidgets.QToolButton):
+class NoArrowToolButton(QtWidgets.QToolButton):
     """
     Override of the ToolButton class to workaround bug where the menu arrow always appear on Tool Button
     even when the NoArrow style option is set
@@ -108,7 +108,9 @@ class AlbumFilter(Filter):
     _saved_status_key: str
     _status_button: QtWidgets.QToolButton
     status_filters: StatusFilters
-    _status_actions: dict[str, QAction]
+    _status_checkboxes: dict[str, QtWidgets.QCheckBox]
+    _clear_all_action: QAction
+    _syncing_status: bool
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -120,50 +122,62 @@ class AlbumFilter(Filter):
                 break
 
         if not layout:
-            raise Exception(
-                "Album Filter is requires layout member in order to add complete and modified filter buttons"
+            raise RuntimeError(
+                "AlbumFilter requires a QHBoxLayout member in order to add the complete and modified filter buttons"
             )
 
         self.initializing = True
 
+        self._syncing_status = False
         self._saved_status_key = "filters_status_AlbumTreeView"
-        self._status_button = NoArrawToolButton(self)
+        self._status_button = NoArrowToolButton(self)
         self._status_button.setAutoRaise(False)
         self._status_button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
         self._status_button.setArrowType(QtCore.Qt.ArrowType.NoArrow)
         self._status_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
         self._status_button.setText(_('Status'))
-        toolTip = _('Drop-down containing Album status filters(modified/unmodified, complete/incomplete)')
-        self._status_button.setToolTip(toolTip)
-        self._status_button.setStatusTip(toolTip)
+        tooltip = _('Drop-down containing Album status filters(modified/unmodified, complete/incomplete)')
+        self._status_button.setToolTip(tooltip)
+        self._status_button.setStatusTip(tooltip)
 
         self.status_filters = self._get_saved_status_filters()
         # Find the layout child to add the modified and complete buttons to
 
-        self._status_actions = {}
+        self._status_checkboxes = {}
         menu = QtWidgets.QMenu()
         menu.setTitle(_("Status Filters"))
-        menu.setTearOffEnabled(True)
+        # Tear-off is intentionally not enabled: a QWidgetAction's default widget
+        # (the per-status QCheckBox) does not render in the torn-off copy, since a
+        # QWidgetAction owns a single widget instance that cannot appear in both
+        # the dropdown and the tear-off window.
 
         for state, desc in STATUS_FILTER_DESCRIPTORS.items():
-            self._status_actions[state] = QAction(desc.text)
-            self._status_actions[state].setToolTip(desc.tooltip)
-            self._status_actions[state].setIcon(desc.icon_provider())
-            self._status_actions[state].setCheckable(True)
-            match state:
-                case 'modified':
-                    self._status_actions[state].setChecked(self.status_filters.modified)
-                case 'unmodified':
-                    self._status_actions[state].setChecked(self.status_filters.unmodified)
-                case 'complete':
-                    self._status_actions[state].setChecked(self.status_filters.complete)
-                case 'incomplete':
-                    self._status_actions[state].setChecked(self.status_filters.incomplete)
+            # A QCheckBox in a QWidgetAction shows the native check indicator,
+            # the colored status icon and the label together, so the enabled
+            # state is unambiguous and toggling keeps the menu open. A plain
+            # checkable QAction renders its icon in the check column, hiding the
+            # checkmark (see PICARD-189 review).
+            checkbox = QtWidgets.QCheckBox(desc.text)
+            checkbox.setToolTip(desc.tooltip)
+            checkbox.setIcon(desc.icon_provider())
+            checkbox.setContentsMargins(6, 2, 6, 2)
+            # Each STATUS_FILTER_DESCRIPTORS key matches a StatusFilters field name.
+            checkbox.setChecked(getattr(self.status_filters, state))
+            checkbox.toggled.connect(partial(self._status_checkbox_toggled, state))
 
-            _unused = self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
-        menu.addActions(self._status_actions.values())
+            widget_action = QtWidgets.QWidgetAction(menu)
+            widget_action.setDefaultWidget(checkbox)
+            menu.addAction(widget_action)
+            self._status_checkboxes[state] = checkbox
+
+        menu.addSeparator()
+        self._clear_all_action = QAction(_("Show all"), self)
+        self._clear_all_action.setToolTip(_("Enable all status filters (show everything)"))
+        self._clear_all_action.triggered.connect(self._clear_all_status_filters)
+        menu.addAction(self._clear_all_action)
 
         self._status_button.setMenu(menu)
+        self._update_status_button_label()
 
         # Locate base Filter class filter button in order to insert status button before it
         filter_button_idx = layout.indexOf(self.filter_button)
@@ -183,29 +197,61 @@ class AlbumFilter(Filter):
     def clear(self):
         super().clear()
         self.status_filters = self._get_saved_status_filters()
-        for state, checkbox in self._status_actions.items():
-            match state:
-                case 'modified':
-                    checkbox.setChecked(self.status_filters.modified)
-                case 'unmodified':
-                    checkbox.setChecked(self.status_filters.unmodified)
-                case 'complete':
-                    checkbox.setChecked(self.status_filters.complete)
-                case 'incomplete':
-                    checkbox.setChecked(self.status_filters.incomplete)
+        self._sync_status_checkboxes()
+        self._update_status_button_label()
+
+    def _sync_status_checkboxes(self):
+        """Reflect self.status_filters on the menu items without re-triggering handlers."""
+        self._syncing_status = True
+        try:
+            for state, checkbox in self._status_checkboxes.items():
+                # Each key in _status_checkboxes matches a StatusFilters field name.
+                checkbox.setChecked(getattr(self.status_filters, state))
+        finally:
+            self._syncing_status = False
 
     def _get_saved_status_filters(self) -> StatusFilters:
         config = get_config()
-        temp = config.persist[self._saved_status_key]
-        if isinstance(temp, StatusFilters):
-            return temp
-        return StatusFilters(True, True, True, True)
+        return StatusFilters.from_dict(config.persist[self._saved_status_key])
+
+    def _save_status_filters(self):
+        config = get_config()
+        config.persist[self._saved_status_key] = self.status_filters.to_dict()
 
     def _status_checkbox_toggled(self, status_key, checked: bool):
+        if self._syncing_status:
+            # Ignore toggles caused by programmatic sync (clear / clear-all).
+            return
         setattr(self.status_filters, status_key, checked)
-        config = get_config()
-        config.persist[self._saved_status_key] = self.status_filters
+        self._save_status_filters()
+        self._update_status_button_label()
         self._query_changed(self.filter_query_box.text())
+
+    def _clear_all_status_filters(self):
+        """Reset every status filter to active (i.e. show everything)."""
+        if self.status_filters.all_active():
+            return
+        self.status_filters = StatusFilters()
+        self._save_status_filters()
+        self._sync_status_checkboxes()
+        self._update_status_button_label()
+        self._query_changed(self.filter_query_box.text())
+
+    def _update_status_button_label(self):
+        self._status_button.setText(self.make_status_button_text(self.status_filters))
+
+    @staticmethod
+    def make_status_button_text(status_filters: StatusFilters) -> str:
+        """Return the Status button label, showing the active/total count.
+
+        When all filters are active (no filtering) the plain label is shown;
+        otherwise the count makes it obvious that a status filter is in effect.
+        """
+        if status_filters.all_active():
+            return _('Status')
+        states = status_filters.to_dict()
+        active = sum(1 for enabled in states.values() if enabled)
+        return _('Status (%(active)d/%(total)d)') % {'active': active, 'total': len(states)}
 
 
 def create_filter_for_tree_view(parent, *args, **kwargs) -> Filter:
