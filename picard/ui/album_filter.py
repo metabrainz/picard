@@ -150,15 +150,8 @@ class AlbumFilter(Filter):
             self._status_actions[state].setToolTip(desc.tooltip)
             self._status_actions[state].setIcon(desc.icon_provider())
             self._status_actions[state].setCheckable(True)
-            match state:
-                case 'modified':
-                    self._status_actions[state].setChecked(self.status_filters.modified)
-                case 'unmodified':
-                    self._status_actions[state].setChecked(self.status_filters.unmodified)
-                case 'complete':
-                    self._status_actions[state].setChecked(self.status_filters.complete)
-                case 'incomplete':
-                    self._status_actions[state].setChecked(self.status_filters.incomplete)
+            # Each STATUS_FILTER_DESCRIPTORS key matches a StatusFilters field name.
+            self._status_actions[state].setChecked(getattr(self.status_filters, state))
 
             _unused = self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
         menu.addActions(self._status_actions.values())
@@ -184,15 +177,8 @@ class AlbumFilter(Filter):
         super().clear()
         self.status_filters = self._get_saved_status_filters()
         for state, checkbox in self._status_actions.items():
-            match state:
-                case 'modified':
-                    checkbox.setChecked(self.status_filters.modified)
-                case 'unmodified':
-                    checkbox.setChecked(self.status_filters.unmodified)
-                case 'complete':
-                    checkbox.setChecked(self.status_filters.complete)
-                case 'incomplete':
-                    checkbox.setChecked(self.status_filters.incomplete)
+            # Each key in _status_actions matches a StatusFilters field name.
+            checkbox.setChecked(getattr(self.status_filters, state))
 
     def _get_saved_status_filters(self) -> StatusFilters:
         config = get_config()
