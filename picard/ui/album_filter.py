@@ -46,7 +46,7 @@ class AlbumStatusFilterDescriptor:
     icon_provider : Callable
         Functor used to create the icon used for the Tool Button in the UI.
     text : str
-        Text to place next to the icon (Not used in this case to save UI space).
+        Label shown next to the icon for the status filter's menu action.
     tooltip : str
         Tooltip explaining the current filter state for the album status.
     """
@@ -81,9 +81,9 @@ STATUS_FILTER_DESCRIPTORS: dict[str, AlbumStatusFilterDescriptor] = {
 }
 
 
-# There is a bug where the menu Arrow typecannot be removed from a QToolButton
+# There is a bug where the menu arrow type cannot be removed from a QToolButton
 # https://qt-project.atlassian.net/browse/QTBUG-2036
-class NoArrawToolButton(QtWidgets.QToolButton):
+class NoArrowToolButton(QtWidgets.QToolButton):
     """
     Override of the ToolButton class to workaround bug where the menu arrow always appear on Tool Button
     even when the NoArrow style option is set
@@ -120,22 +120,22 @@ class AlbumFilter(Filter):
                 break
 
         if not layout:
-            raise Exception(
-                "Album Filter is requires layout member in order to add complete and modified filter buttons"
+            raise RuntimeError(
+                "AlbumFilter requires a QHBoxLayout member in order to add the complete and modified filter buttons"
             )
 
         self.initializing = True
 
         self._saved_status_key = "filters_status_AlbumTreeView"
-        self._status_button = NoArrawToolButton(self)
+        self._status_button = NoArrowToolButton(self)
         self._status_button.setAutoRaise(False)
         self._status_button.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
         self._status_button.setArrowType(QtCore.Qt.ArrowType.NoArrow)
         self._status_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
         self._status_button.setText(_('Status'))
-        toolTip = _('Drop-down containing Album status filters(modified/unmodified, complete/incomplete)')
-        self._status_button.setToolTip(toolTip)
-        self._status_button.setStatusTip(toolTip)
+        tooltip = _('Drop-down containing Album status filters(modified/unmodified, complete/incomplete)')
+        self._status_button.setToolTip(tooltip)
+        self._status_button.setStatusTip(tooltip)
 
         self.status_filters = self._get_saved_status_filters()
         # Find the layout child to add the modified and complete buttons to
@@ -153,7 +153,7 @@ class AlbumFilter(Filter):
             # Each STATUS_FILTER_DESCRIPTORS key matches a StatusFilters field name.
             self._status_actions[state].setChecked(getattr(self.status_filters, state))
 
-            _unused = self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
+            self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
         menu.addActions(self._status_actions.values())
 
         self._status_button.setMenu(menu)
