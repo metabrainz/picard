@@ -249,9 +249,9 @@ class AlbumFilter(Filter):
         """
         if status_filters.all_active():
             return _('Status')
-        states = status_filters.to_dict().values()
-        active = sum(1 for enabled in states if enabled)
-        return _('Status (%(active)d/%(total)d)') % {'active': active, 'total': len(status_filters.to_dict())}
+        states = status_filters.to_dict()
+        active = sum(1 for enabled in states.values() if enabled)
+        return _('Status (%(active)d/%(total)d)') % {'active': active, 'total': len(states)}
 
 
 def create_filter_for_tree_view(parent, *args, **kwargs) -> Filter:
