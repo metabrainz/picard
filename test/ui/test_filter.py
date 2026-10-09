@@ -38,7 +38,10 @@ from picard.tags.tagvar import (
     TagVars,
 )
 
-from picard.ui.filter import Filter
+from picard.ui.filter import (
+    Filter,
+    StatusFilters,
+)
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
 
@@ -124,6 +127,52 @@ class FilterTestTags(PicardTestCase):
             self.assertEqual(
                 button_text, expected_text, f"Filter list {selected_filters} should produce '{expected_text}'"
             )
+
+
+class StatusFiltersTest(PicardTestCase):
+    """Test StatusFilters serialization and helpers."""
+
+    def test_all_active(self):
+        self.assertTrue(StatusFilters().all_active())
+        self.assertTrue(StatusFilters(modified=True, unmodified=True, complete=True, incomplete=True).all_active())
+        self.assertFalse(StatusFilters(modified=False).all_active())
+        self.assertFalse(StatusFilters(incomplete=False).all_active())
+
+    def test_to_dict(self):
+        self.assertEqual(
+            StatusFilters(modified=True, unmodified=False, complete=True, incomplete=False).to_dict(),
+            {'modified': True, 'unmodified': False, 'complete': True, 'incomplete': False},
+        )
+
+    def test_from_dict_roundtrip(self):
+        for modified in (True, False):
+            for unmodified in (True, False):
+                for complete in (True, False):
+                    for incomplete in (True, False):
+                        original = StatusFilters(
+                            modified=modified,
+                            unmodified=unmodified,
+                            complete=complete,
+                            incomplete=incomplete,
+                        )
+                        with self.subTest(status=original):
+                            self.assertEqual(StatusFilters.from_dict(original.to_dict()), original)
+
+    def test_from_dict_defaults_when_empty(self):
+        """An empty or missing stored value yields the all-active default."""
+        self.assertEqual(StatusFilters.from_dict({}), StatusFilters())
+
+    def test_from_dict_partial(self):
+        """Missing keys fall back to the all-active default per field."""
+        self.assertEqual(
+            StatusFilters.from_dict({'modified': False}),
+            StatusFilters(modified=False),
+        )
+
+    def test_from_dict_ignores_non_dict(self):
+        """A non-dict stored value (e.g. legacy/garbage) yields the default."""
+        self.assertEqual(StatusFilters.from_dict(None), StatusFilters())
+        self.assertEqual(StatusFilters.from_dict('garbage'), StatusFilters())
 
 
 class FilterTestFiltering(PicardTestCase):

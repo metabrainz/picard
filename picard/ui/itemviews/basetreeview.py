@@ -93,10 +93,11 @@ from picard.util import (
 )
 from picard.util.qt import cancel_on_destroyed
 
+from picard.ui.album_filter import create_filter_for_tree_view
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.columns import Columns
 from picard.ui.enums import MainAction
-from picard.ui.filter import Filter
+from picard.ui.filter import StatusFilters
 from picard.ui.itemviews.custom_columns import (
     DelegateColumn,
     IconColumn,
@@ -748,62 +749,97 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return None
 
     def setup_filter_box(self):
-        self.filter_box = Filter(self)
+        self.filter_box = create_filter_for_tree_view(self)
         self.filter_box.filterChanged.connect(self.filter_items)
 
         self.filter_box.hide()  # Hide the filter box initially
 
         return self.filter_box
 
-    def filter_items(self, text, filters):
-        if not text or not filters:  # When text or filters is empty, show all items
+    def filter_items(self, text, filters, status_filters):
+        # When text or filters is empty, show all items, unless any status filter is False
+        if (not text or not filters) and status_filters.all_active():
             self._restore_all_items()
             return
 
-        self._filter_tree_items(self.invisibleRootItem(), text, filters)
+        BaseTreeView._filter_tree_items(self.invisibleRootItem(), text, filters, status_filters)
 
-    def _filter_tree_items(self, parent, text, filters):
+    @staticmethod
+    def _filter_tree_items(parent, text, filters, status_filters):
         text = text.lower()
         match_found = False
 
         for i in range(parent.childCount()):
             child = parent.child(i)
-            child_match = False
-            child_tags = False
+            text_filters_match = False
 
             if hasattr(child, 'obj'):
                 obj = child.obj
-                matched_filters = set()
 
-                for matcher in [self._matches_file_properties, self._matches_metadata]:
-                    has_tags, matches = matcher(obj, text, filters)
-                    child_tags |= has_tags
-                    if matches:
-                        child_match = True
-                        matched_filters = matched_filters.union(matches)
+                matches_status_filter = BaseTreeView._matches_status_filters(obj, status_filters)
 
-            if child.childCount() > 0:
-                child_match |= self._filter_tree_items(child, text, filters)
-
-            if not child_match and not child_tags:
-                child_match = True
-
-            if child_match and child.filterable:
-                self._set_item_tooltip(
-                    item=child,
-                    text=(
-                        _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
-                        if matched_filters
-                        else _('No tags found for selected filters.')
-                    ),
-                )
+                if matches_status_filter:
+                    text_filters_match = BaseTreeView._match_text_filters(child, text, filters)
 
             # Hide/show based on match
             if child.filterable:
-                child.setHidden(not child_match)
-            match_found |= child_match
+                child.setHidden(not text_filters_match)
+            match_found |= text_filters_match
 
         return match_found
+
+    @staticmethod
+    def _match_text_filters(child, text, filters) -> bool:
+        if not hasattr(child, 'obj'):
+            return False
+
+        obj = child.obj
+        matched_filters = set()
+        child_match = False
+        child_tags = False
+
+        for matcher in [BaseTreeView._matches_file_properties, BaseTreeView._matches_metadata]:
+            has_tags, matches = matcher(obj, text, filters)
+            child_tags |= has_tags
+            if matches:
+                child_match = True
+                matched_filters = matched_filters.union(matches)
+
+        if child.childCount() > 0:
+            # Only the top level Album modified/complete state needs to be
+            # checked; children are matched with status filtering disabled.
+            child_match |= BaseTreeView._filter_tree_items(child, text, filters, StatusFilters())
+
+        if not child_match and not child_tags:
+            child_match = True
+
+        if child_match and child.filterable:
+            BaseTreeView._set_item_tooltip(
+                item=child,
+                text=(
+                    _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
+                    if matched_filters
+                    else _('No tags found for selected filters.')
+                ),
+            )
+        return child_match
+
+    @staticmethod
+    def _matches_status_filters(obj, status_filters: StatusFilters) -> bool:
+        if not isinstance(obj, Album):
+            return True
+
+        is_modified = obj.is_modified()
+        is_complete = obj.is_complete()
+        if not status_filters.modified and is_modified:
+            return False
+        if not status_filters.unmodified and not is_modified:
+            return False
+        if not status_filters.complete and is_complete:
+            return False
+        if not status_filters.incomplete and not is_complete:
+            return False
+        return True
 
     @staticmethod
     def _matches_file_properties(obj, text: str, filters: set):
@@ -844,7 +880,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         return has_tags, matches
 
-    def _set_item_tooltip(self, item: QtWidgets.QTreeWidgetItem, text: str):
+    @staticmethod
+    def _set_item_tooltip(item: QtWidgets.QTreeWidgetItem, text: str):
         for i in range(item.columnCount()):
             item.setToolTip(i, text)
 
