@@ -109,6 +109,7 @@ class AlbumFilter(Filter):
     _status_button: QtWidgets.QToolButton
     status_filters: StatusFilters
     _status_actions: dict[str, QAction]
+    _clear_all_action: QAction
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -156,7 +157,14 @@ class AlbumFilter(Filter):
             self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
         menu.addActions(self._status_actions.values())
 
+        menu.addSeparator()
+        self._clear_all_action = QAction(_("Clear all"), self)
+        self._clear_all_action.setToolTip(_("Enable all status filters (show everything)"))
+        self._clear_all_action.triggered.connect(self._clear_all_status_filters)
+        menu.addAction(self._clear_all_action)
+
         self._status_button.setMenu(menu)
+        self._update_status_button_label()
 
         # Locate base Filter class filter button in order to insert status button before it
         filter_button_idx = layout.indexOf(self.filter_button)
@@ -178,17 +186,52 @@ class AlbumFilter(Filter):
         self.status_filters = self._get_saved_status_filters()
         for state, checkbox in self._status_actions.items():
             # Each key in _status_actions matches a StatusFilters field name.
-            checkbox.setChecked(getattr(self.status_filters, state))
+            with QtCore.QSignalBlocker(checkbox):
+                checkbox.setChecked(getattr(self.status_filters, state))
+        self._update_status_button_label()
 
     def _get_saved_status_filters(self) -> StatusFilters:
         config = get_config()
         return StatusFilters.from_dict(config.persist[self._saved_status_key])
 
-    def _status_checkbox_toggled(self, status_key, checked: bool):
-        setattr(self.status_filters, status_key, checked)
+    def _save_status_filters(self):
         config = get_config()
         config.persist[self._saved_status_key] = self.status_filters.to_dict()
+
+    def _status_checkbox_toggled(self, status_key, checked: bool):
+        setattr(self.status_filters, status_key, checked)
+        self._save_status_filters()
+        self._update_status_button_label()
         self._query_changed(self.filter_query_box.text())
+
+    def _clear_all_status_filters(self):
+        """Reset every status filter to active (i.e. show everything)."""
+        if self.status_filters.all_active():
+            return
+        self.status_filters = StatusFilters()
+        self._save_status_filters()
+        for checkbox in self._status_actions.values():
+            # Avoid re-triggering _status_checkbox_toggled for each checkbox.
+            with QtCore.QSignalBlocker(checkbox):
+                checkbox.setChecked(True)
+        self._update_status_button_label()
+        self._query_changed(self.filter_query_box.text())
+
+    def _update_status_button_label(self):
+        self._status_button.setText(self.make_status_button_text(self.status_filters))
+
+    @staticmethod
+    def make_status_button_text(status_filters: StatusFilters) -> str:
+        """Return the Status button label, showing the active/total count.
+
+        When all filters are active (no filtering) the plain label is shown;
+        otherwise the count makes it obvious that a status filter is in effect.
+        """
+        if status_filters.all_active():
+            return _('Status')
+        states = status_filters.to_dict().values()
+        active = sum(1 for enabled in states if enabled)
+        return _('Status (%(active)d/%(total)d)') % {'active': active, 'total': len(status_filters.to_dict())}
 
 
 def create_filter_for_tree_view(parent, *args, **kwargs) -> Filter:

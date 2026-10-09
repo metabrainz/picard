@@ -27,6 +27,8 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt6.QtGui import QAction
+
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
@@ -38,6 +40,7 @@ from picard.config import (
     Option,
 )
 from picard.file import File
+from picard.i18n import gettext as _
 from picard.metadata import (
     Metadata,
     MultiMetadataProxy,
@@ -47,6 +50,7 @@ from picard.tags.tagvar import (
     TagVars,
 )
 
+from picard.ui.album_filter import AlbumFilter
 from picard.ui.filter import StatusFilters
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
@@ -511,3 +515,73 @@ class FilterItemsGuardTest(PicardTestCase):
         fake_self, mock_walk = self._call_filter_items('abc', {'title'}, StatusFilters())
         fake_self._restore_all_items.assert_not_called()
         mock_walk.assert_called_once()
+
+
+class StatusButtonLabelTest(PicardTestCase):
+    """Test the Status button label reflecting how many filters are active."""
+
+    def test_label_all_active(self):
+        """All filters active means no filtering, so just the plain label."""
+        self.assertEqual(AlbumFilter.make_status_button_text(StatusFilters()), _('Status'))
+
+    def test_label_subset_active(self):
+        """A subset active shows the active/total count."""
+        self.assertEqual(
+            AlbumFilter.make_status_button_text(StatusFilters(modified=False)),
+            _('Status (%(active)d/%(total)d)') % {'active': 3, 'total': 4},
+        )
+        self.assertEqual(
+            AlbumFilter.make_status_button_text(
+                StatusFilters(modified=False, unmodified=False, complete=False, incomplete=False)
+            ),
+            _('Status (%(active)d/%(total)d)') % {'active': 0, 'total': 4},
+        )
+
+
+class ClearAllStatusFiltersTest(PicardTestCase):
+    """Test the 'Clear all' menu action resetting status filters to all-active."""
+
+    def _make_fake_filter(self, status_filters):
+        """A stand-in AlbumFilter exposing just what _clear_all_status_filters uses.
+
+        Real QActions are used for the checkboxes so the QSignalBlocker context
+        in the production code works (it requires a QObject).
+        """
+        fake = MagicMock()
+        fake.status_filters = status_filters
+        fake._saved_status_key = 'filters_status_AlbumTreeView'
+        fake._status_actions = {
+            state: QAction(checkable=True) for state in ('modified', 'unmodified', 'complete', 'incomplete')
+        }
+        # Use the real persistence helper against a mocked config.
+        fake._save_status_filters.side_effect = lambda: AlbumFilter._save_status_filters(fake)
+        return fake
+
+    def test_clear_all_resets_to_active_and_persists(self):
+        fake = self._make_fake_filter(StatusFilters(modified=False, unmodified=True, complete=False, incomplete=True))
+        with patch('picard.ui.album_filter.get_config') as mock_get_config:
+            config = MagicMock()
+            config.persist = {}
+            mock_get_config.return_value = config
+            AlbumFilter._clear_all_status_filters(fake)
+
+        # Filters reset to all-active.
+        self.assertEqual(fake.status_filters, StatusFilters())
+        # Persisted as the all-active dict.
+        self.assertEqual(config.persist['filters_status_AlbumTreeView'], StatusFilters().to_dict())
+        # Every checkbox ends up checked.
+        self.assertTrue(all(action.isChecked() for action in fake._status_actions.values()))
+        # Re-emits the filter query so the view refreshes.
+        fake._query_changed.assert_called_once()
+
+    def test_clear_all_is_noop_when_already_all_active(self):
+        """Nothing changes and no re-filtering is triggered when already cleared."""
+        fake = self._make_fake_filter(StatusFilters())
+        with patch('picard.ui.album_filter.get_config') as mock_get_config:
+            config = MagicMock()
+            config.persist = {}
+            mock_get_config.return_value = config
+            AlbumFilter._clear_all_status_filters(fake)
+
+        self.assertEqual(fake.status_filters, StatusFilters())
+        fake._query_changed.assert_not_called()
