@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-09-19 14:24+0200\n"
-"PO-Revision-Date: 2026-10-08 09:05+0000\n"
+"PO-Revision-Date: 2026-10-08 17:02+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -543,7 +543,7 @@ msgstr "Cover-Art-Größe anzeigen"
 
 #: picard/options.py:257
 msgid "Show cover art MIME type"
-msgstr "Cover-Art-MIME-Type anzeigen"
+msgstr "Cover-Art-MIME-Typ anzeigen"
 
 #: picard/options.py:261
 msgid "Discard small images"
@@ -3841,10 +3841,8 @@ msgid "Log view text (warning)"
 msgstr "Text in Protokollansicht (Warnung)"
 
 #: picard/ui/colors.py:52
-#, fuzzy
-#| msgid "Profile highlight background"
 msgid "Low match similarity background"
-msgstr "Profil-Hervorhebungen (Hintergrund)"
+msgstr "Hintergrund für geringe Übereinstimmung"
 
 #: picard/ui/colors.py:53
 msgid "Profile highlight background"
@@ -4459,7 +4457,7 @@ msgstr ""
 msgid "You can change these later under Options → General → Startup."
 msgstr ""
 "Dies kann später im Einstellungs-Menü über Einstellungen → Allgemein → "
-"Startup geändert werden."
+"Anwendungsstart geändert werden."
 
 #: picard/ui/setupwizard.py:438
 #, fuzzy
@@ -5513,19 +5511,19 @@ msgstr "Sitzungen speichern:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:117
 msgid "Auto-save every N minutes (0 to disable):"
-msgstr ""
+msgstr "Automatisch alle N Minuten speichern (0 zum deaktivieren):"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:118
 msgid "Attempt session backup on unexpected shutdown"
-msgstr ""
+msgstr "Versuche Sitzung beim unerwarteten Beenden zu sichern"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:119
 msgid "Include MusicBrainz data in saved sessions"
-msgstr ""
+msgstr "MusicBrainz-Daten in gespeicherter Sitzung einschließen"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:120
 msgid "Do not make MusicBrainz requests on restore"
-msgstr ""
+msgstr "Beim Wiederherstellen keine Anfragen an MusicBrainz durchführen"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
 msgid "Loading sessions:"
@@ -5556,6 +5554,9 @@ msgid ""
 "When enabled, ISRCs will be read from the CD during disc lookup. This may "
 "significantly slow down the disc read on some drives."
 msgstr ""
+"Wenn aktiviert, werden ISRCs beim Abfragen von CDs ausgelesen. Diese kann "
+"das\n"
+"Lesen der CD mit einigen Laufwerken deutlich langsamer machen."
 
 #: picard/ui/forms/ui_options_cdlookup_select.py:57
 msgid "Default CD-ROM drive to use for lookups:"
@@ -5610,10 +5611,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover.py:139
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Remove cover images from tags"
-msgstr "Cover-Bilder in Tags einbetten"
+msgstr "Cover-Bilder aus Tags löschen"
 
 #: picard/ui/forms/ui_options_cover.py:140
 msgid "Cover Art Providers"
@@ -5878,7 +5877,7 @@ msgstr "Cover-Art-Details in Cover-Art-Ansicht anzeigen"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
-msgstr ""
+msgstr "Typ anzeigen (Vorderseite, Rückseite usw.)"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
 msgid "Show file size"
@@ -5890,7 +5889,7 @@ msgstr "Größe anzeigen"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
-msgstr ""
+msgstr "MIME-Typ anzeigen"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:49
@@ -5976,11 +5975,11 @@ msgstr "Verzeichnis für automatische Konfigurationssicherungen:"
 
 #: picard/ui/forms/ui_options_maintenance.py:150
 msgid "Load backup…"
-msgstr "Backup laden…"
+msgstr "Sicherung laden …"
 
 #: picard/ui/forms/ui_options_maintenance.py:151
 msgid "Save backup…"
-msgstr "Backup speichern…"
+msgstr "Sicherung speichern …"
 
 #: picard/ui/forms/ui_options_maintenance.py:152
 msgid "Select all"
@@ -6143,10 +6142,8 @@ msgid " MB"
 msgstr " MB"
 
 #: picard/ui/forms/ui_options_network.py:184
-#, fuzzy
-#| msgid "C&lear all"
 msgid "Clear cache"
-msgstr "Alle ent&fernen"
+msgstr "Cache leeren"
 
 #: picard/ui/forms/ui_options_network.py:186
 msgid "Default listening port:"
@@ -6154,25 +6151,23 @@ msgstr "Standard-Verbindungsport:"
 
 #: picard/ui/forms/ui_options_player.py:59
 msgid "ListenBrainz user name"
-msgstr ""
+msgstr "ListenBrainz-Benutzername:"
 
 #: picard/ui/forms/ui_options_player.py:60
 msgid "Enable audio player \"now playing\" notifications"
-msgstr ""
+msgstr "„Aktuelle Wiedergabe“-Benachrichtigungen des Audioplayers aktivieren"
 
 #: picard/ui/forms/ui_options_player.py:61
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit listens to ListenBrainz"
-msgstr "Bewertungen an MusicBrainz übermitteln"
+msgstr "Wiedergaben an ListenBrainz übermitteln"
 
 #: picard/ui/forms/ui_options_player.py:62
 msgid "Submit only tagged files"
-msgstr ""
+msgstr "Nur Wiedergaben getaggter Dateien übermitteln"
 
 #: picard/ui/forms/ui_options_player.py:63
 msgid "ListenBrainz user token:"
-msgstr ""
+msgstr "ListenBrainz-Benutzertoken:"
 
 #: picard/ui/forms/ui_options_player.py:65
 msgid ""
@@ -6180,6 +6175,10 @@ msgid ""
 "listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
 "color:#308cc6;\">ListenBrainz settings</span></a>.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Das Benutzertoken ist in den <a href=\"https://"
+"listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
+"color:#308cc6;\">ListenBrainz-Einstellungen</span></a> verfügbar.</p></body>"
+"</html>"
 
 #: picard/ui/forms/ui_options_profiles.py:81
 msgid "Option Profile(s)"
@@ -6321,7 +6320,7 @@ msgstr "Neues Taggerskript hinzufügen"
 
 #: picard/ui/forms/ui_options_script.py:131
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
@@ -8284,29 +8283,27 @@ msgstr "Erweitert"
 
 #: picard/ui/options/advanced.py:60
 msgid "Test file path matching:"
-msgstr ""
+msgstr "Dateipfadübereinstimmung prüfen"
 
 #: picard/ui/options/advanced.py:62
 msgid "Enter file paths to test, one per line."
-msgstr ""
+msgstr "Zu prüfende Dateipfade eingeben, einen per Zeile."
 
 #: picard/ui/options/advanced.py:63
-#, fuzzy
-#| msgid "The file was empty"
 msgid "the file path matches"
-msgstr "Die Datei war leer"
+msgstr "der Dateipfad stimmt überein"
 
 #: picard/ui/options/advanced.py:64
 msgid "the file path does not match"
-msgstr ""
+msgstr "der Dateipfad stimmt nicht überein"
 
 #: picard/ui/options/cdlookup.py:72
 msgid "ISRC extraction is not supported on this platform."
-msgstr ""
+msgstr "Das Auslesen von ISRCs wird auf dieser Plattform nicht unterstützt."
 
 #: picard/ui/options/cover_processing.py:52
 msgid "Processing"
-msgstr ""
+msgstr "Bearbeitung"
 
 #: picard/ui/options/dialog.py:138
 msgid "This page failed to initialize"
@@ -8621,10 +8618,8 @@ msgstr ""
 "Diese Einstellung aktivieren?"
 
 #: picard/ui/options/interface.py:237
-#, fuzzy
-#| msgid "Reset all"
 msgid "Reset Tutorial"
-msgstr "Alle zurücksetzen"
+msgstr "Tutorial zurücksetzen"
 
 #: picard/ui/options/interface.py:238
 msgid ""
@@ -8776,7 +8771,7 @@ msgstr "Wert"
 
 #: picard/ui/options/maintenance.py:137
 msgid "Configuration File Backup Directory Error"
-msgstr "Konfigurationsdatei-Backupverzeichnis-Fehler"
+msgstr "Konfigurationsdatei-Sicherungsverzeichnis-Fehler"
 
 #: picard/ui/options/maintenance.py:138
 #, python-format
@@ -8801,7 +8796,7 @@ msgstr "Konfigurationsdateien"
 
 #: picard/ui/options/maintenance.py:230
 msgid "Backup Configuration File Save Error"
-msgstr "Fehler beim Speichern des Konfigurationsdatei-Backups"
+msgstr "Fehler beim Speichern der Konfigurationsdateisicherung"
 
 #: picard/ui/options/maintenance.py:231
 #, python-format
@@ -8832,7 +8827,7 @@ msgstr ""
 #: picard/ui/options/maintenance.py:279 picard/ui/options/maintenance.py:297
 #: picard/ui/options/maintenance.py:307
 msgid "Load Backup Configuration File"
-msgstr "Backup der Konfigurationsdatei wiederherstellen"
+msgstr "Sicherung der Konfigurationsdatei wiederherstellen"
 
 #: picard/ui/options/maintenance.py:281
 #, python-format
@@ -8845,9 +8840,9 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Das Wiederherstellen des Backups der Konfigurationsdatei wird die "
+"Das Wiederherstellen der Sicherung der Konfigurationsdatei wird die "
 "derzeitigen Einstellungen ersetzen.\n"
-"Vor der Änderung wird ein Backup der aktuellen Datei hier gespeichert:\n"
+"Vor der Änderung wird eine Sicherung der aktuellen Datei hier gespeichert:\n"
 "%s\n"
 "\n"
 "Mit Wiederherstellung fortfahren?"
@@ -8946,10 +8941,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/player.py:36
-#, fuzzy
-#| msgid "Player"
 msgid "Audio Player"
-msgstr "Player"
+msgstr "Audio-Player"
 
 #: picard/ui/options/plugins.py:108
 #, python-brace-format
@@ -9188,17 +9181,15 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:575
 msgid "Share (exclude sensitive data)"
-msgstr ""
+msgstr "Teilen (sensible Daten ausschließen)"
 
 #: picard/ui/options/profiles.py:575
 msgid "Backup (include everything)"
-msgstr ""
+msgstr "Sicherung (alles einschließen)"
 
 #: picard/ui/options/profiles.py:578 picard/ui/options/profiles.py:592
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Export Profile"
-msgstr "Einstellungs-Profile"
+msgstr "Profil exportieren"
 
 #: picard/ui/options/profiles.py:579
 msgid "Export mode:"
@@ -9454,7 +9445,7 @@ msgstr "Sitzungsverzeichnis auswählen"
 
 #: picard/ui/options/startup.py:55
 msgid "Startup"
-msgstr ""
+msgstr "Anwendungsstart"
 
 #: picard/ui/options/tags_compatibility_aac.py:38
 msgid "AAC"
