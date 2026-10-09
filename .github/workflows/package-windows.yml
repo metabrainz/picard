@@ -53,8 +53,8 @@ jobs:
           -GettextVersion $Env:GETTEXT_VERSION -GettextSha256Sum $Env:GETTEXT_SHA256SUM
         Add-Content $env:GITHUB_PATH (Join-Path -Path (Resolve-Path .) -ChildPath gettext\bin)
       env:
-        GETTEXT_VERSION: 0.22.4
-        GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
+        GETTEXT_VERSION: "1.0"
+        GETTEXT_SHA256SUM: fe844fcbeb49d29daa79bedf1e559ba0b2a9606c19b3a3c968d1383a1f707b5a
     - name: Install dependencies
       run: uv sync --group build --group dev --extra plugins
     - name: Patch build version
