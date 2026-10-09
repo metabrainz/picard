@@ -25,6 +25,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Iterable
 from html import escape as html_escape
 
 from PyQt6 import (
@@ -99,7 +100,7 @@ def open_local_path(path: str) -> None:
         QtGui.QDesktopServices.openUrl(url)
 
 
-def find_starting_directory():
+def find_starting_directory() -> str:
     config = get_config()
     if config.setting['starting_directory']:
         path = config.setting['starting_directory_path']
@@ -108,7 +109,7 @@ def find_starting_directory():
     return find_existing_path(path)
 
 
-def apply_removal_overlay(pixmap):
+def apply_removal_overlay(pixmap: QtGui.QPixmap) -> QtGui.QPixmap:
     """Draw a dotted translucent red overlay signaling the image will be removed from tags."""
     overlaid = QtGui.QPixmap(pixmap)
     painter = QtGui.QPainter(overlaid)
@@ -120,23 +121,25 @@ def apply_removal_overlay(pixmap):
     return overlaid
 
 
-def strikethrough_removal_text(text):
+def strikethrough_removal_text(text: str) -> str:
     """Style rich text as struck-through red, signaling removal from tags."""
     color = interface_colors.get_color('tagstatus_removed')
     return f'<span style="color:{color}; text-decoration:line-through;">{text}</span>'
 
 
-def _picardize_caption(caption):
+def _picardize_caption(caption: str) -> str:
     return _("%s - %s") % (caption, PICARD_DISPLAY_NAME)
 
 
-def _filedialog_caption(caption, default_caption=""):
+def _filedialog_caption(caption: str | None, default_caption: str = "") -> str:
     if not caption:
         caption = default_caption
     return _picardize_caption(caption)
 
 
-def _filedialog_options(options, default=None):
+def _filedialog_options(
+    options: QtWidgets.QFileDialog.Option | None, default: QtWidgets.QFileDialog.Option | None = None
+) -> QtWidgets.QFileDialog.Option:
     if options is None:
         # returns default flags or empty enum flag
         return default or QtWidgets.QFileDialog.Option(0)
@@ -147,14 +150,23 @@ def _filedialog_options(options, default=None):
 class FileDialog(QtWidgets.QFileDialog):
     """Wrap QFileDialog & its static methods"""
 
-    def __init__(self, parent=None, caption="", directory="", filter=""):
+    def __init__(
+        self, parent: QtWidgets.QWidget | None = None, caption: str = "", directory: str = "", filter: str = ""
+    ):
         if not caption:
             caption = _("Select a file or a directory")
         caption = _picardize_caption(caption)
         super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
 
     @staticmethod
-    def getSaveFileName(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
+    def getSaveFileName(
+        parent: QtWidgets.QWidget | None = None,
+        caption: str | None = "",
+        directory: str | None = "",
+        filter: str | None = "",
+        initialFilter: str | None = "",
+        options: QtWidgets.QFileDialog.Option | None = None,
+    ):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getSaveFileName(
@@ -167,7 +179,14 @@ class FileDialog(QtWidgets.QFileDialog):
         )
 
     @staticmethod
-    def getOpenFileName(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
+    def getOpenFileName(
+        parent: QtWidgets.QWidget | None = None,
+        caption: str | None = "",
+        directory: str | None = "",
+        filter: str | None = "",
+        initialFilter: str | None = "",
+        options: QtWidgets.QFileDialog.Option | None = None,
+    ):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileName(
@@ -180,7 +199,14 @@ class FileDialog(QtWidgets.QFileDialog):
         )
 
     @staticmethod
-    def getOpenFileNames(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
+    def getOpenFileNames(
+        parent: QtWidgets.QWidget | None = None,
+        caption: str | None = "",
+        directory: str | None = "",
+        filter: str | None = "",
+        initialFilter: str | None = "",
+        options: QtWidgets.QFileDialog.Option | None = None,
+    ):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileNames(
@@ -193,7 +219,12 @@ class FileDialog(QtWidgets.QFileDialog):
         )
 
     @staticmethod
-    def getExistingDirectory(parent=None, caption="", directory="", options=None):
+    def getExistingDirectory(
+        parent: QtWidgets.QWidget | None = None,
+        caption: str | None = "",
+        directory: str | None = "",
+        options: QtWidgets.QFileDialog.Option | None = None,
+    ) -> str:
         caption = _filedialog_caption(caption, _("Select a directory"))
         options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
         return QtWidgets.QFileDialog.getExistingDirectory(
@@ -204,7 +235,9 @@ class FileDialog(QtWidgets.QFileDialog):
         )
 
     @staticmethod
-    def getMultipleDirectories(parent=None, caption="", directory="", filter=""):
+    def getMultipleDirectories(
+        parent: QtWidgets.QWidget | None = None, caption: str | None = "", directory: str = "", filter: str = ""
+    ) -> tuple[str, ...]:
         """Custom file selection dialog which allows the selection
         of multiple directories.
         Depending on the platform, dialog may fallback on non-native.
@@ -247,7 +280,7 @@ class FileDialog(QtWidgets.QFileDialog):
         return tuple(dirs)
 
 
-def get_text_width(font, text):
+def get_text_width(font: QtGui.QFont, text: str) -> int:
     """Calculate the pixel width of text rendered in the given font.
 
     Uses QFontMetrics to measure the text, ensuring the result adapts
@@ -257,7 +290,7 @@ def get_text_width(font, text):
     return metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text).width()
 
 
-def _get_widget_text(widget):
+def _get_widget_text(widget) -> str:
     """Extract the current display text from a widget.
 
     For QComboBox, returns the longest item text to ensure the widget
@@ -288,7 +321,9 @@ def _get_widget_text(widget):
     return ''
 
 
-def set_widget_fixed_width_for_text(widget, reference_text=None, padding=0):
+def set_widget_fixed_width_for_text(
+    widget: QtWidgets.QWidget, reference_text: str | None = None, padding: int = 0
+) -> None:
     """Set a widget's fixed width based on the pixel width of reference_text.
 
     Uses font metrics instead of hardcoded pixel widths, so the result
@@ -307,7 +342,7 @@ def set_widget_fixed_width_for_text(widget, reference_text=None, padding=0):
     widget.setFixedWidth(width)
 
 
-def font_scaled_size(widget, width_chars, height_lines):
+def font_scaled_size(widget: QtWidgets.QWidget, width_chars: int, height_lines: int) -> QtCore.QSize:
     """Return a QSize scaled to the widget's font metrics.
 
     Args:
@@ -321,13 +356,13 @@ def font_scaled_size(widget, width_chars, height_lines):
     return QtCore.QSize(char_width * width_chars, line_height * height_lines)
 
 
-def qlistwidget_items(qlistwidget):
+def qlistwidget_items(qlistwidget: QtWidgets.QListWidget) -> Iterable[QtWidgets.QListWidgetItem]:
     """Yield all items from a QListWidget"""
     for i in range(qlistwidget.count()):
         yield qlistwidget.item(i)
 
 
-def changes_require_restart_warning(parent, warnings=None, notes=None):
+def changes_require_restart_warning(parent: QtWidgets.QWidget | None, warnings: list[str], notes=None):
     """Display a warning dialog about modified options requiring a restart"""
     if not warnings:
         return
@@ -342,7 +377,7 @@ def changes_require_restart_warning(parent, warnings=None, notes=None):
     QtWidgets.QMessageBox.warning(parent, _("Changes only applied on restart"), text)
 
 
-def show_session_not_found_dialog(parent, path: str) -> None:
+def show_session_not_found_dialog(parent: QtWidgets.QWidget | None, path: str) -> None:
     """Show a friendly dialog for a missing session file.
 
     Parameters
@@ -359,7 +394,9 @@ def show_session_not_found_dialog(parent, path: str) -> None:
     )
 
 
-def menu_builder(menu, main_actions, *args):
+def menu_builder(
+    menu: QtWidgets.QMenu, main_actions, *args: QtGui.QAction | QtWidgets.QMenu | MainAction | str | None
+) -> None:
     """Adds each argument to menu, depending on their type"""
     for arg in args:
         if arg is None:
@@ -436,7 +473,7 @@ def is_keyboard_context_menu_event(event: QtGui.QContextMenuEvent) -> bool:
 def context_menu_item(
     view: QtWidgets.QListWidget | QtWidgets.QTreeWidget | QtWidgets.QTableWidget,
     event: QtGui.QContextMenuEvent,
-):
+) -> QtWidgets.QListWidgetItem | QtWidgets.QTreeWidgetItem | QtWidgets.QTableWidgetItem | None:
     """Return the item a ``contextMenuEvent`` targets on an item-based widget.
 
     For mouse events this is the item under ``event.pos()``. For keyboard events
