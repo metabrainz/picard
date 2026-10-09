@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-19 14:24+0200\n"
+"POT-Creation-Date: 2026-10-08 19:02+0200\n"
 "PO-Revision-Date: 2026-09-14 10:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -57,31 +57,31 @@ msgstr "[hämtar albuminformation]"
 msgid "[could not load album %s]"
 msgstr "[det gick inte att läsa in albumet %s]"
 
-#: picard/cluster.py:393
+#: picard/cluster.py:404
 #, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
 msgstr "Den bästa matchningen för klustret %(album)s är tvetydig"
 
-#: picard/cluster.py:395
+#: picard/cluster.py:406
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "Klustret %(album)s identifierades!"
 
-#: picard/cluster.py:398
+#: picard/cluster.py:409
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Inga matchande utgåvor för klustret %(album)s"
 
-#: picard/cluster.py:454
+#: picard/cluster.py:481
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
 msgstr "Slår upp metadata för klustret %(album)s…"
 
-#: picard/cluster.py:516
+#: picard/cluster.py:587
 msgid "Unclustered Files"
 msgstr "Oklustrerade filer"
 
-#: picard/cluster.py:555
+#: picard/cluster.py:626
 msgid "Clusters"
 msgstr "Kluster"
 
@@ -109,11 +109,11 @@ msgstr[1] "Tog bort %(count)i utgåvor från samlingen ”%(name)s”"
 msgid "Error loading collections: %(error)s"
 msgstr "Fel vid inläsning av samlingar: %(error)s"
 
-#: picard/config_upgrade_hooks.py:171 picard/config_upgrade_hooks.py:188
+#: picard/config_upgrade_hooks.py:172 picard/config_upgrade_hooks.py:189
 msgid "Various Artists file naming scheme removal"
 msgstr "Borttagning av filnamnsschemat för blandade artister"
 
-#: picard/config_upgrade_hooks.py:173
+#: picard/config_upgrade_hooks.py:174
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -125,7 +125,7 @@ msgstr ""
 "Ditt filnamnsschema har automatiskt slagits samman med det för album med en "
 "enda artist."
 
-#: picard/config_upgrade_hooks.py:191
+#: picard/config_upgrade_hooks.py:192
 msgid ""
 "The separate file naming scheme for various artists albums has been removed "
 "in this version of Picard.\n"
@@ -141,19 +141,19 @@ msgstr ""
 "Vill du ta bort det eller slå samman det med ditt filnamnsschema för album "
 "med enskilda artister?"
 
-#: picard/config_upgrade_hooks.py:200
+#: picard/config_upgrade_hooks.py:201
 msgid "Merge"
 msgstr "Slå samman"
 
-#: picard/config_upgrade_hooks.py:201
+#: picard/config_upgrade_hooks.py:202
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:722
+#: picard/ui/metadatabox/__init__.py:724
 #: picard/ui/options/interface_toolbar.py:112 picard/ui/options/profiles.py:157
 #: picard/ui/widgets/preferencelistwidget.py:89
 msgid "Remove"
 msgstr "Ta bort"
 
-#: picard/config_upgrade_hooks.py:545
+#: picard/config_upgrade_hooks.py:546
 msgid "Primary file naming script"
 msgstr "Primärt filnamnsskript"
 
@@ -208,7 +208,7 @@ msgstr ""
 "insticksmoduler"
 
 #: picard/debug_opts.py:178 picard/plugin3/categories.py:31
-#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:260
+#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:279
 msgid "Cover Art"
 msgstr "Omslagsbilder"
 
@@ -282,15 +282,15 @@ msgstr "Webbläsarintegrering"
 msgid "Log browser integration HTTP requests"
 msgstr "Logga HTTP-förfrågningar från webbläsarintegreringen"
 
-#: picard/file.py:335
+#: picard/file.py:336
 msgid "Cannot save file: the file no longer exists."
 msgstr "Det går inte att spara filen eftersom den inte längre finns."
 
-#: picard/file.py:339
+#: picard/file.py:340
 msgid "Cannot save file: permission denied."
 msgstr "Det går inte att spara filen: åtkomst nekad."
 
-#: picard/file.py:344
+#: picard/file.py:345
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
@@ -298,22 +298,22 @@ msgstr ""
 "Filen kunde inte tolkas. Den är antingen skadad eller har ett filformat som "
 "inte stöds."
 
-#: picard/file.py:1174 picard/file.py:1191
+#: picard/file.py:1218 picard/file.py:1235
 #, python-format
 msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Inga matchande spår för filen ”%(filename)s”"
 
-#: picard/file.py:1177
+#: picard/file.py:1221
 #, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
 msgstr "Den bästa matchningen för filen ”%(filename)s” är tvetydig"
 
-#: picard/file.py:1179
+#: picard/file.py:1223
 #, python-format
 msgid "File \"%(filename)s\" identified!"
 msgstr "Filen ”%(filename)s” har identifierats!"
 
-#: picard/file.py:1259
+#: picard/file.py:1317
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Hämtar metadata för filen %(filename)s …"
@@ -346,21 +346,21 @@ msgstr "Sändningen av ISRC-koder misslyckades"
 msgid "ISRC submission finished successfully"
 msgstr "Sändningen av ISRC-koder slutfördes"
 
-#: picard/item.py:342
+#: picard/item.py:352
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
 msgstr[0] "%i bild"
 msgstr[1] "%i bilder"
 
-#: picard/item.py:345
+#: picard/item.py:355
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] "%i bild saknas i vissa spår"
 msgstr[1] "%i olika bilder bland spåren"
 
-#: picard/log.py:93 picard/ui/dialogs/installplugin.py:660
+#: picard/log.py:93 picard/ui/dialogs/installplugin.py:681
 #: picard/ui/options/renaming.py:116 picard/ui/scripteditor/__init__.py:569
 #: picard/ui/scripteditor/__init__.py:572
 #: picard/ui/scripteditor/__init__.py:881
@@ -372,7 +372,7 @@ msgstr "Fel"
 msgid "Warning"
 msgstr "Varning"
 
-#: picard/log.py:95 picard/ui/dialogs/installplugin.py:474
+#: picard/log.py:95 picard/ui/dialogs/installplugin.py:495
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
@@ -395,750 +395,749 @@ msgstr "Oväntat autentiseringsfel"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Oväntat förfrågningsfel (HTTP-kod %s)"
 
-#: picard/options.py:108 picard/ui/forms/ui_provider_options_caa.py:82
-msgid "Download only approved images"
-msgstr "Hämta endast godkända bilder"
-
-#: picard/options.py:109
-msgid "Cover art image size"
-msgstr "Omslagsbildens storlek"
-
-#: picard/options.py:111
-msgid "Cover art image types"
-msgstr "Omslagsbildstyper"
-
-#: picard/options.py:117
-msgid "Cover art image types to omit"
-msgstr "Omslagsbildstyper som ska utelämnas"
-
-#: picard/options.py:120
-msgid "Restrict cover art image types"
-msgstr "Begränsa omslagsbildstyper"
-
-#: picard/options.py:125
-msgid "Local cover art regex"
-msgstr "Reguljärt uttryck för lokala omslagsbilder"
-
-#: picard/options.py:179
-msgid "Tags to ignore for comparison"
-msgstr "Taggar att ignorera vid jämförelse"
-
-#: picard/options.py:180
-msgid "Completeness ignore: Data tracks"
-msgstr "Fullständighetskontroll: ignorera dataspår"
-
-#: picard/options.py:182
-msgid "Completeness ignore: Pregap tracks"
-msgstr "Fullständighetskontroll: ignorera förgapsspår"
-
-#: picard/options.py:185
-msgid "Completeness ignore: Silent tracks"
-msgstr "Fullständighetskontroll: ignorera tysta spår"
-
-#: picard/options.py:188
-msgid "Completeness ignore: Video tracks"
-msgstr "Fullständighetskontroll: ignorera videospår"
-
-#: picard/options.py:190 picard/ui/forms/ui_options_advanced.py:53
-msgid "Ignore hidden files"
-msgstr "Ignorera dolda filer"
-
-#: picard/options.py:191
-msgid "Ignore file paths (regular expression)"
-msgstr "Ignorera filsökvägar (reguljärt uttryck)"
-
-#: picard/options.py:196
-msgid "Allowed track difference (seconds)"
-msgstr "Tillåten skillnad mellan spår (sekunder)"
-
-#: picard/options.py:204
-msgid "Maximum MusicBrainz query items"
-msgstr "Högsta antal objekt per MusicBrainz-förfrågan"
-
-#: picard/options.py:211
-msgid "Include sub-folders when adding files"
-msgstr "Ta med undermappar när filer läggs till"
-
-#: picard/options.py:215
-msgid "CD lookup device"
-msgstr "Enhet för CD-uppslagning"
-
-#: picard/options.py:219
-msgid "Cover art providers"
-msgstr "Leverantörer av omslagsbilder"
-
-#: picard/options.py:221
-msgid "File name for images"
-msgstr "Filnamn för bilder"
-
-#: picard/options.py:223 picard/ui/forms/ui_options_cover.py:128
-msgid "Embed only a single front image"
-msgstr "Bädda endast in en framsidesbild"
-
-#: picard/options.py:228
-msgid "Never replace images with smaller ones"
-msgstr "Ersätt aldrig bilder med mindre bilder"
-
-#: picard/options.py:232
-msgid "Never replace images of selected types"
-msgstr "Ersätt aldrig bilder av valda typer"
-
-#: picard/options.py:238
-msgid "Never replace images of these types"
-msgstr "Ersätt aldrig bilder av dessa typer"
-
-#: picard/options.py:245
-msgid "Primary image type as the file name"
-msgstr "Använd den primära bildtypen som filnamn"
-
-#: picard/options.py:248
-msgid "Overwrite existing image files"
-msgstr "Skriv över befintliga bildfiler"
-
-#: picard/options.py:249
-msgid "Save images as separate files"
-msgstr "Spara bilder som separata filer"
-
-#: picard/options.py:250
-msgid "Embed images into tags"
-msgstr "Bädda in bilder i taggar"
-
-#: picard/options.py:251
-msgid "Remove images from tags"
-msgstr "Ta bort bilder från taggar"
-
-#: picard/options.py:252
-msgid "Save only one front image"
-msgstr "Spara endast en framsidesbild"
-
-#: picard/options.py:253
-msgid "Show cover art details in view"
-msgstr "Visa information om omslagsbilder i vyn"
-
-#: picard/options.py:254
-msgid "Show cover art type"
-msgstr "Visa omslagsbildstyp"
-
-#: picard/options.py:255
-msgid "Show cover art file size"
-msgstr "Visa omslagsbildens filstorlek"
-
-#: picard/options.py:256
-msgid "Show cover art dimensions"
-msgstr "Visa omslagsbildens mått"
-
-#: picard/options.py:257
-msgid "Show cover art MIME type"
-msgstr "Visa omslagsbildens MIME-typ"
-
-#: picard/options.py:261
-msgid "Discard small images"
-msgstr "Kassera små bilder"
-
-#: picard/options.py:269
-msgid "Minimum image width"
-msgstr "Minsta bildbredd"
-
-#: picard/options.py:277
-msgid "Minimum image height"
-msgstr "Minsta bildhöjd"
-
-#: picard/options.py:281
-msgid "Allow enlarging tag images"
-msgstr "Tillåt förstoring av taggbilder"
-
-#: picard/options.py:282
-msgid "Allow resizing tag images"
-msgstr "Tillåt storleksändring av taggbilder"
-
-#: picard/options.py:287
-msgid "Resized tag image width"
-msgstr "Ändrad bredd för taggbild"
-
-#: picard/options.py:295
-msgid "Resized tag image height"
-msgstr "Ändrad höjd för taggbild"
-
-#: picard/options.py:300
-msgid "Tag image resize mode"
-msgstr "Läge för storleksändring av taggbilder"
-
-#: picard/options.py:302
-msgid "Convert tag image format"
-msgstr "Konvertera taggbildens format"
-
-#: picard/options.py:307
-msgid "New tag image format"
-msgstr "Nytt format för taggbild"
-
-#: picard/options.py:310
-msgid "Allow enlarging file images"
-msgstr "Tillåt förstoring av filbilder"
-
-#: picard/options.py:311
-msgid "Allow resizing file images"
-msgstr "Tillåt storleksändring av filbilder"
-
-#: picard/options.py:316
-msgid "Resized file image width"
-msgstr "Ändrad bredd för filbild"
-
-#: picard/options.py:324
-msgid "Resized file image height"
-msgstr "Ändrad höjd för filbild"
-
-#: picard/options.py:329
-msgid "File image resize mode"
-msgstr "Läge för storleksändring av filbilder"
-
-#: picard/options.py:331
-msgid "Convert file image format"
-msgstr "Konvertera filbildens format"
-
-#: picard/options.py:336
-msgid "New file image format"
-msgstr "Nytt format för filbild"
-
-#: picard/options.py:343
-msgid "Format conversion quality"
-msgstr "Kvalitet vid formatkonvertering"
-
-#: picard/options.py:357
-msgid "Use AcoustID fingerprinting"
-msgstr "Använd AcoustID-fingeravtryck"
-
-#: picard/options.py:365 picard/ui/forms/ui_options_fingerprinting.py:109
-msgid "Ignore existing AcoustID fingerprints"
-msgstr "Ignorera befintliga AcoustID-fingeravtryck"
-
-#: picard/options.py:368
-msgid "Save AcoustID fingerprints"
-msgstr "Spara AcoustID-fingeravtryck"
-
-#: picard/options.py:377 picard/ui/forms/ui_options_lookup.py:86
-msgid "Automatically scan all new files"
-msgstr "Skanna automatiskt alla nya filer"
-
-#: picard/options.py:378 picard/ui/forms/ui_options_lookup.py:87
-msgid "Automatically cluster all new files"
-msgstr "Klustra automatiskt alla nya filer"
-
-#: picard/options.py:379 picard/ui/forms/ui_options_lookup.py:88
-msgid "Ignore MBIDs when loading new files"
-msgstr "Ignorera MBID:n när nya filer läses in"
-
-#: picard/options.py:380
-msgid "Server address"
-msgstr "Serveradress"
-
-#: picard/options.py:381
-msgid "Port"
-msgstr "Port"
-
-#: picard/options.py:382
-msgid "Submit to configured server"
-msgstr "Skicka till den konfigurerade servern"
-
-#: picard/options.py:383 picard/ui/forms/ui_options_cdlookup.py:53
-#: picard/ui/forms/ui_options_cdlookup_select.py:59
-msgid "Read ISRCs from CD"
-msgstr "Läs ISRC-koder från CD"
-
-#: picard/options.py:384
-msgid "Enable managing user collections"
-msgstr "Aktivera hantering av användarsamlingar"
-
-#: picard/options.py:389 picard/ui/forms/ui_options_general.py:139
-msgid "Remove complete albums after saving"
-msgstr "Ta bort kompletta album efter sparning"
-
-#: picard/options.py:395
-msgid "Use album artist genres"
-msgstr "Använd albumartistens genrer"
-
-#: picard/options.py:396 picard/ui/forms/ui_options_genres.py:122
-msgid "Use folksonomy tags as genre"
-msgstr "Använd folksonomitaggar som genre"
-
-#: picard/options.py:401
-msgid "Genres to include or exclude"
-msgstr "Genrer som ska tas med eller uteslutas"
-
-#: picard/options.py:404
-msgid "Join multiple genres with"
-msgstr "Sammanfoga flera genrer med"
-
-#: picard/options.py:407
-msgid "Maximum number of genres"
-msgstr "Högsta antal genrer"
-
-#: picard/options.py:408
-msgid "Minimal genre usage"
-msgstr "Minsta genreanvändning"
-
-#: picard/options.py:409
-msgid "Use only my genres"
-msgstr "Använd endast mina genrer"
-
-#: picard/options.py:410 picard/ui/forms/ui_options_genres.py:119
-msgid "Use genres from MusicBrainz"
-msgstr "Använd genrer från MusicBrainz"
-
-#: picard/options.py:415
-msgid "Allow selecting multiple directories"
-msgstr "Tillåt val av flera mappar"
-
-#: picard/options.py:417
-msgid "Use builtin search (not browser)"
-msgstr "Använd inbyggd sökning (inte webbläsaren)"
-
-#: picard/options.py:422
-msgid "Adjust horizontal position in file browser"
-msgstr "Justera den horisontella positionen automatiskt i filbläddraren"
-
-#: picard/options.py:425
-msgid "Confirm when saving"
-msgstr "Bekräfta vid sparning"
-
-#: picard/options.py:427
-msgid "Confirm quit if unsaved changes"
-msgstr "Bekräfta avslutning när det finns osparade ändringar"
-
-#: picard/options.py:428 picard/ui/forms/ui_options_interface.py:120
-msgid "Show icons in menus"
-msgstr "Visa ikoner i menyer"
-
-#: picard/options.py:429
-msgid "Show warning when Picard starts"
-msgstr "Visa en varning när Picard startar"
-
-#: picard/options.py:430
-msgid "Begin browsing in a specific directory"
-msgstr "Börja bläddra i en angiven mapp"
-
-#: picard/options.py:435 picard/ui/forms/ui_options_interface.py:130
-msgid "Directory to begin browsing"
-msgstr "Mapp att börja bläddra i"
-
-#: picard/options.py:439 picard/ui/forms/ui_options_interface.py:119
-msgid "Show text labels under icons"
-msgstr "Visa textetiketter under ikoner"
-
-#: picard/options.py:440
-msgid "User interface language"
-msgstr "Språk för användargränssnittet"
-
-#: picard/options.py:441
-msgid "User interface color theme"
-msgstr "Färgtema för användargränssnittet"
-
-#: picard/options.py:442
-msgid "Use advanced search syntax"
-msgstr "Använd avancerad söksyntax"
-
-#: picard/options.py:446
-msgid "Enable \"now playing\" notifications"
-msgstr "Aktivera aviseringar om ”spelas nu”"
-
-#: picard/options.py:448
-msgid "Enable ListenBrainz listen submissions"
-msgstr "Skicka lyssningar till ListenBrainz"
-
-#: picard/options.py:454
-msgid "Submit only tagged files to ListenBrainz"
-msgstr "Skicka endast taggade filer till ListenBrainz"
-
-#: picard/options.py:457 picard/ui/forms/ui_options_player.py:64
-msgid "ListenBrainz user token"
-msgstr "Användartoken för ListenBrainz"
-
-#: picard/options.py:465
-msgid "Colors to use for light theme"
-msgstr "Färger för ljust tema"
-
-#: picard/options.py:471
-msgid "Colors to use for dark theme"
-msgstr "Färger för mörkt tema"
-
-#: picard/options.py:476
-msgid "Quick Menu options"
-msgstr "Alternativ för snabbmenyn"
-
-#: picard/options.py:495
-msgid "Layout of the tool bar"
-msgstr "Verktygsfältets layout"
-
-#: picard/options.py:501
-msgid "Tags to show at the top"
-msgstr "Taggar som ska visas överst"
-
-#: picard/options.py:509
-msgid "Configuration backup directory"
-msgstr "Mapp för säkerhetskopior av inställningar"
-
-#: picard/options.py:520
-msgid "Minimum similarity"
-msgstr "Minsta likhet"
-
-#: picard/options.py:521
-msgid "Minimum margin"
-msgstr "Minsta marginal"
-
-#: picard/options.py:526
-msgid "Similarity for matching files to tracks"
-msgstr "Likhet för matchning av filer mot spår"
-
-#: picard/options.py:533
-msgid "Translation locales"
-msgstr "Språkvarianter för översättning"
-
-#: picard/options.py:534 picard/ui/setupwizard.py:458
-msgid "Convert Unicode punctuation to ASCII"
-msgstr "Konvertera Unicode-interpunktion till ASCII"
-
-#: picard/options.py:535
-msgid "Guess track number and title"
-msgstr "Gissa spårnummer och titel"
-
-#: picard/options.py:536
-msgid "Standalone recordings name"
-msgstr "Namn för fristående inspelningar"
-
-#: picard/options.py:537 picard/ui/forms/ui_options_metadata.py:199
-msgid "Use release relationships"
-msgstr "Använd utgåverelationer"
-
-#: picard/options.py:538
-msgid "Translation script exceptions"
-msgstr "Undantagna skriftsystem vid översättning"
-
-#: picard/options.py:543
-msgid "Standardize artist names"
-msgstr "Standardisera artistnamn"
-
-#: picard/options.py:550 picard/ui/forms/ui_options_metadata.py:195
-msgid "Always standardize multi-valued artist tags"
-msgstr "Standardisera alltid artisttaggar med flera värden"
-
-#: picard/options.py:553 picard/ui/forms/ui_options_metadata.py:196
-msgid "Use standardized instrument credits"
-msgstr "Använd standardiserade instrumentkrediteringar"
-
-#: picard/options.py:554 picard/ui/forms/ui_options_metadata.py:197
-msgid "Use standardized vocal credits"
-msgstr "Använd standardiserade sångkrediteringar"
-
-#: picard/options.py:555
-msgid "Use track and release relationships"
-msgstr "Använd relationer för spår och utgåvor"
-
-#: picard/options.py:557
-msgid "Translate artist names"
-msgstr "Översätt artistnamn"
-
-#: picard/options.py:558
-msgid "Translate album titles"
-msgstr "Översätt albumtitlar"
-
-#: picard/options.py:559
-msgid "Translate track titles"
-msgstr "Översätt spårtitlar"
-
-#: picard/options.py:561 picard/ui/forms/ui_options_metadata.py:211
-msgid "Use artist sort name for translation"
-msgstr "Använd artistens sorteringsnamn vid översättning"
-
-#: picard/options.py:567
-msgid "Translate artist names exception"
-msgstr "Undantag vid översättning av artistnamn"
-
-#: picard/options.py:570
-msgid "Various Artists name"
-msgstr "Namn för Blandade artister"
-
-#: picard/options.py:575
-msgid "Don't sanitize dates for these formats"
-msgstr "Normalisera inte datum för dessa format"
-
-#: picard/options.py:581
-msgid "Browser integration"
-msgstr "Webbläsarintegrering"
-
-#: picard/options.py:582 picard/ui/forms/ui_options_network.py:187
-msgid "Listen only on localhost"
-msgstr "Lyssna endast på localhost"
-
-#: picard/options.py:587
-msgid "Default listening port"
-msgstr "Förvald lyssningsport"
-
-#: picard/options.py:595
-msgid "Network cache size (bytes)"
-msgstr "Nätverkscachets storlek (byte)"
-
-#: picard/options.py:605
-msgid "Request timeout (seconds)"
-msgstr "Tidsgräns för förfrågningar (sekunder)"
-
-#: picard/options.py:609
-msgid "Proxy password"
-msgstr "Proxylösenord"
-
-#: picard/options.py:610
-msgid "Proxy server address"
-msgstr "Proxyserverns adress"
-
-#: picard/options.py:615
-msgid "Proxy server port"
-msgstr "Proxyserverns port"
-
-#: picard/options.py:620
-msgid "Type of proxy server"
-msgstr "Typ av proxyserver"
-
-#: picard/options.py:621
-msgid "Proxy username"
-msgstr "Proxyanvändarnamn"
-
-#: picard/options.py:622
-msgid "Use a web proxy server"
-msgstr "Använd en webbproxyserver"
-
-#: picard/options.py:626
-msgid "Plugins execution order"
-msgstr "Körordning för insticksmoduler"
-
-#: picard/options.py:635
-msgid "Enable track ratings"
-msgstr "Aktivera spårbetygsättning"
-
-#: picard/options.py:642
-msgid "Email for saving ratings"
-msgstr "E-postadress för att spara betyg"
-
-#: picard/options.py:644 picard/ui/forms/ui_options_ratings.py:62
-msgid "Submit ratings to MusicBrainz"
-msgstr "Skicka betyg till MusicBrainz"
-
-#: picard/options.py:648 picard/ui/forms/ui_options_releases.py:117
-msgid "Preferred release countries"
-msgstr "Föredragna utgivningsländer"
-
-#: picard/options.py:649 picard/ui/forms/ui_options_releases.py:122
-msgid "Preferred medium formats"
-msgstr "Föredragna medieformat"
-
-#: picard/options.py:651 picard/options.py:653
-#: picard/ui/forms/ui_options_releases.py:116
-msgid "Preferred release types"
-msgstr "Föredragna utgåvetyper"
-
-#: picard/options.py:654
-msgid "Discouraged release types"
-msgstr "Utgåvetyper att undvika"
-
-#: picard/options.py:658 picard/ui/forms/ui_options_renaming.py:140
-msgid "Delete empty directories"
-msgstr "Ta bort tomma mappar"
-
-#: picard/options.py:659
-msgid "Move additional files"
-msgstr "Flytta ytterligare filer"
-
-#: picard/options.py:661
-msgid "Additional file patterns"
-msgstr "Mönster för ytterligare filer"
-
-#: picard/options.py:663
-msgid "Move files"
-msgstr "Flytta filer"
-
-#: picard/options.py:665
-msgid "Destination directory"
-msgstr "Målmapp"
-
-#: picard/options.py:667 picard/ui/forms/ui_options_renaming.py:141
-msgid "Overwrite existing files"
-msgstr "Skriv över befintliga filer"
-
-#: picard/options.py:668
-msgid "Rename files"
-msgstr "Byt namn på filer"
-
-#: picard/options.py:672 picard/ui/forms/ui_options_renaming_compat.py:95
-msgid "Replace non-ASCII characters"
-msgstr "Ersätt tecken som inte är ASCII"
-
-#: picard/options.py:677
-msgid "Directory separators character"
-msgstr "Tecken som ersätter katalogavgränsare"
-
-#: picard/options.py:681 picard/ui/forms/ui_options_renaming_compat.py:99
-msgid "Replace spaces with underscores"
-msgstr "Ersätt blanksteg med understreck"
-
-#: picard/options.py:687
-msgid "Windows compatibility characters"
-msgstr "Windows-kompatibla tecken"
-
-#: picard/options.py:690 picard/ui/forms/ui_options_renaming_compat.py:96
-#: picard/ui/forms/ui_win_compat_dialog.py:198
-msgid "Windows compatibility"
-msgstr "Windows-kompatibilitet"
-
-#: picard/options.py:695 picard/ui/options/renaming_compat.py:135
-msgid "Windows long path support"
-msgstr "Stöd för långa sökvägar i Windows"
-
-#: picard/options.py:703 picard/ui/profile_tagger_scripts_dialog.py:87
-msgid "Enable tagger scripts"
-msgstr "Aktivera taggningsskript"
-
-#: picard/options.py:704
-msgid "Tagger scripts"
-msgstr "Taggningsskript"
-
-#: picard/options.py:709 picard/ui/setupwizard.py:397
-msgid "Check for documentation updates"
-msgstr "Sök efter dokumentationsuppdateringar"
-
-#: picard/options.py:710 picard/ui/setupwizard.py:389
-msgid "Check for plugin updates"
-msgstr "Sök efter uppdateringar av insticksmoduler"
-
-#: picard/options.py:711 picard/ui/setupwizard.py:381
-msgid "Check for program updates"
-msgstr "Sök efter programuppdateringar"
-
-#: picard/options.py:713
-msgid "Days between update checks"
-msgstr "Dagar mellan uppdateringskontroller"
-
-#: picard/options.py:714
-msgid "Update types to check"
-msgstr "Uppdateringstyper som ska kontrolleras"
-
-#: picard/options.py:715
-msgid "Log verbosity level"
-msgstr "Detaljnivå för loggning"
-
-#: picard/options.py:720 picard/ui/forms/ui_options_tags.py:96
-msgid "Clear existing tags"
-msgstr "Rensa befintliga taggar"
-
-#: picard/options.py:721
-msgid "Save tags to files"
-msgstr "Spara taggar i filer"
-
-#: picard/options.py:722
-msgid "Fix missing seekpoints in FLAC"
-msgstr "Åtgärda saknade sökpunkter i FLAC"
-
-#: picard/options.py:723
-msgid "Preserved tags list"
-msgstr "Lista över taggar som ska bevaras"
-
-#: picard/options.py:724
-msgid "Keep embedded images"
-msgstr "Behåll inbäddade bilder"
-
-#: picard/options.py:725
-msgid "Preserve timestamps"
-msgstr "Bevara tidsstämplar"
-
-#: picard/options.py:726
-msgid "Remove APEv2 tags from MP3"
-msgstr "Ta bort APEv2-taggar från MP3"
-
-#: picard/options.py:727
-msgid "Remove ID3 tags from FLAC"
-msgstr "Ta bort ID3-taggar från FLAC"
-
-#: picard/options.py:731
+#: picard/options.py:154
+msgid "Plugins to exclude from updates"
+msgstr "Insticksmoduler som ska undantas från uppdateringar"
+
+#: picard/options.py:183
 msgid "Save APEv2 tags to AAC"
 msgstr "Spara APEv2-taggar i AAC"
 
-#: picard/options.py:732
-msgid "Remove APEv2 tags from AAC"
-msgstr "Ta bort APEv2-taggar från AAC"
-
-#: picard/options.py:736
+#: picard/options.py:184
 msgid "Save APEv2 tags to AC3"
 msgstr "Spara APEv2-taggar i AC3"
 
-#: picard/options.py:737
-msgid "Remove APEv2 tags from AC3"
-msgstr "Ta bort APEv2-taggar från AC3"
+#: picard/options.py:187
+msgid "Active file naming script"
+msgstr "Aktivt filnamnsskript"
 
-#: picard/options.py:741
+#: picard/options.py:189
+msgid "Allow selecting multiple directories"
+msgstr "Tillåt val av flera mappar"
+
+#: picard/options.py:195 picard/ui/forms/ui_options_metadata.py:195
+msgid "Always standardize multi-valued artist tags"
+msgstr "Standardisera alltid artisttaggar med flera värden"
+
+#: picard/options.py:198 picard/ui/forms/ui_options_lookup.py:86
+msgid "Automatically scan all new files"
+msgstr "Skanna automatiskt alla nya filer"
+
+#: picard/options.py:199
+msgid "Use album artist genres"
+msgstr "Använd albumartistens genrer"
+
+#: picard/options.py:200 picard/ui/forms/ui_options_renaming_compat.py:95
+msgid "Replace non-ASCII characters"
+msgstr "Ersätt tecken som inte är ASCII"
+
+#: picard/options.py:205
+msgid "Configuration backup directory"
+msgstr "Mapp för säkerhetskopior av inställningar"
+
+#: picard/options.py:209
+msgid "Browser integration"
+msgstr "Webbläsarintegrering"
+
+#: picard/options.py:210 picard/ui/forms/ui_options_network.py:187
+msgid "Listen only on localhost"
+msgstr "Lyssna endast på localhost"
+
+#: picard/options.py:215
+msgid "Default listening port"
+msgstr "Förvald lyssningsport"
+
+#: picard/options.py:219
+msgid "Use builtin search (not browser)"
+msgstr "Använd inbyggd sökning (inte webbläsaren)"
+
+#: picard/options.py:220
+msgid "Cover art providers"
+msgstr "Leverantörer av omslagsbilder"
+
+#: picard/options.py:221 picard/ui/forms/ui_provider_options_caa.py:82
+msgid "Download only approved images"
+msgstr "Hämta endast godkända bilder"
+
+#: picard/options.py:222
+msgid "Cover art image size"
+msgstr "Omslagsbildens storlek"
+
+#: picard/options.py:224
+msgid "Cover art image types"
+msgstr "Omslagsbildstyper"
+
+#: picard/options.py:230
+msgid "Cover art image types to omit"
+msgstr "Omslagsbildstyper som ska utelämnas"
+
+#: picard/options.py:233
+msgid "Restrict cover art image types"
+msgstr "Begränsa omslagsbildstyper"
+
+#: picard/options.py:234
+msgid "CD lookup device"
+msgstr "Enhet för CD-uppslagning"
+
+#: picard/options.py:235 picard/ui/setupwizard.py:408
+msgid "Check for plugin updates"
+msgstr "Sök efter uppdateringar av insticksmoduler"
+
+#: picard/options.py:236 picard/ui/setupwizard.py:400
+msgid "Check for program updates"
+msgstr "Sök efter programuppdateringar"
+
+#: picard/options.py:237 picard/ui/setupwizard.py:416
+msgid "Check for documentation updates"
+msgstr "Sök efter dokumentationsuppdateringar"
+
+#: picard/options.py:238 picard/ui/forms/ui_options_tags.py:96
+msgid "Clear existing tags"
+msgstr "Rensa befintliga taggar"
+
+#: picard/options.py:239 picard/ui/forms/ui_options_lookup.py:87
+msgid "Automatically cluster all new files"
+msgstr "Klustra automatiskt alla nya filer"
+
+#: picard/options.py:240
+msgid "Tags to ignore for comparison"
+msgstr "Taggar att ignorera vid jämförelse"
+
+#: picard/options.py:241
+msgid "Completeness ignore: Data tracks"
+msgstr "Fullständighetskontroll: ignorera dataspår"
+
+#: picard/options.py:243
+msgid "Completeness ignore: Pregap tracks"
+msgstr "Fullständighetskontroll: ignorera förgapsspår"
+
+#: picard/options.py:246
+msgid "Completeness ignore: Silent tracks"
+msgstr "Fullständighetskontroll: ignorera tysta spår"
+
+#: picard/options.py:249
+msgid "Completeness ignore: Video tracks"
+msgstr "Fullständighetskontroll: ignorera videospår"
+
+#: picard/options.py:251 picard/ui/setupwizard.py:477
+msgid "Convert Unicode punctuation to ASCII"
+msgstr "Konvertera Unicode-interpunktion till ASCII"
+
+#: picard/options.py:252
+msgid "Convert file image format"
+msgstr "Konvertera filbildens format"
+
+#: picard/options.py:257
+msgid "New file image format"
+msgstr "Nytt format för filbild"
+
+#: picard/options.py:260
+msgid "Allow enlarging file images"
+msgstr "Tillåt förstoring av filbilder"
+
+#: picard/options.py:261
+msgid "Allow resizing file images"
+msgstr "Tillåt storleksändring av filbilder"
+
+#: picard/options.py:263
+msgid "File image resize mode"
+msgstr "Läge för storleksändring av filbilder"
+
+#: picard/options.py:269
+msgid "Resized file image height"
+msgstr "Ändrad höjd för filbild"
+
+#: picard/options.py:277
+msgid "Resized file image width"
+msgstr "Ändrad bredd för filbild"
+
+#: picard/options.py:282
+msgid "File name for images"
+msgstr "Filnamn för bilder"
+
+#: picard/options.py:288
+msgid "Format conversion quality"
+msgstr "Kvalitet vid formatkonvertering"
+
+#: picard/options.py:296
+msgid "Minimum image height"
+msgstr "Minsta bildhöjd"
+
+#: picard/options.py:304
+msgid "Minimum image width"
+msgstr "Minsta bildbredd"
+
+#: picard/options.py:308
+msgid "Convert tag image format"
+msgstr "Konvertera taggbildens format"
+
+#: picard/options.py:313
+msgid "New tag image format"
+msgstr "Nytt format för taggbild"
+
+#: picard/options.py:316
+msgid "Allow enlarging tag images"
+msgstr "Tillåt förstoring av taggbilder"
+
+#: picard/options.py:317
+msgid "Allow resizing tag images"
+msgstr "Tillåt storleksändring av taggbilder"
+
+#: picard/options.py:319
+msgid "Tag image resize mode"
+msgstr "Läge för storleksändring av taggbilder"
+
+#: picard/options.py:325
+msgid "Resized tag image height"
+msgstr "Ändrad höjd för taggbild"
+
+#: picard/options.py:333
+msgid "Resized tag image width"
+msgstr "Ändrad bredd för taggbild"
+
+#: picard/options.py:338 picard/ui/forms/ui_options_renaming.py:140
+msgid "Delete empty directories"
+msgstr "Ta bort tomma mappar"
+
+#: picard/options.py:343
+msgid "Don't sanitize dates for these formats"
+msgstr "Normalisera inte datum för dessa format"
+
+#: picard/options.py:346
+msgid "Discouraged release types"
+msgstr "Utgåvetyper att undvika"
+
+#: picard/options.py:348
+msgid "Never replace images of selected types"
+msgstr "Ersätt aldrig bilder av valda typer"
+
+#: picard/options.py:354
+msgid "Never replace images of these types"
+msgstr "Ersätt aldrig bilder av dessa typer"
+
+#: picard/options.py:361
+msgid "Never replace images with smaller ones"
+msgstr "Ersätt aldrig bilder med mindre bilder"
+
+#: picard/options.py:364 picard/ui/forms/ui_options_cover.py:128
+msgid "Embed only a single front image"
+msgstr "Bädda endast in en framsidesbild"
+
+#: picard/options.py:365
+msgid "Enable track ratings"
+msgstr "Aktivera spårbetygsättning"
+
+#: picard/options.py:366
+msgid "Save tags to files"
+msgstr "Spara taggar i filer"
+
+#: picard/options.py:367 picard/ui/profile_tagger_scripts_dialog.py:87
+msgid "Enable tagger scripts"
+msgstr "Aktivera taggningsskript"
+
+#: picard/options.py:368
+msgid "Enable managing user collections"
+msgstr "Aktivera hantering av användarsamlingar"
+
+#: picard/options.py:370
+msgid "Confirm when saving"
+msgstr "Bekräfta vid sparning"
+
+#: picard/options.py:375
+msgid "Adjust horizontal position in file browser"
+msgstr "Justera den horisontella positionen automatiskt i filbläddraren"
+
+#: picard/options.py:378
+msgid "Discard small images"
+msgstr "Kassera små bilder"
+
+#: picard/options.py:379
+msgid "Use AcoustID fingerprinting"
+msgstr "Använd AcoustID-fingeravtryck"
+
+#: picard/options.py:380
+msgid "Fix missing seekpoints in FLAC"
+msgstr "Åtgärda saknade sökpunkter i FLAC"
+
+#: picard/options.py:381 picard/ui/forms/ui_options_genres.py:122
+msgid "Use folksonomy tags as genre"
+msgstr "Använd folksonomitaggar som genre"
+
+#: picard/options.py:387
+msgid "Genres to include or exclude"
+msgstr "Genrer som ska tas med eller uteslutas"
+
+#: picard/options.py:390
+msgid "Guess track number and title"
+msgstr "Gissa spårnummer och titel"
+
+#: picard/options.py:391
 msgid "ID3v2.3 join character"
 msgstr "Sammanfogningstecken för ID3v2.3"
 
-#: picard/options.py:742
+#: picard/options.py:392
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "ID3v2-textkodning"
 
-#: picard/options.py:744
+#: picard/options.py:397 picard/ui/forms/ui_options_fingerprinting.py:109
+msgid "Ignore existing AcoustID fingerprints"
+msgstr "Ignorera befintliga AcoustID-fingeravtryck"
+
+#: picard/options.py:400 picard/ui/forms/ui_options_lookup.py:88
+msgid "Ignore MBIDs when loading new files"
+msgstr "Ignorera MBID:n när nya filer läses in"
+
+#: picard/options.py:401 picard/ui/forms/ui_options_advanced.py:53
+msgid "Ignore hidden files"
+msgstr "Ignorera dolda filer"
+
+#: picard/options.py:402
+msgid "Ignore file paths (regular expression)"
+msgstr "Ignorera filsökvägar (reguljärt uttryck)"
+
+#: picard/options.py:407
+msgid "Allowed track difference (seconds)"
+msgstr "Tillåten skillnad mellan spår (sekunder)"
+
+#: picard/options.py:415
+msgid "Primary image type as the file name"
+msgstr "Använd den primära bildtypen som filnamn"
+
+#: picard/options.py:422
+msgid "Colors to use for light theme"
+msgstr "Färger för ljust tema"
+
+#: picard/options.py:428
+msgid "Colors to use for dark theme"
+msgstr "Färger för mörkt tema"
+
+#: picard/options.py:431
 msgid "iTunes compatible grouping / work"
 msgstr "iTunes-kompatibel gruppering/verk"
 
-#: picard/options.py:746
-msgid "Write ID3v1 tags"
-msgstr "Skriv ID3v1-taggar"
+#: picard/options.py:433
+msgid "Join multiple genres with"
+msgstr "Sammanfoga flera genrer med"
 
-#: picard/options.py:747
-msgid "ID3v2 version to write"
-msgstr "ID3v2-version som ska skrivas"
+#: picard/options.py:434
+msgid "Tagger scripts"
+msgstr "Taggningsskript"
 
-#: picard/options.py:751
+#: picard/options.py:436
+msgid "Enable ListenBrainz listen submissions"
+msgstr "Skicka lyssningar till ListenBrainz"
+
+#: picard/options.py:442
+msgid "Submit only tagged files to ListenBrainz"
+msgstr "Skicka endast taggade filer till ListenBrainz"
+
+#: picard/options.py:445 picard/ui/forms/ui_options_player.py:64
+msgid "ListenBrainz user token"
+msgstr "Användartoken för ListenBrainz"
+
+#: picard/options.py:448
+msgid "Local cover art regex"
+msgstr "Reguljärt uttryck för lokala omslagsbilder"
+
+#: picard/options.py:450
+msgid "Log verbosity level"
+msgstr "Detaljnivå för loggning"
+
+#: picard/options.py:451
+msgid "Minimum margin"
+msgstr "Minsta marginal"
+
+#: picard/options.py:452
+msgid "Minimum similarity"
+msgstr "Minsta likhet"
+
+#: picard/options.py:453
+msgid "Maximum number of genres"
+msgstr "Högsta antal genrer"
+
+#: picard/options.py:454
+msgid "Tags to show at the top"
+msgstr "Taggar som ska visas överst"
+
+#: picard/options.py:455
+msgid "Minimal genre usage"
+msgstr "Minsta genreanvändning"
+
+#: picard/options.py:456
+msgid "Move additional files"
+msgstr "Flytta ytterligare filer"
+
+#: picard/options.py:458
+msgid "Additional file patterns"
+msgstr "Mönster för ytterligare filer"
+
+#: picard/options.py:460
+msgid "Move files"
+msgstr "Flytta filer"
+
+#: picard/options.py:462
+msgid "Destination directory"
+msgstr "Målmapp"
+
+#: picard/options.py:464 picard/ui/forms/ui_options_renaming.py:141
+msgid "Overwrite existing files"
+msgstr "Skriv över befintliga filer"
+
+#: picard/options.py:465
+msgid "Standalone recordings name"
+msgstr "Namn för fristående inspelningar"
+
+#: picard/options.py:470
+msgid "Network cache size (bytes)"
+msgstr "Nätverkscachets storlek (byte)"
+
+#: picard/options.py:477
+msgid "Request timeout (seconds)"
+msgstr "Tidsgräns för förfrågningar (sekunder)"
+
+#: picard/options.py:481
+msgid "Use only my genres"
+msgstr "Använd endast mina genrer"
+
+#: picard/options.py:482
+msgid "Enable \"now playing\" notifications"
+msgstr "Aktivera aviseringar om ”spelas nu”"
+
+#: picard/options.py:484
+msgid "Plugins execution order"
+msgstr "Körordning för insticksmoduler"
+
+#: picard/options.py:486
+msgid "Preferred release countries"
+msgstr "Föredragna utgivningsländer"
+
+#: picard/options.py:487
+msgid "Preferred medium formats"
+msgstr "Föredragna medieformat"
+
+#: picard/options.py:488
+msgid "Preferred release types"
+msgstr "Föredragna utgåvetyper"
+
+#: picard/options.py:489
+msgid "Keep embedded images"
+msgstr "Behåll inbäddade bilder"
+
+#: picard/options.py:490
+msgid "Preserve timestamps"
+msgstr "Bevara tidsstämplar"
+
+#: picard/options.py:491
+msgid "Preserved tags list"
+msgstr "Lista över taggar som ska bevaras"
+
+#: picard/options.py:492
+msgid "Proxy password"
+msgstr "Proxylösenord"
+
+#: picard/options.py:493
+msgid "Proxy server address"
+msgstr "Proxyserverns adress"
+
+#: picard/options.py:498
+msgid "Proxy server port"
+msgstr "Proxyserverns port"
+
+#: picard/options.py:503
+msgid "Type of proxy server"
+msgstr "Typ av proxyserver"
+
+#: picard/options.py:504
+msgid "Proxy username"
+msgstr "Proxyanvändarnamn"
+
+#: picard/options.py:509
+msgid "Maximum MusicBrainz query items"
+msgstr "Högsta antal objekt per MusicBrainz-förfrågan"
+
+#: picard/options.py:516
+msgid "Quick Menu options"
+msgstr "Alternativ för snabbmenyn"
+
+#: picard/options.py:517
+msgid "Confirm quit if unsaved changes"
+msgstr "Bekräfta avslutning när det finns osparade ändringar"
+
+#: picard/options.py:519
+msgid "Email for saving ratings"
+msgstr "E-postadress för att spara betyg"
+
+#: picard/options.py:521 picard/ui/forms/ui_options_cdlookup.py:53
+#: picard/ui/forms/ui_options_cdlookup_select.py:59
+msgid "Read ISRCs from CD"
+msgstr "Läs ISRC-koder från CD"
+
+#: picard/options.py:522
+msgid "Include sub-folders when adding files"
+msgstr "Ta med undermappar när filer läggs till"
+
+#: picard/options.py:523 picard/ui/forms/ui_options_metadata.py:199
+msgid "Use release relationships"
+msgstr "Använd utgåverelationer"
+
+#: picard/options.py:524
+msgid "Remove APEv2 tags from AAC"
+msgstr "Ta bort APEv2-taggar från AAC"
+
+#: picard/options.py:525
+msgid "Remove APEv2 tags from AC3"
+msgstr "Ta bort APEv2-taggar från AC3"
+
+#: picard/options.py:526
+msgid "Remove APEv2 tags from MP3"
+msgstr "Ta bort APEv2-taggar från MP3"
+
+#: picard/options.py:531 picard/ui/forms/ui_options_general.py:139
+msgid "Remove complete albums after saving"
+msgstr "Ta bort kompletta album efter sparning"
+
+#: picard/options.py:534
+msgid "Remove ID3 tags from FLAC"
+msgstr "Ta bort ID3-taggar från FLAC"
+
+#: picard/options.py:535
+msgid "Remove images from tags"
+msgstr "Ta bort bilder från taggar"
+
+#: picard/options.py:536
 msgid "Remove RIFF INFO tags from WAVE"
 msgstr "Ta bort RIFF INFO-taggar från WAVE"
 
-#: picard/options.py:752
+#: picard/options.py:537
+msgid "Rename files"
+msgstr "Byt namn på filer"
+
+#: picard/options.py:542
+msgid "Directory separators character"
+msgstr "Tecken som ersätter katalogavgränsare"
+
+#: picard/options.py:546 picard/ui/forms/ui_options_renaming_compat.py:99
+msgid "Replace spaces with underscores"
+msgstr "Ersätt blanksteg med understreck"
+
+#: picard/options.py:548
+msgid "Save AcoustID fingerprints"
+msgstr "Spara AcoustID-fingeravtryck"
+
+#: picard/options.py:549
+msgid "Overwrite existing image files"
+msgstr "Skriv över befintliga bildfiler"
+
+#: picard/options.py:550
+msgid "Save images as separate files"
+msgstr "Spara bilder som separata filer"
+
+#: picard/options.py:551
+msgid "Embed images into tags"
+msgstr "Bädda in bilder i taggar"
+
+#: picard/options.py:552
+msgid "Save only one front image"
+msgstr "Spara endast en framsidesbild"
+
+#: picard/options.py:553
+msgid "Translation script exceptions"
+msgstr "Undantagna skriftsystem vid översättning"
+
+#: picard/options.py:554
+msgid "Server address"
+msgstr "Serveradress"
+
+#: picard/options.py:555
+msgid "Port"
+msgstr "Port"
+
+#: picard/options.py:560
+msgid "Auto-save interval"
+msgstr "Intervall för automatisk sparning"
+
+#: picard/options.py:570
+msgid "Backup session on unexpected exit"
+msgstr "Säkerhetskopiera sessionen vid oväntat avslut"
+
+#: picard/options.py:577
+msgid "Sessions directory"
+msgstr "Sessionsmapp"
+
+#: picard/options.py:584
+msgid "Include MusicBrainz data"
+msgstr "Inkludera MusicBrainz-data"
+
+#: picard/options.py:591
+msgid "Start with last saved session"
+msgstr "Starta med den senast sparade sessionen"
+
+#: picard/options.py:598
+msgid "No MusicBrainz requests on restore"
+msgstr "Skicka inga förfrågningar till MusicBrainz vid återställning"
+
+#: picard/options.py:605 picard/ui/forms/ui_options_advanced_sessions.py:123
+msgid "No auto-matching on load"
+msgstr "Ingen automatisk matchning vid inläsning"
+
+#: picard/options.py:608
+msgid "Show cover art details in view"
+msgstr "Visa information om omslagsbilder i vyn"
+
+#: picard/options.py:609
+msgid "Show cover art dimensions"
+msgstr "Visa omslagsbildens mått"
+
+#: picard/options.py:610
+msgid "Show cover art file size"
+msgstr "Visa omslagsbildens filstorlek"
+
+#: picard/options.py:611
+msgid "Show cover art MIME type"
+msgstr "Visa omslagsbildens MIME-typ"
+
+#: picard/options.py:612
+msgid "Show cover art type"
+msgstr "Visa omslagsbildstyp"
+
+#: picard/options.py:613 picard/ui/forms/ui_options_interface.py:120
+msgid "Show icons in menus"
+msgstr "Visa ikoner i menyer"
+
+#: picard/options.py:614
+msgid "Show warning when Picard starts"
+msgstr "Visa en varning när Picard startar"
+
+#: picard/options.py:619
+msgid "Standardize artist names"
+msgstr "Standardisera artistnamn"
+
+#: picard/options.py:622 picard/ui/forms/ui_options_metadata.py:196
+msgid "Use standardized instrument credits"
+msgstr "Använd standardiserade instrumentkrediteringar"
+
+#: picard/options.py:623 picard/ui/forms/ui_options_metadata.py:197
+msgid "Use standardized vocal credits"
+msgstr "Använd standardiserade sångkrediteringar"
+
+#: picard/options.py:624
+msgid "Begin browsing in a specific directory"
+msgstr "Börja bläddra i en angiven mapp"
+
+#: picard/options.py:629 picard/ui/forms/ui_options_interface.py:130
+msgid "Directory to begin browsing"
+msgstr "Mapp att börja bläddra i"
+
+#: picard/options.py:633 picard/ui/forms/ui_options_ratings.py:62
+msgid "Submit ratings to MusicBrainz"
+msgstr "Skicka betyg till MusicBrainz"
+
+#: picard/options.py:638
+msgid "Layout of the tool bar"
+msgstr "Verktygsfältets layout"
+
+#: picard/options.py:641 picard/ui/forms/ui_options_interface.py:119
+msgid "Show text labels under icons"
+msgstr "Visa textetiketter under ikoner"
+
+#: picard/options.py:642
+msgid "Use track and release relationships"
+msgstr "Använd relationer för spår och utgåvor"
+
+#: picard/options.py:647
+msgid "Similarity for matching files to tracks"
+msgstr "Likhet för matchning av filer mot spår"
+
+#: picard/options.py:651
+msgid "Translate album titles"
+msgstr "Översätt albumtitlar"
+
+#: picard/options.py:652
+msgid "Translate artist names"
+msgstr "Översätt artistnamn"
+
+#: picard/options.py:657
+msgid "Translate artist names exception"
+msgstr "Undantag vid översättning av artistnamn"
+
+#: picard/options.py:661 picard/ui/forms/ui_options_metadata.py:211
+msgid "Use artist sort name for translation"
+msgstr "Använd artistens sorteringsnamn vid översättning"
+
+#: picard/options.py:663
+msgid "Translate track titles"
+msgstr "Översätt spårtitlar"
+
+#: picard/options.py:664
+msgid "Translation locales"
+msgstr "Språkvarianter för översättning"
+
+#: picard/options.py:665
+msgid "User interface language"
+msgstr "Språk för användargränssnittet"
+
+#: picard/options.py:666
+msgid "User interface color theme"
+msgstr "Färgtema för användargränssnittet"
+
+#: picard/options.py:667
+msgid "Days between update checks"
+msgstr "Dagar mellan uppdateringskontroller"
+
+#: picard/options.py:668
+msgid "Update types to check"
+msgstr "Uppdateringstyper som ska kontrolleras"
+
+#: picard/options.py:669
+msgid "Use advanced search syntax"
+msgstr "Använd avancerad söksyntax"
+
+#: picard/options.py:670 picard/ui/forms/ui_options_genres.py:119
+msgid "Use genres from MusicBrainz"
+msgstr "Använd genrer från MusicBrainz"
+
+#: picard/options.py:671
+msgid "Use a web proxy server"
+msgstr "Använd en webbproxyserver"
+
+#: picard/options.py:672
+msgid "Submit to configured server"
+msgstr "Skicka till den konfigurerade servern"
+
+#: picard/options.py:673
+msgid "Various Artists name"
+msgstr "Namn för Blandade artister"
+
+#: picard/options.py:674
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "Teckenkodning för RIFF INFO"
 
-#: picard/options.py:753
+#: picard/options.py:679
+msgid "Windows compatibility characters"
+msgstr "Windows-kompatibla tecken"
+
+#: picard/options.py:682 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/ui/forms/ui_win_compat_dialog.py:198
+msgid "Windows compatibility"
+msgstr "Windows-kompatibilitet"
+
+#: picard/options.py:687 picard/ui/options/renaming_compat.py:135
+msgid "Windows long path support"
+msgstr "Stöd för långa sökvägar i Windows"
+
+#: picard/options.py:691
+msgid "Write ID3v1 tags"
+msgstr "Skriv ID3v1-taggar"
+
+#: picard/options.py:692
+msgid "ID3v2 version to write"
+msgstr "ID3v2-version som ska skrivas"
+
+#: picard/options.py:693
 msgid "Write RIFF INFO tags to WAVE"
 msgstr "Skriv RIFF INFO-taggar till WAVE-filer"
-
-#: picard/options.py:759
-msgid "Active file naming script"
-msgstr "Aktivt filnamnsskript"
-
-#: picard/options.py:767 picard/ui/forms/ui_options_advanced_sessions.py:123
-msgid "No auto-matching on load"
-msgstr "Ingen automatisk matchning vid inläsning"
-
-#: picard/options.py:774
-msgid "Start with last saved session"
-msgstr "Starta med den senast sparade sessionen"
-
-#: picard/options.py:781
-msgid "Auto-save interval"
-msgstr "Intervall för automatisk sparning"
-
-#: picard/options.py:791
-msgid "Backup session on unexpected exit"
-msgstr "Säkerhetskopiera sessionen vid oväntat avslut"
-
-#: picard/options.py:798
-msgid "Include MusicBrainz data"
-msgstr "Inkludera MusicBrainz-data"
-
-#: picard/options.py:805
-msgid "No MusicBrainz requests on restore"
-msgstr "Skicka inga förfrågningar till MusicBrainz vid återställning"
-
-#: picard/options.py:812
-msgid "Sessions directory"
-msgstr "Sessionsmapp"
-
-#: picard/options.py:841
-msgid "Plugins to exclude from updates"
-msgstr "Insticksmoduler som ska undantas från uppdateringar"
 
 #: picard/plugin.py:128
 msgid "No plugin description available."
@@ -1149,18 +1148,18 @@ msgid "Unknown Plugin"
 msgstr "Okänd insticksmodul"
 
 #: picard/plugin.py:133 picard/ui/cdlookup.py:65
-#: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1215
+#: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1255
 msgid "Album"
 msgstr "Album"
 
 #: picard/plugin.py:135 picard/ui/cdlookup.py:229
-#: picard/ui/isrcsubmitdialog.py:50 picard/ui/mainwindow/__init__.py:1217
+#: picard/ui/isrcsubmitdialog.py:50 picard/ui/mainwindow/__init__.py:1257
 msgid "Track"
 msgstr "Spår"
 
 #: picard/coverart/utils.py:47 picard/plugin.py:137
 #: picard/ui/dialogs/plugininfo.py:240 picard/ui/dialogs/plugininfo.py:250
-#: picard/ui/options/profiles.py:692 picard/ui/widgets/pluginlistwidget.py:299
+#: picard/ui/options/profiles.py:692 picard/ui/widgets/pluginlistwidget.py:321
 msgid "Unknown"
 msgstr "Okänd"
 
@@ -1172,76 +1171,76 @@ msgstr "Ingen funktionsbeskrivning är tillgänglig."
 msgid "Plugins"
 msgstr "Insticksmoduler"
 
-#: picard/releasegroup.py:54 picard/ui/searchdialog/album.py:162
+#: picard/releasegroup.py:55 picard/ui/searchdialog/album.py:162
 msgid "Tracks"
 msgstr "Spår"
 
-#: picard/releasegroup.py:55
+#: picard/releasegroup.py:56
 msgid "Year"
 msgstr "År"
 
-#: picard/releasegroup.py:56 picard/ui/cdlookup.py:68
+#: picard/releasegroup.py:57 picard/ui/cdlookup.py:68
 #: picard/ui/searchdialog/album.py:164 picard/ui/searchdialog/track.py:79
 msgid "Country"
 msgstr "Land"
 
-#: picard/releasegroup.py:57 picard/ui/cdlookup.py:72
+#: picard/releasegroup.py:58 picard/ui/cdlookup.py:72
 #: picard/ui/searchdialog/album.py:161
 msgid "Format"
 msgstr "Format"
 
-#: picard/releasegroup.py:58
+#: picard/releasegroup.py:59
 msgid "Label"
 msgstr "Skivbolag"
 
-#: picard/releasegroup.py:59
+#: picard/releasegroup.py:60
 msgid "Cat No"
 msgstr "Katalognr"
 
-#: picard/releasegroup.py:63
+#: picard/releasegroup.py:64
 msgid "Packaging"
 msgstr "Paketering"
 
-#: picard/releasegroup.py:64 picard/ui/cdlookup.py:71
+#: picard/releasegroup.py:65 picard/ui/cdlookup.py:71
 #: picard/ui/itemviews/columns.py:171 picard/ui/searchdialog/album.py:167
 msgid "Barcode"
 msgstr "Streckkod"
 
-#: picard/releasegroup.py:65 picard/ui/cdlookup.py:73
+#: picard/releasegroup.py:66 picard/ui/cdlookup.py:73
 msgid "Disambiguation"
 msgstr "Särskiljning"
 
-#: picard/releasegroup.py:96
+#: picard/releasegroup.py:97
 msgid "[no barcode]"
 msgstr "[ingen streckkod]"
 
-#: picard/releasegroup.py:137
+#: picard/releasegroup.py:138
 msgid "[no release info]"
 msgstr "[ingen information om utgåva]"
 
-#: picard/tagger.py:462
+#: picard/tagger.py:471
 msgid "Git backend not available"
 msgstr "Git-bakänden är inte tillgänglig"
 
-#: picard/tagger.py:464
+#: picard/tagger.py:473
 msgid "Disabled by command line parameter"
 msgstr "Inaktiverad med en kommandoradsparameter"
 
-#: picard/tagger.py:657 picard/ui/forms/ui_options_general.py:135
+#: picard/tagger.py:662 picard/ui/forms/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-konto"
 
-#: picard/tagger.py:658
+#: picard/tagger.py:663
 msgid "Authorization code:"
 msgstr "Behörighetskod:"
 
-#: picard/tagger.py:784 picard/ui/mainwindow/__init__.py:1594
-#: picard/ui/mainwindow/__init__.py:1620
+#: picard/tagger.py:789 picard/ui/mainwindow/__init__.py:1612
+#: picard/ui/mainwindow/__init__.py:1638
 msgid "Failed to load session"
 msgstr "Det gick inte att läsa in sessionen"
 
-#: picard/tagger.py:785 picard/ui/mainwindow/__init__.py:1595
-#: picard/ui/mainwindow/__init__.py:1621
+#: picard/tagger.py:790 picard/ui/mainwindow/__init__.py:1613
+#: picard/ui/mainwindow/__init__.py:1639
 #, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
@@ -1252,7 +1251,7 @@ msgstr ""
 "\n"
 "%(error)s"
 
-#: picard/tagger.py:828
+#: picard/tagger.py:833
 #, python-brace-format
 msgid ""
 "The following plugins have been blacklisted and disabled:\n"
@@ -1269,15 +1268,15 @@ msgstr ""
 "Insticksmodulerna kan innehålla säkerhetsbrister eller skadlig kod. De har "
 "inaktiverats automatiskt för att skydda dig."
 
-#: picard/tagger.py:833
+#: picard/tagger.py:838
 msgid "Blacklisted Plugins Detected"
 msgstr "Svartlistade insticksmoduler upptäcktes"
 
-#: picard/tagger.py:840
+#: picard/tagger.py:845
 msgid "Plugin Initialization Failed"
 msgstr "Det gick inte att initiera insticksmodulen"
 
-#: picard/tagger.py:841
+#: picard/tagger.py:846
 #, python-brace-format
 msgid ""
 "The following plugins failed to load and have been disabled:\n"
@@ -1288,26 +1287,26 @@ msgstr ""
 "\n"
 "{plugin_list}"
 
-#: picard/tagger.py:1306
+#: picard/tagger.py:1335
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Tar bort album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1335
+#: picard/tagger.py:1364
 #, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
 msgstr "Det gick inte att flytta ”%(filename)s” till papperskorgen"
 
-#: picard/tagger.py:1340
+#: picard/tagger.py:1369
 #, python-format
 msgid "Moved %(count)i files to trash"
 msgstr "Flyttade %(count)i filer till papperskorgen"
 
-#: picard/tagger.py:1346
+#: picard/tagger.py:1375
 msgid "CD Lookup Error"
 msgstr "Fel vid uppslagning av CD"
 
-#: picard/tagger.py:1346
+#: picard/tagger.py:1375
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1318,51 +1317,51 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1373
+#: picard/tagger.py:1402
 msgid "All supported log files"
 msgstr "Alla loggfiler som stöds"
 
-#: picard/tagger.py:1374
+#: picard/tagger.py:1403
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "Loggfiler från EAC, XLD, Whipper och fre:ac"
 
-#: picard/tagger.py:1375
+#: picard/tagger.py:1404
 msgid "dBpoweramp log files"
 msgstr "Loggfiler från dBpoweramp"
 
-#: picard/tagger.py:1376
+#: picard/tagger.py:1405
 msgid "SCSI TOC file"
 msgstr "SCSI-TOC-fil"
 
-#: picard/script/serializer.py:383 picard/tagger.py:1377
-#: picard/ui/coverartbox/__init__.py:486 picard/ui/mainwindow/__init__.py:1326
+#: picard/script/serializer.py:384 picard/tagger.py:1406
+#: picard/ui/coverartbox/__init__.py:524 picard/ui/mainwindow/__init__.py:1344
 #: picard/ui/options/maintenance.py:212 picard/ui/options/scripting.py:139
 msgid "All files"
 msgstr "Alla filer"
 
-#: picard/tagger.py:1403
+#: picard/tagger.py:1432
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Det gick inte att tolka rippningsloggen ”%s”"
 
-#: picard/tagger.py:1423 picard/tagger.py:1438
+#: picard/tagger.py:1452 picard/tagger.py:1467
 msgid "Disc information could not be found"
 msgstr "Skivinformationen kunde inte hittas"
 
-#: picard/tagger.py:1425 picard/tagger.py:1440 picard/tagger.py:1448
+#: picard/tagger.py:1454 picard/tagger.py:1469 picard/tagger.py:1477
 msgid "Lookup Error"
 msgstr "Uppslagningsfel"
 
-#: picard/tagger.py:1446
+#: picard/tagger.py:1475
 msgid "Selected files contain tags with conflicting disc information"
 msgstr "De valda filerna innehåller motstridig skivinformation i taggarna"
 
-#: picard/tagger.py:1463
+#: picard/tagger.py:1492
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
 msgstr "Det gick inte att tolka skivinformationen från taggarna: %s"
 
-#: picard/tagger.py:1472
+#: picard/tagger.py:1501
 msgid "Looking up disc from tags…"
 msgstr "Slår upp skivan från taggarna…"
 
@@ -1371,11 +1370,11 @@ msgstr "Slår upp skivan från taggarna…"
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Fel på rad %(lineno)d: %(error)s"
 
-#: picard/track.py:449
+#: picard/track.py:445
 msgid "[loading recording information]"
 msgstr "[läser in inspelningsinformation]"
 
-#: picard/track.py:502
+#: picard/track.py:498
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[kunde inte läsa in inspelningen %s]"
@@ -1618,15 +1617,15 @@ msgstr "Lokala filer"
 msgid "Allowed Cover Art URLs"
 msgstr "Tillåtna URL:er för omslagsbilder"
 
-#: picard/formats/apev2.py:102
+#: picard/formats/apev2.py:108
 msgid "APEv2 (Monkey's Audio, WavPack)"
 msgstr "APEv2 (Monkey’s Audio, WavPack)"
 
-#: picard/formats/id3.py:143
+#: picard/formats/id3.py:144
 msgid "ID3 (MP3, AIFF)"
 msgstr "ID3 (MP3, AIFF)"
 
-#: picard/formats/vorbis.py:130
+#: picard/formats/vorbis.py:148
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
 msgstr "Vorbis-kommentarer (FLAC, Ogg Vorbis, Opus)"
 
@@ -3441,73 +3440,73 @@ msgstr ""
 "\n"
 "_Sedan Picard 2.9_"
 
-#: picard/script/serializer.py:216
+#: picard/script/serializer.py:217
 #, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
 msgstr "Fel vid export av filen ”%(filename)s”: %(error)s."
 
-#: picard/script/serializer.py:225
+#: picard/script/serializer.py:226
 msgid "Export Script File"
 msgstr "Exportera skriptfil"
 
-#: picard/script/serializer.py:253
+#: picard/script/serializer.py:254
 msgid "Export Script"
 msgstr "Exportera skript"
 
-#: picard/script/serializer.py:254
+#: picard/script/serializer.py:255
 #, python-format
 msgid "Script successfully exported to %s"
 msgstr "Skriptet exporterades till %s"
 
-#: picard/script/serializer.py:264
+#: picard/script/serializer.py:265
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
 msgstr "Fel vid import av ”%(filename)s”: %(error)s"
 
-#: picard/script/serializer.py:265
+#: picard/script/serializer.py:266
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
 msgstr "Fel vid avkodning av ”%(filename)s”: %(error)s"
 
-#: picard/script/serializer.py:267
+#: picard/script/serializer.py:268
 msgid "Import Script File"
 msgstr "Importera skriptfil"
 
-#: picard/script/serializer.py:291
+#: picard/script/serializer.py:292
 msgid "The file was empty"
 msgstr "Filen var tom"
 
-#: picard/script/serializer.py:302
+#: picard/script/serializer.py:303
 #, python-format
 msgid "Imported from %s"
 msgstr "Importerad från %s"
 
-#: picard/script/serializer.py:320
+#: picard/script/serializer.py:321
 msgid "Argument is not a dictionary"
 msgstr "Argumentet är inte en ordbok"
 
-#: picard/script/serializer.py:322 picard/script/serializer.py:365
+#: picard/script/serializer.py:323 picard/script/serializer.py:366
 msgid "Invalid script package"
 msgstr "Ogiltigt skriptpaket"
 
-#: picard/script/serializer.py:332
+#: picard/script/serializer.py:333
 #, python-format
 msgid "%s (Copy)"
 msgstr "%s (kopia)"
 
-#: picard/script/serializer.py:363
+#: picard/script/serializer.py:364
 msgid "File content not a dictionary"
 msgstr "Filinnehållet är inte en ordbok"
 
-#: picard/script/serializer.py:373 picard/ui/options/scripting.py:215
+#: picard/script/serializer.py:374 picard/ui/options/scripting.py:215
 msgid "Unnamed Script"
 msgstr "Namnlöst skript"
 
-#: picard/script/serializer.py:384 picard/ui/options/scripting.py:140
+#: picard/script/serializer.py:385 picard/ui/options/scripting.py:140
 msgid "Picard script files"
 msgstr "Picard-skriptfiler"
 
-#: picard/script/serializer.py:385
+#: picard/script/serializer.py:386
 msgid "Picard script package"
 msgstr "Picard-skriptpaket"
 
@@ -3542,78 +3541,78 @@ msgstr "Tillämpar åsidosättningar…"
 msgid "Session restored"
 msgstr "Sessionen har återställts"
 
-#: picard/tags/docs.py:72
+#: picard/tags/docs.py:75
 #, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
-#: picard/tags/docs.py:73
+#: picard/tags/docs.py:76
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
 msgstr "<p><em>%{name}%</em></p>{content}"
 
-#: picard/tags/tagvar.py:68
+#: picard/tags/tagvar.py:86
 msgid "Notes"
 msgstr "Anteckningar"
 
-#: picard/tags/tagvar.py:69
+#: picard/tags/tagvar.py:87
 msgid "Option Settings"
 msgstr "Alternativinställningar"
 
-#: picard/tags/tagvar.py:70 picard/ui/aboutdialog.py:187
+#: picard/tags/tagvar.py:88 picard/ui/aboutdialog.py:187
 #: picard/ui/forms/ui_aboutdialog.py:253
 msgid "Links"
 msgstr "Länkar"
 
-#: picard/tags/tagvar.py:71
+#: picard/tags/tagvar.py:89
 msgid "See Also"
 msgstr "Se även"
 
-#: picard/tags/tagvar.py:72 picard/ui/widgets/pluginlistwidget.py:148
+#: picard/tags/tagvar.py:90 picard/ui/widgets/pluginlistwidget.py:171
 msgid "Plugin"
 msgstr "Insticksmodul"
 
-#: picard/tags/tagvar.py:75
+#: picard/tags/tagvar.py:93
 msgid "No description available."
 msgstr "Ingen beskrivning är tillgänglig."
 
-#: picard/tags/tagvar.py:78
+#: picard/tags/tagvar.py:96
 msgid "multi-value variable"
 msgstr "flervärdesvariabel"
 
-#: picard/tags/tagvar.py:79
+#: picard/tags/tagvar.py:97
 #, fuzzy
 #| msgid "preserved read-only"
 msgid "read-only"
 msgstr "bevarad skrivskyddad"
 
-#: picard/tags/tagvar.py:80
+#: picard/tags/tagvar.py:98
 #, fuzzy
 #| msgid "preserved read-only"
 msgid "preserved"
 msgstr "bevarad skrivskyddad"
 
-#: picard/tags/tagvar.py:81
+#: picard/tags/tagvar.py:99
 msgid "not for use in scripts"
 msgstr "ska inte användas i skript"
 
-#: picard/tags/tagvar.py:82
+#: picard/tags/tagvar.py:100
 msgid "calculated"
 msgstr "beräknad"
 
-#: picard/tags/tagvar.py:83
+#: picard/tags/tagvar.py:101
 msgid "info from audio file"
 msgstr "information från ljudfilen"
 
-#: picard/tags/tagvar.py:84
+#: picard/tags/tagvar.py:102
 msgid "not provided from MusicBrainz data"
 msgstr "tillhandahålls inte av MusicBrainz-data"
 
-#: picard/tags/tagvar.py:85
+#: picard/tags/tagvar.py:103
 msgid "not populated by stock Picard"
 msgstr "fylls inte i av Picard utan insticksmoduler"
 
-#: picard/tags/tagvar.py:340
+#: picard/tags/tagvar.py:358
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"
@@ -3718,7 +3717,7 @@ msgid "Restore &Defaults"
 msgstr "Återställ &förvalda värden"
 
 #: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:145
-#: picard/ui/mainwindow/__init__.py:1216 picard/ui/searchdialog/album.py:160
+#: picard/ui/mainwindow/__init__.py:1256 picard/ui/searchdialog/album.py:160
 #: picard/ui/searchdialog/track.py:76
 msgid "Artist"
 msgstr "Artist"
@@ -3898,19 +3897,19 @@ msgstr "Blandat"
 msgid "Custom Columns"
 msgstr "Anpassade kolumner"
 
-#: picard/ui/filebrowser.py:55
+#: picard/ui/filebrowser.py:57
 msgid "&Load selected files"
 msgstr "&Läs in markerade filer"
 
-#: picard/ui/filebrowser.py:58
+#: picard/ui/filebrowser.py:60
 msgid "&Move tagged files here"
 msgstr "&Flytta taggade filer hit"
 
-#: picard/ui/filebrowser.py:61
+#: picard/ui/filebrowser.py:63
 msgid "Show &hidden files"
 msgstr "Visa &dolda filer"
 
-#: picard/ui/filebrowser.py:67
+#: picard/ui/filebrowser.py:69
 msgid "&Set as starting directory"
 msgstr "&Ställ in som startmapp"
 
@@ -3983,47 +3982,47 @@ msgstr "Ny ISRC-kod"
 msgid "&Submit"
 msgstr "&Skicka"
 
-#: picard/ui/logview.py:171
+#: picard/ui/logview.py:192
 msgid "&View detail…"
 msgstr "&Visa detaljer…"
 
-#: picard/ui/logview.py:176 picard/ui/metadatabox/__init__.py:742
+#: picard/ui/logview.py:197 picard/ui/metadatabox/__init__.py:744
 msgid "&Copy"
 msgstr "&Kopiera"
 
-#: picard/ui/itemviews/basetreeview.py:207 picard/ui/logview.py:181
+#: picard/ui/itemviews/basetreeview.py:212 picard/ui/logview.py:202
 msgid "Select &all"
 msgstr "Välj &alla"
 
-#: picard/ui/logview.py:212
+#: picard/ui/logview.py:233
 msgid "Log Detail"
 msgstr "Loggdetaljer"
 
-#: picard/ui/logview.py:340
+#: picard/ui/logview.py:361
 msgid "Log View"
 msgstr "Loggvy"
 
-#: picard/ui/logview.py:354
+#: picard/ui/logview.py:375
 msgid "Clear &log…"
 msgstr "Rensa &loggen…"
 
-#: picard/ui/logview.py:358
+#: picard/ui/logview.py:379
 msgid "&Regex filter"
 msgstr "Filter med &reguljärt uttryck"
 
-#: picard/ui/logview.py:363
+#: picard/ui/logview.py:384
 msgid "&Compact view"
 msgstr "&Kompakt vy"
 
-#: picard/ui/logview.py:372
+#: picard/ui/logview.py:393
 msgid "Help"
 msgstr "Hjälp"
 
-#: picard/ui/logview.py:379 picard/ui/logview.py:548
+#: picard/ui/logview.py:400 picard/ui/logview.py:569
 msgid "Verbosity"
 msgstr "Detaljnivå"
 
-#: picard/ui/logview.py:382
+#: picard/ui/logview.py:403
 msgid ""
 "Changes the logging verbosity level for the current session. The default "
 "level configured in Options will be restored on next startup."
@@ -4031,48 +4030,48 @@ msgstr ""
 "Ändrar loggningens detaljnivå för den aktuella sessionen. Den förvalda nivå "
 "som har angetts i Alternativ återställs nästa gång programmet startas."
 
-#: picard/ui/logview.py:392 picard/ui/logview.py:394
+#: picard/ui/logview.py:413 picard/ui/logview.py:415
 msgid "Debug Options"
 msgstr "Felsökningsalternativ"
 
-#: picard/ui/logview.py:404 picard/ui/logview.py:412
+#: picard/ui/logview.py:425 picard/ui/logview.py:433
 msgid "Filter"
 msgstr "Filter"
 
-#: picard/ui/logview.py:419
+#: picard/ui/logview.py:440
 msgid "Save As…"
 msgstr "Spara som…"
 
-#: picard/ui/logview.py:485 picard/ui/logview.py:493
+#: picard/ui/logview.py:506 picard/ui/logview.py:514
 msgid "Save Log View to File"
 msgstr "Spara loggvy till fil"
 
-#: picard/ui/logview.py:486
+#: picard/ui/logview.py:507
 msgid "Text files (*.txt);;All files (*)"
 msgstr "Textfiler (*.txt);;Alla filer (*)"
 
-#: picard/ui/logview.py:494
+#: picard/ui/logview.py:515
 msgid "File already exists, do you really want to save to this file?"
 msgstr "Filen finns redan, vill du verkligen spara till denna fil?"
 
-#: picard/ui/logview.py:506
+#: picard/ui/logview.py:527
 msgid "Failed to save Log View to file"
 msgstr "Misslyckades att spara loggvy till fil"
 
-#: picard/ui/logview.py:507
+#: picard/ui/logview.py:528
 #, python-format
 msgid "Something prevented data to be written to \"%s\"."
 msgstr "Något förhindrade att data skrevs till ”%s”."
 
-#: picard/ui/logview.py:517
+#: picard/ui/logview.py:538
 msgid "Clear Log"
 msgstr "Rensa logg"
 
-#: picard/ui/logview.py:518
+#: picard/ui/logview.py:539
 msgid "Are you sure you want to clear the log?"
 msgstr "Är du säker på att du vill rensa loggen?"
 
-#: picard/ui/logview.py:555
+#: picard/ui/logview.py:576
 msgid "Activity History"
 msgstr "Aktivitetshistorik"
 
@@ -4218,11 +4217,11 @@ msgstr "Varning vid filsparning"
 msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Skriptfel i \"%(script)s\": %(message)s"
 
-#: picard/ui/setupwizard.py:130
+#: picard/ui/setupwizard.py:149
 msgid "Welcome to MusicBrainz Picard"
 msgstr "Välkommen till MusicBrainz Picard"
 
-#: picard/ui/setupwizard.py:150
+#: picard/ui/setupwizard.py:169
 msgid ""
 "<p>Picard helps you tag and organize your music collection using the "
 "MusicBrainz database.</p><p>This wizard will help you configure a few "
@@ -4234,35 +4233,35 @@ msgstr ""
 "några viktiga inställningar innan du börjar. Du kan alltid ändra dem senare "
 "i dialogrutan Alternativ.</p>"
 
-#: picard/ui/setupwizard.py:162
+#: picard/ui/setupwizard.py:181
 msgid "Read the documentation"
 msgstr "Läs dokumentationen"
 
-#: picard/ui/setupwizard.py:178
+#: picard/ui/setupwizard.py:197
 msgid "File Organization"
 msgstr "Filorganisation"
 
-#: picard/ui/setupwizard.py:179
+#: picard/ui/setupwizard.py:198
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr "Välj om Picard ska byta namn på och flytta filer när taggar sparas."
 
-#: picard/ui/setupwizard.py:184
+#: picard/ui/setupwizard.py:203
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr "Byt namn på filer utifrån taggar (t.ex. ”Artist - Titel.mp3”)"
 
-#: picard/ui/setupwizard.py:185
+#: picard/ui/setupwizard.py:204
 msgid ""
 "When you save tagged files, their filenames will be updated based on the new "
 "tags."
 msgstr ""
 "När du sparar taggade filer uppdateras filnamnen utifrån de nya taggarna."
 
-#: picard/ui/setupwizard.py:190
+#: picard/ui/setupwizard.py:209
 msgid "Move files to a folder structure based on tags"
 msgstr "Flytta filer till en mappstruktur baserad på taggar"
 
-#: picard/ui/setupwizard.py:191
+#: picard/ui/setupwizard.py:210
 msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
@@ -4270,7 +4269,7 @@ msgstr ""
 "Sparade filer ordnas i undermappar (t.ex. Artist/Album/) i den mapp du "
 "väljer nedan."
 
-#: picard/ui/setupwizard.py:212
+#: picard/ui/setupwizard.py:231
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
@@ -4278,11 +4277,11 @@ msgstr ""
 "Du kan ändra detta senare på menyn Alternativ eller under Alternativ → "
 "Alternativ → Filnamngivning."
 
-#: picard/ui/setupwizard.py:235
+#: picard/ui/setupwizard.py:254
 msgid "Destination folder required"
 msgstr "Målmapp krävs"
 
-#: picard/ui/setupwizard.py:236
+#: picard/ui/setupwizard.py:255
 msgid ""
 "Please choose a destination folder for your music files, or uncheck the move "
 "files option."
@@ -4290,30 +4289,30 @@ msgstr ""
 "Välj en målmapp för musikfilerna eller avmarkera alternativet att flytta "
 "filer."
 
-#: picard/ui/setupwizard.py:248
+#: picard/ui/setupwizard.py:267
 msgid "Select destination directory"
 msgstr "Välj målmapp"
 
-#: picard/ui/setupwizard.py:261
+#: picard/ui/setupwizard.py:280
 msgid "Choose how Picard should handle album cover art."
 msgstr "Välj hur Picard ska hantera albumomslag."
 
-#: picard/ui/setupwizard.py:266
+#: picard/ui/setupwizard.py:285
 msgid "Embed cover art into audio files"
 msgstr "Bädda in omslagsbilder i ljudfiler"
 
-#: picard/ui/setupwizard.py:267
+#: picard/ui/setupwizard.py:286
 msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
 msgstr ""
 "Omslagsbilden lagras i själva ljudfilen så att den visas i alla musikspelare."
 
-#: picard/ui/setupwizard.py:272
+#: picard/ui/setupwizard.py:291
 msgid "Save cover art as separate image files"
 msgstr "Spara omslagsbilder som separata bildfiler"
 
-#: picard/ui/setupwizard.py:273
+#: picard/ui/setupwizard.py:292
 msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
@@ -4321,11 +4320,11 @@ msgstr ""
 "En omslagsbildfil (t.ex. cover.jpg) sparas tillsammans med ljudfilerna i "
 "samma mapp."
 
-#: picard/ui/setupwizard.py:278
+#: picard/ui/setupwizard.py:297
 msgid "Prefer release group cover art"
 msgstr "Föredra omslagsbilder för utgåvegruppen"
 
-#: picard/ui/setupwizard.py:280
+#: picard/ui/setupwizard.py:299
 msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
@@ -4334,20 +4333,20 @@ msgstr ""
 "bilder. Detta ger vanligtvis bilder av högre kvalitet, men de kanske inte "
 "matchar exakt din utgåva."
 
-#: picard/ui/setupwizard.py:288
+#: picard/ui/setupwizard.py:307
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr ""
 "Du kan ändra detta senare under Alternativ → Alternativ → Omslagsbilder."
 
-#: picard/ui/setupwizard.py:369
+#: picard/ui/setupwizard.py:388
 msgid "Updates"
 msgstr "Uppdateringar"
 
-#: picard/ui/setupwizard.py:370
+#: picard/ui/setupwizard.py:389
 msgid "Choose how Picard should check for updates."
 msgstr "Välj hur Picard ska söka efter uppdateringar."
 
-#: picard/ui/setupwizard.py:382
+#: picard/ui/setupwizard.py:401
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
@@ -4355,14 +4354,14 @@ msgstr ""
 "Sök efter en ny programversion på internet och visa en "
 "uppdateringsdialogruta om en finns."
 
-#: picard/ui/setupwizard.py:390
+#: picard/ui/setupwizard.py:409
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
 msgstr ""
 "Sök efter uppdateringar av insticksmoduler på internet och visa en avisering "
 "i statusfältet."
 
-#: picard/ui/setupwizard.py:398
+#: picard/ui/setupwizard.py:417
 msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
@@ -4370,23 +4369,23 @@ msgstr ""
 "Sök efter tillgängliga dokumentationsöversättningar så att onlinehjälpen kan "
 "visas på ditt språk."
 
-#: picard/ui/setupwizard.py:404
+#: picard/ui/setupwizard.py:423
 msgid "You can change these later under Options → General → Startup."
 msgstr "Du kan ändra detta senare under Alternativ → Allmänt → Start."
 
-#: picard/ui/setupwizard.py:438
+#: picard/ui/setupwizard.py:457
 msgid "Additional Metadata"
 msgstr "Ytterligare metadata"
 
-#: picard/ui/setupwizard.py:439
+#: picard/ui/setupwizard.py:458
 msgid "Choose whether Picard should fetch extra details about each track."
 msgstr "Välj om Picard ska hämta extra information om varje spår."
 
-#: picard/ui/setupwizard.py:444
+#: picard/ui/setupwizard.py:463
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr "Hämta detaljerade spårrelationer (utövare, kompositörer med mera)"
 
-#: picard/ui/setupwizard.py:446
+#: picard/ui/setupwizard.py:465
 msgid ""
 "For every track, Picard will also download extra credits such as the "
 "musicians who performed on it, the composer and lyricist, and related works. "
@@ -4407,7 +4406,7 @@ msgstr ""
 "så fullständiga taggar som möjligt och inte har något emot den extra "
 "inläsningstiden."
 
-#: picard/ui/setupwizard.py:460
+#: picard/ui/setupwizard.py:479
 msgid ""
 "Replace typographic Unicode punctuation with plain ASCII equivalents in tags "
 "— mainly curly apostrophes (’) become straight single quotes ('). Curly "
@@ -4417,11 +4416,11 @@ msgid ""
 "Useful if your player or file system does not handle these characters well."
 msgstr ""
 
-#: picard/ui/setupwizard.py:472
+#: picard/ui/setupwizard.py:491
 msgid "You can change this later under Options → Options → Metadata."
 msgstr "Du kan ändra detta senare under Alternativ → Alternativ → Metadata."
 
-#: picard/ui/setupwizard.py:500
+#: picard/ui/setupwizard.py:519
 msgid "Picard Setup"
 msgstr "Konfigurera Picard"
 
@@ -4592,56 +4591,56 @@ msgstr "Läs in session"
 msgid "The session file \"%(path)s\" was not found."
 msgstr "Sessionsfilen ”%(path)s” hittades inte."
 
-#: picard/ui/coverartbox/__init__.py:131
+#: picard/ui/coverartbox/__init__.py:140
 msgid "Show more details"
 msgstr "Visa mer information"
 
-#: picard/ui/coverartbox/__init__.py:133
+#: picard/ui/coverartbox/__init__.py:142
 msgid "Ctrl+Shift+I"
 msgstr "Ctrl+Shift+I"
 
-#: picard/ui/coverartbox/__init__.py:189 picard/ui/coverartbox/__init__.py:195
+#: picard/ui/coverartbox/__init__.py:198 picard/ui/coverartbox/__init__.py:207
 msgid "Saved to File"
 msgstr "Sparad i fil"
 
-#: picard/ui/coverartbox/__init__.py:197
+#: picard/ui/coverartbox/__init__.py:209
 msgid "New Cover Art"
 msgstr "Nytt omslag"
 
-#: picard/ui/coverartbox/__init__.py:198
+#: picard/ui/coverartbox/__init__.py:210
 msgid "Original Cover Art"
 msgstr "Ursprungligt omslag"
 
-#: picard/ui/coverartbox/__init__.py:208 picard/ui/infodialog/dialog.py:331
+#: picard/ui/coverartbox/__init__.py:220 picard/ui/infodialog/dialog.py:331
 msgid "This cover art will be removed from tags when saved"
 msgstr "Den här omslagsbilden tas bort från taggarna när filen sparas"
 
-#: picard/ui/coverartbox/__init__.py:485
+#: picard/ui/coverartbox/__init__.py:523
 msgid "All supported image formats"
 msgstr "Alla bildformat som stöds"
 
-#: picard/ui/coverartbox/__init__.py:511
-#: picard/ui/itemviews/basetreeview.py:343
+#: picard/ui/coverartbox/__init__.py:555
+#: picard/ui/itemviews/basetreeview.py:348
 msgid "Show &more details…"
 msgstr "Visa &fler detaljer…"
 
-#: picard/ui/coverartbox/__init__.py:517
+#: picard/ui/coverartbox/__init__.py:561
 msgid "Keep original cover art"
 msgstr "Behåll ursprungligt omslag"
 
-#: picard/ui/coverartbox/__init__.py:523
+#: picard/ui/coverartbox/__init__.py:567
 msgid "Choose local file…"
 msgstr "Välj lokal fil…"
 
-#: picard/ui/coverartbox/__init__.py:527
+#: picard/ui/coverartbox/__init__.py:571
 msgid "Add from URL…"
 msgstr "Lägg till från URL…"
 
-#: picard/ui/coverartbox/__init__.py:536
+#: picard/ui/coverartbox/__init__.py:580
 msgid "Replace front cover art"
 msgstr "Ersätt framsidesbilden"
 
-#: picard/ui/coverartbox/__init__.py:544
+#: picard/ui/coverartbox/__init__.py:588
 msgid "Append front cover art"
 msgstr "Lägg till framsidesbild"
 
@@ -4726,78 +4725,78 @@ msgstr ""
 "Insticksmodulen finns inte i det officiella registret. Installation av "
 "oregistrerade insticksmoduler kan medföra säkerhetsrisker."
 
-#: picard/ui/dialogs/installplugin.py:73
+#: picard/ui/dialogs/installplugin.py:96
 msgid "Install Plugin"
 msgstr "Installera insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:109 picard/ui/options/plugins.py:121
+#: picard/ui/dialogs/installplugin.py:132 picard/ui/options/plugins.py:121
 msgid "Search plugins…"
 msgstr "Sök efter insticksmoduler…"
 
-#: picard/ui/dialogs/installplugin.py:114
-#: picard/ui/dialogs/installplugin.py:344
+#: picard/ui/dialogs/installplugin.py:137
+#: picard/ui/dialogs/installplugin.py:366
 msgid "All Categories"
 msgstr "Alla kategorier"
 
-#: picard/ui/dialogs/installplugin.py:123
+#: picard/ui/dialogs/installplugin.py:146
 msgid "Trust"
 msgstr "Förtroende"
 
-#: picard/ui/dialogs/installplugin.py:123 picard/ui/searchdialog/album.py:158
+#: picard/ui/dialogs/installplugin.py:146 picard/ui/searchdialog/album.py:158
 #: picard/ui/searchdialog/artist.py:45 picard/ui/searchdialog/track.py:66
 msgid "Name"
 msgstr "Namn"
 
-#: picard/ui/dialogs/installplugin.py:123
+#: picard/ui/dialogs/installplugin.py:146
 msgid "Categories"
 msgstr "Kategorier"
 
-#: picard/ui/dialogs/installplugin.py:141
+#: picard/ui/dialogs/installplugin.py:163
 #, fuzzy
 #| msgid "Double-click to view detailed plugin information"
 msgid "Double-click a plugin for detailed information."
 msgstr "Dubbelklicka för att visa detaljerad information om insticksmodulen"
 
-#: picard/ui/dialogs/installplugin.py:144
+#: picard/ui/dialogs/installplugin.py:166
 msgid "Registry"
 msgstr "Register"
 
-#: picard/ui/dialogs/installplugin.py:150
+#: picard/ui/dialogs/installplugin.py:172
 msgid "Install from URL"
 msgstr "Installera från URL"
 
-#: picard/ui/dialogs/installplugin.py:154
+#: picard/ui/dialogs/installplugin.py:176
 msgid "https://github.com/user/plugin"
 msgstr "https://github.com/user/plugin"
 
-#: picard/ui/dialogs/installplugin.py:155
+#: picard/ui/dialogs/installplugin.py:177
 msgid "Git URL:"
 msgstr "Git-URL:"
 
-#: picard/ui/dialogs/installplugin.py:158
-#: picard/ui/dialogs/installplugin.py:189
+#: picard/ui/dialogs/installplugin.py:180
+#: picard/ui/dialogs/installplugin.py:211
 msgid "main"
 msgstr "main"
 
-#: picard/ui/dialogs/installplugin.py:159
-#: picard/ui/dialogs/installplugin.py:190
+#: picard/ui/dialogs/installplugin.py:181
+#: picard/ui/dialogs/installplugin.py:212
 msgid "Ref/Tag:"
 msgstr "Referens/tagg:"
 
-#: picard/ui/dialogs/installplugin.py:163
+#: picard/ui/dialogs/installplugin.py:185
 msgid "URL"
 msgstr "URL"
 
-#: picard/ui/dialogs/installplugin.py:169
+#: picard/ui/dialogs/installplugin.py:191
 msgid "Install from Local Directory"
 msgstr "Installera från lokal mapp"
 
-#: picard/ui/dialogs/installplugin.py:175
+#: picard/ui/dialogs/installplugin.py:197
 msgid "/path/to/plugin/directory"
 msgstr "/sökväg/till/insticksmodulens/mapp"
 
-#: picard/ui/dialogs/installplugin.py:181
-#: picard/ui/dialogs/installplugin.py:182
+#: picard/ui/dialogs/installplugin.py:203
+#: picard/ui/dialogs/installplugin.py:204
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
 #: picard/ui/forms/ui_options_interface.py:131
 #: picard/ui/forms/ui_options_maintenance.py:149
@@ -4805,15 +4804,15 @@ msgstr "/sökväg/till/insticksmodulens/mapp"
 msgid "Select directory"
 msgstr "Välj mapp"
 
-#: picard/ui/dialogs/installplugin.py:186
+#: picard/ui/dialogs/installplugin.py:208
 msgid "Directory:"
 msgstr "Mapp:"
 
-#: picard/ui/dialogs/installplugin.py:192
+#: picard/ui/dialogs/installplugin.py:214
 msgid "Load in-place (ignore git)"
 msgstr "Läs in på plats (ignorera Git)"
 
-#: picard/ui/dialogs/installplugin.py:195
+#: picard/ui/dialogs/installplugin.py:217
 msgid ""
 "If checked, the plugin will be loaded directly from disk without git "
 "features (no updates, no ref switching). Useful for active development."
@@ -4822,24 +4821,24 @@ msgstr ""
 "Git-funktioner (inga uppdateringar och inget byte av referens). Användbart "
 "vid aktiv utveckling."
 
-#: picard/ui/dialogs/installplugin.py:205 picard/ui/dialogs/plugininfo.py:238
+#: picard/ui/dialogs/installplugin.py:227 picard/ui/dialogs/plugininfo.py:238
 msgid "Local"
 msgstr "Lokal"
 
-#: picard/ui/dialogs/installplugin.py:226
+#: picard/ui/dialogs/installplugin.py:248
 msgid "Install…"
 msgstr "Installera…"
 
-#: picard/ui/dialogs/installplugin.py:290
-#: picard/ui/dialogs/installplugin.py:588
+#: picard/ui/dialogs/installplugin.py:312
+#: picard/ui/dialogs/installplugin.py:609
 msgid "The selected path is not a directory."
 msgstr "Den valda sökvägen är inte en mapp."
 
-#: picard/ui/dialogs/installplugin.py:296
+#: picard/ui/dialogs/installplugin.py:318
 msgid "The directory does not contain a MANIFEST.toml file."
 msgstr "Mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:308
+#: picard/ui/dialogs/installplugin.py:330
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
@@ -4847,7 +4846,7 @@ msgstr ""
 "Insticksmodulen hanteras inte av Git. Den installeras som en lokal "
 "insticksmodul utan Git, versionshantering eller uppdateringar."
 
-#: picard/ui/dialogs/installplugin.py:322
+#: picard/ui/dialogs/installplugin.py:344
 msgid ""
 "Git features (updates, refs) will be disabled. The plugin will be loaded "
 "directly from this directory."
@@ -4855,35 +4854,35 @@ msgstr ""
 "Git-funktioner (uppdateringar och referenser) inaktiveras. Insticksmodulen "
 "läses in direkt från den här mappen."
 
-#: picard/ui/dialogs/installplugin.py:378
+#: picard/ui/dialogs/installplugin.py:400
 msgid "Official plugin - reviewed by Picard team"
 msgstr "Officiell insticksmodul – granskad av Picard-teamet"
 
-#: picard/ui/dialogs/installplugin.py:379
+#: picard/ui/dialogs/installplugin.py:401
 msgid "Trusted plugin - from known developers"
 msgstr "Betrodd insticksmodul – från kända utvecklare"
 
-#: picard/ui/dialogs/installplugin.py:380
+#: picard/ui/dialogs/installplugin.py:402
 msgid "Community plugin - not reviewed"
 msgstr "Gemenskapsmodul – inte granskad"
 
-#: picard/ui/dialogs/installplugin.py:381
+#: picard/ui/dialogs/installplugin.py:403
 msgid "Unregistered plugin - not in official registry"
 msgstr "Oregistrerad insticksmodul – finns inte i det officiella registret"
 
-#: picard/ui/dialogs/installplugin.py:426
+#: picard/ui/dialogs/installplugin.py:448
 msgid "Double-click to view detailed plugin information"
 msgstr "Dubbelklicka för att visa detaljerad information om insticksmodulen"
 
-#: picard/ui/dialogs/installplugin.py:494
+#: picard/ui/dialogs/installplugin.py:515
 msgid "Select Plugin Directory"
 msgstr "Välj mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:514
+#: picard/ui/dialogs/installplugin.py:535
 msgid "Plugin not found in registry"
 msgstr "Insticksmodulen hittades inte i registret"
 
-#: picard/ui/dialogs/installplugin.py:525
+#: picard/ui/dialogs/installplugin.py:546
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
@@ -4891,7 +4890,7 @@ msgstr ""
 "Varning: Detta är en gemenskapsmodul. Gemenskapsmoduler granskas inte av "
 "Picard-teamet. Installera endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:534
+#: picard/ui/dialogs/installplugin.py:555
 msgid ""
 "Warning: This plugin is not in the official registry. Installing "
 "unregistered plugins may pose security risks. Only install plugins from "
@@ -4901,31 +4900,31 @@ msgstr ""
 "av oregistrerade insticksmoduler kan medföra säkerhetsrisker. Installera "
 "endast insticksmoduler från källor som du litar på."
 
-#: picard/ui/dialogs/installplugin.py:582
+#: picard/ui/dialogs/installplugin.py:603
 msgid "No Directory Selected"
 msgstr "Ingen mapp har valts"
 
-#: picard/ui/dialogs/installplugin.py:582
+#: picard/ui/dialogs/installplugin.py:603
 msgid "Please select a local plugin directory."
 msgstr "Välj en lokal mapp för insticksmodulen."
 
-#: picard/ui/dialogs/installplugin.py:588
+#: picard/ui/dialogs/installplugin.py:609
 msgid "Invalid Directory"
 msgstr "Ogiltig mapp"
 
-#: picard/ui/dialogs/installplugin.py:596
+#: picard/ui/dialogs/installplugin.py:617
 msgid "Invalid Plugin Directory"
 msgstr "Ogiltig mapp för insticksmodul"
 
-#: picard/ui/dialogs/installplugin.py:597
+#: picard/ui/dialogs/installplugin.py:618
 msgid "The selected directory does not contain a MANIFEST.toml file."
 msgstr "Den valda mappen innehåller ingen MANIFEST.toml-fil."
 
-#: picard/ui/dialogs/installplugin.py:608
+#: picard/ui/dialogs/installplugin.py:629
 msgid "Plugin Not Managed by Git"
 msgstr "Insticksmodulen hanteras inte av Git"
 
-#: picard/ui/dialogs/installplugin.py:610
+#: picard/ui/dialogs/installplugin.py:631
 msgid ""
 "This plugin is not managed by git.\n"
 "\n"
@@ -4943,33 +4942,33 @@ msgstr ""
 "\n"
 "Vill du fortsätta?"
 
-#: picard/ui/dialogs/installplugin.py:660
+#: picard/ui/dialogs/installplugin.py:681
 msgid "Plugin has no repository URL"
 msgstr "Insticksmodulen saknar URL till kodförrådet"
 
-#: picard/ui/dialogs/installplugin.py:731
+#: picard/ui/dialogs/installplugin.py:752
 msgid "Plugin installed successfully"
 msgstr "Insticksmodulen installerades"
 
-#: picard/ui/dialogs/installplugin.py:736
+#: picard/ui/dialogs/installplugin.py:757
 msgid "Installation failed"
 msgstr "Installationen misslyckades"
 
-#: picard/ui/dialogs/installplugin.py:737 picard/ui/options/plugins.py:532
+#: picard/ui/dialogs/installplugin.py:758 picard/ui/options/plugins.py:532
 #: picard/ui/widgets/plugindetailswidget.py:243
 #: picard/ui/widgets/plugindetailswidget.py:406
-#: picard/ui/widgets/pluginlistwidget.py:733
-#: picard/ui/widgets/pluginlistwidget.py:765
-#: picard/ui/widgets/pluginlistwidget.py:851
-#: picard/ui/widgets/pluginlistwidget.py:884
+#: picard/ui/widgets/pluginlistwidget.py:751
+#: picard/ui/widgets/pluginlistwidget.py:783
+#: picard/ui/widgets/pluginlistwidget.py:869
+#: picard/ui/widgets/pluginlistwidget.py:902
 msgid "Unknown error"
 msgstr "Okänt fel"
 
-#: picard/ui/dialogs/installplugin.py:740
+#: picard/ui/dialogs/installplugin.py:761
 msgid "Installation Failed"
 msgstr "Installationen misslyckades"
 
-#: picard/ui/dialogs/installplugin.py:741
+#: picard/ui/dialogs/installplugin.py:762
 msgid "Failed to install the plugin."
 msgstr "Det gick inte att installera insticksmodulen."
 
@@ -5163,7 +5162,7 @@ msgstr "Oregistrerad"
 msgid "About Picard"
 msgstr "Om Picard"
 
-#: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:276
+#: picard/ui/forms/ui_aboutdialog.py:244 picard/ui/mainwindow/__init__.py:317
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
@@ -5979,7 +5978,7 @@ msgstr "Fristående inspelningar:"
 
 #: picard/ui/forms/ui_options_metadata.py:215
 #: picard/ui/forms/ui_options_metadata.py:216
-#: picard/ui/itemviews/custom_columns/shared.py:305
+#: picard/ui/itemviews/custom_columns/shared.py:310
 #: picard/ui/options/interface.py:89 picard/ui/widgets/refselector.py:54
 msgid "Default"
 msgstr "Förvald"
@@ -6052,13 +6051,9 @@ msgstr "ListenBrainz-användartoken:"
 
 #: picard/ui/forms/ui_options_player.py:65
 msgid ""
-"<html><head/><body><p>Your user token is available in the <a href=\"https://"
-"listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
-"color:#308cc6;\">ListenBrainz settings</span></a>.</p></body></html>"
+"Your user token is available in the [ListenBrainz settings](https://"
+"listenbrainz.org/settings/)."
 msgstr ""
-"<html><head/><body><p>Din användartoken finns under <a href=\"https://"
-"listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
-"color:#308cc6;\">ListenBrainz-inställningar</span></a>.</p></body></html>"
 
 #: picard/ui/forms/ui_options_profiles.py:81
 msgid "Option Profile(s)"
@@ -6091,26 +6086,6 @@ msgstr ""
 #: picard/ui/forms/ui_options_ratings.py:61
 msgid "E-mail:"
 msgstr "E-post:"
-
-#: picard/ui/forms/ui_options_releases.py:118
-#: picard/ui/forms/ui_options_releases.py:119
-msgid "Add to preferred release countries"
-msgstr "Lägg till bland föredragna utgivningsländer"
-
-#: picard/ui/forms/ui_options_releases.py:120
-#: picard/ui/forms/ui_options_releases.py:121
-msgid "Remove from preferred release countries"
-msgstr "Ta bort från föredragna utgivningsländer"
-
-#: picard/ui/forms/ui_options_releases.py:123
-#: picard/ui/forms/ui_options_releases.py:124
-msgid "Add to preferred release formats"
-msgstr "Lägg till bland föredragna utgåveformat"
-
-#: picard/ui/forms/ui_options_releases.py:125
-#: picard/ui/forms/ui_options_releases.py:126
-msgid "Remove from preferred release formats"
-msgstr "Ta bort från föredragna utgåveformat"
 
 #: picard/ui/forms/ui_options_renaming.py:136
 msgid "Move files when saving"
@@ -6418,7 +6393,7 @@ msgid "Windows-1252"
 msgstr "Windows-1252"
 
 #: picard/ui/forms/ui_passworddialog.py:67
-#: picard/ui/mainwindow/__init__.py:2083
+#: picard/ui/mainwindow/__init__.py:2112
 msgid "Authentication Required"
 msgstr "Autentisering krävs"
 
@@ -6644,35 +6619,35 @@ msgstr "Skiva %d"
 msgid "Tracklist:"
 msgstr "Spårlista:"
 
-#: picard/ui/infodialog/widgets.py:133 picard/ui/infodialog/widgets.py:152
-#: picard/ui/infodialog/widgets.py:175
-#: picard/ui/itemviews/custom_columns/shared.py:49
+#: picard/ui/infodialog/widgets.py:137 picard/ui/infodialog/widgets.py:156
+#: picard/ui/infodialog/widgets.py:179
+#: picard/ui/itemviews/custom_columns/shared.py:52
 #: picard/ui/searchdialog/album.py:169 picard/ui/searchdialog/artist.py:47
 #: picard/ui/searchdialog/track.py:80
 msgid "Type"
 msgstr "Typ"
 
-#: picard/ui/infodialog/widgets.py:134 picard/ui/infodialog/widgets.py:176
+#: picard/ui/infodialog/widgets.py:138 picard/ui/infodialog/widgets.py:180
 msgid "New Embedded"
 msgstr "Ny inbäddad"
 
-#: picard/ui/infodialog/widgets.py:135 picard/ui/infodialog/widgets.py:177
+#: picard/ui/infodialog/widgets.py:139 picard/ui/infodialog/widgets.py:181
 msgid "New Exported"
 msgstr "Ny exporterad"
 
-#: picard/ui/infodialog/widgets.py:138 picard/ui/infodialog/widgets.py:181
+#: picard/ui/infodialog/widgets.py:142 picard/ui/infodialog/widgets.py:185
 msgid "New cover art embedded into tags"
 msgstr "Ny omslagsbild inbäddad i taggar"
 
-#: picard/ui/infodialog/widgets.py:139 picard/ui/infodialog/widgets.py:182
+#: picard/ui/infodialog/widgets.py:143 picard/ui/infodialog/widgets.py:186
 msgid "New cover art saved as a separate file"
 msgstr "Ny omslagsbild sparad som separat fil"
 
-#: picard/ui/infodialog/widgets.py:152 picard/ui/infodialog/widgets.py:174
+#: picard/ui/infodialog/widgets.py:156 picard/ui/infodialog/widgets.py:178
 msgid "Existing Cover"
 msgstr "Befintlig omslagsbild"
 
-#: picard/ui/infodialog/widgets.py:154 picard/ui/infodialog/widgets.py:180
+#: picard/ui/infodialog/widgets.py:158 picard/ui/infodialog/widgets.py:184
 msgid "Existing cover art already embedded into tags"
 msgstr "Befintlig omslagsbild är redan inbäddad i taggar"
 
@@ -6701,7 +6676,7 @@ msgid "Excellent match"
 msgstr "Utmärkt matchning"
 
 #: picard/ui/itemviews/__init__.py:361
-#: picard/ui/itemviews/custom_columns/shared.py:149
+#: picard/ui/itemviews/custom_columns/shared.py:154
 msgid "File view"
 msgstr "Filvy"
 
@@ -6710,7 +6685,7 @@ msgid "Contains unmatched files and clusters"
 msgstr "Innehåller omatchade filer och kluster"
 
 #: picard/ui/itemviews/__init__.py:393
-#: picard/ui/itemviews/custom_columns/shared.py:150
+#: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Album view"
 msgstr "Albumvy"
 
@@ -6789,49 +6764,49 @@ msgstr ""
 "Inget fingeravtryck beräknades för den här filen. Använd ”Skanna” eller "
 "”Generera AcoustID-fingeravtryck” för att beräkna det."
 
-#: picard/ui/itemviews/basetreeview.py:172
+#: picard/ui/itemviews/basetreeview.py:177
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Andra versioner (%d)"
 
-#: picard/ui/itemviews/basetreeview.py:203
+#: picard/ui/itemviews/basetreeview.py:208
 msgid "&Expand all"
 msgstr "&Fäll ut alla"
 
-#: picard/ui/itemviews/basetreeview.py:205
+#: picard/ui/itemviews/basetreeview.py:210
 msgid "&Collapse all"
 msgstr "Fäll i&n alla"
 
-#: picard/ui/itemviews/basetreeview.py:209
+#: picard/ui/itemviews/basetreeview.py:214
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews/basetreeview.py:336
+#: picard/ui/itemviews/basetreeview.py:341
 msgid "&Other versions"
 msgstr "&Andra versioner"
 
-#: picard/ui/itemviews/basetreeview.py:348
+#: picard/ui/itemviews/basetreeview.py:353
 msgid "Loading…"
 msgstr "Läser in…"
 
-#: picard/ui/itemviews/basetreeview.py:375
+#: picard/ui/itemviews/basetreeview.py:393
 msgid "Collections"
 msgstr "Samlingar"
 
-#: picard/ui/itemviews/basetreeview.py:379
+#: picard/ui/itemviews/basetreeview.py:397
 msgid "P&lugins"
 msgstr "&Insticksmoduler"
 
-#: picard/ui/itemviews/basetreeview.py:395
+#: picard/ui/itemviews/basetreeview.py:413
 msgid "&Run scripts"
 msgstr "&Kör skript"
 
-#: picard/ui/itemviews/basetreeview.py:772
+#: picard/ui/itemviews/basetreeview.py:795
 #, python-format
 msgid "Matches on: %s"
 msgstr "Matchar på: %s"
 
-#: picard/ui/itemviews/basetreeview.py:774
+#: picard/ui/itemviews/basetreeview.py:797
 msgid "No tags found for selected filters."
 msgstr "Inga taggar hittades för de valda filtren."
 
@@ -6983,61 +6958,61 @@ msgid ""
 "column?"
 msgstr "Du har osparade ändringar. Vill du spara dem innan kolumnen tas bort?"
 
-#: picard/ui/itemviews/custom_columns/shared.py:48
+#: picard/ui/itemviews/custom_columns/shared.py:51
 msgid "Column Title"
 msgstr "Kolumnrubrik"
 
-#: picard/ui/itemviews/custom_columns/shared.py:50
+#: picard/ui/itemviews/custom_columns/shared.py:53
 msgid "Expression"
 msgstr "Uttryck"
 
-#: picard/ui/itemviews/custom_columns/shared.py:51
+#: picard/ui/itemviews/custom_columns/shared.py:54
 msgid "Align"
 msgstr "Justering"
 
-#: picard/ui/itemviews/custom_columns/shared.py:52
+#: picard/ui/itemviews/custom_columns/shared.py:55
 msgid "Width"
 msgstr "Bredd"
 
-#: picard/ui/itemviews/custom_columns/shared.py:72
+#: picard/ui/itemviews/custom_columns/shared.py:77
 msgid "Untitled"
 msgstr "Namnlös"
 
-#: picard/ui/itemviews/custom_columns/shared.py:154
+#: picard/ui/itemviews/custom_columns/shared.py:159
 msgid "Show this column in the Files view."
 msgstr "Visa den här kolumnen i filvyn."
 
-#: picard/ui/itemviews/custom_columns/shared.py:155
+#: picard/ui/itemviews/custom_columns/shared.py:160
 msgid "Show this column in the Albums view."
 msgstr "Visa den här kolumnen i albumvyn."
 
-#: picard/ui/itemviews/custom_columns/shared.py:214
-#: picard/ui/itemviews/custom_columns/shared.py:254
+#: picard/ui/itemviews/custom_columns/shared.py:219
+#: picard/ui/itemviews/custom_columns/shared.py:259
 msgid "left"
 msgstr "vänster"
 
-#: picard/ui/itemviews/custom_columns/shared.py:214
-#: picard/ui/itemviews/custom_columns/shared.py:254
+#: picard/ui/itemviews/custom_columns/shared.py:219
+#: picard/ui/itemviews/custom_columns/shared.py:259
 msgid "right"
 msgstr "höger"
 
-#: picard/ui/itemviews/custom_columns/shared.py:306
+#: picard/ui/itemviews/custom_columns/shared.py:311
 msgid "Default alphabetical text sorting."
 msgstr "Förvald alfabetisk textsortering."
 
-#: picard/ui/itemviews/custom_columns/shared.py:309
+#: picard/ui/itemviews/custom_columns/shared.py:314
 msgid "Case insensitive"
 msgstr "Skiftlägesokänslig"
 
-#: picard/ui/itemviews/custom_columns/shared.py:310
+#: picard/ui/itemviews/custom_columns/shared.py:315
 msgid "Case insensitive alphabetical text sorting."
 msgstr "Skiftlägesokänslig alfabetisk textsortering."
 
-#: picard/ui/itemviews/custom_columns/shared.py:313
+#: picard/ui/itemviews/custom_columns/shared.py:318
 msgid "Numeric"
 msgstr "Numerisk"
 
-#: picard/ui/itemviews/custom_columns/shared.py:314
+#: picard/ui/itemviews/custom_columns/shared.py:319
 msgid ""
 "Numeric sorting if the column content is numeric. Falls back to natural "
 "number sorting."
@@ -7045,11 +7020,11 @@ msgstr ""
 "Numerisk sortering när kolumninnehållet är numeriskt. Annars används "
 "naturlig talsortering."
 
-#: picard/ui/itemviews/custom_columns/shared.py:317
+#: picard/ui/itemviews/custom_columns/shared.py:322
 msgid "Natural number sorting"
 msgstr "Naturlig talsortering"
 
-#: picard/ui/itemviews/custom_columns/shared.py:318
+#: picard/ui/itemviews/custom_columns/shared.py:323
 msgid ""
 "Alphabetical text sorting, but consider numbers (e.g. \"Track 2\" before "
 "\"Track 10\")."
@@ -7057,41 +7032,41 @@ msgstr ""
 "Alfabetisk textsortering som tar hänsyn till tal (t.ex. ”Spår 2” före ”Spår "
 "10”)."
 
-#: picard/ui/itemviews/custom_columns/shared.py:321
+#: picard/ui/itemviews/custom_columns/shared.py:326
 msgid "By value length"
 msgstr "Efter värdelängd"
 
-#: picard/ui/itemviews/custom_columns/shared.py:322
+#: picard/ui/itemviews/custom_columns/shared.py:327
 msgid "Sort by string length."
 msgstr "Sortera efter stränglängd."
 
-#: picard/ui/itemviews/custom_columns/shared.py:325
+#: picard/ui/itemviews/custom_columns/shared.py:330
 msgid "Article insensitive"
 msgstr "Ignorera artiklar"
 
-#: picard/ui/itemviews/custom_columns/shared.py:326
+#: picard/ui/itemviews/custom_columns/shared.py:331
 msgid "Sort ignoring leading articles (e.g. a, an, the)."
 msgstr ""
 "Sortera utan att ta hänsyn till inledande artiklar (t.ex. a, an och the)."
 
-#: picard/ui/itemviews/custom_columns/shared.py:329
+#: picard/ui/itemviews/custom_columns/shared.py:334
 msgid "Empty values first"
 msgstr "Tomma värden först"
 
-#: picard/ui/itemviews/custom_columns/shared.py:330
+#: picard/ui/itemviews/custom_columns/shared.py:335
 msgid "Empty/whitespace values sort first."
 msgstr "Tomma värden och värden som bara innehåller blanksteg sorteras först."
 
-#: picard/ui/itemviews/custom_columns/shared.py:333
+#: picard/ui/itemviews/custom_columns/shared.py:338
 msgid "Empty values last"
 msgstr "Tomma värden sist"
 
-#: picard/ui/itemviews/custom_columns/shared.py:334
+#: picard/ui/itemviews/custom_columns/shared.py:339
 msgid "Empty/whitespace values sort last."
 msgstr "Tomma värden och värden som bara innehåller blanksteg sorteras sist."
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:56
-#: picard/ui/mainwindow/__init__.py:495
+#: picard/ui/mainwindow/__init__.py:536
 msgid "Unsaved Changes"
 msgstr "Osparade ändringar"
 
@@ -7249,11 +7224,19 @@ msgstr "Kolumnen kommer inte att visas i någon vy"
 msgid "Unknown views in add_to: %s"
 msgstr "Okända vyer i add_to: %s"
 
-#: picard/ui/mainwindow/__init__.py:496
+#: picard/ui/mainwindow/__init__.py:207
+msgid "&Advanced search"
+msgstr "&Avancerad sökning"
+
+#: picard/ui/mainwindow/__init__.py:208
+msgid "&Builtin search"
+msgstr "&Inbyggd sökning"
+
+#: picard/ui/mainwindow/__init__.py:537
 msgid "Are you sure you want to quit Picard?"
 msgstr "Är du säker på att du vill avsluta Picard?"
 
-#: picard/ui/mainwindow/__init__.py:499
+#: picard/ui/mainwindow/__init__.py:540
 #, python-format
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
@@ -7265,45 +7248,45 @@ msgstr[1] ""
 "Det finns %d osparade filer. Om Picard stängs går alla osparade ändringar "
 "förlorade."
 
-#: picard/ui/mainwindow/__init__.py:508
+#: picard/ui/mainwindow/__init__.py:549
 msgid "&Quit Picard"
 msgstr "&Avsluta Picard"
 
-#: picard/ui/mainwindow/__init__.py:541
+#: picard/ui/mainwindow/__init__.py:582
 msgid "Close Session"
 msgstr "Stäng session"
 
-#: picard/ui/mainwindow/__init__.py:542
+#: picard/ui/mainwindow/__init__.py:583
 msgid "Do you want to save the current session before continuing?"
 msgstr "Vill du spara den aktuella sessionen innan du fortsätter?"
 
-#: picard/ui/mainwindow/__init__.py:543
+#: picard/ui/mainwindow/__init__.py:584
 msgid ""
 "Closing the session will clear all files, clusters and albums from the view."
 msgstr "När sessionen stängs tas alla filer, kluster och album bort från vyn."
 
-#: picard/ui/mainwindow/__init__.py:545 picard/ui/mainwindow/actions.py:595
+#: picard/ui/mainwindow/__init__.py:586 picard/ui/mainwindow/actions.py:595
 msgid "&Save Session"
 msgstr "&Spara session"
 
-#: picard/ui/mainwindow/__init__.py:546
+#: picard/ui/mainwindow/__init__.py:587
 msgid "Do&n't Save"
 msgstr "Spara i&nte"
 
-#: picard/ui/mainwindow/__init__.py:575 picard/ui/mainwindow/__init__.py:1557
+#: picard/ui/mainwindow/__init__.py:616 picard/ui/mainwindow/__init__.py:1575
 #, python-format
 msgid "Session saved to \"%(path)s\""
 msgstr "Sessionen sparades i ”%(path)s”"
 
-#: picard/ui/mainwindow/__init__.py:578 picard/ui/mainwindow/__init__.py:1554
+#: picard/ui/mainwindow/__init__.py:619 picard/ui/mainwindow/__init__.py:1572
 msgid "Failed to save session"
 msgstr "Det gick inte att spara sessionen"
 
-#: picard/ui/mainwindow/__init__.py:615
+#: picard/ui/mainwindow/__init__.py:656
 msgid "Ready"
 msgstr "Klar"
 
-#: picard/ui/mainwindow/__init__.py:624
+#: picard/ui/mainwindow/__init__.py:665
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
@@ -7313,7 +7296,7 @@ msgstr ""
 "väljer ”Sök” eller ”Öppna i webbläsare” i Picard kan du klicka på knappen "
 "”Tagger” på webbsidan för att läsa in utgåvan i Picard."
 
-#: picard/ui/mainwindow/__init__.py:642
+#: picard/ui/mainwindow/__init__.py:683
 msgid ""
 "There are updates available for installed plugins. Click to open the plugin "
 "manager."
@@ -7321,20 +7304,20 @@ msgstr ""
 "Det finns uppdateringar för installerade insticksmoduler. Klicka för att "
 "öppna hanteraren för insticksmoduler."
 
-#: picard/ui/mainwindow/__init__.py:671
+#: picard/ui/mainwindow/__init__.py:712
 #, python-format
 msgid "Listening on port %(port)d"
 msgstr "Lyssnar på port %(port)d"
 
-#: picard/ui/mainwindow/__init__.py:681
+#: picard/ui/mainwindow/__init__.py:722
 msgid "Stopped by user"
 msgstr "Stoppades av användaren"
 
-#: picard/ui/mainwindow/__init__.py:746
+#: picard/ui/mainwindow/__init__.py:787
 msgid "AcoustID submission not configured"
 msgstr "Sändning till AcoustID är inte konfigurerad"
 
-#: picard/ui/mainwindow/__init__.py:747
+#: picard/ui/mainwindow/__init__.py:788
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
@@ -7342,147 +7325,139 @@ msgstr ""
 "Du behöver konfigurera din AcoustID API-nyckel innan du kan skicka in "
 "fingeravtryck."
 
-#: picard/ui/mainwindow/__init__.py:749
+#: picard/ui/mainwindow/__init__.py:790
 msgid "Open AcoustID options"
 msgstr "Öppna AcoustID-alternativen"
 
-#: picard/ui/mainwindow/__init__.py:799
+#: picard/ui/mainwindow/__init__.py:840
 msgid "Lookup by…"
 msgstr "Slå upp via…"
 
-#: picard/ui/mainwindow/__init__.py:808 picard/ui/mainwindow/actions.py:406
+#: picard/ui/mainwindow/__init__.py:849 picard/ui/mainwindow/actions.py:406
 msgid "Lookup &CD…"
 msgstr "Slå upp &CD…"
 
-#: picard/ui/mainwindow/__init__.py:818
+#: picard/ui/mainwindow/__init__.py:859
 msgid "Recent Sessions"
 msgstr "Senaste sessioner"
 
-#: picard/ui/mainwindow/__init__.py:856
+#: picard/ui/mainwindow/__init__.py:897
 msgid "Recent sessions cleared"
 msgstr "Senaste sessioner har rensats"
 
-#: picard/ui/mainwindow/__init__.py:875
+#: picard/ui/mainwindow/__init__.py:916
 msgid "Empty"
 msgstr "Tom"
 
-#: picard/ui/mainwindow/__init__.py:891 picard/ui/mainwindow/actions.py:619
+#: picard/ui/mainwindow/__init__.py:932 picard/ui/mainwindow/actions.py:619
 msgid "Clear Recent Sessions"
 msgstr "Rensa senaste sessioner"
 
-#: picard/ui/mainwindow/__init__.py:994 picard/ui/scripteditor/__init__.py:244
+#: picard/ui/mainwindow/__init__.py:1035 picard/ui/scripteditor/__init__.py:244
 msgid "&File"
 msgstr "&Arkiv"
 
-#: picard/ui/mainwindow/__init__.py:1018
+#: picard/ui/mainwindow/__init__.py:1059
 msgid "&Edit"
 msgstr "&Redigera"
 
-#: picard/ui/mainwindow/__init__.py:1027 picard/ui/scripteditor/__init__.py:310
+#: picard/ui/mainwindow/__init__.py:1068 picard/ui/scripteditor/__init__.py:310
 msgid "&View"
 msgstr "&Visa"
 
-#: picard/ui/mainwindow/__init__.py:1038
+#: picard/ui/mainwindow/__init__.py:1079
 msgid "File naming &scripts"
 msgstr "Filnamns&skript"
 
-#: picard/ui/mainwindow/__init__.py:1045
+#: picard/ui/mainwindow/__init__.py:1086
 msgid "&Profiles"
 msgstr "&Profiler"
 
-#: picard/ui/mainwindow/__init__.py:1051
+#: picard/ui/mainwindow/__init__.py:1092
 msgid "&Quick settings"
 msgstr "&Snabbinställningar"
 
-#: picard/ui/mainwindow/__init__.py:1055
+#: picard/ui/mainwindow/__init__.py:1096
 msgid "&Options"
 msgstr "A&lternativ"
 
-#: picard/ui/mainwindow/__init__.py:1066
+#: picard/ui/mainwindow/__init__.py:1107
 msgid "&Tools"
 msgstr "Ver&ktyg"
 
-#: picard/ui/mainwindow/__init__.py:1081
+#: picard/ui/mainwindow/__init__.py:1122
 msgid "&Plugin Tools"
 msgstr "Verktyg för &insticksmoduler"
 
-#: picard/ui/mainwindow/__init__.py:1088 picard/ui/scripteditor/__init__.py:331
+#: picard/ui/mainwindow/__init__.py:1129 picard/ui/scripteditor/__init__.py:331
 msgid "&Help"
 msgstr "&Hjälp"
 
-#: picard/ui/mainwindow/__init__.py:1156
+#: picard/ui/mainwindow/__init__.py:1197
 msgid "Actions"
 msgstr "Åtgärder"
 
-#: picard/ui/mainwindow/__init__.py:1204 picard/ui/mainwindow/actions.py:398
+#: picard/ui/mainwindow/__init__.py:1244 picard/ui/mainwindow/actions.py:398
 #: picard/ui/searchdialog/__init__.py:62
 msgid "Search"
 msgstr "Sök"
 
-#: picard/ui/mainwindow/__init__.py:1234
-msgid "&Advanced search"
-msgstr "&Avancerad sökning"
-
-#: picard/ui/mainwindow/__init__.py:1235
-msgid "&Builtin search"
-msgstr "&Inbyggd sökning"
-
-#: picard/ui/mainwindow/__init__.py:1325
+#: picard/ui/mainwindow/__init__.py:1343
 msgid "All supported formats"
 msgstr "Alla format som stöds"
 
-#: picard/ui/mainwindow/__init__.py:1363
+#: picard/ui/mainwindow/__init__.py:1381
 #, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
 msgstr "Lägger till flera mappar från ”%(directory)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1368
+#: picard/ui/mainwindow/__init__.py:1386
 #, python-format
 msgid "Adding directory: \"%(directory)s\" …"
 msgstr "Lägger till mapp: ”%(directory)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1454
+#: picard/ui/mainwindow/__init__.py:1472
 #, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
 msgstr[0] "Flytta ”{filename}” till papperskorgen?"
 msgstr[1] "Flytta {count} filer till papperskorgen?"
 
-#: picard/ui/mainwindow/__init__.py:1460 picard/ui/mainwindow/actions.py:197
+#: picard/ui/mainwindow/__init__.py:1478 picard/ui/mainwindow/actions.py:197
 msgid "Move files to trash"
 msgstr "Flytta filer till papperskorgen"
 
-#: picard/ui/mainwindow/__init__.py:1546 picard/ui/mainwindow/__init__.py:1578
+#: picard/ui/mainwindow/__init__.py:1564 picard/ui/mainwindow/__init__.py:1596
 #, python-format
 msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr "MusicBrainz Picard-session (%s);;Alla filer (*)"
 
-#: picard/ui/mainwindow/__init__.py:1584 picard/ui/mainwindow/__init__.py:1609
+#: picard/ui/mainwindow/__init__.py:1602 picard/ui/mainwindow/__init__.py:1627
 #, python-format
 msgid "Loading session from \"%(path)s\" …"
 msgstr "Läser in session från ”%(path)s” …"
 
-#: picard/ui/mainwindow/__init__.py:1600 picard/ui/mainwindow/__init__.py:1627
+#: picard/ui/mainwindow/__init__.py:1618 picard/ui/mainwindow/__init__.py:1645
 #, python-format
 msgid "Session loaded from \"%(path)s\""
 msgstr "Sessionen lästes in från ”%(path)s”"
 
-#: picard/ui/mainwindow/__init__.py:1703
+#: picard/ui/mainwindow/__init__.py:1721
 msgid "Configuration Required"
 msgstr "Konfigurering krävs"
 
-#: picard/ui/mainwindow/__init__.py:1704
+#: picard/ui/mainwindow/__init__.py:1722
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 "Ljudfingeravtryck har ännu inte konfigurerats. Vill du konfigurera dem nu?"
 
-#: picard/ui/mainwindow/__init__.py:1845
+#: picard/ui/mainwindow/__init__.py:1863
 msgid "Browser integration not enabled"
 msgstr "Webbläsarintegreringen är inte aktiverad"
 
-#: picard/ui/mainwindow/__init__.py:1847
+#: picard/ui/mainwindow/__init__.py:1865
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
@@ -7490,91 +7465,91 @@ msgstr ""
 "För att skicka utgåvor till MusicBrainz måste webbläsarintegreringen vara "
 "aktiverad. Vill du aktivera den nu?"
 
-#: picard/ui/mainwindow/__init__.py:1960
+#: picard/ui/mainwindow/__init__.py:1978
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (fel: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1966
+#: picard/ui/mainwindow/__init__.py:1984
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow/__init__.py:1975
+#: picard/ui/mainwindow/__init__.py:1993
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (fel: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1982
+#: picard/ui/mainwindow/__init__.py:2000
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow/__init__.py:2067
+#: picard/ui/mainwindow/__init__.py:2096
 msgid "personal ratings"
 msgstr "personliga betyg"
 
-#: picard/ui/mainwindow/__init__.py:2069
+#: picard/ui/mainwindow/__init__.py:2098
 msgid "collections"
 msgstr "samlingar"
 
-#: picard/ui/mainwindow/__init__.py:2071
+#: picard/ui/mainwindow/__init__.py:2100
 msgid "personal genres/tags"
 msgstr "personliga genrer/taggar"
 
-#: picard/ui/mainwindow/__init__.py:2075
+#: picard/ui/mainwindow/__init__.py:2104
 msgid "Your current settings require logging in to MusicBrainz to access:"
 msgstr ""
 "Dina nuvarande inställningar kräver att du loggar in på MusicBrainz för att "
 "få åtkomst till:"
 
-#: picard/ui/mainwindow/__init__.py:2079
+#: picard/ui/mainwindow/__init__.py:2108
 msgid "A feature you are using requires logging in to MusicBrainz."
 msgstr "En funktion som du använder kräver att du loggar in på MusicBrainz."
 
-#: picard/ui/mainwindow/__init__.py:2080
+#: picard/ui/mainwindow/__init__.py:2109
 msgid "Would you like to log in now?"
 msgstr "Vill du logga in nu?"
 
-#: picard/ui/mainwindow/__init__.py:2090
+#: picard/ui/mainwindow/__init__.py:2119
 msgid "Waiting for MusicBrainz authentication…"
 msgstr "Väntar på autentisering hos MusicBrainz…"
 
-#: picard/ui/mainwindow/__init__.py:2096
+#: picard/ui/mainwindow/__init__.py:2125
 msgid "MusicBrainz authentication declined"
 msgstr "Autentiseringen hos MusicBrainz nekades"
 
-#: picard/ui/mainwindow/__init__.py:2104
+#: picard/ui/mainwindow/__init__.py:2133
 msgid "Successfully authenticated with MusicBrainz"
 msgstr "Autentiseringen hos MusicBrainz lyckades"
 
-#: picard/ui/mainwindow/__init__.py:2110
+#: picard/ui/mainwindow/__init__.py:2139
 #, python-format
 msgid "MusicBrainz authentication failed: %(error)s"
 msgstr "Autentiseringen hos MusicBrainz misslyckades: %(error)s"
 
-#: picard/ui/mainwindow/__init__.py:2117
+#: picard/ui/mainwindow/__init__.py:2146
 msgid "Authentication failed"
 msgstr "Autentiseringen misslyckades"
 
-#: picard/ui/mainwindow/__init__.py:2118 picard/ui/options/general.py:131
+#: picard/ui/mainwindow/__init__.py:2147 picard/ui/options/general.py:131
 #, python-format
 msgid "Login failed: %s"
 msgstr "Inloggningen misslyckades: %s"
 
-#: picard/ui/mainwindow/__init__.py:2364
+#: picard/ui/mainwindow/__init__.py:2393
 msgid "No profiles configured"
 msgstr "Inga profiler har konfigurerats"
 
-#: picard/ui/mainwindow/__init__.py:2369
+#: picard/ui/mainwindow/__init__.py:2398
 msgid "Configure profiles…"
 msgstr "Konfigurera profiler…"
 
-#: picard/ui/mainwindow/__init__.py:2437
+#: picard/ui/mainwindow/__init__.py:2466
 msgid "No quick settings configured"
 msgstr "Inga snabbinställningar har konfigurerats"
 
-#: picard/ui/mainwindow/__init__.py:2442
+#: picard/ui/mainwindow/__init__.py:2471
 msgid "Configure quick settings…"
 msgstr "Konfigurera snabbinställningar…"
 
@@ -7594,7 +7569,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "Klipp &ut"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:747
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:749
 msgid "&Paste"
 msgstr "&Klistra in"
 
@@ -7694,7 +7669,7 @@ msgstr "&Ta bort"
 msgid "Remove selected files/albums"
 msgstr "Ta bort markerade filer/album"
 
-#: picard/ui/mainwindow/actions.py:243 picard/ui/metadatabox/__init__.py:808
+#: picard/ui/mainwindow/actions.py:243 picard/ui/metadatabox/__init__.py:810
 msgid "Lookup in &Browser"
 msgstr "Slå upp i &webbläsaren"
 
@@ -7941,7 +7916,7 @@ msgstr "Tolka filnamn…"
 msgid "Set tags based on the file names"
 msgstr "Ange taggar utifrån filnamnen"
 
-#: picard/ui/mainwindow/actions.py:505 picard/ui/widgets/scripttextedit.py:439
+#: picard/ui/mainwindow/actions.py:505 picard/ui/widgets/scripttextedit.py:440
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
@@ -8037,73 +8012,73 @@ msgstr "Stäng den aktuella sessionen"
 msgid "Clear all recent session entries"
 msgstr "Rensa alla poster över senaste sessioner"
 
-#: picard/ui/metadatabox/__init__.py:320
+#: picard/ui/metadatabox/__init__.py:322
 msgid "metadata view"
 msgstr "metadatavy"
 
-#: picard/ui/metadatabox/__init__.py:321
+#: picard/ui/metadatabox/__init__.py:323
 msgid "Displays original and new tags for the selected files"
 msgstr "Visar ursprungliga och nya taggar för de valda filerna"
 
-#: picard/ui/metadatabox/__init__.py:323
+#: picard/ui/metadatabox/__init__.py:325
 msgid "Tag"
 msgstr "Tagg"
 
-#: picard/ui/metadatabox/__init__.py:323
+#: picard/ui/metadatabox/__init__.py:325
 msgid "Original Value"
 msgstr "Ursprungligt värde"
 
-#: picard/ui/metadatabox/__init__.py:323
+#: picard/ui/metadatabox/__init__.py:325
 msgid "New Value"
 msgstr "Nytt värde"
 
-#: picard/ui/metadatabox/__init__.py:347
+#: picard/ui/metadatabox/__init__.py:349
 msgid "Add New Tag…"
 msgstr "Lägg till ny tagg…"
 
-#: picard/ui/metadatabox/__init__.py:349
+#: picard/ui/metadatabox/__init__.py:351
 msgid "Show Changes First"
 msgstr "Visa ändringar först"
 
-#: picard/ui/metadatabox/__init__.py:354
+#: picard/ui/metadatabox/__init__.py:356
 msgid "Alt+Shift+A"
 msgstr "Alt+Shift+A"
 
-#: picard/ui/metadatabox/__init__.py:358
+#: picard/ui/metadatabox/__init__.py:360
 msgid "Alt+Shift+E"
 msgstr "Alt+Shift+E"
 
-#: picard/ui/metadatabox/__init__.py:362
+#: picard/ui/metadatabox/__init__.py:364
 msgid "Alt+Shift+R"
 msgstr "Alt+Shift+R"
 
-#: picard/ui/metadatabox/__init__.py:498
+#: picard/ui/metadatabox/__init__.py:500
 msgid "Unable to copy current selection."
 msgstr "Det gick inte att kopiera den aktuella markeringen."
 
-#: picard/ui/metadatabox/__init__.py:582
+#: picard/ui/metadatabox/__init__.py:584
 msgid "No valid data in clipboard to paste"
 msgstr "Urklipp innehåller inga giltiga data att klistra in"
 
-#: picard/ui/metadatabox/__init__.py:627
+#: picard/ui/metadatabox/__init__.py:629
 msgid "Edit…"
 msgstr "Redigera…"
 
-#: picard/ui/metadatabox/__init__.py:633
+#: picard/ui/metadatabox/__init__.py:635
 msgid "Add to \"Preserve Tags\" List"
 msgstr "Lägg till i listan ”Bevara taggar”"
 
-#: picard/ui/metadatabox/__init__.py:638
+#: picard/ui/metadatabox/__init__.py:640
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "Ta bort från listan ”Bevara taggar”"
 
-#: picard/ui/metadatabox/__init__.py:728
+#: picard/ui/metadatabox/__init__.py:730
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Använd ursprungligt värde"
 msgstr[1] "Använd ursprungliga värden"
 
-#: picard/ui/metadatabox/__init__.py:732
+#: picard/ui/metadatabox/__init__.py:734
 msgid "Merge Original Values"
 msgstr "Slå samman ursprungliga värden"
 
@@ -8731,8 +8706,8 @@ msgid "Select Configuration File to Load"
 msgstr "Välj konfigurationsfil som ska läsas in"
 
 #: picard/ui/options/maintenance.py:368
-#: picard/ui/widgets/profilelistwidget.py:109
-#: picard/ui/widgets/scriptlistwidget.py:95
+#: picard/ui/widgets/profilelistwidget.py:113
+#: picard/ui/widgets/scriptlistwidget.py:99
 msgid "Confirm Remove"
 msgstr "Bekräfta borttagning"
 
@@ -8910,7 +8885,7 @@ msgstr "Uppdaterar {name}…"
 msgid "Update Failed"
 msgstr "Uppdateringen misslyckades"
 
-#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:719
+#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:737
 msgid "Failed to update the plugin."
 msgstr "Det gick inte att uppdatera insticksmodulen."
 
@@ -9748,15 +9723,15 @@ msgstr "Spårsökresultat"
 msgid "Standalone Recording"
 msgstr "Fristående inspelning"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:175
+#: picard/ui/widgets/configurablecolumnsheader.py:176
 msgid "Restore default columns"
 msgstr "Återställ förvalda kolumner"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:196
+#: picard/ui/widgets/configurablecolumnsheader.py:197
 msgid "Lock columns"
 msgstr "Lås kolumner"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:222
+#: picard/ui/widgets/configurablecolumnsheader.py:223
 msgid "Manage custom columns…"
 msgstr "Hantera anpassade kolumner…"
 
@@ -9772,17 +9747,17 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:200
 #: picard/ui/widgets/plugindetailswidget.py:204
 #: picard/ui/widgets/plugindetailswidget.py:394
-#: picard/ui/widgets/pluginlistwidget.py:627
+#: picard/ui/widgets/pluginlistwidget.py:645
 msgid "Update"
 msgstr "Uppdatera"
 
 #: picard/ui/widgets/plugindetailswidget.py:121
-#: picard/ui/widgets/pluginlistwidget.py:632
+#: picard/ui/widgets/pluginlistwidget.py:650
 msgid "Uninstall"
 msgstr "Avinstallera"
 
 #: picard/ui/widgets/plugindetailswidget.py:125
-#: picard/ui/widgets/pluginlistwidget.py:647
+#: picard/ui/widgets/pluginlistwidget.py:665
 msgid "Information"
 msgstr "Information"
 
@@ -9791,7 +9766,7 @@ msgid "No description available"
 msgstr "Ingen beskrivning är tillgänglig"
 
 #: picard/ui/widgets/plugindetailswidget.py:196
-#: picard/ui/widgets/pluginlistwidget.py:624
+#: picard/ui/widgets/pluginlistwidget.py:642
 msgid "Reload"
 msgstr "Läs in igen"
 
@@ -9802,7 +9777,7 @@ msgstr "Avinstallationen misslyckades"
 
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
-#: picard/ui/widgets/pluginlistwidget.py:740
+#: picard/ui/widgets/pluginlistwidget.py:758
 msgid "Failed to uninstall the plugin."
 msgstr "Det gick inte att avinstallera insticksmodulen."
 
@@ -9843,97 +9818,97 @@ msgstr "aktuell"
 msgid "Commit date: {date}"
 msgstr "Incheckningsdatum: {date}"
 
-#: picard/ui/widgets/pluginlistwidget.py:94
-#: picard/ui/widgets/pluginlistwidget.py:106
+#: picard/ui/widgets/pluginlistwidget.py:98
+#: picard/ui/widgets/pluginlistwidget.py:110
 msgid "Update All"
 msgstr "Uppdatera alla"
 
-#: picard/ui/widgets/pluginlistwidget.py:102
+#: picard/ui/widgets/pluginlistwidget.py:106
 #, python-brace-format
 msgid "Update Selected ({count})"
 msgstr "Uppdatera valda ({count})"
 
-#: picard/ui/widgets/pluginlistwidget.py:148
+#: picard/ui/widgets/pluginlistwidget.py:171
 msgid "Enabled"
 msgstr "Aktiverad"
 
-#: picard/ui/widgets/pluginlistwidget.py:148
+#: picard/ui/widgets/pluginlistwidget.py:171
 msgid "Version"
 msgstr "Version"
 
-#: picard/ui/widgets/pluginlistwidget.py:148
+#: picard/ui/widgets/pluginlistwidget.py:171
 msgid "New Version"
 msgstr "Ny version"
 
-#: picard/ui/widgets/pluginlistwidget.py:314
+#: picard/ui/widgets/pluginlistwidget.py:336
 msgid "This plugin is included in updates"
 msgstr "Den här insticksmodulen ingår i uppdateringar"
 
-#: picard/ui/widgets/pluginlistwidget.py:316
+#: picard/ui/widgets/pluginlistwidget.py:338
 msgid "This plugin is excluded from updates"
 msgstr "Den här insticksmodulen undantas från uppdateringar"
 
-#: picard/ui/widgets/pluginlistwidget.py:328
+#: picard/ui/widgets/pluginlistwidget.py:350
 msgid "In Progress…"
 msgstr "Pågår…"
 
-#: picard/ui/widgets/pluginlistwidget.py:337
-#: picard/ui/widgets/pluginlistwidget.py:371
-#: picard/ui/widgets/pluginlistwidget.py:374
-#: picard/ui/widgets/pluginlistwidget.py:381
+#: picard/ui/widgets/pluginlistwidget.py:359
+#: picard/ui/widgets/pluginlistwidget.py:393
+#: picard/ui/widgets/pluginlistwidget.py:396
+#: picard/ui/widgets/pluginlistwidget.py:403
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: picard/ui/widgets/pluginlistwidget.py:611
+#: picard/ui/widgets/pluginlistwidget.py:629
 msgid "Disable"
 msgstr "Inaktivera"
 
-#: picard/ui/widgets/pluginlistwidget.py:614
+#: picard/ui/widgets/pluginlistwidget.py:632
 msgid "Enable"
 msgstr "Aktivera"
 
-#: picard/ui/widgets/pluginlistwidget.py:636
+#: picard/ui/widgets/pluginlistwidget.py:654
 msgid "Reinstall"
 msgstr "Installera om"
 
-#: picard/ui/widgets/pluginlistwidget.py:641
+#: picard/ui/widgets/pluginlistwidget.py:659
 msgid "Switch Ref"
 msgstr "Byt referens"
 
-#: picard/ui/widgets/pluginlistwidget.py:654
+#: picard/ui/widgets/pluginlistwidget.py:672
 msgid "View Directory"
 msgstr "Visa mapp"
 
-#: picard/ui/widgets/pluginlistwidget.py:656
+#: picard/ui/widgets/pluginlistwidget.py:674
 msgid "View Repository"
 msgstr "Visa kodförråd"
 
-#: picard/ui/widgets/pluginlistwidget.py:662
+#: picard/ui/widgets/pluginlistwidget.py:680
 msgid "Report a Bug"
 msgstr "Rapportera ett fel"
 
-#: picard/ui/widgets/pluginlistwidget.py:668
+#: picard/ui/widgets/pluginlistwidget.py:686
 msgid "Execution Order"
 msgstr "Körningsordning"
 
-#: picard/ui/widgets/pluginlistwidget.py:677
-#: picard/ui/widgets/pluginlistwidget.py:686
-#: picard/ui/widgets/pluginlistwidget.py:718
-#: picard/ui/widgets/pluginlistwidget.py:739
-#: picard/ui/widgets/pluginlistwidget.py:771
-#: picard/ui/widgets/pluginlistwidget.py:857
+#: picard/ui/widgets/pluginlistwidget.py:695
+#: picard/ui/widgets/pluginlistwidget.py:704
+#: picard/ui/widgets/pluginlistwidget.py:736
+#: picard/ui/widgets/pluginlistwidget.py:757
+#: picard/ui/widgets/pluginlistwidget.py:789
+#: picard/ui/widgets/pluginlistwidget.py:875
 msgid "Plugin Error"
 msgstr "Fel i insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:678
+#: picard/ui/widgets/pluginlistwidget.py:696
 msgid "Failed to enable the plugin."
 msgstr "Det gick inte att aktivera insticksmodulen."
 
-#: picard/ui/widgets/pluginlistwidget.py:687
+#: picard/ui/widgets/pluginlistwidget.py:705
 msgid "Failed to disable the plugin."
 msgstr "Det gick inte att inaktivera insticksmodulen."
 
-#: picard/ui/widgets/pluginlistwidget.py:772
+#: picard/ui/widgets/pluginlistwidget.py:790
 #, python-brace-format
 msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
@@ -9942,15 +9917,15 @@ msgstr ""
 "Det gick inte att installera om insticksmodulen ”{name}”:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:782
+#: picard/ui/widgets/pluginlistwidget.py:800
 msgid "Could not find plugin repository URL"
 msgstr "Det gick inte att hitta URL:en till insticksmodulens kodförråd"
 
-#: picard/ui/widgets/pluginlistwidget.py:790
+#: picard/ui/widgets/pluginlistwidget.py:808
 msgid "Reinstall Local Plugin"
 msgstr "Installera om lokal insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:793
+#: picard/ui/widgets/pluginlistwidget.py:811
 msgid ""
 "This plugin is loaded in local mode (git ignored).\n"
 "\n"
@@ -9962,15 +9937,15 @@ msgstr ""
 "Vill du behålla det lokala läget eller byta till Git-hanterat läge, där "
 "insticksmodulen klonas till mappen för insticksmoduler?"
 
-#: picard/ui/widgets/pluginlistwidget.py:798
+#: picard/ui/widgets/pluginlistwidget.py:816
 msgid "Keep local"
 msgstr "Behåll lokalt läge"
 
-#: picard/ui/widgets/pluginlistwidget.py:799
+#: picard/ui/widgets/pluginlistwidget.py:817
 msgid "Switch to git"
 msgstr "Byt till Git"
 
-#: picard/ui/widgets/pluginlistwidget.py:858
+#: picard/ui/widgets/pluginlistwidget.py:876
 #, python-brace-format
 msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
@@ -9979,11 +9954,11 @@ msgstr ""
 "Det gick inte att byta referens för insticksmodulen ”{name}”:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:895
+#: picard/ui/widgets/pluginlistwidget.py:913
 msgid "Plugin Re-enable Failed"
 msgstr "Insticksmodulen kunde inte aktiveras igen"
 
-#: picard/ui/widgets/pluginlistwidget.py:897
+#: picard/ui/widgets/pluginlistwidget.py:915
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" was updated/switched successfully but could not be re-"
@@ -9998,55 +9973,55 @@ msgstr ""
 "\n"
 "Insticksmodulen är för närvarande inaktiverad."
 
-#: picard/ui/widgets/pluginlistwidget.py:942
+#: picard/ui/widgets/pluginlistwidget.py:960
 msgid "There were no installed metadata processing plugins found."
 msgstr "Inga installerade insticksmoduler för metadatabearbetning hittades."
 
-#: picard/ui/widgets/pluginlistwidget.py:943
+#: picard/ui/widgets/pluginlistwidget.py:961
 msgid "No Data"
 msgstr "Inga data"
 
-#: picard/ui/widgets/pluginlistwidget.py:963
+#: picard/ui/widgets/pluginlistwidget.py:981
 msgid "Uninstall Plugin"
 msgstr "Avinstallera insticksmodul"
 
-#: picard/ui/widgets/pluginlistwidget.py:971
+#: picard/ui/widgets/pluginlistwidget.py:989
 #, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
 msgstr "Vill du avinstallera ”{name}”?"
 
-#: picard/ui/widgets/pluginlistwidget.py:974
+#: picard/ui/widgets/pluginlistwidget.py:992
 msgid "Also remove plugin configuration"
 msgstr "Ta även bort insticksmodulens konfiguration"
 
-#: picard/ui/widgets/pluginlistwidget.py:975
+#: picard/ui/widgets/pluginlistwidget.py:993
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr ""
 "Ta bort alla sparade inställningar och all konfiguration för den här "
 "insticksmodulen"
 
-#: picard/ui/widgets/pluginlistwidget.py:979
+#: picard/ui/widgets/pluginlistwidget.py:997
 msgid "Yes, Uninstall!"
 msgstr "Ja, avinstallera!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1003
+#: picard/ui/widgets/pluginlistwidget.py:1021
 msgid "Switch Git Ref"
 msgstr "Byt Git-referens"
 
-#: picard/ui/widgets/pluginlistwidget.py:1014
+#: picard/ui/widgets/pluginlistwidget.py:1032
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
 msgstr "Byt referens för ”{name}”"
 
-#: picard/ui/widgets/pluginlistwidget.py:1024
+#: picard/ui/widgets/pluginlistwidget.py:1042
 msgid "Yes, Switch!"
 msgstr "Ja, byt!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1053
+#: picard/ui/widgets/pluginlistwidget.py:1071
 msgid "No Ref Selected"
 msgstr "Ingen referens har valts"
 
-#: picard/ui/widgets/pluginlistwidget.py:1054
+#: picard/ui/widgets/pluginlistwidget.py:1072
 msgid "Please select or enter a ref to switch to."
 msgstr "Välj eller ange en referens att byta till."
 
@@ -10062,31 +10037,31 @@ msgstr "Flytta uppåt"
 msgid "Move down"
 msgstr "Flytta nedåt"
 
-#: picard/ui/widgets/profilelistwidget.py:51
+#: picard/ui/widgets/profilelistwidget.py:55
 msgid "Rename profile"
 msgstr "Byt namn på profil"
 
-#: picard/ui/widgets/profilelistwidget.py:54
+#: picard/ui/widgets/profilelistwidget.py:58
 msgid "Remove profile"
 msgstr "Ta bort profil"
 
-#: picard/ui/widgets/profilelistwidget.py:58
+#: picard/ui/widgets/profilelistwidget.py:62
 msgid "Export profile…"
 msgstr "Exportera profil…"
 
-#: picard/ui/widgets/profilelistwidget.py:62
+#: picard/ui/widgets/profilelistwidget.py:66
 msgid "Copy to clipboard"
 msgstr "Kopiera till urklipp"
 
-#: picard/ui/widgets/profilelistwidget.py:66
+#: picard/ui/widgets/profilelistwidget.py:70
 msgid "Import and replace…"
 msgstr "Importera och ersätt…"
 
-#: picard/ui/widgets/profilelistwidget.py:69
+#: picard/ui/widgets/profilelistwidget.py:73
 msgid "Import from clipboard"
 msgstr "Importera från urklipp"
 
-#: picard/ui/widgets/profilelistwidget.py:106
+#: picard/ui/widgets/profilelistwidget.py:110
 msgid "Are you sure you want to remove this profile?"
 msgstr "Vill du ta bort den här profilen?"
 
@@ -10145,19 +10120,19 @@ msgstr "({item} av {total})"
 msgid "(not found)"
 msgstr "(hittades inte)"
 
-#: picard/ui/widgets/scriptlistwidget.py:55
+#: picard/ui/widgets/scriptlistwidget.py:59
 msgid "Rename script"
 msgstr "Byt namn på skript"
 
-#: picard/ui/widgets/scriptlistwidget.py:58
+#: picard/ui/widgets/scriptlistwidget.py:62
 msgid "Remove script"
 msgstr "Ta bort skript"
 
-#: picard/ui/widgets/scriptlistwidget.py:92
+#: picard/ui/widgets/scriptlistwidget.py:96
 msgid "Are you sure you want to remove this script?"
 msgstr "Är du säker på att du vill ta bort det här skriptet?"
 
-#: picard/ui/widgets/scripttextedit.py:358
+#: picard/ui/widgets/scripttextedit.py:359
 #, python-format
 msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
@@ -10166,27 +10141,27 @@ msgstr ""
 "<em>Funktionen <code>$%s</code> finns inte.<br><br>Saknas en insticksmodul?</"
 "em>"
 
-#: picard/ui/widgets/scripttextedit.py:427
+#: picard/ui/widgets/scripttextedit.py:428
 msgid "&Word wrap script"
 msgstr "&Radbryt skriptet"
 
-#: picard/ui/widgets/scripttextedit.py:428
+#: picard/ui/widgets/scripttextedit.py:429
 msgid "Word wrap long lines in the editor"
 msgstr "Radbryt långa rader i redigeraren"
 
-#: picard/ui/widgets/scripttextedit.py:430
+#: picard/ui/widgets/scripttextedit.py:431
 msgid "Ctrl+Shift+W"
 msgstr "Ctrl+Shift+W"
 
-#: picard/ui/widgets/scripttextedit.py:436
+#: picard/ui/widgets/scripttextedit.py:437
 msgid "Show help &tooltips"
 msgstr "Visa &hjälptexter"
 
-#: picard/ui/widgets/scripttextedit.py:437
+#: picard/ui/widgets/scripttextedit.py:438
 msgid "Show tooltips for script elements"
 msgstr "Visa hjälptexter för skriptelement"
 
-#: picard/util/__init__.py:395
+#: picard/util/__init__.py:398
 msgid "No Title"
 msgstr "Ingen titel"
 
@@ -10333,6 +10308,28 @@ msgstr ""
 "Fel när en webbläsare startades:\n"
 "\n"
 "%s"
+
+#~ msgid ""
+#~ "<html><head/><body><p>Your user token is available in the <a "
+#~ "href=\"https://listenbrainz.org/settings/\"><span style=\" text-"
+#~ "decoration: underline; color:#308cc6;\">ListenBrainz settings</span></a>."
+#~ "</p></body></html>"
+#~ msgstr ""
+#~ "<html><head/><body><p>Din användartoken finns under <a href=\"https://"
+#~ "listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
+#~ "color:#308cc6;\">ListenBrainz-inställningar</span></a>.</p></body></html>"
+
+#~ msgid "Add to preferred release countries"
+#~ msgstr "Lägg till bland föredragna utgivningsländer"
+
+#~ msgid "Remove from preferred release countries"
+#~ msgstr "Ta bort från föredragna utgivningsländer"
+
+#~ msgid "Add to preferred release formats"
+#~ msgstr "Lägg till bland föredragna utgåveformat"
+
+#~ msgid "Remove from preferred release formats"
+#~ msgstr "Ta bort från föredragna utgåveformat"
 
 #~ msgid "Remove tagger script"
 #~ msgstr "Ta bort taggningsskript"
