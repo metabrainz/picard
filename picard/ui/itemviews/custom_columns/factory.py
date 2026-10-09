@@ -402,8 +402,6 @@ def make_provider_column(
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
     column_group: ColumnGroup | None = None,
-    status_icon: bool = False,
-    is_default: bool = False,
 ) -> CustomColumn:
     """Create column backed directly by a provider with sort inference.
 
@@ -428,8 +426,6 @@ def make_provider_column(
         always_visible=always_visible,
         sort_type=sort_type,
         column_group=column_group,
-        status_icon=status_icon,
-        is_default=is_default,
     )
 
 

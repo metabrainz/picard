@@ -44,7 +44,6 @@ def file_keys() -> list[str]:
         ("~match_quality", True),
         ("~modified", True),
         ("~complete", True),
-        ("~status", True),
         ("title", True),
         ("albumartist", True),
     ],
@@ -59,7 +58,6 @@ def test_album_view_expected_columns(album_keys: list[str], key: str, expected_p
         ("~match_quality", False),
         ("~modified", False),
         ("~complete", False),
-        ("~status", True),
         ("title", True),
         ("albumartist", True),
     ],
@@ -72,10 +70,16 @@ def _index_of(columns_keys: list[str], key: str) -> int:
     return next(i for i, k in enumerate(columns_keys) if k == key)
 
 
-def test_album_view_match_after_albumartist(album_keys: list[str]) -> None:
+def test_album_view_status_after_albumartist(album_keys: list[str]) -> None:
     idx_albumartist: int = _index_of(album_keys, "albumartist")
-    idx_match: int = _index_of(album_keys, "~match_quality")
+    idx_match: int = _index_of(album_keys, "~status")
     assert idx_match == idx_albumartist + 1
+
+
+def test_album_view_match_after_status(album_keys: list[str]) -> None:
+    idx_status: int = _index_of(album_keys, "~status")
+    idx_match: int = _index_of(album_keys, "~match_quality")
+    assert idx_match == idx_status + 1
 
 
 def test_album_view_match_is_delegate_column_type() -> None:
@@ -129,7 +133,7 @@ def test_treeitem_columns_uses_tree_widget_columns() -> None:
 @pytest.mark.parametrize(
     ("keys", "must_exist"),
     [
-        (["~status", "title", "~length", "artist", "albumartist"], True),
+        (["title", "~length", "artist", "albumartist"], True),
         (["~bitrate", "genre"], True),
     ],
 )
@@ -137,9 +141,3 @@ def test_required_keys_present(keys: list[str], must_exist: bool, album_keys: li
     for key in keys:
         assert (key in album_keys) is must_exist
         assert (key in file_keys) is must_exist
-
-
-def test_status_column_is_status_icon_column() -> None:
-    pos, status_column = ALBUMVIEW_COLUMNS.get_column_by_key("~status")
-    assert status_column is not None
-    assert ALBUMVIEW_COLUMNS.status_icon_column == pos

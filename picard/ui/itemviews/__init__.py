@@ -44,7 +44,9 @@
 
 
 from collections import defaultdict
+from collections.abc import Iterable
 from functools import partial
+from typing import cast
 
 from PyQt6 import (
     QtCore,
@@ -652,19 +654,23 @@ class AlbumItem(TreeItem):
             # below to avoid repeated (non-trivial) scans over tracks/files.
             is_complete = album.is_complete()
             is_modified = album.is_modified()
-            if is_complete:
-                if is_modified:
-                    self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved_modified)
-                    self.setToolTip(self.columns.status_icon_column, _("Album modified and complete"))
+            for status_column in cast(
+                Iterable[int],
+                filter(lambda col: col != -1, [self.columns.status_icon_column, self._column_pos('~status')]),
+            ):
+                if is_complete:
+                    if is_modified:
+                        self.setIcon(status_column, AlbumItem.icon_cd_saved_modified)
+                        self.setToolTip(status_column, _("Album modified and complete"))
+                    else:
+                        self.setIcon(status_column, AlbumItem.icon_cd_saved)
+                        self.setToolTip(status_column, _("Album unchanged and complete"))
+                elif is_modified:
+                    self.setIcon(status_column, AlbumItem.icon_cd_modified)
+                    self.setToolTip(status_column, _("Album modified"))
                 else:
-                    self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved)
-                    self.setToolTip(self.columns.status_icon_column, _("Album unchanged and complete"))
-            elif is_modified:
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
-                self.setToolTip(self.columns.status_icon_column, _("Album modified"))
-            else:
-                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
-                self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
+                    self.setIcon(status_column, AlbumItem.icon_cd)
+                    self.setToolTip(status_column, _("Album unchanged"))
 
             modified_column = self._column_pos('~modified')
             if modified_column >= 0:

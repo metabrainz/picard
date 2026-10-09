@@ -917,66 +917,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         ]
         self.assertEqual(expected_settings, settings['list_of_scripts'])
 
-    def test_set_column_as_leftmost_column(self):
-        Option('persist', 'album_view_header_columns', {})
-        Option('persist', 'file_view_header_columns', {})
-
-        self.config.persist['album_view_header_columns'] = {
-            'title': {'position': 0},
-            'artist': {'position': 1},
-            'albumartist': {'position': 2},
-        }
-        self.config.persist['file_view_header_columns'] = {
-            'title': {'position': 0},
-            'artist': {'position': 1},
-            'album': {'position': 2},
-        }
-
-        # Test to make sure the status column is added a position 0 in the header column config
-        # If the column already exist and not at position 0, it should be moved to position 0
-        for iteration, sub_test_name in enumerate(("No ~status field", "~status not at position 0")):
-            if iteration == 1:
-                # Add in the ~status not in position 0 for the second iteration
-                self.config.persist['album_view_header_columns']['~status'] = {'position': 3}
-                self.config.persist['file_view_header_columns']['~status'] = {'position': 3}
-
-            with self.subTest(sub_test_name):
-                hooks.set_column_as_leftmost_column(self.config)
-                self.assertIn('title', self.config.persist['album_view_header_columns'])
-                self.assertEqual(1, self.config.persist['album_view_header_columns']['title']['position'])
-                self.assertIn('artist', self.config.persist['album_view_header_columns'])
-                self.assertEqual(2, self.config.persist['album_view_header_columns']['artist']['position'])
-                self.assertIn('albumartist', self.config.persist['album_view_header_columns'])
-                self.assertEqual(3, self.config.persist['album_view_header_columns']['albumartist']['position'])
-                self.assertIn('~status', self.config.persist['album_view_header_columns'])
-                self.assertEqual(0, self.config.persist['album_view_header_columns']['~status']['position'])
-
-                self.assertIn('title', self.config.persist['file_view_header_columns'])
-                self.assertEqual(1, self.config.persist['file_view_header_columns']['title']['position'])
-                self.assertIn('artist', self.config.persist['file_view_header_columns'])
-                self.assertEqual(2, self.config.persist['file_view_header_columns']['artist']['position'])
-                self.assertIn('album', self.config.persist['file_view_header_columns'])
-                self.assertEqual(3, self.config.persist['file_view_header_columns']['album']['position'])
-                self.assertIn('~status', self.config.persist['file_view_header_columns'])
-                self.assertEqual(0, self.config.persist['file_view_header_columns']['~status']['position'])
-
-    def test_set_column_as_leftmost_column_missing_position(self):
-        """Entries that lack a 'position' key must not cause a TypeError."""
-        Option('persist', 'album_view_header_columns', {})
-        Option('persist', 'file_view_header_columns', {})
-
-        # Simulate a corrupt / partial config entry with no 'position' key.
-        self.config.persist['album_view_header_columns'] = {
-            'title': {'visible': True},
-            'artist': {'position': 1},
-        }
-        self.config.persist['file_view_header_columns'] = {}
-
-        hooks.set_column_as_leftmost_column(self.config)
-        self.assertEqual(0, self.config.persist['album_view_header_columns']['~status']['position'])
-        # 'title' had no position (defaults to 0 during sort) and should be renumbered.
-        self.assertIn('title', self.config.persist['album_view_header_columns'])
-
 
 class TestRunConfigUpgradesInteractive(TestPicardConfigCommon):
     """run_config_upgrades threads the interactive flag to hooks that accept it."""

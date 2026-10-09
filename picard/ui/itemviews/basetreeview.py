@@ -489,13 +489,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             header.show_column(i, c.is_default)
             if c.width is not None:
                 header.resizeSection(i, c.width)
-            if c.status_icon:
-                # Column 0 holds the tree expand arrows and the status icon;
-                # its required width depends on how deeply the tree is
-                # expanded. Let Qt size it to its contents so it never clips
-                # the icon and never leaves a wide empty gap.
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-            elif c.resizeable:
+            if c.resizeable:
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
             else:
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)

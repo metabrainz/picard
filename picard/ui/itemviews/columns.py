@@ -153,10 +153,7 @@ def _status_predicate(obj) -> StatusColumnState:
     return StatusColumnState.SILVER
 
 
-def _create_status_album_column(
-    title: str,
-    key: str,
-):
+def _create_status_album_column():
     """Create an album-level status column that maps the status icon into sortable state.
 
     Display the icons with the following (increasing) priority:
@@ -185,9 +182,7 @@ def _create_status_album_column(
         applies=lambda obj: isinstance(obj, Album),
         not_applicable=StatusColumnState.NOT_APPLICABLE,
     )
-    column = make_provider_column(
-        title, key, provider, status_icon=True, is_default=True, always_visible=True, column_group=ColumnGroup.MISC
-    )
+    column = make_provider_column(N_('Status'), '~status', provider, column_group=ColumnGroup.MISC)
     # The status column holds the tree expand arrows and the status icon, so
     # its required width depends on the tree's expand state. The view sizes it
     # with Qt's ResizeToContents mode (see BaseTreeView.restore_default_columns
@@ -251,15 +246,14 @@ def create_common_columns() -> tuple[Column, ...]:
     tuple
         Tuple of configured column objects for both views.
     """
-    # Status icon column (No column text)
-    status_icon_col = _create_status_album_column("", '~status')
-    # Title
+    # Title (status icon column)
     title_col = make_field_column(
         N_("Title"),
         'title',
         sort_type=ColumnSortType.NAT,
         width=250,
         always_visible=True,
+        status_icon=True,
         is_default=True,
         column_group=ColumnGroup.MISC,
     )
@@ -345,7 +339,6 @@ def create_common_columns() -> tuple[Column, ...]:
     coverdims = make_field_column(N_("Cover Dimensions"), 'coverdimensions', column_group=ColumnGroup.IMAGE)
 
     return (
-        status_icon_col,
         title_col,
         length_col,
         artist_col,
@@ -384,10 +377,12 @@ _common_columns = create_common_columns()
 FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 
 # Album view columns (with match quality column)
-# Insert `_match_quality_column` after Title, Length, Artist, Album Artist
 ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
+# Insert `_status` after Title, Length, Artist, Album Artist
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _create_status_album_column())
+# Insert `_match_quality_column` after `_status`
 _match_quality_column = create_match_quality_column()
-ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~status') + 1, _match_quality_column)
 # Insert `_modified` after `_match_quality_column`
 _is_modified_column = create_is_modified_column()
 ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~match_quality') + 1, _is_modified_column)

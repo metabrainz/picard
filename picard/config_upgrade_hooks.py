@@ -897,37 +897,6 @@ def upgrade_scripts_lyrics_comments(settings):
     upgrade_option_value(settings, 'list_of_scripts', convert_list_of_scripts)
 
 
-@upgrade_config('3.0.2final0')
-def set_column_as_leftmost_column(config):
-    """Move the status column to be the left most column on upgrade."""
-
-    def _ensure_status_column_first(header_columns):
-        """Ensure ``~status`` is at position 0, shifting other columns right."""
-        if not isinstance(header_columns, dict):
-            return header_columns
-        columns_by_pos = sorted(
-            header_columns.items(),
-            key=lambda elem: elem[1].get('position', 0),
-        )
-        status_found = False
-        pos_index = 1
-        for col_key, col_state in columns_by_pos:
-            if col_key == '~status':
-                col_state['position'] = 0
-                status_found = True
-            else:
-                col_state['position'] = pos_index
-                pos_index += 1
-        if not status_found:
-            columns_by_pos.append(('~status', {'position': 0, 'visible': True}))
-        return dict(columns_by_pos)
-
-    config.persist['album_view_header_columns'] = _ensure_status_column_first(
-        config.persist['album_view_header_columns']
-    )
-    config.persist['file_view_header_columns'] = _ensure_status_column_first(config.persist['file_view_header_columns'])
-
-
 # Retired in 3.0.0rc4: rating_steps became a fixed constant. It has no value
 # conversion, so (unlike release_type_scores) there is no upgrade hook; the
 # key is simply purged for configs older than rc4.
