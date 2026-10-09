@@ -38,7 +38,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
-"PO-Revision-Date: 2026-10-08 17:02+0000\n"
+"PO-Revision-Date: 2026-10-09 05:31+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -752,10 +752,8 @@ msgid "Enable ListenBrainz listen submissions"
 msgstr "ListenBrainz-Übermittlung aktivieren"
 
 #: picard/options.py:442
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit only tagged files to ListenBrainz"
-msgstr "Bewertungen an MusicBrainz übermitteln"
+msgstr "Nur Wiedergaben getaggter Dateien an ListenBrainz übermitteln"
 
 #: picard/options.py:445 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -6174,6 +6172,8 @@ msgid ""
 "Your user token is available in the [ListenBrainz settings](https://"
 "listenbrainz.org/settings/)."
 msgstr ""
+"Das Benutzertoken ist in den [ListenBrainz-Einstellungen](https://"
+"listenbrainz.org/settings/) verfügbar."
 
 #: picard/ui/forms/ui_options_profiles.py:81
 msgid "Option Profile(s)"
