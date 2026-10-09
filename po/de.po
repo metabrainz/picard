@@ -49,7 +49,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-10-08 13:13+0000\n"
+"PO-Revision-Date: 2026-10-09 17:13+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/2/"
 "app/de/>\n"
@@ -58,7 +58,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -5957,7 +5957,7 @@ msgstr "Konfigurationsdatei erfolgreich in %s gesichert."
 
 #: picard/ui/options/maintenance.py:225
 msgid "Load Backup Configuration File"
-msgstr "Backup der Konfigurationsdatei wiederherstellen"
+msgstr "Sicherung der Konfigurationsdatei wiederherstellen"
 
 #: picard/ui/options/maintenance.py:229
 msgid ""
