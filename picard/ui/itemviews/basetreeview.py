@@ -762,7 +762,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             self._restore_all_items()
             return
 
-        __class__._filter_tree_items(self.invisibleRootItem(), text, filters, status_filters)
+        BaseTreeView._filter_tree_items(self.invisibleRootItem(), text, filters, status_filters)
 
     @staticmethod
     def _filter_tree_items(parent, text, filters, status_filters):
@@ -776,10 +776,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             if hasattr(child, 'obj'):
                 obj = child.obj
 
-                matches_status_filter = __class__._matches_status_filters(obj, status_filters)
+                matches_status_filter = BaseTreeView._matches_status_filters(obj, status_filters)
 
                 if matches_status_filter:
-                    text_filters_match = __class__._match_text_filters(child, text, filters)
+                    text_filters_match = BaseTreeView._match_text_filters(child, text, filters)
 
             # Hide/show based on match
             if child.filterable:
@@ -798,7 +798,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         child_match = False
         child_tags = False
 
-        for matcher in [__class__._matches_file_properties, __class__._matches_metadata]:
+        for matcher in [BaseTreeView._matches_file_properties, BaseTreeView._matches_metadata]:
             has_tags, matches = matcher(obj, text, filters)
             child_tags |= has_tags
             if matches:
@@ -807,13 +807,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if child.childCount() > 0:
             # Only the top level Album modified/complete state needs to be checked
-            child_match |= __class__._filter_tree_items(child, text, filters, StatusFilters(True, True, True, True))
+            child_match |= BaseTreeView._filter_tree_items(child, text, filters, StatusFilters(True, True, True, True))
 
         if not child_match and not child_tags:
             child_match = True
 
         if child_match and child.filterable:
-            __class__._set_item_tooltip(
+            BaseTreeView._set_item_tooltip(
                 item=child,
                 text=(
                     _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
