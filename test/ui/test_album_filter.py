@@ -22,7 +22,10 @@
 
 from collections import namedtuple
 import os
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -467,3 +470,44 @@ class AlbumStatusFilterPersistenceTest(PicardTestCase):
         config = self._new_config()
         restored = StatusFilters.from_dict(config.persist[self.STATUS_KEY])
         self.assertEqual(restored, StatusFilters())
+
+
+class FilterItemsGuardTest(PicardTestCase):
+    """Test the BaseTreeView.filter_items early-return guard.
+
+    With empty text or no tag filters, items are only restored (shown) when
+    every status filter is active. If a status filter is disabled, filtering
+    must still run so the status filter takes effect.
+    """
+
+    def _call_filter_items(self, text, filters, status_filters):
+        """Invoke filter_items on a stand-in self, returning (fake_self, walked).
+
+        The recursive _filter_tree_items helper is patched out so the test only
+        observes which branch of the guard ran, not the tree walk itself.
+        """
+        fake_self = MagicMock()
+        with patch.object(BaseTreeView, '_filter_tree_items') as mock_walk:
+            BaseTreeView.filter_items(fake_self, text, filters, status_filters)
+        return fake_self, mock_walk
+
+    def test_restores_all_when_empty_and_all_active(self):
+        fake_self, mock_walk = self._call_filter_items('', set(), StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_empty_text_but_status_filter_active(self):
+        """Empty text with a disabled status filter must still filter."""
+        fake_self, mock_walk = self._call_filter_items('', set(), StatusFilters(modified=False))
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()
+
+    def test_restores_all_when_empty_text_and_default_status(self):
+        fake_self, mock_walk = self._call_filter_items('', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_text_present(self):
+        fake_self, mock_walk = self._call_filter_items('abc', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()

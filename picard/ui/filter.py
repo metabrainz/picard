@@ -198,7 +198,8 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.setText(label)
 
     def _query_changed(self, text):
-        self.filterChanged.emit(text, self.selected_filters, StatusFilters(True, True, True, True))
+        # The base Filter has no status filtering; emit the all-active default.
+        self.filterChanged.emit(text, self.selected_filters, StatusFilters())
 
     def clear(self):
         self.filter_query_box.clear()

@@ -806,8 +806,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 matched_filters = matched_filters.union(matches)
 
         if child.childCount() > 0:
-            # Only the top level Album modified/complete state needs to be checked
-            child_match |= BaseTreeView._filter_tree_items(child, text, filters, StatusFilters(True, True, True, True))
+            # Only the top level Album modified/complete state needs to be
+            # checked; children are matched with status filtering disabled.
+            child_match |= BaseTreeView._filter_tree_items(child, text, filters, StatusFilters())
 
         if not child_match and not child_tags:
             child_match = True
