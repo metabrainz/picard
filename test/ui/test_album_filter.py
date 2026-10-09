@@ -27,7 +27,7 @@ from unittest.mock import (
     patch,
 )
 
-from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QCheckBox
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -544,17 +544,17 @@ class ClearAllStatusFiltersTest(PicardTestCase):
     def _make_fake_filter(self, status_filters):
         """A stand-in AlbumFilter exposing just what _clear_all_status_filters uses.
 
-        Real QActions are used for the checkboxes so the QSignalBlocker context
-        in the production code works (it requires a QObject).
+        Real QCheckBoxes are used so the real _sync_status_checkboxes can set their
+        checked state.
         """
         fake = MagicMock()
         fake.status_filters = status_filters
         fake._saved_status_key = 'filters_status_AlbumTreeView'
-        fake._status_actions = {
-            state: QAction(checkable=True) for state in ('modified', 'unmodified', 'complete', 'incomplete')
-        }
-        # Use the real persistence helper against a mocked config.
+        fake._syncing_status = False
+        fake._status_checkboxes = {state: QCheckBox() for state in ('modified', 'unmodified', 'complete', 'incomplete')}
+        # Use the real persistence and sync helpers against this fake.
         fake._save_status_filters.side_effect = lambda: AlbumFilter._save_status_filters(fake)
+        fake._sync_status_checkboxes.side_effect = lambda: AlbumFilter._sync_status_checkboxes(fake)
         return fake
 
     def test_clear_all_resets_to_active_and_persists(self):
@@ -569,8 +569,8 @@ class ClearAllStatusFiltersTest(PicardTestCase):
         self.assertEqual(fake.status_filters, StatusFilters())
         # Persisted as the all-active dict.
         self.assertEqual(config.persist['filters_status_AlbumTreeView'], StatusFilters().to_dict())
-        # Every checkbox ends up checked.
-        self.assertTrue(all(action.isChecked() for action in fake._status_actions.values()))
+        # Every menu item ends up checked.
+        self.assertTrue(all(checkbox.isChecked() for checkbox in fake._status_checkboxes.values()))
         # Re-emits the filter query so the view refreshes.
         fake._query_changed.assert_called_once()
 

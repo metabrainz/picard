@@ -108,8 +108,9 @@ class AlbumFilter(Filter):
     _saved_status_key: str
     _status_button: QtWidgets.QToolButton
     status_filters: StatusFilters
-    _status_actions: dict[str, QAction]
+    _status_checkboxes: dict[str, QtWidgets.QCheckBox]
     _clear_all_action: QAction
+    _syncing_status: bool
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -127,6 +128,7 @@ class AlbumFilter(Filter):
 
         self.initializing = True
 
+        self._syncing_status = False
         self._saved_status_key = "filters_status_AlbumTreeView"
         self._status_button = NoArrowToolButton(self)
         self._status_button.setAutoRaise(False)
@@ -141,21 +143,29 @@ class AlbumFilter(Filter):
         self.status_filters = self._get_saved_status_filters()
         # Find the layout child to add the modified and complete buttons to
 
-        self._status_actions = {}
+        self._status_checkboxes = {}
         menu = QtWidgets.QMenu()
         menu.setTitle(_("Status Filters"))
         menu.setTearOffEnabled(True)
 
         for state, desc in STATUS_FILTER_DESCRIPTORS.items():
-            self._status_actions[state] = QAction(desc.text)
-            self._status_actions[state].setToolTip(desc.tooltip)
-            self._status_actions[state].setIcon(desc.icon_provider())
-            self._status_actions[state].setCheckable(True)
+            # A QCheckBox in a QWidgetAction shows the native check indicator,
+            # the colored status icon and the label together, so the enabled
+            # state is unambiguous and toggling keeps the menu open. A plain
+            # checkable QAction renders its icon in the check column, hiding the
+            # checkmark (see PICARD-189 review).
+            checkbox = QtWidgets.QCheckBox(desc.text)
+            checkbox.setToolTip(desc.tooltip)
+            checkbox.setIcon(desc.icon_provider())
+            checkbox.setContentsMargins(6, 2, 6, 2)
             # Each STATUS_FILTER_DESCRIPTORS key matches a StatusFilters field name.
-            self._status_actions[state].setChecked(getattr(self.status_filters, state))
+            checkbox.setChecked(getattr(self.status_filters, state))
+            checkbox.toggled.connect(partial(self._status_checkbox_toggled, state))
 
-            self._status_actions[state].toggled.connect(partial(self._status_checkbox_toggled, state))
-        menu.addActions(self._status_actions.values())
+            widget_action = QtWidgets.QWidgetAction(menu)
+            widget_action.setDefaultWidget(checkbox)
+            menu.addAction(widget_action)
+            self._status_checkboxes[state] = checkbox
 
         menu.addSeparator()
         self._clear_all_action = QAction(_("Clear all"), self)
@@ -184,11 +194,18 @@ class AlbumFilter(Filter):
     def clear(self):
         super().clear()
         self.status_filters = self._get_saved_status_filters()
-        for state, checkbox in self._status_actions.items():
-            # Each key in _status_actions matches a StatusFilters field name.
-            with QtCore.QSignalBlocker(checkbox):
-                checkbox.setChecked(getattr(self.status_filters, state))
+        self._sync_status_checkboxes()
         self._update_status_button_label()
+
+    def _sync_status_checkboxes(self):
+        """Reflect self.status_filters on the menu items without re-triggering handlers."""
+        self._syncing_status = True
+        try:
+            for state, checkbox in self._status_checkboxes.items():
+                # Each key in _status_checkboxes matches a StatusFilters field name.
+                checkbox.setChecked(getattr(self.status_filters, state))
+        finally:
+            self._syncing_status = False
 
     def _get_saved_status_filters(self) -> StatusFilters:
         config = get_config()
@@ -199,6 +216,9 @@ class AlbumFilter(Filter):
         config.persist[self._saved_status_key] = self.status_filters.to_dict()
 
     def _status_checkbox_toggled(self, status_key, checked: bool):
+        if self._syncing_status:
+            # Ignore toggles caused by programmatic sync (clear / clear-all).
+            return
         setattr(self.status_filters, status_key, checked)
         self._save_status_filters()
         self._update_status_button_label()
@@ -210,10 +230,7 @@ class AlbumFilter(Filter):
             return
         self.status_filters = StatusFilters()
         self._save_status_filters()
-        for checkbox in self._status_actions.values():
-            # Avoid re-triggering _status_checkbox_toggled for each checkbox.
-            with QtCore.QSignalBlocker(checkbox):
-                checkbox.setChecked(True)
+        self._sync_status_checkboxes()
         self._update_status_button_label()
         self._query_changed(self.filter_query_box.text())
 
