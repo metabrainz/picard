@@ -20,29 +20,11 @@
 
 
 import os.path
-import subprocess  # nosec: B404
 
 from PyQt6 import QtGui
 
 from picard.const.sys import IS_WIN
-
-
-def _read_command_output(args: list[str]) -> str | None:
-    """Run a command and return its stripped stdout, or None on any failure.
-
-    Used for best-effort desktop-environment queries at import time, so a
-    missing tool or an error must never raise.
-    """
-    try:
-        result = subprocess.run(  # nosec: B603
-            args,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-    except (OSError, subprocess.SubprocessError):
-        return None
-    return result.stdout.strip() or None
+from picard.util import run_command_output
 
 
 if IS_WIN:
@@ -56,11 +38,11 @@ _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
     desktop = os.environ['XDG_CURRENT_DESKTOP'].lower()
     if desktop in {'gnome', 'unity'}:
-        _gsettings_theme = _read_command_output(['gsettings', 'get', 'org.gnome.desktop.interface', 'icon-theme'])
+        _gsettings_theme = run_command_output(['gsettings', 'get', 'org.gnome.desktop.interface', 'icon-theme'])
         # gsettings quotes string values, e.g. "'Adwaita'".
         _current_theme = _gsettings_theme.strip("'\"") if _gsettings_theme else None
 elif os.environ.get('KDE_FULL_SESSION'):
-    _current_theme = _read_command_output(
+    _current_theme = run_command_output(
         ['kreadconfig', '--file', 'kdeglobals', '--group', 'Icons', '--key', 'Theme', '--default', 'crystalsvg']
     )
 

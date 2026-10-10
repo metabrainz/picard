@@ -84,6 +84,7 @@ from picard.util import (
     parse_date,
     pattern_as_regex,
     resolve_fs_path,
+    run_command_output,
     system_supports_long_paths,
     titlecase,
     tracknum_and_title_from_filename,
@@ -1243,3 +1244,23 @@ class UnsetEnvVarsTest(PicardTestCase):
             self.assertNotIn('TEST_BAR', os.environ)
         self.assertEqual(os.environ['TEST_FOO'], 'foo')
         self.assertEqual(os.environ['TEST_BAR'], 'bar')
+
+
+class RunCommandOutputTest(PicardTestCase):
+    @staticmethod
+    def _py(code):
+        import sys
+
+        return [sys.executable, "-c", code]
+
+    def test_returns_stripped_stdout(self):
+        self.assertEqual(run_command_output(self._py("print('  hello  ')")), "hello")
+
+    def test_empty_output_returns_none(self):
+        self.assertIsNone(run_command_output(self._py("pass")))
+
+    def test_non_zero_exit_returns_none(self):
+        self.assertIsNone(run_command_output(self._py("import sys; print('x'); sys.exit(1)")))
+
+    def test_missing_executable_returns_none(self):
+        self.assertIsNone(run_command_output(["definitely-not-a-real-command-xyz"]))
