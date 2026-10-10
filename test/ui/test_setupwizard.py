@@ -13,6 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from unittest.mock import (
+    Mock,
+    patch,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard.config import get_config
@@ -20,7 +25,87 @@ from picard.config import get_config
 from picard.ui.setupwizard import (
     MetadataPage,
     SetupWizard,
+    UpdatesPage,
 )
+
+
+class TestSetupWizardUpdatesPage(PicardTestCase):
+    """Tests for UpdatesPage.save_settings update-trigger guards.
+
+    On builds without autoupdate, ``Tagger.updatecheckmanager`` does not exist,
+    so ``save_settings`` must not trigger the program update check even if the
+    stored config value is enabled.
+    """
+
+    def test_updates_page_registered(self):
+        self.assertIn(UpdatesPage, SetupWizard.PAGES)
+
+    def _make_page(self, autoupdate_enabled, plugin_manager):
+        tagger = Mock()
+        tagger.autoupdate_enabled = autoupdate_enabled
+        tagger.get_plugin_manager.return_value = plugin_manager
+        tagger.window = Mock()
+        patcher = patch('picard.ui.setupwizard.tagger_instance', return_value=tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return UpdatesPage(), tagger
+
+    def test_autoupdate_disabled_does_not_trigger_update_check(self):
+        # Config enabled (the default), but the build has autoupdate disabled.
+        self.set_config_values(
+            setting={
+                'check_for_updates': True,
+                'check_for_plugin_updates': False,
+                'check_rtd_updates': False,
+            }
+        )
+        config = get_config()
+        page, tagger = self._make_page(autoupdate_enabled=False, plugin_manager=None)
+        try:
+            # The wizard calls initializePage() on every page as it is shown,
+            # even for the hidden checkbox, so is_checked() reflects the stored
+            # config value (True by default) at save time.
+            page.initializePage()
+            page.save_settings(config)
+            # The crashing call must not happen when autoupdate is disabled.
+            tagger.window._auto_update_check.assert_not_called()
+        finally:
+            page.deleteLater()
+
+    def test_autoupdate_enabled_triggers_update_check(self):
+        self.set_config_values(
+            setting={
+                'check_for_updates': True,
+                'check_for_plugin_updates': False,
+                'check_rtd_updates': False,
+            }
+        )
+        config = get_config()
+        page, tagger = self._make_page(autoupdate_enabled=True, plugin_manager=None)
+        try:
+            page.update_check_app.set_checked(True)
+            page.save_settings(config)
+            tagger.window._auto_update_check.assert_called_once()
+        finally:
+            page.deleteLater()
+
+    def test_autoupdate_enabled_but_unchecked_does_not_trigger(self):
+        self.set_config_values(
+            setting={
+                'check_for_updates': True,
+                'check_for_plugin_updates': False,
+                'check_rtd_updates': False,
+            }
+        )
+        config = get_config()
+        page, tagger = self._make_page(autoupdate_enabled=True, plugin_manager=None)
+        try:
+            page.update_check_app.set_checked(False)
+            page.save_settings(config)
+            tagger.window._auto_update_check.assert_not_called()
+            self.assertFalse(config.setting['check_for_updates'])
+        finally:
+            page.deleteLater()
 
 
 class TestSetupWizardMetadataPage(PicardTestCase):
