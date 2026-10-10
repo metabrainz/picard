@@ -561,6 +561,124 @@ def my_processor(api, album, metadata, release):
 
 ---
 
+## External Commands
+
+Methods for discovering and running external command-line programs (for example
+an encoder, a tagger, or a fingerprinting tool). Commands run asynchronously via
+`QProcess` so the user interface stays responsive, and results are delivered to
+your callbacks on the main thread.
+
+Picard handles the cross-platform and error-reporting details for you: output is
+captured as UTF-8, the console window is hidden on Windows, and on failure the
+program's own output is carried on the error so you can show the user why it
+failed.
+
+`CommandResult` and `CommandError` are importable from `picard.plugin3.api`.
+
+| Attribute | `CommandResult` | `CommandError` |
+|---|---|---|
+| `args` / `args_list` | `args` — the argument vector | `args_list` — the argument vector |
+| `returncode` | the exit code | the exit code, or `None` if it could not start |
+| `stdout` | captured standard output | captured standard output (may be empty) |
+| `stderr` | captured standard error | captured standard error (may be empty) |
+
+### `find_executable(*names) -> str | None`
+
+Locate an external executable. Each name may be a bare command (looked up on
+`PATH`) or an explicit path; the first one that resolves is returned as an
+absolute path, or `None` if none resolve. On Windows the usual executable
+extensions are tried, and executables bundled with a frozen build are found.
+
+```python
+def enable(api):
+    # Prefer a user-configured path, fall back to the name on PATH.
+    rsgain = api.find_executable(api.plugin_config['rsgain_path'], 'rsgain')
+    if rsgain is None:
+        api.logger.error("rsgain not found")
+```
+
+### `run_command(args, *, on_success, on_error, cwd=None, env=None, ok_returncodes=(), key=None)`
+
+Run an external command asynchronously. Exactly one of the callbacks is invoked
+on the main thread when the command finishes:
+
+- `on_success(result: CommandResult)` — the command exited with code `0` or one
+  of `ok_returncodes`.
+- `on_error(error: CommandError)` — the command could not start, or exited with
+  an unaccepted code. `error.stdout` / `error.stderr` carry its output.
+
+Parameters:
+
+- `args`: the argument vector; the first element is the executable (resolve it
+  with `find_executable()` first if needed).
+- `on_success`, `on_error`: result callbacks (keyword-only).
+- `cwd`: optional working directory.
+- `env`: optional environment mapping (inherits the current environment when
+  `None`).
+- `ok_returncodes`: non-zero exit codes to treat as success, for programs that
+  use a non-zero code to signal a recoverable condition.
+- `key`: optional opaque value identifying this command, used by
+  `cancel_commands()` to select which commands to cancel (for example the file
+  a command is working on).
+
+Commands from the same plugin share a bounded pool, so launching many at once
+will not spawn an unbounded number of processes. Use
+`set_max_concurrent_commands()` to change the limit.
+
+```python
+def scan(api, files):
+    exe = api.find_executable('rsgain')
+    if exe is None:
+        api.logger.error("rsgain not found")
+        return
+
+    def on_success(result):
+        # result.returncode is 0 here; parse result.stdout
+        parse_output(result.stdout)
+
+    def on_error(error):
+        # error.stderr contains the program's own message
+        api.logger.error("rsgain failed (code %s): %s", error.returncode, error.stderr)
+
+    api.run_command(
+        [exe, 'custom', '-O', *files],
+        on_success=on_success,
+        on_error=on_error,
+    )
+```
+
+Accepting a non-zero exit code (for example a tool that returns `3` on
+recoverable decoding warnings but still produces usable output):
+
+```python
+api.run_command(
+    [exe, *args],
+    on_success=handle,  # called for exit codes 0 and 3
+    on_error=failed,  # called for any other non-zero code
+    ok_returncodes=(3,),
+)
+```
+
+### `cancel_commands(predicate)`
+
+Cancel pending and running commands whose `key` matches `predicate`. The
+predicate is called with each command's `key` (as passed to `run_command()`).
+
+```python
+# Cancel the command working on a particular file.
+api.cancel_commands(lambda key: key == file)
+```
+
+Running commands are not cancelled automatically when the plugin is disabled.
+If a plugin may have long-running commands in flight, cancel them from
+`disable()`, for example `api.cancel_commands(lambda key: True)`.
+
+### `set_max_concurrent_commands(value)`
+
+Set how many of this plugin's commands may run at once (minimum `1`).
+
+---
+
 ## Translation Methods
 
 ### `get_locale() -> str`
