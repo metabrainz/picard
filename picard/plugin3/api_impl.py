@@ -1828,6 +1828,7 @@ class PluginApi:
         cwd: str | None = None,
         env: dict[str, str] | None = None,
         ok_returncodes: Iterable[int] = (),
+        timeout: float | None = None,
         key: object = None,
     ) -> None:
         """Run an external command asynchronously, off the UI thread.
@@ -1856,6 +1857,9 @@ class PluginApi:
             ok_returncodes: Non-zero exit codes to treat as success, for
                 programs that use a non-zero code to signal a recoverable
                 condition.
+            timeout: Optional timeout in seconds; the command is killed and
+                ``on_error`` is called with a timeout ``CommandError`` if it
+                runs longer. Defaults to no timeout.
             key: Optional opaque value identifying this command, used with
                 :meth:`cancel_commands` to cancel a subset of commands.
 
@@ -1884,6 +1888,7 @@ class PluginApi:
             cwd=cwd,
             env=env,
             ok_returncodes=ok_returncodes,
+            timeout=timeout,
             key=key,
         )
 

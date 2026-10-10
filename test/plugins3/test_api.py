@@ -638,6 +638,7 @@ class TestPluginApiExternalCommand(PicardTestCase):
                 cwd='/tmp',
                 env={'A': 'B'},
                 ok_returncodes=(3,),
+                timeout=12,
                 key='k',
             )
             runner.run.assert_called_once_with(
@@ -647,6 +648,7 @@ class TestPluginApiExternalCommand(PicardTestCase):
                 cwd='/tmp',
                 env={'A': 'B'},
                 ok_returncodes=(3,),
+                timeout=12,
                 key='k',
             )
 

@@ -144,7 +144,9 @@ class ExternalCommand(QtCore.QObject):
 
     The command is started with :meth:`start`; exactly one of the supplied
     callbacks is invoked on the main thread when it finishes. Output is captured
-    and decoded as UTF-8. Use :meth:`cancel` to kill a running command.
+    and decoded as UTF-8. Use :meth:`cancel` to kill a running command. An
+    optional ``timeout`` (seconds) kills the command and reports a
+    :class:`CommandError` if it runs too long.
 
     Prefer :class:`ExternalCommandRunner` when running many commands, as it adds
     a concurrency limit and group cancellation.
@@ -158,6 +160,7 @@ class ExternalCommand(QtCore.QObject):
         cwd: str | None = None,
         env: dict[str, str] | None = None,
         ok_returncodes: Iterable[int] = (),
+        timeout: float | None = None,
     ):
         super().__init__(parent)
         if not args:
@@ -166,9 +169,11 @@ class ExternalCommand(QtCore.QObject):
         self._cwd = cwd
         self._env = env
         self._ok_returncodes = tuple(ok_returncodes)
+        self._timeout = timeout
         self._on_success: SuccessCallback | None = None
         self._on_error: ErrorCallback | None = None
         self._process: QtCore.QProcess | None = None
+        self._timer: QtCore.QTimer | None = None
         self._finished = False
 
     @property
@@ -197,9 +202,39 @@ class ExternalCommand(QtCore.QObject):
         log.debug("Running external command: %r %r", program, arguments)
         process.start(program, arguments)
 
+        if self._timeout is not None:
+            timer = QtCore.QTimer(self)
+            timer.setSingleShot(True)
+            timer.timeout.connect(self._on_timeout)
+            timer.start(int(self._timeout * 1000))
+            self._timer = timer
+
+    def _stop_timer(self) -> None:
+        if self._timer is not None:
+            self._timer.stop()
+            self._timer = None
+
+    def _on_timeout(self) -> None:
+        if self._finished:
+            return
+        self._finished = True
+        self._timer = None
+        stdout, stderr = self._read_output()
+        if self._process is not None and self._process.state() != QtCore.QProcess.ProcessState.NotRunning:
+            self._process.kill()
+        self._deliver_error(
+            CommandError(
+                f"Command timed out after {self._timeout}s: {self._args[0]!r}",
+                args_list=self._args,
+                stdout=stdout,
+                stderr=stderr,
+            )
+        )
+
     def cancel(self) -> None:
         """Kill the running command. No callback is invoked after cancelling."""
         self._finished = True
+        self._stop_timer()
         if self._process is not None and self._process.state() != QtCore.QProcess.ProcessState.NotRunning:
             self._process.kill()
 
@@ -213,6 +248,7 @@ class ExternalCommand(QtCore.QObject):
         if self._finished:
             return
         self._finished = True
+        self._stop_timer()
         stdout, stderr = self._read_output()
 
         if exit_status != QtCore.QProcess.ExitStatus.NormalExit:
@@ -251,6 +287,7 @@ class ExternalCommand(QtCore.QObject):
         if error != QtCore.QProcess.ProcessError.FailedToStart:
             return
         self._finished = True
+        self._stop_timer()
         message = self._process.errorString() if self._process is not None else "failed to start"
         self._deliver_error(
             CommandError(
@@ -302,6 +339,7 @@ class ExternalCommandRunner(QtCore.QObject):
         cwd: str | None = None,
         env: dict[str, str] | None = None,
         ok_returncodes: Iterable[int] = (),
+        timeout: float | None = None,
         key: object = None,
     ) -> ExternalCommand:
         """Queue a command to run. Returns the created :class:`ExternalCommand`.
@@ -313,6 +351,8 @@ class ExternalCommandRunner(QtCore.QObject):
             cwd: Optional working directory.
             env: Optional environment mapping.
             ok_returncodes: Non-zero exit codes to accept as success.
+            timeout: Optional timeout in seconds; the command is killed and
+                reported as a :class:`CommandError` if it runs longer.
             key: Optional opaque value used by :meth:`cancel` to select which
                 commands to cancel (e.g. the file a command is working on).
 
@@ -326,6 +366,7 @@ class ExternalCommandRunner(QtCore.QObject):
             cwd=cwd,
             env=env,
             ok_returncodes=ok_returncodes,
+            timeout=timeout,
         )
         self._queue.append((command, on_success, on_error, key))
         self._pump()

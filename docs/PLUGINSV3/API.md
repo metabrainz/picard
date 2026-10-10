@@ -617,6 +617,9 @@ Parameters:
   `None`).
 - `ok_returncodes`: non-zero exit codes to treat as success, for programs that
   use a non-zero code to signal a recoverable condition.
+- `timeout`: optional timeout in seconds; the command is killed and `on_error`
+  is called with a timeout `CommandError` if it runs longer. There is no
+  timeout by default.
 - `key`: optional opaque value identifying this command, used by
   `cancel_commands()` to select which commands to cancel (for example the file
   a command is working on).

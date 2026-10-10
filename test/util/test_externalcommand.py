@@ -137,6 +137,33 @@ class ExternalCommandTest(ExternalCommandQtTestBase):
         with self.assertRaises(ValueError):
             ExternalCommand([])
 
+    def test_timeout_fires(self):
+        collector = _Collector()
+        cmd = ExternalCommand(_py("import time; time.sleep(5)"), timeout=0.2)
+        cmd.start(collector.on_success, collector.on_error)
+        self._wait_for(lambda: collector.total == 1)
+        self.assertEqual(len(collector.errors), 1)
+        self.assertIn("timed out", str(collector.errors[0]).lower())
+
+    def test_timeout_not_fired_on_fast_command(self):
+        collector = _Collector()
+        # Generous timeout that must not fire for a quick command.
+        cmd = ExternalCommand(_py("print('quick')"), timeout=5)
+        cmd.start(collector.on_success, collector.on_error)
+        self._wait_for(lambda: collector.total == 1)
+        self.assertEqual(len(collector.results), 1)
+        self.assertEqual(collector.results[0].stdout.strip(), "quick")
+        # The timer must have been stopped on normal completion.
+        self.assertIsNone(cmd._timer)
+
+    def test_no_timeout_by_default(self):
+        cmd = ExternalCommand(_py("print('x')"))
+        collector = _Collector()
+        cmd.start(collector.on_success, collector.on_error)
+        self._wait_for(lambda: collector.total == 1)
+        self.assertEqual(len(collector.results), 1)
+        self.assertIsNone(cmd._timer)
+
 
 class ExternalCommandRunnerTest(ExternalCommandQtTestBase):
     def test_runs_all_commands(self):
