@@ -24,31 +24,20 @@
 from collections.abc import Callable
 import os
 from pathlib import Path
-import subprocess  # noqa: S404
 
 from picard import log
+from picard.util import run_command_output
 
 from picard.ui.theme_detect_qtdbus import detect_freedesktop_color_scheme_dbus
 
 
 def gsettings_get(key: str) -> str | None:
     """Get a gsettings value as a string or None."""
-    try:
-        result = subprocess.run(
-            [
-                "gsettings",
-                "get",
-                "org.gnome.desktop.interface",
-                key,
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        return result.stdout.strip().strip("'\"")
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    value = run_command_output(["gsettings", "get", "org.gnome.desktop.interface", key])
+    if value is None:
         log.debug(f"gsettings get {key} failed.")
         return None
+    return value.strip("'\"")
 
 
 def detect_gnome_color_scheme_dark() -> bool:
@@ -88,25 +77,13 @@ def detect_kde_colorscheme_dark() -> bool:
 
 def detect_xfce_dark_theme() -> bool:
     """Detect if XFCE theme is set to dark."""
-    try:
-        result = subprocess.run(  # nosec B603 B607
-            [
-                "xfconf-query",
-                "-c",
-                "xsettings",
-                "-p",
-                "/Net/ThemeName",
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        theme = result.stdout.strip().lower()
-        if "dark" in theme:
-            log.debug(f"Detected XFCE theme: {theme} (dark)")
-            return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    theme = run_command_output(["xfconf-query", "-c", "xsettings", "-p", "/Net/ThemeName"])
+    if theme is None:
         log.debug("xfconf-query detection failed.")
+        return False
+    if "dark" in theme.lower():
+        log.debug(f"Detected XFCE theme: {theme} (dark)")
+        return True
     return False
 
 

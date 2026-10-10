@@ -505,6 +505,30 @@ def run_executable(executable: str, *args, timeout: int | float | None = None) -
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
 
 
+def run_command_output(args: list[str]) -> str | None:
+    """Run a command and return its stripped stdout, or None on any failure.
+
+    Best-effort helper for short, synchronous queries to external tools (e.g.
+    reading a desktop-environment setting). A missing tool or a non-zero exit
+    never raises; it simply yields None.
+    """
+    startupinfo = None
+    if IS_WIN:
+        startupinfo = subprocess.STARTUPINFO()  # ty: ignore[unresolved-attribute]
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # ty: ignore[unresolved-attribute]
+    try:
+        result = subprocess.run(  # nosec: B603
+            args,
+            capture_output=True,
+            text=True,
+            startupinfo=startupinfo,
+            check=True,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return result.stdout.strip() or None
+
+
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 
