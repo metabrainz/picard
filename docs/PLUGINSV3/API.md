@@ -669,9 +669,10 @@ predicate is called with each command's `key` (as passed to `run_command()`).
 api.cancel_commands(lambda key: key == file)
 ```
 
-Running commands are not cancelled automatically when the plugin is disabled.
-If a plugin may have long-running commands in flight, cancel them from
-`disable()`, for example `api.cancel_commands(lambda key: True)`.
+Running commands are cancelled automatically when the plugin is disabled, so a
+plugin does not need to track them for cleanup. Use `cancel_commands()` only
+when you want to cancel a subset earlier (for example when the user removes a
+file a command is working on).
 
 ### `set_max_concurrent_commands(value)`
 

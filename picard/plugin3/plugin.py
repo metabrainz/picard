@@ -755,6 +755,7 @@ class Plugin:
         # Cleanup API instance registry - find and remove by module reference
         for name, api in list(PluginApi._instances.items()):
             if api._plugin_module is self._module:
+                api._cancel_all_commands()
                 api._remove_qt_translator()
                 profile_groups_remove_group(api._api_config.section_name)
                 del PluginApi._instances[name]

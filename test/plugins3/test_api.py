@@ -682,3 +682,16 @@ class TestPluginApiExternalCommand(PicardTestCase):
             runner = mock_runner_cls.return_value
             api.set_max_concurrent_commands(4)
             runner.set_max_concurrent.assert_called_once_with(4)
+
+    def test_cancel_all_commands_without_runner_is_noop(self):
+        api = self._create_api()
+        # No command started -> no runner -> must not raise.
+        api._cancel_all_commands()
+
+    def test_cancel_all_commands_delegates(self):
+        api = self._create_api()
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            runner = mock_runner_cls.return_value
+            api.run_command(['a'], on_success=Mock(), on_error=Mock())
+            api._cancel_all_commands()
+            runner.cancel_all.assert_called_once_with()

@@ -189,3 +189,16 @@ class ExternalCommandRunnerTest(ExternalCommandQtTestBase):
         self.assertIn("a", outputs)
         self.assertNotIn("b", outputs)
         self.assertNotIn("c", outputs)
+
+    def test_cancel_all_prevents_queued_start(self):
+        collector = _Collector()
+        runner = ExternalCommandRunner(max_concurrent=1)
+        runner.run(_py("import time; time.sleep(0.3); print('a')"), collector.on_success, collector.on_error)
+        runner.run(_py("print('b')"), collector.on_success, collector.on_error)
+        runner.run(_py("print('c')"), collector.on_success, collector.on_error)
+        runner.cancel_all()
+        # Nothing more should start; let any erroneous starts report.
+        QTest.qWait(400)
+        outputs = [r.stdout.strip() for r in collector.results]
+        self.assertNotIn("b", outputs)
+        self.assertNotIn("c", outputs)

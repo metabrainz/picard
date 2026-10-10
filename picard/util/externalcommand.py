@@ -347,6 +347,15 @@ class ExternalCommandRunner(QtCore.QObject):
                 self._running.pop(command, None)
         self._pump()
 
+    def cancel_all(self) -> None:
+        """Cancel every queued and running command."""
+        for command, _on_success, _on_error, _key in self._queue:
+            command.cancel()
+        self._queue.clear()
+        for command in list(self._running):
+            command.cancel()
+        self._running.clear()
+
     def _pump(self) -> None:
         while self._queue and len(self._running) < self._max_concurrent:
             command, on_success, on_error, key = self._queue.popleft()

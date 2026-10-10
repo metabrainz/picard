@@ -1906,6 +1906,15 @@ class PluginApi:
             self._command_runner = ExternalCommandRunner(parent=self._tagger)
         return self._command_runner
 
+    def _cancel_all_commands(self) -> None:
+        """Cancel any commands started via :meth:`run_command`.
+
+        Called automatically by the plugin manager when the plugin is disabled,
+        so a plugin does not need to track and cancel its own commands.
+        """
+        if self._command_runner is not None:
+            self._command_runner.cancel_all()
+
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins
     # that use alternative progress displays
