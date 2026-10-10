@@ -409,7 +409,7 @@ class UpdatesPage(SetupWizardPage):
             _("Check for plugin updates online and show a notification in the status bar."),
         )
         layout.addWidget(self.update_check_plugins)
-        if not tagger._pluginmanager3:
+        if not tagger.get_plugin_manager():
             self.update_check_plugins.hide()
 
         self.update_check_docs = WizardCheckbox(
@@ -436,13 +436,15 @@ class UpdatesPage(SetupWizardPage):
         config.setting['check_for_plugin_updates'] = self.update_check_plugins.is_checked()
         config.setting['check_rtd_updates'] = self.update_check_docs.is_checked()
 
-        # Trigger update checks if enabled
+        # Only trigger a check when the feature is available. On a build with
+        # autoupdate disabled (PICARD_DISABLE_AUTOUPDATE) updatecheckmanager is
+        # never created, and get_plugin_manager() is None without plugin support.
         tagger = tagger_instance()
 
-        if config.setting['check_for_updates']:
+        if tagger.autoupdate_enabled and config.setting['check_for_updates']:
             tagger.window._auto_update_check()
 
-        if config.setting['check_for_plugin_updates']:
+        if tagger.get_plugin_manager() and config.setting['check_for_plugin_updates']:
             QtCore.QTimer.singleShot(PLUGINS_BACKGROUND_CHECK_DELAY * 1000, tagger.window._check_for_plugin_updates)
 
         if config.setting['check_rtd_updates']:
