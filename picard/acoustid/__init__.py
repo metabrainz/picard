@@ -54,6 +54,13 @@ class FpcalcExit(IntEnum):
     DECODING_ERROR = 3
 
 
+# Safety-net timeout (seconds) for a single fpcalc invocation. fpcalc scans a
+# limited amount of audio and normally finishes within seconds; this generous
+# value only catches a genuinely stuck process without failing slow but
+# legitimate scans (large files, slow or networked storage).
+FPCALC_TIMEOUT = 120.0
+
+
 def get_score(node):
     try:
         return float(node.get('score', 1.0))
@@ -241,6 +248,7 @@ class AcoustIDClient(QtCore.QObject):
             partial(self._on_fpcalc_success, task),
             partial(self._on_fpcalc_error, task),
             ok_returncodes=(FpcalcExit.DECODING_ERROR,),
+            timeout=FPCALC_TIMEOUT,
             key=task.file,
         )
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)

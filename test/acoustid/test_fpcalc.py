@@ -30,11 +30,15 @@ QProcess implementation is:
 """
 
 from collections import namedtuple
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard.acoustid import (
+    FPCALC_TIMEOUT,
     AcoustIDClient,
     FpcalcExit,
 )
@@ -96,3 +100,28 @@ class FpcalcCallbackTest(PicardTestCase):
         self.client._on_fpcalc_success(task, bad)
         task.next_func.assert_called_once_with(None)
         task.file.set_acoustid_fingerprint.assert_not_called()
+
+
+class FpcalcRunTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.acoustid')
+        self.set_config_values({'fpcalc_threads': 1})
+        self.client = AcoustIDClient(object())
+        self.client._fpcalc = '/usr/bin/fpcalc'
+
+    def test_run_fpcalc_passes_timeout_and_args(self):
+        file = Mock()
+        file.state = None  # not File.State.REMOVED
+        file.filename = '/music/track.flac'
+        task = Task(file, Mock())
+
+        with patch.object(self.client._fpcalc_runner, 'run') as mock_run:
+            self.client._run_fpcalc(task)
+
+        self.assertEqual(mock_run.call_count, 1)
+        args, kwargs = mock_run.call_args
+        self.assertEqual(args[0], ['/usr/bin/fpcalc', '-json', '-length', '120', '/music/track.flac'])
+        self.assertEqual(kwargs['timeout'], FPCALC_TIMEOUT)
+        self.assertEqual(kwargs['ok_returncodes'], (FpcalcExit.DECODING_ERROR,))
+        self.assertEqual(kwargs['key'], file)
