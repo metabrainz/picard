@@ -43,7 +43,7 @@ from __future__ import annotations
 from collections import deque
 from collections.abc import (
     Callable,
-    Iterable,
+    Collection,
 )
 from dataclasses import dataclass
 
@@ -124,9 +124,9 @@ def _decode(data: bytes) -> str:
     return bytes(data).decode('utf-8', errors='replace')
 
 
-def _is_accepted(returncode: int, ok_returncodes: Iterable[int]) -> bool:
+def _is_accepted(returncode: int, ok_returncodes: Collection[int]) -> bool:
     """Return True if the exit code counts as success."""
-    return returncode == 0 or returncode in set(ok_returncodes)
+    return returncode == 0 or returncode in ok_returncodes
 
 
 def _non_zero_message(args: tuple[str, ...], returncode: int, stderr: str) -> str:
@@ -159,7 +159,7 @@ class ExternalCommand(QtCore.QObject):
         parent: QtCore.QObject | None = None,
         cwd: str | None = None,
         env: dict[str, str] | None = None,
-        ok_returncodes: Iterable[int] = (),
+        ok_returncodes: Collection[int] = (),
         timeout: float | None = None,
     ):
         super().__init__(parent)
@@ -218,7 +218,7 @@ class ExternalCommand(QtCore.QObject):
         if self._finished:
             return
         self._finished = True
-        self._timer = None
+        self._stop_timer()
         stdout, stderr = self._read_output()
         if self._process is not None and self._process.state() != QtCore.QProcess.ProcessState.NotRunning:
             self._process.kill()
@@ -338,7 +338,7 @@ class ExternalCommandRunner(QtCore.QObject):
         *,
         cwd: str | None = None,
         env: dict[str, str] | None = None,
-        ok_returncodes: Iterable[int] = (),
+        ok_returncodes: Collection[int] = (),
         timeout: float | None = None,
         key: object = None,
     ) -> ExternalCommand:

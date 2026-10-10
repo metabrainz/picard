@@ -20,7 +20,7 @@
 
 from collections.abc import (
     Callable,
-    Iterable,
+    Collection,
 )
 from functools import (
     partial,
@@ -1827,7 +1827,7 @@ class PluginApi:
         on_error: Callable[[CommandError], None],
         cwd: str | None = None,
         env: dict[str, str] | None = None,
-        ok_returncodes: Iterable[int] = (),
+        ok_returncodes: Collection[int] = (),
         timeout: float | None = None,
         key: object = None,
     ) -> None:
