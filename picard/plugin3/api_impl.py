@@ -18,7 +18,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Callable
+from collections.abc import (
+    Callable,
+    Iterable,
+)
 from functools import (
     partial,
     update_wrapper,
@@ -112,6 +115,12 @@ from picard.plugin3.i18n import (
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
 from picard.util.display_title_base import HasDisplayTitle
+from picard.util.externalcommand import (
+    CommandError,
+    CommandResult,
+    ExternalCommandRunner,
+    find_executable,
+)
 from picard.util.imageinfo import ImageInfo
 from picard.webservice import (
     PendingRequest,
@@ -296,6 +305,7 @@ class PluginApi:
         self._plugin_dir: Path = plugin_dir
         self._qt_translator: PluginTranslator | None = None
         self._mb_api: MBAPIHelper | None = None
+        self._command_runner: ExternalCommandRunner | None = None
 
     @staticmethod
     def _get_caller_info(frame_depth=2):
@@ -1786,6 +1796,115 @@ class PluginApi:
         """
         full_task_id = f'{self.plugin_id}_{task_id}'
         album.complete_task(full_task_id)
+
+    def find_executable(self, *names: str) -> str | None:
+        """Locate an external executable by name or path.
+
+        Each name may be a bare command (looked up on ``PATH``) or an explicit
+        path. The first one that resolves is returned as an absolute path. On
+        Windows the usual executable extensions are tried, and executables
+        bundled with a frozen build are found.
+
+        Args:
+            *names: Command names or paths to try, in order of preference.
+
+        Returns:
+            The absolute path to the executable, or ``None`` if none resolve.
+
+        Example:
+            def enable(api):
+                rsgain = api.find_executable(api.plugin_config['rsgain_path'], 'rsgain')
+                if rsgain is None:
+                    api.logger.error("rsgain not found")
+        """
+        return find_executable(*names)
+
+    def run_command(
+        self,
+        args: list[str] | tuple[str, ...],
+        *,
+        on_success: Callable[[CommandResult], None],
+        on_error: Callable[[CommandError], None],
+        cwd: str | None = None,
+        env: dict[str, str] | None = None,
+        ok_returncodes: Iterable[int] = (),
+        key: object = None,
+    ) -> None:
+        """Run an external command asynchronously, off the UI thread.
+
+        This is the supported way for a plugin to run an external program.
+        The command runs via QProcess and reports back on the main thread, so
+        the user interface stays responsive. Commands from the same plugin share
+        a bounded pool (see :meth:`set_max_concurrent_commands`), so launching
+        many at once will not spawn an unbounded number of processes.
+
+        stdout and stderr are captured as UTF-8. On success, ``on_success``
+        receives a :class:`~picard.util.externalcommand.CommandResult`. On
+        failure — the program could not start, or it exited with a code that is
+        neither ``0`` nor one of ``ok_returncodes`` — ``on_error`` receives a
+        :class:`~picard.util.externalcommand.CommandError` whose ``stdout`` and
+        ``stderr`` attributes carry the program's output.
+
+        Args:
+            args: The argument vector. The first element is the executable;
+                resolve it with :meth:`find_executable` first if needed.
+            on_success: Called on the main thread with a ``CommandResult``.
+            on_error: Called on the main thread with a ``CommandError``.
+            cwd: Optional working directory for the child process.
+            env: Optional environment mapping (inherits the current environment
+                when ``None``).
+            ok_returncodes: Non-zero exit codes to treat as success, for
+                programs that use a non-zero code to signal a recoverable
+                condition.
+            key: Optional opaque value identifying this command, used with
+                :meth:`cancel_commands` to cancel a subset of commands.
+
+        Example:
+            def scan(api, files):
+                exe = api.find_executable('rsgain')
+                if exe is None:
+                    return
+
+                def done(result):
+                    parse(result.stdout)
+
+                def failed(error):
+                    api.logger.error("rsgain failed: %s", error)
+
+                api.run_command(
+                    [exe, 'custom', '-O', *files],
+                    on_success=done,
+                    on_error=failed,
+                )
+        """
+        self._get_command_runner().run(
+            args,
+            on_success,
+            on_error,
+            cwd=cwd,
+            env=env,
+            ok_returncodes=ok_returncodes,
+            key=key,
+        )
+
+    def cancel_commands(self, predicate: Callable[[object], bool]) -> None:
+        """Cancel pending/running commands whose ``key`` matches ``predicate``.
+
+        Args:
+            predicate: Called with each command's ``key`` (as passed to
+                :meth:`run_command`); matching commands are cancelled.
+        """
+        if self._command_runner is not None:
+            self._command_runner.cancel(predicate)
+
+    def set_max_concurrent_commands(self, value: int) -> None:
+        """Set how many of this plugin's commands may run at once (min 1)."""
+        self._get_command_runner().set_max_concurrent(value)
+
+    def _get_command_runner(self) -> ExternalCommandRunner:
+        if self._command_runner is None:
+            self._command_runner = ExternalCommandRunner(parent=self._tagger)
+        return self._command_runner
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins
