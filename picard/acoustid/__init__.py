@@ -21,10 +21,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections import (
-    deque,
-    namedtuple,
-)
+from collections import namedtuple
 from enum import IntEnum
 from functools import partial
 import json
@@ -46,6 +43,7 @@ from picard.util import (
     find_executable,
     win_prefix_longpath,
 )
+from picard.util.externalcommand import ExternalCommandRunner
 from picard.webservice.api_helpers import AcoustIdAPIHelper
 
 
@@ -83,9 +81,8 @@ class AcoustIDClient(QtCore.QObject):
     def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
         self.tagger = tagger_instance()
-        self._queue: deque = deque()
-        self._running = 0
         self._acoustid_api = acoustid_api
+        self._fpcalc_runner = ExternalCommandRunner(max_concurrent=self.get_max_processes(), parent=self)
 
     def init(self):
         pass
@@ -191,95 +188,61 @@ class AcoustIDClient(QtCore.QObject):
             params['recordingid'] = recordingid
         self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, task), **params)
 
-    def _on_fpcalc_finished(self, task, exit_code, exit_status):
-        process = self.sender()
-        assert isinstance(process, QtCore.QProcess), "expected sender to be a QProcess"
-        finished = process.property('picard_finished')
-        if finished:
-            return
-        process.setProperty('picard_finished', True)
-        result = None
+    def _on_fpcalc_success(self, task, result):
+        # fpcalc returns the exit code 3 in case of decoding errors that
+        # still allowed it to calculate a result (ok_returncodes below).
+        if result.returncode == FpcalcExit.DECODING_ERROR:
+            log.warning(
+                "fpcalc non-critical decoding errors for %s: %s",
+                task.file,
+                result.stderr.strip(),
+            )
+        fp_result = None
         try:
-            self._running -= 1
-            self._run_next_task()
-            # fpcalc returns the exit code 3 in case of decoding errors that
-            # still allowed it to calculate a result.
-            if (
-                exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR}
-                and exit_status == QtCore.QProcess.ExitStatus.NormalExit
-            ):
-                if exit_code == FpcalcExit.DECODING_ERROR:
-                    error = process.readAllStandardError().data().decode()
-                    log.warning(
-                        "fpcalc non-critical decoding errors for %s: %s",
-                        task.file,
-                        error,
-                    )
-                output = process.readAllStandardOutput().data().decode()
-                jsondata = json.loads(output)
-                # Use only integer part of duration, floats are not allowed in lookup
-                duration = int(jsondata.get('duration'))
-                fingerprint = jsondata.get('fingerprint')
-                if fingerprint and duration:
-                    result = 'fingerprint', fingerprint, duration
-            else:
-                log.error(
-                    "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
-                    exit_code,
-                    exit_status,
-                    process.errorString(),
-                )
+            jsondata = json.loads(result.stdout)
+            # Use only integer part of duration, floats are not allowed in lookup
+            duration = int(jsondata.get('duration'))
+            fingerprint = jsondata.get('fingerprint')
+            if fingerprint and duration:
+                fp_result = 'fingerprint', fingerprint, duration
         except (json.decoder.JSONDecodeError, UnicodeDecodeError, ValueError):
             log.error("Error reading fingerprint calculator output", exc_info=True)
         finally:
-            if result and result[0] == 'fingerprint':
-                fp_type, fingerprint, length = result
+            if fp_result is not None:
+                _fp_type, fingerprint, length = fp_result
                 # Only set the fingerprint if it was calculated without
                 # decoding errors. Otherwise fingerprints for broken files
                 # might get submitted.
-                if exit_code == FpcalcExit.NOERROR:
+                if result.returncode == FpcalcExit.NOERROR:
                     task.file.set_acoustid_fingerprint(fingerprint, length)
-            task.next_func(result)
+            task.next_func(fp_result)
 
     def _on_fpcalc_error(self, task, error):
-        process = self.sender()
-        assert isinstance(process, QtCore.QProcess), "expected sender to be a QProcess"
-        finished = process.property('picard_finished')
-        if finished:
-            return
-        process.setProperty('picard_finished', True)
-        try:
-            self._running -= 1
-            self._run_next_task()
-            log.error(
-                "Fingerprint calculator failed error= %s (%r) program=%r arguments=%r",
-                process.errorString(),
-                error,
-                process.program(),
-                process.arguments(),
-            )
-        finally:
-            task.next_func(None)
+        log.error(
+            "Fingerprint calculator failed: %s (code=%r) args=%r",
+            error,
+            error.returncode,
+            error.args_list,
+        )
+        task.next_func(None)
 
-    def _run_next_task(self):
-        try:
-            task = self._queue.popleft()
-        except IndexError:
-            return
+    def _run_fpcalc(self, task):
         if task.file.state == File.State.REMOVED:
             log.debug("File %r was removed", task.file)
             return
-        self._running += 1
-        process = QtCore.QProcess(self)
-        process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, task))
-        process.errorOccurred.connect(partial(self._on_fpcalc_error, task))
         file_path = task.file.filename
         # On Windows fpcalc.exe does not handle long paths, even if system wide
         # long path support is enabled. Ensure the path is properly prefixed.
         if IS_WIN:
             file_path = win_prefix_longpath(file_path)
-        process.start(self._fpcalc, ['-json', '-length', '120', file_path])
+        self._fpcalc_runner.set_max_concurrent(self.get_max_processes())
+        self._fpcalc_runner.run(
+            [self._fpcalc, '-json', '-length', '120', file_path],
+            partial(self._on_fpcalc_success, task),
+            partial(self._on_fpcalc_error, task),
+            ok_returncodes=(FpcalcExit.DECODING_ERROR,),
+            key=task.file,
+        )
         log.debug("Starting fingerprint calculator %r %r", self._fpcalc, task.file.filename)
 
     def analyze(self, file, next_func):
@@ -308,17 +271,11 @@ class AcoustIDClient(QtCore.QObject):
         if task.file.state == File.State.REMOVED:
             log.debug("File %r was removed", task.file)
             return
-        self._queue.append(task)
         self._fpcalc = get_fpcalc()
-        if self._running < self.get_max_processes():
-            self._run_next_task()
+        self._run_fpcalc(task)
 
     def fingerprint(self, file, next_func):
         self._fingerprint(AcoustIDTask(file, next_func))
 
     def stop_analyze(self, file):
-        new_queue = deque()
-        for task in self._queue:
-            if task.file != file and task.file.state != File.State.REMOVED:
-                new_queue.appendleft(task)
-        self._queue = new_queue
+        self._fpcalc_runner.cancel(lambda key: key == file or getattr(key, 'state', None) == File.State.REMOVED)
