@@ -1,5 +1,15 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.2 - 2026-10-11
+
+### Bugfixes
+- [PICARD-3484](https://tickets.metabrainz.org/browse/PICARD-3484) - Hardcoded link styling in Audio Player options
+- [PICARD-3485](https://tickets.metabrainz.org/browse/PICARD-3485) - Sticky grey background in metadata pane
+- [PICARD-3490](https://tickets.metabrainz.org/browse/PICARD-3490) - Program crash after wizard if build with `--disable-autoupdate`
+- [PICARD-3491](https://tickets.metabrainz.org/browse/PICARD-3491) - Text color issues in dark mode in metadata pane and placeholder texts
+- [PICARD-3494](https://tickets.metabrainz.org/browse/PICARD-3494) - Plugin manager "View Repository" fails silently when remote is a local path
+
+
 ## Version 3.0.1 - 2026-10-08
 
 ### Bugfixes
