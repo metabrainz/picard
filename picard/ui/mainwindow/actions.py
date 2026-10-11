@@ -48,6 +48,7 @@
 from functools import partial
 
 from PyQt6 import (
+    QtCore,
     QtGui,
     QtWidgets,
 )
@@ -77,9 +78,21 @@ def create_actions(parent):
         yield (action_name, action(parent))
 
 
+def _create_qaction(text: str, icon: QtGui.QIcon | None = None, parent: QtCore.QObject | None = None) -> QtGui.QAction:
+    if icon:
+        action = QtGui.QAction(icon, text, parent=parent)
+    else:
+        action = QtGui.QAction(text, parent=parent)
+    # Default to no menu role. The default would be TextHeuristicRole, which can cause
+    # issues on macOS automatic menu role detection and is also suspected to causing
+    # crashes. Instead the expected role must be set explicitly if it matters.
+    action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
+    return action
+
+
 @add_action(MainAction.OPTIONS)
 def _create_options_action(parent):
-    action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options…"), parent)
+    action = _create_qaction(_("&Options…"), icontheme.lookup('preferences-desktop'), parent)
     action.setMenuRole(QtGui.QAction.MenuRole.PreferencesRole)
     action.triggered.connect(parent.show_options)
     return action
@@ -87,7 +100,7 @@ def _create_options_action(parent):
 
 @add_action(MainAction.SHOW_SCRIPT_EDITOR)
 def _create_show_script_editor_action(parent):
-    action = QtGui.QAction(_("&Edit scripts…"))
+    action = _create_qaction(_("&Edit scripts…"), parent=parent)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
     action.triggered.connect(parent.open_file_naming_script_editor)
     return action
@@ -95,7 +108,7 @@ def _create_show_script_editor_action(parent):
 
 @add_action(MainAction.CUT)
 def _create_cut_action(parent):
-    action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), parent)
+    action = _create_qaction(_("&Cut"), icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), parent)
     action.setShortcut(QtGui.QKeySequence.StandardKey.Cut)
     action.setEnabled(False)
     action.triggered.connect(parent.cut)
@@ -104,7 +117,7 @@ def _create_cut_action(parent):
 
 @add_action(MainAction.PASTE)
 def _create_paste_action(parent):
-    action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), parent)
+    action = _create_qaction(_("&Paste"), icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), parent)
     action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
     action.setEnabled(False)
     action.triggered.connect(parent.paste)
@@ -113,7 +126,7 @@ def _create_paste_action(parent):
 
 @add_action(MainAction.HELP)
 def _create_help_action(parent):
-    action = QtGui.QAction(_("&Help…"), parent)
+    action = _create_qaction(_("&Help…"), parent=parent)
     action.setShortcut(QtGui.QKeySequence.StandardKey.HelpContents)
     action.triggered.connect(parent.show_help)
     return action
@@ -121,7 +134,7 @@ def _create_help_action(parent):
 
 @add_action(MainAction.ABOUT)
 def _create_about_action(parent):
-    action = QtGui.QAction(_("&About…"), parent)
+    action = _create_qaction(_("&About…"), parent=parent)
     action.setMenuRole(QtGui.QAction.MenuRole.AboutRole)
     action.triggered.connect(parent.show_about)
     return action
@@ -129,28 +142,28 @@ def _create_about_action(parent):
 
 @add_action(MainAction.DONATE)
 def _create_donate_action(parent):
-    action = QtGui.QAction(_("&Donate…"), parent)
+    action = _create_qaction(_("&Donate…"), parent=parent)
     action.triggered.connect(parent.open_donation_page)
     return action
 
 
 @add_action(MainAction.REPORT_BUG)
 def _create_report_bug_action(parent):
-    action = QtGui.QAction(_("&Report a Bug…"), parent)
+    action = _create_qaction(_("&Report a Bug…"), parent=parent)
     action.triggered.connect(parent.open_bug_report)
     return action
 
 
 @add_action(MainAction.SUPPORT_FORUM)
 def _create_support_forum_action(parent):
-    action = QtGui.QAction(_("&Support Forum…"), parent)
+    action = _create_qaction(_("&Support Forum…"), parent=parent)
     action.triggered.connect(parent.open_support_forum)
     return action
 
 
 @add_action(MainAction.ADD_FILES)
 def _create_add_files_action(parent):
-    action = QtGui.QAction(icontheme.lookup('document-open'), _("&Add Files…"), parent)
+    action = _create_qaction(_("&Add Files…"), icontheme.lookup('document-open'), parent)
     action.setStatusTip(_("Add files to the tagger"))
     # TR: Keyboard shortcut for "Add Files…"
     action.setShortcut(QtGui.QKeySequence.StandardKey.Open)
@@ -160,7 +173,7 @@ def _create_add_files_action(parent):
 
 @add_action(MainAction.ADD_DIRECTORY)
 def _create_add_directory_action(parent):
-    action = QtGui.QAction(icontheme.lookup('folder'), _("Add Fold&er…"), parent)
+    action = _create_qaction(_("Add Fold&er…"), icontheme.lookup('folder'), parent)
     action.setStatusTip(_("Add a folder to the tagger"))
     # TR: Keyboard shortcut for "Add Directory…"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
@@ -171,7 +184,7 @@ def _create_add_directory_action(parent):
 @add_action(MainAction.CLOSE_WINDOW)
 def _create_close_window_action(parent):
     if parent.show_close_window:
-        action = QtGui.QAction(_("Close Window"), parent)
+        action = _create_qaction(_("Close Window"), parent=parent)
         action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
         action.triggered.connect(parent.close_active_window)
     else:
@@ -181,7 +194,7 @@ def _create_close_window_action(parent):
 
 @add_action(MainAction.SAVE)
 def _create_save_action(parent):
-    action = QtGui.QAction(icontheme.lookup('document-save'), _("&Save"), parent)
+    action = _create_qaction(_("&Save"), icontheme.lookup('document-save'), parent)
     action.setStatusTip(_("Save selected files"))
     # TR: Keyboard shortcut for "Save"
     action.setShortcut(QtGui.QKeySequence.StandardKey.Save)
@@ -193,7 +206,7 @@ def _create_save_action(parent):
 @add_action(MainAction.TRASH)
 def _create_trash_action(parent):
     icon = parent.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TrashIcon)
-    action = QtGui.QAction(icon, _("Move to &trash"), parent)
+    action = _create_qaction(_("Move to &trash"), icon, parent)
     action.setStatusTip(_("Move files to trash"))
     action.setShortcut(QtGui.QKeySequence(_("Shift+Del")))
     action.setEnabled(False)
@@ -203,7 +216,7 @@ def _create_trash_action(parent):
 
 @add_action(MainAction.SUBMIT_ACOUSTID)
 def _create_submit_acoustid_action(parent):
-    action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _("S&ubmit AcoustIDs"), parent)
+    action = _create_qaction(_("S&ubmit AcoustIDs"), icontheme.lookup('acoustid-fingerprinter'), parent)
     action.setStatusTip(_("Submit acoustic fingerprints"))
     action.setEnabled(False)
     action.triggered.connect(parent._on_submit_acoustid)
@@ -212,7 +225,7 @@ def _create_submit_acoustid_action(parent):
 
 @add_action(MainAction.SUBMIT_ISRC)
 def _create_submit_isrc_action(parent):
-    action = QtGui.QAction(icontheme.lookup('isrc-submit'), _("Submit &ISRCs"), parent)
+    action = _create_qaction(_("Submit &ISRCs"), icontheme.lookup('isrc-submit'), parent)
     action.setStatusTip(_("Submit ISRCs to MusicBrainz"))
     action.setEnabled(False)
     action.triggered.connect(parent._on_submit_isrc)
@@ -221,7 +234,7 @@ def _create_submit_isrc_action(parent):
 
 @add_action(MainAction.EXIT)
 def _create_exit_action(parent):
-    action = QtGui.QAction(_("E&xit"), parent)
+    action = _create_qaction(_("E&xit"), parent=parent)
     action.setMenuRole(QtGui.QAction.MenuRole.QuitRole)
     # TR: Keyboard shortcut for "Exit"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Q")))
@@ -231,7 +244,7 @@ def _create_exit_action(parent):
 
 @add_action(MainAction.REMOVE)
 def _create_remove_action(parent):
-    action = QtGui.QAction(icontheme.lookup('list-remove'), _("&Remove"), parent)
+    action = _create_qaction(_("&Remove"), icontheme.lookup('list-remove'), parent)
     action.setStatusTip(_("Remove selected files/albums"))
     action.setEnabled(False)
     action.triggered.connect(parent.remove_selected_objects)
@@ -240,7 +253,7 @@ def _create_remove_action(parent):
 
 @add_action(MainAction.BROWSER_LOOKUP)
 def _create_browser_lookup_action(parent):
-    action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _("Lookup in &Browser"), parent)
+    action = _create_qaction(_("Lookup in &Browser"), icontheme.lookup('lookup-musicbrainz'), parent)
     action.setStatusTip(_("Lookup selected item on MusicBrainz website"))
     action.setEnabled(False)
     # TR: Keyboard shortcut for "Lookup in Browser"
@@ -251,7 +264,7 @@ def _create_browser_lookup_action(parent):
 
 @add_action(MainAction.LOOKUP_ISRC)
 def _create_lookup_isrc_action(parent):
-    action = QtGui.QAction(_("Lookup by &ISRC"), parent)
+    action = _create_qaction(_("Lookup by &ISRC"), parent=parent)
     action.setStatusTip(_("Lookup selected item by ISRC"))
     action.setEnabled(False)
     action.triggered.connect(parent._on_lookup_isrc)
@@ -261,7 +274,7 @@ def _create_lookup_isrc_action(parent):
 @add_action(MainAction.SUBMIT_CLUSTER)
 def _create_submit_cluster_action(parent):
     if addrelease.is_available():
-        action = QtGui.QAction(_("Submit cluster as release…"), parent)
+        action = _create_qaction(_("Submit cluster as release…"), parent=parent)
         action.setStatusTip(_("Submit cluster as a new release to MusicBrainz"))
         action.setEnabled(False)
         action.triggered.connect(parent.submit_cluster)
@@ -273,7 +286,7 @@ def _create_submit_cluster_action(parent):
 @add_action(MainAction.SUBMIT_FILE_AS_RECORDING)
 def _create_submit_file_as_recording_action(parent):
     if addrelease.is_available():
-        action = QtGui.QAction(_("Submit file as standalone recording…"), parent)
+        action = _create_qaction(_("Submit file as standalone recording…"), parent=parent)
         action.setStatusTip(_("Submit file as a new recording to MusicBrainz"))
         action.setEnabled(False)
         action.triggered.connect(parent.submit_file)
@@ -285,7 +298,7 @@ def _create_submit_file_as_recording_action(parent):
 @add_action(MainAction.SUBMIT_FILE_AS_RELEASE)
 def _create_submit_file_as_release_action(parent):
     if addrelease.is_available():
-        action = QtGui.QAction(_("Submit file as release…"), parent)
+        action = _create_qaction(_("Submit file as release…"), parent=parent)
         action.setStatusTip(_("Submit file as a new release to MusicBrainz"))
         action.setEnabled(False)
         action.triggered.connect(partial(parent.submit_file, as_release=True))
@@ -296,7 +309,7 @@ def _create_submit_file_as_release_action(parent):
 
 @add_action(MainAction.SIMILAR_ITEMS_SEARCH)
 def _create_similar_items_search_action(parent):
-    action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar items…"), parent)
+    action = _create_qaction(_("Search for similar items…"), icontheme.lookup('system-search'), parent)
     action.setIconText(_("Similar items"))
     action.setStatusTip(_("View similar releases or recordings and optionally choose a different one"))
     action.setEnabled(False)
@@ -307,7 +320,7 @@ def _create_similar_items_search_action(parent):
 
 @add_action(MainAction.ALBUM_SEARCH)
 def _create_album_search_action(parent):
-    action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar albums…"), parent)
+    action = _create_qaction(_("Search for similar albums…"), icontheme.lookup('system-search'), parent)
     action.setStatusTip(_("View similar releases and optionally choose a different release"))
     action.setEnabled(False)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
@@ -317,7 +330,7 @@ def _create_album_search_action(parent):
 
 @add_action(MainAction.TRACK_SEARCH)
 def _create_track_search_action(parent):
-    action = QtGui.QAction(icontheme.lookup('system-search'), _("Search for similar tracks…"), parent)
+    action = _create_qaction(_("Search for similar tracks…"), icontheme.lookup('system-search'), parent)
     action.setStatusTip(_("View similar tracks and optionally choose a different release"))
     action.setEnabled(False)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
@@ -327,7 +340,7 @@ def _create_track_search_action(parent):
 
 @add_action(MainAction.ALBUM_OTHER_VERSIONS)
 def _create_album_other_versions_action(parent):
-    action = QtGui.QAction(_("Show &other album versions…"), parent)
+    action = _create_qaction(_("Show &other album versions…"), parent=parent)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+O")))
     action.triggered.connect(parent.show_album_other_versions)
     return action
@@ -336,7 +349,7 @@ def _create_album_other_versions_action(parent):
 @add_action(MainAction.SHOW_FILE_BROWSER)
 def _create_show_file_browser_action(parent):
     config = get_config()
-    action = QtGui.QAction(_("File &Browser"), parent)
+    action = _create_qaction(_("File &Browser"), parent=parent)
     action.setCheckable(True)
     if config.persist['view_file_browser']:
         action.setChecked(True)
@@ -348,7 +361,7 @@ def _create_show_file_browser_action(parent):
 @add_action(MainAction.SHOW_METADATA_VIEW)
 def _create_show_metadata_view_action(parent):
     config = get_config()
-    action = QtGui.QAction(_("&Metadata"), parent)
+    action = _create_qaction(_("&Metadata"), parent=parent)
     action.setCheckable(True)
     if config.persist['view_metadata_view']:
         action.setChecked(True)
@@ -360,7 +373,7 @@ def _create_show_metadata_view_action(parent):
 @add_action(MainAction.SHOW_COVER_ART)
 def _create_show_cover_art_action(parent):
     config = get_config()
-    action = QtGui.QAction(_("&Cover Art"), parent)
+    action = _create_qaction(_("&Cover Art"), parent=parent)
     action.setCheckable(True)
     if config.persist['view_cover_art']:
         action.setChecked(True)
@@ -372,7 +385,7 @@ def _create_show_cover_art_action(parent):
 @add_action(MainAction.SHOW_TOOLBAR)
 def _create_show_toolbar_action(parent):
     config = get_config()
-    action = QtGui.QAction(_("&Actions"), parent)
+    action = _create_qaction(_("&Actions"), parent=parent)
     action.setCheckable(True)
     if config.persist['view_toolbar']:
         action.setChecked(True)
@@ -383,7 +396,7 @@ def _create_show_toolbar_action(parent):
 @add_action(MainAction.SHOW_FILTERBAR)
 def _create_filter_bar_action(parent):
     config = get_config()
-    action = QtGui.QAction(_("Filter Items"), parent)
+    action = _create_qaction(_("Filter Items"), parent=parent)
     action.setStatusTip(_("Toggle filtering of items based on specific tag values."))
     action.setCheckable(True)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+F")))
@@ -395,7 +408,7 @@ def _create_filter_bar_action(parent):
 
 @add_action(MainAction.SEARCH)
 def _create_search_action(parent):
-    action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), parent)
+    action = _create_qaction(_("Search"), icontheme.lookup('system-search'), parent)
     action.setEnabled(False)
     action.triggered.connect(parent.search)
     return action
@@ -403,7 +416,7 @@ def _create_search_action(parent):
 
 @add_action(MainAction.CD_LOOKUP)
 def _create_cd_lookup_action(parent):
-    action = QtGui.QAction(icontheme.lookup('media-optical'), _("Lookup &CD…"), parent)
+    action = _create_qaction(_("Lookup &CD…"), icontheme.lookup('media-optical'), parent)
     action.setStatusTip(_("Lookup the details of the CD in your drive"))
     # TR: Keyboard shortcut for "Lookup CD"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
@@ -413,7 +426,7 @@ def _create_cd_lookup_action(parent):
 
 @add_action(MainAction.DISCID_FROM_LOGFILE)
 def _lookup_discid_from_logfile_action(parent):
-    action = QtGui.QAction(icontheme.lookup('file-disc'), _("Lookup CD &log file…"), parent)
+    action = _create_qaction(_("Lookup CD &log file…"), icontheme.lookup('file-disc'), parent)
     action.setStatusTip(_("Lookup release from a CD ripping log file"))
     action.setEnabled(True)
     action.triggered.connect(parent.tagger.lookup_discid_from_logfile)
@@ -422,7 +435,7 @@ def _lookup_discid_from_logfile_action(parent):
 
 @add_action(MainAction.DISCID_FROM_TAGS)
 def _lookup_discid_from_tags_action(parent):
-    action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Lookup TOC &tag…"), parent)
+    action = _create_qaction(_("Lookup TOC &tag…"), icontheme.lookup('media-optical-disc-id'), parent)
     action.setStatusTip(_("Lookup release via disc identifiers from track tags"))
     action.setEnabled(False)
     action.triggered.connect(parent.lookup_discid_from_tags)
@@ -431,7 +444,7 @@ def _lookup_discid_from_tags_action(parent):
 
 @add_action(MainAction.ANALYZE)
 def _create_analyze_action(parent):
-    action = QtGui.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), parent)
+    action = _create_qaction(_("&Scan"), icontheme.lookup('picard-analyze'), parent)
     action.setStatusTip(
         _("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata")
     )
@@ -445,7 +458,7 @@ def _create_analyze_action(parent):
 
 @add_action(MainAction.GENERATE_FINGERPRINTS)
 def _create_generate_fingerprints_action(parent):
-    action = QtGui.QAction(icontheme.lookup('fingerprint'), _("&Generate AcoustID Fingerprints"), parent)
+    action = _create_qaction(_("&Generate AcoustID Fingerprints"), icontheme.lookup('fingerprint'), parent)
     action.setIconText(_("Generate Fingerprints"))
     action.setStatusTip(_("Generate the AcoustID audio fingerprints for the selected files without doing a lookup"))
     action.setEnabled(False)
@@ -457,7 +470,7 @@ def _create_generate_fingerprints_action(parent):
 
 @add_action(MainAction.CLUSTER)
 def _create_cluster_action(parent):
-    action = QtGui.QAction(icontheme.lookup('picard-cluster'), _("Cl&uster"), parent)
+    action = _create_qaction(_("Cl&uster"), icontheme.lookup('picard-cluster'), parent)
     action.setStatusTip(_("Cluster files into album clusters"))
     action.setEnabled(False)
     # TR: Keyboard shortcut for "Cluster"
@@ -468,7 +481,7 @@ def _create_cluster_action(parent):
 
 @add_action(MainAction.AUTOTAG)
 def _create_autotag_action(parent):
-    action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _("&Lookup"), parent)
+    action = _create_qaction(_("&Lookup"), icontheme.lookup('picard-auto-tag'), parent)
     tip = _("Lookup selected items in MusicBrainz")
     action.setToolTip(tip)
     action.setStatusTip(tip)
@@ -481,7 +494,7 @@ def _create_autotag_action(parent):
 
 @add_action(MainAction.VIEW_INFO)
 def _create_view_info_action(parent):
-    action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _("&Info…"), parent)
+    action = _create_qaction(_("&Info…"), icontheme.lookup('picard-edit-tags'), parent)
     action.setEnabled(False)
     # TR: Keyboard shortcut for "Info"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+I")))
@@ -491,7 +504,7 @@ def _create_view_info_action(parent):
 
 @add_action(MainAction.REFRESH)
 def _create_refresh_action(parent):
-    action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), parent)
+    action = _create_qaction(_("&Refresh"), icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), parent)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+R")))
     action.triggered.connect(parent.refresh)
     return action
@@ -499,7 +512,7 @@ def _create_refresh_action(parent):
 
 @add_action(MainAction.TAGS_FROM_FILENAMES)
 def _create_tags_from_filenames_action(parent):
-    action = QtGui.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names…"), parent)
+    action = _create_qaction(_("Tags From &File Names…"), icontheme.lookup('picard-tags-from-filename'), parent)
     action.setIconText(_("Parse File Names…"))
     action.setToolTip(_("Set tags based on the file names"))
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
@@ -510,7 +523,7 @@ def _create_tags_from_filenames_action(parent):
 
 @add_action(MainAction.OPEN_COLLECTION_IN_BROWSER)
 def _create_open_collection_in_browser_action(parent):
-    action = QtGui.QAction(_("&Open My Collections in Browser"), parent)
+    action = _create_qaction(_("&Open My Collections in Browser"), parent=parent)
     action.setEnabled(parent.tagger.webservice.oauth_manager.is_logged_in())
     action.triggered.connect(parent.open_collection_in_browser)
     return action
@@ -518,7 +531,7 @@ def _create_open_collection_in_browser_action(parent):
 
 @add_action(MainAction.VIEW_LOG)
 def _create_view_log_action(parent):
-    action = QtGui.QAction(_("View &Error/Debug Log"), parent)
+    action = _create_qaction(_("View &Error/Debug Log"), parent=parent)
     # TR: Keyboard shortcut for "View Error/Debug Log"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+G")))
     action.triggered.connect(parent.show_log)
@@ -527,7 +540,7 @@ def _create_view_log_action(parent):
 
 @add_action(MainAction.VIEW_HISTORY)
 def _create_view_history_action(parent):
-    action = QtGui.QAction(_("View Activity &History"), parent)
+    action = _create_qaction(_("View Activity &History"), parent=parent)
     # TR: Keyboard shortcut for "View Activity History"
     # On macOS ⌘+H is a system shortcut to hide the window. Use ⌘+Shift+H instead.
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+H") if IS_MACOS else _("Ctrl+H")))
@@ -537,7 +550,7 @@ def _create_view_history_action(parent):
 
 @add_action(MainAction.PLAY)
 def _create_play_file_action(parent):
-    action = QtGui.QAction(icontheme.lookup('play'), _("&Play"), parent)
+    action = _create_qaction(_("&Play"), icontheme.lookup('play'), parent)
     action.setStatusTip(_("Play selected files"))
     action.setEnabled(False)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+P")))
@@ -547,7 +560,7 @@ def _create_play_file_action(parent):
 
 @add_action(MainAction.PLAY_FILE_EXTERNAL)
 def _create_play_file_external_action(parent):
-    action = QtGui.QAction(icontheme.lookup('play-music'), _("Open in System &Media Player"), parent)
+    action = _create_qaction(_("Open in System &Media Player"), icontheme.lookup('play-music'), parent)
     action.setStatusTip(_("Play the file in your default media player"))
     action.setEnabled(False)
     action.triggered.connect(parent.play_file_external)
@@ -556,7 +569,7 @@ def _create_play_file_external_action(parent):
 
 @add_action(MainAction.OPEN_FOLDER)
 def _create_open_folder_action(parent):
-    action = QtGui.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), _("Open Containing &Folder"), parent)
+    action = _create_qaction(_("Open Containing &Folder"), icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), parent)
     action.setStatusTip(_("Open the containing folder in your file explorer"))
     action.setEnabled(False)
     action.triggered.connect(parent.open_folder)
@@ -566,7 +579,7 @@ def _create_open_folder_action(parent):
 @add_action(MainAction.CHECK_UPDATE)
 def _create_check_update_action(parent):
     if parent.tagger.autoupdate_enabled:
-        action = QtGui.QAction(_("&Check for Update…"), parent)
+        action = _create_qaction(_("&Check for Update…"), parent=parent)
         action.setMenuRole(QtGui.QAction.MenuRole.ApplicationSpecificRole)
         action.triggered.connect(parent.do_update_check)
     else:
@@ -576,7 +589,7 @@ def _create_check_update_action(parent):
 
 @add_action(MainAction.SHOW_SETUP_WIZARD)
 def _create_show_setup_wizard_action(parent):
-    action = QtGui.QAction(_("Show Setup &Wizard…"), parent)
+    action = _create_qaction(_("Show Setup &Wizard…"), parent=parent)
     action.setMenuRole(QtGui.QAction.MenuRole.ApplicationSpecificRole)
     action.triggered.connect(partial(parent.show_setup_wizard, True))
     return action
@@ -584,7 +597,7 @@ def _create_show_setup_wizard_action(parent):
 
 @add_action(MainAction.SAVE_SESSION_AS)
 def _create_save_session_action(parent):
-    action = QtGui.QAction(icontheme.lookup('document-save'), _("Save Session &As…"), parent)
+    action = _create_qaction(_("Save Session &As…"), icontheme.lookup('document-save'), parent)
     action.setStatusTip(_("Save the current session to a new file"))
     action.triggered.connect(parent.save_session_as)
     return action
@@ -592,7 +605,7 @@ def _create_save_session_action(parent):
 
 @add_action(MainAction.SAVE_SESSION)
 def _create_quick_save_session_action(parent):
-    action = QtGui.QAction(icontheme.lookup('document-save'), _("&Save Session"), parent)
+    action = _create_qaction(_("&Save Session"), icontheme.lookup('document-save'), parent)
     action.setStatusTip(_("Save the current session to the last used file"))
     action.triggered.connect(parent.quick_save_session)
     return action
@@ -600,7 +613,7 @@ def _create_quick_save_session_action(parent):
 
 @add_action(MainAction.LOAD_SESSION)
 def _create_load_session_action(parent):
-    action = QtGui.QAction(icontheme.lookup('document-open'), _("&Load Session…"), parent)
+    action = _create_qaction(_("&Load Session…"), icontheme.lookup('document-open'), parent)
     action.setStatusTip(_("Load a session file"))
     action.triggered.connect(parent.load_session)
     return action
@@ -608,7 +621,7 @@ def _create_load_session_action(parent):
 
 @add_action(MainAction.NEW_SESSION)
 def _create_close_session_action(parent):
-    action = QtGui.QAction(_("&New Session"), parent)
+    action = _create_qaction(_("&New Session"), parent=parent)
     action.setStatusTip(_("Close the current session"))
     action.triggered.connect(parent.close_session)
     return action
@@ -616,7 +629,7 @@ def _create_close_session_action(parent):
 
 @add_action(MainAction.CLEAR_RECENT_SESSIONS)
 def _create_clear_recent_sessions_action(parent):
-    action = QtGui.QAction(_("Clear Recent Sessions"), parent)
+    action = _create_qaction(_("Clear Recent Sessions"), parent=parent)
     action.setStatusTip(_("Clear all recent session entries"))
     action.triggered.connect(parent.clear_recent_sessions)
     return action
