@@ -38,8 +38,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
-"PO-Revision-Date: 2026-10-09 05:31+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-10-11 14:39+0000\n"
+"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -424,7 +424,7 @@ msgstr "APEv2-Tags in AC3 speichern"
 
 #: picard/options.py:187
 msgid "Active file naming script"
-msgstr "Aktives Dateibenennungsskript"
+msgstr "Ausgewähltes Dateibenennungs-Skript"
 
 #: picard/options.py:189
 msgid "Allow selecting multiple directories"
@@ -541,20 +541,16 @@ msgid "Convert Unicode punctuation to ASCII"
 msgstr "Unicode-Interpunktion zu ASCII umwandeln"
 
 #: picard/options.py:252
-#, fuzzy
-#| msgid "Convert File Names to Tags"
 msgid "Convert file image format"
-msgstr "Tags aus Dateinamen ermitteln"
+msgstr "Format von Bildern in Dateien konvertieren"
 
 #: picard/options.py:257
-#, fuzzy
-#| msgid "All supported image formats"
 msgid "New file image format"
-msgstr "Alle unterstützten Bildformate"
+msgstr "Neues Format für Bild in Datei"
 
 #: picard/options.py:260
 msgid "Allow enlarging file images"
-msgstr "Vergrößern von Bilddateien zulassen"
+msgstr "Vergrößerung von Bildern in Dateien zulassen"
 
 #: picard/options.py:261
 msgid "Allow resizing file images"
@@ -566,11 +562,11 @@ msgstr ""
 
 #: picard/options.py:269
 msgid "Resized file image height"
-msgstr "Höhe von gespeicherten Bilddateien"
+msgstr "Höhe von in Dateien vergrößerten Bildern"
 
 #: picard/options.py:277
 msgid "Resized file image width"
-msgstr "Breite von gespeicherten Bilddateien"
+msgstr "Breite von in Dateien vergrößerten Bildern"
 
 #: picard/options.py:282
 msgid "File name for images"
@@ -578,7 +574,7 @@ msgstr "Dateiname für Bilder"
 
 #: picard/options.py:288
 msgid "Format conversion quality"
-msgstr "Qualität bei Formatkonvertierungen"
+msgstr "Qualität der Formatkonvertierung"
 
 #: picard/options.py:296
 msgid "Minimum image height"
@@ -594,7 +590,7 @@ msgstr "In Tags gespeicherte Bilder konvertieren"
 
 #: picard/options.py:313
 msgid "New tag image format"
-msgstr "Neues Tag-Bild-Format"
+msgstr "Neues Bild-Format in Tags"
 
 #: picard/options.py:316
 msgid "Allow enlarging tag images"
@@ -614,7 +610,7 @@ msgstr "Höhe in der Größe angepasster Bilder in Tags"
 
 #: picard/options.py:333
 msgid "Resized tag image width"
-msgstr "Breite von in Tags gespeicherten Bildern"
+msgstr "Breite in der Größe angepasster Bilder in Tags"
 
 #: picard/options.py:338 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
@@ -757,7 +753,7 @@ msgstr "Nur Wiedergaben getaggter Dateien an ListenBrainz übermitteln"
 
 #: picard/options.py:445 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr "ListenBrainz-Benutzertoken"
+msgstr "ListenBrainz Benutzer-Token"
 
 #: picard/options.py:448
 msgid "Local cover art regex"
@@ -768,16 +764,12 @@ msgid "Log verbosity level"
 msgstr "Protokoll-Stufe"
 
 #: picard/options.py:451
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum margin"
-msgstr "Minimale Bildbreite"
+msgstr "Mindestdistanz"
 
 #: picard/options.py:452
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum similarity"
-msgstr "Minimale Bildbreite"
+msgstr "Mindestähnlichkeit"
 
 #: picard/options.py:453
 msgid "Maximum number of genres"
@@ -797,7 +789,7 @@ msgstr "Zusätzliche Dateien verschieben"
 
 #: picard/options.py:458
 msgid "Additional file patterns"
-msgstr "Zusätzliche Dateimuster"
+msgstr "Namensmuster für zusätzliche Dateien"
 
 #: picard/options.py:460
 msgid "Move files"
@@ -817,7 +809,7 @@ msgstr "Name für alleinstehende Aufnahmen"
 
 #: picard/options.py:470
 msgid "Network cache size (bytes)"
-msgstr "Größe des Netzwerkcaches (Bytes)"
+msgstr "Größe des Netzwerk-Caches (Bytes)"
 
 #: picard/options.py:477
 msgid "Request timeout (seconds)"
@@ -930,7 +922,7 @@ msgstr "ID3-Tags aus FLAC entfernen"
 
 #: picard/options.py:535
 msgid "Remove images from tags"
-msgstr "Bilder aus Tags entfernen"
+msgstr "Entferne Bilder aus den Tags"
 
 #: picard/options.py:536
 msgid "Remove RIFF INFO tags from WAVE"
@@ -966,7 +958,7 @@ msgstr "Bilder in Tags einbetten"
 
 #: picard/options.py:552
 msgid "Save only one front image"
-msgstr "Nur ein einziges Titelcover speichern"
+msgstr "Nur ein einziges Titel-Cover speichern"
 
 #: picard/options.py:553
 msgid "Translation script exceptions"
@@ -1224,7 +1216,7 @@ msgstr "Label"
 
 #: picard/releasegroup.py:60
 msgid "Cat No"
-msgstr "Kat.-Nr."
+msgstr "Katalog-Nr."
 
 #: picard/releasegroup.py:64
 msgid "Packaging"
@@ -1399,7 +1391,7 @@ msgstr "Disk-Abfrage aus Tags…"
 #: picard/track.py:141
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
-msgstr "Fehler Zeile %(lineno)d: %(error)s"
+msgstr "Fehler in Zeile %(lineno)d: %(error)s"
 
 #: picard/track.py:445
 msgid "[loading recording information]"
@@ -1408,7 +1400,7 @@ msgstr "[Aufnahmeinformationen werden geladen]"
 #: picard/track.py:498
 #, python-format
 msgid "[could not load recording %s]"
-msgstr "[Aufnahme %s wurde nicht geladen]"
+msgstr "[Aufnahme %s konnte nicht geladen werden]"
 
 #: picard/acoustid/__init__.py:109
 #, python-format
@@ -1537,7 +1529,7 @@ msgstr ""
 
 #: picard/browser/auth_responses.py:171
 msgid "Additional interaction is required to sign in."
-msgstr "Zur Anmeldung ist eine weitere Interaktion notwendig."
+msgstr "Für die Anmeldung werden zusätzliche Schritte benötigt."
 
 #: picard/browser/auth_responses.py:172
 msgid "You need to sign in to continue."
@@ -1636,10 +1628,8 @@ msgid "Enter file names to test, one per line."
 msgstr "Zu prüfende Dateinamen eingeben, einen je Zeile."
 
 #: picard/coverart/providers/local.py:64
-#, fuzzy
-#| msgid "File name for images"
 msgid "the file name matches"
-msgstr "Dateiname für Bilder"
+msgstr "Der Dateiname stimmt überein"
 
 #: picard/coverart/providers/local.py:65
 msgid "the file name does not match"
@@ -1836,13 +1826,13 @@ msgstr ""
 
 #: picard/script/functions.py:73
 msgid "$if(if,then[,else])"
-msgstr "$if(Bedingung,wenn[,dann])"
+msgstr "$if(Bedingung,wenn[,sonst])"
 
 #: picard/script/functions.py:74
 msgid "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
 "Wenn `Bedingung` nicht leer ist, wird `wenn` zurückgegeben, andernfalls "
-"`dann`."
+"`sonst`."
 
 #: picard/script/functions.py:86
 msgid "$if2(a1,a2,a3,…)"
@@ -2203,7 +2193,7 @@ msgstr ""
 
 #: picard/script/functions.py:445
 msgid "$copy(new,old)"
-msgstr "$copy(neu,alt)"
+msgstr "$copy(Neu,Alt)"
 
 #: picard/script/functions.py:447
 #, python-format
@@ -2214,8 +2204,8 @@ msgid ""
 "\n"
 "_Since Picard 0.9_"
 msgstr ""
-"Kopiert Metadaten von der Variablen `neu` nach `alt`.\n"
-"Der Unterschied zu `$set(neu,%alt%)` ist, dass `$copy(neu,alt)` mehrwertige "
+"Kopiert Metadaten von der Variablen `Neu` nach `Alt`.\n"
+"Der Unterschied zu `$set(Neu,%Alt%)` ist, dass `$copy(Neu,Alt)` mehrwertige "
 "Variablen kopiert\n"
 "mehrwertige Variablen kopiert, ohne sie zu glätten.\n"
 "\n"
