@@ -39,7 +39,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
 "PO-Revision-Date: 2026-10-11 14:39+0000\n"
-"Last-Translator: \"st.esser\" <se@freebsd.org>\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -590,7 +590,7 @@ msgstr "In Tags gespeicherte Bilder konvertieren"
 
 #: picard/options.py:313
 msgid "New tag image format"
-msgstr "Neues Bild-Format in Tags"
+msgstr "Neues Bildformat in Tags"
 
 #: picard/options.py:316
 msgid "Allow enlarging tag images"
@@ -749,7 +749,7 @@ msgstr "ListenBrainz-Übermittlung aktivieren"
 
 #: picard/options.py:442
 msgid "Submit only tagged files to ListenBrainz"
-msgstr "Nur Wiedergaben getaggter Dateien an ListenBrainz übermitteln"
+msgstr "Nur getaggte Dateien an ListenBrainz übermitteln"
 
 #: picard/options.py:445 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
@@ -1792,8 +1792,8 @@ msgid "%d duplicate script skipped (same title and content already exist)."
 msgid_plural ""
 "%d duplicate scripts skipped (same title and content already exist)."
 msgstr[0] ""
-"%d doppelte Skript übersprungen (gleicher Titel und Inhalt existiert "
-"bereits)."
+"%d doppelte Skripte ausgelassen (gleicher Titel und Inhalt existiert bereits)"
+"."
 msgstr[1] ""
 "%d doppelte Skripte übersprungen (gleicher Titel und Inhalt existiert "
 "bereits)."
@@ -6139,7 +6139,7 @@ msgstr "Standard-Verbindungsport:"
 
 #: picard/ui/forms/ui_options_player.py:59
 msgid "ListenBrainz user name"
-msgstr "ListenBrainz-Benutzername:"
+msgstr "ListenBrainz-Benutzername"
 
 #: picard/ui/forms/ui_options_player.py:60
 msgid "Enable audio player \"now playing\" notifications"
@@ -8248,7 +8248,7 @@ msgstr "Erweitert"
 
 #: picard/ui/options/advanced.py:60
 msgid "Test file path matching:"
-msgstr "Dateipfadübereinstimmung prüfen"
+msgstr "Dateipfadübereinstimmung prüfen:"
 
 #: picard/ui/options/advanced.py:62
 msgid "Enter file paths to test, one per line."
