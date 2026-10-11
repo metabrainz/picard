@@ -32,6 +32,7 @@ from picard import (
     tagger_instance,
 )
 from picard.config import get_config
+from picard.git.utils import get_local_path
 from picard.i18n import gettext as _
 from picard.metadata import (
     album_metadata_processors,
@@ -57,6 +58,7 @@ from picard.ui.util import (
     context_menu_global_pos,
     context_menu_item,
     font_scaled_size,
+    open_local_path,
 )
 from picard.ui.widgets.pluginformat import (
     commit_date_display,
@@ -918,9 +920,19 @@ class PluginListWidget(QtWidgets.QWidget):
         )
 
     def _view_repository(self, plugin):
-        """Open plugin repository in browser."""
+        """Open plugin repository in browser or local file manager."""
         remote_url = self._get_plugin_remote_url(plugin)
-        if remote_url:
+        if not remote_url:
+            return
+        # A plugin source may be a local filesystem path (e.g. a local git
+        # repo like "D:\git\my-plugin"). Passing such a path directly to
+        # QUrl() makes Qt misinterpret a Windows drive letter as the URL
+        # scheme, so QDesktopServices.openUrl() silently fails. Route local
+        # paths through open_local_path() (QUrl.fromLocalFile()) instead.
+        local_path = get_local_path(remote_url)
+        if local_path is not None:
+            open_local_path(str(local_path))
+        else:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(remote_url))
 
     def _get_report_bugs_to(self, plugin):
