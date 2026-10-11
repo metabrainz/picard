@@ -68,6 +68,7 @@ DARK_PALETTE_COLORS = {
     QtGui.QPalette.ColorRole.ToolTipBase: DARK_BG_COLOR,
     QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.PlaceholderText: QtCore.Qt.GlobalColor.lightGray,
     QtGui.QPalette.ColorRole.Button: DARK_BG_COLOR,
     QtGui.QPalette.ColorRole.ButtonText: QtCore.Qt.GlobalColor.white,
     QtGui.QPalette.ColorRole.BrightText: QtCore.Qt.GlobalColor.red,
