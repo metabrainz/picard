@@ -562,6 +562,14 @@ class PluginManager(QObject):
                         and existing_metadata.url
                         and str(existing_metadata.url).rstrip('/') == str(url_or_path).rstrip('/')
                     ):
+                        # Don't preserve the local sentinel ref ('local'/'local-dev').
+                        # When a local in-place plugin is reinstalled in git-managed
+                        # mode, that sentinel is not a real git ref and would fail to
+                        # resolve. Fall through to None so git uses the default branch
+                        # (PICARD-3499).
+                        if is_local_plugin(existing_metadata):
+                            log.debug('Not preserving local sentinel ref for plugin switching to git')
+                            return None
                         if existing_metadata.ref:
                             log.debug('Preserving original ref "%s" for plugin reinstall', existing_metadata.ref)
                             return existing_metadata.ref
