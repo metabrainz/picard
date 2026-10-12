@@ -126,6 +126,39 @@ class CoverOptionsPage(OptionsPage):
         for item in qlistwidget_items(self.ui.ca_providers_list):
             yield (item.data(Qt.ItemDataRole.UserRole), item.checked)
 
+    def _merged_ca_providers(self, stored):
+        """Merge the UI provider list with stored entries for inactive providers.
+
+        The UI list only contains currently-registered providers. Providers
+        from disabled plugins are unregistered and therefore absent from the
+        list. Overwriting ca_providers with the UI contents alone would purge
+        those entries, losing the user's position and enabled state when the
+        plugin is re-enabled (PICARD-3498).
+
+        Here we preserve stored entries whose provider is not currently shown,
+        keeping their original position relative to the stored order, and
+        append any newly-registered providers not present in the stored config.
+        """
+        ui_providers = {name: enabled for name, enabled in self._ca_providers()}
+        seen = set()
+        merged = []
+        # Walk the stored order: substitute UI state for visible providers,
+        # keep stored entries verbatim for inactive (hidden) ones.
+        for name, enabled in stored:
+            if name in seen:
+                continue
+            seen.add(name)
+            if name in ui_providers:
+                merged.append((name, ui_providers[name]))
+            else:
+                merged.append((name, enabled))
+        # Append providers shown in the UI but absent from the stored config.
+        for name, enabled in self._ca_providers():
+            if name not in seen:
+                seen.add(name)
+                merged.append((name, enabled))
+        return merged
+
     def save(self):
         config = get_config()
         config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
@@ -139,7 +172,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
         config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
         config.setting['remove_images_from_tags'] = self.ui.remove_images_from_tags.isChecked()
-        config.setting['ca_providers'] = list(self._ca_providers())
+        config.setting['ca_providers'] = self._merged_ca_providers(config.setting['ca_providers'])
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
