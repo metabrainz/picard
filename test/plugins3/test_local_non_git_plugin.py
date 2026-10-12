@@ -24,8 +24,10 @@ import tempfile
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
     MockTagger,
+    create_git_repo_with_backend,
     create_test_manifest_content,
     run_cli,
+    skip_if_no_git_backend,
 )
 
 from picard.config import get_config
@@ -232,6 +234,53 @@ class TestNoGitInstall(PicardTestCase):
             entry = next(v for v in raw.values() if v.get('url') == str(plugin_dir))
             self.assertNotIn('has_git', entry)
             self.assertEqual(entry.get('ref_type'), 'local')
+
+    def test_reinstall_local_dev_switch_to_git(self):
+        """PICARD-3499: switching a local-dev plugin to git must not reuse the 'local' ref.
+
+        A plugin installed with no_git=True stores ref='local' (the local
+        sentinel). Reinstalling it in git-managed mode (no_git=False, no ref
+        specified) previously preserved that sentinel and passed it to git,
+        failing with "Could not find ref 'local'". Switching to git should
+        resolve the repository's default branch instead.
+        """
+        skip_if_no_git_backend()
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_name = f'test-lng-{uuid[:8]}'
+            plugin_dir = Path(tmp_dir) / plugin_name
+            manifest_content = create_test_manifest_content(name='Test LNG Plugin', uuid=uuid)
+            # Create a real git repo (default branch 'main') with the plugin files.
+            create_git_repo_with_backend(
+                plugin_dir,
+                {
+                    'MANIFEST.toml': manifest_content,
+                    '__init__.py': 'def enable(api): pass\ndef disable(): pass\n',
+                },
+            )
+
+            manager = _create_manager(plugins_dir)
+
+            # 1. Install in local-dev mode (git ignored): ref becomes 'local'.
+            plugin_id = manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+            plugin = manager.plugin_id_to_plugin(plugin_id)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
+            self.assertEqual(metadata.ref_type, 'local-dev')
+            self.assertEqual(metadata.ref, 'local')
+
+            # 2. Reinstall switching to git mode (no_git=False, no ref specified).
+            #    This must not fail trying to resolve a git ref named 'local'.
+            new_plugin_id = manager.install_plugin(
+                str(plugin_dir), reinstall=True, enable_after_install=False, no_git=False
+            )
+            new_plugin = manager.plugin_id_to_plugin(new_plugin_id)
+            new_metadata = manager._get_plugin_metadata(new_plugin.uuid)
+
+            # Now git-managed: ref_type is no longer a local sentinel and the
+            # resolved ref is a real git ref (the default branch).
+            self.assertNotIn(new_metadata.ref_type, {'local', 'local-dev'})
+            self.assertNotEqual(new_metadata.ref, 'local')
+            self.assertTrue(new_metadata.commit)
 
 
 class TestLocalNonGitPluginCLI(PicardTestCase):
