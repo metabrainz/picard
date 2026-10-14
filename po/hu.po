@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
-"PO-Revision-Date: 2026-09-21 06:52+0000\n"
+"PO-Revision-Date: 2026-10-14 08:13+0000\n"
 "Last-Translator: pXF <pxf@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
 "picard/3/app/hu/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -3499,10 +3499,8 @@ msgid "&Set as starting directory"
 msgstr ""
 
 #: picard/ui/filter.py:63
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filters"
-msgstr "Csoportok"
+msgstr "Szűrők"
 
 #: picard/ui/filter.py:77
 msgid "Type to filter…"
@@ -3634,10 +3632,8 @@ msgid "Debug Options"
 msgstr "&Beállítások"
 
 #: picard/ui/logview.py:425 picard/ui/logview.py:433
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filter"
-msgstr "Csoportok"
+msgstr "Szűrő"
 
 #: picard/ui/logview.py:440
 msgid "Save As…"
@@ -7435,7 +7431,7 @@ msgstr "Ctrl+Shift+Y"
 
 #: picard/ui/mainwindow/actions.py:460
 msgid "Cl&uster"
-msgstr "&Csoport"
+msgstr "&Csoportosít"
 
 #: picard/ui/mainwindow/actions.py:461
 msgid "Cluster files into album clusters"
@@ -7854,10 +7850,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr ""
 
 #: picard/ui/options/general.py:154
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "CD lekérdezési hiba"
+msgstr "Kijelentkezési hiba"
 
 #: picard/ui/options/general.py:157
 #, python-format
@@ -7902,14 +7896,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/genres.py:71
-#, fuzzy
 msgid "Genres"
-msgstr "Műfaj"
+msgstr "Műfajok"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
 msgid "Test genres filter:"
-msgstr "&Fájlok átnevezése"
+msgstr "A műfajszűrő tesztelése:"
 
 #: picard/ui/options/genres.py:100
 msgid "Enter genres or folksonomy tags to test, one per line."
@@ -7956,13 +7948,12 @@ msgid "Reset tutorial and setup wizard…"
 msgstr ""
 
 #: picard/ui/options/interface.py:198
-#, fuzzy
 msgid "You have changed the interface language."
-msgstr "Felhasználói felület nyelve:"
+msgstr "Megváltoztattad a felület nyelvét."
 
 #: picard/ui/options/interface.py:222
 msgid "Option Setting Warning"
-msgstr ""
+msgstr "Beállítási figyelmeztetés"
 
 #: picard/ui/options/interface.py:224
 msgid ""
@@ -8019,9 +8010,8 @@ msgid "Add Files"
 msgstr "Fájlok hozzáadása"
 
 #: picard/ui/options/interface_toolbar.py:88
-#, fuzzy
 msgid "Cluster"
-msgstr "&Csoport"
+msgstr "Csoportosít"
 
 #: picard/ui/options/interface_toolbar.py:92 picard/ui/options/lookup.py:35
 msgid "Lookup"
