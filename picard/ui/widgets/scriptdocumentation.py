@@ -194,6 +194,31 @@ class TagsDocumentationPage(DocumentationPage):
         return html
 
 
+class SearchLineEdit(QtWidgets.QLineEdit):
+    """Line edit that navigates search matches with Enter / Shift+Enter.
+
+    Enter requests the next match and Shift+Enter the previous one
+    (PICARD-3507). Handling this in ``keyPressEvent`` (rather than via the
+    ``returnPressed`` signal or an event filter) ensures the key is consumed
+    before a parent dialog's default button can react to it, and it works
+    regardless of where the widget is embedded.
+    """
+
+    find_next_requested = QtCore.pyqtSignal()
+    find_prev_requested = QtCore.pyqtSignal()
+
+    def keyPressEvent(self, a0: QtGui.QKeyEvent | None) -> None:
+        event = a0
+        if event is not None and event.key() in {QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Enter}:
+            if event.modifiers() & QtCore.Qt.KeyboardModifier.ShiftModifier:
+                self.find_prev_requested.emit()
+            else:
+                self.find_next_requested.emit()
+            event.accept()
+            return
+        super().keyPressEvent(a0)
+
+
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
     """Custom widget to display the scripting documentation."""
 
@@ -217,10 +242,12 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         searchLabel = QtWidgets.QLabel(_("Find:"))
         self.searchLayout.addWidget(searchLabel)
 
-        self.searchText = QtWidgets.QLineEdit()
+        self.searchText = SearchLineEdit()
         self.searchText.setClearButtonEnabled(True)
         self.searchText.setMaxLength(30)
         self.searchText.textEdited.connect(self._search_text_edited)
+        self.searchText.find_next_requested.connect(self._find_next_if_possible)
+        self.searchText.find_prev_requested.connect(self._find_prev_if_possible)
         self.searchLayout.addWidget(self.searchText)
 
         self.searchCount = QtWidgets.QLabel('')
@@ -301,8 +328,22 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.searchCount.setVisible(True)
 
     def _set_button_status(self):
-        self.pb_prev.setDisabled(self.found_item < 2)
-        self.pb_next.setDisabled(not self.found_item < self.found_items)
+        self.pb_prev.setDisabled(not self._has_prev())
+        self.pb_next.setDisabled(not self._has_next())
+
+    def _has_prev(self):
+        return self.found_item >= 2
+
+    def _has_next(self):
+        return self.found_item < self.found_items
+
+    def _find_next_if_possible(self):
+        if self._has_next():
+            self._find_next()
+
+    def _find_prev_if_possible(self):
+        if self._has_prev():
+            self._find_prev()
 
     def _find_next(self):
         tab: DocumentationPage = self.tabs.currentWidget()
