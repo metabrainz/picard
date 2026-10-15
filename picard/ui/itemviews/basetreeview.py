@@ -516,7 +516,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             """Recursively refresh item and all its children."""
             if hasattr(item, 'update_colums_text'):
                 try:
-                    item.update_colums_text()
+                    # Re-apply the item's current foreground/background colours
+                    # while refreshing. Passing no colours leaves setBackground
+                    # untouched, so a newly added column keeps Qt's default
+                    # (opaque white) brush while the rest of the row carries the
+                    # match-similarity tint, leaving a solid white band until
+                    # reload (PICARD-3510). Items that tint expose _item_colors();
+                    # the others (clusters, albums) just refresh their text.
+                    if hasattr(item, '_item_colors'):
+                        color, bgcolor = item._item_colors()
+                        item.update_colums_text(color=color, bgcolor=bgcolor)
+                    else:
+                        item.update_colums_text()
                 except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
                     # Log but don't fail the entire refresh operation
                     log.debug("Failed to refresh item %r: %r", type(item).__name__, exc)
