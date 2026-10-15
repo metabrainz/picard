@@ -430,6 +430,61 @@ class CompareToTrackTest(PicardTestCase):
         # ISRC match dominates; the large length difference is not penalised.
         self.assertGreater(match_.similarity, 0.25)
 
+    def _song_recording(self, artist_name):
+        """A standalone recording with a given artist, fixed title and length."""
+        return {
+            'id': 'rec-song-001',
+            'title': 'Song Title',
+            'length': 240000,
+            'artist-credit': [
+                {
+                    'name': artist_name,
+                    'artist': {'id': 'a1', 'name': artist_name, 'sort-name': artist_name},
+                }
+            ],
+        }
+
+    def test_compare_to_track_wrong_artist_penalised_on_strong_title(self):
+        # A strong title match must not carry the match when the artist clearly
+        # contradicts. The matching-artist candidate must score clearly higher.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title', 'artist': 'The Real Band'})
+        m.length = 240000
+
+        right = compare_to_track(m, self._song_recording('The Real Band'), FILE_COMPARISON_WEIGHTS)
+        wrong = compare_to_track(m, self._song_recording('Completely Different'), FILE_COMPARISON_WEIGHTS)
+
+        self.assertLess(
+            wrong.similarity,
+            right.similarity,
+            'A contradicting artist must score lower than the matching artist',
+        )
+        # The discriminator should drag the wrong-artist candidate well down,
+        # not just by the small raw artist weight.
+        self.assertLess(wrong.similarity, 0.6)
+
+    def test_compare_to_track_artist_penalty_not_applied_when_artist_missing(self):
+        # When the file has no artist tag, the discriminator must not fire: a
+        # missing artist is not a contradiction.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title'})
+        m.length = 240000
+        match_ = compare_to_track(m, self._song_recording('Any Band'), FILE_COMPARISON_WEIGHTS)
+        # Title + length match carry a strong score with no artist penalty.
+        self.assertGreater(match_.similarity, 0.6)
+
+    def test_compare_to_track_artist_penalty_skipped_when_isrc_confirmed(self):
+        # ISRC-confirmed recordings are the same recording; a differing artist
+        # credit (e.g. alias/typo) must not trigger the discriminator.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title', 'artist': 'The Real Band'})
+        m.length = 240000
+        m.add('isrc', 'XXUM70000001')
+        rec = self._song_recording('Completely Different')
+        rec['isrcs'] = ['XXUM70000001']
+        match_ = compare_to_track(m, rec, FILE_COMPARISON_WEIGHTS)
+        self.assertGreater(match_.similarity, 0.6)
+
 
 class ReleaseMatchPartsTest(PicardTestCase):
     def setUp(self):

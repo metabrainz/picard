@@ -551,16 +551,34 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
                 isrc_confirmed = score >= 0.9
 
         # Track-level similarity signals
+        title_sim = None
         if 'title' in metadata and 'title' in sim_w:
             a = metadata['title']
             b = track.get('title', '')
-            track_parts.similarity.append((similarity2(a, b), sim_w["title"]))
+            title_sim = similarity2(a, b)
+            track_parts.similarity.append((title_sim, sim_w["title"]))
 
+        artist_sim = None
         if 'artist' in metadata and 'artist' in sim_w:
             a = metadata['artist']
             artist_credits = track.get('artist-credit', [])
             b = artist_credit_from_node(artist_credits).name
-            track_parts.similarity.append((similarity2(a, b), sim_w["artist"]))
+            artist_sim = similarity2(a, b)
+            track_parts.similarity.append((artist_sim, sim_w["artist"]))
+
+        # A matching title must not carry the match when the artist clearly
+        # contradicts (mirrors the release-level discriminator for file→track
+        # matching, where the weighted artist signal is the track 'artist').
+        # Only fires on a strong title match so a swapped artist/title tag is
+        # not wrongly penalised, and is skipped when ISRC-confirmed.
+        if (
+            not isrc_confirmed
+            and title_sim is not None
+            and title_sim >= _DISCRIMINATOR_TITLE_MATCH_THRESHOLD
+            and artist_sim is not None
+            and artist_sim < _DISCRIMINATOR_MISMATCH_THRESHOLD
+        ):
+            track_parts.discriminator_penalty *= _DISCRIMINATOR_ARTIST_PENALTY
 
         a = metadata.length
         if a > 0 and 'length' in track and 'length' in sim_w:
