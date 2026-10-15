@@ -75,6 +75,19 @@ if TYPE_CHECKING:
 # 20000 50000 0.0
 LENGTH_SCORE_THRESHOLD_MS = 30000
 
+# A gross length mismatch is strong negative evidence that two recordings are
+# not the same, yet length_score() saturates at LENGTH_SCORE_THRESHOLD_MS: a
+# recording that is an hour too long scores identically to one that is 31 s off,
+# so it can no longer counteract a partial title match. To restore that signal
+# without disturbing the well-tuned 0..threshold behaviour, a *separate*
+# multiplicative discriminator penalises the similarity tier once the absolute
+# difference grows far beyond the threshold. The penalty ramps linearly from
+# 1.0 (no penalty) at LENGTH_DISCRIMINATOR_START_MS down to
+# LENGTH_DISCRIMINATOR_FLOOR at LENGTH_DISCRIMINATOR_FULL_MS and stays there.
+LENGTH_DISCRIMINATOR_START_MS = 60000
+LENGTH_DISCRIMINATOR_FULL_MS = 600000
+LENGTH_DISCRIMINATOR_FLOOR = 0.3
+
 _DATE_MATCH_FACTORS = {
     'exact': 1.00,
     'year': 0.95,
@@ -527,6 +540,7 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
 
     with metadata._lock.lock_for_read():
         # Tier 1: ISRC — recording-level identifier
+        isrc_confirmed = False
         if 'isrc' in id_w:
             file_isrcs = metadata.getall('isrc')
             if file_isrcs:
@@ -534,6 +548,7 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
                 track_isrcs = recording.get('isrcs', [])
                 score = _isrcs_score(file_isrcs, track_isrcs)
                 track_parts.identifiers.append((score, id_w['isrc']))
+                isrc_confirmed = score >= 0.9
 
         # Track-level similarity signals
         if 'title' in metadata and 'title' in sim_w:
@@ -552,6 +567,12 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
             b = track['length']
             score = length_score(a, b)
             track_parts.similarity.append((score, sim_w["length"]))
+            # A gross length mismatch is strong evidence against a match, but
+            # length_score saturates. Apply a separate discriminator so an
+            # hour-off candidate can't ride a partial title match. Skip it when
+            # the recording is ISRC-confirmed (same recording, trust the ID).
+            if not isrc_confirmed:
+                track_parts.discriminator_penalty *= length_mismatch_penalty(a, b)
 
         if 'isvideo' in pref_w:
             metadata_is_video = metadata['~video'] == '1'
@@ -667,6 +688,26 @@ def length_score(a: int | None, b: int | None) -> float:
     if a is None or b is None:
         return 0.0
     return 1.0 - min(abs(a - b), LENGTH_SCORE_THRESHOLD_MS) / float(LENGTH_SCORE_THRESHOLD_MS)
+
+
+def length_mismatch_penalty(a: int | None, b: int | None) -> float:
+    """Discriminator multiplier for a gross track-length mismatch.
+
+    Returns a value in ``[LENGTH_DISCRIMINATOR_FLOOR, 1.0]``. It is ``1.0`` (no
+    penalty) when either length is missing/zero or the difference is within
+    ``LENGTH_DISCRIMINATOR_START_MS``, then ramps linearly down to
+    ``LENGTH_DISCRIMINATOR_FLOOR`` at ``LENGTH_DISCRIMINATOR_FULL_MS`` and stays
+    there. Unlike :func:`length_score`, this keeps penalising past the
+    saturation point so an hour-off candidate cannot ride a partial title match.
+    """
+    if not a or not b:
+        return 1.0
+    diff = abs(a - b)
+    if diff <= LENGTH_DISCRIMINATOR_START_MS:
+        return 1.0
+    span = LENGTH_DISCRIMINATOR_FULL_MS - LENGTH_DISCRIMINATOR_START_MS
+    ramp = min(diff - LENGTH_DISCRIMINATOR_START_MS, span) / float(span)
+    return 1.0 - ramp * (1.0 - LENGTH_DISCRIMINATOR_FLOOR)
 
 
 def _date_score(release: dict, metadata: 'Metadata') -> float:
