@@ -56,7 +56,12 @@ def synchronize_vertical_scrollbars(widgets):
         widgets (list): List of QListView widgets to synchronize
     """
 
-    # Set highlight colors for selected list items
+    # Set highlight colors for selected list items. The slot is connected to the
+    # long-lived global ``theme.theme_changed`` signal, so it must be
+    # disconnected once the widgets are destroyed (e.g. when the owning dialog
+    # closes). Otherwise a later theme switch invokes this closure on already
+    # deleted C++ objects and crashes with "wrapped C/C++ object ... has been
+    # deleted" (PICARD-3509).
     def _apply_highlight_stylesheet():
         example_style = widgets[0].palette()
         highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
@@ -73,6 +78,18 @@ def synchronize_vertical_scrollbars(widgets):
 
     _apply_highlight_stylesheet()
     theme.theme_changed.connect(_apply_highlight_stylesheet)
+
+    def _disconnect_highlight_stylesheet():
+        try:
+            theme.theme_changed.disconnect(_apply_highlight_stylesheet)
+        except (RuntimeError, TypeError):
+            # theme already deleted (RuntimeError) or slot already
+            # disconnected (TypeError) — nothing to do.
+            pass
+
+    # Disconnect once (the first widget to be destroyed is enough; the slot
+    # operates on all widgets together).
+    widgets[0].destroyed.connect(_disconnect_highlight_stylesheet)
 
     def _sync_scrollbar_vert(widget, value):
         with QSignalBlocker(widget):
