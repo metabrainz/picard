@@ -32,6 +32,7 @@ from types import MappingProxyType
 from unittest.mock import patch
 
 import mutagen
+import mutagen.id3
 
 from test.picardtestcase import PicardTestCase
 
@@ -263,6 +264,34 @@ class CommonId3Tests:
             self.assertIn(metadata['grouping'], loaded_metadata['grouping'])
             self.assertIn(metadata['work'], loaded_metadata['grouping'])
             self.assertEqual(loaded_metadata['work'], '')
+
+        @skipUnlessTestfile
+        def test_delete_grouping(self):
+            config.setting['itunes_compatible_grouping'] = False
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.GRP1(encoding=id3.Id3Encoding.UTF8, text=('Foo')))
+            tags.add(mutagen.id3.TIT1(encoding=id3.Id3Encoding.UTF8, text=('Bar')))
+            save_raw(self.filename, tags)
+            metadata = Metadata()
+            metadata.delete('grouping')
+            save_metadata(self.format_registry, self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('TIT1', raw_metadata)
+            self.assertEqual(['Foo'], raw_metadata['GRP1'].text)
+
+        @skipUnlessTestfile
+        def test_delete_grouping_itunes_compatible(self):
+            config.setting['itunes_compatible_grouping'] = True
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.GRP1(encoding=id3.Id3Encoding.UTF8, text=('Foo')))
+            tags.add(mutagen.id3.TIT1(encoding=id3.Id3Encoding.UTF8, text=('Bar')))
+            save_raw(self.filename, tags)
+            metadata = Metadata()
+            metadata.delete('grouping')
+            save_metadata(self.format_registry, self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('GRP1', raw_metadata)
+            self.assertEqual(['Bar'], raw_metadata['TIT1'].text)
 
         @skipUnlessTestfile
         def test_always_read_txxx_work(self):

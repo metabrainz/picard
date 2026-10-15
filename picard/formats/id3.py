@@ -981,6 +981,8 @@ class ID3File(File):
                 self._remove_license_tag(tags, real_name)
             elif name == '~rating':
                 self._remove_rating_tag(tags, config_params['rating_user_email'])
+            elif name == 'grouping':
+                self._remove_grouping_tag(tags, config_params)
             elif real_name in self.__translate:
                 self._remove_translated_tag(tags, real_name)
             elif name.lower() in self.__rtranslate_freetext_ci:
@@ -1047,6 +1049,14 @@ class ID3File(File):
         for key, frame in list(tags.items()):
             if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                 del tags[key]
+
+    def _remove_grouping_tag(self, tags, config_params):
+        """Save grouping tag to ID3 frames."""
+        if config_params['itunes_compatible']:
+            key = 'GRP1'
+        else:
+            key = 'TIT1'
+        del tags[key]
 
     def _remove_translated_tag(self, tags, real_name):
         """Remove translated tag from ID3 frames."""
