@@ -33,6 +33,7 @@ import gc
 from hashlib import blake2b
 import os
 import tempfile
+from typing import ClassVar
 from weakref import WeakValueDictionary
 
 from PyQt6.QtCore import QMutex
@@ -52,7 +53,7 @@ class DataHash:
     DataHash instance gets deleted.
     """
 
-    __datahashes: WeakValueDictionary[str, 'DataHash'] = WeakValueDictionary()
+    __datahashes: ClassVar[WeakValueDictionary[str, 'DataHash']] = WeakValueDictionary()
     __datafile_mutex = QMutex()
 
     # Set during construction in _write_data(); annotated here so the types are
