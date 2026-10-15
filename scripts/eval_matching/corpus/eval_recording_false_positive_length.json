@@ -1,0 +1,73 @@
+{
+  "description": "False-positive lookup: partial title match wins despite >1h length diff and wrong artist (community thread 815815)",
+  "releases": {
+    "mood_swings_blokzijl": {
+      "id": "8621fb47-f58b-45a8-888b-404ed8779b26",
+      "title": "Mood swings",
+      "artist-credit": [
+        {
+          "name": "Gert Blokzijl",
+          "artist": {
+            "id": "gert-blokzijl",
+            "name": "Gert Blokzijl",
+            "sort-name": "Blokzijl, Gert"
+          }
+        }
+      ],
+      "date": "2017-11-11",
+      "country": "XW",
+      "release-group": {
+        "id": "cf926751-4192-411e-9b6a-7f9c602c1851",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "Digital Media",
+          "track-count": 1
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "78d92f7f-9b11-43a6-89d8-623f7f8edd0b",
+      "title": "Mood swings",
+      "length": 4826000,
+      "artist-credit": [
+        {
+          "name": "Gert Blokzijl",
+          "artist": {
+            "id": "gert-blokzijl",
+            "name": "Gert Blokzijl",
+            "sort-name": "Blokzijl, Gert"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "mood_swings_blokzijl",
+      "score": 97
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "false_positive_partial_title_hour_length_diff",
+      "description": "File 'Mood Music (For Mood Swings)' by Radiolab (17:52) must NOT match 'Mood swings' by Gert Blokzijl (80:26)",
+      "correct_id": "__no_match_expected__",
+      "file": {
+        "title": "Mood Music (For Mood Swings)",
+        "artist": "Radiolab",
+        "length": 1072013
+      }
+    },
+    {
+      "name": "false_positive_wrong_artist_real_artist",
+      "description": "Same file but artist spoofed to a real but unrelated artist (Radiohead) — still must NOT match",
+      "correct_id": "__no_match_expected__",
+      "file": {
+        "title": "Mood Music (For Mood Swings)",
+        "artist": "Radiohead",
+        "length": 1072013
+      }
+    }
+  ]
+}
