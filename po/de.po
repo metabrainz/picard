@@ -33,13 +33,14 @@
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 # janrieger <jan+musicbrainz.org@mainzelmaennchen.net>, 2026.
 # "st.esser" <se@freebsd.org>, 2026.
+# x150 <4evnyuij+musicbrainz@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
-"PO-Revision-Date: 2026-10-11 14:39+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-10-16 23:13+0000\n"
+"Last-Translator: x150 <4evnyuij+musicbrainz@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -277,7 +278,7 @@ msgstr "Zugriffsratenbegrenzung"
 
 #: picard/debug_opts.py:183
 msgid "Log request throttling, congestion window, and backoff details"
-msgstr ""
+msgstr "Details zu Anfragedrosselungen und timings loggen"
 
 #: picard/debug_opts.py:184
 msgid "Theme"
@@ -286,7 +287,7 @@ msgstr "Farbschema"
 #: picard/debug_opts.py:184
 msgid ""
 "Log theme switching diagnostics, palette colors, and color scheme details"
-msgstr ""
+msgstr "Details zu Farbschemen, Schemenwechseln und Farbpaletten loggen"
 
 #: picard/debug_opts.py:185 picard/ui/forms/ui_options_network.py:185
 msgid "Browser Integration"
