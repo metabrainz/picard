@@ -53,6 +53,7 @@ from picard.matching import (
     compare_to_track,
     find_best_match,
     find_best_match_with_margin,
+    length_mismatch_penalty,
     length_score,
     sort_by_similarity,
 )
@@ -361,6 +362,128 @@ class CompareToTrackTest(PicardTestCase):
         # the base_similarity breakdown.
         for m in (m1, m2):
             self.assertIsNotNone(m.base_similarity)
+
+    def test_length_mismatch_penalty_values(self):
+        # No penalty when a length is missing/zero or within the start window.
+        self.assertEqual(1.0, length_mismatch_penalty(None, 240000))
+        self.assertEqual(1.0, length_mismatch_penalty(240000, 0))
+        self.assertEqual(1.0, length_mismatch_penalty(240000, 240000))
+        self.assertEqual(1.0, length_mismatch_penalty(240000, 240000 + 59000))
+        # Ramps down beyond the start window, bottoming out at the floor and
+        # staying there for grossly different lengths (e.g. an hour off).
+        mid = length_mismatch_penalty(240000, 240000 + 330000)  # +5.5 min
+        self.assertLess(mid, 1.0)
+        self.assertGreater(mid, 0.3)
+        self.assertAlmostEqual(0.3, length_mismatch_penalty(240000, 240000 + 600000))  # +10 min
+        self.assertAlmostEqual(0.3, length_mismatch_penalty(240000, 240000 + 3600000))  # +1 h
+        # Symmetric in its arguments.
+        self.assertEqual(
+            length_mismatch_penalty(240000, 1000000),
+            length_mismatch_penalty(1000000, 240000),
+        )
+
+    def _mood_swings_recording(self, length):
+        """A standalone (no-releases) recording resembling the 815815 report."""
+        return {
+            'id': '78d92f7f-9b11-43a6-89d8-623f7f8edd0b',
+            'title': 'Mood swings',
+            'length': length,
+            'artist-credit': [
+                {
+                    'name': 'Gert Blokzijl',
+                    'artist': {'id': 'gb', 'name': 'Gert Blokzijl', 'sort-name': 'Blokzijl, Gert'},
+                }
+            ],
+        }
+
+    def test_compare_to_track_gross_length_mismatch_penalised(self):
+        # Regression test for community thread 815815: a partial title match must
+        # not win when the length differs by more than an hour. The gross-length
+        # discriminator must drag the score well below a close-length match.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Mood Music (For Mood Swings)', 'artist': 'Radiolab'})
+        m.length = 1072013  # 17:52
+
+        close = compare_to_track(m, self._mood_swings_recording(1072013), FILE_COMPARISON_WEIGHTS)
+        gross = compare_to_track(m, self._mood_swings_recording(4826000), FILE_COMPARISON_WEIGHTS)  # 80:26
+
+        self.assertLess(
+            gross.similarity,
+            close.similarity,
+            'An hour-long length mismatch must score lower than a matching length',
+        )
+        # The hour-off candidate must fall below Picard's default 0.25 floor so
+        # it is rejected rather than wrongly applied.
+        self.assertLess(gross.similarity, 0.25)
+
+    def test_compare_to_track_length_penalty_skipped_when_isrc_confirmed(self):
+        # When the recording is ISRC-confirmed it is the same recording; a length
+        # discrepancy must not trigger the discriminator.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Mood swings', 'artist': 'Gert Blokzijl'})
+        m.length = 1072013
+        m.add('isrc', 'XXUM71234567')
+
+        rec = self._mood_swings_recording(4826000)
+        rec['isrcs'] = ['XXUM71234567']
+        match_ = compare_to_track(m, rec, FILE_COMPARISON_WEIGHTS)
+        # ISRC match dominates; the large length difference is not penalised.
+        self.assertGreater(match_.similarity, 0.25)
+
+    def _song_recording(self, artist_name):
+        """A standalone recording with a given artist, fixed title and length."""
+        return {
+            'id': 'rec-song-001',
+            'title': 'Song Title',
+            'length': 240000,
+            'artist-credit': [
+                {
+                    'name': artist_name,
+                    'artist': {'id': 'a1', 'name': artist_name, 'sort-name': artist_name},
+                }
+            ],
+        }
+
+    def test_compare_to_track_wrong_artist_penalised_on_strong_title(self):
+        # A strong title match must not carry the match when the artist clearly
+        # contradicts. The matching-artist candidate must score clearly higher.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title', 'artist': 'The Real Band'})
+        m.length = 240000
+
+        right = compare_to_track(m, self._song_recording('The Real Band'), FILE_COMPARISON_WEIGHTS)
+        wrong = compare_to_track(m, self._song_recording('Completely Different'), FILE_COMPARISON_WEIGHTS)
+
+        self.assertLess(
+            wrong.similarity,
+            right.similarity,
+            'A contradicting artist must score lower than the matching artist',
+        )
+        # The discriminator should drag the wrong-artist candidate well down,
+        # not just by the small raw artist weight.
+        self.assertLess(wrong.similarity, 0.6)
+
+    def test_compare_to_track_artist_penalty_not_applied_when_artist_missing(self):
+        # When the file has no artist tag, the discriminator must not fire: a
+        # missing artist is not a contradiction.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title'})
+        m.length = 240000
+        match_ = compare_to_track(m, self._song_recording('Any Band'), FILE_COMPARISON_WEIGHTS)
+        # Title + length match carry a strong score with no artist penalty.
+        self.assertGreater(match_.similarity, 0.6)
+
+    def test_compare_to_track_artist_penalty_skipped_when_isrc_confirmed(self):
+        # ISRC-confirmed recordings are the same recording; a differing artist
+        # credit (e.g. alias/typo) must not trigger the discriminator.
+        self.set_config_values(settings)
+        m = Metadata({'title': 'Song Title', 'artist': 'The Real Band'})
+        m.length = 240000
+        m.add('isrc', 'XXUM70000001')
+        rec = self._song_recording('Completely Different')
+        rec['isrcs'] = ['XXUM70000001']
+        match_ = compare_to_track(m, rec, FILE_COMPARISON_WEIGHTS)
+        self.assertGreater(match_.similarity, 0.6)
 
 
 class ReleaseMatchPartsTest(PicardTestCase):
