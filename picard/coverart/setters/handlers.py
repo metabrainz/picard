@@ -173,8 +173,22 @@ def _handle_tempitemlist(itemlist: TempItemList, setter) -> bool:
                     stack.enter_context(parent.suspend_metadata_images_update)
                     parents.add(parent)
 
+            # Set the image on the selected item itself so a file-less selection
+            # (e.g. an album that still carries cover art but has no linked
+            # files) keeps contributing its image to the aggregate (PICARD-3461).
             if setter._set_image(item):
                 item.update()
+
+        # Also set the image on every underlying file, in a single deduplicated
+        # pass (iterfiles() yields unique files across all selected items, so a
+        # file shared by several selected items is not appended twice). Only the
+        # files' metadata is written on save, so without this a multi-item
+        # right-pane selection would show the new art but silently fail to embed
+        # it (PICARD-3511). file.update(signal=False) keeps the already-set
+        # aggregate on the selected items from being rebuilt and wiped.
+        for file in itemlist.iterfiles():
+            if setter._set_image(file):
+                file.update(signal=False)
 
         for parent in parents:
             if isinstance(parent, Album):
