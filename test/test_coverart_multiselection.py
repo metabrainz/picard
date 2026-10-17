@@ -24,7 +24,12 @@ from test.picardtestcase import (
 from picard.album import Album
 from picard.cluster import TempItemList
 from picard.coverart.image import CoverArtImage
+from picard.coverart.setters import (
+    CoverArtSetter,
+    CoverArtSetterMode,
+)
 from picard.file import File
+from picard.track import Track
 
 
 class TempItemListTest(PicardTestCase):
@@ -100,3 +105,113 @@ class TempItemListTest(PicardTestCase):
         images_before = set(temp.metadata.images.hash_dict())
         album.metadata_images_changed.emit()
         self.assertEqual(images_before, set(temp.metadata.images.hash_dict()))
+
+
+class TempItemListCoverArtSetterTest(PicardTestCase):
+    """PICARD-3511: Replacing cover art on a multi-track selection in the right
+    pane must propagate the image down to the underlying files, not only to the
+    aggregate/track metadata. Only the files' metadata is written on save, so if
+    the image never reaches the files it is silently dropped even though the UI
+    shows it as "New Embedded".
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
+    @staticmethod
+    def _front_image(name, data):
+        return CoverArtImage(
+            url='file://' + name,
+            data=create_fake_png(data),
+            types=['front'],
+            support_types=True,
+        )
+
+    def _track_with_file(self, track_id, file_name, image):
+        """Build a Track with a single linked file, both carrying ``image``."""
+        track = Track(track_id)
+        file = File(file_name)
+        file.metadata.images.append(image)
+        file.orig_metadata.images.append(image)
+        track.files.append(file)
+        track.metadata.images.append(image)
+        track.orig_metadata.images.append(image)
+        return track, file
+
+    def test_replace_on_multiselection_reaches_files(self):
+        old1 = self._front_image('old1', b'old1')
+        old2 = self._front_image('old2', b'old2')
+        track1, file1 = self._track_with_file('t1', 'a.flac', old1)
+        track2, file2 = self._track_with_file('t2', 'b.flac', old2)
+
+        temp = TempItemList(items=[track1, track2])
+
+        new_image = self._front_image('new', b'new-front')
+        setter = CoverArtSetter(CoverArtSetterMode.REPLACE, new_image, temp)
+        self.assertTrue(setter.set_coverart())
+
+        # The replaced image must land in each file's metadata, because that is
+        # what actually gets embedded when the files are saved.
+        for file in (file1, file2):
+            file_hashes = set(file.metadata.images.hash_dict())
+            self.assertIn(
+                new_image.datahash.hash,
+                file_hashes,
+                msg=f"New front image not embedded in {file.filename}",
+            )
+            # REPLACE must have stripped the previous front image.
+            self.assertEqual([new_image.datahash.hash], list(file_hashes))
+
+    def test_append_on_multiselection_reaches_files(self):
+        old1 = self._front_image('old1', b'old1')
+        old2 = self._front_image('old2', b'old2')
+        track1, file1 = self._track_with_file('t1', 'a.flac', old1)
+        track2, file2 = self._track_with_file('t2', 'b.flac', old2)
+
+        temp = TempItemList(items=[track1, track2])
+
+        new_image = self._front_image('new', b'new-front')
+        setter = CoverArtSetter(CoverArtSetterMode.APPEND, new_image, temp)
+        self.assertTrue(setter.set_coverart())
+
+        for file in (file1, file2):
+            file_hashes = set(file.metadata.images.hash_dict())
+            self.assertIn(new_image.datahash.hash, file_hashes)
+
+    def test_fileless_album_in_selection_keeps_its_image(self):
+        # PICARD-3461 must not regress: an album with cover art but no linked
+        # files still gets the replacement image set on its own metadata (it is
+        # not wiped by a rebuild-from-children of its empty file list).
+        track, _file = self._track_with_file('t1', 'a.flac', self._front_image('old', b'old'))
+        album = Album('a1')
+        album.metadata.images.append(self._front_image('albumart', b'albumart'))
+        self.assertEqual([], list(album.iterfiles()))
+
+        temp = TempItemList(items=[track, album])
+
+        new_image = self._front_image('new', b'new-front')
+        setter = CoverArtSetter(CoverArtSetterMode.REPLACE, new_image, temp)
+        self.assertTrue(setter.set_coverart())
+
+        self.assertIn(new_image.datahash.hash, set(album.metadata.images.hash_dict()))
+
+    def test_shared_file_not_duplicated_on_append(self):
+        # A file reachable via two selected items (an album and one of its
+        # tracks) must receive the appended image only once.
+        old = self._front_image('old', b'old')
+        track, file = self._track_with_file('t1', 'a.flac', old)
+        album = Album('a1')
+        album.tracks = [track]
+        # The album exposes the same file through its track.
+        self.assertEqual([file], list(album.iterfiles()))
+
+        temp = TempItemList(items=[album, track])
+
+        new_image = self._front_image('new', b'new-front')
+        setter = CoverArtSetter(CoverArtSetterMode.APPEND, new_image, temp)
+        self.assertTrue(setter.set_coverart())
+
+        new_hash = new_image.datahash.hash
+        occurrences = [img for img in file.metadata.images if img.datahash.hash == new_hash]
+        self.assertEqual(1, len(occurrences))
