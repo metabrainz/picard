@@ -42,8 +42,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Callable
+
 from PyQt6 import QtCore
 
+from picard.album import Album
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -54,12 +57,21 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
+from picard.ui.itemviews.custom_columns.boolean_providers import (
+    BoolColumnState,
+    BooleanAlbumColumnProvider,
+)
 from picard.ui.itemviews.custom_columns.factory import (
     make_delegate_column,
     make_duration_field_column,
     make_field_column,
     make_icon_header_column,
     make_numeric_field_column,
+    make_provider_column,
+)
+from picard.ui.itemviews.custom_columns.multi_state_providers import (
+    MultiColumnState,
+    MultiStateAlbumColumnProvider,
 )
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
@@ -110,6 +122,120 @@ def create_fingerprint_status_column():
         column_group=ColumnGroup.FILE,
     )
     return column
+
+
+class StatusColumnState(MultiColumnState):
+    """Four-state enum for the album status icon column.
+
+    The integer values define the sort order (ascending): incomplete and
+    unmodified sorts first, complete and modified sorts last.  Display
+    returns an empty string because the column renders icons (set by
+    ``AlbumItem.update``), not text.
+    """
+
+    NOT_APPLICABLE = -1
+    SILVER = 0
+    SILVER_STAR = 5
+    GOLD = 10
+    GOLD_STAR = 15
+
+
+def _status_predicate(obj) -> StatusColumnState:
+    """Map an album's modified/complete flags to a ``StatusColumnState``."""
+    is_modified = obj.is_modified()
+    is_complete = obj.is_complete()
+    if is_complete:
+        if is_modified:
+            return StatusColumnState.GOLD_STAR
+        return StatusColumnState.GOLD
+    if is_modified:
+        return StatusColumnState.SILVER_STAR
+    return StatusColumnState.SILVER
+
+
+def _create_status_album_column():
+    """Create an album-level status column that maps the status icon into sortable state.
+
+    Display the icons with the following (increasing) priority:
+        silver (incomplete, unmodified)
+        silver + star (incomplete, modified)
+        gold (complete, unmodified)
+        gold + star (complete, modified)
+
+    The predicate is only evaluated for ``Album`` rows; other rows render
+    empty and sort apart.
+
+    Parameters
+    ----------
+    title
+        Column header (wrapped with ``N_`` by the caller for extraction).
+    key
+        Internal column key.
+
+    Returns
+    -------
+    CustomColumn
+        The configured column.
+    """
+    provider = MultiStateAlbumColumnProvider(
+        predicate=_status_predicate,
+        applies=lambda obj: isinstance(obj, Album),
+        not_applicable=StatusColumnState.NOT_APPLICABLE,
+    )
+    column = make_provider_column(N_('Status'), '~status', provider, column_group=ColumnGroup.MISC)
+    # The status column holds the tree expand arrows and the status icon, so
+    # its required width depends on the tree's expand state. The view sizes it
+    # with Qt's ResizeToContents mode (see BaseTreeView.restore_default_columns
+    # and ConfigurableColumnsHeader.restore_columns_state), so it must not be a
+    # user-resizable, fixed-width column.
+    column.resizeable = False
+    return column
+
+
+def _create_bool_album_column(title: str, key: str, predicate: Callable[[object], BoolColumnState]):
+    """Create an album-level boolean column (translated Yes/No, stable sort).
+
+    Display shows a translated ``Yes``/``No`` while sorting uses a stable,
+    language-independent key (see `BooleanAlbumColumnProvider`). The predicate
+    is only evaluated for `Album` rows; other rows render empty and sort apart.
+
+    Parameters
+    ----------
+    title
+        Column header (wrapped with ``N_`` by the caller for extraction).
+    key
+        Internal column key.
+    predicate
+        Callable returning the boolean state of an album.
+
+    Returns
+    -------
+    CustomColumn
+        The configured column.
+    """
+    provider = BooleanAlbumColumnProvider(
+        predicate=predicate,
+        applies=lambda obj: isinstance(obj, Album),
+    )
+    return make_provider_column(title, key, provider, column_group=ColumnGroup.MISC)
+
+
+def create_is_modified_column():
+    """Create the "Modified" album column."""
+    return _create_bool_album_column(
+        N_("Modified"),
+        '~modified',
+        lambda obj: BoolColumnState.YES if obj.is_modified() else BoolColumnState.NO,
+    )
+
+
+def create_is_complete_column():
+    """Create the "Complete" album column."""
+    return _create_bool_album_column(
+        N_("Complete"),
+        '~complete',
+        lambda obj: BoolColumnState.YES if obj.is_complete() else BoolColumnState.NO,
+    )
 
 
 def create_common_columns() -> tuple[Column, ...]:
@@ -251,7 +377,15 @@ _common_columns = create_common_columns()
 FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 
 # Album view columns (with match quality column)
-# Insert `_match_quality_column` after Title, Length, Artist, Album Artist
 ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
+# Insert `_status` after Title, Length, Artist, Album Artist
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _create_status_album_column())
+# Insert `_match_quality_column` after `_status`
 _match_quality_column = create_match_quality_column()
-ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~status') + 1, _match_quality_column)
+# Insert `_modified` after `_match_quality_column`
+_is_modified_column = create_is_modified_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~match_quality') + 1, _is_modified_column)
+# Insert `_complete` after `_modified`
+_is_complete_column = create_is_complete_column()
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('~modified') + 1, _is_complete_column)
