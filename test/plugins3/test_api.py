@@ -610,3 +610,90 @@ class TestPluginApi(PicardTestCase):
         with patch('picard.plugin3.api_impl.register_file_action') as mock:
             api.register_file_action(mock_action)
             mock.assert_called_once_with(mock_action)
+
+
+class TestPluginApiExternalCommand(PicardTestCase):
+    """Tests for PluginApi.find_executable / run_command / cancel_commands."""
+
+    def _create_api(self):
+        return PluginApi(load_plugin_manifest('example'), Mock(), Mock(), Path(''))
+
+    def test_find_executable_delegates(self):
+        api = self._create_api()
+        with patch('picard.plugin3.api_impl.find_executable', return_value='/usr/bin/rsgain') as mock_find:
+            result = api.find_executable('rsgain', 'rsgain.exe')
+        self.assertEqual(result, '/usr/bin/rsgain')
+        mock_find.assert_called_once_with('rsgain', 'rsgain.exe')
+
+    def test_run_command_forwards_to_runner(self):
+        api = self._create_api()
+        on_success = Mock()
+        on_error = Mock()
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            runner = mock_runner_cls.return_value
+            api.run_command(
+                ['tool', 'arg'],
+                on_success=on_success,
+                on_error=on_error,
+                cwd='/tmp',
+                env={'A': 'B'},
+                ok_returncodes=(3,),
+                timeout=12,
+                key='k',
+            )
+            runner.run.assert_called_once_with(
+                ['tool', 'arg'],
+                on_success,
+                on_error,
+                cwd='/tmp',
+                env={'A': 'B'},
+                ok_returncodes=(3,),
+                timeout=12,
+                key='k',
+            )
+
+    def test_runner_is_lazily_created_and_reused(self):
+        api = self._create_api()
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            api.run_command(['a'], on_success=Mock(), on_error=Mock())
+            api.run_command(['b'], on_success=Mock(), on_error=Mock())
+            # Runner constructed exactly once and reused for both commands.
+            mock_runner_cls.assert_called_once()
+            self.assertEqual(mock_runner_cls.return_value.run.call_count, 2)
+
+    def test_cancel_commands_without_runner_is_noop(self):
+        api = self._create_api()
+        # No run_command called yet -> no runner -> cancel must not raise.
+        api.cancel_commands(lambda key: True)
+
+    def test_cancel_commands_delegates(self):
+        api = self._create_api()
+
+        def predicate(key: object) -> bool:
+            return key == 'x'
+
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            runner = mock_runner_cls.return_value
+            api.run_command(['a'], on_success=Mock(), on_error=Mock())
+            api.cancel_commands(predicate)
+            runner.cancel.assert_called_once_with(predicate)
+
+    def test_set_max_concurrent_commands_delegates(self):
+        api = self._create_api()
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            runner = mock_runner_cls.return_value
+            api.set_max_concurrent_commands(4)
+            runner.set_max_concurrent.assert_called_once_with(4)
+
+    def test_cancel_all_commands_without_runner_is_noop(self):
+        api = self._create_api()
+        # No command started -> no runner -> must not raise.
+        api._cancel_all_commands()
+
+    def test_cancel_all_commands_delegates(self):
+        api = self._create_api()
+        with patch('picard.plugin3.api_impl.ExternalCommandRunner') as mock_runner_cls:
+            runner = mock_runner_cls.return_value
+            api.run_command(['a'], on_success=Mock(), on_error=Mock())
+            api._cancel_all_commands()
+            runner.cancel_all.assert_called_once_with()

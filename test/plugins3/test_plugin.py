@@ -369,6 +369,7 @@ class TestPluginDisable(PicardTestCase):
             plugin.disable()
 
         mock_api._remove_qt_translator.assert_called_once()
+        mock_api._cancel_all_commands.assert_called_once()
         self.assertNotIn('picard.plugins.my-plugin', mock_api_cls._instances)
         self.assertNotIn('picard.plugins.my-plugin', mock_api_cls._module_cache)
         self.assertNotIn('picard.plugins.my-plugin.sub', mock_api_cls._module_cache)

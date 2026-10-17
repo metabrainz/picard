@@ -41,6 +41,10 @@ from picard.plugin3.api_impl import (
     t_,
 )
 from picard.script import ScriptParser
+from picard.util.externalcommand import (
+    CommandError,
+    CommandResult,
+)
 
 from picard.ui.options import PageOptionConfigs
 
@@ -49,6 +53,8 @@ __all__ = [
     'Album',
     'BaseAction',
     'Cluster',
+    'CommandError',
+    'CommandResult',
     'CoverArtImage',
     'CoverArtProvider',
     'DebugOpt',
