@@ -22,7 +22,10 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.coverart.providers.caa import caa_url_fallback_list
+from picard.coverart.providers.caa import (
+    caa_image_types_accepted,
+    caa_url_fallback_list,
+)
 
 
 class CoverArtImageProviderCaaTest(PicardTestCase):
@@ -89,3 +92,56 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
 
         with self.assertRaises(AttributeError):
             caa_url_fallback_list(250, 666)
+
+
+class CaaImageTypesAcceptedTest(PicardTestCase):
+    """Regression tests for the CAA include/exclude type filtering.
+
+    Contract (as described in the CAA types selector dialog):
+      - An image with at least one type in the 'Include' list is a candidate,
+        UNLESS it ALSO has any type found in the 'Exclude' list.
+      - Images with a type in the 'Exclude' list are NEVER used (exclude wins).
+      - Types in neither list are ignored when deciding.
+
+    See https://community.metabrainz.org/t/artwork-downloads-from-caa/815842/
+    The historical bug accepted images like ['front', 'booklet'] or
+    ['back', 'spine'] even when 'booklet'/'spine' were in the exclude list,
+    because the exclude set was subtracted from the include intersection rather
+    than tested against the image's full type set.
+    """
+
+    def test_included_only(self):
+        self.assertTrue(caa_image_types_accepted(['front'], {'front', 'back'}, set()))
+        self.assertTrue(caa_image_types_accepted(['back'], {'front', 'back'}, set()))
+
+    def test_not_included(self):
+        # No matching include type -> rejected
+        self.assertFalse(caa_image_types_accepted(['medium'], {'front', 'back'}, set()))
+        self.assertFalse(caa_image_types_accepted(['booklet'], {'front', 'back'}, set()))
+
+    def test_exclude_overrides_include(self):
+        # These are the exact cases from the bug report: an image that has both
+        # an included and an excluded type must be REJECTED.
+        included = {'front', 'back'}
+        excluded = {'booklet', 'spine', 'sticker', 'obi', 'raw/unedited', 'watermark'}
+        self.assertFalse(caa_image_types_accepted(['front', 'booklet'], included, excluded))
+        self.assertFalse(caa_image_types_accepted(['back', 'spine'], included, excluded))
+
+    def test_pure_excluded(self):
+        # Only an excluded type (and nothing included) -> rejected
+        self.assertFalse(caa_image_types_accepted(['sticker'], {'front'}, {'sticker'}))
+
+    def test_included_without_excluded_type(self):
+        # Included type, and the image carries no excluded type -> accepted
+        self.assertTrue(caa_image_types_accepted(['front'], {'front'}, {'booklet', 'spine'}))
+
+    def test_exclude_not_in_include(self):
+        # Exclude must veto even when the excluded type is not part of the
+        # include list at all (the default exclude list contains such types).
+        self.assertFalse(caa_image_types_accepted(['front', 'watermark'], {'front'}, {'watermark'}))
+
+    def test_unknown_pseudo_type(self):
+        # Images with no type get the pseudo type 'unknown'; accepted only if
+        # 'unknown' is included and not excluded.
+        self.assertTrue(caa_image_types_accepted(['unknown'], {'unknown'}, set()))
+        self.assertFalse(caa_image_types_accepted(['unknown'], {'front'}, set()))
