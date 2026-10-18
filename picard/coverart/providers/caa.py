@@ -114,6 +114,26 @@ def caa_url_fallback_list(desired_size, thumbnails):
     return thumbnail_list
 
 
+def caa_image_types_accepted(image_types, included_types, excluded_types):
+    """Decide whether a CAA image should be downloaded based on its types.
+
+    An image is accepted only if it has at least one type in the 'Include'
+    list AND none of its types are in the 'Exclude' list. The exclude list
+    always wins: an image carrying an excluded type is never used, even if it
+    also carries an included type. Types in neither list are ignored.
+
+    Args:
+        image_types: iterable of the image's type names (lowercased)
+        included_types: set of included type names (lowercased)
+        excluded_types: set of excluded type names (lowercased)
+
+    Returns:
+        True if the image should be downloaded, False otherwise.
+    """
+    image_types = set(image_types)
+    return bool(image_types & included_types) and image_types.isdisjoint(excluded_types)
+
+
 class ProviderOptionsCaa(ProviderOptions):
     """
     Options for Cover Art Archive cover art provider
@@ -316,8 +336,10 @@ class CoverArtProviderCaa(CoverArtProvider):
 
                     if self.restrict_types:
                         # accept only if image types matches according to included/excluded types
-                        accepted = bool(
-                            set(image['types']).intersection(self.included_types).difference(self.excluded_types)
+                        accepted = caa_image_types_accepted(
+                            image['types'],
+                            self.included_types,
+                            self.excluded_types,
                         )
                         log.debug(
                             "CAA image %s: %s  %s",
