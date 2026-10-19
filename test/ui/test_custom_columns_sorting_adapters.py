@@ -22,10 +22,10 @@ from collections.abc import Callable
 import dataclasses
 from unittest.mock import MagicMock
 
+from PyQt6.QtCore import QT_VERSION
+
 from picard.const.sys import IS_WIN
 from picard.i18n import setup_i18n
-
-from PyQt6.QtCore import QT_VERSION
 
 import pytest
 
