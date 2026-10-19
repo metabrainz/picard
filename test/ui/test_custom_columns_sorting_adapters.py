@@ -25,6 +25,8 @@ from unittest.mock import MagicMock
 from picard.const.sys import IS_WIN
 from picard.i18n import setup_i18n
 
+from PyQt6.QtCore import QT_VERSION
+
 import pytest
 
 from picard.ui.columns import (
@@ -156,7 +158,11 @@ def test_length_sort_adapter() -> None:
 def test_article_insensitive_adapter() -> None:
     setup_i18n(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
-    expected = ["An Artist", "Artist", "The Beatles", "Beatles"]
+    # Qt 6.12 changed the way texts are collated so the sort order is different
+    if QT_VERSION >= ((6 << 16) | (12 << 8)):
+        expected = ["Artist", "An Artist", "Beatles", "The Beatles"]
+    else:
+        expected = ["An Artist", "Artist", "The Beatles", "Beatles"]
     result = _sorted_values(ArticleInsensitiveAdapter, values)
     assert result == expected
 
