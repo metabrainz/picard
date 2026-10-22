@@ -715,9 +715,12 @@ class TrackItem(TreeItem):
                     items = []
                     for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.files[i])
-                        item.update(update_track=False, update_selection=update_selection)
                         items.append(item)
                     self.addChildren(items)
+                    # Update after addChildren so items use the attached view's
+                    # column set, not the detached file-view fallback (PICARD-3515).
+                    for item in items:
+                        item.update(update_track=False, update_selection=update_selection)
             self.setExpanded(True)
         if track.errors:
             self.setIcon(self.columns.status_icon_column, TrackItem.icon_error)
