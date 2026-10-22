@@ -1786,6 +1786,7 @@ class PluginApi:
         """
         full_task_id = f'{self.plugin_id}_{task_id}'
         album.complete_task(full_task_id)
+        album.try_finalize_loading()
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins

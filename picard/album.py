@@ -101,6 +101,7 @@ from picard.track import Track
 from picard.util import (
     format_time,
     mbid_validate,
+    thread,
 )
 from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
@@ -297,6 +298,17 @@ class Album(MetadataItem):
             log.debug("Completed %s task %s after %.2fs", task_info.type.name, task_id, task_info.elapsed_time())
         else:
             log.warning("Attempted to complete unknown task: %s", task_id)
+
+    def try_finalize_loading(self):
+        """Re-attempt finalization after a gating task completed.
+
+        Album loading is held back while critical tasks are pending. Completing
+        such a task (e.g. a plugin's blocking task) must re-trigger finalization,
+        which the per-task completion does not do on its own. The plugin callback
+        may run off the main thread, so dispatch there (PICARD-3513)."""
+        if self.loaded or self.has_critical_tasks():
+            return
+        thread.to_main(self._finalize_loading, False)
 
     def cancel_tasks(self):
         """Cancel all pending tasks and abort their network operations."""
