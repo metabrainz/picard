@@ -13,14 +13,15 @@
 # "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 # "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024, 2026.
 # "ApeKattQuest, MonkeyPython" <ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>, 2024, 2025.
+# Akira Holm <apekattquest_monkeypython@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-10-06 07:13+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
-"<monkeypython+inst@yepmail.net>\n"
+"PO-Revision-Date: 2026-10-22 23:13+0000\n"
+"Last-Translator: Akira Holm "
+"<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/2/app/nb/>\n"
 "Language: nb\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -435,7 +436,7 @@ msgstr "ID3v2 versjon som skal brukes"
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
-msgstr "ID3v2.3 tekstkodering"
+msgstr "ID3v2 tekstkodering"
 
 #: picard/profile.py:119
 msgid "ID3v2.3 join character"
@@ -2585,9 +2586,8 @@ msgid "Loading…"
 msgstr "Laster…"
 
 #: picard/ui/itemviews.py:547
-#, fuzzy
 msgid "Show &more details…"
-msgstr "Vis flere detaljer…"
+msgstr "Vis &flere detaljer…"
 
 #: picard/ui/itemviews.py:600
 #, python-format
@@ -3062,7 +3062,7 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:806
 msgid "&Lookup"
-msgstr "MB &Søk"
+msgstr "S&lå opp"
 
 #: picard/ui/mainwindow.py:807
 msgid "Lookup selected items in MusicBrainz"
@@ -3270,7 +3270,7 @@ msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:1725
 msgid "Authentication Required"
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering kreves"
 
 #: picard/ui/mainwindow.py:1726
 msgid ""
@@ -3810,9 +3810,8 @@ msgid "Submit disc ID"
 msgstr "Send inn disk ID"
 
 #: picard/ui/ui_cdlookup.py:89
-#, fuzzy
 msgid "&Load into Picard"
-msgstr "Last inn i Picard"
+msgstr "&Last inn i Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
@@ -3979,7 +3978,7 @@ msgstr "Bruk følgende filnavn for bilder:"
 
 #: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
-msgstr "Overskriv filen hvis den allerede finnes?"
+msgstr "Overskriv filen hvis den allerede finnes"
 
 #: picard/ui/ui_options_cover.py:102
 #, fuzzy
@@ -4303,7 +4302,7 @@ msgstr "Standard lytteport:"
 
 #: picard/ui/options/plugins.py:226 picard/ui/ui_options_plugins.py:131
 msgid "Plugins"
-msgstr "Programtillegg"
+msgstr "Programtillegger"
 
 #: picard/ui/options/plugins.py:629 picard/ui/searchdialog/album.py:152
 #: picard/ui/searchdialog/artist.py:54 picard/ui/searchdialog/track.py:69
@@ -4833,10 +4832,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Logget inn som <b>%s</b>."
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Feil ved CD oppslag"
+msgstr "Utloggingsfeil"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -4990,7 +4987,7 @@ msgstr "Gruppér"
 
 #: picard/ui/options/interface_toolbar.py:80
 msgid "Lookup"
-msgstr "MB Søk"
+msgstr "Slå opp"
 
 #: picard/ui/options/interface_toolbar.py:84
 msgid "Scan"
@@ -5816,7 +5813,7 @@ msgstr "Opprinnelig utgivelsesår"
 
 #: picard/util/tags.py:99
 msgid "Performer"
-msgstr "Artist"
+msgstr "Utøver"
 
 #: picard/util/tags.py:100
 msgid "Podcast"
