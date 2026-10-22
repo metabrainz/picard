@@ -14,14 +14,15 @@
 # "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024, 2026.
 # "ApeKattQuest, MonkeyPython" <ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# Akira Holm <apekattquest_monkeypython@users.noreply.translations.metabrainz.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-08 19:02+0200\n"
-"PO-Revision-Date: 2026-10-06 07:13+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
-"<monkeypython+inst@yepmail.net>\n"
+"PO-Revision-Date: 2026-10-22 23:13+0000\n"
+"Last-Translator: Akira Holm "
+"<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/3/app/nb/>\n"
 "Language: nb\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:218
@@ -169,7 +170,7 @@ msgstr "POST-data for netttjenester"
 
 #: picard/debug_opts.py:173
 msgid "Log data of web service post requests"
-msgstr "Loggdata for POST-forespørsler til netttjenesteinnlegg"
+msgstr "Loggdata for POST-forespørsler om netttjenesteinnlegg"
 
 #: picard/debug_opts.py:174
 msgid "Web Service Replies"
@@ -198,10 +199,8 @@ msgid "Log plugin translation lookups and fallbacks"
 msgstr ""
 
 #: picard/debug_opts.py:177
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Updates"
-msgstr "Programtillegg"
+msgstr "Oppdateringer av programtillegg"
 
 #: picard/debug_opts.py:177
 msgid "Log detailed plugin version checking and update detection"
@@ -226,10 +225,8 @@ msgid "Log similarity scores and match decisions"
 msgstr ""
 
 #: picard/debug_opts.py:180
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Development"
-msgstr "Programtillegg"
+msgstr "Utvikling av programtillegg"
 
 #: picard/debug_opts.py:180
 msgid "Log plugin details typically only used during development"
@@ -554,10 +551,8 @@ msgid "Convert file image format"
 msgstr "Konverter filnavn om till tagger"
 
 #: picard/options.py:257
-#, fuzzy
-#| msgid "Format:"
 msgid "New file image format"
-msgstr "Format:"
+msgstr "Nytt filbildeformat"
 
 #: picard/options.py:260
 #, fuzzy
@@ -728,15 +723,13 @@ msgid "Guess track number and title"
 msgstr "Gjett spornummer og -tittel fra filnavn dersom det er tomt"
 
 #: picard/options.py:391
-#, fuzzy
 msgid "ID3v2.3 join character"
 msgstr "Skilletegn for ID3v2.3"
 
 #: picard/options.py:392
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
-#, fuzzy
 msgid "ID3v2 text encoding"
-msgstr "ID3v2.3 tekstkodering"
+msgstr "ID3v2 tekstkodering"
 
 #: picard/options.py:397 picard/ui/forms/ui_options_fingerprinting.py:109
 msgid "Ignore existing AcoustID fingerprints"
@@ -751,10 +744,8 @@ msgid "Ignore hidden files"
 msgstr "Ignorer skjulte filer"
 
 #: picard/options.py:402
-#, fuzzy
-#| msgid "Ignore file paths matching the following regular expression:"
 msgid "Ignore file paths (regular expression)"
-msgstr "Ignorer filbaner som tilsvarer følgende regulære uttrykk:"
+msgstr "Ignorer filbaner (regulært uttrykk)"
 
 #: picard/options.py:407
 msgid "Allowed track difference (seconds)"
@@ -929,10 +920,8 @@ msgid "Maximum MusicBrainz query items"
 msgstr "MusicBrainz Server"
 
 #: picard/options.py:516
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Quick Menu options"
-msgstr "Kodeinnstillinger"
+msgstr "Alternativer for hurtigmeny"
 
 #: picard/options.py:517
 #, fuzzy
@@ -952,10 +941,8 @@ msgid "Read ISRCs from CD"
 msgstr ""
 
 #: picard/options.py:522
-#, fuzzy
-#| msgid "Ignore MBIDs when loading new files"
 msgid "Include sub-folders when adding files"
-msgstr "Ignorer MBID ved lasting av nye filer"
+msgstr "Inkluder undermapper når filer legges til"
 
 #: picard/options.py:523 picard/ui/forms/ui_options_metadata.py:199
 msgid "Use release relationships"
@@ -1307,7 +1294,7 @@ msgstr "Ny versjon tilgjengelig"
 
 #: picard/profile.py:89 picard/ui/options/plugins.py:60
 msgid "Plugins"
-msgstr "Programtillegg"
+msgstr "Programtillegger"
 
 #: picard/releasegroup.py:55 picard/ui/searchdialog/album.py:162
 msgid "Tracks"
@@ -1379,13 +1366,15 @@ msgstr ""
 
 #: picard/tagger.py:790 picard/ui/mainwindow/__init__.py:1613
 #: picard/ui/mainwindow/__init__.py:1639
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
 "\n"
 "%(error)s"
-msgstr "Henter album %(id)s …"
+msgstr ""
+"Kunne ikke laste økten fra «%(path)s»\n"
+"\n"
+"%(error)s"
 
 #: picard/tagger.py:833
 #, python-brace-format
@@ -1478,10 +1467,8 @@ msgid "Disc information could not be found"
 msgstr ""
 
 #: picard/tagger.py:1454 picard/tagger.py:1469 picard/tagger.py:1477
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Lookup Error"
-msgstr "Feil ved CD oppslag"
+msgstr "Feil ved oppsøk"
 
 #: picard/tagger.py:1475
 msgid "Selected files contain tags with conflicting disc information"
@@ -1511,16 +1498,14 @@ msgid "[could not load recording %s]"
 msgstr "[kunne ikke laste spor %s]"
 
 #: picard/acoustid/__init__.py:109
-#, fuzzy, python-format
-#| msgid "AcoustID lookup network error for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup network error for \"%(filename)s\"!"
-msgstr "Nettverksfeil for AcoustID oppsøket av \"%(filename)s\""
+msgstr "Nettverksfeil under oppsøket av AcoustID for «%(filename)s»!"
 
 #: picard/acoustid/__init__.py:131
-#, fuzzy, python-format
-#| msgid "AcoustID lookup failed for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup failed for \"%(filename)s\"!"
-msgstr "Oppsøk av AcoustID feilet for \"%(filename)s\""
+msgstr "Oppsøk av AcoustID feilet for «%(filename)s»!"
 
 #: picard/acoustid/__init__.py:172
 #, fuzzy, python-format
@@ -1587,16 +1572,13 @@ msgid "Add file as recording…"
 msgstr ""
 
 #: picard/browser/auth_responses.py:142
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication successful — %s"
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering vellykket — %s"
 
 #: picard/browser/auth_responses.py:143
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication successful."
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering vellykket."
 
 #: picard/browser/auth_responses.py:144
 msgid "Picard has been authorized."
@@ -1665,28 +1647,22 @@ msgid "Picard has not been authorized."
 msgstr ""
 
 #: picard/browser/auth_responses.py:195
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication cancelled — %s"
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering avbrutt — %s"
 
 #: picard/browser/auth_responses.py:196
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication cancelled."
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering avbrutt."
 
 #: picard/browser/auth_responses.py:211
-#, fuzzy, python-format
-#| msgid "Authentication Required"
+#, python-format
 msgid "Authentication error — %s"
-msgstr "Autorisering nødvendig"
+msgstr "Autentiseringsfeil — %s"
 
 #: picard/browser/auth_responses.py:212
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication error."
-msgstr "Autorisering nødvendig"
+msgstr "Autentiseringsfeil."
 
 #: picard/browser/auth_responses.py:213
 msgid ""
@@ -1759,10 +1735,9 @@ msgid "the file name does not match"
 msgstr "Filnavnsformat kan ikke være tom."
 
 #: picard/coverart/providers/local.py:87 picard/ui/options/advanced.py:90
-#, fuzzy, python-format
-#| msgid "Ignore file paths matching the following regular expression:"
+#, python-format
 msgid "Invalid regular expression: %s"
-msgstr "Ignorer filbaner som tilsvarer følgende regulære uttrykk:"
+msgstr "Ugyldig regulært uttrykk: %s"
 
 #: picard/coverart/providers/local.py:103
 msgid "Local Files"
@@ -1824,20 +1799,17 @@ msgid "{base} (current)"
 msgstr ""
 
 #: picard/profiles/importer.py:127
-#, fuzzy, python-format
-#| msgid "Invalid Title"
+#, python-format
 msgid "Invalid TOML: %s"
-msgstr "Ugyldig tittel"
+msgstr "Ugyldig TOML: %s"
 
 #: picard/profiles/importer.py:132
 msgid "Missing required [profile] section"
 msgstr ""
 
 #: picard/profiles/importer.py:134
-#, fuzzy
-#| msgid "The profile title cannot be blank."
 msgid "The [profile] section must be a table"
-msgstr "Profiltittelen kan ikke være tom."
+msgstr "Seksjonen [profile] må være en tabell"
 
 #: picard/profiles/importer.py:138
 msgid "Missing required 'title' in [profile] section"
@@ -2175,20 +2147,16 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:388
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get(name)"
-msgstr "Vietnamesisk"
+msgstr "$get(name)"
 
 #: picard/script/functions.py:389
 msgid "Returns the variable `name` (equivalent to `%name%`)."
 msgstr ""
 
 #: picard/script/functions.py:397
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get_new(name)"
-msgstr "Vietnamesisk"
+msgstr "$get_new(name)"
 
 #: picard/script/functions.py:399
 msgid ""
@@ -2218,10 +2186,8 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:424
-#, fuzzy
-#| msgid "Vietnamese"
 msgid "$get_original(name)"
-msgstr "Vietnamesisk"
+msgstr "$get_original(name)"
 
 #: picard/script/functions.py:426
 msgid ""
@@ -3165,10 +3131,9 @@ msgid "Preloading albums from cache ({albums})…"
 msgstr ""
 
 #: picard/session/session_loader.py:106
-#, fuzzy, python-brace-format
-#| msgid "Loading album %(id)s …"
+#, python-brace-format
 msgid "Loading files and albums ({files} files)…"
-msgstr "Henter album %(id)s …"
+msgstr "Laster in filer og album {files}er…"
 
 #: picard/session/session_loader.py:111
 #, python-brace-format
@@ -3176,10 +3141,8 @@ msgid "Waiting on network ({requests} requests)…"
 msgstr ""
 
 #: picard/session/session_loader.py:112
-#, fuzzy
-#| msgid "Loading…"
 msgid "Finalizing…"
-msgstr "Laster…"
+msgstr "Ferdigstiller…"
 
 #: picard/session/session_loader.py:115
 msgid "Reading session…"
@@ -3210,10 +3173,8 @@ msgid "Notes"
 msgstr ""
 
 #: picard/tags/tagvar.py:87
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Option Settings"
-msgstr "Kodeinnstillinger"
+msgstr "Alternativinnstillinger"
 
 #: picard/tags/tagvar.py:88 picard/ui/aboutdialog.py:187
 #: picard/ui/forms/ui_aboutdialog.py:253
@@ -3225,8 +3186,6 @@ msgid "See Also"
 msgstr ""
 
 #: picard/tags/tagvar.py:90 picard/ui/widgets/pluginlistwidget.py:171
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin"
 msgstr "Programtillegg"
 
@@ -3249,10 +3208,8 @@ msgid "preserved"
 msgstr ""
 
 #: picard/tags/tagvar.py:99
-#, fuzzy
-#| msgid "Rename script"
 msgid "not for use in scripts"
-msgstr "Gi nytt navn"
+msgstr "skal ikke brukes i skript"
 
 #: picard/tags/tagvar.py:100
 msgid "calculated"
@@ -3278,16 +3235,14 @@ msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr ""
 
 #: picard/ui/__init__.py:294
-#, fuzzy, python-format
-#| msgid "MusicBrainz Picard"
+#, python-format
 msgid "%s — MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "%s — MusicBrainz Picard"
 
 #: picard/ui/aboutdialog.py:126
-#, fuzzy, python-format
-#| msgid "Version"
+#, python-format
 msgid "Version %s"
-msgstr "Versjon"
+msgstr "Versjon %s"
 
 #: picard/ui/aboutdialog.py:157
 #, python-format
@@ -3314,10 +3269,8 @@ msgid "Documentation"
 msgstr "Dokumentasjon"
 
 #: picard/ui/aboutdialog.py:191
-#, fuzzy
-#| msgid "Comment"
 msgid "Community forum"
-msgstr "Kommentar"
+msgstr "Fellesskapsforum"
 
 #: picard/ui/aboutdialog.py:192
 msgid "License"
@@ -3605,10 +3558,9 @@ msgid "Type to filter…"
 msgstr ""
 
 #: picard/ui/filter.py:152
-#, fuzzy, python-brace-format
-#| msgid "Rename files"
+#, python-brace-format
 msgid "{num} filters"
-msgstr "Omdøp filer"
+msgstr "{num} filtre"
 
 #: picard/ui/filter.py:178
 #, fuzzy
@@ -3675,15 +3627,12 @@ msgid "New ISRC"
 msgstr "ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:95
-#, fuzzy
-#| msgid "&Submit disc ID"
 msgid "&Submit"
-msgstr "&Send inn disk ID"
+msgstr "&Send inn"
 
 #: picard/ui/logview.py:192
-#, fuzzy
 msgid "&View detail…"
-msgstr "Vis flere detaljer…"
+msgstr "&Vis detaljer…"
 
 #: picard/ui/logview.py:197 picard/ui/metadatabox/__init__.py:744
 msgid "&Copy"
@@ -3706,16 +3655,12 @@ msgid "Log View"
 msgstr "Logg inn"
 
 #: picard/ui/logview.py:375
-#, fuzzy
-#| msgid "Clear Log"
 msgid "Clear &log…"
-msgstr "Tøm logg"
+msgstr "Tøm &loggen…"
 
 #: picard/ui/logview.py:379
-#, fuzzy
-#| msgid "Rename files"
 msgid "&Regex filter"
-msgstr "Omdøp filer"
+msgstr "Filtre med &regulært uttrykk"
 
 #: picard/ui/logview.py:384
 #, fuzzy
@@ -3845,10 +3790,8 @@ msgid "Green: %s."
 msgstr ""
 
 #: picard/ui/profile_tagger_scripts_dialog.py:54
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enable Tagger Scripts?"
-msgstr "Skru på taggerskript"
+msgstr "Skru på taggerskript?"
 
 #: picard/ui/profile_tagger_scripts_dialog.py:61
 #, python-format
@@ -3929,10 +3872,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Skriptfeil i \"%(script)s\": %(message)s"
 
 #: picard/ui/setupwizard.py:149
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "Velkommen til MusicBrainz Picard"
 
 #: picard/ui/setupwizard.py:169
 msgid ""
@@ -3985,10 +3926,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:254
-#, fuzzy
-#| msgid "Authentication required"
 msgid "Destination folder required"
-msgstr "Autorisering nødvendig"
+msgstr "Målmappe kreves"
 
 #: picard/ui/setupwizard.py:255
 msgid ""
@@ -4310,9 +4249,8 @@ msgstr ""
 
 #: picard/ui/coverartbox/__init__.py:555
 #: picard/ui/itemviews/basetreeview.py:348
-#, fuzzy
 msgid "Show &more details…"
-msgstr "Vis flere detaljer…"
+msgstr "Vis &flere detaljer…"
 
 #: picard/ui/coverartbox/__init__.py:561
 msgid "Keep original cover art"
@@ -4375,10 +4313,9 @@ msgid "Don't show this warning again"
 msgstr "Ikke vis denne advarselen igjen."
 
 #: picard/ui/dialogs/installconfirm.py:93
-#, fuzzy, python-brace-format
-#| msgid "Install plugin…"
+#, python-brace-format
 msgid "Install plugin: {name}"
-msgstr "Installér programtillegg…"
+msgstr "Installér programtillegg: {name}"
 
 #: picard/ui/dialogs/installconfirm.py:99
 #: picard/ui/dialogs/installconfirm.py:101
@@ -4417,16 +4354,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:96
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin"
-msgstr "Installér programtillegg…"
+msgstr "Installér programtillegg"
 
 #: picard/ui/dialogs/installplugin.py:132 picard/ui/options/plugins.py:121
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Search plugins…"
-msgstr "Installér programtillegg…"
+msgstr "Søk etter programtillegg…"
 
 #: picard/ui/dialogs/installplugin.py:137
 #: picard/ui/dialogs/installplugin.py:366
@@ -4524,10 +4457,8 @@ msgid "Local"
 msgstr "Lokale filer"
 
 #: picard/ui/dialogs/installplugin.py:248
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install…"
-msgstr "Installér programtillegg…"
+msgstr "Installere…"
 
 #: picard/ui/dialogs/installplugin.py:312
 #: picard/ui/dialogs/installplugin.py:609
@@ -4605,10 +4536,8 @@ msgid "Please select a local plugin directory."
 msgstr "Velg en gyldig fpcalc programfil."
 
 #: picard/ui/dialogs/installplugin.py:609
-#, fuzzy
-#| msgid "Invalid Title"
 msgid "Invalid Directory"
-msgstr "Ugyldig tittel"
+msgstr "Ugyldig mappe"
 
 #: picard/ui/dialogs/installplugin.py:617
 msgid "Invalid Plugin Directory"
@@ -4680,16 +4609,13 @@ msgid "Please report this issue on the %s."
 msgstr ""
 
 #: picard/ui/dialogs/plugin_error.py:174
-#, fuzzy
-#| msgid "MusicBrainz Track Id"
 msgid "MusicBrainz bug tracker"
-msgstr "MusicBrainz Spor ID"
+msgstr "MusicBrainz feilrapporteringssystem"
 
 #: picard/ui/dialogs/plugin_error.py:182
-#, fuzzy, python-format
-#| msgid "Plugins"
+#, python-format
 msgid "Plugin \"%s\":"
-msgstr "Programtillegg"
+msgstr "Programtillegget «%s»:"
 
 #: picard/ui/dialogs/plugin_error.py:187
 msgid "Error reported by the plugin:"
@@ -4709,10 +4635,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:84
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Name"
-msgstr "Programtillegg"
+msgstr "Programtilleggets navn"
 
 #: picard/ui/dialogs/plugin_order_selector.py:85
 msgid "Processor"
@@ -4752,11 +4676,11 @@ msgid "Confirm Reset"
 msgstr "Bekreft tilbakestilling"
 
 #: picard/ui/dialogs/plugin_order_selector.py:203
-#, fuzzy
-#| msgid "Are you sure you want to remove this profile?"
 msgid ""
 "Are you sure you want to reset the execution order to the plugin defaults?"
-msgstr "Er du sikker på at du vil fjerne denne profilen?"
+msgstr ""
+"Er du sikker på at du vil tilbakestille kjørerekkefølgen til "
+"standardinnstillingen for dette programtillegget?"
 
 #: picard/ui/dialogs/plugininfo.py:48
 #, fuzzy
@@ -4779,10 +4703,8 @@ msgid "Registry ID:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:102
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "State:"
-msgstr "Bitfrekvens:"
+msgstr "Tilstand:"
 
 #: picard/ui/dialogs/plugininfo.py:103
 #: picard/ui/forms/ui_scripteditor_details.py:103
@@ -4838,10 +4760,8 @@ msgid "Homepage:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:113
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report Bugs To:"
-msgstr "&Rapportér en feil…"
+msgstr "Rapportér feil til:"
 
 #: picard/ui/dialogs/plugininfo.py:114
 #: picard/ui/widgets/plugindetailswidget.py:185
@@ -4869,10 +4789,8 @@ msgid "Trusted"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:247
-#, fuzzy
-#| msgid "Comment"
 msgid "Community"
-msgstr "Kommentar"
+msgstr "Fellesskap"
 
 #: picard/ui/dialogs/plugininfo.py:248
 msgid "Unregistered"
@@ -4947,9 +4865,8 @@ msgid "Submit disc ID"
 msgstr "Send inn disk ID"
 
 #: picard/ui/forms/ui_cdlookup.py:95
-#, fuzzy
 msgid "&Load into Picard"
-msgstr "Last inn i Picard"
+msgstr "&Last inn i Picard"
 
 #: picard/ui/forms/ui_cdlookup.py:96
 msgid "&Submit disc ID"
@@ -5108,10 +5025,8 @@ msgid "Sessions directory:"
 msgstr "Destinasjonsmappe:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:116
-#, fuzzy
-#| msgid "Version"
 msgid "Saving sessions:"
-msgstr "Versjon"
+msgstr "Lagrer økter:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:117
 msgid "Auto-save every N minutes (0 to disable):"
@@ -5130,10 +5045,8 @@ msgid "Do not make MusicBrainz requests on restore"
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
-#, fuzzy
-#| msgid "Loading…"
 msgid "Loading sessions:"
-msgstr "Laster…"
+msgstr "Laster inn økter:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:122
 msgid "Load last saved session on startup"
@@ -5193,7 +5106,7 @@ msgstr "Bruk følgende filnavn for bilder:"
 
 #: picard/ui/forms/ui_options_cover.py:134
 msgid "Overwrite the file if it already exists"
-msgstr "Overskriv filen hvis den allerede finnes?"
+msgstr "Overskriv filen hvis den allerede finnes"
 
 #: picard/ui/forms/ui_options_cover.py:135
 msgid "Save only a single front image as separate file"
@@ -5527,10 +5440,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Available Option Settings"
-msgstr "Kodeinnstillinger"
+msgstr "Tilgjengelige innstillinger"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -5788,10 +5699,8 @@ msgid " MB"
 msgstr ""
 
 #: picard/ui/forms/ui_options_network.py:184
-#, fuzzy
-#| msgid "Clear Log"
 msgid "Clear cache"
-msgstr "Tøm logg"
+msgstr "Tøm hurtigbuffer"
 
 #: picard/ui/forms/ui_options_network.py:186
 msgid "Default listening port:"
@@ -6117,7 +6026,6 @@ msgstr ""
 "\"_ / _\". Du kan også skrive din egen. </p></body></html>"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
-#, fuzzy
 msgid "Save iTunes compatible grouping and work"
 msgstr "Lagre gruppering og åndsverk på en måte som er kompatibel med iTunes"
 
@@ -6152,7 +6060,7 @@ msgstr "Windows-1252"
 #: picard/ui/forms/ui_passworddialog.py:67
 #: picard/ui/mainwindow/__init__.py:2112
 msgid "Authentication Required"
-msgstr "Autorisering nødvendig"
+msgstr "Autentisering kreves"
 
 #: picard/ui/forms/ui_provider_options_caa.py:79
 #, fuzzy
@@ -6310,16 +6218,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/infodialog/dialog.py:328
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"Dobbelklikk for å åpne i ekstern forhåndsviser\n"
-"Midlertidig fil: %(tempfile)s\n"
-"Kilde: %(sourcefile)s"
+msgstr "Dobbeltklikk for å åpne i et eksternt visningsprogram"
 
 #: picard/ui/infodialog/dialog.py:338
 msgid "Missing temporary file"
@@ -6660,10 +6560,8 @@ msgid "File Creation Time"
 msgstr ""
 
 #: picard/ui/itemviews/columns.py:197
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "Bitfrekvens:"
+msgstr "Bitfrekvens"
 
 #: picard/ui/itemviews/columns.py:205
 msgid "Genre"
@@ -6706,10 +6604,9 @@ msgid "Extra files: %(count)d"
 msgstr ""
 
 #: picard/ui/itemviews/match_quality_column.py:255
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "Ufiltrerte filer"
+msgstr "Uoverensstemmende filer: %(count)d"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
 #, fuzzy
@@ -6887,16 +6784,14 @@ msgid "Confirm Delete"
 msgstr "Bekreft tilbakestilling"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:115
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to remove this profile?"
+#, python-brace-format
 msgid "Are you sure you want to delete the custom column \"{title}\"?"
-msgstr "Er du sikker på at du vil fjerne denne profilen?"
+msgstr "Er du sikker på at du vil slette den egendefinerte kolonnen «{title}»?"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:137
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to remove this profile?"
+#, python-brace-format
 msgid "Are you sure you want to delete {n} selected custom columns?"
-msgstr "Er du sikker på at du vil fjerne denne profilen?"
+msgstr "Er du sikker på at du vil slette de {n} valgte egendefinerte kolonnene?"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:154
 #, python-format
@@ -6904,10 +6799,8 @@ msgid "Invalid column: %s"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:154
-#, fuzzy
-#| msgid "Invalid Title"
 msgid "Invalid column"
-msgstr "Ugyldig tittel"
+msgstr "Ugyldig kolonne"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:179
 msgid "Blank expression"
@@ -6936,20 +6829,18 @@ msgid "Valid"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:107
-#, fuzzy, python-format
-#| msgid "Error"
+#, python-format
 msgid "%d error"
 msgid_plural "%d errors"
-msgstr[0] "Feil"
-msgstr[1] "Feil"
+msgstr[0] "%d feil"
+msgstr[1] "%d feil"
 
 #: picard/ui/itemviews/custom_columns/validation.py:109
-#, fuzzy, python-format
-#| msgid "Warning"
+#, python-format
 msgid "%d warning"
 msgid_plural "%d warnings"
-msgstr[0] "Advarsel"
-msgstr[1] "Advarsel"
+msgstr[0] "%d advarsel"
+msgstr[1] "%d advarseler"
 
 #: picard/ui/itemviews/custom_columns/validation.py:142
 msgid "Title is required and cannot be empty"
@@ -6978,10 +6869,9 @@ msgid "Key is required"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:242
-#, fuzzy, python-format
-#| msgid "Invalid Title"
+#, python-format
 msgid "Invalid field key: \"%s\""
-msgstr "Ugyldig tittel"
+msgstr "Ugyldig feltnøkkel: «%s»"
 
 #: picard/ui/itemviews/custom_columns/validation.py:251
 msgid ""
@@ -6989,10 +6879,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/validation.py:265
-#, fuzzy, python-format
-#| msgid "Enabled scripts:"
+#, python-format
 msgid "Invalid script syntax: %s"
-msgstr "Aktiverte skript:"
+msgstr "Ugyldig skriptsyntaks: %s"
 
 #: picard/ui/itemviews/custom_columns/validation.py:273
 msgid "Very long scripts may impact performance"
@@ -7129,10 +7018,8 @@ msgid "Open AcoustID options"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:840
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup by…"
-msgstr "Slå opp CD…"
+msgstr "Slå opp via…"
 
 #: picard/ui/mainwindow/__init__.py:849 picard/ui/mainwindow/actions.py:406
 msgid "Lookup &CD…"
@@ -7179,10 +7066,8 @@ msgid "&Profiles"
 msgstr "Filflytting"
 
 #: picard/ui/mainwindow/__init__.py:1092
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "&Quick settings"
-msgstr "Kodeinnstillinger"
+msgstr "&Hurtiginnstillinger"
 
 #: picard/ui/mainwindow/__init__.py:1096
 msgid "&Options"
@@ -7193,10 +7078,8 @@ msgid "&Tools"
 msgstr "&Verktøy"
 
 #: picard/ui/mainwindow/__init__.py:1122
-#, fuzzy
-#| msgid "Plugins"
 msgid "&Plugin Tools"
-msgstr "Programtillegg"
+msgstr "&Programtillegg"
 
 #: picard/ui/mainwindow/__init__.py:1129 picard/ui/scripteditor/__init__.py:331
 msgid "&Help"
@@ -7228,12 +7111,11 @@ msgid "Adding directory: \"%(directory)s\" …"
 msgstr "Legger til mappe \"%(directory)s\" …"
 
 #: picard/ui/mainwindow/__init__.py:1472
-#, fuzzy, python-brace-format
-#| msgid "Convert File Names to Tags"
+#, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
-msgstr[0] "Konverter filnavn om till tagger"
-msgstr[1] "Konverter filnavn om till tagger"
+msgstr[0] "Flytt «{filename}» til papirkurven?"
+msgstr[1] "Flytt {count} filer til papirkurven?"
 
 #: picard/ui/mainwindow/__init__.py:1478 picard/ui/mainwindow/actions.py:197
 #, fuzzy
@@ -7247,16 +7129,14 @@ msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:1602 picard/ui/mainwindow/__init__.py:1627
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid "Loading session from \"%(path)s\" …"
-msgstr "Henter album %(id)s …"
+msgstr "Laster økten fra «%(path)s» …"
 
 #: picard/ui/mainwindow/__init__.py:1618 picard/ui/mainwindow/__init__.py:1645
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid "Session loaded from \"%(path)s\""
-msgstr "Henter album %(id)s …"
+msgstr "Økten ble lastet inn fra «%(path)s»"
 
 #: picard/ui/mainwindow/__init__.py:1721
 msgid "Configuration Required"
@@ -7334,10 +7214,8 @@ msgid "Waiting for MusicBrainz authentication…"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:2125
-#, fuzzy
-#| msgid "MusicBrainz Recording Id"
 msgid "MusicBrainz authentication declined"
-msgstr "MusicBrainz Innspillings ID"
+msgstr "Autentisering med MusicBrainz ble avvist"
 
 #: picard/ui/mainwindow/__init__.py:2133
 msgid "Successfully authenticated with MusicBrainz"
@@ -7364,32 +7242,24 @@ msgid "No profiles configured"
 msgstr "Flytt profil nedover"
 
 #: picard/ui/mainwindow/__init__.py:2398
-#, fuzzy
-#| msgid "Configuration file:"
 msgid "Configure profiles…"
-msgstr "Konfigurasjon nødvendig:"
+msgstr "Konfigurerer profiler…"
 
 #: picard/ui/mainwindow/__init__.py:2466
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "No quick settings configured"
-msgstr "Kodeinnstillinger"
+msgstr "Ingen hurtiginnstillinger er konfigurert"
 
 #: picard/ui/mainwindow/__init__.py:2471
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Configure quick settings…"
-msgstr "Kodeinnstillinger"
+msgstr "Konfigurer hurtiginnstillinger…"
 
 #: picard/ui/mainwindow/actions.py:82
 msgid "&Options…"
 msgstr "&Alternativer…"
 
 #: picard/ui/mainwindow/actions.py:90
-#, fuzzy
-#| msgid "Enabled scripts:"
 msgid "&Edit scripts…"
-msgstr "Aktiverte skript:"
+msgstr "&Rediger skript…"
 
 #: picard/ui/mainwindow/actions.py:91
 msgid "Ctrl+Shift+S"
@@ -7518,10 +7388,8 @@ msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow/actions.py:254
-#, fuzzy
-#| msgid "Lookup &CD…"
 msgid "Lookup by &ISRC"
-msgstr "Slå opp &CD…"
+msgstr "Slå opp via &ISRC-kode"
 
 #: picard/ui/mainwindow/actions.py:255
 #, fuzzy
@@ -7643,10 +7511,8 @@ msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow/actions.py:416
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD &log file…"
-msgstr "Slå opp CD…"
+msgstr "Slå opp CD-&loggfil…"
 
 #: picard/ui/mainwindow/actions.py:417
 #, fuzzy
@@ -7655,10 +7521,8 @@ msgid "Lookup release from a CD ripping log file"
 msgstr "Slå opp detaljene av CDen i cd-rom stasjonen"
 
 #: picard/ui/mainwindow/actions.py:425
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC &tag…"
-msgstr "Slå opp CD…"
+msgstr "Slår opp TOC-&tagg…"
 
 #: picard/ui/mainwindow/actions.py:426
 msgid "Lookup release via disc identifiers from track tags"
@@ -7721,7 +7585,7 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow/actions.py:471
 msgid "&Lookup"
-msgstr "MB &Søk"
+msgstr "S&lå opp"
 
 #: picard/ui/mainwindow/actions.py:472
 msgid "Lookup selected items in MusicBrainz"
@@ -7789,10 +7653,8 @@ msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow/actions.py:540
-#, fuzzy
-#| msgid "Play"
 msgid "&Play"
-msgstr "Spill"
+msgstr "S&pill"
 
 #: picard/ui/mainwindow/actions.py:541 picard/ui/player/toolbar.py:69
 msgid "Play selected files"
@@ -7845,10 +7707,8 @@ msgid "Save the current session to the last used file"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:603
-#, fuzzy
-#| msgid "Loading…"
 msgid "&Load Session…"
-msgstr "Laster…"
+msgstr "&Last inn økt…"
 
 #: picard/ui/mainwindow/actions.py:604
 msgid "Load a session file"
@@ -8144,10 +8004,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Logget inn som <b>%s</b>."
 
 #: picard/ui/options/general.py:154
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Feil ved CD oppslag"
+msgstr "Utloggingsfeil"
 
 #: picard/ui/options/general.py:157
 #, python-format
@@ -8196,10 +8054,8 @@ msgid "Genres"
 msgstr "Sjangre"
 
 #: picard/ui/options/genres.py:98
-#, fuzzy
-#| msgid "Rename files"
 msgid "Test genres filter:"
-msgstr "Omdøp filer"
+msgstr "Test sjangerfilter:"
 
 #: picard/ui/options/genres.py:100
 msgid "Enter genres or folksonomy tags to test, one per line."
@@ -8316,7 +8172,7 @@ msgstr "Gruppér"
 
 #: picard/ui/options/interface_toolbar.py:92 picard/ui/options/lookup.py:35
 msgid "Lookup"
-msgstr "MB Søk"
+msgstr "Slå opp"
 
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Scan"
@@ -8339,16 +8195,12 @@ msgid "Submit AcoustIDs"
 msgstr "Send AcoustIDer"
 
 #: picard/ui/options/interface_toolbar.py:128
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "Slå opp CD…"
+msgstr "Slå opp TOC-&tagg…"
 
 #: picard/ui/options/interface_toolbar.py:132
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD log file…"
-msgstr "Slå opp CD…"
+msgstr "Slå opp CD-loggfil…"
 
 #: picard/ui/options/interface_toolbar.py:140 picard/ui/player/toolbar.py:68
 msgid "Play"
@@ -8568,8 +8420,6 @@ msgid "Plugins unavailable: {reason}."
 msgstr ""
 
 #: picard/ui/options/plugins.py:128
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin…"
 msgstr "Installér programtillegg…"
 
@@ -8578,10 +8428,8 @@ msgid "Install a new plugin from the registry or a custom URL"
 msgstr ""
 
 #: picard/ui/options/plugins.py:133 picard/ui/options/plugins.py:275
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refresh All"
-msgstr "&Oppdater"
+msgstr "Oppdater alt"
 
 #: picard/ui/options/plugins.py:134
 msgid "Refresh plugin registry, list, and check for updates"
@@ -8598,25 +8446,20 @@ msgid "Show/hide plugin details panel"
 msgstr ""
 
 #: picard/ui/options/plugins.py:225
-#, fuzzy, python-brace-format
-#| msgid "plus {extra_file_count:,d} other plugin."
-#| msgid_plural "plus {extra_file_count:,d} other plugins."
+#, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
-msgstr[0] "pluss ett till programtillegg."
-msgstr[1] "pluss {extra_file_count:,d} till programtillegg."
+msgstr[0] "{plugin_count:,d} programtillegg installért"
+msgstr[1] "{plugin_count:,d} programtillegg installert"
 
 #: picard/ui/options/plugins.py:234
-#, fuzzy, python-brace-format
-#| msgid "Error loading plugins list: %(error)s"
+#, python-brace-format
 msgid "Error loading plugins: {}"
-msgstr "Feil ved henting av programtilleggsliste: %(error)s"
+msgstr "Feil ved lasting av programtillegg: {}"
 
 #: picard/ui/options/plugins.py:239
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refreshing…"
-msgstr "&Oppdater"
+msgstr "Oppdaterer…"
 
 #: picard/ui/options/plugins.py:240
 msgid "Refreshing plugin registry, list, and checking for updates…"
@@ -8628,13 +8471,11 @@ msgid "Error refreshing: {}"
 msgstr ""
 
 #: picard/ui/options/plugins.py:260
-#, fuzzy, python-brace-format
-#| msgid "plus {extra_file_count:,d} other plugin."
-#| msgid_plural "plus {extra_file_count:,d} other plugins."
+#, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
-msgstr[0] "pluss ett till programtillegg."
-msgstr[1] "pluss {extra_file_count:,d} till programtillegg."
+msgstr[0] "{plugin_count:,d} programtillegg"
+msgstr[1] "{plugin_count:,d} programtillegg"
 
 #: picard/ui/options/plugins.py:264
 #, python-brace-format
@@ -8683,11 +8524,8 @@ msgid "Update Failed"
 msgstr ""
 
 #: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:737
-#, fuzzy
-#| msgid "Do you want to update the plugin now?"
-#| msgid_plural "Do you want to update the plugins now?"
 msgid "Failed to update the plugin."
-msgstr "Vil du oppdatere programtillegget nå?"
+msgstr "Kunne ikke oppdatere programtillegget."
 
 #: picard/ui/options/profiles.py:93
 msgid "Option Profiles"
@@ -8742,10 +8580,8 @@ msgid "Unknown script"
 msgstr "Ukjent skript"
 
 #: picard/ui/options/profiles.py:340
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Gi nytt navn"
+msgstr "Ingen aktiverte skript"
 
 #: picard/ui/options/profiles.py:341
 msgid "Enabled scripts:"
@@ -8876,10 +8712,8 @@ msgid "Enable this profile after import?"
 msgstr ""
 
 #: picard/ui/options/profiles.py:668 picard/ui/options/profiles.py:727
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import Profile"
-msgstr "&Importér ei skriptfil"
+msgstr "Importér profil"
 
 #: picard/ui/options/profiles.py:679 picard/ui/options/profiles.py:767
 #: picard/ui/options/profiles.py:834
@@ -8900,10 +8734,9 @@ msgid "Profile Exists"
 msgstr "Filflytting"
 
 #: picard/ui/options/profiles.py:697
-#, fuzzy, python-format
-#| msgid "Overwrite the file if it already exists"
+#, python-format
 msgid "A profile '%s' with the same ID already exists."
-msgstr "Overskriv filen hvis den allerede finnes?"
+msgstr "En profil med navnet '%s' med samme ID finnes allerede."
 
 #: picard/ui/options/profiles.py:700
 #, python-format
@@ -8918,10 +8751,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/profiles.py:712
-#, fuzzy, python-format
-#| msgid "Replacement"
+#, python-format
 msgid "Replace '%s'"
-msgstr "Erstatning"
+msgstr "Erstatt «%s»"
 
 #: picard/ui/options/profiles.py:715
 msgid "Create new copy"
@@ -8934,10 +8766,8 @@ msgid "Import Warnings"
 msgstr "Advarsel"
 
 #: picard/ui/options/profiles.py:823
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and Replace Profile"
-msgstr "&Importér ei skriptfil"
+msgstr "Importér og erstatt profil"
 
 #: picard/ui/options/profiles.py:840
 #, fuzzy
@@ -9070,10 +8900,8 @@ msgid "Script Error"
 msgstr "Skriptfeil"
 
 #: picard/ui/options/sessions.py:45
-#, fuzzy
-#| msgid "Version"
 msgid "Sessions"
-msgstr "Versjon"
+msgstr "Økter"
 
 #: picard/ui/options/sessions.py:114
 #, fuzzy
@@ -9347,10 +9175,8 @@ msgid "The script title must not be empty."
 msgstr ""
 
 #: picard/ui/scripteditor/__init__.py:686
-#, fuzzy
-#| msgid "Rename script"
 msgid "Activate script?"
-msgstr "Gi nytt navn"
+msgstr "Aktivere skriptet?"
 
 #: picard/ui/scripteditor/__init__.py:687
 #, python-format
@@ -9448,19 +9274,15 @@ msgid "Retry"
 msgstr "Prøv igjen"
 
 #: picard/ui/searchdialog/__init__.py:250
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "<strong>Following error occurred while fetching results:<br><br></"
-#| "strong>Network request error for %(url)s:<br>%(error)s (QT code %"
-#| "(qtcode)d, HTTP code %(statuscode)r)<br>"
+#, python-brace-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
 "strong>Network request error for {url}:<br>{error} (QT code {qtcode}, HTTP "
 "code {statuscode})<br>"
 msgstr ""
-"<strong>Det oppsto en feil ved henting av resultater:<br><br></strong>feil "
-"ved Nettverkforespørsel for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP "
-"code %(statuscode)r)<br>"
+"<strong>Følgende feil oppsto under henting av resultater:<br><br></strong>"
+"feil ved nettverksforespørsel for {url}:<br>{error} (QT code {qtcode}, HTTP "
+"code {statuscode})<br>"
 
 #: picard/ui/searchdialog/__init__.py:261
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9566,10 +9388,8 @@ msgstr "Sist oppdatert:"
 
 #: picard/ui/widgets/plugindetailswidget.py:121
 #: picard/ui/widgets/pluginlistwidget.py:650
-#, fuzzy
-#| msgid "is not installed"
 msgid "Uninstall"
-msgstr "er ikke installert"
+msgstr "Avinstaller"
 
 #: picard/ui/widgets/plugindetailswidget.py:125
 #: picard/ui/widgets/pluginlistwidget.py:665
@@ -9589,10 +9409,8 @@ msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:246
 #: picard/ui/widgets/plugindetailswidget.py:373
-#, fuzzy
-#| msgid "is not installed"
 msgid "Uninstall Failed"
-msgstr "er ikke installert"
+msgstr "Avinstallering mislyktes"
 
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
@@ -9610,10 +9428,8 @@ msgid "Update to {version}"
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:319
-#, fuzzy
-#| msgid "Plugins"
 msgid "Update Plugin"
-msgstr "Programtillegg"
+msgstr "Oppdatere programtillegg"
 
 #: picard/ui/widgets/plugindetailswidget.py:320
 #, python-brace-format
@@ -9624,10 +9440,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:383
-#, fuzzy
-#| msgid "Loading…"
 msgid "Updating…"
-msgstr "Laster…"
+msgstr "Oppdaterer…"
 
 #: picard/ui/widgets/pluginformat.py:30
 msgid "current"
@@ -9644,10 +9458,9 @@ msgid "Update All"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:106
-#, fuzzy, python-brace-format
-#| msgid "Unmatched Files"
+#, python-brace-format
 msgid "Update Selected ({count})"
-msgstr "Ufiltrerte filer"
+msgstr "Oppdatert valgte {count}"
 
 #: picard/ui/widgets/pluginlistwidget.py:171
 msgid "Enabled"
@@ -9658,10 +9471,8 @@ msgid "Version"
 msgstr "Versjon"
 
 #: picard/ui/widgets/pluginlistwidget.py:171
-#, fuzzy
-#| msgid "Version"
 msgid "New Version"
-msgstr "Versjon"
+msgstr "Ny versjon"
 
 #: picard/ui/widgets/pluginlistwidget.py:336
 msgid "This plugin is included in updates"
@@ -9709,10 +9520,8 @@ msgid "View Repository"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:680
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report a Bug"
-msgstr "&Rapportér en feil…"
+msgstr "Rapportér en feil"
 
 #: picard/ui/widgets/pluginlistwidget.py:686
 msgid "Execution Order"
@@ -9724,10 +9533,8 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:757
 #: picard/ui/widgets/pluginlistwidget.py:789
 #: picard/ui/widgets/pluginlistwidget.py:875
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Error"
-msgstr "Programtillegg"
+msgstr "Programtilleggfeil"
 
 #: picard/ui/widgets/pluginlistwidget.py:696
 msgid "Failed to enable the plugin."
@@ -9749,10 +9556,8 @@ msgid "Could not find plugin repository URL"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:808
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Reinstall Local Plugin"
-msgstr "Installér programtillegg…"
+msgstr "Installér lokalt programtillegg på nytt"
 
 #: picard/ui/widgets/pluginlistwidget.py:811
 msgid ""
@@ -9800,16 +9605,13 @@ msgid "No Data"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:981
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Uninstall Plugin"
-msgstr "Installér programtillegg…"
+msgstr "Avinstallér programtillegg"
 
 #: picard/ui/widgets/pluginlistwidget.py:989
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to quit Picard?"
+#, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
-msgstr "Er du sikker på at du vil avslutte Picard?"
+msgstr "Vil du avinstallere «{name}»?"
 
 #: picard/ui/widgets/pluginlistwidget.py:992
 msgid "Also remove plugin configuration"
@@ -9820,10 +9622,8 @@ msgid "Remove all saved settings and configuration for this plugin"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:997
-#, fuzzy
-#| msgid "is not installed"
 msgid "Yes, Uninstall!"
-msgstr "er ikke installert"
+msgstr "Ja, avinstaller!"
 
 #: picard/ui/widgets/pluginlistwidget.py:1021
 msgid "Switch Git Ref"
@@ -9871,20 +9671,16 @@ msgid "Remove profile"
 msgstr "Fjern profil"
 
 #: picard/ui/widgets/profilelistwidget.py:62
-#, fuzzy
-#| msgid "Configuration file:"
 msgid "Export profile…"
-msgstr "Konfigurasjon nødvendig:"
+msgstr "Eksporter profil…"
 
 #: picard/ui/widgets/profilelistwidget.py:66
 msgid "Copy to clipboard"
 msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:70
-#, fuzzy
-#| msgid "&Import a script file"
 msgid "Import and replace…"
-msgstr "&Importér ei skriptfil"
+msgstr "Importér og erstatt…"
 
 #: picard/ui/widgets/profilelistwidget.py:73
 msgid "Import from clipboard"
@@ -9903,10 +9699,8 @@ msgid "Enter custom ref (tag, branch, or commit):"
 msgstr ""
 
 #: picard/ui/widgets/refselector.py:79
-#, fuzzy
-#| msgid "Customize…"
 msgid "Custom"
-msgstr "Tilpass…"
+msgstr "Tilpasset"
 
 #: picard/ui/widgets/refselector.py:118
 #, python-brace-format
@@ -9918,10 +9712,9 @@ msgid "Use the default ref (usually main/master branch)"
 msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:144
-#, fuzzy, python-brace-format
-#| msgid "Plugin \"%(plugin)s\""
+#, python-brace-format
 msgid "Plugin: {plugin_name}"
-msgstr "Programtillegget «%(plugin)s»"
+msgstr "Programtillegg: {plugin_name}"
 
 #: picard/ui/widgets/scriptdocumentation.py:217
 msgid "Find:"
