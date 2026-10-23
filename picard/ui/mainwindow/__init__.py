@@ -87,7 +87,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.debug_opts import DebugOpt
-from picard.extension_points.item_actions import add_action_to_menu
+from picard.extension_points.item_actions import (
+    add_action_to_menu,
+    remove_leaf_actions as _remove_leaf_actions,
+)
 from picard.extension_points.plugin_tools_menu import (
     ext_point_plugin_tools_items,
     signaler,
@@ -1122,6 +1125,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.plugin_tools_menu = self.menuBar().addMenu(_("&Plugin Tools"))
         self.plugin_tools_menu.menuAction().setVisible(False)
+        # Persistent cache of plugin menu-path submenus. Reused across rebuilds
+        # so the submenu QMenu objects are never destroyed (see PICARD-3479).
+        self._plugin_tools_submenus: dict[tuple[str, ...], QtWidgets.QMenu] = {}
         self._make_plugin_tools_menu()
 
         self.menuBar().addSeparator()
@@ -2423,20 +2429,40 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return
 
     def _make_plugin_tools_menu(self):
-        """Update the Plugin Tools menu"""
+        """Update the Plugin Tools menu.
+
+        On macOS the Plugin Tools menu lives in the native (global) menu bar.
+        Calling ``QMenu.clear()`` here would delete the submenu ``QMenu``
+        objects created for plugin menu paths, while AppKit may still hold a
+        reference to the corresponding ``NSMenuItem``. A later focus switch
+        (``-[NSWindow becomeKeyWindow]``) then sends ``setSubmenu:`` to the
+        freed ``NSMenuItem`` and crashes with EXC_BAD_ACCESS (PICARD-3479).
+
+        To avoid that, we never destroy and recreate the submenu ``QMenu``
+        objects. They are cached in ``self._plugin_tools_submenus`` and reused
+        across rebuilds; only the leaf actions are removed and re-added.
+        """
         actions = list(ext_point_plugin_tools_items)
 
         plugin_tools_menu = self.plugin_tools_menu
         if plugin_tools_menu is None:
             return
-        plugin_tools_menu.clear()
+
+        # Reuse a persistent submenu cache so submenu QMenu objects (which may
+        # be referenced by AppKit NSMenuItems) are never destroyed on rebuild.
+        plugin_menus = self._plugin_tools_submenus
+
+        # Remove only the leaf actions from the root menu and every cached
+        # submenu, keeping the submenu QMenu objects alive and attached.
+        _remove_leaf_actions(plugin_tools_menu)
+        for submenu in plugin_menus.values():
+            _remove_leaf_actions(submenu)
 
         if not actions:
             plugin_tools_menu.menuAction().setVisible(False)
             return
 
         plugin_tools_menu.menuAction().setVisible(True)
-        plugin_menus = {}
 
         for ActionClass in actions:
             # Instantiate action with API

@@ -132,6 +132,24 @@ def add_action_to_menu(
     action_menu.addAction(action)
 
 
+def remove_leaf_actions(menu: QtWidgets.QMenu) -> None:
+    """Remove a menu's leaf actions, preserving submenu (QMenu) child objects.
+
+    A "leaf" action is a plain action or separator (its ``menu()`` is ``None``).
+    Actions that own a submenu are left in place so the submenu ``QMenu``
+    objects are not destroyed.
+
+    This matters on macOS: submenu ``QMenu`` objects attached to the native
+    (global) menu bar are referenced by AppKit ``NSMenuItem`` instances.
+    Destroying and recreating them on a menu rebuild (as ``QMenu.clear()``
+    does) can leave a dangling ``NSMenuItem`` whose ``setSubmenu:`` is later
+    called on a focus switch, crashing with EXC_BAD_ACCESS (PICARD-3479).
+    """
+    for action in list(menu.actions()):
+        if action.menu() is None:
+            menu.removeAction(action)
+
+
 ext_point_album_actions = ExtensionPoint[type[BaseAction]](label='album_actions')
 ext_point_cluster_actions = ExtensionPoint[type[BaseAction]](label='cluster_actions')
 ext_point_clusterlist_actions = ExtensionPoint[type[BaseAction]](label='clusterlist_actions')
