@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   pypi-sdist:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       CODESIGN: 0
     steps:

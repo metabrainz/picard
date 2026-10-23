@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15-intel, ubuntu-latest, windows-2022]
+        os: [macos-15-intel, ubuntu-24.04, windows-2022]
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
 
     steps:
@@ -71,7 +71,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-24.04]
         python-version: ['3.8']
         dependencies: [
           "PyQt5==5.15.11",
@@ -104,7 +104,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15-intel, ubuntu-latest, windows-latest]
+        os: [macos-15-intel, ubuntu-24.04, windows-latest]
         python-version: ['3.8', '3.14']
 
     steps:
