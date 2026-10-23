@@ -22,7 +22,10 @@ import os
 import re
 from typing import Protocol
 
-from PyQt6.QtCore import QCollator
+from PyQt6.QtCore import (
+    QCollator,
+    QCollatorSortKey,
+)
 
 from picard.const.sys import (
     IS_MACOS,
@@ -33,6 +36,46 @@ from picard.const.sys import (
 _qcollator = QCollator()
 _qcollator_numeric = QCollator()
 _qcollator_numeric.setNumericMode(True)
+
+
+class _QtSortKey:
+    """Comparable wrapper around :class:`QCollatorSortKey`.
+
+    ``QCollatorSortKey`` only provides ``compare()`` and, via PyQt, a ``<``
+    operator; it does **not** implement a meaningful ``==``. That makes it
+    unsafe to use as a non-final element of a composite (tuple) sort key:
+    Python tuple comparison tests ``==`` on each element to decide whether to
+    advance to the next one, and two keys built from equal strings compare as
+    "not equal" (identity fallback), so later tie-break elements are never
+    considered. Defining ``__eq__``/``__lt__`` in terms of ``compare()``
+    restores correct, backend-independent tuple ordering.
+
+    The comparison methods are deliberately kept minimal: they sit on the hot
+    path of every Qt-collated sort, including the main item view. ``__lt__``
+    (by far the most-called during sorting) skips the ``isinstance`` guard
+    since it is only ever called with another ``_QtSortKey``; ``__eq__`` keeps
+    the guard so equality against unrelated objects stays well-defined.
+    ``>``/``>=``/``<=`` work through Python's reflected-operator fallback onto
+    ``__lt__``/``__eq__``.
+    """
+
+    __slots__ = ("_key",)
+
+    def __init__(self, key: QCollatorSortKey):
+        self._key = key
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _QtSortKey):
+            return NotImplemented
+        return self._key.compare(other._key) == 0
+
+    def __lt__(self, other: "_QtSortKey") -> bool:
+        return self._key.compare(other._key) < 0
+
+    def __hash__(self) -> int:  # pragma: no cover - not used for sorting
+        # Sort keys are not hashable in a content-meaningful way; fall back to
+        # identity. Provided only so the type is not unhashable.
+        return id(self)
 
 
 def setup_collator(logger: Callable):
@@ -87,7 +130,7 @@ def _sort_key_qt(string: str, numeric: bool = False) -> Comparable:
         # prefix with an alphabetic character to work around that.
         string = 'a' + string
 
-    return collator.sortKey(string)
+    return _QtSortKey(collator.sortKey(string))
 
 
 def _sort_key_strxfrm(string: str, numeric: bool = False) -> Comparable:

@@ -156,9 +156,29 @@ def test_length_sort_adapter() -> None:
 def test_article_insensitive_adapter() -> None:
     setup_i18n(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
-    expected = ["An Artist", "Artist", "The Beatles", "Beatles"]
+    # Sorted by article-stripped tail ("artist" before "beatles"); within a
+    # tie the bare form sorts before the articled form. This order is stable
+    # across collation backends (it does not depend on how QCollator sorts an
+    # empty sort key, which changed between the ICU releases in Qt 6.11/6.12).
+    expected = ["Artist", "An Artist", "Beatles", "The Beatles"]
     result = _sorted_values(ArticleInsensitiveAdapter, values)
     assert result == expected
+
+
+def test_article_insensitive_adapter_tie_break_is_stable() -> None:
+    # Regression: values reducing to the same tail must group together with a
+    # deterministic order and must not be split across an unrelated value.
+    # The previous tie-break collated the leading article (including the empty
+    # string), which placed "a thing" and "A thing" on opposite sides of
+    # "thing" and varied with the ICU/Qt version.
+    setup_i18n(None, 'en')
+    values = ["A thing", "thing", "a thing"]
+    result = _sorted_values(ArticleInsensitiveAdapter, values)
+    # The bare form sorts first. The two articled forms are identical for
+    # sorting (same tail and article after casefolding), so their relative
+    # order is unspecified, but they must stay grouped after the bare form.
+    assert result[0] == "thing"
+    assert set(result[1:]) == {"A thing", "a thing"}
 
 
 def test_composite_sort_adapter() -> None:
