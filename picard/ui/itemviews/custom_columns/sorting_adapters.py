@@ -179,16 +179,30 @@ class ArticleInsensitiveAdapter(_AdapterBase):
     def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return article-insensitive sort key for item.
 
-        Returns a tuple (tail, original_lower) so items compare by the tail
-        (without article) and tie-break by the original lowercased value.
+        Returns a tuple ``(tail, has_article, article)`` so items compare
+        primarily by the article-stripped tail (locale-aware), and tie-break
+        deterministically:
+
+        - ``has_article`` (0 for no article, 1 otherwise) groups the bare form
+          before the articled form when both reduce to the same tail.
+        - ``article`` (the normalized leading article, e.g. ``"an"``) orders
+          different articles against each other with a plain string compare.
+
+        The tie-break deliberately avoids collating a possibly-empty string:
+        the ordering of ``QCollator.sortKey("")`` against a non-empty key is
+        not stable across ICU versions (it changed between the ICU releases
+        bundled with Qt 6.11 and 6.12), and collating ``""`` could even place
+        the bare and articled forms of the same tail on opposite sides of an
+        unrelated value. A structural tie-break keeps the result stable and
+        reproducible regardless of the underlying collation backend.
         """
         v = (self._base.evaluate(obj) or "").strip()
         lv = v.casefold()
         for art in self._articles:
             prefix = f"{art} "
             if lv.startswith(prefix):
-                return (_sort_key(lv[len(prefix) :]), _sort_key(prefix))
-        return (_sort_key(lv), _sort_key(""))
+                return (_sort_key(lv[len(prefix) :]), 1, art)
+        return (_sort_key(lv), 0, "")
 
 
 class CompositeSortAdapter(_AdapterBase):
