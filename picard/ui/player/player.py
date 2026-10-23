@@ -222,6 +222,15 @@ class Player(QtCore.QObject):
         # hard stop, not just end of track
         self._playback_state = Player.PlaybackState.STOPPED
         self._player.stop()
+        # Clear the media source synchronously so the underlying QMediaPlayer
+        # releases the file handle right away. On Windows a save/move is queued
+        # immediately after stop() (see File.save -> _release_file_from_player,
+        # PICARD-3290/PICARD-3517); relying on the asynchronous
+        # playbackStateChanged handler to clear it later leaves the file locked
+        # when the background move runs. The end-of-track path still clears the
+        # source in _on_playback_state_changed; clearing an already-empty source
+        # here is a harmless no-op.
+        self._player.setSource(QtCore.QUrl())
         self.playback_state_changed.emit(self._playback_state)
 
     @QtCore.pyqtSlot(str)
