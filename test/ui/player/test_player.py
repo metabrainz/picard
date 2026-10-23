@@ -142,3 +142,21 @@ def test_end_of_track_clears_media_source(player):
     player._on_playback_state_changed(RealQMediaPlayer.PlaybackState.StoppedState)
 
     assert _source_cleared(player._mock_media_player)
+
+
+def test_unmapped_playback_state_is_ignored(player):
+    """An unrecognised playback state must not raise or change state.
+
+    QMediaPlayer only defines Stopped/Playing/Paused today, but the handler
+    must not raise UnboundLocalError should it ever receive another value: it
+    should leave the Player state untouched and emit no signal.
+    """
+    player._playback_state = Player.PlaybackState.PLAYING
+    received = []
+    player.playback_state_changed.connect(received.append)
+
+    # A sentinel value matching none of the known QMediaPlayer states.
+    player._on_playback_state_changed(object())
+
+    assert player._playback_state == Player.PlaybackState.PLAYING
+    assert received == []

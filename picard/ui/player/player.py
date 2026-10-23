@@ -273,6 +273,7 @@ class Player(QtCore.QObject):
         if state == QMediaPlayer.PlaybackState.StoppedState and self.is_playing:
             self._play_next()
         else:
+            new_state = None
             if state == QMediaPlayer.PlaybackState.StoppedState:
                 self._player.setSource(QtCore.QUrl())
                 new_state = Player.PlaybackState.STOPPED
