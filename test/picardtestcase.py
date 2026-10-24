@@ -229,7 +229,9 @@ def create_fake_png(extra: bytes = b''):
     return b'\x89PNG\x0d\x0a\x1a\x0a' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
 
-def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None):
+def create_image(
+    extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None, is_front=None
+):
     """Creates a CoverArtImage backed by fake PNG data, for use in tests."""
     return CoverArtImage(
         data=create_fake_png(extra_data),
@@ -238,6 +240,7 @@ def create_image(extra_data, types=None, support_types=False, support_multi_type
         support_types=support_types,
         support_multi_types=support_multi_types,
         id3_type=id3_type,
+        is_front=is_front,
     )
 
 

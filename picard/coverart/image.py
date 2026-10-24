@@ -98,6 +98,7 @@ class CoverArtImage:
         support_types: bool | None = None,
         support_multi_types: bool | None = None,
         id3_type: Id3ImageType | None = None,
+        is_front: bool | None = None,
     ):
         if types is None:
             self.types = []
@@ -131,6 +132,7 @@ class CoverArtImage:
         except ValueError:
             log.warning("Invalid ID3 image type %r in %r", type, self)
             self.id3_type = Id3ImageType.OTHER
+        self.is_front = is_front
 
     @property
     def source(self) -> str:
@@ -276,6 +278,7 @@ class CoverArtImage:
             support_types=self.support_types,
             support_multi_types=self.support_multi_types,
             id3_type=self.id3_type,
+            is_front=self.is_front,
         )
 
     @property

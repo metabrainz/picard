@@ -115,6 +115,12 @@ class CoverArtImageTest(PicardTestCase):
         self.assertTrue(image.is_front_image())
         self.assertEqual(Id3ImageType.COVER_FRONT, image.id3_type)
 
+    def test_is_front_override_image_types(self):
+        image = create_image(b'a', types=["booklet", "back"], support_types=True, is_front=True)
+        self.assertTrue(image.is_front_image())
+        image.is_front = False
+        self.assertFalse(image.is_front_image())
+
     def test_maintype(self):
         self.assertEqual("front", create_image(b'a').maintype)
         self.assertEqual("front", create_image(b'a', support_types=True).maintype)
@@ -332,7 +338,9 @@ class CoverArtImageTest(PicardTestCase):
             self.assertEqual(2, counters[counter_filename])
 
     def test_set_external_file_data(self):
-        image = CoverArtImage(comment='Foo', types=['back', 'spine'], support_types=True, support_multi_types=True)
+        image = CoverArtImage(
+            comment='Foo', types=['back', 'spine'], support_types=True, support_multi_types=True, is_front=True
+        )
         self.assertIsNone(image.external_file_coverart)
         image.set_external_file_data(create_fake_png())
         self.assertIsNotNone(image.external_file_coverart)
@@ -340,6 +348,7 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(image.external_file_coverart.types, image.types)
         self.assertEqual(image.external_file_coverart.support_types, image.support_types)
         self.assertEqual(image.external_file_coverart.support_multi_types, image.support_multi_types)
+        self.assertEqual(image.external_file_coverart.is_front, image.is_front)
 
 
 class CoverArtImageMakeFilenameTest(PicardTestCase):
