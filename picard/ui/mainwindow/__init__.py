@@ -813,13 +813,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # Find the first valid ISRC from selected files
         source_file = None
         isrc = None
-        for obj in objects:
-            if hasattr(obj, 'metadata'):
-                for value in obj.metadata.getall('isrc'):
-                    isrc = valid_isrc(value)
-                    if isrc:
-                        source_file = obj
-                        break
+        for obj in iter_files_from_objects(objects):
+            for value in obj.metadata.getall('isrc'):
+                isrc = valid_isrc(value)
+                if isrc:
+                    source_file = obj
+                    break
             if isrc:
                 break
         else:
