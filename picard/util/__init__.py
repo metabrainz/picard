@@ -479,7 +479,9 @@ def find_executable(*executables: str) -> str | None:
                 return os.path.abspath(f)
 
 
-def run_executable(executable: str, *args, timeout: int | float | None = None) -> tuple[int, str, str]:
+def run_executable(
+    executable: str, *args, timeout: int | float | None = None, input: bytes | None = None
+) -> tuple[int, str, str]:
     # Prevent new shell window from appearing
     startupinfo = None
     if IS_WIN:
@@ -492,13 +494,16 @@ def run_executable(executable: str, *args, timeout: int | float | None = None) -
     else:
         arguments = [executable, *args]
 
+    # Feed data on stdin when provided, otherwise keep stdin closed.
+    run_kwargs: dict = {'input': input} if input is not None else {'stdin': subprocess.DEVNULL}
+
     # Call program with arguments
     ret = subprocess.run(  # nosec: B603
         arguments,
-        stdin=subprocess.DEVNULL,
         capture_output=True,
         startupinfo=startupinfo,
         timeout=timeout,
+        **run_kwargs,
     )
 
     # Return (error code, stdout and stderr)
