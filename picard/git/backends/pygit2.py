@@ -353,6 +353,46 @@ class Pygit2Repository(GitRepository):
         _log_git_call("get_commit_author", commit_id, retval=ret)
         return ret
 
+    def get_signature(self, rev: str) -> tuple[bytes, bytes] | None:
+        result = self._get_signature(rev)
+        _log_git_call("get_signature", rev, retval='<signed>' if result else None)
+        return result
+
+    def _get_signature(self, rev: str) -> tuple[bytes, bytes] | None:
+        try:
+            obj = self._repo.revparse_single(rev)
+        except (pygit2.GitError, KeyError, ValueError):
+            return None
+
+        # Try the resolved object's own signature first. Annotated tags and
+        # commits both expose (signature, signed_payload) via gpg_signature;
+        # git does not verify it, it only stores and extracts it.
+        result = self._extract_gpg_signature(obj)
+        if result is not None:
+            return result
+
+        # If the object is an (unsigned) annotated tag, or a lightweight tag
+        # reference resolving to a tag/commit, fall back to the commit it points
+        # at: a signed release is commonly a tag pointing at a signed commit.
+        if getattr(obj, 'type', None) == pygit2.enums.ObjectType.COMMIT:
+            return None
+        try:
+            commit = obj.peel(pygit2.enums.ObjectType.COMMIT)
+        except (pygit2.GitError, ValueError):
+            return None
+        return self._extract_gpg_signature(commit)
+
+    @staticmethod
+    def _extract_gpg_signature(obj) -> tuple[bytes, bytes] | None:
+        """Return (signature, signed_payload) for a commit/tag, or None."""
+        try:
+            signature, payload = obj.gpg_signature
+        except (AttributeError, pygit2.GitError, ValueError):
+            return None
+        if not signature or not payload:
+            return None
+        return bytes(signature), bytes(payload)
+
     def fetch_remote(self, remote, refspec: str | None = None, callbacks=None):
         _log_git_call("fetch_remote", str(remote.name), refspec)
         if refspec:
