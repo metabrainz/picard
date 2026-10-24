@@ -36,6 +36,8 @@ def _normalize_isrc(value: str) -> str:
     Returns:
         Normalized uppercase ISRC string with separators removed.
     """
+    if not isinstance(value, str):
+        return ''
     return value.strip().replace('-', '').replace(' ', '').upper()
 
 
@@ -52,6 +54,8 @@ def valid_isrc(value: str) -> NormalizedISRC | None:
     Returns:
         NormalizedISRC if valid, None otherwise.
     """
+    if not isinstance(value, str):
+        return None
     normalized = _normalize_isrc(value)
     if _ISRC_RE.match(normalized):
         return NormalizedISRC(normalized)
@@ -59,19 +63,22 @@ def valid_isrc(value: str) -> NormalizedISRC | None:
 
 
 def format_isrc(value: str) -> str:
-    """Format a normalized ISRC for display with hyphens.
+    """Format an ISRC for display with hyphens.
 
     Converts `CCXXXYYNNNNN` to `CC-XXX-YY-NNNNN`.
 
     Args:
-        value: Normalized 12-character ISRC string.
+        value: ISRC string to format.
 
     Returns:
         Hyphenated display form, or the original value if not a valid ISRC.
     """
-    if not _ISRC_RE.match(value):
+    if not isinstance(value, str):
         return value
-    return f"{value[:2]}-{value[2:5]}-{value[5:7]}-{value[7:]}"
+    valid = valid_isrc(value)
+    if not valid:
+        return value
+    return f"{valid[:2]}-{valid[2:5]}-{valid[5:7]}-{valid[7:]}"
 
 
 def normalized_isrcs(values: list[str]) -> set[NormalizedISRC]:
