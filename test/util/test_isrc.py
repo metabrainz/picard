@@ -45,6 +45,10 @@ class TestNormalizeIsrc(PicardTestCase):
     def test_empty_string(self):
         self.assertEqual('', _normalize_isrc(''))
 
+    def test_non_string(self):
+        self.assertEqual('', _normalize_isrc(None))
+        self.assertEqual('', _normalize_isrc(12345))
+
 
 class TestValidIsrc(PicardTestCase):
     def test_valid_plain(self):
@@ -88,10 +92,23 @@ class TestValidIsrc(PicardTestCase):
     def test_invalid_random_string(self):
         self.assertIsNone(valid_isrc('not-an-isrc'))
 
+    def test_invalid_non_string(self):
+        self.assertIsNone(valid_isrc(None))
+        self.assertIsNone(valid_isrc(12345))
+
 
 class TestFormatIsrc(PicardTestCase):
     def test_standard(self):
         self.assertEqual('US-RC1-76-07839', format_isrc('USRC17607839'))
+
+    def test_lowercase(self):
+        self.assertEqual('US-RC1-76-07839', format_isrc('usrc17607839'))
+
+    def test_with_hyphens(self):
+        self.assertEqual('US-RC1-76-07839', format_isrc('us-rc1-76-07839'))
+
+    def test_with_spaces(self):
+        self.assertEqual('US-RC1-76-07839', format_isrc(' US RC1 76 07839 '))
 
     def test_finnish(self):
         self.assertEqual('FI-7S5-16-00001', format_isrc('FI7S51600001'))
@@ -101,6 +118,10 @@ class TestFormatIsrc(PicardTestCase):
 
     def test_empty_unchanged(self):
         self.assertEqual('', format_isrc(''))
+
+    def test_non_string_unchanged(self):
+        self.assertIsNone(format_isrc(None))
+        self.assertEqual(12345, format_isrc(12345))
 
     def test_invalid_12char_unchanged(self):
         # 12 chars but doesn't match ISRC pattern (digits in country code)
@@ -116,7 +137,7 @@ class TestNormalizedIsrcs(PicardTestCase):
         self.assertEqual({'USRC17607839', 'GBAYE0000351'}, result)
 
     def test_filters_invalid(self):
-        result = normalized_isrcs(['USRC17607839', 'INVALID', '', 'GBAYE0000351'])
+        result = normalized_isrcs(['USRC17607839', 'INVALID', '', None, 'GBAYE0000351'])
         self.assertEqual({'USRC17607839', 'GBAYE0000351'}, result)
 
     def test_normalizes_values(self):
