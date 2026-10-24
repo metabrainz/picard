@@ -19,6 +19,7 @@ This directory contains comprehensive documentation for Picard's Plugin v3 syste
 - **[WEBSITE.md](WEBSITE.md)** - Website implementation for registry generation
 - **[TRANSLATIONS.md](TRANSLATIONS.md)** - Translation system for plugins and registry
 - **[SECURITY.md](SECURITY.md)** - Security model and rationale
+- **[SIGNATURES.md](SIGNATURES.md)** - Optional plugin signature verification
 
 ### Reference
 

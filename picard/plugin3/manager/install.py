@@ -23,6 +23,7 @@ import shutil
 import tempfile
 
 from picard import log
+from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.utils import (
     get_local_path,
@@ -36,6 +37,7 @@ from picard.plugin3.manager.errors import (
     PluginAlreadyInstalledError,
     PluginBlacklistedError,
     PluginDirtyError,
+    PluginSignatureError,
     PluginUUIDConflictError,
 )
 from picard.plugin3.plugin import (
@@ -48,6 +50,10 @@ from picard.plugin3.plugin_metadata import (
     REF_TYPE_LOCAL,
     REF_TYPE_LOCAL_DEV,
     PluginMetadata,
+)
+from picard.plugin3.signature import (
+    VerifyResult,
+    verify as verify_signature,
 )
 from picard.plugin3.validation import PluginValidation
 
@@ -86,6 +92,7 @@ class PluginInstaller:
         discard_changes=False,
         enable_after_install=False,
         no_git=False,
+        allow_unverified=False,
     ):
         """Install a plugin from a git URL or local directory."""
         # Check if url is a local directory (git or plain)
@@ -107,11 +114,18 @@ class PluginInstaller:
         # Install from local directory or remote URL
         if local_path:
             return self._install_from_local_directory(
-                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install, no_git=no_git
+                local_path,
+                reinstall,
+                force_blacklisted,
+                ref,
+                discard_changes,
+                enable_after_install,
+                no_git=no_git,
+                allow_unverified=allow_unverified,
             )
 
         return self._install_from_remote_url(
-            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
+            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, allow_unverified
         )
 
     def _resolve_redirect(self, url):
@@ -168,6 +182,78 @@ class PluginInstaller:
             else:
                 self.manager._safe_remove_directory(temp_path, "temp directory after sync failure")
                 raise
+
+    def _verify_signature(self, temp_path, commit_id, source_url, plugin_uuid, allow_unverified=False):
+        """Verify the synced commit's signature against the registry's keys.
+
+        Looks up the registry entry for this plugin (by UUID, falling back to
+        URL). If it lists ``signing_keys``, the resolved commit is verified
+        against them. Behaviour follows the signature policy:
+
+        - No registry keys: nothing to verify, returns silently.
+        - Keys present, verification succeeds: returns silently.
+        - Keys present, verification fails and ``require_signature`` is false:
+          logs a warning and allows the install.
+        - Keys present, verification fails and ``require_signature`` is true:
+          raises PluginSignatureError. The 'unverifiable' case (verifier tool
+          missing / unknown type) can be bypassed with ``allow_unverified``;
+          'no_match' and 'unsigned' can never be overridden.
+
+        Args:
+            temp_path: Path to the freshly synced repository.
+            commit_id: Resolved commit the plugin will be installed at.
+            source_url: Install URL (used for registry lookup / messages).
+            plugin_uuid: Plugin UUID from the manifest (primary registry key).
+            allow_unverified: If True, permit installation when a required
+                signature is merely unverifiable (not when it is wrong/missing).
+        """
+        registry = getattr(self.manager, '_registry', None)
+        if registry is None:
+            return
+
+        registry_plugin = None
+        try:
+            registry_plugin = registry.find_plugin(uuid=plugin_uuid) or registry.find_plugin(url=source_url)
+        except Exception as e:
+            log.debug("Signature check: registry lookup failed: %s", e)
+
+        # No registry entry or no trusted keys: fail open (unchanged behaviour).
+        if registry_plugin is None or not registry_plugin.signing_keys:
+            return
+
+        allowed_keys = registry_plugin.signing_keys
+        required = registry_plugin.require_signature
+
+        try:
+            backend = git_backend()
+            with backend.create_repository(temp_path.absolute()) as repo:
+                extracted = repo.get_signature(commit_id)
+        except Exception as e:
+            log.warning("Signature check: could not read signature: %s", e)
+            extracted = None
+
+        signature, payload = extracted if extracted else (None, None)
+        result = verify_signature(signature, payload, allowed_keys)
+
+        if result == VerifyResult.VERIFIED:
+            log.info("Plugin signature verified for %s", source_url)
+            return
+
+        if not required:
+            log.warning(
+                "Plugin signature not verified for %s (%s); installing anyway (signature not required)",
+                source_url,
+                result.value,
+            )
+            return
+
+        # require_signature is set: a verification failure blocks the install,
+        # except the 'unverifiable' case may be bypassed with an explicit opt-in.
+        if result == VerifyResult.UNVERIFIABLE and allow_unverified:
+            log.warning("Plugin signature for %s could not be verified; installing with explicit override", source_url)
+            return
+
+        raise PluginSignatureError(source_url, result.value)
 
     def _finalize_installation(self, temp_path, final_path, plugin_name, manifest, source, commit_id, source_url):
         """Complete plugin installation after validation."""
@@ -291,6 +377,7 @@ class PluginInstaller:
         enable_after_install,
         is_local=False,
         no_git=False,
+        allow_unverified=False,
     ):
         """Common installation logic for both remote and local sources."""
         # Preserve original ref if reinstalling and no ref specified
@@ -339,6 +426,12 @@ class PluginInstaller:
                 self._check_blacklist(source_url, ref, local_path, manifest.uuid)
             self._check_uuid_conflict(manifest, str(source_url), reinstall)
 
+            # Verify the signature of the resolved commit against registry keys
+            # before anything is moved into place or loaded.
+            self._verify_signature(
+                temp_path, commit_id, str(source_url), manifest.uuid, allow_unverified=allow_unverified
+            )
+
             final_path = self.manager._primary_plugin_dir / plugin_name
 
             # Handle existing installation
@@ -358,10 +451,19 @@ class PluginInstaller:
                 self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
 
-    def _install_from_remote_url(self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install):
+    def _install_from_remote_url(
+        self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, allow_unverified=False
+    ):
         """Install a plugin from a remote git URL."""
         return self._install_common(
-            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, is_local=False
+            url,
+            ref,
+            reinstall,
+            force_blacklisted,
+            discard_changes,
+            enable_after_install,
+            is_local=False,
+            allow_unverified=allow_unverified,
         )
 
     def _install_from_local_directory(
@@ -373,6 +475,7 @@ class PluginInstaller:
         discard_changes=False,
         enable_after_install=False,
         no_git=False,
+        allow_unverified=False,
     ):
         """Install a plugin from a local directory."""
         return self._install_common(
@@ -384,6 +487,7 @@ class PluginInstaller:
             enable_after_install,
             is_local=True,
             no_git=no_git,
+            allow_unverified=allow_unverified,
         )
 
     def _handle_existing_plugin_reinstall(self, final_path, plugin_name, discard_changes):
