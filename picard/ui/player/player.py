@@ -264,6 +264,12 @@ class Player(QtCore.QObject):
             self._can_play = False
             self._playback_state = Player.PlaybackState.STOPPED
             self._player.stop()
+            # Drop the last file explicitly: the queue is now empty (the last
+            # track finished), so the QMediaPlayer is already in StoppedState
+            # and the stop() above may emit no further state change. Without
+            # clearing the source here the file handle would stay open, which
+            # on Windows blocks a subsequent save/move (PICARD-3517).
+            self._player.setSource(QtCore.QUrl())
             self.media_changed.emit(None)
             self.playback_available.emit(self._can_play)
 

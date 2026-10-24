@@ -160,3 +160,21 @@ def test_unmapped_playback_state_is_ignored(player):
 
     assert player._playback_state == Player.PlaybackState.PLAYING
     assert received == []
+
+
+def test_play_next_clears_source_when_queue_empty(player):
+    """Reaching the end of the queue must drop the last file's handle.
+
+    When the last track finishes, _play_next() is invoked with an empty queue
+    and takes the IndexError branch. The QMediaPlayer is already stopped, so
+    the stop() there may emit no further state change; the source must be
+    cleared explicitly so the file handle is released and a subsequent
+    save/move is not blocked on Windows (PICARD-3517).
+    """
+    player._current_file = MagicMock()
+    player._media_queue.clear()
+
+    player._play_next()
+
+    assert player._current_file is None
+    assert _source_cleared(player._mock_media_player)
