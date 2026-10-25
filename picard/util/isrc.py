@@ -36,8 +36,6 @@ def _normalize_isrc(value: str) -> str:
     Returns:
         Normalized uppercase ISRC string with separators removed.
     """
-    if not isinstance(value, str):
-        return ''
     return value.strip().replace('-', '').replace(' ', '').upper()
 
 
@@ -54,8 +52,6 @@ def valid_isrc(value: str) -> NormalizedISRC | None:
     Returns:
         NormalizedISRC if valid, None otherwise.
     """
-    if not isinstance(value, str):
-        return None
     normalized = _normalize_isrc(value)
     if _ISRC_RE.match(normalized):
         return NormalizedISRC(normalized)
@@ -73,8 +69,6 @@ def format_isrc(value: str) -> str:
     Returns:
         Hyphenated display form, or the original value if not a valid ISRC.
     """
-    if not isinstance(value, str):
-        return value
     valid = valid_isrc(value)
     if not valid:
         return value

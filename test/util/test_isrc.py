@@ -45,10 +45,6 @@ class TestNormalizeIsrc(PicardTestCase):
     def test_empty_string(self):
         self.assertEqual('', _normalize_isrc(''))
 
-    def test_non_string(self):
-        self.assertEqual('', _normalize_isrc(None))
-        self.assertEqual('', _normalize_isrc(12345))
-
 
 class TestValidIsrc(PicardTestCase):
     def test_valid_plain(self):
@@ -92,10 +88,6 @@ class TestValidIsrc(PicardTestCase):
     def test_invalid_random_string(self):
         self.assertIsNone(valid_isrc('not-an-isrc'))
 
-    def test_invalid_non_string(self):
-        self.assertIsNone(valid_isrc(None))
-        self.assertIsNone(valid_isrc(12345))
-
 
 class TestFormatIsrc(PicardTestCase):
     def test_standard(self):
@@ -119,10 +111,6 @@ class TestFormatIsrc(PicardTestCase):
     def test_empty_unchanged(self):
         self.assertEqual('', format_isrc(''))
 
-    def test_non_string_unchanged(self):
-        self.assertIsNone(format_isrc(None))
-        self.assertEqual(12345, format_isrc(12345))
-
     def test_invalid_12char_unchanged(self):
         # 12 chars but doesn't match ISRC pattern (digits in country code)
         self.assertEqual('12RC17607839', format_isrc('12RC17607839'))
@@ -137,7 +125,7 @@ class TestNormalizedIsrcs(PicardTestCase):
         self.assertEqual({'USRC17607839', 'GBAYE0000351'}, result)
 
     def test_filters_invalid(self):
-        result = normalized_isrcs(['USRC17607839', 'INVALID', '', None, 'GBAYE0000351'])
+        result = normalized_isrcs(['USRC17607839', 'INVALID', '', 'GBAYE0000351'])
         self.assertEqual({'USRC17607839', 'GBAYE0000351'}, result)
 
     def test_normalizes_values(self):
