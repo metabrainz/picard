@@ -620,6 +620,9 @@ def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None 
     configured translation locales.  Falls back to the artist's default
     sort-name, or the credited name itself if sort-name is empty.
     """
+    if name == node['name'] and node['sort-name']:
+        return node['sort-name']
+
     if 'aliases' in node:
         config = config or get_config()
         candidates = [alias for alias in node['aliases'] if alias['name'] == name and alias['sort-name']]
