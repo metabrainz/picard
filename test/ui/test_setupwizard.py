@@ -152,3 +152,30 @@ class TestSetupWizardMetadataPage(PicardTestCase):
             self.assertEqual(config.setting['convert_punctuation'], not initial)
         finally:
             page.deleteLater()
+
+    def test_metadata_page_wrapped_label_margin_awareness(self):
+        page = MetadataPage()
+        try:
+            cb = page.track_ars_checkbox
+            hint = cb._inner_layout.itemAt(0).widget()
+            # Verify hint minimumSizeHint accounts for inner indent margins rather than raw parent width
+            min_hint = hint.minimumSizeHint()
+            self.assertGreater(min_hint.height(), 0)
+            self.assertGreaterEqual(hint.sizeHint().height(), min_hint.height())
+        finally:
+            page.deleteLater()
+
+
+class TestSetupWizardDialog(PicardTestCase):
+    def test_wizard_minimum_size(self):
+        tagger = Mock()
+        tagger.autoupdate_enabled = True
+        tagger.get_plugin_manager.return_value = None
+        with patch('picard.ui.setupwizard.tagger_instance', return_value=tagger):
+            wizard = SetupWizard()
+            try:
+                min_size = wizard.minimumSize()
+                self.assertGreaterEqual(min_size.width(), 640)
+                self.assertGreaterEqual(min_size.height(), 580)
+            finally:
+                wizard.deleteLater()

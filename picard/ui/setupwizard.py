@@ -51,11 +51,32 @@ class WrappedLabel(QtWidgets.QLabel):
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
 
-    def minimumSizeHint(self) -> QtCore.QSize:
-        size = super().minimumSizeHint()
+    def _target_width(self) -> int:
+        if self.width() > 0:
+            return self.width()
         parent = self.parent()
         if isinstance(parent, QtWidgets.QWidget):
-            size.setHeight(self.heightForWidth(parent.width()))
+            margins = parent.contentsMargins()
+            avail = parent.width() - margins.left() - margins.right()
+            inner_layout = getattr(parent, '_inner_layout', None)
+            if inner_layout:
+                inner_margins = inner_layout.contentsMargins()
+                avail -= inner_margins.left() + inner_margins.right()
+            return max(avail, 0)
+        return 0
+
+    def sizeHint(self) -> QtCore.QSize:
+        size = super().sizeHint()
+        width = self._target_width()
+        if width > 0:
+            size.setHeight(self.heightForWidth(width))
+        return size
+
+    def minimumSizeHint(self) -> QtCore.QSize:
+        size = super().minimumSizeHint()
+        width = self._target_width()
+        if width > 0:
+            size.setHeight(self.heightForWidth(width))
         return size
 
 
@@ -520,7 +541,7 @@ class SetupWizard(QtWidgets.QWizard):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        self.setMinimumSize(640, 520)
+        self.setMinimumSize(640, 580)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
 
