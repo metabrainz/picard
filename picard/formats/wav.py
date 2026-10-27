@@ -82,24 +82,35 @@ def _iter_wav_chunks(fileobj, file_size):
     largest size that still fits inside the file after the chunk's 8 byte header.
     A valid chunk size never exceeds ``max_size``; anything larger is bogus.
     Yields nothing if the file is not a RIFF file.
+
+    Only the top-level chunks are scanned: the placeholder-size defect we work
+    around only affects the RIFF root and its ``data`` chunk, both of which are
+    direct children of the root. Nested subchunks are not descended into.
     """
     fileobj.seek(0)
     if fileobj.read(4) != b'RIFF':
         return
-    pos = 0
+
+    # The RIFF root chunk spans the whole file; its declared size covers
+    # everything after its own 8 byte header.
+    root_size = struct.unpack('<I', fileobj.read(4))[0]
+    yield 0, b'RIFF', root_size, file_size - 8
+
+    # Its payload starts with the 4 byte "WAVE" form type, followed by the
+    # top-level subchunks. Walk them one by one.
+    pos = 12
     while pos + 8 <= file_size:
-        fileobj.seek(pos + 4)
+        fileobj.seek(pos)
+        chunk_id = fileobj.read(4)
         declared_size = struct.unpack('<I', fileobj.read(4))[0]
         max_size = file_size - (pos + 8)
-        chunk_id = b'RIFF' if pos == 0 else None
-        if chunk_id is None:
-            fileobj.seek(pos)
-            chunk_id = fileobj.read(4)
         yield pos, chunk_id, declared_size, max_size
+        # Advance to the next chunk. Clamp to max_size so an oversized
+        # (placeholder) size can't push pos past EOF and silently end the walk;
+        # such a chunk is the last real one anyway. RIFF pads odd-sized chunks
+        # with one byte, so round the size up to even with (size & 1).
         size = min(declared_size, max_size)
-        # The root RIFF chunk contains the subchunks, so descend into it:
-        # its payload starts with the 4 byte "WAVE" form type at offset 8.
-        pos = 12 if pos == 0 else pos + 8 + size + (size & 1)
+        pos += 8 + size + (size & 1)
 
 
 def repair_wav_chunk_sizes(filename):
