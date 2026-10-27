@@ -398,6 +398,98 @@ class CommonTests:
             m2.delete("title")
             self.assertTrue(m1.compare(m2) < 1)
 
+        def _astropilot_track(self, title, length):
+            # Mimics a file fully tagged before Picard 3: everything matches the
+            # MB data except that the new ``albumartists`` tag gets added.
+            orig = Metadata()
+            new = Metadata()
+            for m in (orig, new):
+                m["title"] = title
+                m["artist"] = "Astropilot"
+                m["album"] = "Event Horizon: Original Fulldome Versions (2012-2014)"
+                m["tracknumber"] = "3"
+                m["totaltracks"] = "18"
+                m["discnumber"] = "1"
+                m["totaldiscs"] = "1"
+                m.length = length
+            new["albumartists"] = "Astropilot"
+            return orig, new
+
+        def test_compare_changes_identical(self):
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m1["tracknumber"] = "2"
+            m1.length = 360
+            m2 = Metadata()
+            m2["title"] = "title1"
+            m2["tracknumber"] = "2"
+            m2.length = 360
+            self.assertEqual(m1.compare_changes(m2), 1.0)
+            self.assertEqual(m1.compare_changes(m2), m2.compare_changes(m1))
+
+        def test_compare_changes_ignores_unchanged_fuzzy_jitter(self):
+            # PICARD-3527: tracks differing only by an identical added tag must
+            # report an identical similarity, regardless of per-track length or
+            # title values of the *unchanged* fields.
+            scores = set()
+            for title, length in (
+                ("Earth (Midgard-Earth) (ambient version)", 388000),
+                ("Sun (Event Horizon)", 528000),
+                ("Mars (Immersion)", 305000),
+            ):
+                orig, new = self._astropilot_track(title, length)
+                scores.add(round(orig.compare_changes(new), 6))
+            # All three tracks changed by the same single field -> one score.
+            self.assertEqual(len(scores), 1)
+
+        def test_compare_changes_only_scores_changed_tags(self):
+            # A tiny length rounding difference on an otherwise unchanged field
+            # must not drag the differ score below 1.0 when nothing else changed.
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m1.length = 360000
+            m2 = Metadata()
+            m2["title"] = "title1"
+            m2.length = 360200
+            self.assertEqual(m1.compare_changes(m2), 1.0)
+
+        def test_compare_changes_reflects_real_difference(self):
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m2 = Metadata()
+            m2["title"] = "completely different"
+            self.assertLess(m1.compare_changes(m2), 1.0)
+
+        def test_compare_changes_respects_ignored(self):
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m1["tracknumber"] = "2"
+            m2 = Metadata()
+            m2["title"] = "title1"
+            m2["tracknumber"] = "3"
+            self.assertLess(m1.compare_changes(m2), 1.0)
+            self.assertEqual(m1.compare_changes(m2, ignored=["tracknumber"]), 1.0)
+
+        def test_compare_changes_multivalue_unchanged(self):
+            # Multi-valued tags are stored as lists internally; identical
+            # multi-values must still count as unchanged (score 1.0).
+            m1 = Metadata()
+            m1["artist"] = ["A", "B"]
+            m1["title"] = "t"
+            m2 = Metadata()
+            m2["artist"] = ["A", "B"]
+            m2["title"] = "t"
+            self.assertEqual(m1.compare_changes(m2), 1.0)
+
+        def test_compare_changes_multivalue_changed(self):
+            m1 = Metadata()
+            m1["artist"] = ["A", "B"]
+            m1["title"] = "t"
+            m2 = Metadata()
+            m2["artist"] = ["A", "C"]
+            m2["title"] = "t"
+            self.assertLess(m1.compare_changes(m2), 1.0)
+
         def test_strip_whitespace(self):
             m1 = Metadata()
             m1["artist"] = "  TheArtist  "
