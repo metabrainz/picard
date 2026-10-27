@@ -155,7 +155,10 @@ def correct_inflated_wav_length(metadata, filename):
                     break
     except OSError:
         return
-    if declared_size and declared_size > actual_size:
+    # declared_size is None when no data chunk was found. Rescale only when the
+    # declared size overflows the file (declared_size > actual_size); actual_size
+    # is then clamped and non-zero, so the division is safe.
+    if declared_size is not None and declared_size > actual_size:
         metadata.length = int(metadata.length * actual_size / declared_size)
 
 
