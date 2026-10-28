@@ -233,7 +233,6 @@ register_album_action(MyAlbumAction())
 
         # Check code conversion
         code = (output_dir / '__init__.py').read_text()
-        print(code)
 
         # Action class should have TITLE instead of NAME
         self.assertNotIn("    NAME = 'My Action'", code)
