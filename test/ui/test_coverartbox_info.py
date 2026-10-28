@@ -19,8 +19,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Iterable
-from dataclasses import dataclass
+from test.ui.coverartbox_fakes import (
+    DummyButton,
+    DummyImage,
+    DummyLabel,
+)
 
 from picard.i18n import setup_i18n
 
@@ -77,44 +80,15 @@ class _DummyThumb:
         self.marked_for_removal = bool(marked)
 
 
-class _DummyLabel:
-    def __init__(self) -> None:
-        self._text: str = ""
-        self._visible: bool = True
-
-    def setText(self, text: str) -> None:  # noqa: N802
-        self._text = text
-
-    def text(self) -> str:
-        return self._text
-
-    def setVisible(self, visible: bool) -> None:  # noqa: N802
-        self._visible = visible
-
-    def isVisible(self) -> bool:  # noqa: N802
-        return self._visible
-
-
-class _DummyButton:
-    def __init__(self) -> None:
-        self._visible: bool = False
-
-    def setVisible(self, visible: bool) -> None:  # noqa: N802
-        self._visible = visible
-
-    def isVisible(self) -> bool:  # noqa: N802
-        return self._visible
-
-
 class CoverArtBoxLite:
     def __init__(self) -> None:
         self.item = None
         self._removal_predicted = False
-        self.cover_art_label = _DummyLabel()
-        self.cover_art_info_label = _DummyLabel()
-        self.orig_cover_art_label = _DummyLabel()
-        self.orig_cover_art_info_label = _DummyLabel()
-        self.show_details_button = _DummyButton()
+        self.cover_art_label = DummyLabel()
+        self.cover_art_info_label = DummyLabel()
+        self.orig_cover_art_label = DummyLabel()
+        self.orig_cover_art_info_label = DummyLabel()
+        self.show_details_button = DummyButton()
         self.cover_art = _DummyThumb()
         self.orig_cover_art = _DummyThumb()
         # Reuse real implementation helpers
@@ -179,22 +153,6 @@ def setup_config() -> None:
     config.setting['show_cover_art_details_filesize'] = True
     config.setting['show_cover_art_details_dimensions'] = True
     config.setting['show_cover_art_details_mimetype'] = True
-
-
-@dataclass
-class DummyImage:
-    types_text: str
-    datalength: int
-    width: int | None = None
-    height: int | None = None
-    mimetype: str | None = None
-
-    def types_as_string(self) -> str:
-        return self.types_text
-
-
-def lines_to_text(lines: Iterable[str]) -> str:
-    return "\n".join(lines)
 
 
 @pytest.mark.parametrize(

@@ -19,13 +19,16 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import (
-    Iterable,
-    Iterator,
-)
-from dataclasses import dataclass
+from collections.abc import Iterator
 
 from PyQt6 import QtWidgets
+
+from test.ui.coverartbox_fakes import (
+    DummyButton,
+    DummyImage,
+    DummyLabel,
+    lines_to_text,
+)
 
 from picard.config import (
     Option,
@@ -42,22 +45,6 @@ from picard.ui.coverartbox import CoverArtBox
 def i18n_c_locale() -> None:
     # Ensure deterministic number formatting
     setup_i18n(None, 'C')
-
-
-@dataclass
-class DummyImage:
-    types_text: str
-    datalength: int
-    width: int | None = None
-    height: int | None = None
-    mimetype: str | None = None
-
-    def types_as_string(self) -> str:
-        return self.types_text
-
-
-def lines_to_text(lines: Iterable[str]) -> str:
-    return "\n".join(lines)
 
 
 class _DummyThumb:
@@ -82,44 +69,15 @@ class _DummyThumb:
         return self._tooltip
 
 
-class _DummyLabel:
-    def __init__(self) -> None:
-        self._text: str = ""
-        self._visible: bool = True
-
-    def setText(self, text: str) -> None:  # noqa: N802
-        self._text = text
-
-    def text(self) -> str:
-        return self._text
-
-    def setVisible(self, visible: bool) -> None:  # noqa: N802
-        self._visible = visible
-
-    def isVisible(self) -> bool:  # noqa: N802
-        return self._visible
-
-
-class _DummyButton:
-    def __init__(self) -> None:
-        self._visible: bool = False
-
-    def setVisible(self, visible: bool) -> None:  # noqa: N802
-        self._visible = visible
-
-    def isVisible(self) -> bool:  # noqa: N802
-        return self._visible
-
-
 class CoverArtBoxLite:
     def __init__(self) -> None:
         self.item = None
         self._removal_predicted = False
-        self.cover_art_label = _DummyLabel()
-        self.cover_art_info_label = _DummyLabel()
-        self.orig_cover_art_label = _DummyLabel()
-        self.orig_cover_art_info_label = _DummyLabel()
-        self.show_details_button = _DummyButton()
+        self.cover_art_label = DummyLabel()
+        self.cover_art_info_label = DummyLabel()
+        self.orig_cover_art_label = DummyLabel()
+        self.orig_cover_art_info_label = DummyLabel()
+        self.show_details_button = DummyButton()
         self.cover_art = _DummyThumb()
         self.orig_cover_art = _DummyThumb()
         # Bind helpers from real implementation
