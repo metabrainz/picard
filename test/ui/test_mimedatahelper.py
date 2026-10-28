@@ -35,8 +35,8 @@ class MimeDataHelperTest(PicardTestCase):
         helper = MimeDataHelper()
         helper.register(self.MIMETYPE_TEXT)
         self.assertTrue(helper.is_registered(self.MIMETYPE_TEXT))
-        self.assertTrue(helper.encode_func(self.MIMETYPE_TEXT) is None)
-        self.assertTrue(helper.decode_func(self.MIMETYPE_TEXT) is None)
+        self.assertIsNone(helper.encode_func(self.MIMETYPE_TEXT))
+        self.assertIsNone(helper.decode_func(self.MIMETYPE_TEXT))
 
     def test_register(self):
         helper = MimeDataHelper()
@@ -46,8 +46,8 @@ class MimeDataHelperTest(PicardTestCase):
             decode_func=lambda x: x,
         )
         self.assertTrue(helper.is_registered(self.MIMETYPE_TEXT))
-        self.assertTrue(helper.encode_func(self.MIMETYPE_TEXT) is not None)
-        self.assertTrue(helper.decode_func(self.MIMETYPE_TEXT) is not None)
+        self.assertIsNotNone(helper.encode_func(self.MIMETYPE_TEXT))
+        self.assertIsNotNone(helper.decode_func(self.MIMETYPE_TEXT))
 
     def test_reregister(self):
         helper = MimeDataHelper()
@@ -79,7 +79,7 @@ class MimeDataHelperTest(PicardTestCase):
             encode_func=lambda: result,
         )
         fn = helper.encode_func(self.MIMETYPE_TEXT)
-        self.assertTrue(fn() == result)
+        self.assertEqual(result, fn())
 
     def test_decode(self):
         helper = MimeDataHelper()
@@ -89,7 +89,7 @@ class MimeDataHelperTest(PicardTestCase):
             encode_func=lambda: result,
         )
         fn = helper.encode_func(self.MIMETYPE_TEXT)
-        self.assertTrue(fn() == result)
+        self.assertEqual(result, fn())
 
     def test_encode_generator(self):
         helper = MimeDataHelper()
@@ -107,9 +107,9 @@ class MimeDataHelperTest(PicardTestCase):
         results = []
         for mimetype, encode_func in helper.encode_funcs():
             results.append((mimetype, encode_func()))
-        self.assertTrue(len(results) == 2)
-        self.assertTrue(results[0][0] == self.MIMETYPE_TEXT)
-        self.assertTrue(results[1][0] == self.MIMETYPE_TSV)
+        self.assertEqual(2, len(results))
+        self.assertEqual(self.MIMETYPE_TEXT, results[0][0])
+        self.assertEqual(self.MIMETYPE_TSV, results[1][0])
 
     def test_decode_generator(self):
         mimedata = QtCore.QMimeData()
@@ -123,7 +123,7 @@ class MimeDataHelperTest(PicardTestCase):
         mimedata.setData(self.MIMETYPE_TEXT, txtresult.encode())
 
         for fn in helper.decode_funcs(mimedata):
-            self.assertTrue(fn() == txtresult)
+            self.assertEqual(txtresult, fn())
 
     def test_decode_generator_sorted(self):
         mimedata = QtCore.QMimeData()
@@ -144,5 +144,5 @@ class MimeDataHelperTest(PicardTestCase):
         results = []
         for result in helper.decode_funcs(mimedata):
             results.append(result)
-        self.assertTrue(len(results) == 1)
-        self.assertTrue(results[0]() == tsvresult)
+        self.assertEqual(1, len(results))
+        self.assertEqual(tsvresult, results[0]())
