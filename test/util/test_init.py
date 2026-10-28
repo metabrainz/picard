@@ -326,45 +326,31 @@ class HiddenFileTest(PicardTestCase):
 
 
 class LinearCombinationTest(PicardTestCase):
-    def test_0(self):
-        parts = []
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
+    @subtest_cases(
+        "parts,expected",
+        {
+            'empty': ([], 0.0),
+            'all full weight': ([(1.0, 1), (1.0, 1), (1.0, 1)], 1.0),
+            'zero-weight parts ignored': ([(0.0, 1), (0.0, 0), (1.0, 0)], 0.0),
+            'even split': ([(0.0, 1), (1.0, 1)], 0.5),
+            'weighted split': ([(0.5, 4), (1.0, 1)], 0.6),
+            'many parts': ([(0.95, 100), (0.05, 399), (0.0, 1), (1.0, 0)], 0.2299),
+        },
+    )
+    def test_value(self, parts, expected):
+        self.assertEqual(expected, util.linear_combination_of_weights(parts))
 
-    def test_1(self):
-        parts = [(1.0, 1), (1.0, 1), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 1.0)
-
-    def test_2(self):
-        parts = [(0.0, 1), (0.0, 0), (1.0, 0)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
-
-    def test_3(self):
-        parts = [(0.0, 1), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.5)
-
-    def test_4(self):
-        parts = [(0.5, 4), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.6)
-
-    def test_5(self):
-        parts = [(0.95, 100), (0.05, 399), (0.0, 1), (1.0, 0)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.2299)
-
-    def test_6(self):
-        parts = [(-0.5, 4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_7(self):
-        parts = [(0.5, -4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_8(self):
-        parts = [(1.5, 4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_9(self):
-        parts = (1.5, 4)
-        self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
+    @subtest_cases(
+        "parts,expected_exception",
+        {
+            'score below 0': ([(-0.5, 4)], AssertionError),
+            'weight below 0': ([(0.5, -4)], AssertionError),
+            'score above 1': ([(1.5, 4)], AssertionError),
+            'not a list of tuples': ((1.5, 4), TypeError),
+        },
+    )
+    def test_raises(self, parts, expected_exception):
+        self.assertRaises(expected_exception, util.linear_combination_of_weights, parts)
 
 
 class AlbumArtistFromPathTest(PicardTestCase):
