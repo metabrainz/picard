@@ -20,170 +20,147 @@
 
 from collections import Counter
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.track import TagGenreFilter
 
 
-class TagGenreFilterTest(PicardTestCase):
-    def test_no_filter(self):
-        tag_filter = TagGenreFilter("# comment")
-        self.assertFalse(tag_filter.skip('jazz'))
+class TagGenreFilterSkipTest(PicardTestCase):
+    # Recurring multi-rule filter sets, reused across the skip() cases below.
+    # TagGenreFilter strips each line, so the indentation here is irrelevant.
+    WILDCARD_ALL_BUT_BLUES = """
+        -*
+        +blues
+    """
+    WILDCARD_PATTERNS = """
+        -jazz*
+        -*rock
+        -*disco*
+        -a*b
+    """
+    REGEX_PATTERNS = """
+        -/^j.zz/
+        -/r[io]ck$/
+        -/disco+/
+        +/discoooo/
+    """
+    REGEX_PATTERNS_KEEP_ALL = """
+        -/^j.zz/
+        -/r[io]ck$/
+        -/disco+/
+        +/discoooo/
+        +/.*/
+    """
+    UPPERCASED_PATTERNS = """
+        -JAZZ*
+        -ROCK
+        -/^DISCO$/
+    """
+    WHITESPACE_PATTERNS = """
+        - jazz b*
+        - * ro ck
+        - /^di sco$/
+    """
 
-    def test_strict_filter(self):
-        tag_filter = TagGenreFilter("-jazz")
-        self.assertTrue(tag_filter.skip('jazz'))
-
-    def test_strict_filter_allowlist(self):
-        filters = """
-            +jazz
-            -jazz
-        """
+    @subtest_cases(
+        "filters,tag,expected_skip",
+        {
+            'no filter (comment only)': ("# comment", 'jazz', False),
+            'strict filter': ("-jazz", 'jazz', True),
+            'strict filter allowlist': ("+jazz\n-jazz", 'jazz', False),
+            'strict filter allowlist reverse order': ("-jazz\n+jazz", 'jazz', False),
+            'wildcard all-but skips jazz': (WILDCARD_ALL_BUT_BLUES, 'jazz', True),
+            'wildcard all-but skips rock': (WILDCARD_ALL_BUT_BLUES, 'rock', True),
+            'wildcard all-but keeps blues': (WILDCARD_ALL_BUT_BLUES, 'blues', False),
+            'wildcard prefix jazz': (WILDCARD_PATTERNS, 'jazz', True),
+            'wildcard prefix jazz blues': (WILDCARD_PATTERNS, 'jazz blues', True),
+            'wildcard prefix blues jazz': (WILDCARD_PATTERNS, 'blues jazz', False),
+            'wildcard suffix rock': (WILDCARD_PATTERNS, 'rock', True),
+            'wildcard suffix blues rock': (WILDCARD_PATTERNS, 'blues rock', True),
+            'wildcard suffix rock blues': (WILDCARD_PATTERNS, 'rock blues', False),
+            'wildcard contains disco': (WILDCARD_PATTERNS, 'disco', True),
+            'wildcard contains xdisco': (WILDCARD_PATTERNS, 'xdisco', True),
+            'wildcard contains discox': (WILDCARD_PATTERNS, 'discox', True),
+            'wildcard a*b ab': (WILDCARD_PATTERNS, 'ab', True),
+            'wildcard a*b axb': (WILDCARD_PATTERNS, 'axb', True),
+            'wildcard a*b axxb': (WILDCARD_PATTERNS, 'axxb', True),
+            'wildcard a*b xab': (WILDCARD_PATTERNS, 'xab', False),
+            'regex jazz': (REGEX_PATTERNS, 'jazz', True),
+            'regex jizz': (REGEX_PATTERNS, 'jizz', True),
+            'regex jazz blues': (REGEX_PATTERNS, 'jazz blues', True),
+            'regex blues jazz': (REGEX_PATTERNS, 'blues jazz', False),
+            'regex rock': (REGEX_PATTERNS, 'rock', True),
+            'regex blues rock': (REGEX_PATTERNS, 'blues rock', True),
+            'regex blues rick': (REGEX_PATTERNS, 'blues rick', True),
+            'regex rock blues': (REGEX_PATTERNS, 'rock blues', False),
+            'regex disco': (REGEX_PATTERNS, 'disco', True),
+            'regex xdiscox': (REGEX_PATTERNS, 'xdiscox', True),
+            'regex xdiscooox': (REGEX_PATTERNS, 'xdiscooox', True),
+            'regex xdiscoooox allowlisted': (REGEX_PATTERNS, 'xdiscoooox', False),
+            'uppercased filter jazz blues': (UPPERCASED_PATTERNS, 'jazz blues', True),
+            'uppercased filter JAZZ BLUES': (UPPERCASED_PATTERNS, 'JAZZ BLUES', True),
+            'uppercased filter rock': (UPPERCASED_PATTERNS, 'rock', True),
+            'uppercased filter ROCK': (UPPERCASED_PATTERNS, 'ROCK', True),
+            'uppercased filter disco': (UPPERCASED_PATTERNS, 'disco', True),
+            'uppercased filter DISCO': (UPPERCASED_PATTERNS, 'DISCO', True),
+            'whitespaces jazz blues': (WHITESPACE_PATTERNS, 'jazz blues', True),
+            'whitespaces blues ro ck': (WHITESPACE_PATTERNS, 'blues ro ck', True),
+            'whitespaces di sco': (WHITESPACE_PATTERNS, 'di sco', True),
+            'whitespaces bluesro ck': (WHITESPACE_PATTERNS, 'bluesro ck', False),
+        },
+    )
+    def test_skip(self, filters, tag, expected_skip):
         tag_filter = TagGenreFilter(filters)
-        self.assertFalse(tag_filter.skip('jazz'))
+        self.assertEqual(expected_skip, tag_filter.skip(tag))
 
-    def test_strict_filter_allowlist_reverseorder(self):
-        filters = """
-            -jazz
-            +jazz
-        """
+    @subtest_cases(
+        "filters,tags",
+        {
+            # the regex patterns above, but a trailing +/.*/ allowlists everything
+            'regex keep all': (
+                REGEX_PATTERNS_KEEP_ALL,
+                (
+                    'jazz',
+                    'jizz',
+                    'jazz blues',
+                    'blues jazz',
+                    'rock',
+                    'blues rock',
+                    'blues rick',
+                    'rock blues',
+                    'disco',
+                    'xdiscox',
+                    'xdiscooox',
+                    'xdiscoooox',
+                ),
+            ),
+        },
+    )
+    def test_skip_none(self, filters, tags):
         tag_filter = TagGenreFilter(filters)
-        self.assertFalse(tag_filter.skip('jazz'))
+        for tag in tags:
+            self.assertFalse(tag_filter.skip(tag), f"expected {tag!r} not to be skipped")
 
-    def test_wildcard_filter_all_but(self):
-        filters = """
-            -*
-            +blues
-        """
+
+class TagGenreFilterMethodTest(PicardTestCase):
+    @subtest_cases(
+        "filters,genres,expected",
+        {
+            'drops a* prefix': ("-a*", Counter(ax=1, bx=2, ay=3, by=4), [('bx', 2), ('by', 4)]),
+            'empty input': ("", Counter(), []),
+            'empty result (deny all)': ("-*", Counter(ax=1, bx=2, ay=3, by=4), []),
+        },
+    )
+    def test_filter(self, filters, genres, expected):
         tag_filter = TagGenreFilter(filters)
-        self.assertTrue(tag_filter.skip('jazz'))
-        self.assertTrue(tag_filter.skip('rock'))
-        self.assertFalse(tag_filter.skip('blues'))
-
-    def test_wildcard_filter(self):
-        filters = """
-            -jazz*
-            -*rock
-            -*disco*
-            -a*b
-        """
-        tag_filter = TagGenreFilter(filters)
-
-        self.assertTrue(tag_filter.skip('jazz'))
-        self.assertTrue(tag_filter.skip('jazz blues'))
-        self.assertFalse(tag_filter.skip('blues jazz'))
-
-        self.assertTrue(tag_filter.skip('rock'))
-        self.assertTrue(tag_filter.skip('blues rock'))
-        self.assertFalse(tag_filter.skip('rock blues'))
-
-        self.assertTrue(tag_filter.skip('disco'))
-        self.assertTrue(tag_filter.skip('xdisco'))
-        self.assertTrue(tag_filter.skip('discox'))
-
-        self.assertTrue(tag_filter.skip('ab'))
-        self.assertTrue(tag_filter.skip('axb'))
-        self.assertTrue(tag_filter.skip('axxb'))
-        self.assertFalse(tag_filter.skip('xab'))
-
-    def test_regex_filter(self):
-        filters = """
-            -/^j.zz/
-            -/r[io]ck$/
-            -/disco+/
-            +/discoooo/
-        """
-        tag_filter = TagGenreFilter(filters)
-
-        self.assertTrue(tag_filter.skip('jazz'))
-        self.assertTrue(tag_filter.skip('jizz'))
-        self.assertTrue(tag_filter.skip('jazz blues'))
-        self.assertFalse(tag_filter.skip('blues jazz'))
-
-        self.assertTrue(tag_filter.skip('rock'))
-        self.assertTrue(tag_filter.skip('blues rock'))
-        self.assertTrue(tag_filter.skip('blues rick'))
-        self.assertFalse(tag_filter.skip('rock blues'))
-
-        self.assertTrue(tag_filter.skip('disco'))
-        self.assertTrue(tag_filter.skip('xdiscox'))
-        self.assertTrue(tag_filter.skip('xdiscooox'))
-        self.assertFalse(tag_filter.skip('xdiscoooox'))
-
-    def test_regex_filter_keep_all(self):
-        filters = """
-            -/^j.zz/
-            -/r[io]ck$/
-            -/disco+/
-            +/discoooo/
-            +/.*/
-        """
-        tag_filter = TagGenreFilter(filters)
-
-        self.assertFalse(tag_filter.skip('jazz'))
-        self.assertFalse(tag_filter.skip('jizz'))
-        self.assertFalse(tag_filter.skip('jazz blues'))
-        self.assertFalse(tag_filter.skip('blues jazz'))
-
-        self.assertFalse(tag_filter.skip('rock'))
-        self.assertFalse(tag_filter.skip('blues rock'))
-        self.assertFalse(tag_filter.skip('blues rick'))
-        self.assertFalse(tag_filter.skip('rock blues'))
-
-        self.assertFalse(tag_filter.skip('disco'))
-        self.assertFalse(tag_filter.skip('xdiscox'))
-        self.assertFalse(tag_filter.skip('xdiscooox'))
-        self.assertFalse(tag_filter.skip('xdiscoooox'))
-
-    def test_uppercased_filter(self):
-        filters = """
-            -JAZZ*
-            -ROCK
-            -/^DISCO$/
-        """
-        tag_filter = TagGenreFilter(filters)
-
-        self.assertTrue(tag_filter.skip('jazz blues'))
-        self.assertTrue(tag_filter.skip('JAZZ BLUES'))
-        self.assertTrue(tag_filter.skip('rock'))
-        self.assertTrue(tag_filter.skip('ROCK'))
-        self.assertTrue(tag_filter.skip('disco'))
-        self.assertTrue(tag_filter.skip('DISCO'))
-
-    def test_whitespaces_filter(self):
-        filters = """
-            - jazz b*
-            - * ro ck
-            - /^di sco$/
-        """
-        tag_filter = TagGenreFilter(filters)
-
-        self.assertTrue(tag_filter.skip('jazz blues'))
-        self.assertTrue(tag_filter.skip('blues ro ck'))
-        self.assertTrue(tag_filter.skip('di sco'))
-
-        self.assertFalse(tag_filter.skip('bluesro ck'))
-
-    def test_filter_method(self):
-        tag_filter = TagGenreFilter("-a*")
-        genres = Counter(ax=1, bx=2, ay=3, by=4)
         result = tag_filter.filter(genres)
-        self.assertEqual([('bx', 2), ('by', 4)], list(result.items()))
+        self.assertEqual(expected, list(result.items()))
 
-    def test_filter_method_minusage(self):
+    def test_filter_minusage_drops_low_usage_genres(self):
         tag_filter = TagGenreFilter("-a*")
         genres = Counter(ax=4, bx=5, ay=20, by=10, bz=4)
         result = tag_filter.filter(genres, minusage=50)
         self.assertEqual([('bx', 5), ('by', 10)], list(result.items()))
-
-    def test_filter_method_empty_input(self):
-        tag_filter = TagGenreFilter("")
-        genres = Counter()
-        result = tag_filter.filter(genres)
-        self.assertEqual([], list(result.items()))
-
-    def test_filter_method_empty_result(self):
-        tag_filter = TagGenreFilter("-*")
-        genres = Counter(ax=1, bx=2, ay=3, by=4)
-        result = tag_filter.filter(genres)
-        self.assertEqual([], list(result.items()))
