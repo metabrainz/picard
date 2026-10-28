@@ -142,6 +142,34 @@ class WizardCheckbox(QtWidgets.QWidget):
         return self._checkbox.isChecked()
 
 
+class _PageScrollArea(QtWidgets.QScrollArea):
+    """Scroll area that resizes its content widget to the viewport width.
+
+    ``widgetResizable=True`` lets a word-wrapped label report a width wider
+    than the viewport, which then gets clipped on the right because horizontal
+    scrolling is disabled. Instead, resize the content to exactly the viewport
+    width (so text always wraps within the visible area) and only grow the
+    height past the viewport when the content genuinely does not fit, which is
+    when the vertical scrollbar appears. This mirrors the options dialog's
+    scroll area (see picard/ui/options/dialog.py).
+    """
+
+    def resizeEvent(self, a0: QtGui.QResizeEvent | None) -> None:
+        super().resizeEvent(a0)
+        self._relayout_widget()
+
+    def _relayout_widget(self) -> None:
+        widget = self.widget()
+        viewport = self.viewport()
+        if widget is None or viewport is None:
+            return
+        viewport_size = viewport.size()
+        width = viewport_size.width()
+        min_height = widget.minimumSizeHint().height()
+        height = max(min_height, viewport_size.height())
+        widget.resize(width, height)
+
+
 class SetupWizardPage(QtWidgets.QWizardPage):
     """Base class for setup wizard pages that can save settings."""
 
@@ -153,8 +181,32 @@ class SetupWizardPage(QtWidgets.QWizardPage):
         )
 
     def _body_layout(self) -> QtWidgets.QVBoxLayout:
-        """Create and return the page's top-level vertical layout."""
-        return QtWidgets.QVBoxLayout(self)
+        """Create the page body and return the layout to fill with content.
+
+        The body lives inside a vertical scroll area so that very long content
+        (e.g. long translations, large accessibility fonts, or more options
+        added later) stays reachable instead of forcing the dialog past the
+        screen. The scroll area is transparent and frameless, so when the
+        content fits it looks the same as a plain page; a vertical scrollbar
+        only appears when needed and horizontal scrolling is disabled so text
+        keeps wrapping to the available width.
+        """
+        page_layout = QtWidgets.QVBoxLayout(self)
+        page_layout.setContentsMargins(0, 0, 0, 0)
+
+        scroll_area = _PageScrollArea()
+        scroll_area.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        viewport = scroll_area.viewport()
+        if viewport is not None:
+            viewport.setAutoFillBackground(False)
+        page_layout.addWidget(scroll_area)
+
+        content = QtWidgets.QWidget()
+        content.setAutoFillBackground(False)
+        scroll_area.setWidget(content)
+
+        return QtWidgets.QVBoxLayout(content)
 
     def _add_checkbox(self, layout: QtWidgets.QBoxLayout, title: str, description: str) -> WizardCheckbox:
         """Create a WizardCheckbox, add it to layout, and return it."""
@@ -547,12 +599,13 @@ class SetupWizard(QtWidgets.QWizard):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        # Wrapped descriptions size themselves to their text (see WrappedLabel),
-        # so this is just a comfortable default that fits the multi-paragraph
-        # pages without scrolling; it is not what prevents text truncation.
-        self.setMinimumSize(640, 580)
+        # Pages scroll when their content does not fit (see
+        # SetupWizardPage._body_layout), so the dialog can be shrunk by the
+        # user below the comfortable default size set via resize() below.
+        self.setMinimumSize(640, 400)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
+        self.resize(640, 540)
 
         self._pages: list[SetupWizardPage] = []
         for page_class in self.PAGES:

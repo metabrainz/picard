@@ -21,6 +21,7 @@ from unittest.mock import (
 from PyQt6 import (
     QtCore,
     QtGui,
+    QtWidgets,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -190,6 +191,36 @@ class TestSetupWizardMetadataPage(PicardTestCase):
         finally:
             page.deleteLater()
 
+    def test_page_body_is_scrollable(self):
+        # Regression for PICARD-3477: pages place their content in a scroll
+        # area so very long descriptions stay reachable instead of forcing the
+        # dialog past the screen. The page's own minimum height must therefore
+        # stay small (driven by the scroll area, not the full content height).
+        page = MetadataPage()
+        try:
+            scroll_area = page.findChild(QtWidgets.QScrollArea)
+            self.assertIsNotNone(scroll_area)
+            # Horizontal scrolling is disabled so text keeps wrapping within the
+            # visible width instead of being clipped on the right.
+            self.assertEqual(
+                scroll_area.horizontalScrollBarPolicy(),
+                QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
+            )
+            # The checkbox content lives inside the scroll area's widget.
+            content = scroll_area.widget()
+            self.assertIsNotNone(content)
+            self.assertIsNotNone(page.track_ars_checkbox.parentWidget())
+            # The content widget is resized to the viewport width, never wider,
+            # so the description never overflows the right edge.
+            scroll_area.resize(500, 400)
+            viewport = scroll_area.viewport()
+            self.assertIsNotNone(viewport)
+            self.assertLessEqual(content.width(), viewport.width())
+            # The page does not force its full content height as a hard minimum.
+            self.assertLess(page.minimumSizeHint().height(), 300)
+        finally:
+            page.deleteLater()
+
 
 class TestSetupWizardDialog(PicardTestCase):
     def test_wizard_minimum_size(self):
@@ -199,8 +230,11 @@ class TestSetupWizardDialog(PicardTestCase):
         with patch('picard.ui.setupwizard.tagger_instance', return_value=tagger):
             wizard = SetupWizard()
             try:
+                # The dialog can be shrunk (pages scroll), so the minimum is
+                # modest; the default size is a bit larger for comfort.
                 min_size = wizard.minimumSize()
                 self.assertGreaterEqual(min_size.width(), 640)
-                self.assertGreaterEqual(min_size.height(), 580)
+                self.assertLessEqual(min_size.height(), 540)
+                self.assertGreaterEqual(wizard.size().height(), min_size.height())
             finally:
                 wizard.deleteLater()
