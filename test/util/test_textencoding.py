@@ -22,7 +22,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.const.sys import IS_WIN
 from picard.util.textencoding import (
@@ -190,20 +193,32 @@ class CombinationsTest(PicardTestCase):
 
 
 class AsciiPunctTest(PicardTestCase):
-    def test_correct(self):
-        self.assertEqual(asciipunct("‘Test’"), "'Test'")  # Quotations
-        self.assertEqual(asciipunct("“Test”"), "\"Test\"")  # Quotations
-        self.assertEqual(asciipunct("1′6″"), "1'6\"")  # Quotations
-        self.assertEqual(asciipunct("…"), "...")  # Ellipses
-        self.assertEqual(asciipunct("\u2024"), ".")  # ONE DOT LEADER
-        self.assertEqual(asciipunct("\u2025"), "..")  # TWO DOT LEADER
+    @subtest_cases(
+        "value,expected",
+        {
+            'single quotations': ("‘Test’", "'Test'"),
+            'double quotations': ("“Test”", "\"Test\""),
+            'prime quotations': ("1′6″", "1'6\""),
+            'ellipsis': ("…", "..."),
+            'one dot leader': ("\u2024", "."),
+            'two dot leader': ("\u2025", ".."),
+        },
+    )
+    def test_correct(self, value, expected):
+        self.assertEqual(expected, asciipunct(value))
 
 
 class UnaccentTest(PicardTestCase):
-    def test_correct(self):
-        self.assertEqual(unaccent("Lukáš"), "Lukas")
-        self.assertEqual(unaccent("Björk"), "Bjork")
-        self.assertEqual(unaccent("小室哲哉"), "小室哲哉")
+    @subtest_cases(
+        "value,expected",
+        {
+            'latin accents': ("Lukáš", "Lukas"),
+            'o with diaeresis': ("Björk", "Bjork"),
+            'kanji unchanged': ("小室哲哉", "小室哲哉"),
+        },
+    )
+    def test_correct(self, value, expected):
+        self.assertEqual(expected, unaccent(value))
 
     def test_incorrect(self):
         self.assertNotEqual(unaccent("Björk"), "Björk")
@@ -214,23 +229,29 @@ class UnaccentTest(PicardTestCase):
 
 
 class ReplaceNonAsciiTest(PicardTestCase):
-    def test_correct(self):
-        self.assertEqual(replace_non_ascii("Lukáš"), "Lukas")
-        self.assertEqual(replace_non_ascii("Björk"), "Bjork")
-        self.assertEqual(replace_non_ascii("Trentemøller"), "Trentemoeller")
-        self.assertEqual(replace_non_ascii("Ænima"), "AEnima")
-        self.assertEqual(replace_non_ascii("ænima"), "aenima")
-        self.assertEqual(replace_non_ascii("小室哲哉"), "____")
-        self.assertEqual(replace_non_ascii("ᴀᴄᴇ"), "ACE")  # Latin Letter Small
-        self.assertEqual(replace_non_ascii("Ａｂｃ"), "Abc")  # Fullwidth Latin
-        self.assertEqual(replace_non_ascii("500㎏,2㎓"), "500kg,2GHz")  # Technical
-        self.assertEqual(replace_non_ascii("⒜⒝⒞"), "(a)(b)(c)")  # Parenthesised Latin
-        self.assertEqual(replace_non_ascii("ⅯⅯⅩⅣ"), "MMXIV")  # Roman numerals
-        self.assertEqual(replace_non_ascii("ⅿⅿⅹⅳ"), "mmxiv")  # Roman numerals small
-        self.assertEqual(replace_non_ascii("⑴⑵⑶"), "(1)(2)(3)")  # Parenthesised numbers
-        self.assertEqual(replace_non_ascii("⒈ ⒉ ⒊"), "1. 2. 3.")  # Digit full stop
-        self.assertEqual(replace_non_ascii("１２３"), "123")  # Fullwidth digits
-        self.assertEqual(replace_non_ascii("\u2216\u2044\u2215\uff0f"), "\\///")  # Slashes
+    @subtest_cases(
+        "value,expected",
+        {
+            'latin accents': ("Lukáš", "Lukas"),
+            'o with diaeresis': ("Björk", "Bjork"),
+            'o with stroke': ("Trentemøller", "Trentemoeller"),
+            'ae ligature upper': ("Ænima", "AEnima"),
+            'ae ligature lower': ("ænima", "aenima"),
+            'kanji replaced': ("小室哲哉", "____"),
+            'latin letter small': ("ᴀᴄᴇ", "ACE"),
+            'fullwidth latin': ("Ａｂｃ", "Abc"),
+            'technical': ("500㎏,2㎓", "500kg,2GHz"),
+            'parenthesised latin': ("⒜⒝⒞", "(a)(b)(c)"),
+            'roman numerals': ("ⅯⅯⅩⅣ", "MMXIV"),
+            'roman numerals small': ("ⅿⅿⅹⅳ", "mmxiv"),
+            'parenthesised numbers': ("⑴⑵⑶", "(1)(2)(3)"),
+            'digit full stop': ("⒈ ⒉ ⒊", "1. 2. 3."),
+            'fullwidth digits': ("１２３", "123"),
+            'slashes': ("\u2216\u2044\u2215\uff0f", "\\///"),
+        },
+    )
+    def test_correct(self, value, expected):
+        self.assertEqual(expected, replace_non_ascii(value))
 
     def test_pathsave(self):
         expected = '____/8 1_2\\' if IS_WIN else '\\___/8 1_2\\'
