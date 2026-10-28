@@ -19,10 +19,19 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
+import struct
+
 from mutagen import version as mutagen_version
+import mutagen.wave
+
+from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.formats.wav import RiffListInfo
+from picard.formats.wav import (
+    RiffListInfo,
+    repair_wav_chunk_sizes,
+)
 from picard.metadata import Metadata
 
 from .common import (
@@ -141,3 +150,65 @@ class WAVTest(CommonId3Tests.Id3TestCase):
         for key, value in riff_info_tags.items():
             info[key] = value
         info.save(self.filename)
+
+    @skipUnlessTestfile
+    def test_save_with_invalid_chunk_sizes(self):
+        # Regression test for PICARD-3519: WAV files with bogus (oversized)
+        # RIFF root and data chunk sizes must still be saveable. Without the
+        # repair, saving raised struct.error because mutagen could not pack the
+        # overflowing root size into the 32-bit size field.
+        filename = self.copy_file_tmp(os.path.join('test', 'data', 'test-invalid-chunk-sizes.wav'), '.wav')
+        metadata = Metadata({'title': 'The Title', 'artist': 'The Artist'})
+        save_metadata(self.format_registry, filename, metadata)
+        loaded_metadata = load_metadata(self.format_registry, filename)
+        self.assertEqual(loaded_metadata['title'], 'The Title')
+        self.assertEqual(loaded_metadata['artist'], 'The Artist')
+        # The repaired file reports a sane (non-inflated) length again.
+        self.assertLess(loaded_metadata.length, 10 * 60 * 1000)
+
+    def test_length_with_invalid_chunk_sizes(self):
+        # PICARD-3519: the displayed length must be correct on load, before the
+        # file is repaired on save, and without modifying the file.
+        filename = self.copy_file_tmp(os.path.join('test', 'data', 'test-invalid-chunk-sizes.wav'), '.wav')
+        with open(filename, 'rb') as fileobj:
+            original = fileobj.read()
+        metadata = load_metadata(self.format_registry, filename)
+        self.assertEqual(metadata.length, self.expected_info['length'])
+        # Loading must not have modified the file.
+        with open(filename, 'rb') as fileobj:
+            self.assertEqual(original, fileobj.read())
+
+
+class RepairWavChunkSizesTest(PicardTestCase):
+    def _copy_testfile(self, name):
+        return self.copy_file_tmp(os.path.join('test', 'data', name), '.wav')
+
+    def test_repairs_bogus_sizes(self):
+        filename = self._copy_testfile('test-invalid-chunk-sizes.wav')
+
+        repair_wav_chunk_sizes(filename)
+
+        # Root size now fits the file and the length is no longer inflated.
+        file_size = os.path.getsize(filename)
+        with open(filename, 'rb') as fileobj:
+            self.assertEqual(struct.unpack('<I', fileobj.read(12)[4:8])[0], file_size - 8)
+        info = mutagen.wave.WAVE(filename).info
+        assert info is not None
+        self.assertLess(info.length, 10 * 60)
+
+    def test_leaves_valid_file_untouched(self):
+        filename = self._copy_testfile('test.wav')
+        with open(filename, 'rb') as fileobj:
+            original = fileobj.read()
+
+        repair_wav_chunk_sizes(filename)
+
+        with open(filename, 'rb') as fileobj:
+            self.assertEqual(original, fileobj.read())
+
+    def test_non_riff_file_is_ignored(self):
+        tmpdir = self.mktmpdir()
+        filename = os.path.join(tmpdir, 'notawav.bin')
+        with open(filename, 'wb') as fileobj:
+            fileobj.write(b'NOTARIFFFILECONTENTS' * 4)
+        repair_wav_chunk_sizes(filename)  # Must not raise.
