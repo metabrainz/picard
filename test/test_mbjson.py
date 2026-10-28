@@ -997,7 +997,7 @@ class TestAliasesLocales(PicardTestCase):
             },
         ]
 
-    def test_1(self):
+    def test_default_aliases_full_weight(self):
         expected = {
             'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
@@ -1006,7 +1006,7 @@ class TestAliasesLocales(PicardTestCase):
         locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expected, locales)
 
-    def test_2(self):
+    def test_legal_name_type_lowers_weight(self):
         self.aliases[2]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
 
         expected = {
@@ -1017,7 +1017,7 @@ class TestAliasesLocales(PicardTestCase):
         locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expected, locales)
 
-    def test_3(self):
+    def test_primary_alias_without_locale(self):
         self.aliases[0]['primary'] = True
         del self.aliases[0]['locale']
 
@@ -1029,7 +1029,7 @@ class TestAliasesLocales(PicardTestCase):
         locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expected, locales)
 
-    def test_4(self):
+    def test_search_hint_type_lowers_weight(self):
         self.aliases[2]['type-id'] = ALIAS_TYPE_SEARCH_HINT_ID
 
         expected = {
@@ -1040,7 +1040,7 @@ class TestAliasesLocales(PicardTestCase):
         locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expected, locales)
 
-    def test_5(self):
+    def test_sub_locale_fills_parent_locale(self):
         self.aliases[1]['locale'] = 'en_US'
         self.aliases[1]['name'] = 'Ed Sheeran (en_US)'
         self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
@@ -1054,7 +1054,7 @@ class TestAliasesLocales(PicardTestCase):
         locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expected, locales)
 
-    def test_6(self):
+    def test_artist_name_type_preferred_for_locale(self):
         self.aliases[2]['locale'] = 'en'
         self.aliases[2]['name'] = 'Ed Sheeran (en2)'
         self.aliases[2]['type-id'] = ALIAS_TYPE_ARTIST_NAME_ID
@@ -1181,19 +1181,19 @@ class GetScoreTest(PicardTestCase):
 
 
 class ParseAttributeTest(PicardTestCase):
-    def test_1(self):
+    def test_instrument_with_credited_name(self):
         attrs, reltype, attr_credits = ('guest', 'keyboard'), 'instrument', {'keyboard': 'keyboards'}
         result = _parse_attributes(attrs, reltype, attr_credits)
         expected = 'guest keyboards'
         self.assertEqual(expected, result)
 
-    def test_2(self):
+    def test_empty_attrs_vocal(self):
         attrs, reltype, attr_credits = (), 'vocal', {}
         result = _parse_attributes(attrs, reltype, attr_credits)
         expected = 'vocals'
         self.assertEqual(expected, result)
 
-    def test_3(self):
+    def test_multiple_credited_instruments(self):
         attrs, reltype, attr_credits = (
             ('guitar', 'keyboard'),
             'instrument',

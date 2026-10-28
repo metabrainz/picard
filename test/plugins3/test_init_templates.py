@@ -35,7 +35,7 @@ from picard.plugin3.project_config import PluginProjectConfig
 
 
 class TestSlugifyName(PicardTestCase):
-    def test_basic(self):
+    def test_lowercase_with_dashes(self):
         self.assertEqual(slugify_name('My Cool Plugin'), 'my-cool-plugin')
 
     def test_special_characters(self):

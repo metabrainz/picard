@@ -449,7 +449,7 @@ class CompareBarcodesTest(PicardTestCase):
 
 
 class MbidValidateTest(PicardTestCase):
-    def test_ok(self):
+    def test_valid_and_invalid_strings(self):
         self.assertTrue(util.mbid_validate('2944824d-4c26-476f-a981-be849081942f'))
         self.assertTrue(util.mbid_validate('2944824D-4C26-476F-A981-be849081942f'))
         self.assertFalse(util.mbid_validate(''))
@@ -458,7 +458,7 @@ class MbidValidateTest(PicardTestCase):
         self.assertFalse(util.mbid_validate('2944824d-4c26-476f-a981-be849081942ff'))
         self.assertFalse(util.mbid_validate('2944824d-4c26.476f-a981-be849081942f'))
 
-    def test_not_ok(self):
+    def test_rejects_non_string_types(self):
         self.assertRaises(TypeError, util.mbid_validate, 123)
         self.assertRaises(TypeError, util.mbid_validate, None)
 
@@ -468,12 +468,12 @@ class LimitedJoin(PicardTestCase):
         super().setUp()
         self.list = [str(x) for x in range(0, 10)]
 
-    def test_1(self):
+    def test_truncates_with_separator_and_ellipsis(self):
         expected = '0+1+...+8+9'
         result = limited_join(self.list, 5, '+', '...')
         self.assertEqual(result, expected)
 
-    def test_2(self):
+    def test_no_truncation_when_limit_ge_length(self):
         expected = '0+1+2+3+4+5+6+7+8+9'
         result = limited_join(self.list, -1)
         self.assertEqual(result, expected)
@@ -482,7 +482,7 @@ class LimitedJoin(PicardTestCase):
         result = limited_join(self.list, len(self.list) + 1)
         self.assertEqual(result, expected)
 
-    def test_3(self):
+    def test_custom_separator(self):
         expected = '0,1,2,3,…,6,7,8,9'
         result = limited_join(self.list, len(self.list) - 1, ',')
         self.assertEqual(result, expected)
