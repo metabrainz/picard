@@ -27,7 +27,7 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
-from test.plugins3.helpers import MockTagger
+from test.plugins3.helpers import MockPluginTagger
 
 from picard.plugin3.plugin import (
     Plugin,
@@ -49,7 +49,7 @@ class TestPluginHelpers(PicardTestCase):
 class TestPluginState(PicardTestCase):
     def test_plugin_state_transitions(self):
         """Test that plugin state transitions work correctly."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
         # Initial state should be DISCOVERED
@@ -77,7 +77,7 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_double_enable_error(self):
         """Test that enabling an already enabled plugin raises error."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
         plugin._module = Mock()

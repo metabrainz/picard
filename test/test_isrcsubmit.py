@@ -301,7 +301,7 @@ class PendingDetailsTest(ISRCSubmitTestCase):
         self.manager.add(file, recording_id, isrcs, [])
         return file
 
-    def test_basic(self):
+    def test_groups_tracks_by_album_and_artist(self):
         track1 = make_mock_track('1', 'Song One')
         track2 = make_mock_track('2', 'Song Two', ['USRC17607839'])
         album = make_mock_album('Test Album', 'Test Artist', [track1, track2])

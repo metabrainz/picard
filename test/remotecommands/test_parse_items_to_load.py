@@ -25,7 +25,7 @@ from picard.remotecommands.handlers import ParseItemsToLoad
 
 
 class TestParseItemsToLoad(PicardTestCase):
-    def test(self):
+    def test_splits_files_mbids_and_urls(self):
         test_cases = {
             "test_case.mp3",
             "file:///home/picard/music/test.flac",

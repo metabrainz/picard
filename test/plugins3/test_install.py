@@ -33,7 +33,7 @@ from test.plugins3.helpers import (
     MockCliArgs,
     MockPlugin,
     MockPluginManager,
-    MockTagger,
+    MockPluginTagger,
     run_cli,
 )
 
@@ -61,7 +61,7 @@ from picard.plugin3.validator import generate_uuid
 
 class TestPluginInstall(PicardTestCase):
     def _create_manager(self):
-        return PluginManager(MockTagger())
+        return PluginManager(MockPluginTagger())
 
     def test_plugin_metadata_storage(self):
         """Test that plugin metadata is stored and retrieved correctly."""
@@ -398,7 +398,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_command_execution(self):
         """Test install command execution path."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(return_value='test-plugin')
@@ -423,7 +423,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_command_with_error(self):
         """Test install command handles errors."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(side_effect=Exception('Install failed'))
@@ -448,7 +448,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_remove_command_with_yes_flag(self):
         """Test remove command with --yes flag."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = MockPlugin()
@@ -470,7 +470,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_command_execution(self):
         """Test update command execution path."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = MockPlugin()
@@ -498,7 +498,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_command_already_up_to_date(self):
         """Test update command when already up to date."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = MockPlugin()
@@ -526,7 +526,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_all_with_results(self):
         """Test update-all command with mixed results."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = MockPlugin()
@@ -568,7 +568,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_multiple_plugins_with_ref_requires_confirmation(self):
         """Test that installing multiple plugins with --ref requires confirmation."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_manager = MockPluginManager()
         mock_tagger._pluginmanager3 = mock_manager
 

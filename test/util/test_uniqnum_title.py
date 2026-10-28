@@ -18,7 +18,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.util import (
     _regex_numbered_title_fmt,
@@ -27,98 +30,50 @@ from picard.util import (
 
 
 class RegexNumberedTitleFmt(PicardTestCase):
-    def test_1(self):
-        fmt = ''
-        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
-        self.assertEqual(result, '')
-
-    def test_2(self):
-        fmt = '{title} {count}'
-        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
-        self.assertEqual(result, r'TITLE(?:\ COUNT)?')
-
-    def test_3(self):
-        fmt = 'x {count}  {title} y'
-        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
-        self.assertEqual(result, r'(?:x\ COUNT\ \ )?TITLE y')
-
-    def test_4(self):
-        fmt = 'x {title}{count} y'
-        result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')
-        self.assertEqual(result, r'x TITLE(?:COUNT\ y)?')
+    @subtest_cases(
+        "fmt,expected",
+        {
+            'empty': ('', ''),
+            'title then count': ('{title} {count}', r'TITLE(?:\ COUNT)?'),
+            'count before title': ('x {count}  {title} y', r'(?:x\ COUNT\ \ )?TITLE y'),
+            'count after title': ('x {title}{count} y', r'x TITLE(?:COUNT\ y)?'),
+        },
+    )
+    def test_regex_numbered_title_fmt(self, fmt, expected):
+        self.assertEqual(expected, _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT'))
 
 
 class UniqueNumberedTitle(PicardTestCase):
-    def test_existing_titles_0(self):
-        title = unique_numbered_title('title', [], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (1)')
+    @subtest_cases(
+        "existing,expected",
+        {
+            'no existing': ([], 'title (1)'),
+            'one existing': (['title'], 'title (2)'),
+            'existing with number': (['title', 'title (2)'], 'title (3)'),
+            'two numbered': (['title (1)', 'title (2)'], 'title (3)'),
+            'duplicates': (['title', 'title'], 'title (3)'),
+            'non-matching neighbours': (['x title', 'title y'], 'title (1)'),
+            'non-numeric count': (['title (n)'], 'title (1)'),
+            'empty count': (['title ()'], 'title (1)'),
+            'no separator': (['title(2)'], 'title (1)'),
+        },
+    )
+    def test_unique_numbered_title_suffix(self, existing, expected):
+        self.assertEqual(expected, unique_numbered_title('title', existing, fmt='{title} ({count})'))
 
-    def test_existing_titles_1(self):
-        title = unique_numbered_title('title', ['title'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (2)')
-
-    def test_existing_titles_2(self):
-        title = unique_numbered_title('title', ['title', 'title (2)'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (3)')
-
-    def test_existing_titles_3(self):
-        title = unique_numbered_title('title', ['title (1)', 'title (2)'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (3)')
-
-    def test_existing_titles_4(self):
-        title = unique_numbered_title('title', ['title', 'title'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (3)')
-
-    def test_existing_titles_5(self):
-        title = unique_numbered_title('title', ['x title', 'title y'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (1)')
-
-    def test_existing_titles_6(self):
-        title = unique_numbered_title('title', ['title (n)'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (1)')
-
-    def test_existing_titles_7(self):
-        title = unique_numbered_title('title', ['title ()'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (1)')
-
-    def test_existing_titles_8(self):
-        title = unique_numbered_title('title', ['title(2)'], fmt='{title} ({count})')
-        self.assertEqual(title, 'title (1)')
-
-
-class UniqueNumberedTitleFmt(PicardTestCase):
-    def test_existing_titles_0(self):
-        title = unique_numbered_title('title', [], fmt='({count}) {title}')
-        self.assertEqual(title, '(1) title')
-
-    def test_existing_titles_1(self):
-        title = unique_numbered_title('title', ['title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(2) title')
-
-    def test_existing_titles_2(self):
-        title = unique_numbered_title('title', ['title', '(2) title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(3) title')
-
-    def test_existing_titles_3(self):
-        title = unique_numbered_title('title', ['(1) title', '(2) title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(3) title')
-
-    def test_existing_titles_4(self):
-        title = unique_numbered_title('title', ['title', 'title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(3) title')
-
-    def test_existing_titles_5(self):
-        title = unique_numbered_title('title', ['x title', 'title y'], fmt='({count}) {title}')
-        self.assertEqual(title, '(1) title')
-
-    def test_existing_titles_6(self):
-        title = unique_numbered_title('title', ['(n) title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(1) title')
-
-    def test_existing_titles_7(self):
-        title = unique_numbered_title('title', ['() title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(1) title')
-
-    def test_existing_titles_8(self):
-        title = unique_numbered_title('title', ['(2)title'], fmt='({count}) {title}')
-        self.assertEqual(title, '(1) title')
+    @subtest_cases(
+        "existing,expected",
+        {
+            'no existing': ([], '(1) title'),
+            'one existing': (['title'], '(2) title'),
+            'existing with number': (['title', '(2) title'], '(3) title'),
+            'two numbered': (['(1) title', '(2) title'], '(3) title'),
+            'duplicates': (['title', 'title'], '(3) title'),
+            'non-matching neighbours': (['x title', 'title y'], '(1) title'),
+            'non-numeric count': (['(n) title'], '(1) title'),
+            'empty count': (['() title'], '(1) title'),
+            'no separator': (['(2)title'], '(1) title'),
+        },
+    )
+    def test_unique_numbered_title_prefix(self, existing, expected):
+        self.assertEqual(expected, unique_numbered_title('title', existing, fmt='({count}) {title}'))

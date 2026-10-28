@@ -149,6 +149,32 @@ def _write_session(tmp_path: Path, data: dict) -> Path:
     return p
 
 
+def _make_cached_album_loader(tmp_path: Path, album_id: str) -> tuple[SessionLoader, Mock, Path]:
+    """Build a loader whose tagger already holds a cached album plus the
+    matching session file referencing it via ``mb_cache``.
+
+    Returns the loader, the album mock (so callers can assert on
+    ``album_mock.load``) and the session file path.
+    """
+    tagger = MockQtTagger()
+    album_mock = Mock()
+    album_mock.unmatched_files = Mock()
+    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
+    tagger.albums = {album_id: album_mock}
+
+    loader = SessionLoader(tagger)  # type: ignore
+
+    data = {
+        'version': 1,
+        'options': {},
+        'mb_cache': {album_id: {"id": album_id}},
+        'items': [],
+        'expanded_albums': [album_id],
+    }
+    path = _write_session(tmp_path, data)
+    return loader, album_mock, path
+
+
 def test_session_loader_requests_allowed(tmp_path: Path, mock_single_shot, cfg_options) -> None:
     cfg = picard_config.get_config()
     cfg.setting['session_no_mb_requests_on_load'] = False
@@ -204,22 +230,7 @@ def test_session_loader_cached_album_refresh_allowed(tmp_path: Path, mock_single
     cfg.setting['session_no_mb_requests_on_load'] = False
     cfg.setting['session_safe_restore'] = False
 
-    tagger = MockQtTagger()
-    album_mock = Mock()
-    album_mock.unmatched_files = Mock()
-    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
-    tagger.albums = {"album-123": album_mock}
-
-    loader = SessionLoader(tagger)  # type: ignore
-
-    data = {
-        'version': 1,
-        'options': {},
-        'mb_cache': {"album-123": {"id": "album-123"}},
-        'items': [],
-        'expanded_albums': ["album-123"],
-    }
-    path = _write_session(tmp_path, data)
+    loader, album_mock, path = _make_cached_album_loader(tmp_path, "album-123")
 
     loader.load_from_path(path)
 
@@ -233,22 +244,7 @@ def test_session_loader_cached_album_no_refresh_when_suppressed(tmp_path: Path, 
     cfg.setting['session_no_mb_requests_on_load'] = True
     cfg.setting['session_safe_restore'] = False
 
-    tagger = MockQtTagger()
-    album_mock = Mock()
-    album_mock.unmatched_files = Mock()
-    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
-    tagger.albums = {"album-123": album_mock}
-
-    loader = SessionLoader(tagger)  # type: ignore
-
-    data = {
-        'version': 1,
-        'options': {},
-        'mb_cache': {"album-123": {"id": "album-123"}},
-        'items': [],
-        'expanded_albums': ["album-123"],
-    }
-    path = _write_session(tmp_path, data)
+    loader, album_mock, path = _make_cached_album_loader(tmp_path, "album-123")
 
     loader.load_from_path(path)
 
@@ -311,22 +307,7 @@ def test_session_loader_request_suppression_matrix_cached(
     cfg.setting['session_no_mb_requests_on_load'] = no_requests
     cfg.setting['session_safe_restore'] = False
 
-    tagger = MockQtTagger()
-    album_mock = Mock()
-    album_mock.unmatched_files = Mock()
-    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
-    tagger.albums = {"album-xyz": album_mock}
-
-    loader = SessionLoader(tagger)  # type: ignore
-
-    data = {
-        'version': 1,
-        'options': {},
-        'mb_cache': {"album-xyz": {"id": "album-xyz"}},
-        'items': [],
-        'expanded_albums': ["album-xyz"],
-    }
-    path = _write_session(tmp_path, data)
+    loader, album_mock, path = _make_cached_album_loader(tmp_path, "album-xyz")
 
     loader.load_from_path(path)
 

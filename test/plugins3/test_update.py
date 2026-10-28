@@ -27,7 +27,7 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
-    MockTagger,
+    MockPluginTagger,
     backend_add_and_commit,
     backend_create_tag,
     backend_set_detached_head,
@@ -80,7 +80,7 @@ def _create_plugin_repo(tmpdir, version="1.0.0", plugin_id="test-plugin"):
 
 def _create_updater():
     """Create a PluginUpdater with a real PluginManager."""
-    manager = PluginManager(MockTagger())
+    manager = PluginManager(MockPluginTagger())
     return PluginUpdater(manager)
 
 

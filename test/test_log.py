@@ -73,7 +73,7 @@ class LogQueueCommonTest(PicardTestCase):
 
 
 class LogQueueBoundsTestCase(LogQueueCommonTest):
-    def test_1(self):
+    def test_positions_within_maxlen(self):
         # Common case where the item positions are within the max size of the queue
         # [0,1,2,3,4,5,6,7], len = 8, maxlen = 10, offset = 0
         for i in range(8):
@@ -81,7 +81,7 @@ class LogQueueBoundsTestCase(LogQueueCommonTest):
         content_list = self.item_queue.contents()
         self.assertListEqual([x.pos for x in content_list], list(range(0, 8)))
 
-    def test_2(self):
+    def test_positions_exceed_maxlen(self):
         # Common case where the item positions are outside the max size of the queue
         # Which means the positions do not match the index of items in the queue
         # [5,6,7,8,9,10,11,12,13,14], len = 10, offset = len - (last - prev) = 10 - (14-7) = 3
@@ -90,7 +90,7 @@ class LogQueueBoundsTestCase(LogQueueCommonTest):
         content_list = self.item_queue.contents(7)  # prev value
         self.assertListEqual([x.pos for x in content_list], list(range(8, 15)))
 
-    def test_3(self):
+    def test_prev_already_evicted_falls_back_to_first(self):
         # Previous case but the previous item (2) was already removed from the queue
         # So we pick the first item in the queue in its place
         # [5,6,7,8,9,10,11,12,13,14], len = 10, maxlen = 10, prev = 5-1 = 4, offset = 0
@@ -99,7 +99,7 @@ class LogQueueBoundsTestCase(LogQueueCommonTest):
         content_list = self.item_queue.contents(2)
         self.assertListEqual([x.pos for x in content_list], list(range(5, 15)))
 
-    def test_4(self):
+    def test_single_element_various_prev_values(self):
         # In case we have only one element but use different prev values
         self.item_queue.push(MockLogItem(10))
         content_list = self.item_queue.contents()  # prev = -1 is smaller than 10, so we update prev from -1 to 10-1 = 9
@@ -117,7 +117,7 @@ class LogQueueBoundsTestCase(LogQueueCommonTest):
         content_list = self.item_queue.contents(20)  # prev = 20 is bigger than 10, so we use it as is
         self.assertListEqual([x.pos for x in content_list], [])
 
-    def test_5(self):
+    def test_discontinuous_positions(self):
         # This shouldn't really happen, but here is a test for it
         # In case of a discontinuity e.g. [4,5,11], we have len = 3, prev = 3, last_pos=11,
         #   which results in offset = 3 - (11-4) = -4, which is completely absurd offset, when the correct would be 0

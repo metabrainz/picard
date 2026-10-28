@@ -85,7 +85,7 @@ class TestPluginApiQtTranslator(PicardTestCase):
     def _create_mock_tagger(self):
         """Create a mock tagger with proper Qt signal."""
 
-        class MockTagger(QtCore.QObject):
+        class MockPluginTagger(QtCore.QObject):
             _qt_translators_updated = QtCore.pyqtSignal()
 
             def __init__(self):
@@ -93,7 +93,7 @@ class TestPluginApiQtTranslator(PicardTestCase):
                 self.installTranslator = Mock(return_value=True)
                 self.removeTranslator = Mock()
 
-        return MockTagger()
+        return MockPluginTagger()
 
     def _setup_plugin_api(self, tmpdir, translations=None):
         """Setup PluginApi with optional translations."""

@@ -42,7 +42,7 @@ settings = {
 
 
 class ReleaseTest(PicardTestCase):
-    def test_1(self):
+    def test_disambiguate_by_packaging(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_2.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
@@ -103,7 +103,7 @@ class ReleaseTest(PicardTestCase):
         self.assertEqual(r.versions[1]['name'], '5 / 2009 / GB / CD / label A / cat 123 / Digipak / special')
         self.assertEqual(r.versions[2]['name'], '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
 
-    def test_2(self):
+    def test_disambiguate_by_disambiguation_comment(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_3.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
@@ -147,7 +147,7 @@ class ReleaseTest(PicardTestCase):
         self.assertEqual(r.versions[0]['name'], '5 / 2011 / FR / CD / label A / cat 123 / special A')
         self.assertEqual(r.versions[1]['name'], '5 / 2011 / FR / CD / label A / cat 123')
 
-    def test_3(self):
+    def test_disambiguate_by_barcode(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_4.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
@@ -192,7 +192,7 @@ class ReleaseTest(PicardTestCase):
         self.assertEqual(r.versions[1]['name'], '5 / 2009 / FR / CD / label A / cat 123 / [no barcode]')
 
     @patch('picard.releasegroup.VERSIONS_MAX_TRACKS', 2)
-    def test_4(self):
+    def test_track_counts_truncated_at_max_tracks(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_5.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
@@ -217,7 +217,7 @@ class ReleaseTest(PicardTestCase):
         self.assertEqual(releases, expected)
 
     @patch('picard.releasegroup.VERSIONS_MAX_TRACKS', 3)
-    def test_5(self):
+    def test_track_counts_shown_in_full_within_max_tracks(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_5.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))

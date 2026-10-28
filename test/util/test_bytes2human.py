@@ -29,7 +29,7 @@ from picard.util import bytes2human
 
 
 class Testbytes2human(PicardTestCase):
-    def test_00(self):
+    def test_binary_and_decimal_formatting(self):
         self.run_test()
 
         self.assertEqual(bytes2human.binary(45682), '44.6 KiB')

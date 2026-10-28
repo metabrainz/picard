@@ -33,7 +33,7 @@ from test.picardtestcase import (
 )
 from test.plugins3.helpers import (
     MockPlugin,
-    MockTagger,
+    MockPluginTagger,
     backend_init_and_commit,
     create_test_registry,
     skip_if_no_git_backend,
@@ -70,8 +70,8 @@ from picard.plugin3.validator import generate_uuid
 
 
 def _create_manager():
-    """Create a PluginManager with a MockTagger."""
-    return PluginManager(MockTagger())
+    """Create a PluginManager with a MockPluginTagger."""
+    return PluginManager(MockPluginTagger())
 
 
 class TestPluginManagerHelpers(PicardTestCase):
@@ -146,7 +146,7 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_cleanup_registers_with_tagger(self):
         """Test that cleanup is registered with tagger."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         mock_tagger.register_cleanup = Mock()
 
         manager = PluginManager(mock_tagger)
@@ -521,7 +521,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.git_backend')
     def test_rollback_plugin_to_commit(self, mock_git_backend):
         """Test _rollback_plugin_to_commit method."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
 
         # Create mock plugin
         plugin = MockPlugin()
@@ -546,7 +546,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.git_backend')
     def test_validate_manifest_or_rollback_success(self, mock_git_backend):
         """Test _validate_manifest_or_rollback with successful validation."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
 
         # Create mock plugin
         plugin = MockPlugin()
@@ -562,7 +562,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.git_backend')
     def test_validate_manifest_or_rollback_failure(self, mock_git_backend):
         """Test _validate_manifest_or_rollback with validation failure."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
 
         # Create mock plugin
         plugin = MockPlugin()
@@ -592,7 +592,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_update_plugin_rollback_on_manifest_error(self, mock_git_backend, mock_source_git):
         """Test update_plugin rolls back on manifest validation failure."""
         skip_if_no_git_backend()
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._registry = Mock()
         manager._metadata = Mock()
 
@@ -657,7 +657,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.update.GitOperations')
     def test_switch_ref_rollback_on_manifest_error(self, mock_git_ops):
         """Test switch_ref rolls back on manifest validation failure."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._metadata = Mock()
 
         # Create mock plugin
@@ -701,7 +701,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.install.shutil')
     def test_install_plugin_cleanup_on_enable_failure(self, mock_shutil, mock_validation, mock_source_git):
         """Test install_plugin cleans up on manifest validation failure during enable."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._registry = Mock()
         manager._registry.find_plugin.return_value = None
         manager._metadata = Mock()
@@ -745,7 +745,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_versioning_scheme_with_uuid(self):
         """Test get_plugin_versioning_scheme returns scheme when plugin has a UUID."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._registry = create_test_registry()
         manager._metadata = PluginMetadataManager(manager._registry)
 
@@ -759,7 +759,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_versioning_scheme_no_uuid(self):
         """Test get_plugin_versioning_scheme returns empty string when plugin has no UUID."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         plugin = MockPlugin()
         plugin.uuid = None
 
@@ -768,7 +768,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_versioning_scheme_registry_lookup(self):
         """Test get_plugin_versioning_scheme queries registry for plugins with UUID and metadata."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
 
         mock_registry_plugin = Mock()
         mock_registry_plugin.versioning_scheme = 'semver'
@@ -803,7 +803,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.shutil')
     def test_cleanup_failed_plugin_install(self, mock_shutil):
         """Test _cleanup_failed_plugin_install helper method."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
 
         # Create mock plugin and path
         plugin = MockPlugin()
@@ -831,7 +831,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @unittest.skipUnless(IS_WIN, "read-only file attribute only blocks deletion on Windows")
     def test_safe_remove_directory_with_readonly_files(self):
         """Test _safe_remove_directory handles read-only files (e.g. .git pack files)."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a nested structure with a read-only file, similar to .git pack files
             subdir = Path(tmpdir) / 'plugin' / '.git' / 'objects' / 'pack'
@@ -847,7 +847,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @unittest.skipIf(IS_WIN, "non-Windows test")
     def test_safe_remove_directory(self):
         """Test _safe_remove_directory removes a directory tree."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir) / 'plugin'
             plugin_dir.mkdir()
@@ -858,7 +858,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_safe_remove_directory_nonexistent(self):
         """Test _safe_remove_directory is a no-op for nonexistent paths."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._safe_remove_directory(Path('/nonexistent/path'), "test")
         # No exception raised
 

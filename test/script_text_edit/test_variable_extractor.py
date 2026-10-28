@@ -191,6 +191,7 @@ class TestASTTraversal:
         variables = set()
         variable_extractor._collect_from_ast(mock_function, variables)
         # Should not add anything since we can't easily mock the static name extraction
+        assert variables == set()
 
     def test_collect_from_ast_expression_node(self, variable_extractor: VariableExtractor) -> None:
         """Test AST collection from expression nodes."""
@@ -201,6 +202,7 @@ class TestASTTraversal:
         variables = set()
         variable_extractor._collect_from_ast(mock_expression, variables)
         # Should not add anything since we can't easily mock the traversal
+        assert variables == set()
 
     def test_extract_static_name_failure(self, variable_extractor: VariableExtractor) -> None:
         """Test static name extraction failure."""

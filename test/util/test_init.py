@@ -326,45 +326,31 @@ class HiddenFileTest(PicardTestCase):
 
 
 class LinearCombinationTest(PicardTestCase):
-    def test_0(self):
-        parts = []
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
+    @subtest_cases(
+        "parts,expected",
+        {
+            'empty': ([], 0.0),
+            'all full weight': ([(1.0, 1), (1.0, 1), (1.0, 1)], 1.0),
+            'zero-weight parts ignored': ([(0.0, 1), (0.0, 0), (1.0, 0)], 0.0),
+            'even split': ([(0.0, 1), (1.0, 1)], 0.5),
+            'weighted split': ([(0.5, 4), (1.0, 1)], 0.6),
+            'many parts': ([(0.95, 100), (0.05, 399), (0.0, 1), (1.0, 0)], 0.2299),
+        },
+    )
+    def test_value(self, parts, expected):
+        self.assertEqual(expected, util.linear_combination_of_weights(parts))
 
-    def test_1(self):
-        parts = [(1.0, 1), (1.0, 1), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 1.0)
-
-    def test_2(self):
-        parts = [(0.0, 1), (0.0, 0), (1.0, 0)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
-
-    def test_3(self):
-        parts = [(0.0, 1), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.5)
-
-    def test_4(self):
-        parts = [(0.5, 4), (1.0, 1)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.6)
-
-    def test_5(self):
-        parts = [(0.95, 100), (0.05, 399), (0.0, 1), (1.0, 0)]
-        self.assertEqual(util.linear_combination_of_weights(parts), 0.2299)
-
-    def test_6(self):
-        parts = [(-0.5, 4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_7(self):
-        parts = [(0.5, -4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_8(self):
-        parts = [(1.5, 4)]
-        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
-
-    def test_9(self):
-        parts = (1.5, 4)
-        self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
+    @subtest_cases(
+        "parts,expected_exception",
+        {
+            'score below 0': ([(-0.5, 4)], AssertionError),
+            'weight below 0': ([(0.5, -4)], AssertionError),
+            'score above 1': ([(1.5, 4)], AssertionError),
+            'not a list of tuples': ((1.5, 4), TypeError),
+        },
+    )
+    def test_raises(self, parts, expected_exception):
+        self.assertRaises(expected_exception, util.linear_combination_of_weights, parts)
 
 
 class AlbumArtistFromPathTest(PicardTestCase):
@@ -463,7 +449,7 @@ class CompareBarcodesTest(PicardTestCase):
 
 
 class MbidValidateTest(PicardTestCase):
-    def test_ok(self):
+    def test_valid_and_invalid_strings(self):
         self.assertTrue(util.mbid_validate('2944824d-4c26-476f-a981-be849081942f'))
         self.assertTrue(util.mbid_validate('2944824D-4C26-476F-A981-be849081942f'))
         self.assertFalse(util.mbid_validate(''))
@@ -472,7 +458,7 @@ class MbidValidateTest(PicardTestCase):
         self.assertFalse(util.mbid_validate('2944824d-4c26-476f-a981-be849081942ff'))
         self.assertFalse(util.mbid_validate('2944824d-4c26.476f-a981-be849081942f'))
 
-    def test_not_ok(self):
+    def test_rejects_non_string_types(self):
         self.assertRaises(TypeError, util.mbid_validate, 123)
         self.assertRaises(TypeError, util.mbid_validate, None)
 
@@ -482,12 +468,12 @@ class LimitedJoin(PicardTestCase):
         super().setUp()
         self.list = [str(x) for x in range(0, 10)]
 
-    def test_1(self):
+    def test_truncates_with_separator_and_ellipsis(self):
         expected = '0+1+...+8+9'
         result = limited_join(self.list, 5, '+', '...')
         self.assertEqual(result, expected)
 
-    def test_2(self):
+    def test_no_truncation_when_limit_ge_length(self):
         expected = '0+1+2+3+4+5+6+7+8+9'
         result = limited_join(self.list, -1)
         self.assertEqual(result, expected)
@@ -496,7 +482,7 @@ class LimitedJoin(PicardTestCase):
         result = limited_join(self.list, len(self.list) + 1)
         self.assertEqual(result, expected)
 
-    def test_3(self):
+    def test_custom_separator(self):
         expected = '0,1,2,3,…,6,7,8,9'
         result = limited_join(self.list, len(self.list) - 1, ',')
         self.assertEqual(result, expected)

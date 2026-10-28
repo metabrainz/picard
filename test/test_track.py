@@ -153,7 +153,7 @@ class TrackGenresToMetadataTest(PicardTestCase):
         ret = Track._genres_to_metadata(genres)
         self.assertEqual(ret, [])
 
-    def test_basic(self):
+    def test_sorted_titlecased_by_count(self):
         genres = Counter(pop=6, rock=7, blues=2)
         ret = Track._genres_to_metadata(genres)
         self.assertEqual(ret, ['Blues', 'Pop', 'Rock'])
