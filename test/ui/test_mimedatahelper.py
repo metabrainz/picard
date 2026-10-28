@@ -86,9 +86,9 @@ class MimeDataHelperTest(PicardTestCase):
         result = self.MIMETYPE_TEXT + " decoded"
         helper.register(
             self.MIMETYPE_TEXT,
-            encode_func=lambda: result,
+            decode_func=lambda: result,
         )
-        fn = helper.encode_func(self.MIMETYPE_TEXT)
+        fn = helper.decode_func(self.MIMETYPE_TEXT)
         self.assertEqual(result, fn())
 
     def test_encode_generator(self):
