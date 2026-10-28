@@ -23,7 +23,7 @@ import tempfile
 
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
-    MockTagger,
+    MockPluginTagger,
     create_git_repo_with_backend,
     create_test_manifest_content,
     run_cli,
@@ -50,7 +50,7 @@ def _create_plugin_dir(base_dir, uuid):
 
 def _create_manager(plugins_dir):
     """Create a PluginManager without triggering _load_local_plugins."""
-    manager = PluginManager(MockTagger())
+    manager = PluginManager(MockPluginTagger())
     manager._primary_plugin_dir = Path(plugins_dir)
     manager._plugin_dirs.append(manager._primary_plugin_dir)
     return manager
@@ -152,7 +152,7 @@ class TestLocalNonGitPlugin(PicardTestCase):
             shutil.rmtree(plugin_dir)
 
             # New manager simulates restart — _load_local_plugins should clean up
-            manager2 = PluginManager(MockTagger())
+            manager2 = PluginManager(MockPluginTagger())
             manager2.add_directory(plugins_dir, primary=True)
 
             self.assertIsNone(manager2.plugin_id_to_plugin(plugin_name))

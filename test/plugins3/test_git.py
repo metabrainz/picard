@@ -29,7 +29,7 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
-    MockTagger,
+    MockPluginTagger,
     backend_add_and_commit,
     backend_create_branch,
     backend_create_lightweight_tag,
@@ -251,7 +251,7 @@ class TestPluginGitOperations(PicardTestCase):
 
     def _create_manager(self, plugin_dir):
         """Create a PluginManager with a temporary plugin directory."""
-        manager = PluginManager(MockTagger())
+        manager = PluginManager(MockPluginTagger())
         manager._primary_plugin_dir = plugin_dir
         plugin_dir.mkdir(parents=True, exist_ok=True)
         return manager

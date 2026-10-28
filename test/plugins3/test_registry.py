@@ -29,7 +29,7 @@ from unittest.mock import (
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
     MockPlugin,
-    MockTagger,
+    MockPluginTagger,
     create_test_registry,
 )
 
@@ -314,7 +314,7 @@ class TestPluginRegistry(PicardTestCase):
         check for local installs (is_local=True), allowing locally cloned
         copies of UUID-blacklisted plugins to be installed.
         """
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -350,7 +350,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -365,7 +365,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_install_with_force_blacklisted(self):
         """Test that --force-blacklisted bypasses blacklist."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
         test_uuid = generate_uuid()
@@ -402,7 +402,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_blacklisted_plugins_on_startup(self):
         """Test that blacklisted plugins are disabled on startup."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -439,7 +439,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_blacklist_warning_shown(self):
         """Test that blacklisted plugins are returned for warning display."""
-        mock_tagger = MockTagger()
+        mock_tagger = MockPluginTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 

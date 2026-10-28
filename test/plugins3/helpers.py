@@ -105,7 +105,7 @@ class MockPluginManager(Mock):
         self.find_similar_plugin_ids = find_similar_plugin_ids_impl
 
 
-class MockTagger(Mock):
+class MockPluginTagger(Mock):
     """Mock Tagger with sensible defaults."""
 
     def __init__(self, **kwargs):
