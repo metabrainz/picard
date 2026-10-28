@@ -333,7 +333,6 @@ if show_latin2ascii_coverage:
     print("Underscores are characters which currently do not have an ASCII representation.")
     print()
     print("latin-1:       ", replace_non_ascii(latin_1))
-    print("latin-1:       ", replace_non_ascii(latin_1))
     print("latin-a:       ", replace_non_ascii(latin_a))
     print("latin-b:       ", replace_non_ascii(latin_b))
     print("ipa-ext:       ", replace_non_ascii(ipa_ext))
