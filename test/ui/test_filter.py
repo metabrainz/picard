@@ -99,13 +99,8 @@ class FilterTestTags(PicardTestCase):
         filterable_tags = set(str(x) for x in Filter.filterable_tags)
         self.assertEqual(len(filterable_tags), 3)
 
-        tag_names = ['album', 'artist', 'title']
-        for name in tag_names:
-            self.assertTrue(name in filterable_tags)
-
-        tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
-        for name in tag_names:
-            self.assertFalse(name in filterable_tags)
+        self.assertLessEqual({'album', 'artist', 'title'}, filterable_tags)
+        self.assertTrue(filterable_tags.isdisjoint({'bitrate', 'filename', 'filepath', 'invalid_tag'}))
 
     @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
