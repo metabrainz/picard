@@ -18,6 +18,11 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard.config import get_config
@@ -153,15 +158,35 @@ class TestSetupWizardMetadataPage(PicardTestCase):
         finally:
             page.deleteLater()
 
-    def test_metadata_page_wrapped_label_margin_awareness(self):
+    def test_wrapped_label_pins_minimum_height_to_wrapped_text(self):
+        # Regression for PICARD-3477: a word-wrapped description must reserve
+        # enough height for every line at the width it is actually given,
+        # otherwise the text is clipped (notably with longer translations).
         page = MetadataPage()
         try:
             cb = page.track_ars_checkbox
-            hint = cb._inner_layout.itemAt(0).widget()
-            # Verify hint minimumSizeHint accounts for inner indent margins rather than raw parent width
-            min_hint = hint.minimumSizeHint()
-            self.assertGreater(min_hint.height(), 0)
-            self.assertGreaterEqual(hint.sizeHint().height(), min_hint.height())
+            item = cb._inner_layout.itemAt(0)
+            assert item is not None
+            label = item.widget()
+            assert label is not None
+
+            def resize_to(width):
+                # Drive the real resizeEvent handler deterministically, without
+                # relying on an event loop that may not run under pytest.
+                old = label.size()
+                label.resize(width, 10)
+                label.resizeEvent(QtGui.QResizeEvent(QtCore.QSize(width, 10), old))
+
+            resize_to(560)
+            needed = label.heightForWidth(560)
+            self.assertGreater(needed, 0)
+            self.assertGreaterEqual(label.minimumHeight(), needed)
+
+            # Re-pinning must track the current width: a very narrow width wraps
+            # into more lines and needs at least as much height as a wide one.
+            resize_to(250)
+            self.assertGreaterEqual(label.minimumHeight(), label.heightForWidth(250))
+            self.assertGreaterEqual(label.heightForWidth(250), label.heightForWidth(560))
         finally:
             page.deleteLater()
 

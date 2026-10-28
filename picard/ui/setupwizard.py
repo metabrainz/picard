@@ -42,6 +42,17 @@ from picard.ui.theme import theme
 
 
 class WrappedLabel(QtWidgets.QLabel):
+    """A word-wrapped label that always reserves enough height for its text.
+
+    A word-wrapped ``QLabel`` only tells its layout ``heightForWidth()``. Inside
+    nested layouts that height is evaluated against a width that does not always
+    match the width the label is finally given, so the label can end up shorter
+    than its text needs and the text is clipped (this is a long-standing Qt
+    limitation with wrapped labels in layouts). To avoid that, we pin the label's
+    minimum height to the wrapped height for whatever width it is actually
+    assigned, updating it whenever the width changes.
+    """
+
     def __init__(self, text: str, parent: QtWidgets.QWidget | None = None):
         super().__init__(text, parent=parent)
         self.setWordWrap(True)
@@ -51,33 +62,16 @@ class WrappedLabel(QtWidgets.QLabel):
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
 
-    def _target_width(self) -> int:
-        if self.width() > 0:
-            return self.width()
-        parent = self.parent()
-        if isinstance(parent, QtWidgets.QWidget):
-            margins = parent.contentsMargins()
-            avail = parent.width() - margins.left() - margins.right()
-            inner_layout = getattr(parent, '_inner_layout', None)
-            if inner_layout:
-                inner_margins = inner_layout.contentsMargins()
-                avail -= inner_margins.left() + inner_margins.right()
-            return max(avail, 0)
-        return 0
-
-    def sizeHint(self) -> QtCore.QSize:
-        size = super().sizeHint()
-        width = self._target_width()
+    def _update_minimum_height(self) -> None:
+        width = self.width()
         if width > 0:
-            size.setHeight(self.heightForWidth(width))
-        return size
+            self.setMinimumHeight(self.heightForWidth(width))
 
-    def minimumSizeHint(self) -> QtCore.QSize:
-        size = super().minimumSizeHint()
-        width = self._target_width()
-        if width > 0:
-            size.setHeight(self.heightForWidth(width))
-        return size
+    def resizeEvent(self, a0: QtGui.QResizeEvent | None) -> None:
+        super().resizeEvent(a0)
+        # The wrapped height depends on the (now known) width; pin the minimum
+        # height so the parent layouts reserve room for every line of text.
+        self._update_minimum_height()
 
 
 class WizardCheckbox(QtWidgets.QWidget):
