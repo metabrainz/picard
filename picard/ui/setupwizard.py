@@ -152,6 +152,26 @@ class SetupWizardPage(QtWidgets.QWizardPage):
             icontheme.lookup('preferences-desktop').pixmap(32, 32),
         )
 
+    def _body_layout(self) -> QtWidgets.QVBoxLayout:
+        """Create and return the page's top-level vertical layout."""
+        return QtWidgets.QVBoxLayout(self)
+
+    def _add_checkbox(self, layout: QtWidgets.QBoxLayout, title: str, description: str) -> WizardCheckbox:
+        """Create a WizardCheckbox, add it to layout, and return it."""
+        checkbox = WizardCheckbox(title, description)
+        layout.addWidget(checkbox)
+        return checkbox
+
+    def _add_footer_hint(self, layout: QtWidgets.QBoxLayout, text: str) -> None:
+        """Add the trailing "You can change these later ..." hint.
+
+        A stretch pushes the hint to the bottom of the page, below the options.
+        """
+        layout.addStretch()
+        hint = QtWidgets.QLabel(text)
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
+
     def save_settings(self, config: Config) -> None:
         """Save page settings to config. Override in subclasses."""
 
@@ -212,20 +232,20 @@ class FileOrganizationPage(SetupWizardPage):
         self.setTitle(_("File Organization"))
         self.setSubTitle(_("Choose whether Picard should rename and move your files when saving tags."))
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = self._body_layout()
 
-        self.rename_checkbox = WizardCheckbox(
+        self.rename_checkbox = self._add_checkbox(
+            layout,
             _("Rename files based on tags (e.g. \"Artist - Title.mp3\")"),
             _("When you save tagged files, their filenames will be updated based on the new tags."),
         )
-        layout.addWidget(self.rename_checkbox)
 
-        self.move_checkbox = WizardCheckbox(
+        self.move_checkbox = self._add_checkbox(
+            layout,
             _("Move files to a folder structure based on tags"),
             _("Saved files will be organized into subfolders (e.g. Artist/Album/) inside the folder you choose below."),
         )
         self.move_checkbox.toggled.connect(self._update_move_to_state)
-        layout.addWidget(self.move_checkbox)
 
         move_to_layout = QtWidgets.QHBoxLayout()
         self.move_to_edit = QtWidgets.QLineEdit()
@@ -240,16 +260,14 @@ class FileOrganizationPage(SetupWizardPage):
         move_to_layout.addWidget(self.browse_button)
         self.move_checkbox.add_extra_layout(move_to_layout)
 
-        layout.addStretch()
-        hint = QtWidgets.QLabel(
+        self._add_footer_hint(
+            layout,
             _(
                 "You can change these later from the Options menu "
                 "or under Options \N{RIGHTWARDS ARROW} Options "
                 "\N{RIGHTWARDS ARROW} File Naming."
-            )
+            ),
         )
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
@@ -294,35 +312,33 @@ class CoverArtPage(SetupWizardPage):
         self.setTitle(_("Cover Art"))
         self.setSubTitle(_("Choose how Picard should handle album cover art."))
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = self._body_layout()
 
-        self.embed_checkbox = WizardCheckbox(
+        self.embed_checkbox = self._add_checkbox(
+            layout,
             _("Embed cover art into audio files"),
             _("The cover image will be stored inside the audio file itself, so it shows up in any music player."),
         )
-        layout.addWidget(self.embed_checkbox)
 
-        self.save_to_files_checkbox = WizardCheckbox(
+        self.save_to_files_checkbox = self._add_checkbox(
+            layout,
             _("Save cover art as separate image files"),
             _("A cover image file (e.g. cover.jpg) will be saved alongside your audio files in the same folder."),
         )
-        layout.addWidget(self.save_to_files_checkbox)
 
-        self.prefer_release_group_checkbox = WizardCheckbox(
+        self.prefer_release_group_checkbox = self._add_checkbox(
+            layout,
             _("Prefer release group cover art"),
             _(
                 "Use the album's main cover art instead of edition-specific artwork. "
                 "This usually provides higher quality images but may not match your exact release."
             ),
         )
-        layout.addWidget(self.prefer_release_group_checkbox)
 
-        layout.addStretch()
-        hint = QtWidgets.QLabel(
-            _("You can change these later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Cover Art.")
+        self._add_footer_hint(
+            layout,
+            _("You can change these later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Cover Art."),
         )
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
@@ -409,36 +425,34 @@ class UpdatesPage(SetupWizardPage):
 
         tagger = tagger_instance()
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = self._body_layout()
 
-        self.update_check_app = WizardCheckbox(
+        self.update_check_app = self._add_checkbox(
+            layout,
             _("Check for program updates"),
             _("Check for a new program version online and show an update dialog if available."),
         )
-        layout.addWidget(self.update_check_app)
         if not tagger.autoupdate_enabled:
             self.update_check_app.hide()
 
-        self.update_check_plugins = WizardCheckbox(
+        self.update_check_plugins = self._add_checkbox(
+            layout,
             _("Check for plugin updates"),
             _("Check for plugin updates online and show a notification in the status bar."),
         )
-        layout.addWidget(self.update_check_plugins)
         if not tagger.get_plugin_manager():
             self.update_check_plugins.hide()
 
-        self.update_check_docs = WizardCheckbox(
+        self.update_check_docs = self._add_checkbox(
+            layout,
             _("Check for documentation updates"),
             _("Check for available documentation translations, so the online help can be shown in your language."),
         )
-        layout.addWidget(self.update_check_docs)
 
-        layout.addStretch()
-        hint = QtWidgets.QLabel(
-            _("You can change these later under Options \N{RIGHTWARDS ARROW} General \N{RIGHTWARDS ARROW} Startup.")
+        self._add_footer_hint(
+            layout,
+            _("You can change these later under Options \N{RIGHTWARDS ARROW} General \N{RIGHTWARDS ARROW} Startup."),
         )
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
@@ -474,9 +488,10 @@ class MetadataPage(SetupWizardPage):
         self.setTitle(_("Additional Metadata"))
         self.setSubTitle(_("Choose whether Picard should fetch extra details about each track."))
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = self._body_layout()
 
-        self.track_ars_checkbox = WizardCheckbox(
+        self.track_ars_checkbox = self._add_checkbox(
+            layout,
             _("Fetch detailed track relationships (performers, composers, and more)"),
             _(
                 "For every track, Picard will also download extra credits such as the "
@@ -488,9 +503,9 @@ class MetadataPage(SetupWizardPage):
                 "don't mind the extra loading time."
             ),
         )
-        layout.addWidget(self.track_ars_checkbox)
 
-        self.convert_punctuation_checkbox = WizardCheckbox(
+        self.convert_punctuation_checkbox = self._add_checkbox(
+            layout,
             _("Convert Unicode punctuation to ASCII"),
             _(
                 "Replace typographic Unicode punctuation with plain ASCII equivalents "
@@ -501,14 +516,11 @@ class MetadataPage(SetupWizardPage):
                 "Useful if your player or file system does not handle these characters well."
             ),
         )
-        layout.addWidget(self.convert_punctuation_checkbox)
 
-        layout.addStretch()
-        hint = QtWidgets.QLabel(
-            _("You can change this later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Metadata.")
+        self._add_footer_hint(
+            layout,
+            _("You can change this later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Metadata."),
         )
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
@@ -535,6 +547,9 @@ class SetupWizard(QtWidgets.QWizard):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        # Wrapped descriptions size themselves to their text (see WrappedLabel),
+        # so this is just a comfortable default that fits the multi-paragraph
+        # pages without scrolling; it is not what prevents text truncation.
         self.setMinimumSize(640, 580)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
