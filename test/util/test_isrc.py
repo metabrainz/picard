@@ -69,6 +69,8 @@ class TestValidIsrc(PicardTestCase):
     def test_idempotent(self):
         """Calling valid_isrc on an already-normalized value returns it unchanged."""
         normalized = valid_isrc('USRC17607839')
+        self.assertIsNotNone(normalized)
+        assert normalized is not None  # narrow type for the reuse below
         self.assertEqual(normalized, valid_isrc(normalized))
 
 
