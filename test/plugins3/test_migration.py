@@ -55,6 +55,32 @@ class TestPluginMigration(PicardTestCase):
             del sys.modules['migrate_plugin']
         super().tearDown()
 
+    def _import_migrate_plugin(self):
+        """Import and return the migrate_plugin script module."""
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        return migrate_plugin
+
+    def _run_migrate(self, v2_plugin, basename):
+        """Write a v2 plugin to a file, migrate it, and return (result, output_dir).
+
+        Asserts the common success contract (exit 0, MANIFEST.toml and
+        __init__.py written) so callers only assert what is specific to them.
+        """
+        input_file = self.temp_path / f'{basename}.py'
+        input_file.write_text(v2_plugin)
+
+        migrate_plugin = self._import_migrate_plugin()
+
+        output_dir = self.temp_path / f'{basename}_v3'
+        result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
+
+        self.assertEqual(result, 0)
+        self.assertTrue((output_dir / 'MANIFEST.toml').exists())
+        self.assertTrue((output_dir / '__init__.py').exists())
+        return result, output_dir
+
     def test_migrate_simple_plugin(self):
         """Test migrating a simple V2 plugin."""
         v2_plugin = '''# -*- coding: utf-8 -*-
@@ -74,19 +100,7 @@ def process_metadata(album, metadata, track, release):
 register_track_metadata_processor(process_metadata)
 '''
 
-        input_file = self.temp_path / 'test_plugin.py'
-        input_file.write_text(v2_plugin)
-
-        # Import migration tool
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
-
-        output_dir = self.temp_path / 'test_plugin_v3'
-        result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
-
-        self.assertEqual(result, 0)
-        self.assertTrue((output_dir / 'MANIFEST.toml').exists())
-        self.assertTrue((output_dir / '__init__.py').exists())
+        result, output_dir = self._run_migrate(v2_plugin, 'test_plugin')
 
         # Validate MANIFEST using tomllib
 
@@ -119,8 +133,7 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'long_desc.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         output_dir = self.temp_path / 'long_desc_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -146,8 +159,7 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'quote_test.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         output_dir = self.temp_path / 'quote_test_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -179,8 +191,7 @@ def my_function():
         input_file = self.temp_path / 'name_test.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         output_dir = self.temp_path / 'name_test_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -211,19 +222,7 @@ class MyAlbumAction(BaseAction):
 register_album_action(MyAlbumAction())
 '''
 
-        input_file = self.temp_path / 'test_plugin.py'
-        input_file.write_text(v2_plugin)
-
-        # Import migration tool
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
-
-        output_dir = self.temp_path / 'test_plugin_v3'
-        result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
-
-        self.assertEqual(result, 0)
-        self.assertTrue((output_dir / 'MANIFEST.toml').exists())
-        self.assertTrue((output_dir / '__init__.py').exists())
+        result, output_dir = self._run_migrate(v2_plugin, 'test_plugin')
 
         # Validate MANIFEST using tomllib
 
@@ -254,8 +253,7 @@ register_album_action(MyAlbumAction())
             "register_track_metadata_processor(process_track)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
 
@@ -274,8 +272,7 @@ register_album_action(MyAlbumAction())
             "register_album_metadata_processor(process_album)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertIn('def process_album(api, album, metadata, release_node)', content)
@@ -290,8 +287,7 @@ register_album_action(MyAlbumAction())
             "register_track_metadata_processor(my_proc)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
 
@@ -315,8 +311,7 @@ register_album_action(MyAlbumAction())
             "register_file_post_addition_to_track_processor(get_lyrics)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertIn('def get_lyrics(api, track, file)', content)
@@ -330,8 +325,7 @@ register_album_action(MyAlbumAction())
             "register_file_post_load_processor(on_load)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertIn('def on_load(api, file)', content)
@@ -354,8 +348,7 @@ register_album_action(MyAlbumAction())
             "    add_instruments, priority=plugin.PluginPriority.HIGH)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
 
@@ -398,8 +391,7 @@ register_track_metadata_processor(process_track)
         input_file = self.temp_path / 'valid_output.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         output_dir = self.temp_path / 'valid_output_v3'
         buf = io.StringIO()
@@ -426,8 +418,7 @@ register_track_metadata_processor(process_track)
             "register_album_metadata_processor(process_album)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         content, _warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertIn('def process_album(api, album, metadata, release_node)', content)
@@ -444,8 +435,7 @@ register_track_metadata_processor(process_track)
             "    register_file_post_load_processor(on_load)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         joined = '\n'.join(warnings)
@@ -461,8 +451,7 @@ register_track_metadata_processor(process_track)
             "register_track_metadata_processor(process_track)\n"
         )
 
-        sys.path.insert(0, str(self.scripts_path))
-        import migrate_plugin
+        migrate_plugin = self._import_migrate_plugin()
 
         _content, warnings = migrate_plugin.convert_plugin_code(v2_code, {'name': 'Test'})
         self.assertNotIn('NOT at module top level', '\n'.join(warnings))
