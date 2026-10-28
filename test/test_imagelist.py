@@ -23,6 +23,7 @@
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
+    create_image,
 )
 
 from picard.album import Album
@@ -54,11 +55,11 @@ def create_test_files():
 
 def create_front_image(name, width, height):
     """Create a front CoverArtImage with explicit dimensions."""
-    image = CoverArtImage(
-        url='file://' + name,
-        data=create_fake_png(name.encode('utf-8')),
+    image = create_image(
+        name.encode('utf-8'),
         types=['front'],
         support_types=True,
+        url='file://' + name,
     )
     image.width = width
     image.height = height
@@ -269,19 +270,19 @@ class ImageListTest(PicardTestCase):
         self.patch_tagger_instance('picard.item')
         self.imagelist = ImageList()
 
-        def create_image(name, types):
-            return CoverArtImage(
-                url='file://file' + name,
-                data=create_fake_png(name.encode('utf-8')),
+        def make_image(name, types):
+            return create_image(
+                name.encode('utf-8'),
                 types=types,
                 support_types=True,
                 support_multi_types=True,
+                url='file://file' + name,
             )
 
         self.images = {
-            'a': create_image('a', ["booklet"]),
-            'b': create_image('b', ["booklet", "front"]),
-            'c': create_image('c', ["front", "booklet"]),
+            'a': make_image('a', ["booklet"]),
+            'b': make_image('b', ["booklet", "front"]),
+            'c': make_image('c', ["front", "booklet"]),
         }
 
     def test_append(self):

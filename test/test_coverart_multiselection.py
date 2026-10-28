@@ -18,18 +18,21 @@
 
 from test.picardtestcase import (
     PicardTestCase,
-    create_fake_png,
+    create_image,
 )
 
 from picard.album import Album
 from picard.cluster import TempItemList
-from picard.coverart.image import CoverArtImage
 from picard.coverart.setters import (
     CoverArtSetter,
     CoverArtSetterMode,
 )
 from picard.file import File
 from picard.track import Track
+
+
+def _front_image(name, data):
+    return create_image(data, types=['front'], support_types=True, url='file://' + name)
 
 
 class TempItemListTest(PicardTestCase):
@@ -46,7 +49,7 @@ class TempItemListTest(PicardTestCase):
 
     def _album_with_image(self, album_id, data):
         album = Album(album_id)
-        image = CoverArtImage(url='file://' + album_id, data=create_fake_png(data), types=['front'], support_types=True)
+        image = _front_image(album_id, data)
         album.metadata.images.append(image)
         album.orig_metadata.images.append(image)
         return album, image
@@ -68,7 +71,7 @@ class TempItemListTest(PicardTestCase):
         # Items sharing identical cover art contribute a single image.
         album1, _image1 = self._album_with_image('a1', b'same')
         album2 = Album('a2')
-        shared = CoverArtImage(url='file://a2', data=create_fake_png(b'same'), types=['front'], support_types=True)
+        shared = _front_image('a2', b'same')
         album2.metadata.images.append(shared)
         album2.orig_metadata.images.append(shared)
 
@@ -85,7 +88,7 @@ class TempItemListTest(PicardTestCase):
 
     def test_files_contribute_their_images(self):
         f = File('t.flac')
-        image = CoverArtImage(url='file://t', data=create_fake_png(b'z'), types=['front'], support_types=True)
+        image = _front_image('t', b'z')
         f.metadata.images.append(image)
         f.orig_metadata.images.append(image)
 
@@ -120,15 +123,7 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
         self.patch_tagger_instance('picard.item')
 
     @staticmethod
-    def _front_image(name, data):
-        return CoverArtImage(
-            url='file://' + name,
-            data=create_fake_png(data),
-            types=['front'],
-            support_types=True,
-        )
-
-    def _track_with_file(self, track_id, file_name, image):
+    def _track_with_file(track_id, file_name, image):
         """Build a Track with a single linked file, both carrying ``image``."""
         track = Track(track_id)
         file = File(file_name)
@@ -140,14 +135,14 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
         return track, file
 
     def test_replace_on_multiselection_reaches_files(self):
-        old1 = self._front_image('old1', b'old1')
-        old2 = self._front_image('old2', b'old2')
+        old1 = _front_image('old1', b'old1')
+        old2 = _front_image('old2', b'old2')
         track1, file1 = self._track_with_file('t1', 'a.flac', old1)
         track2, file2 = self._track_with_file('t2', 'b.flac', old2)
 
         temp = TempItemList(items=[track1, track2])
 
-        new_image = self._front_image('new', b'new-front')
+        new_image = _front_image('new', b'new-front')
         setter = CoverArtSetter(CoverArtSetterMode.REPLACE, new_image, temp)
         self.assertTrue(setter.set_coverart())
 
@@ -164,14 +159,14 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
             self.assertEqual([new_image.datahash.hash], list(file_hashes))
 
     def test_append_on_multiselection_reaches_files(self):
-        old1 = self._front_image('old1', b'old1')
-        old2 = self._front_image('old2', b'old2')
+        old1 = _front_image('old1', b'old1')
+        old2 = _front_image('old2', b'old2')
         track1, file1 = self._track_with_file('t1', 'a.flac', old1)
         track2, file2 = self._track_with_file('t2', 'b.flac', old2)
 
         temp = TempItemList(items=[track1, track2])
 
-        new_image = self._front_image('new', b'new-front')
+        new_image = _front_image('new', b'new-front')
         setter = CoverArtSetter(CoverArtSetterMode.APPEND, new_image, temp)
         self.assertTrue(setter.set_coverart())
 
@@ -183,14 +178,14 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
         # PICARD-3461 must not regress: an album with cover art but no linked
         # files still gets the replacement image set on its own metadata (it is
         # not wiped by a rebuild-from-children of its empty file list).
-        track, _file = self._track_with_file('t1', 'a.flac', self._front_image('old', b'old'))
+        track, _file = self._track_with_file('t1', 'a.flac', _front_image('old', b'old'))
         album = Album('a1')
-        album.metadata.images.append(self._front_image('albumart', b'albumart'))
+        album.metadata.images.append(_front_image('albumart', b'albumart'))
         self.assertEqual([], list(album.iterfiles()))
 
         temp = TempItemList(items=[track, album])
 
-        new_image = self._front_image('new', b'new-front')
+        new_image = _front_image('new', b'new-front')
         setter = CoverArtSetter(CoverArtSetterMode.REPLACE, new_image, temp)
         self.assertTrue(setter.set_coverart())
 
@@ -199,7 +194,7 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
     def test_shared_file_not_duplicated_on_append(self):
         # A file reachable via two selected items (an album and one of its
         # tracks) must receive the appended image only once.
-        old = self._front_image('old', b'old')
+        old = _front_image('old', b'old')
         track, file = self._track_with_file('t1', 'a.flac', old)
         album = Album('a1')
         album.tracks = [track]
@@ -208,7 +203,7 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
 
         temp = TempItemList(items=[album, track])
 
-        new_image = self._front_image('new', b'new-front')
+        new_image = _front_image('new', b'new-front')
         setter = CoverArtSetter(CoverArtSetterMode.APPEND, new_image, temp)
         self.assertTrue(setter.set_coverart())
 

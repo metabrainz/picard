@@ -230,10 +230,18 @@ def create_fake_png(extra: bytes = b''):
 
 
 def create_image(
-    extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None, is_front=None
+    extra_data,
+    types=None,
+    support_types=False,
+    support_multi_types=False,
+    comment='',
+    id3_type=None,
+    is_front=None,
+    url=None,
 ):
     """Creates a CoverArtImage backed by fake PNG data, for use in tests."""
     return CoverArtImage(
+        url=url,
         data=create_fake_png(extra_data),
         types=types,
         comment=comment,
