@@ -18,38 +18,34 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    subtest_cases,
+)
 
 from picard.util import union_sorted_lists
 
 
 class UnionSortedListsTest(PicardTestCase):
-    def test_1(self):
-        list1 = [1, 2, 3]
-        list2 = [3, 4, 5, 6]
-        expected = [1, 2, 3, 4, 5, 6]
-        r = union_sorted_lists(list1, list2)
-        self.assertEqual(r, expected)
-        r = union_sorted_lists(list2, list1)
-        self.assertEqual(r, expected)
-
-    def test_2(self):
-        list1 = [1, 3, 5, 7]
-        list2 = [2, 4, 6, 8]
-        expected = [1, 2, 3, 4, 5, 6, 7, 8]
-        r = union_sorted_lists(list1, list2)
-        self.assertEqual(r, expected)
-
-    def test_3(self):
-        list1 = ['Back', 'Back', 'Front', 'Front, Side']
-        list2 = ['Front', 'Front', 'Front, Side']
-        expected = ['Back', 'Back', 'Front', 'Front', 'Front, Side']
-        r = union_sorted_lists(list1, list2)
-        self.assertEqual(r, expected)
-
-    def test_4(self):
-        list1 = ['Back', 'Back, Spine', 'Front', 'Front, Side']
-        list2 = ['Back', 'Back, Spine', 'Front', 'Front, Side']
-        expected = ['Back', 'Back, Spine', 'Front', 'Front, Side']
-        r = union_sorted_lists(list1, list2)
-        self.assertEqual(r, expected)
+    @subtest_cases(
+        "list1,list2,expected",
+        {
+            'overlapping ints': ([1, 2, 3], [3, 4, 5, 6], [1, 2, 3, 4, 5, 6]),
+            'interleaved ints': ([1, 3, 5, 7], [2, 4, 6, 8], [1, 2, 3, 4, 5, 6, 7, 8]),
+            'string duplicates': (
+                ['Back', 'Back', 'Front', 'Front, Side'],
+                ['Front', 'Front', 'Front, Side'],
+                ['Back', 'Back', 'Front', 'Front', 'Front, Side'],
+            ),
+            'identical lists': (
+                ['Back', 'Back, Spine', 'Front', 'Front, Side'],
+                ['Back', 'Back, Spine', 'Front', 'Front, Side'],
+                ['Back', 'Back, Spine', 'Front', 'Front, Side'],
+            ),
+        },
+    )
+    def test_union_sorted_lists(self, list1, list2, expected):
+        # The union of two sorted lists is commutative, so both argument
+        # orders must produce the same result.
+        self.assertEqual(expected, union_sorted_lists(list1, list2))
+        self.assertEqual(expected, union_sorted_lists(list2, list1))
