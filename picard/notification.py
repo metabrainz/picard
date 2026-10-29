@@ -69,6 +69,8 @@ class NotifierSink(Protocol):
 
     def set_processing(self, processing: bool = True) -> None: ...
 
+    def flash_busy_cursor(self) -> None: ...
+
 
 class Notifier:
     """Forwards notifications to an installed sink, or logs if none.
@@ -124,6 +126,16 @@ class Notifier:
         """
         if self._sink is not None:
             self._sink.set_processing(processing)
+
+    def flash_busy(self):
+        """Briefly acknowledge that an asynchronous action was started.
+
+        In the GUI this flashes the busy cursor; it is fire-and-forget feedback
+        for a background operation whose completion is not tracked. Forwards to
+        the sink when installed; a no-op in headless mode.
+        """
+        if self._sink is not None:
+            self._sink.flash_busy_cursor()
 
 
 _notifier = Notifier()

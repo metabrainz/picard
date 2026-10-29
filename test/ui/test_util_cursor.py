@@ -86,10 +86,10 @@ class TaggerClusterActionsFlashTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        # The Tagger methods call the module-level flash_busy_cursor() imported
-        # into picard.tagger; patch it there and assert on the mock.
-        patcher = patch('picard.tagger.flash_busy_cursor')
-        self.mock_flash = patcher.start()
+        # The Tagger methods flash via notifier().flash_busy(); patch the
+        # notifier accessor in picard.tagger and assert on the facade's method.
+        patcher = patch('picard.tagger.notifier')
+        self.mock_flash = patcher.start().return_value.flash_busy
         self.addCleanup(patcher.stop)
 
     def _mock_self(self):
@@ -165,8 +165,8 @@ class TaggerSearchFlashTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.tagger.flash_busy_cursor')
-        self.mock_flash = patcher.start()
+        patcher = patch('picard.tagger.notifier')
+        self.mock_flash = patcher.start().return_value.flash_busy
         self.addCleanup(patcher.stop)
 
     def _mock_self(self, lookup):
