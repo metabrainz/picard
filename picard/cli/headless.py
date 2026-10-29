@@ -45,6 +45,8 @@ read/write pipeline. Broader headless tagging (album loading, matching) is a
 later step.
 """
 
+import time
+
 from PyQt6 import QtCore
 
 from picard import log
@@ -143,6 +145,51 @@ class HeadlessTagger(QtCore.QCoreApplication):
             a0.run()
             return True
         return super().event(a0)
+
+    # --- event loop driver --------------------------------------------------
+
+    def _has_pending_work(self) -> bool:
+        """True while background work is still in flight.
+
+        Covers the work the tag load/save pipeline produces: active thread-pool
+        tasks and pending web requests. AcoustID fingerprinting is not part of
+        tag read/write and is not driven here.
+        """
+        return bool(
+            self.thread_pool.activeThreadCount()
+            or self.priority_thread_pool.activeThreadCount()
+            or self.save_thread_pool.activeThreadCount()
+            or self.webservice.num_pending_web_requests
+        )
+
+    def run_until_idle(self, timeout: float | None = None, interval: float = 0.02) -> bool:
+        """Pump the Qt event loop until all background work has drained.
+
+        File load/save and web requests run on background threads (or the Qt
+        network stack) and deliver their results as events on the main thread
+        (ProxyToMainEvent / queued signals). Headless code must therefore pump
+        the event loop for that work to progress and complete.
+
+        Args:
+            timeout: Maximum seconds to wait, or None to wait indefinitely.
+            interval: Max seconds each processEvents() call may block waiting
+                for new events.
+
+        Returns:
+            True if work drained, False if the timeout elapsed first.
+        """
+        deadline = None if timeout is None else time.monotonic() + timeout
+        interval_ms = max(1, int(interval * 1000))
+        while True:
+            # Dispatch any already-queued events (callbacks, signals), waiting
+            # briefly for more so we don't busy-spin while threads run.
+            self.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, interval_ms)
+            if not self._has_pending_work():
+                # Drain any final queued callbacks produced by the last task.
+                self.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents)
+                return True
+            if deadline is not None and time.monotonic() >= deadline:
+                return False
 
     # --- save bookkeeping ---------------------------------------------------
 
