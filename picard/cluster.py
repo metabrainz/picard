@@ -46,6 +46,7 @@ import weakref
 
 from picard import log
 from picard.config import get_config
+from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.file import File
 from picard.i18n import (
@@ -70,8 +71,6 @@ from picard.util import (
     format_time,
     iter_files_from_objects,
 )
-
-from picard.ui.enums import MainAction
 
 
 if TYPE_CHECKING:

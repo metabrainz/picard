@@ -22,6 +22,7 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.i18n import N_
 from picard.util.isrc import (
@@ -29,8 +30,6 @@ from picard.util.isrc import (
     normalized_isrcs,
     valid_isrc,
 )
-
-from picard.ui.enums import MainAction
 
 
 class ISRCTrackDetail(NamedTuple):
