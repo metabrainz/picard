@@ -18,6 +18,12 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard.config import get_config
@@ -152,3 +158,83 @@ class TestSetupWizardMetadataPage(PicardTestCase):
             self.assertEqual(config.setting['convert_punctuation'], not initial)
         finally:
             page.deleteLater()
+
+    def test_wrapped_label_pins_minimum_height_to_wrapped_text(self):
+        # Regression for PICARD-3477: a word-wrapped description must reserve
+        # enough height for every line at the width it is actually given,
+        # otherwise the text is clipped (notably with longer translations).
+        page = MetadataPage()
+        try:
+            cb = page.track_ars_checkbox
+            item = cb._inner_layout.itemAt(0)
+            assert item is not None
+            label = item.widget()
+            assert label is not None
+
+            def resize_to(width):
+                # Drive the real resizeEvent handler deterministically, without
+                # relying on an event loop that may not run under pytest.
+                old = label.size()
+                label.resize(width, 10)
+                label.resizeEvent(QtGui.QResizeEvent(QtCore.QSize(width, 10), old))
+
+            resize_to(560)
+            needed = label.heightForWidth(560)
+            self.assertGreater(needed, 0)
+            self.assertGreaterEqual(label.minimumHeight(), needed)
+
+            # Re-pinning must track the current width: a very narrow width wraps
+            # into more lines and needs at least as much height as a wide one.
+            resize_to(250)
+            self.assertGreaterEqual(label.minimumHeight(), label.heightForWidth(250))
+            self.assertGreaterEqual(label.heightForWidth(250), label.heightForWidth(560))
+        finally:
+            page.deleteLater()
+
+    def test_page_body_is_scrollable(self):
+        # Regression for PICARD-3477: pages place their content in a scroll
+        # area so very long descriptions stay reachable instead of forcing the
+        # dialog past the screen. The page's own minimum height must therefore
+        # stay small (driven by the scroll area, not the full content height).
+        page = MetadataPage()
+        try:
+            scroll_area = page.findChild(QtWidgets.QScrollArea)
+            self.assertIsNotNone(scroll_area)
+            # Horizontal scrolling is disabled so text keeps wrapping within the
+            # visible width instead of being clipped on the right.
+            self.assertEqual(
+                scroll_area.horizontalScrollBarPolicy(),
+                QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
+            )
+            # The checkbox content lives inside the scroll area's widget.
+            content = scroll_area.widget()
+            self.assertIsNotNone(content)
+            self.assertIsNotNone(page.track_ars_checkbox.parentWidget())
+            # The content widget is resized to the viewport width, never wider,
+            # so the description never overflows the right edge.
+            scroll_area.resize(500, 400)
+            viewport = scroll_area.viewport()
+            self.assertIsNotNone(viewport)
+            self.assertLessEqual(content.width(), viewport.width())
+            # The page does not force its full content height as a hard minimum.
+            self.assertLess(page.minimumSizeHint().height(), 300)
+        finally:
+            page.deleteLater()
+
+
+class TestSetupWizardDialog(PicardTestCase):
+    def test_wizard_minimum_size(self):
+        tagger = Mock()
+        tagger.autoupdate_enabled = True
+        tagger.get_plugin_manager.return_value = None
+        with patch('picard.ui.setupwizard.tagger_instance', return_value=tagger):
+            wizard = SetupWizard()
+            try:
+                # The dialog can be shrunk (pages scroll), so the minimum is
+                # modest; the default size is a bit larger for comfort.
+                min_size = wizard.minimumSize()
+                self.assertGreaterEqual(min_size.width(), 640)
+                self.assertLessEqual(min_size.height(), 540)
+                self.assertGreaterEqual(wizard.size().height(), min_size.height())
+            finally:
+                wizard.deleteLater()
