@@ -1250,9 +1250,8 @@ class FileIdentityLifecycleTest(PicardTestCase):
         """A freshly constructed File has _file_identity set to None."""
         self.assertIsNone(self.file._file_identity)
 
-    @patch('picard.file.Filter.apply_filters')
     @patch('picard.file.run_file_post_load_processors')
-    def test_file_identity_set_after_failed_load(self, mock_post_load, mock_filters):
+    def test_file_identity_set_after_failed_load(self, mock_post_load):
         """After a failed load, _file_identity must be set (not None) so a
         later save does not raise AttributeError."""
         # Prevent the format-guessing retry path from doing anything.

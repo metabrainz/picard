@@ -125,8 +125,6 @@ from picard.util.filenaming import (
 from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
 
-from picard.ui.filter import Filter
-
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -415,7 +413,7 @@ class File(MetadataItem):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         callback(self)
-        Filter.apply_filters()
+        self.tagger.file_loaded.emit(self)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
