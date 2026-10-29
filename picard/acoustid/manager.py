@@ -28,10 +28,9 @@ from picard import (
     log,
     tagger_instance,
 )
+from picard.const.actions import MainAction
 from picard.i18n import N_
 from picard.util import load_json
-
-from picard.ui.enums import MainAction
 
 
 # Maximum difference between file duration and MB recording length.
