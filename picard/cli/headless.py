@@ -50,6 +50,8 @@ import time
 from PyQt6 import QtCore
 
 from picard import (
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
     log,
     set_tagger_provider,
 )
@@ -99,8 +101,11 @@ class HeadlessTagger(QtCore.QCoreApplication):
         self._isrc_submit_manager = None
 
         # Config must be set up before any service (WebService reads config).
-        # Mirror minimal_init(): register options, load config, migrate
+        # Mirror minimal_init(): set app/org name (used for the versioned
+        # config file path), register options, load config, migrate
         # non-interactively (headless must not block on an upgrade dialog).
+        self.setApplicationName(PICARD_APP_NAME)
+        self.setOrganizationName(PICARD_ORG_NAME)
         init_options()
         setup_config(app=self, filename=config_file)
         run_config_upgrades(get_config(), interactive=False)
