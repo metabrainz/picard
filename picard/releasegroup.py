@@ -42,6 +42,7 @@ from picard.mbjson import (
     label_info_from_node,
     media_formats_from_node,
 )
+from picard.services import services
 from picard.util import (
     countries_shortlist,
     uniqify,
@@ -116,7 +117,7 @@ class ReleaseGroup(MetadataItem):
 
     def load_versions(self, callback: Callable) -> PendingRequest:
         kwargs = {'release-group': self.id, 'limit': 100}
-        return self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
+        return services().mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
     def _parse_versions(self, document: dict) -> None:
         """Parse document and return a list of releases"""
