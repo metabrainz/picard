@@ -98,6 +98,7 @@ from picard.metadata import Metadata
 from picard.notification import notifier
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
+from picard.services import services
 from picard.tags import (
     ALL_TAGS,
     calculated_tag_names,
@@ -378,7 +379,7 @@ class File(MetadataItem):
 
             # If loading failed, force format guessing and try loading again
             try:
-                alternative_file = self.tagger.format_registry.guess_format(self.filename)
+                alternative_file = services().format_registry.guess_format(self.filename)
             except (FileNotFoundError, OSError):
                 log.error("Guessing format of %s failed", self.filename, exc_info=True)
                 alternative_file = None
@@ -394,7 +395,7 @@ class File(MetadataItem):
                     alternative_file.remove()  # cleanup unused File object
 
             file_name, file_extension = os.path.splitext(self.base_filename)
-            if file_extension not in self.tagger.format_registry.supported_extensions():
+            if file_extension not in services().format_registry.supported_extensions():
                 log.error("Unsupported media file %r wrongly loaded. Removing …", self)
                 callback(self, remove_file=True)
                 return
@@ -1320,7 +1321,7 @@ class File(MetadataItem):
         metadata = self.metadata
         self.set_pending()
         config = get_config()
-        self._lookup_task = self.tagger.mb_api.find_tracks(
+        self._lookup_task = services().mb_api.find_tracks(
             partial(self._lookup_finished, File.LookupType.METADATA),
             track=metadata['title'],
             artist=metadata['artist'],
@@ -1334,7 +1335,7 @@ class File(MetadataItem):
 
     def clear_lookup_task(self):
         if self._lookup_task:
-            self.tagger.webservice.abort_task(self._lookup_task)
+            services().webservice.abort_task(self._lookup_task)
             self._lookup_task = None
 
     def set_pending(self):
