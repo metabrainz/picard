@@ -1015,7 +1015,7 @@ class File(MetadataItem):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(self.metadata, ignored_tags)
+                    self.similarity = self.orig_metadata.compare_changes(self.metadata, ignored_tags)
                     if self.state == File.State.NORMAL:
                         self.state = File.State.CHANGED
                     break
