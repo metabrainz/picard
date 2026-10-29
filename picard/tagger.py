@@ -230,6 +230,7 @@ class Tagger(QtWidgets.QApplication):
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
+    file_loaded = QtCore.pyqtSignal(File)
     _qt_translators_updated = QtCore.pyqtSignal()
 
     __instance: 'Tagger'
