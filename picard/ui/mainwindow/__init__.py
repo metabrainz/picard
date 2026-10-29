@@ -247,7 +247,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent=parent)
         self.action_map = {}
-        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
         self._menus_created = False
         self.tagger = tagger_instance()
