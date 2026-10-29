@@ -857,7 +857,7 @@ class Album(MetadataItem):
                 if current_sort_column >= 0:
                     tree_widget.sortByColumn(current_sort_column, tree_widget.header().sortIndicatorOrder())
 
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
             {
                 'id': self.id,
@@ -919,7 +919,7 @@ class Album(MetadataItem):
         if self.has_critical_tasks():
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_("Loading album %(id)s …"),
             {'id': self.id},
         )

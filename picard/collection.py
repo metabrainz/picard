@@ -102,7 +102,7 @@ class Collection:
             self._error(reply)
 
     def _error(self, reply: QNetworkReply) -> None:
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},
             echo=log.error,
@@ -139,7 +139,7 @@ class Collection:
             'name': self.name,
         }
         log.debug(debug_msg % mparms)
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             status_msg,
             mparms,
             translate=None,
