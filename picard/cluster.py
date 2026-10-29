@@ -65,6 +65,7 @@ from picard.matching import (
     compare_to_release,
     find_best_match_with_margin,
 )
+from picard.notification import notifier
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -191,12 +192,12 @@ class Cluster(FileList):
         self.add_files([file], new_album=new_album)
 
     def remove_file(self, file: File, new_album=True):
-        self.tagger.window.set_processing(True)
+        notifier().set_processing(True)
         try:
             self.files.remove(file)
         except ValueError as e:
             log.debug("File %r already removed from cluster %r: %s", file, self, e)
-            self.tagger.window.set_processing(False)
+            notifier().set_processing(False)
             return
         self.update(signal=False)
         if self.ui_item:
@@ -206,7 +207,7 @@ class Cluster(FileList):
             self.remove_metadata_images_from_children([file])
         if new_album:
             self._update_related_album(removed_files=[file])
-        self.tagger.window.set_processing(False)
+        notifier().set_processing(False)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
@@ -382,7 +383,7 @@ class Cluster(FileList):
             releases = None
 
         def statusbar(message):
-            self.tagger.set_statusbar_message(
+            notifier().status_message(
                 message,
                 {'album': self.metadata['album']},
                 timeout=3000,
@@ -476,7 +477,7 @@ class Cluster(FileList):
         """Try to identify the cluster using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
         )
@@ -587,11 +588,11 @@ class UnclusteredFiles(Cluster):
 
     def add_files(self, files, new_album=True):
         super().add_files(files, new_album=new_album)
-        self.tagger.enable_action(MainAction.CLUSTER, self.files)
+        notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def remove_file(self, file, new_album=True):
         super().remove_file(file, new_album=new_album)
-        self.tagger.enable_action(MainAction.CLUSTER, self.files)
+        notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)

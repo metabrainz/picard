@@ -90,6 +90,7 @@ from picard.metadata import (
     run_album_metadata_processors,
     run_track_metadata_processors,
 )
+from picard.notification import notifier
 from picard.plugin import PluginFunctions
 from picard.releasegroup import ReleaseGroup
 from picard.script import (
@@ -857,7 +858,7 @@ class Album(MetadataItem):
                 if current_sort_column >= 0:
                     tree_widget.sortByColumn(current_sort_column, tree_widget.header().sortIndicatorOrder())
 
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
             {
                 'id': self.id,
@@ -919,7 +920,7 @@ class Album(MetadataItem):
         if self.has_critical_tasks():
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_("Loading album %(id)s …"),
             {'id': self.id},
         )

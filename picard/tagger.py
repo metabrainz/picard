@@ -152,6 +152,7 @@ except ImportError:
     PluginCLI = None
     PluginManager = None
 
+from picard.notification import set_notifier_sink
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -512,6 +513,9 @@ class Tagger(QtWidgets.QApplication):
         """Initialize User Interface / Main Window"""
         self.enable_menu_icons(config.setting['show_menu_icons'])
         self.window = MainWindow(disable_player=self._no_player)
+        # Route core status/progress/action notifications to the main window.
+        # In headless mode no sink is installed and the facade only logs.
+        set_notifier_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -522,41 +526,6 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(self)
-
-    def set_statusbar_message(self, message, *args, **kwargs):
-        """Report a status/progress message to the user interface.
-
-        This is the UI-agnostic entry point core code should use instead of
-        reaching into ``self.window`` directly. When a GUI main window exists
-        the call is forwarded to it; otherwise (e.g. headless/CLI mode) the
-        message is only logged, so core/tagging code does not depend on a
-        window being present.
-
-        See :meth:`picard.ui.mainwindow.MainWindow.set_statusbar_message` for
-        the accepted arguments.
-        """
-        window = getattr(self, 'window', None)
-        if window is not None:
-            window.set_statusbar_message(message, *args, **kwargs)
-        else:
-            echo = kwargs.get('echo', log.debug)
-            if message and echo:
-                args = args or ((),)
-                try:
-                    echo(message % args[0])
-                except (TypeError, ValueError, KeyError):
-                    echo(message)
-
-    def enable_action(self, action_id, enabled):
-        """Enable/disable a main window action in a UI-agnostic way.
-
-        Like :meth:`set_statusbar_message`, this forwards to the main window
-        when one exists and is a no-op otherwise, so core code can toggle
-        action availability without depending on a window being present.
-        """
-        window = getattr(self, 'window', None)
-        if window is not None:
-            window.enable_action(action_id, enabled)
 
     @property
     def is_wayland(self):

@@ -37,6 +37,7 @@ from picard.i18n import (
     N_,
     ngettext,
 )
+from picard.notification import notifier
 from picard.webservice import ReplyHandler
 from picard.webservice.api_helpers import MBAPIHelper
 
@@ -102,7 +103,7 @@ class Collection:
             self._error(reply)
 
     def _error(self, reply: QNetworkReply) -> None:
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},
             echo=log.error,
@@ -139,7 +140,7 @@ class Collection:
             'name': self.name,
         }
         log.debug(debug_msg % mparms)
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             status_msg,
             mparms,
             translate=None,
@@ -161,7 +162,7 @@ def load_user_collections(callback: Callable | None = None) -> None:
 
     def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
         if error:
-            tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_("Error loading collections: %(error)s"),
                 {'error': reply.errorString()},
                 echo=log.error,

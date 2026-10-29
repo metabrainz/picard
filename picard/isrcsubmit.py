@@ -25,6 +25,7 @@ from picard import (
 from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.i18n import N_
+from picard.notification import notifier
 from picard.util.isrc import (
     NormalizedISRC,
     normalized_isrcs,
@@ -318,7 +319,7 @@ class ISRCSubmitManager:
             "ISRC submission payload: %r",
             pending,
         )
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_("Submitting ISRCs …"),
             echo=None,
         )
@@ -329,7 +330,7 @@ class ISRCSubmitManager:
         """Handle submission response."""
         if error:
             log.error("ISRC submission failed: %r", http.errorString() if http else error)
-            self.tagger.set_statusbar_message(
+            notifier().status_message(
                 N_("ISRC submission failed"),
                 echo=None,
                 timeout=3000,
@@ -344,7 +345,7 @@ class ISRCSubmitManager:
             # Clean up fully submitted entries
             self._entries = {k: v for k, v in self._entries.items() if not v.is_submitted}
             log.debug("ISRC submission finished successfully")
-            self.tagger.set_statusbar_message(
+            notifier().status_message(
                 N_("ISRC submission finished successfully"),
                 echo=None,
                 timeout=3000,
@@ -355,4 +356,4 @@ class ISRCSubmitManager:
     def _check_unsubmitted(self) -> None:
         """Update the UI action state based on pending submissions."""
         enabled = self.unsubmitted_count > 0
-        self.tagger.enable_action(MainAction.SUBMIT_ISRC, enabled)
+        notifier().enable_action(MainAction.SUBMIT_ISRC, enabled)
