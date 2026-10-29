@@ -63,7 +63,6 @@ class ISRCSubmitTestCase(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.isrcsubmit')
         self.mock_api = MagicMock()
         self.mock_api.submit_isrcs = Mock(wraps=mock_succeed_submission)
         self.manager = ISRCSubmitManager(self.mock_api)
@@ -351,7 +350,6 @@ class ISRCUpdateTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.isrcsubmit')
         self.patch_tagger_instance('picard.item')
         self.mock_api = MagicMock()
         self.manager = ISRCSubmitManager(self.mock_api)

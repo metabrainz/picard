@@ -18,10 +18,7 @@
 
 from typing import NamedTuple
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
 from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.i18n import N_
@@ -66,7 +63,6 @@ class ISRCSubmitManager:
     """
 
     def __init__(self, mb_api):
-        self.tagger = tagger_instance()
         self._mb_api = mb_api
         self._entries: dict[object, ISRCSubmitEntry] = {}
         self._last_submitted: dict[str, list[str]] = {}
