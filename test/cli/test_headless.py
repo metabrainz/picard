@@ -75,6 +75,46 @@ print('CLEANUP_OK')
 """
 
 
+_DRIVER_PROGRAM = """
+import sys
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+from picard.util import thread
+
+app = HeadlessTagger(sys.argv, config_file=None)
+
+# Schedule a background task whose completion callback runs on the main thread
+# via ProxyToMainEvent. run_until_idle() must pump the event loop so the task
+# runs, drains, and the callback fires.
+state = {'ran': False, 'result': None}
+
+def work():
+    return 21 * 2
+
+def done(result=None, error=None):
+    state['ran'] = True
+    state['result'] = result
+
+thread.run_task(work, done, thread_pool=app.thread_pool)
+
+drained = app.run_until_idle(timeout=30)
+assert drained, 'run_until_idle timed out'
+assert state['ran'], 'completion callback did not run'
+assert state['result'] == 42, state['result']
+print('DRIVER_OK')
+
+# With no work queued, run_until_idle returns promptly.
+assert app.run_until_idle(timeout=5) is True
+print('IDLE_OK')
+
+app.run_cleanup()
+"""
+
+
 class HeadlessTaggerSubprocessTest(PicardTestCase):
     def test_headless_tagger_boots_and_wires_services(self):
         result = subprocess.run(
@@ -89,4 +129,19 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
         for marker in ('SERVICES_OK', 'FORMATS_OK', 'EVENT_OK', 'BOOKKEEPING_OK', 'CLEANUP_OK'):
+            self.assertIn(marker, result.stdout)
+
+    def test_run_until_idle_drives_background_task_to_completion(self):
+        result = subprocess.run(
+            [sys.executable, '-c', _DRIVER_PROGRAM],
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        for marker in ('DRIVER_OK', 'IDLE_OK'):
             self.assertIn(marker, result.stdout)
