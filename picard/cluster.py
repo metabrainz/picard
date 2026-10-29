@@ -382,7 +382,7 @@ class Cluster(FileList):
             releases = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(
+            self.tagger.set_statusbar_message(
                 message,
                 {'album': self.metadata['album']},
                 timeout=3000,
@@ -476,7 +476,7 @@ class Cluster(FileList):
         """Try to identify the cluster using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
         )

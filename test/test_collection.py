@@ -87,7 +87,7 @@ class CollectionTest(PicardTestCase):
         mb_api.put_to_collection.assert_called_once_with('foo', list(releases), ANY)
         self.assertEqual(2, collection.size)
         self.assertEqual(releases, collection.releases)
-        collection.tagger.window.set_statusbar_message.assert_called_once()
+        collection.tagger.set_statusbar_message.assert_called_once()
 
     def test_collection_remove_releases(self):
         releases = [
@@ -104,7 +104,7 @@ class CollectionTest(PicardTestCase):
         mb_api.delete_from_collection.assert_called_once_with('foo', list(releases_to_remove), ANY)
         self.assertEqual(1, collection.size)
         self.assertEqual({releases[2]}, collection.releases)
-        collection.tagger.window.set_statusbar_message.assert_called_once()
+        collection.tagger.set_statusbar_message.assert_called_once()
 
     def test_get_user_collection(self):
         self.assertEqual({}, picard.collection.user_collections)

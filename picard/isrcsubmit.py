@@ -318,7 +318,7 @@ class ISRCSubmitManager:
             "ISRC submission payload: %r",
             pending,
         )
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_("Submitting ISRCs …"),
             echo=None,
         )
@@ -329,7 +329,7 @@ class ISRCSubmitManager:
         """Handle submission response."""
         if error:
             log.error("ISRC submission failed: %r", http.errorString() if http else error)
-            self.tagger.window.set_statusbar_message(
+            self.tagger.set_statusbar_message(
                 N_("ISRC submission failed"),
                 echo=None,
                 timeout=3000,
@@ -344,7 +344,7 @@ class ISRCSubmitManager:
             # Clean up fully submitted entries
             self._entries = {k: v for k, v in self._entries.items() if not v.is_submitted}
             log.debug("ISRC submission finished successfully")
-            self.tagger.window.set_statusbar_message(
+            self.tagger.set_statusbar_message(
                 N_("ISRC submission finished successfully"),
                 echo=None,
                 timeout=3000,

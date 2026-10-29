@@ -1198,7 +1198,7 @@ class File(MetadataItem):
             tracks = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(
+            self.tagger.set_statusbar_message(
                 message,
                 {'filename': self.filename},
                 timeout=3000,
@@ -1313,7 +1313,7 @@ class File(MetadataItem):
         """Try to identify the file using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.window.set_statusbar_message(
+        self.tagger.set_statusbar_message(
             N_("Looking up the metadata for file %(filename)s …"),
             {'filename': self.filename},
         )

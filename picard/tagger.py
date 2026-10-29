@@ -522,6 +522,30 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(self)
 
+    def set_statusbar_message(self, message, *args, **kwargs):
+        """Report a status/progress message to the user interface.
+
+        This is the UI-agnostic entry point core code should use instead of
+        reaching into ``self.window`` directly. When a GUI main window exists
+        the call is forwarded to it; otherwise (e.g. headless/CLI mode) the
+        message is only logged, so core/tagging code does not depend on a
+        window being present.
+
+        See :meth:`picard.ui.mainwindow.MainWindow.set_statusbar_message` for
+        the accepted arguments.
+        """
+        window = getattr(self, 'window', None)
+        if window is not None:
+            window.set_statusbar_message(message, *args, **kwargs)
+        else:
+            echo = kwargs.get('echo', log.debug)
+            if message and echo:
+                args = args or ((),)
+                try:
+                    echo(message % args[0])
+                except (TypeError, ValueError, KeyError):
+                    echo(message)
+
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
