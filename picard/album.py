@@ -98,6 +98,7 @@ from picard.script import (
     ScriptParser,
     iter_active_tagging_scripts,
 )
+from picard.services import services
 from picard.track import Track
 from picard.util import (
     format_time,
@@ -317,7 +318,7 @@ class Album(MetadataItem):
             log.debug("Canceling %s request %s: %s", task_info.type.name, task_id, task_info.description)
             if task_info.request:
                 try:
-                    self.tagger.webservice.abort_task(task_info.request)
+                    services().webservice.abort_task(task_info.request)
                 except (RuntimeError, ValueError, AttributeError):
                     # Task may already be completed or invalid
                     pass
@@ -452,7 +453,7 @@ class Album(MetadataItem):
                 position,
                 recording_id,
             )
-            self.tagger.isrc_submit_manager.add(track, recording_id, [disc_isrc], list(known_isrcs))
+            services().isrc_submit_manager.add(track, recording_id, [disc_isrc], list(known_isrcs))
 
     def _get_disc_medium_tracks(self):
         """Get the tracks belonging to the medium of the read disc.
@@ -646,7 +647,7 @@ class Album(MetadataItem):
         request_id = f'recording_rels_{offset}'
 
         def create_request():
-            self._load_request = self.tagger.mb_api.browse_recordings(
+            self._load_request = services().mb_api.browse_recordings(
                 self._recordings_request_finished,
                 inc=inc,
                 release=self.id,
@@ -952,7 +953,7 @@ class Album(MetadataItem):
             'recordings',
             'release-groups',
         }
-        if self.tagger.webservice.oauth_manager.is_authorized():
+        if services().webservice.oauth_manager.is_authorized():
             require_authentication = True
             if config.setting['enable_user_collections']:
                 inc |= {'user-collections'}
@@ -978,7 +979,7 @@ class Album(MetadataItem):
             inc |= {'user-ratings'}
 
         def create_request():
-            self._load_request = self.tagger.mb_api.get_release_by_id(
+            self._load_request = services().mb_api.get_release_by_id(
                 self.id,
                 self._release_request_finished,
                 inc=inc,
@@ -1003,7 +1004,7 @@ class Album(MetadataItem):
 
     def stop_loading(self):
         if self._load_request:
-            self.tagger.webservice.abort_task(self._load_request)
+            services().webservice.abort_task(self._load_request)
             self._load_request = None
 
     def abort_loading(self, reason: str = ""):
