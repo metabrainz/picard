@@ -20,6 +20,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from dataclasses import dataclass
 from typing import ClassVar
 
 from PyQt6 import (
@@ -46,8 +47,48 @@ from picard.ui.util import (
 )
 
 
+@dataclass
+class StatusFilters:
+    modified: bool = True
+    unmodified: bool = True
+    complete: bool = True
+    incomplete: bool = True
+
+    def all_active(self) -> bool:
+        """
+        Return true if all the filters are true
+        """
+        return self.modified and self.unmodified and self.complete and self.incomplete
+
+    def to_dict(self) -> dict[str, bool]:
+        """Return a plain dict suitable for storage in the config (QSettings)."""
+        return {
+            'modified': self.modified,
+            'unmodified': self.unmodified,
+            'complete': self.complete,
+            'incomplete': self.incomplete,
+        }
+
+    @classmethod
+    def from_dict(cls, data) -> 'StatusFilters':
+        """Build a StatusFilters from a stored dict.
+
+        Unknown or non-dict values (e.g. a missing or legacy config entry) and
+        missing keys fall back to the all-active default, so a filter is only
+        disabled when it was explicitly stored as such.
+        """
+        if not isinstance(data, dict):
+            return cls()
+        return cls(
+            modified=bool(data.get('modified', True)),
+            unmodified=bool(data.get('unmodified', True)),
+            complete=bool(data.get('complete', True)),
+            incomplete=bool(data.get('incomplete', True)),
+        )
+
+
 class Filter(QtWidgets.QWidget):
-    filterChanged = QtCore.pyqtSignal(str, set)
+    filterChanged = QtCore.pyqtSignal(str, set, StatusFilters)
     filterable_tags: ClassVar[set[str]] = set()
     instances: ClassVar[set] = set()
     suspended = False
@@ -157,7 +198,8 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.setText(label)
 
     def _query_changed(self, text):
-        self.filterChanged.emit(text, self.selected_filters)
+        # The base Filter has no status filtering; emit the all-active default.
+        self.filterChanged.emit(text, self.selected_filters, StatusFilters())
 
     def clear(self):
         self.filter_query_box.clear()
