@@ -27,6 +27,7 @@ from enum import Enum
 
 from PyQt6 import QtCore
 
+from picard.colors import default_interface_colors
 from picard.config import (
     BoolOption,
     FloatOption,
@@ -75,8 +76,6 @@ from picard.const.defaults import (
 )
 from picard.i18n import N_
 from picard.util.cdrom import has_isrc_support
-
-from picard.ui.colors import InterfaceColors
 
 
 # Note: When adding an option:
@@ -419,13 +418,13 @@ BoolOption(
 Option(
     'setting',
     'interface_colors',
-    InterfaceColors(dark_theme=False).get_colors(),
+    default_interface_colors(dark_theme=False),
     title=N_("Colors to use for light theme"),
 )
 Option(
     'setting',
     'interface_colors_dark',
-    InterfaceColors(dark_theme=True).get_colors(),
+    default_interface_colors(dark_theme=True),
     title=N_("Colors to use for dark theme"),
 )
 BoolOption(
