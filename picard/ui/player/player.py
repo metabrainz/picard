@@ -29,8 +29,10 @@ from picard import log
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import gettext as _
-from picard.item import Item
-from picard.util import iter_files_from_objects
+from picard.util import (
+    IterableFiles,
+    iter_files_from_objects,
+)
 
 
 try:
@@ -182,8 +184,8 @@ class Player(QtCore.QObject):
     def current_file(self) -> File | None:
         return self._current_file
 
-    def set_objects(self, objects: Iterable[Item]):
-        self._selected_objects = objects
+    def set_objects(self, objects: Iterable[IterableFiles]):
+        self._selected_objects = list(objects)
         can_play = bool(any(iter_files_from_objects(self._selected_objects)))
         if self._can_play != can_play:
             self._can_play = can_play
