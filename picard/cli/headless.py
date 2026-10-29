@@ -49,7 +49,10 @@ import time
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard import (
+    log,
+    set_tagger_provider,
+)
 from picard.config import (
     get_config,
     setup_config,
@@ -64,6 +67,12 @@ from picard.util import thread
 
 class HeadlessTagger(QtCore.QCoreApplication):
     """A minimal, GUI-less application object for the tagging core."""
+
+    # Signals the tagging core emits on the application object. The GUI Tagger
+    # declares the same signals; headless has no listeners by default, but the
+    # signals must exist for File state transitions / load completion to emit.
+    tagger_stats_changed = QtCore.pyqtSignal()
+    file_loaded = QtCore.pyqtSignal(object)
 
     def __init__(self, argv, config_file=None):
         super().__init__(argv)
@@ -87,7 +96,11 @@ class HeadlessTagger(QtCore.QCoreApplication):
         self._init_threads()
         self._init_services()
 
+        # Make this object discoverable to core code that reaches the running
+        # application via tagger_instance() (e.g. File state bookkeeping), and
+        # as the services provider for services().
         set_services_provider(self)
+        set_tagger_provider(self)
 
     # --- services -----------------------------------------------------------
 
@@ -218,3 +231,6 @@ class HeadlessTagger(QtCore.QCoreApplication):
             except Exception:
                 log.error("Headless cleanup step failed", exc_info=True)
         self.exit_cleanup = []
+        # Clear the providers we installed so a later app/test starts clean.
+        set_services_provider(None)
+        set_tagger_provider(None)
