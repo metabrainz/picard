@@ -1,5 +1,32 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.3 - 2026-10-29
+
+### Bugfixes
+- [PICARD-3477](https://tickets.metabrainz.org/browse/PICARD-3477) - Setup Wizard: Checkbox description text not fully shown
+- [PICARD-3496](https://tickets.metabrainz.org/browse/PICARD-3496) - "Grouping" tags cannot be deleted from MP3s
+- [PICARD-3498](https://tickets.metabrainz.org/browse/PICARD-3498) - Disabling plugin purges cover art provider configuration from picard.ini
+- [PICARD-3499](https://tickets.metabrainz.org/browse/PICARD-3499) - Reinstalling local in-place plugin and switching to git fails
+- [PICARD-3509](https://tickets.metabrainz.org/browse/PICARD-3509) - Crash when switching themes
+- [PICARD-3510](https://tickets.metabrainz.org/browse/PICARD-3510) - Newly added custom column renders with solid white background on tracks while built-in columns do not
+- [PICARD-3511](https://tickets.metabrainz.org/browse/PICARD-3511) - Right-pane artwork replacement silently fails to embed in FLAC files
+- [PICARD-3513](https://tickets.metabrainz.org/browse/PICARD-3513) - Blocking album task that is completed forever blocks UI operation
+- [PICARD-3514](https://tickets.metabrainz.org/browse/PICARD-3514) - Cover Art Archive "Exclude" types list does not override the "Include" list
+- [PICARD-3515](https://tickets.metabrainz.org/browse/PICARD-3515) - If many files for a given track are found and additional fields are enabled, metadata is wrong in the Album Pane
+- [PICARD-3516](https://tickets.metabrainz.org/browse/PICARD-3516) - Article-insensitive column sort is non-deterministic (QCollatorSortKey lacks working equality)
+- [PICARD-3517](https://tickets.metabrainz.org/browse/PICARD-3517) - Built-in player prevents file write access
+- [PICARD-3518](https://tickets.metabrainz.org/browse/PICARD-3518) - Cover art saved as external files ignores CAA "front" flag when naming files
+- [PICARD-3519](https://tickets.metabrainz.org/browse/PICARD-3519) - Picard unable to save metadata for WAVE files with data size not matching actual data
+- [PICARD-3521](https://tickets.metabrainz.org/browse/PICARD-3521) - Picard crashes when loading a release from ISRC lookup for files already matched to a track
+- [PICARD-3527](https://tickets.metabrainz.org/browse/PICARD-3527) - Track match indicator is inconsistent
+- [PICARD-3528](https://tickets.metabrainz.org/browse/PICARD-3528) - Uses alias sort name even if artist credits matches artist name
+
+### Improvements
+- [PICARD-3507](https://tickets.metabrainz.org/browse/PICARD-3507) - Scripting documentation function/tag search: Enter key to proceed to next match
+- [PICARD-3508](https://tickets.metabrainz.org/browse/PICARD-3508) - Gross track-length mismatch does not prevent a false-positive recording match on Lookup
+- [PICARD-3526](https://tickets.metabrainz.org/browse/PICARD-3526) - format_isrc does not normalize lowercase or unhyphenated valid ISRCs
+
+
 ## Version 3.0.2 - 2026-10-11
 
 ### Bugfixes
