@@ -187,6 +187,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_updates import set_view_updates_sink
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -516,6 +517,9 @@ class Tagger(QtWidgets.QApplication):
         # Route core status/progress/action notifications to the main window.
         # In headless mode no sink is installed and the facade only logs.
         set_notifier_sink(self.window)
+        # Route core view-update suspensions (e.g. batch file moves) to the
+        # main window. In headless mode no sink is installed and they no-op.
+        set_view_updates_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard

@@ -108,6 +108,7 @@ from picard.util import (
 from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
+from picard.view_updates import view_updates
 from picard.webservice import PendingRequest
 
 
@@ -1083,11 +1084,11 @@ class Album(MetadataItem):
             config = get_config()
             threshold = config.setting['track_matching_threshold']
             moves = self._match_files(files, self.tracks, self.unmatched_files, threshold=threshold)
-            with self.tagger.window.metadata_box.ignore_updates:
+            with view_updates().suspend_metadata_box():
                 for file, target in moves:
                     file.move(target)
         else:
-            with self.tagger.window.metadata_box.ignore_updates:
+            with view_updates().suspend_metadata_box():
                 for file in list(files):
                     file.move(self.unmatched_files)
 
