@@ -152,7 +152,10 @@ except ImportError:
     PluginCLI = None
     PluginManager = None
 
-from picard.notification import set_notifier_sink
+from picard.notification import (
+    notifier,
+    set_notifier_sink,
+)
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -211,7 +214,6 @@ from picard.ui.util import (
     FileDialog,
     busy_cursor_start,
     busy_cursor_stop,
-    flash_busy_cursor,
     show_session_not_found_dialog,
 )
 
@@ -1136,14 +1138,14 @@ class Tagger(QtWidgets.QApplication):
             # the fallback below opens a modal dialog, which is its own
             # immediate feedback and needs no cursor flash.
             if lookup.mbid_lookup(text, search['entity'], mbid_matched_callback=mbid_matched_callback):
-                flash_busy_cursor()
+                notifier().flash_busy()
             else:
                 dialog = search['dialog'](self.window)
                 dialog.search(text)
                 dialog.exec()
         else:
             # Opens the browser / dispatches an entity search asynchronously.
-            flash_busy_cursor()
+            notifier().flash_busy()
             lookup.search_entity(
                 search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback, force_browser=force_browser
             )
@@ -1153,7 +1155,7 @@ class Tagger(QtWidgets.QApplication):
         lookup = self.get_file_lookup()
         config = get_config()
         # Result appears asynchronously; acknowledge the action immediately.
-        flash_busy_cursor()
+        notifier().flash_busy()
         lookup.collection_lookup(config.persist['oauth_username'])
 
     def browser_lookup(self, item):
@@ -1162,7 +1164,7 @@ class Tagger(QtWidgets.QApplication):
         metadata = item.metadata
         # Result appears asynchronously (browser opens / network lookup);
         # acknowledge the action immediately.
-        flash_busy_cursor()
+        notifier().flash_busy()
         # Only lookup via MB IDs if matched to a Track or Album;
         # otherwise ignore and search by metadata details
         is_track = isinstance(item, Track)
@@ -1531,7 +1533,7 @@ class Tagger(QtWidgets.QApplication):
             if file.can_analyze:
                 if not flashed:
                     # Result appears asynchronously; acknowledge the action once.
-                    flash_busy_cursor()
+                    notifier().flash_busy()
                     flashed = True
                 file.set_pending()
                 self.acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
@@ -1558,7 +1560,7 @@ class Tagger(QtWidgets.QApplication):
             if obj.can_autotag:
                 if not flashed:
                     # Result appears asynchronously; acknowledge the action once.
-                    flash_busy_cursor()
+                    notifier().flash_busy()
                     flashed = True
                 obj.lookup_metadata()
 
@@ -1571,7 +1573,7 @@ class Tagger(QtWidgets.QApplication):
         files = tuple(iter_files_from_objects(objs))
         if files:
             # Clustering runs on a background thread; acknowledge the action.
-            flash_busy_cursor()
+            notifier().flash_busy()
         if log.is_debug():
             limit = 5
             count = len(files)

@@ -191,6 +191,7 @@ from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
     find_starting_directory,
+    flash_busy_cursor,
     is_keyboard_context_menu_event,
     menu_builder,
     open_local_path,
@@ -454,6 +455,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def set_processing(self, processing=True):
         self.panel.set_processing(processing)
+
+    def flash_busy_cursor(self):
+        flash_busy_cursor()
 
     def set_sorting(self, sorting=True):
         self.panel.set_sorting(sorting)
