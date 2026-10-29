@@ -35,7 +35,9 @@ from picard.metadata import (
     MultiMetadataProxy,
 )
 from picard.options import StandardizeArtistNames
+from picard.similarity import similarity2
 from picard.tags import preserved_tag_names
+from picard.util import linear_combination_of_weights
 from picard.util.imagelist import ImageList
 
 
@@ -398,6 +400,31 @@ class CommonTests:
             m2.delete("title")
             self.assertTrue(m1.compare(m2) < 1)
 
+        def test_compare_ignores_absent_weighted_tag(self):
+            # A weighted tag present on one side but merely *absent* (not
+            # explicitly deleted) on the other must not be scored by compare().
+            # Only a value mismatch or an explicit deletion penalizes the
+            # score. This distinguishes "tag missing" (ignore) from "tag
+            # deleted" (penalize) and is relied on by the matching pipeline
+            # (Album._match_files), where a MB candidate that simply lacks a
+            # tag the file carries should not be penalized.
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m1["album"] = "TheAlbum"
+            m2 = Metadata()
+            m2["title"] = "title1"
+            # m2 has no "album" tag at all (absent, not deleted).
+            self.assertEqual(m1.compare(m2), 1.0)
+            self.assertEqual(m1.compare(m2), m2.compare(m1))
+
+            # By contrast, explicitly deleting the tag on the other side does
+            # lower the score (see test_compare_deleted).
+            m3 = Metadata()
+            m3["title"] = "title1"
+            m3["album"] = "TheAlbum"
+            m3.delete("album")
+            self.assertTrue(m1.compare(m3) < 1.0)
+
         def _astropilot_track(self, title, length):
             # Mimics a file fully tagged before Picard 3: everything matches the
             # MB data except that the new ``albumartists`` tag gets added.
@@ -489,6 +516,36 @@ class CommonTests:
             m2["artist"] = ["A", "C"]
             m2["title"] = "t"
             self.assertLess(m1.compare_changes(m2), 1.0)
+
+        def test_compare_changes_weighted_tag_not_double_counted(self):
+            # A changed *weighted* tag must be scored exactly once, at its own
+            # weight. It must NOT also be scored a second time by the auxiliary
+            # (non-weighted) loop at ``_CHANGE_DEFAULT_WEIGHT``. Regression
+            # guard: building the "already weighted" name set from
+            # ``self.__weights`` must use the tag names, not the (name, weight)
+            # pairs -- otherwise every weighted tag leaks into the auxiliary
+            # loop and gets counted twice, skewing the differ score.
+            m1 = Metadata()
+            m1["title"] = "title1"
+            m1["album"] = "AlbumA"
+            m2 = Metadata()
+            m2["title"] = "title1"
+            m2["album"] = "AlbumB"
+
+            # 'album' differs; 'title' is identical. The only parts scored
+            # should be (title, 1.0) and (album, <album_score>) -- each once.
+            weights = dict(Metadata._Metadata__weights)
+            album_score = similarity2("AlbumA", "AlbumB")
+            scored_once = linear_combination_of_weights([(1.0, weights["title"]), (album_score, weights["album"])])
+            scored_twice = linear_combination_of_weights(
+                [
+                    (1.0, weights["title"]),
+                    (album_score, weights["album"]),
+                    (album_score, Metadata._CHANGE_DEFAULT_WEIGHT),
+                ]
+            )
+            self.assertNotEqual(scored_once, scored_twice)
+            self.assertAlmostEqual(m1.compare_changes(m2), scored_once)
 
         def test_strip_whitespace(self):
             m1 = Metadata()
