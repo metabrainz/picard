@@ -87,18 +87,30 @@ def canonical_language(name):
     return LANGUAGE_ALIASES.get(name, name)
 
 
-# Human-maintained map crediting code authors for languages they genuinely
-# translated. Code authors are otherwise excluded from the translator list
-# (they appear in the code-contributions line, and the commit-message language
-# labels over-attribute maintainers who merely merged translation PRs). Use
-# canonical language names (post LANGUAGE_ALIASES). Only affects --by-language.
+# Human-maintained per-code-author curation map. Keyed by git author name,
+# each entry may carry any of these optional fields:
 #
-# 'weblate' is the contributor's Weblate username, used for the profile link
-# when their git author name differs from their Weblate account name (so the
-# automatic name-based lookup would miss it).
-CODE_AUTHOR_TRANSLATIONS = {
+#   'langs'   - set of languages the author genuinely translated. Code authors
+#               are otherwise excluded from the translator list (they appear in
+#               the code-contributions line, and the commit-message language
+#               labels over-attribute maintainers who merely merged translation
+#               PRs). Use canonical language names (post LANGUAGE_ALIASES).
+#               Only affects --by-language.
+#   'weblate' - the author's Weblate username, used for the translator profile
+#               link when their git author name differs from their Weblate
+#               account name (so the automatic name-based lookup would miss it).
+#   'github'  - the author's GitHub username, used for the code-contributor
+#               profile link when it cannot be resolved automatically. This
+#               happens when the author commits with a real email address (not
+#               a GitHub noreply address) and their PR was merged in a way that
+#               attributes the fork owner to a different author (e.g. the PR tip
+#               commit was rebased/authored by a maintainer, so the "Merge pull
+#               request #N from <fork>/..." slug maps to the maintainer rather
+#               than the contributor).
+CODE_AUTHOR_INFO = {
     'Laurent Monin': {'langs': {'French'}, 'weblate': 'Zas'},
     'Philipp Wolfer': {'langs': {'German'}, 'weblate': 'outsidecontext'},
+    'prsdx': {'github': 'knowprasad'},
 }
 
 # Human-maintained map of translator name -> Weblate username, for translators
@@ -605,6 +617,16 @@ def get_github_display_names(github_users):
     return display_names
 
 
+def resolve_github_username(name, github_users):
+    """Resolve a code-author name to a GitHub username.
+
+    Prefers curated overrides (for contributors whose GitHub account cannot be
+    derived from merge commits or noreply emails), then falls back to the
+    auto-derived name->username mapping.
+    """
+    return CODE_AUTHOR_INFO.get(name, {}).get('github') or github_users.get(name)
+
+
 def format_code_authors(code_authors, github_users, display_names, translator_langs, weblate_users):
     """Format code contributors with optional GitHub links.
 
@@ -613,7 +635,7 @@ def format_code_authors(code_authors, github_users, display_names, translator_la
     """
     names = []
     for name in sorted(code_authors, key=str.casefold):
-        gh_user = github_users.get(name)
+        gh_user = resolve_github_username(name, github_users)
         display = display_from_name(display_names.get(name, name))
         url = f'{GITHUB_URL}/{url_quote(gh_user)}' if gh_user else None
         entry = linked_name(url, display)
@@ -633,7 +655,7 @@ def resolve_weblate_username(name, weblate_users):
     their Weblate account, or who are absent from the auto-derived sources),
     then falls back to the auto-derived name->username mapping.
     """
-    curated = CODE_AUTHOR_TRANSLATIONS.get(name, {}).get('weblate') or TRANSLATOR_WEBLATE_USERS.get(name)
+    curated = CODE_AUTHOR_INFO.get(name, {}).get('weblate') or TRANSLATOR_WEBLATE_USERS.get(name)
     return curated or weblate_users.get(name)
 
 
@@ -662,8 +684,8 @@ def format_translators_by_language(translators, translator_langs, weblate_users)
             by_language.setdefault(canonical_language(language), set()).add(name)
 
     # Credit code authors for languages they genuinely translated (curated).
-    for name, info in CODE_AUTHOR_TRANSLATIONS.items():
-        for language in info['langs']:
+    for name, info in CODE_AUTHOR_INFO.items():
+        for language in info.get('langs', ()):
             by_language.setdefault(canonical_language(language), set()).add(name)
 
     lines = []
@@ -730,9 +752,12 @@ def main():
     translator_langs = get_translator_langs(rev_range)
     translators = set(translator_langs.keys()) - code_authors
     debug(f"{len(translators)} translators (excluding code authors)")
-    display_names = get_github_display_names(
-        {name: github_users[name] for name in code_authors if name in github_users}
-    )
+    code_author_github_users = {}
+    for name in code_authors:
+        gh_user = resolve_github_username(name, github_users)
+        if gh_user:
+            code_author_github_users[name] = gh_user
+    display_names = get_github_display_names(code_author_github_users)
 
     if code_authors:
         # Use email-confirmed users only for dual-contributor check to avoid
