@@ -86,7 +86,19 @@ class HeadlessTagger(QtCore.QCoreApplication):
         self._saving_files_count = 0
         self._saving_dirty_image_parents = set()
 
-        # Config must be set up before the services (WebService reads config).
+        # Services are created lazily (see the properties below) so a command
+        # that needs none (e.g. profiles) pays for none, and one that needs only
+        # the web service (e.g. plugins) does not spin up the format registry or
+        # the AcoustID client. Backing fields start unset.
+        self._webservice = None
+        self._mb_api = None
+        self._format_registry = None
+        self._acoustid_api = None
+        self._acoustid_client = None
+        self._acoustidmanager = None
+        self._isrc_submit_manager = None
+
+        # Config must be set up before any service (WebService reads config).
         # Mirror minimal_init(): register options, load config, migrate
         # non-interactively (headless must not block on an upgrade dialog).
         init_options()
@@ -94,7 +106,6 @@ class HeadlessTagger(QtCore.QCoreApplication):
         run_config_upgrades(get_config(), interactive=False)
 
         self._init_threads()
-        self._init_services()
 
         # Make this object discoverable to core code that reaches the running
         # application via tagger_instance() (e.g. File state bookkeeping), and
@@ -102,34 +113,71 @@ class HeadlessTagger(QtCore.QCoreApplication):
         set_services_provider(self)
         set_tagger_provider(self)
 
-    # --- services -----------------------------------------------------------
+    # --- services (lazy) ----------------------------------------------------
+    #
+    # Each service is built on first access and cached. services() delegates by
+    # attribute name, so these lazy properties are transparent to core code.
+    # Cleanup for a service is registered when (and only when) it is created.
 
-    def _init_services(self):
-        # Imported here to avoid pulling the web service into CLI commands that
-        # do not need it, and to mirror the GUI Tagger's lazy service setup.
-        from picard.acoustid import AcoustIDClient
-        from picard.acoustid.manager import AcoustIDManager
-        from picard.isrcsubmit import ISRCSubmitManager
-        from picard.webservice import WebService
-        from picard.webservice.api_helpers import (
-            AcoustIdAPIHelper,
-            MBAPIHelper,
-        )
+    @property
+    def webservice(self):
+        if self._webservice is None:
+            from picard.webservice import WebService
 
-        self.webservice = WebService()
-        self.register_cleanup(self.webservice.stop)
-        self.mb_api = MBAPIHelper(self.webservice)
+            self._webservice = WebService()
+            self.register_cleanup(self._webservice.stop)
+        return self._webservice
 
-        self.format_registry = FormatRegistry(self)
-        for file_format in DEFAULT_FORMATS:
-            self.format_registry.register(file_format)
+    @property
+    def mb_api(self):
+        if self._mb_api is None:
+            from picard.webservice.api_helpers import MBAPIHelper
 
-        acoustid_api = AcoustIdAPIHelper(self.webservice)
-        self.acoustid_client = AcoustIDClient(acoustid_api)
-        self.acoustid_client.init()
-        self.register_cleanup(self.acoustid_client.done)
-        self.acoustidmanager = AcoustIDManager(acoustid_api)
-        self.isrc_submit_manager = ISRCSubmitManager(self.mb_api)
+            self._mb_api = MBAPIHelper(self.webservice)
+        return self._mb_api
+
+    @property
+    def format_registry(self):
+        if self._format_registry is None:
+            self._format_registry = FormatRegistry(self)
+            for file_format in DEFAULT_FORMATS:
+                self._format_registry.register(file_format)
+        return self._format_registry
+
+    @property
+    def _acoustid_api_helper(self):
+        if self._acoustid_api is None:
+            from picard.webservice.api_helpers import AcoustIdAPIHelper
+
+            self._acoustid_api = AcoustIdAPIHelper(self.webservice)
+        return self._acoustid_api
+
+    @property
+    def acoustid_client(self):
+        if self._acoustid_client is None:
+            from picard.acoustid import AcoustIDClient
+
+            client = AcoustIDClient(self._acoustid_api_helper)
+            client.init()
+            self.register_cleanup(client.done)
+            self._acoustid_client = client
+        return self._acoustid_client
+
+    @property
+    def acoustidmanager(self):
+        if self._acoustidmanager is None:
+            from picard.acoustid.manager import AcoustIDManager
+
+            self._acoustidmanager = AcoustIDManager(self._acoustid_api_helper)
+        return self._acoustidmanager
+
+    @property
+    def isrc_submit_manager(self):
+        if self._isrc_submit_manager is None:
+            from picard.isrcsubmit import ISRCSubmitManager
+
+            self._isrc_submit_manager = ISRCSubmitManager(self.mb_api)
+        return self._isrc_submit_manager
 
     # --- threads ------------------------------------------------------------
 
@@ -167,12 +215,16 @@ class HeadlessTagger(QtCore.QCoreApplication):
         Covers the work the tag load/save pipeline produces: active thread-pool
         tasks and pending web requests. AcoustID fingerprinting is not part of
         tag read/write and is not driven here.
+
+        Reads the web service via the backing field so that merely draining the
+        event loop never forces the (lazy) web service to be created.
         """
+        pending_requests = self._webservice.num_pending_web_requests if self._webservice is not None else 0
         return bool(
             self.thread_pool.activeThreadCount()
             or self.priority_thread_pool.activeThreadCount()
             or self.save_thread_pool.activeThreadCount()
-            or self.webservice.num_pending_web_requests
+            or pending_requests
         )
 
     def run_until_idle(self, timeout: float | None = None, interval: float = 0.02) -> bool:
