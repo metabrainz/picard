@@ -42,6 +42,7 @@ from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
 from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.services import services
 from picard.util.cdrom import (
     discid,
     has_isrc_support,
@@ -172,7 +173,7 @@ class Disc:
 
     def lookup(self):
         if self.id:
-            self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
+            services().mb_api.lookup_discid(self.id, self._lookup_finished)
         else:
             log.warning("Disc.lookup called without disc ID set, cannot lookup")
 
@@ -186,7 +187,7 @@ class Disc:
         """
         self._skip_dialog = skip_dialog
         self._files_to_match = files_to_match
-        self.tagger.mb_api.lookup_toc(toc_string, self._toc_lookup_finished)
+        services().mb_api.lookup_toc(toc_string, self._toc_lookup_finished)
 
     def _lookup_finished(self, document, http, error):
         busy_cursor_stop()
