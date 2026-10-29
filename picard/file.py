@@ -539,8 +539,12 @@ class File(MetadataItem):
         """Ask the internal player to release the file handle if it holds it.
 
         Must be called from the main thread (e.g. from save()).
+
+        The player is a GUI-only feature; in headless mode there is no window
+        (and no player), so this is a no-op.
         """
-        player = self.tagger.window.player
+        window = getattr(self.tagger, 'window', None)
+        player = getattr(window, 'player', None)
         if player:
             player.release_file(filename)
 
