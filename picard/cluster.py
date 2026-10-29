@@ -66,6 +66,7 @@ from picard.matching import (
     find_best_match_with_margin,
 )
 from picard.notification import notifier
+from picard.services import services
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -483,7 +484,7 @@ class Cluster(FileList):
         )
         config = get_config()
         freq = self._most_frequent_values(('catalognumber', 'label'))
-        self._lookup_task = self.tagger.mb_api.find_releases(
+        self._lookup_task = services().mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
@@ -497,7 +498,7 @@ class Cluster(FileList):
 
     def _clear_lookup_task(self):
         if self._lookup_task:
-            self.tagger.webservice.abort_task(self._lookup_task)
+            services().webservice.abort_task(self._lookup_task)
             self._lookup_task = None
 
     @staticmethod
