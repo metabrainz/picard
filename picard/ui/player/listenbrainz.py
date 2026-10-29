@@ -44,6 +44,7 @@ from picard.util.qt import (
 )
 from picard.webservice import (
     ReplyHandler,
+    ReplyLike,
     WebService,
 )
 from picard.webservice.api_helpers.listenbrainz import (
@@ -161,7 +162,7 @@ class ListenBrainzSubmissionService:
         self._lbapi.submit_listen(token, listen, self._on_submit_now_playing_response)
 
     def _on_submit_now_playing_response(
-        self, data, reply: QNetworkReply, error: QNetworkReply.NetworkError | Exception | None
+        self, data, reply: ReplyLike, error: QNetworkReply.NetworkError | Exception | None
     ):
         if error:
             log.error('ListenBrainz now playing failed: data=%s, error=%s', data, error)
@@ -228,7 +229,7 @@ class ListenQueue:
         self,
         payload: ListenPayload,
         data,
-        reply: QNetworkReply,
+        reply: ReplyLike,
         error: QNetworkReply.NetworkError | Exception | None,
     ):
         if error:
@@ -262,7 +263,7 @@ class ListenQueue:
         self,
         batch: list[ListenPayload],
         data,
-        reply: QNetworkReply,
+        reply: ReplyLike,
         error: QNetworkReply.NetworkError | Exception | None,
     ):
         self._submitting = False

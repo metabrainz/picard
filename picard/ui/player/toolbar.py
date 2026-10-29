@@ -141,10 +141,12 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.volume_button.popover_position = popover_position
 
     def _get_popover_position(self):
-        if self.isFloating():
+        parent = self.parent()
+        if self.isFloating() or not parent:
             return 'bottom'
         pos = self.mapToParent(QtCore.QPoint(0, 0))
-        half_main_window_height = self.parent().height() / 2
+        assert isinstance(parent, QtWidgets.QWidget)
+        half_main_window_height = parent.height() / 2
         if pos.y() <= half_main_window_height:
             return 'bottom'
         else:
