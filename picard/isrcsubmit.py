@@ -355,4 +355,4 @@ class ISRCSubmitManager:
     def _check_unsubmitted(self) -> None:
         """Update the UI action state based on pending submissions."""
         enabled = self.unsubmitted_count > 0
-        self.tagger.window.enable_action(MainAction.SUBMIT_ISRC, enabled)
+        self.tagger.enable_action(MainAction.SUBMIT_ISRC, enabled)
