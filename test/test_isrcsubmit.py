@@ -67,7 +67,7 @@ class ISRCSubmitTestCase(PicardTestCase):
         self.mock_api.submit_isrcs = Mock(wraps=mock_succeed_submission)
         self.manager = ISRCSubmitManager(self.mock_api)
         self.tagger.window = MagicMock()
-        self.tagger.window.enable_action = MagicMock()
+        self.tagger.enable_action = MagicMock()
 
 
 class ISRCSubmitManagerTest(ISRCSubmitTestCase):
@@ -199,13 +199,13 @@ class ISRCSubmitManagerTest(ISRCSubmitTestCase):
 
     def test_check_unsubmitted_enables_action(self):
         self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, True)
+        self.tagger.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, True)
 
     def test_check_unsubmitted_disables_action(self):
         file = object()
         self.manager.add(file, 'rec-1', ['USRC17607839'], [])
         self.manager.remove(file)
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, False)
+        self.tagger.enable_action.assert_called_with(MainAction.SUBMIT_ISRC, False)
 
     def test_multiple_files_same_recording(self):
         self.manager.add(object(), 'rec-1', ['USRC17607839'], [])
@@ -353,7 +353,7 @@ class ISRCUpdateTest(PicardTestCase):
         self.manager = ISRCSubmitManager(self.mock_api)
         self.tagger.isrc_submit_manager = self.manager
         self.tagger.window = MagicMock()
-        self.tagger.window.enable_action = MagicMock()
+        self.tagger.enable_action = MagicMock()
         self._tracks = []
 
     def _make_file_with_track(self, file_isrcs, mb_isrcs, recording_id='rec-1'):

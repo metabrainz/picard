@@ -587,11 +587,11 @@ class UnclusteredFiles(Cluster):
 
     def add_files(self, files, new_album=True):
         super().add_files(files, new_album=new_album)
-        self.tagger.window.enable_action(MainAction.CLUSTER, self.files)
+        self.tagger.enable_action(MainAction.CLUSTER, self.files)
 
     def remove_file(self, file, new_album=True):
         super().remove_file(file, new_album=new_album)
-        self.tagger.window.enable_action(MainAction.CLUSTER, self.files)
+        self.tagger.enable_action(MainAction.CLUSTER, self.files)
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)

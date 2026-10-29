@@ -546,6 +546,17 @@ class Tagger(QtWidgets.QApplication):
                 except (TypeError, ValueError, KeyError):
                     echo(message)
 
+    def enable_action(self, action_id, enabled):
+        """Enable/disable a main window action in a UI-agnostic way.
+
+        Like :meth:`set_statusbar_message`, this forwards to the main window
+        when one exists and is a no-op otherwise, so core code can toggle
+        action availability without depending on a window being present.
+        """
+        window = getattr(self, 'window', None)
+        if window is not None:
+            window.enable_action(action_id, enabled)
+
     @property
     def is_wayland(self):
         return self.platformName() == 'wayland'
