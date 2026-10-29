@@ -75,6 +75,47 @@ print('CLEANUP_OK')
 """
 
 
+_LAZY_PROGRAM = """
+import sys
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+
+app = HeadlessTagger(sys.argv, config_file=None)
+
+# Nothing is built at construction time.
+assert app._webservice is None
+assert app._mb_api is None
+assert app._format_registry is None
+assert app._acoustid_client is None
+assert app._acoustidmanager is None
+assert app._isrc_submit_manager is None
+print('LAZY_UNBUILT_OK')
+
+# Touching the format registry must NOT build the web service / acoustid.
+app.format_registry
+assert app._format_registry is not None
+assert app._webservice is None, 'format_registry must not build the web service'
+assert app._acoustid_client is None
+print('LAZY_ISOLATED_OK')
+
+# Draining the (idle) event loop must not build the web service either.
+app.run_until_idle(timeout=5)
+assert app._webservice is None, 'run_until_idle must not build the web service'
+print('LAZY_IDLE_OK')
+
+# mb_api pulls in the web service; caching returns the same instances.
+assert app.mb_api is app.mb_api
+assert app._webservice is not None
+print('LAZY_BUILD_OK')
+
+app.run_cleanup()
+"""
+
+
 _DRIVER_PROGRAM = """
 import sys
 from PyQt6 import QtCore
@@ -121,6 +162,7 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             [sys.executable, '-c', _SUBPROCESS_PROGRAM],
             capture_output=True,
             text=True,
+            encoding='utf-8',
             timeout=120,
         )
         self.assertEqual(
@@ -136,6 +178,7 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             [sys.executable, '-c', _DRIVER_PROGRAM],
             capture_output=True,
             text=True,
+            encoding='utf-8',
             timeout=120,
         )
         self.assertEqual(
@@ -144,4 +187,20 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
         for marker in ('DRIVER_OK', 'IDLE_OK'):
+            self.assertIn(marker, result.stdout)
+
+    def test_services_are_built_lazily(self):
+        result = subprocess.run(
+            [sys.executable, '-c', _LAZY_PROGRAM],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        for marker in ('LAZY_UNBUILT_OK', 'LAZY_ISOLATED_OK', 'LAZY_IDLE_OK', 'LAZY_BUILD_OK'):
             self.assertIn(marker, result.stdout)
