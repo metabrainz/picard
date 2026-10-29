@@ -39,6 +39,7 @@ from picard.const.defaults import DEFAULT_FPCALC_THREADS
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.i18n import N_
+from picard.notification import notifier
 from picard.util import (
     find_executable,
     win_prefix_longpath,
@@ -109,7 +110,7 @@ class AcoustIDClient(QtCore.QObject):
                 'filename': task.file.filename,
             }
             log.error("AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" % mparms)
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_('AcoustID lookup network error for "%(filename)s"!'),
                 mparms,
                 echo=None,
@@ -131,7 +132,7 @@ class AcoustIDClient(QtCore.QObject):
                         'filename': task.file.filename,
                     }
                     log.error("AcoustID: Lookup error for '%(filename)s': %(error)r" % mparms)
-                    self.tagger.window.set_statusbar_message(
+                    notifier().status_message(
                         N_('AcoustID lookup failed for "%(filename)s"!'),
                         mparms,
                         echo=None,
@@ -172,7 +173,7 @@ class AcoustIDClient(QtCore.QObject):
         }
         if not result:
             log.debug("AcoustID: lookup returned no result for file '%(filename)s'" % mparms)
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_('AcoustID lookup returned no result for file "%(filename)s"'),
                 mparms,
                 echo=None,
@@ -180,7 +181,7 @@ class AcoustIDClient(QtCore.QObject):
             task.file.clear_pending()
             return
         log.debug("AcoustID: looking up the fingerprint for file '%(filename)s'" % mparms)
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_('Looking up the fingerprint for file "%(filename)s" …'),
             mparms,
             echo=None,

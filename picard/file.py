@@ -95,6 +95,7 @@ from picard.matching import (
     find_best_match_with_margin,
 )
 from picard.metadata import Metadata
+from picard.notification import notifier
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
 from picard.tags import (
@@ -1196,7 +1197,7 @@ class File(MetadataItem):
             tracks = None
 
         def statusbar(message):
-            self.tagger.set_statusbar_message(
+            notifier().status_message(
                 message,
                 {'filename': self.filename},
                 timeout=3000,
@@ -1311,7 +1312,7 @@ class File(MetadataItem):
         """Try to identify the file using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.set_statusbar_message(
+        notifier().status_message(
             N_("Looking up the metadata for file %(filename)s …"),
             {'filename': self.filename},
         )

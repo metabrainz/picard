@@ -20,6 +20,7 @@
 from unittest.mock import (
     ANY,
     MagicMock,
+    patch,
 )
 
 from test.picardtestcase import (
@@ -57,6 +58,10 @@ class CollectionTest(PicardTestCase):
         super().setUp()
         self.patch_tagger_instance('picard.collection')
         self.tagger.mb_api = mb_api
+        self.notifier = MagicMock()
+        patcher = patch('picard.collection.notifier', return_value=self.notifier)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         picard.collection.user_collections = {}
 
     def test_collection_init(self):
@@ -87,7 +92,7 @@ class CollectionTest(PicardTestCase):
         mb_api.put_to_collection.assert_called_once_with('foo', list(releases), ANY)
         self.assertEqual(2, collection.size)
         self.assertEqual(releases, collection.releases)
-        collection.tagger.set_statusbar_message.assert_called_once()
+        self.notifier.status_message.assert_called_once()
 
     def test_collection_remove_releases(self):
         releases = [
@@ -104,7 +109,7 @@ class CollectionTest(PicardTestCase):
         mb_api.delete_from_collection.assert_called_once_with('foo', list(releases_to_remove), ANY)
         self.assertEqual(1, collection.size)
         self.assertEqual({releases[2]}, collection.releases)
-        collection.tagger.set_statusbar_message.assert_called_once()
+        self.notifier.status_message.assert_called_once()
 
     def test_get_user_collection(self):
         self.assertEqual({}, picard.collection.user_collections)
