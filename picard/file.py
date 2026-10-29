@@ -901,8 +901,8 @@ class File(MetadataItem):
         if from_parent_item and self.parent_item:
             log.debug("Removing %r from %r", self, self.parent_item)
             self.parent_item.remove_file(self)
-        self.tagger.acoustidmanager.remove(self)
-        self.tagger.isrc_submit_manager.remove(self)
+        services().acoustidmanager.remove(self)
+        services().isrc_submit_manager.remove(self)
         self.state = File.State.REMOVED
 
     def move(self, to_parent_item):
@@ -910,7 +910,7 @@ class File(MetadataItem):
         if hasattr(to_parent_item, 'add_file') and to_parent_item != self.parent_item:
             log.debug("Moving %r from %r to %r", self, self.parent_item, to_parent_item)
             self.clear_lookup_task()
-            self.tagger._acoustid.stop_analyze(self)
+            services().acoustid_client.stop_analyze(self)
             new_album = True
             if self.parent_item:
                 new_album = self.parent_item.album != to_parent_item.album
@@ -938,11 +938,11 @@ class File(MetadataItem):
         if not fingerprint:
             self.acoustid_fingerprint = None
             self.acoustid_length = 0
-            self.tagger.acoustidmanager.remove(self)
+            services().acoustidmanager.remove(self)
         elif fingerprint != self.acoustid_fingerprint:
             self.acoustid_fingerprint = fingerprint
             self.acoustid_length = length or self.metadata.length // 1000
-            self.tagger.acoustidmanager.add(self, None)
+            services().acoustidmanager.add(self, None)
             self.acoustid_update()
         config = get_config()
         if config.setting['save_acoustid_fingerprints']:
@@ -954,13 +954,13 @@ class File(MetadataItem):
             recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
-        self.tagger.acoustidmanager.update(self, recording_id)
+        services().acoustidmanager.update(self, recording_id)
         self.update_item()
 
     def isrc_update(self):
         """Update ISRC submission state based on current file-to-track match."""
         if not self.parent_item or not self.parent_item.can_link_fingerprint:
-            self.tagger.isrc_submit_manager.remove(self)
+            services().isrc_submit_manager.remove(self)
             return
         recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
         if not recording_id:
@@ -983,7 +983,7 @@ class File(MetadataItem):
             file_isrcs,
             mb_isrcs,
         )
-        self.tagger.isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
+        services().isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
 
     @classmethod
     def supports_tag(cls, name: str) -> bool:
@@ -1224,7 +1224,7 @@ class File(MetadataItem):
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
-                    self.tagger.acoustidmanager.add(self, recording_id)
+                    services().acoustidmanager.add(self, recording_id)
                 if release_group_id is not None:
                     releasegroup = self.tagger.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)

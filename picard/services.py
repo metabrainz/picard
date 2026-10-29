@@ -51,6 +51,7 @@ _SERVICE_ATTRS = (
     'format_registry',
     'acoustidmanager',
     'isrc_submit_manager',
+    'acoustid_client',
 )
 
 

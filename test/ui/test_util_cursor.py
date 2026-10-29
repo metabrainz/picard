@@ -135,7 +135,7 @@ class TaggerClusterActionsFlashTest(PicardTestCase):
     def test_analyze_flashes_once_for_batch(self):
         tagger = self._mock_self()
         tagger.use_acoustid = True
-        tagger._acoustid = MagicMock()
+        tagger.acoustid_client = MagicMock()
         file1 = MagicMock(can_analyze=True)
         file2 = MagicMock(can_analyze=True)
         with patch('picard.tagger.iter_files_from_objects', return_value=iter((file1, file2))):
