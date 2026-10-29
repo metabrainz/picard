@@ -56,7 +56,6 @@ mb_api.get_collection_list.side_effect = fake_get_collection_list
 class CollectionTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.collection')
         self.tagger.mb_api = mb_api
         self.notifier = MagicMock()
         patcher = patch('picard.collection.notifier', return_value=self.notifier)
@@ -65,16 +64,15 @@ class CollectionTest(PicardTestCase):
         picard.collection.user_collections = {}
 
     def test_collection_init(self):
-        collection = Collection('foo', mb_api)
+        collection = Collection('foo')
         self.assertEqual('foo', collection.id)
         self.assertEqual('', collection.name)
         self.assertEqual(0, collection.size)
         self.assertEqual(set(), collection.pending_releases)
         self.assertEqual(set(), collection.releases)
-        self.assertEqual(mb_api, collection._mb_api)
 
     def test_collection_size(self):
-        collection = Collection('foo', mb_api)
+        collection = Collection('foo')
         self.assertEqual(0, collection.size)
         collection.size = 2
         self.assertEqual(2, collection.size)
@@ -86,7 +84,7 @@ class CollectionTest(PicardTestCase):
             '963a7d48-5995-4751-aef8-6727cb879b9c',
             '54292079-790c-4e99-bf8d-12efa29fa3e9',
         }
-        collection = Collection('foo', mb_api)
+        collection = Collection('foo')
         callback = MagicMock()
         collection.add_releases(releases, callback)
         mb_api.put_to_collection.assert_called_once_with('foo', list(releases), ANY)
@@ -101,7 +99,7 @@ class CollectionTest(PicardTestCase):
             'd0e5212c-d463-4810-ab0b-a33431b38008',
         ]
         releases_to_remove = set(releases[:2])
-        collection = Collection('foo', mb_api)
+        collection = Collection('foo')
         collection.releases = set(releases)
         collection.size = len(releases)
         callback = MagicMock()
@@ -162,7 +160,7 @@ class CollectionTest(PicardTestCase):
 
     def test_load_user_collections(self):
         self.tagger.webservice.oauth_manager.is_authorized.return_value = True
-        picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)
+        picard.collection.user_collections['old-collection'] = Collection('old-collection')
         callback = MagicMock()
         load_user_collections(callback)
         callback.assert_called_once_with()
@@ -174,7 +172,7 @@ class CollectionTest(PicardTestCase):
 
     def test_load_user_collections_not_authorized(self):
         self.tagger.webservice.oauth_manager.is_authorized.return_value = False
-        picard.collection.user_collections['old-collection'] = Collection('old-collection', mb_api)
+        picard.collection.user_collections['old-collection'] = Collection('old-collection')
         callback = MagicMock()
         load_user_collections(callback)
         callback.assert_not_called()
