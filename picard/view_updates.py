@@ -54,12 +54,24 @@ from typing import (
 class ViewUpdatesSink(Protocol):
     """Interface a frontend provides to receive view-update suspensions.
 
-    The GUI main window satisfies this structurally via its metadata box's
-    ``ignore_updates`` context manager.
+    The GUI main window satisfies this structurally: it exposes a metadata box
+    with an ``ignore_updates`` context, an ``ignore_selection_changes`` context,
+    a ``suspend_while_loading`` context, and the matching
+    ``suspend_while_loading_enter`` / ``suspend_while_loading_exit`` methods.
     """
 
     @property
     def metadata_box(self) -> Any: ...
+
+    @property
+    def ignore_selection_changes(self) -> AbstractContextManager: ...
+
+    @property
+    def suspend_while_loading(self) -> AbstractContextManager: ...
+
+    def suspend_while_loading_enter(self) -> None: ...
+
+    def suspend_while_loading_exit(self) -> None: ...
 
 
 class ViewUpdates:
@@ -67,7 +79,13 @@ class ViewUpdates:
 
     A single instance is shared process-wide (see :func:`view_updates`). A GUI
     frontend installs its main window as the sink; in headless mode the sink
-    stays ``None`` and the contexts are no-ops.
+    stays ``None`` and the contexts/methods are no-ops.
+
+    Several core operations touch a lot of items in a loop (file moves,
+    clustering, bulk removal). In the GUI these are wrapped to suspend the
+    selection/metadata-box/tree refresh and do it once at the end — purely a UI
+    optimization. Core code uses the contexts here so the same code path works
+    with or without a GUI.
     """
 
     def __init__(self):
@@ -91,6 +109,46 @@ class ViewUpdates:
         if sink is None:
             return nullcontext()
         return sink.metadata_box.ignore_updates
+
+    def suspend_selection(self) -> AbstractContextManager:
+        """Suspend selection-change handling for a batch of changes.
+
+        Delegates to the GUI's ``ignore_selection_changes`` context when a sink
+        is installed; a no-op context otherwise.
+        """
+        sink = self._sink
+        if sink is None:
+            return nullcontext()
+        return sink.ignore_selection_changes
+
+    def suspend_while_loading(self) -> AbstractContextManager:
+        """Suspend expensive view work (sorting, filtering) during a load.
+
+        Delegates to the GUI's ``suspend_while_loading`` context when a sink is
+        installed; a no-op context otherwise.
+        """
+        sink = self._sink
+        if sink is None:
+            return nullcontext()
+        return sink.suspend_while_loading
+
+    def suspend_while_loading_enter(self) -> None:
+        """Imperatively begin a "while loading" suspension.
+
+        For callers that enter and exit across asynchronous boundaries (where a
+        ``with`` block cannot span the two). Paired with
+        :meth:`suspend_while_loading_exit`. A no-op when headless.
+        """
+        if self._sink is not None:
+            self._sink.suspend_while_loading_enter()
+
+    def suspend_while_loading_exit(self) -> None:
+        """Imperatively end a "while loading" suspension.
+
+        Paired with :meth:`suspend_while_loading_enter`. A no-op when headless.
+        """
+        if self._sink is not None:
+            self._sink.suspend_while_loading_exit()
 
 
 _view_updates = ViewUpdates()

@@ -187,7 +187,10 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
-from picard.view_updates import set_view_updates_sink
+from picard.view_updates import (
+    set_view_updates_sink,
+    view_updates,
+)
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -635,7 +638,7 @@ class Tagger(QtWidgets.QApplication):
 
     def clear_session(self) -> None:
         """Remove all files, clusters and albums from current UI state."""
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             # Remove all albums (includes NAT)
             for album in list(self.albums.values()):
                 self.remove_album(album)
@@ -936,7 +939,7 @@ class Tagger(QtWidgets.QApplication):
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
-                self.window.suspend_while_loading_exit()
+                view_updates().suspend_while_loading_exit()
 
         if remove_file:
             file.remove()
@@ -1018,8 +1021,8 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Aborting move since target is invalid")
             return
         with (
-            self.window.suspend_while_loading,
-            self.window.ignore_selection_changes,
+            view_updates().suspend_while_loading(),
+            view_updates().suspend_selection(),
         ):
             if isinstance(target, Cluster):
                 for file in process_events_iter(files):
@@ -1072,7 +1075,7 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
-            self.window.suspend_while_loading_enter()
+            view_updates().suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
             self._load_files_batch(new_files, target, unmatched_files)
@@ -1331,7 +1334,7 @@ class Tagger(QtWidgets.QApplication):
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             for obj in objects:
                 if isinstance(obj, File):
                     files.append(obj)
@@ -1353,7 +1356,7 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_files(files)
 
     def trash_files(self, files):
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             files_removed = []
             for file in files:
                 success, new_location = QtCore.QFile.moveToTrash(file.filename)
@@ -1589,10 +1592,10 @@ class Tagger(QtWidgets.QApplication):
             return
 
         clusters = list(result)
-        self.window.suspend_while_loading_enter()
+        view_updates().suspend_while_loading_enter()
 
         def on_complete():
-            self.window.suspend_while_loading_exit()
+            view_updates().suspend_while_loading_exit()
             if callback:
                 callback()
 
