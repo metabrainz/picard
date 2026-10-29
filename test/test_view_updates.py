@@ -74,3 +74,48 @@ class ViewUpdatesTest(PicardTestCase):
             self.assertTrue(bool(ignore_updates))
         set_view_updates_sink(None)
         self.assertFalse(view_updates().has_sink)
+
+    def test_suspend_selection_delegates_and_noops(self):
+        ignore_selection = IgnoreUpdatesContext()
+        sink = SimpleNamespace(ignore_selection_changes=ignore_selection)
+        vu = ViewUpdates()
+        # No sink: no-op, body still runs.
+        ran = False
+        with vu.suspend_selection():
+            ran = True
+        self.assertTrue(ran)
+        # With sink: delegates to ignore_selection_changes.
+        vu.set_sink(sink)
+        with vu.suspend_selection():
+            self.assertTrue(bool(ignore_selection))
+        self.assertFalse(bool(ignore_selection))
+
+    def test_suspend_while_loading_context_delegates_and_noops(self):
+        suspend = IgnoreUpdatesContext()
+        sink = SimpleNamespace(suspend_while_loading=suspend)
+        vu = ViewUpdates()
+        ran = False
+        with vu.suspend_while_loading():
+            ran = True
+        self.assertTrue(ran)
+        vu.set_sink(sink)
+        with vu.suspend_while_loading():
+            self.assertTrue(bool(suspend))
+        self.assertFalse(bool(suspend))
+
+    def test_suspend_while_loading_enter_exit_delegates_and_noops(self):
+        calls = []
+        sink = SimpleNamespace(
+            suspend_while_loading_enter=lambda: calls.append('enter'),
+            suspend_while_loading_exit=lambda: calls.append('exit'),
+        )
+        vu = ViewUpdates()
+        # No sink: both are no-ops.
+        vu.suspend_while_loading_enter()
+        vu.suspend_while_loading_exit()
+        self.assertEqual([], calls)
+        # With sink: forwards.
+        vu.set_sink(sink)
+        vu.suspend_while_loading_enter()
+        vu.suspend_while_loading_exit()
+        self.assertEqual(['enter', 'exit'], calls)
