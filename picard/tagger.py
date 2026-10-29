@@ -438,9 +438,9 @@ class Tagger(QtWidgets.QApplication):
     def _init_fingerprinting(self):
         """Initialize fingerprinting"""
         acoustid_api = AcoustIdAPIHelper(self.webservice)
-        self._acoustid = acoustid.AcoustIDClient(acoustid_api)
-        self._acoustid.init()
-        self.register_cleanup(self._acoustid.done)
+        self.acoustid_client = acoustid.AcoustIDClient(acoustid_api)
+        self.acoustid_client.init()
+        self.register_cleanup(self.acoustid_client.done)
         self.acoustidmanager = AcoustIDManager(acoustid_api)
         self.isrc_submit_manager = ISRCSubmitManager(self.mb_api)
 
@@ -589,7 +589,7 @@ class Tagger(QtWidgets.QApplication):
                                 or self.thread_pool.activeThreadCount() > original_main_thread_count
                                 or self.save_thread_pool.activeThreadCount() > original_save_thread_count
                                 or self.webservice.num_pending_web_requests
-                                or self._acoustid._running
+                                or self.acoustid_client._running
                             ):
                                 continue
                             break
@@ -1253,7 +1253,7 @@ class Tagger(QtWidgets.QApplication):
         for file in files:
             if file.filename in self.files:
                 file.clear_lookup_task()
-                self._acoustid.stop_analyze(file)
+                self.acoustid_client.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
         self.tagger_stats_changed.emit()
@@ -1527,7 +1527,7 @@ class Tagger(QtWidgets.QApplication):
                     flash_busy_cursor()
                     flashed = True
                 file.set_pending()
-                self._acoustid.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
+                self.acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
 
     def generate_fingerprints(self, objs):
         """Generate the fingerprints without matching the files."""
@@ -1539,7 +1539,7 @@ class Tagger(QtWidgets.QApplication):
 
         for file in iter_files_from_objects(objs):
             file.set_pending()
-            self._acoustid.fingerprint(file, partial(finished, file))
+            self.acoustid_client.fingerprint(file, partial(finished, file))
 
     # =======================================================================
     #  Metadata-based lookups
