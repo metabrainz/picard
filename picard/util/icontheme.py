@@ -24,6 +24,7 @@ import os.path
 from PyQt6 import QtGui
 
 from picard.const.sys import IS_WIN
+from picard.util import run_command_output
 
 
 if IS_WIN:
@@ -37,10 +38,12 @@ _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
     desktop = os.environ['XDG_CURRENT_DESKTOP'].lower()
     if desktop in {'gnome', 'unity'}:
-        _current_theme = os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1] or None
+        _gsettings_theme = run_command_output(['gsettings', 'get', 'org.gnome.desktop.interface', 'icon-theme'])
+        # gsettings quotes string values, e.g. "'Adwaita'".
+        _current_theme = _gsettings_theme.strip("'\"") if _gsettings_theme else None
 elif os.environ.get('KDE_FULL_SESSION'):
-    _current_theme = (
-        os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip() or None
+    _current_theme = run_command_output(
+        ['kreadconfig', '--file', 'kdeglobals', '--group', 'Icons', '--key', 'Theme', '--default', 'crystalsvg']
     )
 
 
