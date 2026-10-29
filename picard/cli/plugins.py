@@ -231,9 +231,10 @@ class PluginsSubcommand(Subcommand):
 def _run_plugins(args):
     """Initialize and run the plugin CLI with subcommand args."""
     from picard.cli._bootstrap import (
-        init_cli,
+        init_logging,
         is_color_disabled,
     )
+    from picard.cli.headless import HeadlessTagger
     from picard.const import USER_PLUGIN_DIR
     from picard.git.factory import has_git_backend
     from picard.plugin3.cli import PluginCLI
@@ -248,14 +249,19 @@ def _run_plugins(args):
     except ImportError as err:
         cli.print_message_and_exit("failed importing git backend", str(err), status=1)
 
-    # Bootstrap app, logging, and debug options
-    app = init_cli(args, with_webservice=True)  # noqa: F841
+    # Headless application: sets up config; the web service (used by the plugin
+    # registry via app_instance().webservice) is built lazily on first access.
+    app = HeadlessTagger([], config_file=getattr(args, 'config_file', None))
+    init_logging(args)
 
-    # Create plugin manager
-    manager = PluginManager()
-    manager.add_directory(USER_PLUGIN_DIR, primary=True)
+    try:
+        # Create plugin manager
+        manager = PluginManager()
+        manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
-    # Create output
-    output = PluginCliOutput(color=False if is_color_disabled(args) else None)
+        # Create output
+        output = PluginCliOutput(color=False if is_color_disabled(args) else None)
 
-    return PluginCLI(manager, args, output=output).run()
+        return PluginCLI(manager, args, output=output).run()
+    finally:
+        app.run_cleanup()
