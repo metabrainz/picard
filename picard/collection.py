@@ -38,6 +38,7 @@ from picard.i18n import (
     ngettext,
 )
 from picard.notification import notifier
+from picard.services import services
 from picard.webservice import ReplyHandler
 from picard.webservice.api_helpers import MBAPIHelper
 
@@ -151,13 +152,11 @@ class Collection:
 def get_user_collection(collection_id: str) -> Collection:
     collection = user_collections.get(collection_id)
     if collection is None:
-        tagger = tagger_instance()
-        collection = user_collections[collection_id] = Collection(collection_id, tagger.mb_api)
+        collection = user_collections[collection_id] = Collection(collection_id, services().mb_api)
     return collection
 
 
 def load_user_collections(callback: Callable | None = None) -> None:
-    tagger = tagger_instance()
     config = get_config()
 
     def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
@@ -190,8 +189,8 @@ def load_user_collections(callback: Callable | None = None) -> None:
         if callback:
             callback()
 
-    if tagger.webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
-        tagger.mb_api.get_collection_list(partial(request_finished))
+    if services().webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
+        services().mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
 
