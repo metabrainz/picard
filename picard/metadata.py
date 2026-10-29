@@ -129,41 +129,34 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             raise ValueError("negative value: %d" % length)
         self._length = length
 
-    @staticmethod
-    def _field_similarity(name: str, a: str, b: str) -> float:
-        """Score the similarity of two non-empty field values.
+    def compare(self, other: 'Metadata', ignored: Iterable[str] | None = None) -> float:
+        ignored = set(ignored or [])
 
-        Tags in :data:`NUMERIC_COMPARE_TAGS` are compared as integers (so "1"
-        and "01" match); everything else is scored with :func:`similarity2`.
-        Shared by :meth:`compare` and :meth:`compare_changes` so the per-field
-        scoring rule lives in one place.
-        """
-        if name in NUMERIC_COMPARE_TAGS:
-            try:
-                return 1.0 - int(int(a) != int(b))
-            except ValueError:
-                return 1.0 - int(a != b)
-        return similarity2(a, b)
-
-    def compare(self, other: 'Metadata', ignored: Iterable[str] | None = None):
-        parts = []
-        if ignored is None:
-            ignored = []
-
+        # Snapshot both stores (and deleted-tag sets) once under their own
+        # locks, instead of holding one lock across the whole comparison.
         with self._lock.lock_for_read():
-            if self.length and other.length and '~length' not in ignored:
-                score = length_score(self.length, other.length)
-                parts.append((score, 8))
+            self_store = dict(self._store)
+            self_deleted = set(self.deleted_tags)
+            self_length = self.length
+        with other._lock.lock_for_read():
+            other_store = dict(other._store)
+            other_deleted = set(other.deleted_tags)
+            other_length = other.length
 
-            for name, weight in self.__weights:
-                if name in ignored:
-                    continue
-                a = self[name]
-                b = other[name]
-                if a and b:
-                    parts.append((self._field_similarity(name, a, b), weight))
-                elif a and name in other.deleted_tags or b and name in self.deleted_tags:
-                    parts.append((0, weight))
+        # A weighted tag present on only one side is ignored unless the other
+        # side explicitly deleted it (penalize_missing=False): a candidate that
+        # merely lacks a tag the file carries must not be penalized.
+        parts = self._compare_weighted(
+            self_store,
+            other_store,
+            ignored,
+            penalize_missing=False,
+            deleted_a=self_deleted,
+            deleted_b=other_deleted,
+        )
+        if self_length and other_length and '~length' not in ignored:
+            score = length_score(self_length, other_length)
+            parts.append((score, 8))
 
         return linear_combination_of_weights(parts)
 
@@ -188,36 +181,13 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
           scored too, at ``_CHANGE_DEFAULT_WEIGHT``, so such an edit registers.
 
         A field that genuinely differs is scored exactly as :meth:`compare`
-        scores it, via :meth:`_field_similarity` (numeric equality for
+        scores it, via :func:`_field_similarity` (numeric equality for
         track/disc numbers, :func:`similarity2` otherwise, 0.0 for an
         added/removed tag). Unchanged fields contribute a perfect 1.0 without
         calling :func:`similarity2` (equal values always score 1.0 there, so
         this is only a shortcut), which keeps this fast on heavily tagged files.
         """
-        if ignored is None:
-            ignored = []
-        ignored = set(ignored)
-
-        parts = []
-
-        def _display(stored) -> str:
-            # Join a raw store value (bare str or list) the same way
-            # __getitem__ does, for the fuzzy comparison of a changed field.
-            if stored is None:
-                return ''
-            if type(stored) is str:
-                return stored
-            return self.multi_valued_joiner.join(stored)
-
-        def _changed_score(name: str, sa, sb) -> float:
-            # Only called when the raw values differ. ``sa``/``sb`` are raw
-            # store values (bare str, list, or None for missing).
-            a = _display(sa)
-            b = _display(sb)
-            if a and b:
-                return self._field_similarity(name, a, b)
-            # Tag added on one side or removed on the other.
-            return 0.0
+        ignored = set(ignored or [])
 
         # Snapshot both stores once under their own locks, instead of calling
         # the locking accessors once per tag (``update()`` runs on every edit,
@@ -229,21 +199,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             other_store = dict(other._store)
             other_deleted = set(other.deleted_tags)
 
-        weighted_names = set()
-
         # Known weighted fields always contribute, so that unchanged metadata
         # forms a stable baseline and a single changed field only moves the
-        # score proportionally to its weight.
-        for name, weight in self.__weights:
-            weighted_names.add(name)
-            if name in ignored:
-                continue
-            sa = self_store.get(name)
-            sb = other_store.get(name)
-            if sa is None and sb is None:
-                continue
-            score = 1.0 if sa == sb else _changed_score(name, sa, sb)
-            parts.append((score, weight))
+        # score proportionally to its weight. Here an added or removed weighted
+        # tag is a genuine change, so one-sided tags are penalized
+        # (penalize_missing=True).
+        parts = self._compare_weighted(self_store, other_store, ignored, penalize_missing=True)
 
         # Any tag outside the weighted set only matters when it changed
         # (added, removed or modified); unchanged auxiliary tags are not scored
@@ -251,6 +212,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         # tags are skipped entirely (see the docstring: ``~length`` is the main
         # jitter source, and these tags are never user-edited anyway). The
         # metadata box applies the same rule.
+        weighted_names = {name for name, _weight in self.__weights}
         names = set(self_store) | set(other_store) | self_deleted | other_deleted
         for name in names:
             if name in weighted_names or name in ignored or name.startswith('~'):
@@ -263,6 +225,52 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         if not parts:
             return 1.0
         return linear_combination_of_weights(parts)
+
+    def _compare_weighted(
+        self,
+        store_a: dict[str, str | list[str]],
+        store_b: dict[str, str | list[str]],
+        ignored: set[str],
+        penalize_missing: bool,
+        deleted_a: set[str] | None = None,
+        deleted_b: set[str] | None = None,
+    ) -> list[tuple[float, int]]:
+        """Compare all weighted fields in ``store_a`` and ``store_b`` and return a list of (score, weight) pairs.
+
+        A weighted tag present on both sides is always scored. The two callers
+        differ in how a tag present on only *one* side is treated:
+
+        * :meth:`compare_changes` (``penalize_missing=True``) scores every
+          one-sided tag as a change (0.0), so an added or removed field
+          registers in the display differ.
+        * :meth:`compare` (``penalize_missing=False``) ignores a one-sided tag
+          *unless* the other side explicitly deleted it (``deleted_a`` /
+          ``deleted_b``). A candidate that merely lacks a tag the file carries
+          is not penalized, but an explicit deletion scores 0.0. This preserves
+          the matching pipeline's behaviour.
+        """
+        deleted_a = deleted_a or set()
+        deleted_b = deleted_b or set()
+        parts = []
+
+        for name, weight in self.__weights:
+            if name in ignored:
+                continue
+            sa = store_a.get(name)
+            sb = store_b.get(name)
+            if sa is None and sb is None:
+                continue
+            if (sa is None or sb is None) and not penalize_missing:
+                # Tag present on one side only: for compare() this counts only
+                # when the missing side explicitly deleted it; a tag that is
+                # simply absent is ignored (not scored at all).
+                deleted = (sa is None and name in deleted_a) or (sb is None and name in deleted_b)
+                if not deleted:
+                    continue
+            score = 1.0 if sa == sb else _changed_score(name, sa, sb)
+            parts.append((score, weight))
+
+        return parts
 
     def copy(self, other: 'Metadata', copy_images=True):
         self.clear()
@@ -715,6 +723,48 @@ class MultiMetadataProxy:
 
     def __repr__(self):
         return self.__read('__repr__')
+
+
+def _display(stored: str | list[str] | None) -> str:
+    """Join a raw store value (bare str or list) the same way Metadata.__getitem__ does.
+
+    Used for the fuzzy comparison of a changed field.
+    """
+    if stored is None:
+        return ''
+    if type(stored) is str:
+        return stored
+    return MULTI_VALUED_JOINER.join(stored)
+
+
+def _changed_score(name: str, sa: str | list[str] | None, sb: str | list[str] | None) -> float:
+    """Calculate a score for changed values ``sa`` and ``sb``.
+
+    Only called when the raw values differ. ``sa``/``sb`` are raw store values
+    (bare str, list, or None for missing).
+    """
+    a = _display(sa)
+    b = _display(sb)
+    if a and b:
+        return _field_similarity(name, a, b)
+    # Tag added on one side or removed on the other.
+    return 0.0
+
+
+def _field_similarity(name: str, a: str, b: str) -> float:
+    """Score the similarity of two non-empty field values.
+
+    Tags in :data:`NUMERIC_COMPARE_TAGS` are compared as integers (so "1"
+    and "01" match); everything else is scored with :func:`similarity2`.
+    Shared by :meth:`Metadata.compare` and :meth:`Metadata.compare_changes` so
+    the per-field scoring rule lives in one place.
+    """
+    if name in NUMERIC_COMPARE_TAGS:
+        try:
+            return 1.0 - int(int(a) != int(b))
+        except ValueError:
+            return 1.0 - int(a != b)
+    return similarity2(a, b)
 
 
 album_metadata_processors = PluginFunctions[['Album', Metadata, dict], None](label='album_metadata_processors')
