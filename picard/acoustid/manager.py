@@ -24,10 +24,7 @@
 
 from functools import partial
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
 from picard.const.actions import MainAction
 from picard.i18n import N_
 from picard.notification import notifier
@@ -112,7 +109,6 @@ class AcoustIDManager:
     BATCH_SIZE_REDUCTION_FACTOR = 0.7
 
     def __init__(self, acoustid_api):
-        self.tagger = tagger_instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api
 
