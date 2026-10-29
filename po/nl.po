@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-08 19:02+0200\n"
+"POT-Creation-Date: 2026-10-29 18:53+0100\n"
 "PO-Revision-Date: 2026-10-09 05:31+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -32,25 +32,25 @@ msgstr ""
 "X-Generator: Weblate 2026.10\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: picard/album.py:218
+#: picard/album.py:219
 msgid "Unmatched Files"
 msgstr "Niet-overeenkomende bestanden"
 
-#: picard/album.py:849
+#: picard/album.py:861
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Uitgave %(id)s geladen: %(artist)s - %(album)s"
 
-#: picard/album.py:911
+#: picard/album.py:923
 #, python-format
 msgid "Loading album %(id)s …"
 msgstr "De uitgave %(id)s wordt geladen"
 
-#: picard/album.py:1141
+#: picard/album.py:1153
 msgid "[loading album information]"
 msgstr "[uitgave-informatie laden]"
 
-#: picard/album.py:1143
+#: picard/album.py:1155
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[kon de uitgave %s niet laden]"
@@ -205,7 +205,7 @@ msgstr ""
 "Informatie over versiecontroles en het bijwerken van plug-ins registreren"
 
 #: picard/debug_opts.py:178 picard/plugin3/categories.py:31
-#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:279
+#: picard/ui/options/cover.py:58 picard/ui/setupwizard.py:364
 msgid "Cover Art"
 msgstr "Hoesafbeeldingen"
 
@@ -245,7 +245,7 @@ msgstr ""
 "UI registreren"
 
 #: picard/debug_opts.py:182 picard/ui/cdlookup.py:229
-#: picard/ui/itemviews/columns.py:173
+#: picard/ui/itemviews/columns.py:227
 msgid "ISRC"
 msgstr "ISRC"
 
@@ -393,749 +393,749 @@ msgstr "Onverwachte fout bij het aanmelden"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Onverwachte aanvraagfout (http-code %s)"
 
-#: picard/options.py:154
+#: picard/options.py:155
 msgid "Plugins to exclude from updates"
 msgstr "Plug-ins die niet moeten worden bijgewerkt"
 
-#: picard/options.py:183
+#: picard/options.py:184
 msgid "Save APEv2 tags to AAC"
 msgstr "Sla APEv2-tags op in AAC-bestanden"
 
-#: picard/options.py:184
+#: picard/options.py:185
 msgid "Save APEv2 tags to AC3"
 msgstr "Sla APEv2-tags op in AC3-bestanden"
 
-#: picard/options.py:187
+#: picard/options.py:188
 msgid "Active file naming script"
 msgstr "Actief bestandsnamenscript"
 
-#: picard/options.py:189
+#: picard/options.py:190
 msgid "Allow selecting multiple directories"
 msgstr "Sta het selecteren van meerdere mappen toe"
 
-#: picard/options.py:195 picard/ui/forms/ui_options_metadata.py:195
+#: picard/options.py:196 picard/ui/forms/ui_options_metadata.py:195
 msgid "Always standardize multi-valued artist tags"
 msgstr "Standaardiseer altijd meervoudige artiesttags"
 
-#: picard/options.py:198 picard/ui/forms/ui_options_lookup.py:86
+#: picard/options.py:199 picard/ui/forms/ui_options_lookup.py:86
 msgid "Automatically scan all new files"
 msgstr "Analyseer automatisch alle nieuwe bestanden"
 
-#: picard/options.py:199
+#: picard/options.py:200
 msgid "Use album artist genres"
 msgstr "Gebruik het genre van de uitgaveartiest"
 
-#: picard/options.py:200 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:201 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "Vervang niet-ASCII-tekens"
 
-#: picard/options.py:205
+#: picard/options.py:206
 msgid "Configuration backup directory"
 msgstr "Map voor configuratieback-ups"
 
-#: picard/options.py:209
+#: picard/options.py:210
 msgid "Browser integration"
 msgstr "Browserintegratie"
 
-#: picard/options.py:210 picard/ui/forms/ui_options_network.py:187
+#: picard/options.py:211 picard/ui/forms/ui_options_network.py:187
 msgid "Listen only on localhost"
 msgstr "Luister alleen op localhost"
 
-#: picard/options.py:215
+#: picard/options.py:216
 msgid "Default listening port"
 msgstr "Standaard luisterpoort"
 
-#: picard/options.py:219
+#: picard/options.py:220
 msgid "Use builtin search (not browser)"
 msgstr "Gebruik de ingebouwde zoekfunctie in plaats van de browser"
 
-#: picard/options.py:220
+#: picard/options.py:221
 msgid "Cover art providers"
 msgstr "Bronnen voor afbeeldingen"
 
-#: picard/options.py:221 picard/ui/forms/ui_provider_options_caa.py:82
+#: picard/options.py:222 picard/ui/forms/ui_provider_options_caa.py:82
 msgid "Download only approved images"
 msgstr "Download alleen goedgekeurde afbeeldingen"
 
-#: picard/options.py:222
+#: picard/options.py:223
 msgid "Cover art image size"
 msgstr "Bestandsgrootte van afbeeldingen"
 
-#: picard/options.py:224
+#: picard/options.py:225
 msgid "Cover art image types"
 msgstr "Afbeeldingtypes"
 
-#: picard/options.py:230
+#: picard/options.py:231
 msgid "Cover art image types to omit"
 msgstr "Afbeeldingtypes die moeten worden genegeerd"
 
-#: picard/options.py:233
+#: picard/options.py:234
 msgid "Restrict cover art image types"
 msgstr "Gebruik alleen bepaalde afbeeldingstypes"
 
-#: picard/options.py:234
+#: picard/options.py:235
 msgid "CD lookup device"
 msgstr "Cd-opzoekapparaat"
 
-#: picard/options.py:235 picard/ui/setupwizard.py:408
+#: picard/options.py:236 picard/ui/setupwizard.py:492
 msgid "Check for plugin updates"
 msgstr "Kijk of er nieuwe versies van plug-ins zijn"
 
-#: picard/options.py:236 picard/ui/setupwizard.py:400
+#: picard/options.py:237 picard/ui/setupwizard.py:484
 msgid "Check for program updates"
 msgstr "Kijk of er een nieuwe versie van Picard is"
 
-#: picard/options.py:237 picard/ui/setupwizard.py:416
+#: picard/options.py:238 picard/ui/setupwizard.py:500
 msgid "Check for documentation updates"
 msgstr "Kijk of er een nieuwe versie van de documentatie is"
 
-#: picard/options.py:238 picard/ui/forms/ui_options_tags.py:96
+#: picard/options.py:239 picard/ui/forms/ui_options_tags.py:96
 msgid "Clear existing tags"
 msgstr "Verwijder bestaande tags"
 
-#: picard/options.py:239 picard/ui/forms/ui_options_lookup.py:87
+#: picard/options.py:240 picard/ui/forms/ui_options_lookup.py:87
 msgid "Automatically cluster all new files"
 msgstr "Cluster automatisch alle nieuwe bestanden"
 
-#: picard/options.py:240
+#: picard/options.py:241
 msgid "Tags to ignore for comparison"
 msgstr "Bij het vergelijken te negeren tags"
 
-#: picard/options.py:241
+#: picard/options.py:242
 msgid "Completeness ignore: Data tracks"
 msgstr "Voor compleetheid negeren: datanummers"
 
-#: picard/options.py:243
+#: picard/options.py:244
 msgid "Completeness ignore: Pregap tracks"
 msgstr "Voor compleetheid negeren: pregapnummers"
 
-#: picard/options.py:246
+#: picard/options.py:247
 msgid "Completeness ignore: Silent tracks"
 msgstr "Voor compleetheid negeren: geluidloze nummers"
 
-#: picard/options.py:249
+#: picard/options.py:250
 msgid "Completeness ignore: Video tracks"
 msgstr "Voor compleetheid negeren: video’s"
 
-#: picard/options.py:251 picard/ui/setupwizard.py:477
+#: picard/options.py:252 picard/ui/setupwizard.py:561
 msgid "Convert Unicode punctuation to ASCII"
 msgstr "Zet Unicode-tekens om naar ASCII"
 
-#: picard/options.py:252
+#: picard/options.py:253
 msgid "Convert file image format"
 msgstr "Converteer bestandsindelingen van afbeeldingen"
 
-#: picard/options.py:257
+#: picard/options.py:258
 msgid "New file image format"
 msgstr "Bestandsindeling voor nieuwe afbeeldingen"
 
-#: picard/options.py:260
+#: picard/options.py:261
 msgid "Allow enlarging file images"
 msgstr "Sta het vergroten van afbeeldingen voor bestanden toe"
 
-#: picard/options.py:261
+#: picard/options.py:262
 msgid "Allow resizing file images"
 msgstr "Sta het schalen van afbeeldingen voor bestanden toe"
 
-#: picard/options.py:263
+#: picard/options.py:264
 msgid "File image resize mode"
 msgstr "Schaalmethode afbeeldingen voor bestanden"
 
-#: picard/options.py:269
+#: picard/options.py:270
 msgid "Resized file image height"
 msgstr "Hoogte geschaalde afbeeldingen voor bestanden"
 
-#: picard/options.py:277
+#: picard/options.py:278
 msgid "Resized file image width"
 msgstr "Breedte geschaalde afbeeldingen voor bestanden"
 
-#: picard/options.py:282
+#: picard/options.py:283
 msgid "File name for images"
 msgstr "Bestandsnaam voor afbeeldingen"
 
-#: picard/options.py:288
+#: picard/options.py:289
 msgid "Format conversion quality"
 msgstr "Kwaliteit voor afbeeldingsconversie"
 
-#: picard/options.py:296
+#: picard/options.py:297
 msgid "Minimum image height"
 msgstr "Minimumhoogte afbeeldingen"
 
-#: picard/options.py:304
+#: picard/options.py:305
 msgid "Minimum image width"
 msgstr "Minimumbreedte afbeeldingen"
 
-#: picard/options.py:308
+#: picard/options.py:309
 msgid "Convert tag image format"
 msgstr "Converteer afbeeldingsindelingen voor tags"
 
-#: picard/options.py:313
+#: picard/options.py:314
 msgid "New tag image format"
 msgstr "Nieuwe indeling voor afbeeldingen voor tags"
 
-#: picard/options.py:316
+#: picard/options.py:317
 msgid "Allow enlarging tag images"
 msgstr "Sta het vergroten van afbeeldingen voor tags toe"
 
-#: picard/options.py:317
+#: picard/options.py:318
 msgid "Allow resizing tag images"
 msgstr "Sta het schalen van afbeeldingen voor tags toe"
 
-#: picard/options.py:319
+#: picard/options.py:320
 msgid "Tag image resize mode"
 msgstr "Schaalmethode afbeeldingen voor tags"
 
-#: picard/options.py:325
+#: picard/options.py:326
 msgid "Resized tag image height"
 msgstr "Hoogte geschaalde afbeeldingen voor tags"
 
-#: picard/options.py:333
+#: picard/options.py:334
 msgid "Resized tag image width"
 msgstr "Breedte geschaalde afbeeldingen voor tags"
 
-#: picard/options.py:338 picard/ui/forms/ui_options_renaming.py:140
+#: picard/options.py:339 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
 msgstr "Verwijder lege mappen"
 
-#: picard/options.py:343
+#: picard/options.py:344
 msgid "Don't sanitize dates for these formats"
 msgstr "Datums voor deze indelingen niet opschonen"
 
-#: picard/options.py:346
+#: picard/options.py:347
 msgid "Discouraged release types"
 msgstr "Gebruik uitgaven van dit type liever niet"
 
-#: picard/options.py:348
+#: picard/options.py:349
 msgid "Never replace images of selected types"
 msgstr "Vervang nooit afbeeldingen van de geselecteerde types"
 
-#: picard/options.py:354
+#: picard/options.py:355
 msgid "Never replace images of these types"
 msgstr "Vervang nooit afbeeldingen van deze types"
 
-#: picard/options.py:361
+#: picard/options.py:362
 msgid "Never replace images with smaller ones"
 msgstr "Vervang afbeeldingen nooit door kleinere"
 
-#: picard/options.py:364 picard/ui/forms/ui_options_cover.py:128
+#: picard/options.py:365 picard/ui/forms/ui_options_cover.py:128
 msgid "Embed only a single front image"
 msgstr "Sla slechts één afbeelding van de voorkant in de tags op"
 
-#: picard/options.py:365
+#: picard/options.py:366
 msgid "Enable track ratings"
 msgstr "Schakel nummerwaarderingen in"
 
-#: picard/options.py:366
+#: picard/options.py:367
 msgid "Save tags to files"
 msgstr "Sla tags in bestanden op"
 
-#: picard/options.py:367 picard/ui/profile_tagger_scripts_dialog.py:87
+#: picard/options.py:368 picard/ui/profile_tagger_scripts_dialog.py:87
 msgid "Enable tagger scripts"
 msgstr "Schakel tagscripts in"
 
-#: picard/options.py:368
+#: picard/options.py:369
 msgid "Enable managing user collections"
 msgstr "Maak het beheren van gebruikerscollecties mogelijk"
 
-#: picard/options.py:370
+#: picard/options.py:371
 msgid "Confirm when saving"
 msgstr "Vraag bij het opslaan om bevestiging"
 
-#: picard/options.py:375
+#: picard/options.py:376
 msgid "Adjust horizontal position in file browser"
 msgstr "Pas de horizontale positie in de verkenner aan"
 
-#: picard/options.py:378
+#: picard/options.py:379
 msgid "Discard small images"
 msgstr "Verwerp kleine afbeeldingen"
 
-#: picard/options.py:379
+#: picard/options.py:380
 msgid "Use AcoustID fingerprinting"
 msgstr "Gebruik vingerafdrukken"
 
-#: picard/options.py:380
+#: picard/options.py:381
 msgid "Fix missing seekpoints in FLAC"
 msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden toe"
 
-#: picard/options.py:381 picard/ui/forms/ui_options_genres.py:122
+#: picard/options.py:382 picard/ui/forms/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
 msgstr "Gebruik folksonomietags als genre"
 
-#: picard/options.py:387
+#: picard/options.py:388
 msgid "Genres to include or exclude"
 msgstr "Bepaalde genres wel of niet gebruiken"
 
-#: picard/options.py:390
+#: picard/options.py:391
 msgid "Guess track number and title"
 msgstr "Gok nummerposities en titels"
 
-#: picard/options.py:391
+#: picard/options.py:392
 msgid "ID3v2.3 join character"
 msgstr "Scheidingsteken voor ID3v2.3"
 
-#: picard/options.py:392
+#: picard/options.py:393
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "ID3v2-tekstcodering"
 
-#: picard/options.py:397 picard/ui/forms/ui_options_fingerprinting.py:109
+#: picard/options.py:398 picard/ui/forms/ui_options_fingerprinting.py:109
 msgid "Ignore existing AcoustID fingerprints"
 msgstr "Negeer bestaande AcoustID’s"
 
-#: picard/options.py:400 picard/ui/forms/ui_options_lookup.py:88
+#: picard/options.py:401 picard/ui/forms/ui_options_lookup.py:88
 msgid "Ignore MBIDs when loading new files"
 msgstr "Negeer MBID’s bij het laden van nieuwe bestanden"
 
-#: picard/options.py:401 picard/ui/forms/ui_options_advanced.py:53
+#: picard/options.py:402 picard/ui/forms/ui_options_advanced.py:53
 msgid "Ignore hidden files"
 msgstr "Negeer verborgen bestanden"
 
-#: picard/options.py:402
+#: picard/options.py:403
 msgid "Ignore file paths (regular expression)"
 msgstr "Bestandspaden negeren (reguliere expressie)"
 
-#: picard/options.py:407
+#: picard/options.py:408
 msgid "Allowed track difference (seconds)"
 msgstr "Verschillen in nummerduur (seconden) negeren"
 
-#: picard/options.py:415
+#: picard/options.py:416
 msgid "Primary image type as the file name"
 msgstr "Primaire type als bestandsnaam"
 
-#: picard/options.py:422
+#: picard/options.py:423
 msgid "Colors to use for light theme"
 msgstr "Kleuren voor het lichte thema"
 
-#: picard/options.py:428
+#: picard/options.py:429
 msgid "Colors to use for dark theme"
 msgstr "Kleuren voor het donkere thema"
 
-#: picard/options.py:431
+#: picard/options.py:432
 msgid "iTunes compatible grouping / work"
 msgstr "iTunes-groeperingen en -composities"
 
-#: picard/options.py:433
+#: picard/options.py:434
 msgid "Join multiple genres with"
 msgstr "Meerdere genres samenvoegen met"
 
-#: picard/options.py:434
+#: picard/options.py:435
 msgid "Tagger scripts"
 msgstr "Tagscripts"
 
-#: picard/options.py:436
+#: picard/options.py:437
 msgid "Enable ListenBrainz listen submissions"
 msgstr "Luisters naar ListenBrainz versturen inschakelen"
 
-#: picard/options.py:442
+#: picard/options.py:443
 msgid "Submit only tagged files to ListenBrainz"
 msgstr "Verstuur alleen nummers met tags naar ListenBrainz"
 
-#: picard/options.py:445 picard/ui/forms/ui_options_player.py:64
+#: picard/options.py:446 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
 msgstr "ListenBrainz-gebruikerstoken"
 
-#: picard/options.py:448
+#: picard/options.py:449
 msgid "Local cover art regex"
 msgstr "Reguliere expressie voor lokale hoesafbeeldingen"
 
-#: picard/options.py:450
+#: picard/options.py:451
 msgid "Log verbosity level"
 msgstr "Uitgebreidheid van het logboek"
 
-#: picard/options.py:451
+#: picard/options.py:452
 msgid "Minimum margin"
 msgstr "Minimale marge"
 
-#: picard/options.py:452
+#: picard/options.py:453
 msgid "Minimum similarity"
 msgstr "Minimale overeenkomst"
 
-#: picard/options.py:453
+#: picard/options.py:454
 msgid "Maximum number of genres"
 msgstr "Maximumaantal genres"
 
-#: picard/options.py:454
+#: picard/options.py:455
 msgid "Tags to show at the top"
 msgstr "Tags om bovenaan weer te geven"
 
-#: picard/options.py:455
+#: picard/options.py:456
 msgid "Minimal genre usage"
 msgstr "Beperkt genres gebruiken"
 
-#: picard/options.py:456
+#: picard/options.py:457
 msgid "Move additional files"
 msgstr "Verplaats extra bestanden"
 
-#: picard/options.py:458
+#: picard/options.py:459
 msgid "Additional file patterns"
 msgstr "Extra bestandspatronen"
 
-#: picard/options.py:460
+#: picard/options.py:461
 msgid "Move files"
 msgstr "Verplaats bestanden"
 
-#: picard/options.py:462
+#: picard/options.py:463
 msgid "Destination directory"
 msgstr "Doelmap"
 
-#: picard/options.py:464 picard/ui/forms/ui_options_renaming.py:141
+#: picard/options.py:465 picard/ui/forms/ui_options_renaming.py:141
 msgid "Overwrite existing files"
 msgstr "Overschrijf bestaande bestanden"
 
-#: picard/options.py:465
+#: picard/options.py:466
 msgid "Standalone recordings name"
 msgstr "Naam voor losse opnamen"
 
-#: picard/options.py:470
+#: picard/options.py:471
 msgid "Network cache size (bytes)"
 msgstr "Grootte netwerkcache (bytes)"
 
-#: picard/options.py:477
+#: picard/options.py:478
 msgid "Request timeout (seconds)"
 msgstr "Maximumwachttijd voor verzoeken (seconden)"
 
-#: picard/options.py:481
+#: picard/options.py:482
 msgid "Use only my genres"
 msgstr "Gebruik alleen mijn genres"
 
-#: picard/options.py:482
+#: picard/options.py:483
 msgid "Enable \"now playing\" notifications"
 msgstr "Schakel ‘Nu afgespeeld’-meldingen in"
 
-#: picard/options.py:484
+#: picard/options.py:485
 msgid "Plugins execution order"
 msgstr "Uitvoeringsvolgorde voor plug-ins"
 
-#: picard/options.py:486
+#: picard/options.py:487
 msgid "Preferred release countries"
 msgstr "Geef uitgaven uit deze landen voorrang"
 
-#: picard/options.py:487
+#: picard/options.py:488
 msgid "Preferred medium formats"
 msgstr "Geef uitgaven met deze media voorrang"
 
-#: picard/options.py:488
+#: picard/options.py:489
 msgid "Preferred release types"
 msgstr "Geef uitgaven van dit type voorrang"
 
-#: picard/options.py:489
+#: picard/options.py:490
 msgid "Keep embedded images"
 msgstr "Behoud ingebedde afbeeldingen"
 
-#: picard/options.py:490
+#: picard/options.py:491
 msgid "Preserve timestamps"
 msgstr "Behoud tijdstempels"
 
-#: picard/options.py:491
+#: picard/options.py:492
 msgid "Preserved tags list"
 msgstr "Lijst met tags die moeten worden behouden"
 
-#: picard/options.py:492
+#: picard/options.py:493
 msgid "Proxy password"
 msgstr "Wachtwoord voor de proxy"
 
-#: picard/options.py:493
+#: picard/options.py:494
 msgid "Proxy server address"
 msgstr "Proxyserveradres"
 
-#: picard/options.py:498
+#: picard/options.py:499
 msgid "Proxy server port"
 msgstr "Proxyserverpoort"
 
-#: picard/options.py:503
+#: picard/options.py:504
 msgid "Type of proxy server"
 msgstr "Soort proxyserver"
 
-#: picard/options.py:504
+#: picard/options.py:505
 msgid "Proxy username"
 msgstr "Gebruikersnaam voor de proxy"
 
-#: picard/options.py:509
+#: picard/options.py:510
 msgid "Maximum MusicBrainz query items"
 msgstr "Maximumaantal objecten per MusicBrainz-aanvraag"
 
-#: picard/options.py:516
+#: picard/options.py:517
 msgid "Quick Menu options"
 msgstr "Snelmenuopties"
 
-#: picard/options.py:517
+#: picard/options.py:518
 msgid "Confirm quit if unsaved changes"
 msgstr ""
 "Vraag bij het afsluiten om bevestiging als er niet-opgeslagen wijzigingen "
 "zijn"
 
-#: picard/options.py:519
+#: picard/options.py:520
 msgid "Email for saving ratings"
 msgstr "E-mailadres voor opslaan waarderingen"
 
-#: picard/options.py:521 picard/ui/forms/ui_options_cdlookup.py:53
+#: picard/options.py:522 picard/ui/forms/ui_options_cdlookup.py:53
 #: picard/ui/forms/ui_options_cdlookup_select.py:59
 msgid "Read ISRCs from CD"
 msgstr "Lees ISRC’s van de cd"
 
-#: picard/options.py:522
+#: picard/options.py:523
 msgid "Include sub-folders when adding files"
 msgstr "Voeg met bestanden ook submappen toe"
 
-#: picard/options.py:523 picard/ui/forms/ui_options_metadata.py:199
+#: picard/options.py:524 picard/ui/forms/ui_options_metadata.py:199
 msgid "Use release relationships"
 msgstr "Gebruik uitgaverelaties"
 
-#: picard/options.py:524
+#: picard/options.py:525
 msgid "Remove APEv2 tags from AAC"
 msgstr "Verwijder APEv2-tags uit AAC-bestanden"
 
-#: picard/options.py:525
+#: picard/options.py:526
 msgid "Remove APEv2 tags from AC3"
 msgstr "Verwijder APEv2-tags uit AC3-bestanden"
 
-#: picard/options.py:526
+#: picard/options.py:527
 msgid "Remove APEv2 tags from MP3"
 msgstr "Verwijder APEv2-tags uit MP3-bestanden"
 
-#: picard/options.py:531 picard/ui/forms/ui_options_general.py:139
+#: picard/options.py:532 picard/ui/forms/ui_options_general.py:139
 msgid "Remove complete albums after saving"
 msgstr "Verwijder complete uitgaven na het opslaan"
 
-#: picard/options.py:534
+#: picard/options.py:535
 msgid "Remove ID3 tags from FLAC"
 msgstr "Verwijder ID3-tags uit FLAC-bestanden"
 
-#: picard/options.py:535
+#: picard/options.py:536
 msgid "Remove images from tags"
 msgstr "Verwijder afbeeldingen uit tags"
 
-#: picard/options.py:536
+#: picard/options.py:537
 msgid "Remove RIFF INFO tags from WAVE"
 msgstr "Verwijder bestaande RIFF INFO-tags uit WAVE-bestanden"
 
-#: picard/options.py:537
+#: picard/options.py:538
 msgid "Rename files"
 msgstr "Hernoem bestanden"
 
-#: picard/options.py:542
+#: picard/options.py:543
 msgid "Directory separators character"
 msgstr "Scheidingsteken voor mappen"
 
-#: picard/options.py:546 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:547 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr "Vervang spaties door lage streepjes"
 
-#: picard/options.py:548
+#: picard/options.py:549
 msgid "Save AcoustID fingerprints"
 msgstr "Sla AcoustID-vingerafdrukken op"
 
-#: picard/options.py:549
+#: picard/options.py:550
 msgid "Overwrite existing image files"
 msgstr "Overschrijf bestaande afbeeldingsbestanden"
 
-#: picard/options.py:550
+#: picard/options.py:551
 msgid "Save images as separate files"
 msgstr "Sla afbeeldingen als aparte bestanden op"
 
-#: picard/options.py:551
+#: picard/options.py:552
 msgid "Embed images into tags"
 msgstr "Sla afbeeldingen in tags op"
 
-#: picard/options.py:552
+#: picard/options.py:553
 msgid "Save only one front image"
 msgstr "Sla slechts één afbeelding van de voorkant op"
 
-#: picard/options.py:553
+#: picard/options.py:554
 msgid "Translation script exceptions"
 msgstr "Uitzonderingen voor het vertalen van schriften"
 
-#: picard/options.py:554
+#: picard/options.py:555
 msgid "Server address"
 msgstr "Serveradres"
 
-#: picard/options.py:555
+#: picard/options.py:556
 msgid "Port"
 msgstr "Poort"
 
-#: picard/options.py:560
+#: picard/options.py:561
 msgid "Auto-save interval"
 msgstr "Interval automatisch opslaan"
 
-#: picard/options.py:570
+#: picard/options.py:571
 msgid "Backup session on unexpected exit"
 msgstr "Sla de sessie bij onverwachts afsluiten op"
 
-#: picard/options.py:577
+#: picard/options.py:578
 msgid "Sessions directory"
 msgstr "Sessiemap"
 
-#: picard/options.py:584
+#: picard/options.py:585
 msgid "Include MusicBrainz data"
 msgstr "Voeg gegevens van MusicBrainz toe"
 
-#: picard/options.py:591
+#: picard/options.py:592
 msgid "Start with last saved session"
 msgstr "Start met de laatst opgeslagen sessie"
 
-#: picard/options.py:598
+#: picard/options.py:599
 msgid "No MusicBrainz requests on restore"
 msgstr "Vraag bij het herstellen geen informatie bij MusicBrainz op"
 
-#: picard/options.py:605 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:606 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr "Koppel bij het laden niet automatisch bestanden aan nummers"
 
-#: picard/options.py:608
+#: picard/options.py:609
 msgid "Show cover art details in view"
 msgstr "Toon details over de afbeelding in de weergave"
 
-#: picard/options.py:609
+#: picard/options.py:610
 msgid "Show cover art dimensions"
 msgstr "Toon de afmetingen van de afbeelding"
 
-#: picard/options.py:610
+#: picard/options.py:611
 msgid "Show cover art file size"
 msgstr "Toon de bestandsgrootte van de afbeelding"
 
-#: picard/options.py:611
+#: picard/options.py:612
 msgid "Show cover art MIME type"
 msgstr "Toon het MIME-type van de afbeelding"
 
-#: picard/options.py:612
+#: picard/options.py:613
 msgid "Show cover art type"
 msgstr "Toon het type afbeelding"
 
-#: picard/options.py:613 picard/ui/forms/ui_options_interface.py:120
+#: picard/options.py:614 picard/ui/forms/ui_options_interface.py:120
 msgid "Show icons in menus"
 msgstr "Toon pictogrammen in menu’s"
 
-#: picard/options.py:614
+#: picard/options.py:615
 msgid "Show warning when Picard starts"
 msgstr "Toon bij het starten van Picard een waarschuwing"
 
-#: picard/options.py:619
+#: picard/options.py:620
 msgid "Standardize artist names"
 msgstr "Standaariseer artiestennamen"
 
-#: picard/options.py:622 picard/ui/forms/ui_options_metadata.py:196
+#: picard/options.py:623 picard/ui/forms/ui_options_metadata.py:196
 msgid "Use standardized instrument credits"
 msgstr "Gebruik gestandaardiseerde namen van instrumenten"
 
-#: picard/options.py:623 picard/ui/forms/ui_options_metadata.py:197
+#: picard/options.py:624 picard/ui/forms/ui_options_metadata.py:197
 msgid "Use standardized vocal credits"
 msgstr "Gebruik gestandaardiseerde namen van soorten vocalen"
 
-#: picard/options.py:624
+#: picard/options.py:625
 msgid "Begin browsing in a specific directory"
 msgstr "Begin met bladeren in een specifieke map"
 
-#: picard/options.py:629 picard/ui/forms/ui_options_interface.py:130
+#: picard/options.py:630 picard/ui/forms/ui_options_interface.py:130
 msgid "Directory to begin browsing"
 msgstr "Map waarin je met bladeren wil beginnen"
 
-#: picard/options.py:633 picard/ui/forms/ui_options_ratings.py:62
+#: picard/options.py:634 picard/ui/forms/ui_options_ratings.py:62
 msgid "Submit ratings to MusicBrainz"
 msgstr "Verstuur waarderingen naar MusicBrainz"
 
-#: picard/options.py:638
+#: picard/options.py:639
 msgid "Layout of the tool bar"
 msgstr "Indeling van de werkbalk"
 
-#: picard/options.py:641 picard/ui/forms/ui_options_interface.py:119
+#: picard/options.py:642 picard/ui/forms/ui_options_interface.py:119
 msgid "Show text labels under icons"
 msgstr "Toon tekst onder pictogrammen"
 
-#: picard/options.py:642
+#: picard/options.py:643
 msgid "Use track and release relationships"
 msgstr "Gebruik relaties van nummers en uitgaven"
 
-#: picard/options.py:647
+#: picard/options.py:648
 msgid "Similarity for matching files to tracks"
 msgstr "Overeenkomst voor het koppelen van bestanden aan nummers"
 
-#: picard/options.py:651
+#: picard/options.py:652
 msgid "Translate album titles"
 msgstr "Vertaal titels van uitgaven"
 
-#: picard/options.py:652
+#: picard/options.py:653
 msgid "Translate artist names"
 msgstr "Vertaal artiestennamen"
 
-#: picard/options.py:657
+#: picard/options.py:658
 msgid "Translate artist names exception"
 msgstr "Uitzonderingen voor het vertalen van artiestennamen"
 
-#: picard/options.py:661 picard/ui/forms/ui_options_metadata.py:211
+#: picard/options.py:662 picard/ui/forms/ui_options_metadata.py:211
 msgid "Use artist sort name for translation"
 msgstr "Gebruik de sorteernamen van artiesten voor vertalingen"
 
-#: picard/options.py:663
+#: picard/options.py:664
 msgid "Translate track titles"
 msgstr "Vertaal titels van nummers"
 
-#: picard/options.py:664
+#: picard/options.py:665
 msgid "Translation locales"
 msgstr "Talen voor artiestennamen"
 
-#: picard/options.py:665
+#: picard/options.py:666
 msgid "User interface language"
 msgstr "Weergavetaal"
 
-#: picard/options.py:666
+#: picard/options.py:667
 msgid "User interface color theme"
 msgstr "Gebruikersinterfacethema"
 
-#: picard/options.py:667
+#: picard/options.py:668
 msgid "Days between update checks"
 msgstr "Aantal dagen tussen controles"
 
-#: picard/options.py:668
+#: picard/options.py:669
 msgid "Update types to check"
 msgstr "Soorten versies om te zoeken"
 
-#: picard/options.py:669
+#: picard/options.py:670
 msgid "Use advanced search syntax"
 msgstr "Gebruik de geavanceerde zoeksyntaxis"
 
-#: picard/options.py:670 picard/ui/forms/ui_options_genres.py:119
+#: picard/options.py:671 picard/ui/forms/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
 msgstr "Gebruik genres van MusicBrainz"
 
-#: picard/options.py:671
+#: picard/options.py:672
 msgid "Use a web proxy server"
 msgstr "Gebruik een webproxyserver"
 
-#: picard/options.py:672
+#: picard/options.py:673
 msgid "Submit to configured server"
 msgstr "Dien bij de geconfigureerde server in"
 
-#: picard/options.py:673
+#: picard/options.py:674
 msgid "Various Artists name"
 msgstr "Naam voor diverse artiesten"
 
-#: picard/options.py:674
+#: picard/options.py:675
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "RIFF INFO-tekencodering"
 
-#: picard/options.py:679
+#: picard/options.py:680
 msgid "Windows compatibility characters"
 msgstr "Tekens voor Windows-compatibiliteit"
 
-#: picard/options.py:682 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:683 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Windows-compatibiliteit"
 
-#: picard/options.py:687 picard/ui/options/renaming_compat.py:135
+#: picard/options.py:688 picard/ui/options/renaming_compat.py:135
 msgid "Windows long path support"
 msgstr "Windows-ondersteuning voor lange bestandspaden"
 
-#: picard/options.py:691
+#: picard/options.py:692
 msgid "Write ID3v1 tags"
 msgstr "Sla ID3v1-tags op"
 
-#: picard/options.py:692
+#: picard/options.py:693
 msgid "ID3v2 version to write"
 msgstr "Te gebruiken ID3v2-versie"
 
-#: picard/options.py:693
+#: picard/options.py:694
 msgid "Write RIFF INFO tags to WAVE"
 msgstr "Sla RIFF INFO-tags in WAVE op"
 
@@ -1148,7 +1148,7 @@ msgid "Unknown Plugin"
 msgstr "Onbekende plug-in"
 
 #: picard/plugin.py:133 picard/ui/cdlookup.py:65
-#: picard/ui/itemviews/columns.py:150 picard/ui/mainwindow/__init__.py:1255
+#: picard/ui/itemviews/columns.py:204 picard/ui/mainwindow/__init__.py:1255
 msgid "Album"
 msgstr "Uitgave"
 
@@ -1159,7 +1159,7 @@ msgstr "Nummer"
 
 #: picard/coverart/utils.py:47 picard/plugin.py:137
 #: picard/ui/dialogs/plugininfo.py:240 picard/ui/dialogs/plugininfo.py:250
-#: picard/ui/options/profiles.py:692 picard/ui/widgets/pluginlistwidget.py:321
+#: picard/ui/options/profiles.py:692 picard/ui/widgets/pluginlistwidget.py:323
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -1202,7 +1202,7 @@ msgid "Packaging"
 msgstr "Verpakking"
 
 #: picard/releasegroup.py:65 picard/ui/cdlookup.py:71
-#: picard/ui/itemviews/columns.py:171 picard/ui/searchdialog/album.py:167
+#: picard/ui/itemviews/columns.py:225 picard/ui/searchdialog/album.py:167
 msgid "Barcode"
 msgstr "Streepjescode"
 
@@ -1380,22 +1380,22 @@ msgstr "[opname-informatie wordt geladen]"
 msgid "[could not load recording %s]"
 msgstr "[opname %s kon niet worden geladen]"
 
-#: picard/acoustid/__init__.py:109
+#: picard/acoustid/__init__.py:113
 #, python-format
 msgid "AcoustID lookup network error for \"%(filename)s\"!"
 msgstr "Netwerkfout bij het opzoeken van AcoustID van ‘%(filename)s’!"
 
-#: picard/acoustid/__init__.py:131
+#: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for \"%(filename)s\"!"
 msgstr "AcoustID van ‘%(filename)s’ opzoeken mislukt!"
 
-#: picard/acoustid/__init__.py:172
+#: picard/acoustid/__init__.py:176
 #, python-format
 msgid "AcoustID lookup returned no result for file \"%(filename)s\""
 msgstr "AcoustID-zoekactie voor ‘%(filename)s’ gaf geen resultaat"
 
-#: picard/acoustid/__init__.py:180
+#: picard/acoustid/__init__.py:184
 #, python-format
 msgid "Looking up the fingerprint for file \"%(filename)s\" …"
 msgstr "Vingerafdruk voor bestand ‘%(filename)s’ wordt opgezocht"
@@ -1581,11 +1581,11 @@ msgstr "1200 px"
 msgid "Full size"
 msgstr "Grootste formaat"
 
-#: picard/coverart/providers/caa.py:123
+#: picard/coverart/providers/caa.py:143
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/coverart/providers/caa.py:194
+#: picard/coverart/providers/caa.py:214
 msgid "Cover Art Archive: Release"
 msgstr "Cover Art Archive: uitgave"
 
@@ -3554,7 +3554,7 @@ msgstr "Links"
 msgid "See Also"
 msgstr "Zie ook"
 
-#: picard/tags/tagvar.py:90 picard/ui/widgets/pluginlistwidget.py:171
+#: picard/tags/tagvar.py:90 picard/ui/widgets/pluginlistwidget.py:173
 msgid "Plugin"
 msgstr "Plug-in"
 
@@ -3648,6 +3648,76 @@ msgstr "Forum"
 msgid "License"
 msgstr "Licentie"
 
+#: picard/ui/album_filter.py:77 picard/ui/itemviews/columns.py:154
+#, fuzzy
+#| msgid "Album modified"
+msgid "Modified"
+msgstr "De uitgave heeft wijzigingen"
+
+#: picard/ui/album_filter.py:77
+msgid "Filters on modified albums"
+msgstr ""
+
+#: picard/ui/album_filter.py:78
+#, fuzzy
+#| msgid "Album modified"
+msgid "Unmodified"
+msgstr "De uitgave heeft wijzigingen"
+
+#: picard/ui/album_filter.py:78
+msgid "Filters on unmodified albums"
+msgstr ""
+
+#: picard/ui/album_filter.py:79 picard/ui/itemviews/columns.py:163
+#, fuzzy
+#| msgid "Export Complete"
+msgid "Complete"
+msgstr "Exporteren voltooid"
+
+#: picard/ui/album_filter.py:79
+msgid "Filters on complete albums"
+msgstr ""
+
+#: picard/ui/album_filter.py:80
+msgid "Incomplete"
+msgstr ""
+
+#: picard/ui/album_filter.py:80
+msgid "Filters on incomplete albums"
+msgstr ""
+
+#: picard/ui/album_filter.py:138 picard/ui/album_filter.py:251
+#: picard/ui/searchdialog/album.py:170
+msgid "Status"
+msgstr "Status"
+
+#: picard/ui/album_filter.py:139
+msgid ""
+"Drop-down containing Album status filters(modified/unmodified, complete/"
+"incomplete)"
+msgstr ""
+
+#: picard/ui/album_filter.py:148
+#, fuzzy
+#| msgid "Select Filters"
+msgid "Status Filters"
+msgstr "Filters selecteren"
+
+#: picard/ui/album_filter.py:174
+#, fuzzy
+#| msgid "Show Name"
+msgid "Show all"
+msgstr "Shownaam"
+
+#: picard/ui/album_filter.py:175
+msgid "Enable all status filters (show everything)"
+msgstr ""
+
+#: picard/ui/album_filter.py:254
+#, python-format
+msgid "Status (%(active)d/%(total)d)"
+msgstr ""
+
 #: picard/ui/caa_types_selector.py:184
 #: picard/ui/dialogs/cover_types_selector.py:45
 msgid "Cover art types"
@@ -3700,13 +3770,13 @@ msgstr "A&lles wissen"
 msgid "Restore &Defaults"
 msgstr "&Instellingen herstellen"
 
-#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:145
+#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:199
 #: picard/ui/mainwindow/__init__.py:1256 picard/ui/searchdialog/album.py:160
 #: picard/ui/searchdialog/track.py:76
 msgid "Artist"
 msgstr "Artiest"
 
-#: picard/ui/cdlookup.py:67 picard/ui/itemviews/columns.py:209
+#: picard/ui/cdlookup.py:67 picard/ui/itemviews/columns.py:263
 #: picard/ui/searchdialog/album.py:163 picard/ui/searchdialog/track.py:78
 msgid "Date"
 msgstr "Datum"
@@ -3811,7 +3881,7 @@ msgstr "Tag toegevoegd"
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56 picard/ui/colors.py:57
 #: picard/ui/options/tags.py:51 picard/ui/widgets/refselector.py:61
-#: picard/ui/widgets/scriptdocumentation.py:254
+#: picard/ui/widgets/scriptdocumentation.py:281
 msgid "Tags"
 msgstr "Tags"
 
@@ -3897,24 +3967,24 @@ msgstr "&Verborgen bestanden tonen"
 msgid "&Set as starting directory"
 msgstr "Als &standaardmap instellen"
 
-#: picard/ui/filter.py:63
+#: picard/ui/filter.py:104
 msgid "Filters"
 msgstr "Filters"
 
-#: picard/ui/filter.py:77
+#: picard/ui/filter.py:118
 msgid "Type to filter…"
 msgstr "Tik om te filteren"
 
-#: picard/ui/filter.py:152
+#: picard/ui/filter.py:193
 #, python-brace-format
 msgid "{num} filters"
 msgstr "{num} filters"
 
-#: picard/ui/filter.py:178
+#: picard/ui/filter.py:220
 msgid "Select Filters"
 msgstr "Filters selecteren"
 
-#: picard/ui/filter.py:194
+#: picard/ui/filter.py:236
 msgid "Select / clear all filters"
 msgstr "(De)selecteer alle filters"
 
@@ -3950,7 +4020,7 @@ msgstr "ISRC’s indienen"
 msgid "The following ISRCs will be submitted to MusicBrainz:"
 msgstr "De volgende ISRC’s worden bij MusicBrainz ingediend:"
 
-#: picard/ui/isrcsubmitdialog.py:50 picard/ui/itemviews/columns.py:125
+#: picard/ui/isrcsubmitdialog.py:50 picard/ui/itemviews/columns.py:179
 msgid "Title"
 msgstr "Titel"
 
@@ -3974,7 +4044,7 @@ msgstr "Details &weergeven …"
 msgid "&Copy"
 msgstr "&Kopiëren"
 
-#: picard/ui/itemviews/basetreeview.py:212 picard/ui/logview.py:202
+#: picard/ui/itemviews/basetreeview.py:213 picard/ui/logview.py:202
 msgid "Select &all"
 msgstr "&Alles selecteren"
 
@@ -4211,11 +4281,11 @@ msgstr "Bestanden opslaan"
 msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Scriptfout in “%(script)s”: %(message)s"
 
-#: picard/ui/setupwizard.py:149
+#: picard/ui/setupwizard.py:236
 msgid "Welcome to MusicBrainz Picard"
 msgstr "Welkom bij MusicBrainz Picard"
 
-#: picard/ui/setupwizard.py:169
+#: picard/ui/setupwizard.py:256
 msgid ""
 "<p>Picard helps you tag and organize your music collection using the "
 "MusicBrainz database.</p><p>This wizard will help you configure a few "
@@ -4227,26 +4297,26 @@ msgstr ""
 "configureren van een aantal belangrijke instellingen, zodat je aan de slag "
 "kan. Je kan deze instellingen later in de Opties weer aanpassen.</p>"
 
-#: picard/ui/setupwizard.py:181
+#: picard/ui/setupwizard.py:268
 msgid "Read the documentation"
 msgstr "Lees de documentatie"
 
-#: picard/ui/setupwizard.py:197
+#: picard/ui/setupwizard.py:284
 msgid "File Organization"
 msgstr "Bestanden ordenen"
 
-#: picard/ui/setupwizard.py:198
+#: picard/ui/setupwizard.py:285
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr ""
 "Selecteer of Picard je bestanden moet hernoemen en verplaatsen wanneer hij "
 "de tags opslaat."
 
-#: picard/ui/setupwizard.py:203
+#: picard/ui/setupwizard.py:291
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr "Hernoem bestanden op basis van de tags (bijv. ‘Artiest - Titel.mp3’)"
 
-#: picard/ui/setupwizard.py:204
+#: picard/ui/setupwizard.py:292
 msgid ""
 "When you save tagged files, their filenames will be updated based on the new "
 "tags."
@@ -4254,11 +4324,11 @@ msgstr ""
 "Als je getagde bestanden opslaat, worden hun bestandsnamen op basis van de "
 "nieuwe tags gewijzigd."
 
-#: picard/ui/setupwizard.py:209
+#: picard/ui/setupwizard.py:297
 msgid "Move files to a folder structure based on tags"
 msgstr "Verplaats bestanden op basis van de tags naar een map"
 
-#: picard/ui/setupwizard.py:210
+#: picard/ui/setupwizard.py:298
 msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
@@ -4266,18 +4336,18 @@ msgstr ""
 "Bestanden worden opgeslagen in submappen (bijv. Artiest/Album) in de map die "
 "je hieronder selecteert."
 
-#: picard/ui/setupwizard.py:231
+#: picard/ui/setupwizard.py:318
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
 msgstr ""
 "Je kan deze instellingen later in Opties → Opties → Bestandsnamen aanpassen."
 
-#: picard/ui/setupwizard.py:254
+#: picard/ui/setupwizard.py:339
 msgid "Destination folder required"
 msgstr "Doelmap vereist"
 
-#: picard/ui/setupwizard.py:255
+#: picard/ui/setupwizard.py:340
 msgid ""
 "Please choose a destination folder for your music files, or uncheck the move "
 "files option."
@@ -4285,19 +4355,19 @@ msgstr ""
 "Selecteer een map waarin je muziekbestanden moeten worden opgeslagen, of "
 "vink de optie Bestanden verplaatsen uit."
 
-#: picard/ui/setupwizard.py:267
+#: picard/ui/setupwizard.py:352
 msgid "Select destination directory"
 msgstr "Selecteer een doelmap"
 
-#: picard/ui/setupwizard.py:280
+#: picard/ui/setupwizard.py:365
 msgid "Choose how Picard should handle album cover art."
 msgstr "Selecteer wat Picard met hoesafbeeldingen moet doen."
 
-#: picard/ui/setupwizard.py:285
+#: picard/ui/setupwizard.py:371
 msgid "Embed cover art into audio files"
 msgstr "Sla hoesafbeeldingen in audiobestanden op"
 
-#: picard/ui/setupwizard.py:286
+#: picard/ui/setupwizard.py:372
 msgid ""
 "The cover image will be stored inside the audio file itself, so it shows up "
 "in any music player."
@@ -4305,11 +4375,11 @@ msgstr ""
 "De hoesafbeelding wordt in het audiobestand zelf opgeslagen, zodat ze in "
 "elke muziekspeler kan worden weergegeven."
 
-#: picard/ui/setupwizard.py:291
+#: picard/ui/setupwizard.py:377
 msgid "Save cover art as separate image files"
 msgstr "Sla hoesafbeeldingen als aparte bestanden op"
 
-#: picard/ui/setupwizard.py:292
+#: picard/ui/setupwizard.py:378
 msgid ""
 "A cover image file (e.g. cover.jpg) will be saved alongside your audio files "
 "in the same folder."
@@ -4317,11 +4387,11 @@ msgstr ""
 "Een afbeeldingsbestand (bijv. voorkant.jpg) wordt in dezelfde map als de "
 "bijbehorende audiobestanden opgeslagen."
 
-#: picard/ui/setupwizard.py:297
+#: picard/ui/setupwizard.py:383
 msgid "Prefer release group cover art"
 msgstr "Gebruik hoesafbeeldingen van de uitgavegroep"
 
-#: picard/ui/setupwizard.py:299
+#: picard/ui/setupwizard.py:385
 msgid ""
 "Use the album's main cover art instead of edition-specific artwork. This "
 "usually provides higher quality images but may not match your exact release."
@@ -4330,19 +4400,19 @@ msgstr ""
 "de specifieke uitgave. Dit is vaak een afbeelding van hogere kwaliteit, maar "
 "komt misschien niet overeen met de uitgave die je voor je hebt."
 
-#: picard/ui/setupwizard.py:307
+#: picard/ui/setupwizard.py:392
 msgid "You can change these later under Options → Options → Cover Art."
 msgstr "Je kan dit later in ‘Opties → Opties → Hoesafbeeldingen’ aanpassen."
 
-#: picard/ui/setupwizard.py:388
+#: picard/ui/setupwizard.py:471
 msgid "Updates"
 msgstr "Nieuwe versies"
 
-#: picard/ui/setupwizard.py:389
+#: picard/ui/setupwizard.py:472
 msgid "Choose how Picard should check for updates."
 msgstr "Selecteer hoe Picard moet zoeken naar nieuwe programmaversies."
 
-#: picard/ui/setupwizard.py:401
+#: picard/ui/setupwizard.py:485
 msgid ""
 "Check for a new program version online and show an update dialog if "
 "available."
@@ -4350,14 +4420,14 @@ msgstr ""
 "Kijk online of er een nieuwe programmaversie is en geef een venster weer als "
 "dat zo is."
 
-#: picard/ui/setupwizard.py:409
+#: picard/ui/setupwizard.py:493
 msgid ""
 "Check for plugin updates online and show a notification in the status bar."
 msgstr ""
 "Kijk online of er nieuwe versies van plug-ins zijn en toon een melding in de "
 "statusbalk."
 
-#: picard/ui/setupwizard.py:417
+#: picard/ui/setupwizard.py:501
 msgid ""
 "Check for available documentation translations, so the online help can be "
 "shown in your language."
@@ -4365,25 +4435,25 @@ msgstr ""
 "Kijk of er vertalingen van documentatie beschikbaar zijn, zodat de online "
 "hulp in je eigen taal kan worden weergegeven."
 
-#: picard/ui/setupwizard.py:423
+#: picard/ui/setupwizard.py:506
 msgid "You can change these later under Options → General → Startup."
 msgstr "Je kan dit later in ‘Opties → Algemeen → Opstarten’ aanpassen."
 
-#: picard/ui/setupwizard.py:457
+#: picard/ui/setupwizard.py:540
 msgid "Additional Metadata"
 msgstr "Extra metadata"
 
-#: picard/ui/setupwizard.py:458
+#: picard/ui/setupwizard.py:541
 msgid "Choose whether Picard should fetch extra details about each track."
 msgstr "Selecteer of Picard voor elk nummer extra informatie moet ophalen."
 
-#: picard/ui/setupwizard.py:463
+#: picard/ui/setupwizard.py:547
 msgid "Fetch detailed track relationships (performers, composers, and more)"
 msgstr ""
 "Haal gedetailleerde informatie over relaties op (uitvoerende artiesten, "
 "componisten enz.)"
 
-#: picard/ui/setupwizard.py:465
+#: picard/ui/setupwizard.py:549
 msgid ""
 "For every track, Picard will also download extra credits such as the "
 "musicians who performed on it, the composer and lyricist, and related works. "
@@ -4404,7 +4474,7 @@ msgstr ""
 "je de meest complete tags wil hebben en je het niet vervelend vindt om "
 "langer te wachten."
 
-#: picard/ui/setupwizard.py:479
+#: picard/ui/setupwizard.py:563
 msgid ""
 "Replace typographic Unicode punctuation with plain ASCII equivalents in tags "
 "— mainly curly apostrophes (’) become straight single quotes ('). Curly "
@@ -4421,15 +4491,15 @@ msgstr ""
 "Dit is handig als de speler of het bestandssysteem niet goed met deze tekens "
 "overweg kunnen."
 
-#: picard/ui/setupwizard.py:491
+#: picard/ui/setupwizard.py:574
 msgid "You can change this later under Options → Options → Metadata."
 msgstr "Je kan dit later in ‘Opties → Opties → Metadata’ aanpassen."
 
-#: picard/ui/setupwizard.py:519
+#: picard/ui/setupwizard.py:600
 msgid "Picard Setup"
 msgstr "Picard instellen"
 
-#: picard/ui/itemviews/columns.py:189 picard/ui/tagsfromfilenames.py:127
+#: picard/ui/itemviews/columns.py:243 picard/ui/tagsfromfilenames.py:127
 #: picard/ui/tagsfromfilenames.py:138
 msgid "File Name"
 msgstr "Bestandsnaam"
@@ -4553,52 +4623,52 @@ msgstr "Tips niet meer weergeven"
 msgid "Got it"
 msgstr "Begrepen"
 
-#: picard/ui/util.py:90
+#: picard/ui/util.py:91
 msgid "Make It So!"
 msgstr "Oké"
 
-#: picard/ui/util.py:130
+#: picard/ui/util.py:131
 #, python-format
 msgid "%s - %s"
 msgstr "%s - %s"
 
-#: picard/ui/util.py:152
+#: picard/ui/util.py:157
 msgid "Select a file or a directory"
 msgstr "Een bestand of map selecteren"
 
-#: picard/ui/util.py:158
+#: picard/ui/util.py:170
 msgid "Select a target file"
 msgstr "Een doelbestand selecteren"
 
-#: picard/ui/util.py:171
+#: picard/ui/util.py:190
 msgid "Select a file"
 msgstr "Een bestand selecteren"
 
-#: picard/ui/util.py:184
+#: picard/ui/util.py:210
 msgid "Select one or more files"
 msgstr "Een of meer bestanden selecteren"
 
-#: picard/ui/util.py:197
+#: picard/ui/util.py:228
 msgid "Select a directory"
 msgstr "Een map selecteren"
 
-#: picard/ui/util.py:213
+#: picard/ui/util.py:246
 msgid "Select one or more directories"
 msgstr "Een of meer mappen selecteren"
 
-#: picard/ui/util.py:341
+#: picard/ui/util.py:376
 msgid "You have to restart Picard for the changes to take effect."
 msgstr "De veranderingen worden actief nadat je Picard hebt herstart."
 
-#: picard/ui/util.py:342
+#: picard/ui/util.py:377
 msgid "Changes only applied on restart"
 msgstr "Veranderingen alleen bij herstart toegepast"
 
-#: picard/ui/util.py:357
+#: picard/ui/util.py:392
 msgid "Load Session"
 msgstr "Sessie laden"
 
-#: picard/ui/util.py:358
+#: picard/ui/util.py:393
 #, python-format
 msgid "The session file \"%(path)s\" was not found."
 msgstr "Het sessiebestand ‘%(path)s’ is niet gevonden."
@@ -4632,7 +4702,7 @@ msgid "All supported image formats"
 msgstr "Alle ondersteunde afbeeldingsindelingen"
 
 #: picard/ui/coverartbox/__init__.py:555
-#: picard/ui/itemviews/basetreeview.py:348
+#: picard/ui/itemviews/basetreeview.py:349
 msgid "Show &more details…"
 msgstr "&Meer details …"
 
@@ -4968,10 +5038,10 @@ msgstr "Installatie mislukt"
 #: picard/ui/dialogs/installplugin.py:758 picard/ui/options/plugins.py:532
 #: picard/ui/widgets/plugindetailswidget.py:243
 #: picard/ui/widgets/plugindetailswidget.py:406
-#: picard/ui/widgets/pluginlistwidget.py:751
-#: picard/ui/widgets/pluginlistwidget.py:783
-#: picard/ui/widgets/pluginlistwidget.py:869
-#: picard/ui/widgets/pluginlistwidget.py:902
+#: picard/ui/widgets/pluginlistwidget.py:753
+#: picard/ui/widgets/pluginlistwidget.py:785
+#: picard/ui/widgets/pluginlistwidget.py:871
+#: picard/ui/widgets/pluginlistwidget.py:904
 msgid "Unknown error"
 msgstr "Onbekende fout"
 
@@ -6722,75 +6792,99 @@ msgstr "Rechter deelvenster"
 msgid "Contains albums and matched files"
 msgstr "Bevat uitgaven en overeenkomende bestanden"
 
-#: picard/ui/itemviews/__init__.py:637
+#: picard/ui/itemviews/__init__.py:648
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 "Verwerkingsfout(en): zie het tabblad “Foutmelding” in het venster “Uitgave-"
 "informatie”"
 
-#: picard/ui/itemviews/__init__.py:642
+#: picard/ui/itemviews/__init__.py:658
 msgid "Album modified and complete"
 msgstr "De uitgave is compleet en heeft wijzigingen"
 
-#: picard/ui/itemviews/__init__.py:645
+#: picard/ui/itemviews/__init__.py:661
 msgid "Album unchanged and complete"
 msgstr "De uitgave is compleet en heeft geen wijzigingen"
 
-#: picard/ui/itemviews/__init__.py:648
+#: picard/ui/itemviews/__init__.py:664
 msgid "Album modified"
 msgstr "De uitgave heeft wijzigingen"
 
-#: picard/ui/itemviews/__init__.py:651
+#: picard/ui/itemviews/__init__.py:667
 msgid "Album unchanged"
 msgstr "De uitgave heeft geen wijzigingen"
 
-#: picard/ui/itemviews/__init__.py:692
+#: picard/ui/itemviews/__init__.py:671
+#, fuzzy
+#| msgid "Album modified"
+msgid "Album is modified"
+msgstr "De uitgave heeft wijzigingen"
+
+#: picard/ui/itemviews/__init__.py:671
+#, fuzzy
+#| msgid "Album unchanged"
+msgid "Album is unchanged"
+msgstr "De uitgave heeft geen wijzigingen"
+
+#: picard/ui/itemviews/__init__.py:674
+#, fuzzy
+#| msgid "Album modified and complete"
+msgid "Album is complete"
+msgstr "De uitgave is compleet en heeft wijzigingen"
+
+#: picard/ui/itemviews/__init__.py:674
+#, fuzzy
+#| msgid "Album modified and complete"
+msgid "Album is incomplete"
+msgstr "De uitgave is compleet en heeft wijzigingen"
+
+#: picard/ui/itemviews/__init__.py:716
 msgid "There are no files matched to this track"
 msgstr "Er zijn geen bestanden aan dit nummer gekoppeld"
 
-#: picard/ui/itemviews/__init__.py:694
+#: picard/ui/itemviews/__init__.py:718
 #, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
 msgstr[0] "%i gekoppeld bestand"
 msgstr[1] "%i gekoppelde bestanden"
 
-#: picard/ui/itemviews/__init__.py:725
+#: picard/ui/itemviews/__init__.py:752
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 "Verwerkingsfout(en): zie het tabblad “Foutmelding” in het venster "
 "“Informatie over het nummer”"
 
-#: picard/ui/itemviews/__init__.py:796
+#: picard/ui/itemviews/__init__.py:823
 msgid "File not found"
 msgstr "Bestand niet gevonden"
 
-#: picard/ui/itemviews/__init__.py:799
+#: picard/ui/itemviews/__init__.py:826
 msgid "File permission error"
 msgstr "Fout met bestandsmachtiging"
 
-#: picard/ui/itemviews/__init__.py:802
+#: picard/ui/itemviews/__init__.py:829
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 "Verwerkingsfout(en): zie het tabblad “Foutmelding” in het venster “Info”"
 
-#: picard/ui/itemviews/__init__.py:806
+#: picard/ui/itemviews/__init__.py:833
 msgid "Track saved"
 msgstr "Nummer opgeslagen"
 
-#: picard/ui/itemviews/__init__.py:810 picard/ui/itemviews/__init__.py:817
+#: picard/ui/itemviews/__init__.py:837 picard/ui/itemviews/__init__.py:844
 msgid "Pending"
 msgstr "In de wacht"
 
-#: picard/ui/itemviews/__init__.py:828
+#: picard/ui/itemviews/__init__.py:855
 msgid "Fingerprint has already been submitted"
 msgstr "De vingerafdruk is al ingediend"
 
-#: picard/ui/itemviews/__init__.py:831
+#: picard/ui/itemviews/__init__.py:858
 msgid "Unsubmitted fingerprint"
 msgstr "Niet-ingediende vingerafdruk"
 
-#: picard/ui/itemviews/__init__.py:835
+#: picard/ui/itemviews/__init__.py:862
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -6798,137 +6892,137 @@ msgstr ""
 "Voor dit bestand is geen vingerafdruk berekend. Gebruik “Scannen” of "
 "“AcoustID-vingerafdrukken aanmaken” om de vingerafdruk te berekenen."
 
-#: picard/ui/itemviews/basetreeview.py:177
+#: picard/ui/itemviews/basetreeview.py:178
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Andere versies (%d)"
 
-#: picard/ui/itemviews/basetreeview.py:208
+#: picard/ui/itemviews/basetreeview.py:209
 msgid "&Expand all"
 msgstr "&Alles uitklappen"
 
-#: picard/ui/itemviews/basetreeview.py:210
+#: picard/ui/itemviews/basetreeview.py:211
 msgid "&Collapse all"
 msgstr "Alles &inklappen"
 
-#: picard/ui/itemviews/basetreeview.py:214
+#: picard/ui/itemviews/basetreeview.py:215
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews/basetreeview.py:341
+#: picard/ui/itemviews/basetreeview.py:342
 msgid "&Other versions"
 msgstr "&Andere versies"
 
-#: picard/ui/itemviews/basetreeview.py:353
+#: picard/ui/itemviews/basetreeview.py:354
 msgid "Loading…"
 msgstr "Laden …"
 
-#: picard/ui/itemviews/basetreeview.py:393
+#: picard/ui/itemviews/basetreeview.py:394
 msgid "Collections"
 msgstr "Collecties"
 
-#: picard/ui/itemviews/basetreeview.py:397
+#: picard/ui/itemviews/basetreeview.py:398
 msgid "P&lugins"
 msgstr "P&lug-ins"
 
-#: picard/ui/itemviews/basetreeview.py:413
+#: picard/ui/itemviews/basetreeview.py:414
 msgid "&Run scripts"
 msgstr "&Scripts uitvoeren"
 
-#: picard/ui/itemviews/basetreeview.py:795
+#: picard/ui/itemviews/basetreeview.py:831
 #, python-format
 msgid "Matches on: %s"
 msgstr "Overeenkomst op: %s"
 
-#: picard/ui/itemviews/basetreeview.py:797
+#: picard/ui/itemviews/basetreeview.py:833
 msgid "No tags found for selected filters."
 msgstr "Voor de geselecteerde filters zijn geen tags gevonden."
 
-#: picard/ui/itemviews/columns.py:81
+#: picard/ui/itemviews/columns.py:89
 msgid "Match"
 msgstr "Overeenkomst"
 
-#: picard/ui/itemviews/columns.py:104
+#: picard/ui/itemviews/columns.py:112
 msgid "Fingerprint status"
 msgstr "Vingerafdrukstatus"
 
-#: picard/ui/itemviews/columns.py:137 picard/ui/searchdialog/track.py:69
+#: picard/ui/itemviews/columns.py:191 picard/ui/searchdialog/track.py:69
 msgid "Length"
 msgstr "Lengte"
 
-#: picard/ui/itemviews/columns.py:148
+#: picard/ui/itemviews/columns.py:202
 msgid "Album Artist"
 msgstr "Albumartiest"
 
-#: picard/ui/itemviews/columns.py:149
+#: picard/ui/itemviews/columns.py:203
 msgid "Composer"
 msgstr "Componist"
 
-#: picard/ui/itemviews/columns.py:152
+#: picard/ui/itemviews/columns.py:206
 msgid "Disc Subtitle"
 msgstr "Mediumondertitel"
 
-#: picard/ui/itemviews/columns.py:155
+#: picard/ui/itemviews/columns.py:209
 msgid "Track No."
 msgstr "Nummerpositie"
 
-#: picard/ui/itemviews/columns.py:162
+#: picard/ui/itemviews/columns.py:216
 msgid "Disc No."
 msgstr "Mediumnummer"
 
-#: picard/ui/itemviews/columns.py:169
+#: picard/ui/itemviews/columns.py:223
 msgid "Catalog No."
 msgstr "Catalogusnummer"
 
-#: picard/ui/itemviews/columns.py:172
+#: picard/ui/itemviews/columns.py:226
 msgid "Media"
 msgstr "Medium"
 
-#: picard/ui/itemviews/columns.py:174
+#: picard/ui/itemviews/columns.py:228
 msgid "ISWC"
 msgstr "ISWC"
 
-#: picard/ui/itemviews/columns.py:178
+#: picard/ui/itemviews/columns.py:232
 msgid "Size"
 msgstr "Grootte"
 
-#: picard/ui/itemviews/columns.py:185
+#: picard/ui/itemviews/columns.py:239
 msgid "File Type"
 msgstr "Bestandstype"
 
-#: picard/ui/itemviews/columns.py:188
+#: picard/ui/itemviews/columns.py:242
 msgid "Directory"
 msgstr "Map"
 
-#: picard/ui/itemviews/columns.py:190
+#: picard/ui/itemviews/columns.py:244
 msgid "File Extension"
 msgstr "Bestandsextensie"
 
-#: picard/ui/itemviews/columns.py:193
+#: picard/ui/itemviews/columns.py:247
 msgid "File Creation Time"
 msgstr "Tijdstip van aanmaken bestand"
 
-#: picard/ui/itemviews/columns.py:197
+#: picard/ui/itemviews/columns.py:251
 msgid "Bitrate"
 msgstr "Bitsnelheid"
 
-#: picard/ui/itemviews/columns.py:205
+#: picard/ui/itemviews/columns.py:259
 msgid "Genre"
 msgstr "Genre"
 
-#: picard/ui/itemviews/columns.py:210
+#: picard/ui/itemviews/columns.py:264
 msgid "Original Release Date"
 msgstr "Originele uitgavedatum"
 
-#: picard/ui/itemviews/columns.py:211
+#: picard/ui/itemviews/columns.py:265
 msgid "Release Date"
 msgstr "Uitgavedatum"
 
-#: picard/ui/itemviews/columns.py:212 picard/ui/searchdialog/album.py:171
+#: picard/ui/itemviews/columns.py:266 picard/ui/searchdialog/album.py:171
 msgid "Cover"
 msgstr "Afbeelding"
 
-#: picard/ui/itemviews/columns.py:213
+#: picard/ui/itemviews/columns.py:267
 msgid "Cover Dimensions"
 msgstr "Afmetingen afbeelding"
 
@@ -6956,6 +7050,16 @@ msgstr "Extra bestanden: %(count)d"
 #, python-format
 msgid "Unmatched files: %(count)d"
 msgstr "Niet-overeenkomende bestanden: %(count)d"
+
+#: picard/ui/itemviews/custom_columns/boolean_providers.py:67
+msgid "Yes"
+msgstr ""
+
+#: picard/ui/itemviews/custom_columns/boolean_providers.py:69
+#, fuzzy
+#| msgid "Now"
+msgid "No"
+msgstr "Nu"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
 msgid "Manage Custom Columns"
@@ -7308,7 +7412,7 @@ msgstr ""
 "Als je de sessie afsluit, worden alle bestanden, clusters en uitgaven in de "
 "weergave verwijderd."
 
-#: picard/ui/mainwindow/__init__.py:586 picard/ui/mainwindow/actions.py:595
+#: picard/ui/mainwindow/__init__.py:586 picard/ui/mainwindow/actions.py:608
 msgid "&Save Session"
 msgstr "&Sessie opslaan"
 
@@ -7372,27 +7476,27 @@ msgstr ""
 msgid "Open AcoustID options"
 msgstr "AcoustID-opties openen"
 
-#: picard/ui/mainwindow/__init__.py:840
+#: picard/ui/mainwindow/__init__.py:839
 msgid "Lookup by…"
 msgstr "Opzoeken aan de hand van …"
 
-#: picard/ui/mainwindow/__init__.py:849 picard/ui/mainwindow/actions.py:406
+#: picard/ui/mainwindow/__init__.py:848 picard/ui/mainwindow/actions.py:419
 msgid "Lookup &CD…"
 msgstr "&Cd opzoeken …"
 
-#: picard/ui/mainwindow/__init__.py:859
+#: picard/ui/mainwindow/__init__.py:858
 msgid "Recent Sessions"
 msgstr "Recente sessies"
 
-#: picard/ui/mainwindow/__init__.py:897
+#: picard/ui/mainwindow/__init__.py:896
 msgid "Recent sessions cleared"
 msgstr "Recente sessies gewist"
 
-#: picard/ui/mainwindow/__init__.py:916
+#: picard/ui/mainwindow/__init__.py:915
 msgid "Empty"
 msgstr "leeg"
 
-#: picard/ui/mainwindow/__init__.py:932 picard/ui/mainwindow/actions.py:619
+#: picard/ui/mainwindow/__init__.py:931 picard/ui/mainwindow/actions.py:632
 msgid "Clear Recent Sessions"
 msgstr "Recente sessies wissen"
 
@@ -7440,7 +7544,7 @@ msgstr "&Hulp"
 msgid "Actions"
 msgstr "Handelingen"
 
-#: picard/ui/mainwindow/__init__.py:1244 picard/ui/mainwindow/actions.py:398
+#: picard/ui/mainwindow/__init__.py:1244 picard/ui/mainwindow/actions.py:411
 #: picard/ui/searchdialog/__init__.py:62
 msgid "Search"
 msgstr "&Zoeken"
@@ -7466,7 +7570,7 @@ msgid_plural "Move {count} files to trash?"
 msgstr[0] "‘{filename}’ naar prullenbak verplaatsen?"
 msgstr[1] "{count} bestanden naar prullenbak verplaatsen?"
 
-#: picard/ui/mainwindow/__init__.py:1478 picard/ui/mainwindow/actions.py:197
+#: picard/ui/mainwindow/__init__.py:1478 picard/ui/mainwindow/actions.py:210
 msgid "Move files to trash"
 msgstr "Bestanden naar prullenbak verplaatsen"
 
@@ -7582,292 +7686,292 @@ msgstr "Aanmelden mislukt"
 msgid "Login failed: %s"
 msgstr "Aanmelden mislukt: %s"
 
-#: picard/ui/mainwindow/__init__.py:2393
+#: picard/ui/mainwindow/__init__.py:2394
 msgid "No profiles configured"
 msgstr "Geen profielen geconfigureerd"
 
-#: picard/ui/mainwindow/__init__.py:2398
+#: picard/ui/mainwindow/__init__.py:2399
 msgid "Configure profiles…"
 msgstr "Profielen configureren …"
 
-#: picard/ui/mainwindow/__init__.py:2466
+#: picard/ui/mainwindow/__init__.py:2467
 msgid "No quick settings configured"
 msgstr "Geen snelmenu geconfigureerd"
 
-#: picard/ui/mainwindow/__init__.py:2471
+#: picard/ui/mainwindow/__init__.py:2472
 msgid "Configure quick settings…"
 msgstr "Snelmenu configureren …"
 
-#: picard/ui/mainwindow/actions.py:82
+#: picard/ui/mainwindow/actions.py:95
 msgid "&Options…"
 msgstr "&Opties …"
 
-#: picard/ui/mainwindow/actions.py:90
+#: picard/ui/mainwindow/actions.py:103
 msgid "&Edit scripts…"
 msgstr "Scripts &bewerken …"
 
-#: picard/ui/mainwindow/actions.py:91
+#: picard/ui/mainwindow/actions.py:104
 msgid "Ctrl+Shift+S"
 msgstr "Ctrl+Shift+S"
 
-#: picard/ui/mainwindow/actions.py:98
+#: picard/ui/mainwindow/actions.py:111
 msgid "&Cut"
 msgstr "&Knippen"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:749
+#: picard/ui/mainwindow/actions.py:120 picard/ui/metadatabox/__init__.py:749
 msgid "&Paste"
 msgstr "&Plakken"
 
-#: picard/ui/mainwindow/actions.py:116 picard/ui/scripteditor/__init__.py:334
+#: picard/ui/mainwindow/actions.py:129 picard/ui/scripteditor/__init__.py:334
 msgid "&Help…"
 msgstr "&Hulp …"
 
-#: picard/ui/mainwindow/actions.py:124
+#: picard/ui/mainwindow/actions.py:137
 msgid "&About…"
 msgstr "&Info …"
 
-#: picard/ui/mainwindow/actions.py:132
+#: picard/ui/mainwindow/actions.py:145
 msgid "&Donate…"
 msgstr "&Doneren …"
 
-#: picard/ui/mainwindow/actions.py:139
+#: picard/ui/mainwindow/actions.py:152
 msgid "&Report a Bug…"
 msgstr "Een bug &melden …"
 
-#: picard/ui/mainwindow/actions.py:146
+#: picard/ui/mainwindow/actions.py:159
 msgid "&Support Forum…"
 msgstr "&Ondersteuningsforum …"
 
-#: picard/ui/mainwindow/actions.py:153
+#: picard/ui/mainwindow/actions.py:166
 msgid "&Add Files…"
 msgstr "&Bestanden toevoegen …"
 
-#: picard/ui/mainwindow/actions.py:154
+#: picard/ui/mainwindow/actions.py:167
 msgid "Add files to the tagger"
 msgstr "Bestanden aan de tagger toevoegen"
 
-#: picard/ui/mainwindow/actions.py:163
+#: picard/ui/mainwindow/actions.py:176
 msgid "Add Fold&er…"
 msgstr "&Map toevoegen …"
 
-#: picard/ui/mainwindow/actions.py:164
+#: picard/ui/mainwindow/actions.py:177
 msgid "Add a folder to the tagger"
 msgstr "Een map aan de tagger toevoegen"
 
-#: picard/ui/mainwindow/actions.py:166
+#: picard/ui/mainwindow/actions.py:179
 msgid "Ctrl+E"
 msgstr "Ctrl+E"
 
-#: picard/ui/mainwindow/actions.py:174
+#: picard/ui/mainwindow/actions.py:187
 msgid "Close Window"
 msgstr "Venster sluiten"
 
-#: picard/ui/mainwindow/actions.py:175
+#: picard/ui/mainwindow/actions.py:188
 msgid "Ctrl+W"
 msgstr "Ctrl+W"
 
-#: picard/ui/mainwindow/actions.py:184
+#: picard/ui/mainwindow/actions.py:197
 msgid "&Save"
 msgstr "&Opslaan"
 
-#: picard/ui/mainwindow/actions.py:185
+#: picard/ui/mainwindow/actions.py:198
 msgid "Save selected files"
 msgstr "Geselecteerde bestanden opslaan"
 
-#: picard/ui/mainwindow/actions.py:196
+#: picard/ui/mainwindow/actions.py:209
 msgid "Move to &trash"
 msgstr "Naar &prullenbak verplaatsen"
 
-#: picard/ui/mainwindow/actions.py:198
+#: picard/ui/mainwindow/actions.py:211
 msgid "Shift+Del"
 msgstr "Shift+Del"
 
-#: picard/ui/mainwindow/actions.py:206
+#: picard/ui/mainwindow/actions.py:219
 msgid "S&ubmit AcoustIDs"
 msgstr "AcoustID’s &versturen"
 
-#: picard/ui/mainwindow/actions.py:207
+#: picard/ui/mainwindow/actions.py:220
 msgid "Submit acoustic fingerprints"
 msgstr "Akoestische vingerafdrukken versturen"
 
-#: picard/ui/mainwindow/actions.py:215
+#: picard/ui/mainwindow/actions.py:228
 msgid "Submit &ISRCs"
 msgstr "&ISRC’s versturen"
 
-#: picard/ui/mainwindow/actions.py:216
+#: picard/ui/mainwindow/actions.py:229
 msgid "Submit ISRCs to MusicBrainz"
 msgstr "ISRC’s naar MusicBrainz versturen"
 
-#: picard/ui/mainwindow/actions.py:224
+#: picard/ui/mainwindow/actions.py:237
 msgid "E&xit"
 msgstr "&Afsluiten"
 
-#: picard/ui/mainwindow/actions.py:227
+#: picard/ui/mainwindow/actions.py:240
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow/actions.py:234
+#: picard/ui/mainwindow/actions.py:247
 msgid "&Remove"
 msgstr "&Verwijderen"
 
-#: picard/ui/mainwindow/actions.py:235
+#: picard/ui/mainwindow/actions.py:248
 msgid "Remove selected files/albums"
 msgstr "Geselecteerde bestanden/mappen verwijderen"
 
-#: picard/ui/mainwindow/actions.py:243 picard/ui/metadatabox/__init__.py:810
+#: picard/ui/mainwindow/actions.py:256 picard/ui/metadatabox/__init__.py:810
 msgid "Lookup in &Browser"
 msgstr "In de &browser opzoeken"
 
-#: picard/ui/mainwindow/actions.py:244
+#: picard/ui/mainwindow/actions.py:257
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "Het geselecteerde object op de website van MusicBrainz opzoeken"
 
-#: picard/ui/mainwindow/actions.py:247
+#: picard/ui/mainwindow/actions.py:260
 msgid "Ctrl+Shift+L"
 msgstr "Ctrl+Shift+L"
 
-#: picard/ui/mainwindow/actions.py:254
+#: picard/ui/mainwindow/actions.py:267
 msgid "Lookup by &ISRC"
 msgstr "ISRC"
 
-#: picard/ui/mainwindow/actions.py:255
+#: picard/ui/mainwindow/actions.py:268
 msgid "Lookup selected item by ISRC"
 msgstr "Zoek het geselecteerde object aan de hand van de ISRC"
 
-#: picard/ui/mainwindow/actions.py:264
+#: picard/ui/mainwindow/actions.py:277
 msgid "Submit cluster as release…"
 msgstr "Cluster als uitgave toevoegen …"
 
-#: picard/ui/mainwindow/actions.py:265
+#: picard/ui/mainwindow/actions.py:278
 msgid "Submit cluster as a new release to MusicBrainz"
 msgstr "Cluster als nieuwe uitgave aan MusicBrainz toevoegen"
 
-#: picard/ui/mainwindow/actions.py:276
+#: picard/ui/mainwindow/actions.py:289
 msgid "Submit file as standalone recording…"
 msgstr "Bestand als losse opname toevoegen …"
 
-#: picard/ui/mainwindow/actions.py:277
+#: picard/ui/mainwindow/actions.py:290
 msgid "Submit file as a new recording to MusicBrainz"
 msgstr "Bestand als nieuwe opname aan MusicBrainz toevoegen"
 
-#: picard/ui/mainwindow/actions.py:288
+#: picard/ui/mainwindow/actions.py:301
 msgid "Submit file as release…"
 msgstr "Bestand als uitgave toevoegen …"
 
-#: picard/ui/mainwindow/actions.py:289
+#: picard/ui/mainwindow/actions.py:302
 msgid "Submit file as a new release to MusicBrainz"
 msgstr "Bestand als nieuwe uitgave aan MusicBrainz toevoegen"
 
-#: picard/ui/mainwindow/actions.py:299
+#: picard/ui/mainwindow/actions.py:312
 msgid "Search for similar items…"
 msgstr "Naar soortgelijke objecten zoeken …"
 
-#: picard/ui/mainwindow/actions.py:300
+#: picard/ui/mainwindow/actions.py:313
 #: picard/ui/options/interface_toolbar.py:156
 msgid "Similar items"
 msgstr "Soortgelijke objecten"
 
-#: picard/ui/mainwindow/actions.py:301
+#: picard/ui/mainwindow/actions.py:314
 msgid ""
 "View similar releases or recordings and optionally choose a different one"
 msgstr ""
 "Naar soortgelijke uitgaven of opnamen zoeken, zodat je een andere kunt kiezen"
 
-#: picard/ui/mainwindow/actions.py:303 picard/ui/mainwindow/actions.py:313
-#: picard/ui/mainwindow/actions.py:323
+#: picard/ui/mainwindow/actions.py:316 picard/ui/mainwindow/actions.py:326
+#: picard/ui/mainwindow/actions.py:336
 msgid "Ctrl+T"
 msgstr "Ctrl+T"
 
-#: picard/ui/mainwindow/actions.py:310
+#: picard/ui/mainwindow/actions.py:323
 msgid "Search for similar albums…"
 msgstr "Naar soortgelijke uitgaven zoeken …"
 
-#: picard/ui/mainwindow/actions.py:311
+#: picard/ui/mainwindow/actions.py:324
 msgid "View similar releases and optionally choose a different release"
 msgstr "Naar soortgelijke uitgaven zoeken, zodat je een andere kan kiezen"
 
-#: picard/ui/mainwindow/actions.py:320
+#: picard/ui/mainwindow/actions.py:333
 msgid "Search for similar tracks…"
 msgstr "Naar soortgelijke nummers zoeken …"
 
-#: picard/ui/mainwindow/actions.py:321
+#: picard/ui/mainwindow/actions.py:334
 msgid "View similar tracks and optionally choose a different release"
 msgstr ""
 "Naar soortgelijke nummers zoeken, zodat je een andere uitgave kan kiezen"
 
-#: picard/ui/mainwindow/actions.py:330
+#: picard/ui/mainwindow/actions.py:343
 msgid "Show &other album versions…"
 msgstr "&Andere versies van de uitgave zoeken …"
 
-#: picard/ui/mainwindow/actions.py:331
+#: picard/ui/mainwindow/actions.py:344
 msgid "Ctrl+Shift+O"
 msgstr "Ctrl+Shift+O"
 
-#: picard/ui/mainwindow/actions.py:339
+#: picard/ui/mainwindow/actions.py:352
 msgid "File &Browser"
 msgstr "&Verkenner"
 
-#: picard/ui/mainwindow/actions.py:343
+#: picard/ui/mainwindow/actions.py:356
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow/actions.py:351
+#: picard/ui/mainwindow/actions.py:364
 msgid "&Metadata"
 msgstr "&Metadata"
 
-#: picard/ui/mainwindow/actions.py:355
+#: picard/ui/mainwindow/actions.py:368
 msgid "Ctrl+Shift+M"
 msgstr "Ctrl+Shift+M"
 
-#: picard/ui/mainwindow/actions.py:363
+#: picard/ui/mainwindow/actions.py:376
 msgid "&Cover Art"
 msgstr "&Hoesafbeelding"
 
-#: picard/ui/mainwindow/actions.py:375
+#: picard/ui/mainwindow/actions.py:388
 msgid "&Actions"
 msgstr "&Werkbalk"
 
-#: picard/ui/mainwindow/actions.py:386
+#: picard/ui/mainwindow/actions.py:399
 msgid "Filter Items"
 msgstr "Filters"
 
-#: picard/ui/mainwindow/actions.py:387
+#: picard/ui/mainwindow/actions.py:400
 msgid "Toggle filtering of items based on specific tag values."
 msgstr "Toon of verberg filters voor specifieke tagwaarden."
 
-#: picard/ui/mainwindow/actions.py:389
+#: picard/ui/mainwindow/actions.py:402
 msgid "Ctrl+Shift+F"
 msgstr "Ctrl+Shift+F"
 
-#: picard/ui/mainwindow/actions.py:407
+#: picard/ui/mainwindow/actions.py:420
 msgid "Lookup the details of the CD in your drive"
 msgstr "Details van de cd in je cd-speler opzoeken"
 
-#: picard/ui/mainwindow/actions.py:409
+#: picard/ui/mainwindow/actions.py:422
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow/actions.py:416
+#: picard/ui/mainwindow/actions.py:429
 msgid "Lookup CD &log file…"
 msgstr "Cd-logboekbestand opzoeken …"
 
-#: picard/ui/mainwindow/actions.py:417
+#: picard/ui/mainwindow/actions.py:430
 msgid "Lookup release from a CD ripping log file"
 msgstr "Een uitgave opzoeken op basis van een logboek van een cd-ripper"
 
-#: picard/ui/mainwindow/actions.py:425
+#: picard/ui/mainwindow/actions.py:438
 msgid "Lookup TOC &tag…"
 msgstr "TOC-tag opzoeken …"
 
-#: picard/ui/mainwindow/actions.py:426
+#: picard/ui/mainwindow/actions.py:439
 msgid "Lookup release via disc identifiers from track tags"
 msgstr "Een uitgave opzoeken op basis van disc-ID’s in tags"
 
-#: picard/ui/mainwindow/actions.py:434
+#: picard/ui/mainwindow/actions.py:447
 msgid "&Scan"
 msgstr "&Scannen"
 
-#: picard/ui/mainwindow/actions.py:436
+#: picard/ui/mainwindow/actions.py:449
 msgid ""
 "Use AcoustID audio fingerprint to identify the files by the actual music, "
 "even if they have no metadata"
@@ -7875,24 +7979,24 @@ msgstr ""
 "AcoustID-vingerafdrukken gebruiken om muziek aan de hand van het geluid te "
 "identificeren, zelfs als ze geen tags hebben"
 
-#: picard/ui/mainwindow/actions.py:439
+#: picard/ui/mainwindow/actions.py:452
 msgid "Identify the file using its AcoustID audio fingerprint"
 msgstr "Het bestand aan de hand van zijn vingerafdruk identificeren"
 
-#: picard/ui/mainwindow/actions.py:441
+#: picard/ui/mainwindow/actions.py:454
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow/actions.py:448
+#: picard/ui/mainwindow/actions.py:461
 msgid "&Generate AcoustID Fingerprints"
 msgstr "AcoustID-&vingerafdrukken aanmaken"
 
-#: picard/ui/mainwindow/actions.py:449
+#: picard/ui/mainwindow/actions.py:462
 #: picard/ui/options/interface_toolbar.py:136
 msgid "Generate Fingerprints"
 msgstr "Vingerafdrukken aanmaken"
 
-#: picard/ui/mainwindow/actions.py:450
+#: picard/ui/mainwindow/actions.py:463
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
@@ -7900,160 +8004,160 @@ msgstr ""
 "AcoustID-audiovingerafdrukken voor de geselecteerde bestanden aanmaken, "
 "zonder ze op te zoeken"
 
-#: picard/ui/mainwindow/actions.py:452
+#: picard/ui/mainwindow/actions.py:465
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "AcoustID-audiovingerafdrukken voor de geselecteerde bestanden aanmaken"
 
-#: picard/ui/mainwindow/actions.py:453
+#: picard/ui/mainwindow/actions.py:466
 msgid "Ctrl+Shift+Y"
 msgstr "Ctrl+Shift+Y"
 
-#: picard/ui/mainwindow/actions.py:460
+#: picard/ui/mainwindow/actions.py:473
 msgid "Cl&uster"
 msgstr "&Clusteren"
 
-#: picard/ui/mainwindow/actions.py:461
+#: picard/ui/mainwindow/actions.py:474
 msgid "Cluster files into album clusters"
 msgstr "Bestanden naar uitgave clusteren"
 
-#: picard/ui/mainwindow/actions.py:464
+#: picard/ui/mainwindow/actions.py:477
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow/actions.py:471
+#: picard/ui/mainwindow/actions.py:484
 msgid "&Lookup"
 msgstr "&Opzoeken"
 
-#: picard/ui/mainwindow/actions.py:472
+#: picard/ui/mainwindow/actions.py:485
 msgid "Lookup selected items in MusicBrainz"
 msgstr "Geselecteerde object in MusicBrainz opzoeken"
 
-#: picard/ui/mainwindow/actions.py:477
+#: picard/ui/mainwindow/actions.py:490
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow/actions.py:484
+#: picard/ui/mainwindow/actions.py:497
 msgid "&Info…"
 msgstr "&Info …"
 
-#: picard/ui/mainwindow/actions.py:487
+#: picard/ui/mainwindow/actions.py:500
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow/actions.py:494
+#: picard/ui/mainwindow/actions.py:507
 msgid "&Refresh"
 msgstr "Ver&nieuwen"
 
-#: picard/ui/mainwindow/actions.py:495
+#: picard/ui/mainwindow/actions.py:508
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow/actions.py:502
+#: picard/ui/mainwindow/actions.py:515
 msgid "Tags From &File Names…"
 msgstr "&Tags uit bestandsnamen halen …"
 
-#: picard/ui/mainwindow/actions.py:503
+#: picard/ui/mainwindow/actions.py:516
 #: picard/ui/options/interface_toolbar.py:152
 msgid "Parse File Names…"
 msgstr "Bestandsnamen gebruiken …"
 
-#: picard/ui/mainwindow/actions.py:504
+#: picard/ui/mainwindow/actions.py:517
 msgid "Set tags based on the file names"
 msgstr "Tags aan de hand van de bestandsnamen invullen"
 
-#: picard/ui/mainwindow/actions.py:505 picard/ui/widgets/scripttextedit.py:440
+#: picard/ui/mainwindow/actions.py:518 picard/ui/widgets/scripttextedit.py:440
 msgid "Ctrl+Shift+T"
 msgstr "Ctrl+Shift+T"
 
-#: picard/ui/mainwindow/actions.py:513
+#: picard/ui/mainwindow/actions.py:526
 msgid "&Open My Collections in Browser"
 msgstr "Mijn Collecties in de browser &openen"
 
-#: picard/ui/mainwindow/actions.py:521
+#: picard/ui/mainwindow/actions.py:534
 msgid "View &Error/Debug Log"
 msgstr "Fout- en debug&logboek bekijken"
 
-#: picard/ui/mainwindow/actions.py:523
+#: picard/ui/mainwindow/actions.py:536
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow/actions.py:530
+#: picard/ui/mainwindow/actions.py:543
 msgid "View Activity &History"
 msgstr "&Activiteitengeschiedenis bekijken"
 
-#: picard/ui/mainwindow/actions.py:533
+#: picard/ui/mainwindow/actions.py:546
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow/actions.py:533 picard/ui/scripteditor/__init__.py:325
+#: picard/ui/mainwindow/actions.py:546 picard/ui/scripteditor/__init__.py:325
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow/actions.py:540
+#: picard/ui/mainwindow/actions.py:553
 msgid "&Play"
 msgstr "&Afspelen"
 
-#: picard/ui/mainwindow/actions.py:541 picard/ui/player/toolbar.py:69
+#: picard/ui/mainwindow/actions.py:554 picard/ui/player/toolbar.py:69
 msgid "Play selected files"
 msgstr "Geselecteerde bestanden afspelen"
 
-#: picard/ui/mainwindow/actions.py:543
+#: picard/ui/mainwindow/actions.py:556
 msgid "Ctrl+Shift+P"
 msgstr "Ctrl+Shift+P"
 
-#: picard/ui/mainwindow/actions.py:550
+#: picard/ui/mainwindow/actions.py:563
 msgid "Open in System &Media Player"
 msgstr "In standaarspeler van systeem &openen"
 
-#: picard/ui/mainwindow/actions.py:551
+#: picard/ui/mainwindow/actions.py:564
 msgid "Play the file in your default media player"
 msgstr "Bestand in de standaard mediaspeler afspelen"
 
-#: picard/ui/mainwindow/actions.py:559
+#: picard/ui/mainwindow/actions.py:572
 msgid "Open Containing &Folder"
 msgstr "De bijbehorende &map openen"
 
-#: picard/ui/mainwindow/actions.py:560
+#: picard/ui/mainwindow/actions.py:573
 msgid "Open the containing folder in your file explorer"
 msgstr "De bijbehorende map in je verkenner openen"
 
-#: picard/ui/mainwindow/actions.py:569
+#: picard/ui/mainwindow/actions.py:582
 msgid "&Check for Update…"
 msgstr "&Nieuwe versie zoeken …"
 
-#: picard/ui/mainwindow/actions.py:579
+#: picard/ui/mainwindow/actions.py:592
 msgid "Show Setup &Wizard…"
 msgstr "Wizard voor instellingen weergeven …"
 
-#: picard/ui/mainwindow/actions.py:587
+#: picard/ui/mainwindow/actions.py:600
 msgid "Save Session &As…"
 msgstr "Sessie opslaan &als …"
 
-#: picard/ui/mainwindow/actions.py:588
+#: picard/ui/mainwindow/actions.py:601
 msgid "Save the current session to a new file"
 msgstr "Sla de huidige sessie op naar een nieuw bestand"
 
-#: picard/ui/mainwindow/actions.py:596
+#: picard/ui/mainwindow/actions.py:609
 msgid "Save the current session to the last used file"
 msgstr "Sla de huidige sessie op naar het laatst gebruikte bestand"
 
-#: picard/ui/mainwindow/actions.py:603
+#: picard/ui/mainwindow/actions.py:616
 msgid "&Load Session…"
 msgstr "Sessie &laden …"
 
-#: picard/ui/mainwindow/actions.py:604
+#: picard/ui/mainwindow/actions.py:617
 msgid "Load a session file"
 msgstr "Laad een sessiebestand"
 
-#: picard/ui/mainwindow/actions.py:611
+#: picard/ui/mainwindow/actions.py:624
 msgid "&New Session"
 msgstr "&Nieuwe sessie"
 
-#: picard/ui/mainwindow/actions.py:612
+#: picard/ui/mainwindow/actions.py:625
 msgid "Close the current session"
 msgstr "Sluit de huidige sessie"
 
-#: picard/ui/mainwindow/actions.py:620
+#: picard/ui/mainwindow/actions.py:633
 msgid "Clear all recent session entries"
 msgstr "Wis alle recente sessievermeldingen"
 
@@ -8323,12 +8427,12 @@ msgstr ""
 msgid "Fingerprinting"
 msgstr "Vingerafdrukken"
 
-#: picard/ui/options/fingerprinting.py:196
-#: picard/ui/options/fingerprinting.py:200
+#: picard/ui/options/fingerprinting.py:197
+#: picard/ui/options/fingerprinting.py:201
 msgid "Please select a valid fpcalc executable."
 msgstr "Selecteer een geldig uitvoerbaar bestand voor fpcalc."
 
-#: picard/ui/options/fingerprinting.py:200
+#: picard/ui/options/fingerprinting.py:201
 msgid "Invalid fpcalc executable"
 msgstr "Ongeldig uitvoerbaar bestand voor fpcalc"
 
@@ -8928,7 +9032,7 @@ msgstr "{name} wordt bijgewerkt"
 msgid "Update Failed"
 msgstr "Bijwerken mislukt"
 
-#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:737
+#: picard/ui/options/plugins.py:536 picard/ui/widgets/pluginlistwidget.py:739
 msgid "Failed to update the plugin."
 msgstr "Plug-in bijwerken mislukt."
 
@@ -9322,13 +9426,13 @@ msgstr "AC3"
 msgid "WAVE"
 msgstr "WAVE"
 
-#: picard/ui/player/player.py:284
+#: picard/ui/player/player.py:302
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 "Interne speler: de indeling van de mediabron wordt niet (volledig) "
 "ondersteund"
 
-#: picard/ui/player/player.py:286
+#: picard/ui/player/player.py:304
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
@@ -9336,7 +9440,7 @@ msgstr ""
 "Interne speler: de juiste machtigingen voor het afspelen van een mediabron "
 "ontbreken"
 
-#: picard/ui/player/player.py:288
+#: picard/ui/player/player.py:306
 #, python-format
 msgid "Internal player: %(error)s, %(message)s"
 msgstr "Interne speler: %(error)s, %(message)s"
@@ -9357,57 +9461,57 @@ msgstr "Afspelen pauzeren of hervatten"
 msgid "Ctrl+P"
 msgstr "Ctrl+P"
 
-#: picard/ui/player/toolbar.py:218
+#: picard/ui/player/toolbar.py:220
 msgid "Unknown Artist"
 msgstr "Onbekende artiest"
 
-#: picard/ui/player/toolbar.py:238
+#: picard/ui/player/toolbar.py:240
 #, python-format
 msgid "%1.1f ×"
 msgstr "%1.1f ×"
 
-#: picard/ui/player/toolbar.py:246
+#: picard/ui/player/toolbar.py:248
 msgid "Change playback speed"
 msgstr "Afspeelsnelheid veranderen"
 
-#: picard/ui/player/toolbar.py:252
+#: picard/ui/player/toolbar.py:254
 msgid "Playback speed"
 msgstr "Afspeelsnelheid"
 
-#: picard/ui/player/toolbar.py:300
+#: picard/ui/player/toolbar.py:302
 #, python-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: picard/ui/player/toolbar.py:308
+#: picard/ui/player/toolbar.py:310
 msgid "Change audio volume"
 msgstr "Volume veranderen"
 
-#: picard/ui/player/toolbar.py:313
+#: picard/ui/player/toolbar.py:315
 msgid "Volume up"
 msgstr "Volume omhoog"
 
-#: picard/ui/player/toolbar.py:314
+#: picard/ui/player/toolbar.py:316
 msgid "Increase audio volume"
 msgstr "Verhoog het volume"
 
-#: picard/ui/player/toolbar.py:319
+#: picard/ui/player/toolbar.py:321
 msgid "Ctrl+Shift++"
 msgstr "Ctrl+Shift++"
 
-#: picard/ui/player/toolbar.py:323
+#: picard/ui/player/toolbar.py:325
 msgid "Volume down"
 msgstr "Volume omlaag"
 
-#: picard/ui/player/toolbar.py:324
+#: picard/ui/player/toolbar.py:326
 msgid "Decrease audio volume"
 msgstr "Verlaag het volume"
 
-#: picard/ui/player/toolbar.py:329
+#: picard/ui/player/toolbar.py:331
 msgid "Ctrl+Shift+-"
 msgstr "Ctrl+Shift+-"
 
-#: picard/ui/player/toolbar.py:334
+#: picard/ui/player/toolbar.py:336
 msgid "Audio volume"
 msgstr "Volume"
 
@@ -9713,10 +9817,6 @@ msgstr "Opmerking"
 msgid "Language"
 msgstr "Taal"
 
-#: picard/ui/searchdialog/album.py:170
-msgid "Status"
-msgstr "Status"
-
 #: picard/ui/searchdialog/album.py:172 picard/ui/searchdialog/artist.py:54
 #: picard/ui/searchdialog/track.py:81
 msgid "Score"
@@ -9798,17 +9898,17 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:200
 #: picard/ui/widgets/plugindetailswidget.py:204
 #: picard/ui/widgets/plugindetailswidget.py:394
-#: picard/ui/widgets/pluginlistwidget.py:645
+#: picard/ui/widgets/pluginlistwidget.py:647
 msgid "Update"
 msgstr "Bijwerken"
 
 #: picard/ui/widgets/plugindetailswidget.py:121
-#: picard/ui/widgets/pluginlistwidget.py:650
+#: picard/ui/widgets/pluginlistwidget.py:652
 msgid "Uninstall"
 msgstr "Verwijderen"
 
 #: picard/ui/widgets/plugindetailswidget.py:125
-#: picard/ui/widgets/pluginlistwidget.py:665
+#: picard/ui/widgets/pluginlistwidget.py:667
 msgid "Information"
 msgstr "Informatie"
 
@@ -9817,7 +9917,7 @@ msgid "No description available"
 msgstr "Geen beschrijving beschikbaar"
 
 #: picard/ui/widgets/plugindetailswidget.py:196
-#: picard/ui/widgets/pluginlistwidget.py:642
+#: picard/ui/widgets/pluginlistwidget.py:644
 msgid "Reload"
 msgstr "Opnieuw laden"
 
@@ -9828,7 +9928,7 @@ msgstr "Verwijderen mislukt"
 
 #: picard/ui/widgets/plugindetailswidget.py:247
 #: picard/ui/widgets/plugindetailswidget.py:374
-#: picard/ui/widgets/pluginlistwidget.py:758
+#: picard/ui/widgets/pluginlistwidget.py:760
 msgid "Failed to uninstall the plugin."
 msgstr "Plug-in verwijderen mislukt."
 
@@ -9870,97 +9970,97 @@ msgstr "huidig"
 msgid "Commit date: {date}"
 msgstr "Datum van commit: {date}"
 
-#: picard/ui/widgets/pluginlistwidget.py:98
-#: picard/ui/widgets/pluginlistwidget.py:110
+#: picard/ui/widgets/pluginlistwidget.py:100
+#: picard/ui/widgets/pluginlistwidget.py:112
 msgid "Update All"
 msgstr "Alles bijwerken"
 
-#: picard/ui/widgets/pluginlistwidget.py:106
+#: picard/ui/widgets/pluginlistwidget.py:108
 #, python-brace-format
 msgid "Update Selected ({count})"
 msgstr "{count} geselecteerde plug-ins bijwerken"
 
-#: picard/ui/widgets/pluginlistwidget.py:171
+#: picard/ui/widgets/pluginlistwidget.py:173
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: picard/ui/widgets/pluginlistwidget.py:171
+#: picard/ui/widgets/pluginlistwidget.py:173
 msgid "Version"
 msgstr "Versie"
 
-#: picard/ui/widgets/pluginlistwidget.py:171
+#: picard/ui/widgets/pluginlistwidget.py:173
 msgid "New Version"
 msgstr "Nieuwe versie"
 
-#: picard/ui/widgets/pluginlistwidget.py:336
+#: picard/ui/widgets/pluginlistwidget.py:338
 msgid "This plugin is included in updates"
 msgstr "Deze plug-in wordt bijgewerkt"
 
-#: picard/ui/widgets/pluginlistwidget.py:338
+#: picard/ui/widgets/pluginlistwidget.py:340
 msgid "This plugin is excluded from updates"
 msgstr "Deze plug-in wordt niet bijgewerkt"
 
-#: picard/ui/widgets/pluginlistwidget.py:350
+#: picard/ui/widgets/pluginlistwidget.py:352
 msgid "In Progress…"
 msgstr "In uitvoering"
 
-#: picard/ui/widgets/pluginlistwidget.py:359
-#: picard/ui/widgets/pluginlistwidget.py:393
-#: picard/ui/widgets/pluginlistwidget.py:396
-#: picard/ui/widgets/pluginlistwidget.py:403
+#: picard/ui/widgets/pluginlistwidget.py:361
+#: picard/ui/widgets/pluginlistwidget.py:395
+#: picard/ui/widgets/pluginlistwidget.py:398
+#: picard/ui/widgets/pluginlistwidget.py:405
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: picard/ui/widgets/pluginlistwidget.py:629
+#: picard/ui/widgets/pluginlistwidget.py:631
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: picard/ui/widgets/pluginlistwidget.py:632
+#: picard/ui/widgets/pluginlistwidget.py:634
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: picard/ui/widgets/pluginlistwidget.py:654
+#: picard/ui/widgets/pluginlistwidget.py:656
 msgid "Reinstall"
 msgstr "Opnieuw installeren"
 
-#: picard/ui/widgets/pluginlistwidget.py:659
+#: picard/ui/widgets/pluginlistwidget.py:661
 msgid "Switch Ref"
 msgstr "Ref wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:672
+#: picard/ui/widgets/pluginlistwidget.py:674
 msgid "View Directory"
 msgstr "Map bekijken"
 
-#: picard/ui/widgets/pluginlistwidget.py:674
+#: picard/ui/widgets/pluginlistwidget.py:676
 msgid "View Repository"
 msgstr "Opslagplaats bekijken"
 
-#: picard/ui/widgets/pluginlistwidget.py:680
+#: picard/ui/widgets/pluginlistwidget.py:682
 msgid "Report a Bug"
 msgstr "Een bug melden"
 
-#: picard/ui/widgets/pluginlistwidget.py:686
+#: picard/ui/widgets/pluginlistwidget.py:688
 msgid "Execution Order"
 msgstr "Uitvoeringsvolgorde"
 
-#: picard/ui/widgets/pluginlistwidget.py:695
-#: picard/ui/widgets/pluginlistwidget.py:704
-#: picard/ui/widgets/pluginlistwidget.py:736
-#: picard/ui/widgets/pluginlistwidget.py:757
-#: picard/ui/widgets/pluginlistwidget.py:789
-#: picard/ui/widgets/pluginlistwidget.py:875
+#: picard/ui/widgets/pluginlistwidget.py:697
+#: picard/ui/widgets/pluginlistwidget.py:706
+#: picard/ui/widgets/pluginlistwidget.py:738
+#: picard/ui/widgets/pluginlistwidget.py:759
+#: picard/ui/widgets/pluginlistwidget.py:791
+#: picard/ui/widgets/pluginlistwidget.py:877
 msgid "Plugin Error"
 msgstr "Plug-infout"
 
-#: picard/ui/widgets/pluginlistwidget.py:696
+#: picard/ui/widgets/pluginlistwidget.py:698
 msgid "Failed to enable the plugin."
 msgstr "Plug-in inschakelen mislukt."
 
-#: picard/ui/widgets/pluginlistwidget.py:705
+#: picard/ui/widgets/pluginlistwidget.py:707
 msgid "Failed to disable the plugin."
 msgstr "Plug-in uitschakelen mislukt."
 
-#: picard/ui/widgets/pluginlistwidget.py:790
+#: picard/ui/widgets/pluginlistwidget.py:792
 #, python-brace-format
 msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
@@ -9969,15 +10069,15 @@ msgstr ""
 "Plug-in ‘{name}’ opnieuw installeren mislukt:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:800
+#: picard/ui/widgets/pluginlistwidget.py:802
 msgid "Could not find plugin repository URL"
 msgstr "Kon de URL van de plug-inopslagplaats niet vinden"
 
-#: picard/ui/widgets/pluginlistwidget.py:808
+#: picard/ui/widgets/pluginlistwidget.py:810
 msgid "Reinstall Local Plugin"
 msgstr "Lokale plug-in opnieuw installeren"
 
-#: picard/ui/widgets/pluginlistwidget.py:811
+#: picard/ui/widgets/pluginlistwidget.py:813
 msgid ""
 "This plugin is loaded in local mode (git ignored).\n"
 "\n"
@@ -9989,15 +10089,15 @@ msgstr ""
 "Wil je de lokale modus behouden of de plug-in via git beheren (klonen naar "
 "de plug-inmap)?"
 
-#: picard/ui/widgets/pluginlistwidget.py:816
+#: picard/ui/widgets/pluginlistwidget.py:818
 msgid "Keep local"
 msgstr "Lokaal houden"
 
-#: picard/ui/widgets/pluginlistwidget.py:817
+#: picard/ui/widgets/pluginlistwidget.py:819
 msgid "Switch to git"
 msgstr "Git gebruiken"
 
-#: picard/ui/widgets/pluginlistwidget.py:876
+#: picard/ui/widgets/pluginlistwidget.py:878
 #, python-brace-format
 msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
@@ -10006,11 +10106,11 @@ msgstr ""
 "Plug-in ‘{name}’ naar andere ref wijzigen mislukt:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:913
+#: picard/ui/widgets/pluginlistwidget.py:915
 msgid "Plugin Re-enable Failed"
 msgstr "Plug-in opnieuw inschakelen mislukt"
 
-#: picard/ui/widgets/pluginlistwidget.py:915
+#: picard/ui/widgets/pluginlistwidget.py:917
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" was updated/switched successfully but could not be re-"
@@ -10025,55 +10125,55 @@ msgstr ""
 "\n"
 "De plug-in is nu uitgeschakeld."
 
-#: picard/ui/widgets/pluginlistwidget.py:960
+#: picard/ui/widgets/pluginlistwidget.py:972
 msgid "There were no installed metadata processing plugins found."
 msgstr ""
 "Er zijn geen geïnstalleerde plug-ins voor het verwerken van metadata "
 "gevonden."
 
-#: picard/ui/widgets/pluginlistwidget.py:961
+#: picard/ui/widgets/pluginlistwidget.py:973
 msgid "No Data"
 msgstr "Geen gegevens"
 
-#: picard/ui/widgets/pluginlistwidget.py:981
+#: picard/ui/widgets/pluginlistwidget.py:993
 msgid "Uninstall Plugin"
 msgstr "Plug-in verwijderen"
 
-#: picard/ui/widgets/pluginlistwidget.py:989
+#: picard/ui/widgets/pluginlistwidget.py:1001
 #, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
 msgstr "Weet je zeker dat je ‘{name}’ wil verwijderen?"
 
-#: picard/ui/widgets/pluginlistwidget.py:992
+#: picard/ui/widgets/pluginlistwidget.py:1004
 msgid "Also remove plugin configuration"
 msgstr "Verwijder ook de instellingen van de plug-in"
 
-#: picard/ui/widgets/pluginlistwidget.py:993
+#: picard/ui/widgets/pluginlistwidget.py:1005
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr "Verwijder alle opgeslagen instellingen voor deze plug-in"
 
-#: picard/ui/widgets/pluginlistwidget.py:997
+#: picard/ui/widgets/pluginlistwidget.py:1009
 msgid "Yes, Uninstall!"
 msgstr "Ja, verwijderen!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1021
+#: picard/ui/widgets/pluginlistwidget.py:1033
 msgid "Switch Git Ref"
 msgstr "Git-ref wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:1032
+#: picard/ui/widgets/pluginlistwidget.py:1044
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
 msgstr "Ref van ‘{name}’ wijzigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:1042
+#: picard/ui/widgets/pluginlistwidget.py:1054
 msgid "Yes, Switch!"
 msgstr "Ja, wijzigen!"
 
-#: picard/ui/widgets/pluginlistwidget.py:1071
+#: picard/ui/widgets/pluginlistwidget.py:1083
 msgid "No Ref Selected"
 msgstr "Geen ref geselecteerd"
 
-#: picard/ui/widgets/pluginlistwidget.py:1072
+#: picard/ui/widgets/pluginlistwidget.py:1084
 msgid "Please select or enter a ref to switch to."
 msgstr "Selecteer een ref om naar over te schakelen."
 
@@ -10143,32 +10243,32 @@ msgstr "Gebruik de standaardref (meestal main/master branch)"
 msgid "Plugin: {plugin_name}"
 msgstr "Plug-in: {plugin_name}"
 
-#: picard/ui/widgets/scriptdocumentation.py:217
+#: picard/ui/widgets/scriptdocumentation.py:242
 msgid "Find:"
 msgstr "Zoeken:"
 
-#: picard/ui/widgets/scriptdocumentation.py:232
+#: picard/ui/widgets/scriptdocumentation.py:259
 msgid "Find previous"
 msgstr "Terug zoeken"
 
-#: picard/ui/widgets/scriptdocumentation.py:239
+#: picard/ui/widgets/scriptdocumentation.py:266
 msgid "Find next"
 msgstr "Verder zoeken"
 
-#: picard/ui/widgets/scriptdocumentation.py:253
+#: picard/ui/widgets/scriptdocumentation.py:280
 msgid "Functions"
 msgstr "Functies"
 
-#: picard/ui/widgets/scriptdocumentation.py:268
+#: picard/ui/widgets/scriptdocumentation.py:295
 msgid "Open Scripting Documentation in your browser"
 msgstr "Open de documentatie over scripts in je browser"
 
-#: picard/ui/widgets/scriptdocumentation.py:298
+#: picard/ui/widgets/scriptdocumentation.py:325
 #, python-brace-format
 msgid "({item} of {total})"
 msgstr "({item} van {total})"
 
-#: picard/ui/widgets/scriptdocumentation.py:300
+#: picard/ui/widgets/scriptdocumentation.py:327
 msgid "(not found)"
 msgstr "(niet gevonden)"
 
@@ -10213,7 +10313,7 @@ msgstr "&Hulpteksten tonen"
 msgid "Show tooltips for script elements"
 msgstr "Hulpteksten voor scriptelementen tonen"
 
-#: picard/util/__init__.py:398
+#: picard/util/__init__.py:414
 msgid "No Title"
 msgstr "Geen titel"
 
@@ -11276,9 +11376,6 @@ msgstr ""
 #~| msgid "Silesian"
 #~ msgid "Silence"
 #~ msgstr "Silezisch"
-
-#~ msgid "Show Name"
-#~ msgstr "Shownaam"
 
 #~ msgid "Show Work & Movement"
 #~ msgstr "Compositie en deel tonen"
