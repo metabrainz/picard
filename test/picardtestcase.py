@@ -51,6 +51,7 @@ from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
 from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
+from picard.services import set_services_provider
 from picard.tagger import Tagger
 
 
@@ -137,6 +138,13 @@ class PicardTestCase(unittest.TestCase):
         log.set_verbosity(logging.DEBUG)
         setup_i18n(None, 'C')
         self.tagger = MockTagger()
+        # Core service lookups go through picard.services.services(), which by
+        # default resolves from app_instance(). In tests the Tagger is a mock
+        # that is not the QCoreApplication, so install it as the services
+        # provider for the duration of each test (mirroring how the GUI's
+        # Tagger backs both app_instance() and the services).
+        set_services_provider(self.tagger)
+        self.addCleanup(set_services_provider, None)
         self.init_config()
 
     @staticmethod
