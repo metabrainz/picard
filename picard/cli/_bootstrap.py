@@ -116,22 +116,3 @@ def is_color_disabled(args):
         True if color should be disabled, False otherwise.
     """
     return getattr(args, 'no_color', False) or 'NO_COLOR' in os.environ
-
-
-def init_cli(args, *, with_webservice=False):
-    """Full CLI initialization: app bootstrap + logging + color detection.
-
-    Convenience function combining minimal_init() and init_logging().
-    Use this in subcommand handlers instead of calling each step manually.
-
-    Args:
-        args: Parsed argparse namespace (must have config_file, debug, debug_opts).
-        with_webservice: If True, initialize WebService on the app instance.
-
-    Returns:
-        QCoreApplication instance.
-    """
-    config_file = getattr(args, 'config_file', None)
-    app = minimal_init(config_file, with_webservice=with_webservice)
-    init_logging(args)
-    return app
