@@ -1376,13 +1376,7 @@ class Tagger(QtWidgets.QApplication):
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
-        for file in files:
-            if file.filename in self.files:
-                file.clear_lookup_task()
-                self.acoustid_client.stop_analyze(file)
-                del self.files[file.filename]
-                file.remove(from_parent)
-        workspace_events().tagger_stats_changed.emit()
+        self._workspace.remove_files(files, from_parent=from_parent)
 
     def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.

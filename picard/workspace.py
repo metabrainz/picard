@@ -54,6 +54,9 @@ from typing import (
     Any,
 )
 
+from picard.services import services
+from picard.workspace_events import workspace_events
+
 
 if TYPE_CHECKING:
     from picard.album import (
@@ -133,6 +136,21 @@ class Workspace:
         from picard.releasegroup import ReleaseGroup
 
         return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
+
+    def remove_files(self, files, from_parent: bool = True) -> None:
+        """Remove ``files`` from the working set.
+
+        Cancels any pending lookup/fingerprint work, drops each file from the
+        registry and detaches it from its parent, then announces the change.
+        """
+        acoustid_client = services().acoustid_client
+        for file in files:
+            if file.filename in self.files:
+                file.clear_lookup_task()
+                acoustid_client.stop_analyze(file)
+                del self.files[file.filename]
+                file.remove(from_parent)
+        workspace_events().tagger_stats_changed.emit()
 
 
 _workspace: Workspace | None = None
