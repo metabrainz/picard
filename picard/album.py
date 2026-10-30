@@ -611,7 +611,7 @@ class Album(MetadataItem):
                         recordingid = file.metadata['musicbrainz_recordingid']
                         if mbid_validate(recordingid) and file.metadata['album'] == nat_name:
                             nats = True
-                            self.tagger.move_file_to_nat(file, recordingid)
+                            workspace().move_file_to_nat(file, recordingid)
                             nat_album = workspace().nats
                             if nat_album is not None:
                                 nat_album.update()

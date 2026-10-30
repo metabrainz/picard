@@ -83,7 +83,6 @@ from picard import (
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
     Album,
-    NatAlbum,
 )
 from picard.audit import setup_audit
 from picard.browser.filelookup import FileLookup
@@ -872,20 +871,10 @@ class Tagger(QtWidgets.QApplication):
         self._workspace.move_file_to_track(file, albumid, recordingid)
 
     def create_nats(self):
-        if self.nats is None:
-            self.nats = NatAlbum()
-            self.albums['NATS'] = self.nats
-            workspace_events().album_added.emit(self.nats)
-            self.nats.ui_item.setExpanded(True)
-        return self.nats
+        return self._workspace.create_nats()
 
     def move_file_to_nat(self, file, recordingid, node=None):
-        self.create_nats()
-        file.move(self.nats.unmatched_files)
-        nat = self.load_nat(recordingid, node=node)
-        nat.run_when_loaded(partial(file.move, nat))
-        if nat.loaded:
-            self.nats.update()
+        self._workspace.move_file_to_nat(file, recordingid, node=node)
 
     def quit(self):
         self.exit()
@@ -1336,25 +1325,10 @@ class Tagger(QtWidgets.QApplication):
         return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
 
     def load_nat(self, nat_id, node=None):
-        self.create_nats()
-        nat = self.get_nat_by_id(nat_id)
-        if nat:
-            log.debug("NAT %s already loaded.", nat_id)
-            return nat
-        nat = NonAlbumTrack(nat_id)
-        self.nats.tracks.append(nat)
-        self.nats.update(True)
-        if node:
-            nat._parse_recording(node)
-        else:
-            nat.load()
-        return nat
+        return self._workspace.load_nat(nat_id, node=node)
 
     def get_nat_by_id(self, nat_id):
-        if self.nats is not None:
-            for nat in self.nats.tracks:
-                if nat.id == nat_id:
-                    return nat
+        return self._workspace.get_nat_by_id(nat_id)
 
     def get_release_group_by_id(self, rg_id):
         return self._workspace.get_release_group_by_id(rg_id)

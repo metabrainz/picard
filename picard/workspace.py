@@ -49,6 +49,7 @@ workspace) and stays on the application object.
 
 from __future__ import annotations
 
+from functools import partial
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -235,6 +236,57 @@ class Workspace:
         album = self.load_album(albumid)
         file.match_recordingid = recordingid
         album.match_files([file])
+
+    def create_nats(self) -> NatAlbum:
+        """Return the Non-Album-Tracks container, creating it on first use."""
+        # Imported here to avoid the album <-> workspace import cycle.
+        from picard.album import NatAlbum
+
+        if self.nats is None:
+            self.nats = NatAlbum()
+            self.albums['NATS'] = self.nats
+            workspace_events().album_added.emit(self.nats)
+            # ui_item is None in headless mode (no tree view); guard the GUI
+            # expand. The GUI sets ui_item when it adds the album to the tree.
+            if self.nats.ui_item is not None:
+                self.nats.ui_item.setExpanded(True)
+        return self.nats
+
+    def get_nat_by_id(self, nat_id):
+        """Return the already-loaded NAT with ``nat_id``, or None."""
+        if self.nats is not None:
+            for nat in self.nats.tracks:
+                if nat.id == nat_id:
+                    return nat
+        return None
+
+    def load_nat(self, nat_id, node=None):
+        """Load the non-album track ``nat_id`` into the NATs container."""
+        # Imported here to avoid the track <-> workspace import cycle.
+        from picard.track import NonAlbumTrack
+
+        nats = self.create_nats()
+        nat = self.get_nat_by_id(nat_id)
+        if nat:
+            log.debug("NAT %s already loaded.", nat_id)
+            return nat
+        nat = NonAlbumTrack(nat_id)
+        nats.tracks.append(nat)
+        nats.update(True)
+        if node:
+            nat._parse_recording(node)
+        else:
+            nat.load()
+        return nat
+
+    def move_file_to_nat(self, file, recordingid, node=None):
+        """Move ``file`` to the non-album track ``recordingid``."""
+        nats = self.create_nats()
+        file.move(nats.unmatched_files)
+        nat = self.load_nat(recordingid, node=node)
+        nat.run_when_loaded(partial(file.move, nat))
+        if nat.loaded:
+            nats.update()
 
 
 _workspace: Workspace | None = None

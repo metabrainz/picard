@@ -1236,7 +1236,7 @@ class File(MetadataItem):
                     releasegroup.loaded_albums.add(release_id)
                     workspace().move_file_to_track(self, release_id, recording_id)
                 else:
-                    self.tagger.move_file_to_nat(self, recording_id)
+                    workspace().move_file_to_nat(self, recording_id)
         else:
             statusbar(N_('No matching tracks for file "%(filename)s"'))
 
