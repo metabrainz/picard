@@ -41,6 +41,7 @@ from typing import Any
 from PyQt6 import QtCore
 from PyQt6.QtNetwork import QNetworkReply
 
+from picard import log
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util import load_json
 
@@ -262,3 +263,52 @@ def cancel_on_destroyed(
         return callback(*args, **kwargs)
 
     return wrapper
+
+
+# Qt-internal warnings that are benign for Picard and only add noise. These are
+# emitted by Qt's C++ layer (via qWarning), not by Picard code, and do not
+# indicate a problem we can act on:
+#
+# - "QIODevice::read (QSslSocket): device not open": emitted when a reply body
+#   is read (QNetworkReply.readAll) after its underlying socket has already
+#   closed. This happens routinely on HTTP/2 error responses (e.g. a 503 from
+#   the MusicBrainz server) where the stream is torn down before we read the
+#   (empty) body in WebService._handle_reply. The read simply yields no data;
+#   the warning is spurious.
+#
+# Matched as substrings against the Qt message text. Keep this list tight:
+# only add a pattern that is provably Qt-internal and actionless, so real
+# diagnostics are never hidden.
+_SUPPRESSED_QT_MESSAGE_SUBSTRINGS = ('QIODevice::read (QSslSocket): device not open',)
+
+
+def _qt_message_handler(mode: 'QtCore.QtMsgType', context: 'QtCore.QMessageLogContext', message: 'str | None') -> None:
+    """Route Qt's own log messages into Picard's logging, dropping known noise.
+
+    Installed via :func:`install_qt_message_handler`. Suppresses the benign
+    Qt-internal warnings listed in ``_SUPPRESSED_QT_MESSAGE_SUBSTRINGS`` and
+    forwards everything else to the matching :mod:`picard.log` level, so Qt
+    diagnostics appear in Picard's log instead of bypassing it on stderr.
+    """
+    text = message or ''
+    for needle in _SUPPRESSED_QT_MESSAGE_SUBSTRINGS:
+        if needle in text:
+            return
+    if mode in {QtCore.QtMsgType.QtCriticalMsg, QtCore.QtMsgType.QtFatalMsg}:
+        log.error("Qt: %s", text)
+    elif mode == QtCore.QtMsgType.QtWarningMsg:
+        log.warning("Qt: %s", text)
+    elif mode == QtCore.QtMsgType.QtInfoMsg:
+        log.info("Qt: %s", text)
+    else:  # QtDebugMsg
+        log.debug("Qt: %s", text)
+
+
+def install_qt_message_handler() -> None:
+    """Install Picard's Qt message handler (idempotent-friendly).
+
+    Call once at application startup (GUI and headless) so Qt's own messages go
+    through Picard's logging and the known-benign Qt warnings are filtered out
+    instead of printed raw to stderr.
+    """
+    QtCore.qInstallMessageHandler(_qt_message_handler)

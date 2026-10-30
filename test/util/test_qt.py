@@ -24,7 +24,11 @@ from PyQt6 import (
     sip,
 )
 
-from picard.util.qt import cancel_on_destroyed
+from picard.util.qt import (
+    _qt_message_handler,
+    cancel_on_destroyed,
+    install_qt_message_handler,
+)
 
 import pytest
 
@@ -95,3 +99,52 @@ class TestCancelOnDestroyed:
         cb()
         assert aborts == []
         obj.deleteLater()
+
+
+class TestQtMessageHandler:
+    def test_suppresses_benign_ssl_read_warning(self, monkeypatch):
+        records = []
+        monkeypatch.setattr('picard.util.qt.log.warning', lambda *a, **k: records.append(a))
+        _qt_message_handler(
+            QtCore.QtMsgType.QtWarningMsg,
+            None,
+            'QIODevice::read (QSslSocket): device not open',
+        )
+        assert records == []  # dropped, not forwarded
+
+    def test_suppresses_benign_message_embedded_in_longer_text(self, monkeypatch):
+        records = []
+        monkeypatch.setattr('picard.util.qt.log.warning', lambda *a, **k: records.append(a))
+        _qt_message_handler(
+            QtCore.QtMsgType.QtWarningMsg,
+            None,
+            'prefix QIODevice::read (QSslSocket): device not open suffix',
+        )
+        assert records == []
+
+    def test_forwards_other_warning(self, monkeypatch):
+        records = []
+        monkeypatch.setattr('picard.util.qt.log.warning', lambda msg, text: records.append((msg, text)))
+        _qt_message_handler(QtCore.QtMsgType.QtWarningMsg, None, 'some other Qt warning')
+        assert records == [('Qt: %s', 'some other Qt warning')]
+
+    def test_critical_maps_to_error(self, monkeypatch):
+        records = []
+        monkeypatch.setattr('picard.util.qt.log.error', lambda msg, text: records.append((msg, text)))
+        _qt_message_handler(QtCore.QtMsgType.QtCriticalMsg, None, 'boom')
+        assert records == [('Qt: %s', 'boom')]
+
+    def test_debug_maps_to_debug(self, monkeypatch):
+        records = []
+        monkeypatch.setattr('picard.util.qt.log.debug', lambda msg, text: records.append((msg, text)))
+        _qt_message_handler(QtCore.QtMsgType.QtDebugMsg, None, 'chatter')
+        assert records == [('Qt: %s', 'chatter')]
+
+    def test_install_sets_handler(self):
+        # Installing then restoring the previous handler must not raise, and
+        # the installer returns the handler object Qt had before.
+        previous = QtCore.qInstallMessageHandler(None)
+        try:
+            install_qt_message_handler()
+        finally:
+            QtCore.qInstallMessageHandler(previous)
