@@ -25,7 +25,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14, ubuntu-latest, windows-2022]
+        os: [macos-15, ubuntu-latest, windows-2022]
         python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
     env:
       UV_FROZEN: 1
@@ -108,7 +108,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14, ubuntu-latest, windows-latest]
+        os: [macos-15, ubuntu-latest, windows-latest]
         python-version: ['3.10', '3.14']
 
     steps:
