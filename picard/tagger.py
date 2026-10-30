@@ -203,7 +203,10 @@ from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
     MBAPIHelper,
 )
-from picard.workspace import Workspace
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+)
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
@@ -511,8 +514,11 @@ class Tagger(QtWidgets.QApplication):
         # The entity registries and batch-save/restore bookkeeping now live on
         # a Workspace. Tagger owns one and exposes each field as a delegating
         # property below, so existing self.tagger.<field> access is unchanged.
+        # It is also installed as the process-wide workspace provider so core
+        # code reaching the working set via workspace() sees the same object.
         # See picard.workspace.
         self._workspace = Workspace()
+        set_workspace_provider(self._workspace)
 
     # --- workspace field delegation -----------------------------------------
     #

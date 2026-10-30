@@ -53,6 +53,10 @@ from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
 from picard.services import set_services_provider
 from picard.tagger import Tagger
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+)
 
 
 def subtest_cases(argnames, argvalues):
@@ -145,6 +149,12 @@ class PicardTestCase(unittest.TestCase):
         # Tagger backs both app_instance() and the services).
         set_services_provider(self.tagger)
         self.addCleanup(set_services_provider, None)
+        # Core reads of the per-run working set (registries + bookkeeping) go
+        # through picard.workspace.workspace(). Install a fresh Workspace for
+        # the duration of each test so those reads resolve to isolated state
+        # (mirroring the services provider above). Reset on cleanup.
+        set_workspace_provider(Workspace())
+        self.addCleanup(set_workspace_provider, None)
         self.init_config()
 
     @staticmethod
