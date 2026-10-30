@@ -861,9 +861,7 @@ class Tagger(QtWidgets.QApplication):
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
-        if album is None:
-            album = self.load_album(albumid)
-        album.match_files(files)
+        self._workspace.move_files_to_album(files, albumid=albumid, album=album)
 
     def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""
@@ -871,9 +869,7 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file_to_track(self, file, albumid, recordingid):
         """Move `file` to recording `recordingid` on album `albumid`."""
-        album = self.load_album(albumid)
-        file.match_recordingid = recordingid
-        album.match_files([file])
+        self._workspace.move_file_to_track(file, albumid, recordingid)
 
     def create_nats(self):
         if self.nats is None:
@@ -1337,17 +1333,7 @@ class Tagger(QtWidgets.QApplication):
             log.warning("Unknown type to load: %s", type)
 
     def load_album(self, album_id, discid=None, disc_isrcs=None):
-        album_id = self.mbid_redirects.get(album_id, album_id)
-        album = self.albums.get(album_id)
-        if album:
-            log.debug("Album %s already loaded.", album_id)
-            album.add_discid(discid)
-            return album
-        album = Album(album_id, discid=discid, disc_isrcs=disc_isrcs)
-        self.albums[album_id] = album
-        workspace_events().album_added.emit(album)
-        album.load()
-        return album
+        return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
 
     def load_nat(self, nat_id, node=None):
         self.create_nats()

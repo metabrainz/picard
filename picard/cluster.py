@@ -406,7 +406,7 @@ class Cluster(FileList):
                 statusbar(N_("Best match for cluster %(album)s is ambiguous"))
             else:
                 statusbar(N_("Cluster %(album)s identified!"))
-            self.tagger.move_files_to_album(self.files, best_match_release['id'])
+            workspace().move_files_to_album(self.files, best_match_release['id'])
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 

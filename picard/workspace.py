@@ -197,6 +197,45 @@ class Workspace:
         self.clusters.remove(cluster)
         workspace_events().cluster_removed.emit(cluster)
 
+    def load_album(self, album_id: str, discid=None, disc_isrcs=None):
+        """Load the release ``album_id`` into the working set.
+
+        Resolves release redirects, returns the already-loaded album if present
+        (attaching ``discid``), otherwise creates it, registers it, announces
+        the addition and starts loading.
+        """
+        # Imported here to avoid the album <-> workspace import cycle.
+        from picard.album import Album
+
+        album_id = self.mbid_redirects.get(album_id, album_id)
+        album = self.albums.get(album_id)
+        if album:
+            log.debug("Album %s already loaded.", album_id)
+            album.add_discid(discid)
+            return album
+        album = Album(album_id, discid=discid, disc_isrcs=disc_isrcs)
+        self.albums[album_id] = album
+        workspace_events().album_added.emit(album)
+        album.load()
+        return album
+
+    def move_files_to_album(self, files, albumid: str | None = None, album=None):
+        """Move ``files`` to tracks on album ``albumid`` (or a given album).
+
+        Exactly one of ``albumid`` / ``album`` is expected; when no album is
+        given, ``albumid`` must be a release MBID.
+        """
+        if album is None:
+            assert albumid is not None, "move_files_to_album requires albumid or album"
+            album = self.load_album(albumid)
+        album.match_files(files)
+
+    def move_file_to_track(self, file, albumid, recordingid):
+        """Move ``file`` to recording ``recordingid`` on album ``albumid``."""
+        album = self.load_album(albumid)
+        file.match_recordingid = recordingid
+        album.match_files([file])
+
 
 _workspace: Workspace | None = None
 

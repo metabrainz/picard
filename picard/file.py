@@ -1234,7 +1234,7 @@ class File(MetadataItem):
                 if release_group_id is not None:
                     releasegroup = workspace().get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
-                    self.tagger.move_file_to_track(self, release_id, recording_id)
+                    workspace().move_file_to_track(self, release_id, recording_id)
                 else:
                     self.tagger.move_file_to_nat(self, recording_id)
         else:
