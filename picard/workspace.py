@@ -47,11 +47,6 @@ that ``clear_session`` resets. ``stopping`` is application lifecycle (not
 workspace) and stays on the application object.
 """
 
-from picard.cluster import (
-    ClusterList,
-    UnclusteredFiles,
-)
-
 
 class Workspace:
     """The mutable working set of a tagging run.
@@ -65,6 +60,15 @@ class Workspace:
     """
 
     def __init__(self):
+        # ClusterList/UnclusteredFiles are imported here, not at module level,
+        # to break a circular import: picard.cluster imports picard.file, and
+        # picard.file imports this module (workspace). A module-level import of
+        # picard.cluster here would close that cycle.
+        from picard.cluster import (
+            ClusterList,
+            UnclusteredFiles,
+        )
+
         # Entity registries ---------------------------------------------------
         # filename -> File
         self.files = {}
@@ -97,20 +101,30 @@ class Workspace:
         self._restoring_session = False
 
 
-_workspace = Workspace()
+_workspace: Workspace | None = None
 
 
 def workspace() -> Workspace:
-    """Return the process-wide :class:`Workspace`."""
+    """Return the process-wide :class:`Workspace`.
+
+    The instance is created lazily on first access. This keeps importing this
+    module free of any dependency on :mod:`picard.cluster` (which indirectly
+    imports :mod:`picard.file`, which imports this module), avoiding an
+    import-time cycle.
+    """
+    global _workspace
+    if _workspace is None:
+        _workspace = Workspace()
     return _workspace
 
 
 def set_workspace_provider(provider: Workspace | None) -> None:
     """Install the :class:`Workspace` the accessor returns.
 
-    Passing ``None`` installs a fresh, empty workspace. Intended for the GUI /
-    headless application objects, which each own the workspace for their run,
-    and for tests that need an isolated workspace.
+    Passing ``None`` resets the accessor; a fresh, empty workspace is created
+    on the next :func:`workspace` call. Intended for the GUI / headless
+    application objects, which each own the workspace for their run, and for
+    tests that need an isolated workspace.
     """
     global _workspace
-    _workspace = provider if provider is not None else Workspace()
+    _workspace = provider

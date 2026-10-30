@@ -51,6 +51,7 @@ from picard.tags import (
     file_info_tag_names,
 )
 from picard.util.imagelist import ImageList
+from picard.workspace import workspace
 
 
 class FileTest(PicardTestCase):
@@ -798,7 +799,7 @@ class FileSavingFinishedImagesTest(PicardTestCase):
         super().setUp()
         self.patch_tagger_instance('picard.item')
         self.file = FakeMp3File('somepath/somefile.mp3')
-        self.tagger.files[self.file.filename] = self.file
+        workspace().files[self.file.filename] = self.file
         self.set_config_values(
             {
                 'clear_existing_tags': False,
@@ -911,7 +912,7 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
 
     def _make_file(self, path):
         f = FakeMp3File(path)
-        self.tagger.files[f.filename] = f
+        workspace().files[f.filename] = f
         # Observe update_item calls without touching a real UI item.
         f.update_item = MagicMock()
         return f
@@ -1231,7 +1232,7 @@ class FileIdentityLifecycleTest(PicardTestCase):
         self.patch_tagger_instance('picard.item')
         self.tagger.acoustid_manager = MagicMock()
         self.file = FakeMp3File('somepath/somefile.mp3')
-        self.tagger.files[self.file.filename] = self.file
+        workspace().files[self.file.filename] = self.file
         self.set_config_values(
             {
                 'ignore_existing_acoustid_fingerprints': True,

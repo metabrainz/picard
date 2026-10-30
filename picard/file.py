@@ -126,6 +126,7 @@ from picard.util.filenaming import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
+from picard.workspace import workspace
 
 
 if TYPE_CHECKING:
@@ -689,8 +690,8 @@ class File(MetadataItem):
         self.update(update_selection=batch_done)
 
         if self.state != File.State.REMOVED:
-            del self.tagger.files[old_filename]
-            self.tagger.files[new_filename] = self
+            del workspace().files[old_filename]
+            workspace().files[new_filename] = self
 
         if batch_done:
             self.tagger.flush_saving_image_parents()
@@ -889,7 +890,7 @@ class File(MetadataItem):
     def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
-            if self.tagger.files.get(old_file_path):
+            if workspace().files.get(old_file_path):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
             if not overwrite_existing_files and os.path.exists(new_file_path):
