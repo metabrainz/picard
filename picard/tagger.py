@@ -91,7 +91,6 @@ from picard.cli import get_subcommands_help
 from picard.cluster import (
     Cluster,
     ClusterList,
-    UnclusteredFiles,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -161,7 +160,6 @@ from picard.session.session_manager import (
     save_session_to_path,
 )
 from picard.track import (
-    NonAlbumTrack,
     Track,
 )
 from picard.util import (
@@ -1365,18 +1363,7 @@ class Tagger(QtWidgets.QApplication):
 
     def remove_nat(self, track):
         """Remove the specified non-album track."""
-        log.debug("Removing %r", track)
-        self.remove_files(list(track.iterfiles()))
-        if not self.nats:
-            return
-        try:
-            self.nats.tracks.remove(track)
-        except ValueError:
-            return
-        if not self.nats.tracks:
-            self.remove_album(self.nats)
-        else:
-            self.nats.update(True)
+        self._workspace.remove_nat(track)
 
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
@@ -1384,27 +1371,7 @@ class Tagger(QtWidgets.QApplication):
 
     def remove(self, objects):
         """Remove the specified objects."""
-        files = []
-        with view_updates().suspend_selection():
-            for obj in objects:
-                if isinstance(obj, File):
-                    files.append(obj)
-                elif isinstance(obj, NonAlbumTrack):
-                    self.remove_nat(obj)
-                elif isinstance(obj, Track):
-                    files.extend(obj.files)
-                elif isinstance(obj, Album):
-                    self.window.set_statusbar_message(
-                        N_("Removing album %(id)s: %(artist)s - %(album)s"),
-                        {'id': obj.id, 'artist': obj.metadata['albumartist'], 'album': obj.metadata['album']},
-                    )
-                    self.remove_album(obj)
-                elif isinstance(obj, UnclusteredFiles):
-                    files.extend(list(obj.files))
-                elif isinstance(obj, Cluster):
-                    self.remove_cluster(obj)
-            if files:
-                self.remove_files(files)
+        self._workspace.remove(objects)
 
     def trash_files(self, files):
         with view_updates().suspend_selection():

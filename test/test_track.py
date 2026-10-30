@@ -33,12 +33,12 @@ from picard.album import (
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.file import File
 from picard.releasegroup import ReleaseGroup
-from picard.tagger import Tagger
 from picard.track import (
     NonAlbumTrack,
     Track,
     TrackArtist,
 )
+from picard.workspace import Workspace
 
 
 class TrackTest(PicardTestCase):
@@ -231,11 +231,16 @@ class TestRemoveNat(PicardTestCase):
         self.patch_tagger_instance('picard.track')
         self.set_config_values(setting={'nat_name': 'Standalone Recordings'})
         self.nats = NatAlbum()
+        # NonAlbumTrack.__init__ reads tagger_instance().nats; give the patched
+        # tagger the same NAT container the Workspace uses.
         self.tagger.nats = self.nats
-        self.tagger.albums = {'NATS': self.nats}
-        self.tagger.album_removed = MagicMock()
-        self.tagger.remove_files = MagicMock()
-        self.tagger.remove_album = MagicMock()
+        # remove_nat now lives on Workspace; drive it directly with a Workspace
+        # whose NAT container is set and whose album/file removal is mocked.
+        self.workspace = Workspace()
+        self.workspace.nats = self.nats
+        self.workspace.albums = {'NATS': self.nats}
+        self.workspace.remove_files = MagicMock()
+        self.workspace.remove_album = MagicMock()
 
     def _make_nat(self, nat_id):
         nat = NonAlbumTrack(nat_id)
@@ -246,17 +251,17 @@ class TestRemoveNat(PicardTestCase):
         """Removing a NAT track not in self.nats.tracks should not raise ValueError."""
         nat = NonAlbumTrack('fake-recording-id')
         # Track is NOT in self.nats.tracks — this must not crash
-        Tagger.remove_nat(self.tagger, nat)
+        self.workspace.remove_nat(nat)
 
     def test_remove_nat_last_track_removes_album(self):
         """Removing the last NAT track should remove the NAT album."""
         nat = self._make_nat('recording-1')
-        Tagger.remove_nat(self.tagger, nat)
-        self.tagger.remove_album.assert_called_once_with(self.nats)
+        self.workspace.remove_nat(nat)
+        self.workspace.remove_album.assert_called_once_with(self.nats)
 
     def test_remove_nat_not_last_track_updates(self):
         """Removing a NAT track when others remain should update the album."""
         nat1 = self._make_nat('recording-1')
         self._make_nat('recording-2')
-        Tagger.remove_nat(self.tagger, nat1)
+        self.workspace.remove_nat(nat1)
         self.assertNotIn(nat1, self.nats.tracks)

@@ -56,8 +56,10 @@ from typing import (
 )
 
 from picard import log
+from picard.i18n import N_
 from picard.notification import notifier
 from picard.services import services
+from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
 
 
@@ -303,6 +305,57 @@ class Workspace:
                     notifier().flash_busy()
                     flashed = True
                 obj.lookup_metadata()
+
+    def remove_nat(self, track) -> None:
+        """Remove the non-album track ``track`` from the working set."""
+        log.debug("Removing %r", track)
+        self.remove_files(list(track.iterfiles()))
+        if not self.nats:
+            return
+        try:
+            self.nats.tracks.remove(track)
+        except ValueError:
+            return
+        if not self.nats.tracks:
+            self.remove_album(self.nats)
+        else:
+            self.nats.update(True)
+
+    def remove(self, objects) -> None:
+        """Remove ``objects`` (files, tracks, albums, clusters) from the set."""
+        # Imported here to avoid cycles with the entity modules.
+        from picard.album import Album
+        from picard.cluster import (
+            Cluster,
+            UnclusteredFiles,
+        )
+        from picard.file import File
+        from picard.track import (
+            NonAlbumTrack,
+            Track,
+        )
+
+        files = []
+        with view_updates().suspend_selection():
+            for obj in objects:
+                if isinstance(obj, File):
+                    files.append(obj)
+                elif isinstance(obj, NonAlbumTrack):
+                    self.remove_nat(obj)
+                elif isinstance(obj, Track):
+                    files.extend(obj.files)
+                elif isinstance(obj, Album):
+                    notifier().status_message(
+                        N_("Removing album %(id)s: %(artist)s - %(album)s"),
+                        {'id': obj.id, 'artist': obj.metadata['albumartist'], 'album': obj.metadata['album']},
+                    )
+                    self.remove_album(obj)
+                elif isinstance(obj, UnclusteredFiles):
+                    files.extend(list(obj.files))
+                elif isinstance(obj, Cluster):
+                    self.remove_cluster(obj)
+            if files:
+                self.remove_files(files)
 
 
 _workspace: Workspace | None = None
