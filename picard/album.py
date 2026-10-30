@@ -110,6 +110,7 @@ from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
 from picard.view_updates import view_updates
 from picard.webservice import PendingRequest
+from picard.workspace import workspace
 
 
 RECORDING_QUERY_LIMIT = 100
@@ -520,8 +521,8 @@ class Album(MetadataItem):
         if release_id == self.id:
             return False
 
-        self.tagger.mbid_redirects[self.id] = release_id
-        album = self.tagger.albums.get(release_id)
+        workspace().mbid_redirects[self.id] = release_id
+        album = workspace().albums.get(release_id)
         if album:
             log.debug("Release %r already loaded", release_id)
             album.match_files(self.unmatched_files.files)
@@ -529,8 +530,8 @@ class Album(MetadataItem):
             self.tagger.remove_album(self)
             return True
 
-        del self.tagger.albums[self.id]
-        self.tagger.albums[release_id] = self
+        del workspace().albums[self.id]
+        workspace().albums[release_id] = self
         self.id = release_id
         return False
 
