@@ -91,6 +91,13 @@ class ScanPathsRecursiveTest(PicardTestCase):
         all_files = self._names(scan_paths_recursive([self.root], recursive=True, ignore_hidden=False))
         self.assertIn('.hidden.mp3', all_files)
 
+    def test_hidden_path_passed_directly_respects_ignore_hidden(self):
+        # A hidden file given directly as a path (not discovered by scanning)
+        # must also honour ignore_hidden: skipped when True, yielded when False.
+        hidden = normpath(self._touch_hidden('.hidden.mp3'))
+        self.assertEqual([], list(scan_paths_recursive([hidden], recursive=True, ignore_hidden=True)))
+        self.assertEqual([hidden], list(scan_paths_recursive([hidden], recursive=True, ignore_hidden=False)))
+
     def test_missing_path_is_skipped(self):
         missing = normpath(os.path.join(self.root, 'does-not-exist'))
         # Non-dir, non-existent path is yielded as-is (caller decides); a

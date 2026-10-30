@@ -703,7 +703,10 @@ def scan_paths_recursive(paths: Iterable[str], recursive: bool, ignore_hidden: b
                             local_paths.append(entry.path)
                     else:
                         yield entry.path
-            else:
+            elif not ignore_hidden or not is_hidden(current_path):
+                # A path given directly (not discovered by scanning) is yielded
+                # as-is, but still respects ignore_hidden so a hidden file
+                # passed in is not yielded when hidden files should be skipped.
                 yield current_path
         except OSError as err:
             log.warning(err)
