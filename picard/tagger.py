@@ -762,26 +762,14 @@ class Tagger(QtWidgets.QApplication):
         self.start_process_commands()
 
     def iter_album_files(self):
-        for album in self.albums.values():
-            yield from album.iterfiles()
+        return self._workspace.iter_album_files()
 
     def iter_all_files(self):
-        yield from self.unclustered_files.files
-        yield from self.iter_album_files()
-        yield from self.clusters.iterfiles()
+        return self._workspace.iter_all_files()
 
     def clear_session(self) -> None:
         """Remove all files, clusters and albums from current UI state."""
-        with view_updates().suspend_selection():
-            # Remove all albums (includes NAT)
-            for album in list(self.albums.values()):
-                self.remove_album(album)
-            # Remove all left-pane clusters
-            for cluster in list(self.clusters):
-                self.remove_cluster(cluster)
-            # Remove all unclustered files
-            if self.unclustered_files.files:
-                self.remove_files(list(self.unclustered_files.files))
+        self._workspace.clear_session()
 
     def _init_remote_commands(self):
         self.commands = RemoteCommands.commands()
@@ -862,7 +850,7 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""
-        self.move_files_to_album([file], albumid)
+        self._workspace.move_file_to_album(file, albumid)
 
     def move_file_to_track(self, file, albumid, recordingid):
         """Move `file` to recording `recordingid` on album `albumid`."""

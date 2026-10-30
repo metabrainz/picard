@@ -136,6 +136,30 @@ class Workspace:
 
     # --- registry orchestration ---------------------------------------------
 
+    def iter_album_files(self):
+        """Yield every file matched to a loaded album."""
+        for album in self.albums.values():
+            yield from album.iterfiles()
+
+    def iter_all_files(self):
+        """Yield every file in the working set (unclustered, album, cluster)."""
+        yield from self.unclustered_files.files
+        yield from self.iter_album_files()
+        yield from self.clusters.iterfiles()
+
+    def clear_session(self) -> None:
+        """Remove all files, clusters and albums from the working set."""
+        with view_updates().suspend_selection():
+            # Remove all albums (includes NAT)
+            for album in list(self.albums.values()):
+                self.remove_album(album)
+            # Remove all left-pane clusters
+            for cluster in list(self.clusters):
+                self.remove_cluster(cluster)
+            # Remove all unclustered files
+            if self.unclustered_files.files:
+                self.remove_files(list(self.unclustered_files.files))
+
     def get_release_group_by_id(self, rg_id: str) -> ReleaseGroup:
         """Return the ReleaseGroup for ``rg_id``, creating it if unknown.
 
@@ -245,6 +269,10 @@ class Workspace:
         album = self.load_album(albumid)
         file.match_recordingid = recordingid
         album.match_files([file])
+
+    def move_file_to_album(self, file, albumid):
+        """Move ``file`` to a track on album ``albumid``."""
+        self.move_files_to_album([file], albumid)
 
     def create_nats(self) -> NatAlbum:
         """Return the Non-Album-Tracks container, creating it on first use."""
