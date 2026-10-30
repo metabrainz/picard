@@ -199,8 +199,11 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-    def __init__(self, album_id, discid=None, disc_isrcs=None):
+    def __init__(self, album_id: str, discid=None, disc_isrcs=None):
         super().__init__(album_id)
+        # An Album always has a release MBID (str); narrow the base
+        # MetadataItem.id (typed loosely as it is shared across entity types).
+        self.id: str = album_id
         self.tracks: list[Track] = []
         self.loaded = False
         self._load_request = None
@@ -609,7 +612,9 @@ class Album(MetadataItem):
                         if mbid_validate(recordingid) and file.metadata['album'] == nat_name:
                             nats = True
                             self.tagger.move_file_to_nat(file, recordingid)
-                            self.tagger.nats.update()
+                            nat_album = workspace().nats
+                            if nat_album is not None:
+                                nat_album.update()
                     if nats and not self.get_num_unmatched_files():
                         self.tagger.remove_album(self)
                         error = False
@@ -1195,16 +1200,16 @@ class Album(MetadataItem):
             return
         for file in list(self.iterfiles(True)):
             file.move(self.unmatched_files)
-        album = self.tagger.albums.get(mbid)
+        album = workspace().albums.get(mbid)
         if album:
             album.match_files(self.unmatched_files.files)
             album.update()
             self.tagger.remove_album(self)
         else:
-            del self.tagger.albums[self.id]
+            del workspace().albums[self.id]
             self.release_group.loaded_albums.discard(self.id)
             self.id = mbid
-            self.tagger.albums[mbid] = self
+            workspace().albums[mbid] = self
             self.load(priority=True, refresh=True)
 
     def update_metadata_images(self):
