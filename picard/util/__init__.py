@@ -679,6 +679,33 @@ def is_hidden(filepath: str) -> bool:
     return (not IS_WIN and name.startswith('.')) or _has_hidden_attribute(filepath)
 
 
+def scan_paths_recursive(paths, recursive, ignore_hidden):
+    """Yield file paths from ``paths``, descending into directories.
+
+    A directory is expanded to the files it contains; with ``recursive`` it is
+    walked depth-first. ``ignore_hidden`` skips hidden entries. Non-directory
+    paths are yielded as-is. OSErrors (e.g. unreadable dir) are logged and
+    skipped. Shared by the GUI tagger's add_paths and the headless file-add
+    command.
+    """
+    local_paths = list(paths)
+    while local_paths:
+        current_path = normpath(local_paths.pop(0))
+        try:
+            if os.path.isdir(current_path):
+                for entry in os.scandir(current_path):
+                    if ignore_hidden and is_hidden(entry.path):
+                        continue
+                    if recursive and entry.is_dir():
+                        local_paths.append(entry.path)
+                    else:
+                        yield entry.path
+            else:
+                yield current_path
+        except OSError as err:
+            log.warning(err)
+
+
 if IS_WIN:
     from ctypes import windll  # type: ignore[attr-defined]
 
