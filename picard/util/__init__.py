@@ -679,7 +679,7 @@ def is_hidden(filepath: str) -> bool:
     return (not IS_WIN and name.startswith('.')) or _has_hidden_attribute(filepath)
 
 
-def scan_paths_recursive(paths, recursive, ignore_hidden):
+def scan_paths_recursive(paths: Iterable[str], recursive: bool, ignore_hidden: bool) -> Iterator[str]:
     """Yield file paths from ``paths``, descending into directories.
 
     A directory is expanded to the files it contains; with ``recursive`` it is
@@ -696,8 +696,11 @@ def scan_paths_recursive(paths, recursive, ignore_hidden):
                 for entry in os.scandir(current_path):
                     if ignore_hidden and is_hidden(entry.path):
                         continue
-                    if recursive and entry.is_dir():
-                        local_paths.append(entry.path)
+                    if entry.is_dir():
+                        # Only descend into subdirectories when recursing;
+                        # never yield a directory path (callers expect files).
+                        if recursive:
+                            local_paths.append(entry.path)
                     else:
                         yield entry.path
             else:
