@@ -67,11 +67,12 @@ from picard.services import set_services_provider
 from picard.util import thread
 from picard.workspace import (
     Workspace,
+    WorkspaceHost,
     set_workspace_provider,
 )
 
 
-class HeadlessTagger(QtCore.QCoreApplication):
+class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
     """A minimal, GUI-less application object for the tagging core."""
 
     # Signals the tagging core emits on the application object. The GUI Tagger
@@ -265,40 +266,6 @@ class HeadlessTagger(QtCore.QCoreApplication):
                 return True
             if deadline is not None and time.monotonic() >= deadline:
                 return False
-
-    # --- save bookkeeping ---------------------------------------------------
-    #
-    # The registry and batch-save bookkeeping live on the Workspace; expose the
-    # fields the File save path reads via tagger_instance() as delegating
-    # properties (mirroring the GUI Tagger).
-
-    @property
-    def files(self):
-        return self._workspace.files
-
-    @files.setter
-    def files(self, value):
-        self._workspace.files = value
-
-    @property
-    def _saving_files_count(self):
-        return self._workspace._saving_files_count
-
-    @_saving_files_count.setter
-    def _saving_files_count(self, value):
-        self._workspace._saving_files_count = value
-
-    @property
-    def _saving_dirty_image_parents(self):
-        return self._workspace._saving_dirty_image_parents
-
-    @_saving_dirty_image_parents.setter
-    def _saving_dirty_image_parents(self, value):
-        self._workspace._saving_dirty_image_parents = value
-
-    def flush_saving_image_parents(self):
-        """Delegate to the Workspace (see Workspace.flush_saving_image_parents)."""
-        self._workspace.flush_saving_image_parents()
 
     # --- lifecycle ----------------------------------------------------------
 

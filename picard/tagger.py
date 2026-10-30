@@ -201,6 +201,7 @@ from picard.webservice.api_helpers import (
 )
 from picard.workspace import (
     Workspace,
+    WorkspaceHost,
     set_workspace_provider,
 )
 from picard.workspace_events import (
@@ -237,7 +238,7 @@ _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
 
-class Tagger(QtWidgets.QApplication):
+class Tagger(WorkspaceHost, QtWidgets.QApplication):
     tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
@@ -559,94 +560,6 @@ class Tagger(QtWidgets.QApplication):
     # keep ``self.tagger.<field>`` working (read and write) as a
     # backwards-compatible surface for GUI code and plugins; new core code reads
     # ``workspace().<field>`` directly.
-
-    @property
-    def files(self):
-        return self._workspace.files
-
-    @files.setter
-    def files(self, value):
-        self._workspace.files = value
-
-    @property
-    def clusters(self):
-        return self._workspace.clusters
-
-    @clusters.setter
-    def clusters(self, value):
-        self._workspace.clusters = value
-
-    @property
-    def albums(self):
-        return self._workspace.albums
-
-    @albums.setter
-    def albums(self, value):
-        self._workspace.albums = value
-
-    @property
-    def release_groups(self):
-        return self._workspace.release_groups
-
-    @release_groups.setter
-    def release_groups(self, value):
-        self._workspace.release_groups = value
-
-    @property
-    def mbid_redirects(self):
-        return self._workspace.mbid_redirects
-
-    @mbid_redirects.setter
-    def mbid_redirects(self, value):
-        self._workspace.mbid_redirects = value
-
-    @property
-    def unclustered_files(self):
-        return self._workspace.unclustered_files
-
-    @unclustered_files.setter
-    def unclustered_files(self, value):
-        self._workspace.unclustered_files = value
-
-    @property
-    def nats(self):
-        return self._workspace.nats
-
-    @nats.setter
-    def nats(self, value):
-        self._workspace.nats = value
-
-    @property
-    def _pending_files_count(self):
-        return self._workspace._pending_files_count
-
-    @_pending_files_count.setter
-    def _pending_files_count(self, value):
-        self._workspace._pending_files_count = value
-
-    @property
-    def _saving_files_count(self):
-        return self._workspace._saving_files_count
-
-    @_saving_files_count.setter
-    def _saving_files_count(self, value):
-        self._workspace._saving_files_count = value
-
-    @property
-    def _saving_dirty_image_parents(self):
-        return self._workspace._saving_dirty_image_parents
-
-    @_saving_dirty_image_parents.setter
-    def _saving_dirty_image_parents(self, value):
-        self._workspace._saving_dirty_image_parents = value
-
-    @property
-    def _restoring_session(self):
-        return self._workspace._restoring_session
-
-    @_restoring_session.setter
-    def _restoring_session(self, value):
-        self._workspace._restoring_session = value
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -1280,18 +1193,6 @@ class Tagger(QtWidgets.QApplication):
         """Save the specified objects."""
         for file in iter_files_from_objects(objects, save=True):
             file.save()
-
-    def flush_saving_image_parents(self):
-        """Rebuild cover-art image aggregation once for each container whose
-        update was deferred during a batch save, then clear the set.
-
-        During a batch save, files register their parent containers (clusters,
-        tracks, albums) in ``_saving_dirty_image_parents`` instead of emitting
-        ``metadata_images_changed`` per file (which would rebuild each parent's
-        image list over all children once per saved file). This performs that
-        rebuild a single time when the batch completes.
-        """
-        self._workspace.flush_saving_image_parents()
 
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()

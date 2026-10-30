@@ -455,6 +455,115 @@ class Workspace:
 _workspace: Workspace | None = None
 
 
+class WorkspaceHost:
+    """Delegating access to the working set for an application object.
+
+    Both the GUI ``Tagger`` and the headless ``HeadlessTagger`` own a
+    :class:`Workspace` as ``self._workspace`` and historically exposed each of
+    its registries/bookkeeping fields as ``self.<field>`` (so core code reaching
+    the running app via ``tagger_instance()`` — e.g. ``self.tagger.albums`` —
+    keeps working). This mixin provides those delegating properties once, shared
+    by both app objects, instead of duplicating the boilerplate in each.
+
+    Requires the host to set ``self._workspace`` (a :class:`Workspace`) before
+    these are used.
+    """
+
+    _workspace: Workspace
+
+    @property
+    def files(self):
+        return self._workspace.files
+
+    @files.setter
+    def files(self, value):
+        self._workspace.files = value
+
+    @property
+    def clusters(self):
+        return self._workspace.clusters
+
+    @clusters.setter
+    def clusters(self, value):
+        self._workspace.clusters = value
+
+    @property
+    def albums(self):
+        return self._workspace.albums
+
+    @albums.setter
+    def albums(self, value):
+        self._workspace.albums = value
+
+    @property
+    def release_groups(self):
+        return self._workspace.release_groups
+
+    @release_groups.setter
+    def release_groups(self, value):
+        self._workspace.release_groups = value
+
+    @property
+    def mbid_redirects(self):
+        return self._workspace.mbid_redirects
+
+    @mbid_redirects.setter
+    def mbid_redirects(self, value):
+        self._workspace.mbid_redirects = value
+
+    @property
+    def unclustered_files(self):
+        return self._workspace.unclustered_files
+
+    @unclustered_files.setter
+    def unclustered_files(self, value):
+        self._workspace.unclustered_files = value
+
+    @property
+    def nats(self):
+        return self._workspace.nats
+
+    @nats.setter
+    def nats(self, value):
+        self._workspace.nats = value
+
+    @property
+    def _pending_files_count(self):
+        return self._workspace._pending_files_count
+
+    @_pending_files_count.setter
+    def _pending_files_count(self, value):
+        self._workspace._pending_files_count = value
+
+    @property
+    def _saving_files_count(self):
+        return self._workspace._saving_files_count
+
+    @_saving_files_count.setter
+    def _saving_files_count(self, value):
+        self._workspace._saving_files_count = value
+
+    @property
+    def _saving_dirty_image_parents(self):
+        return self._workspace._saving_dirty_image_parents
+
+    @_saving_dirty_image_parents.setter
+    def _saving_dirty_image_parents(self, value):
+        self._workspace._saving_dirty_image_parents = value
+
+    @property
+    def _restoring_session(self):
+        return self._workspace._restoring_session
+
+    @_restoring_session.setter
+    def _restoring_session(self, value):
+        self._workspace._restoring_session = value
+
+    def flush_saving_image_parents(self):
+        """Delegate to the Workspace (see Workspace.flush_saving_image_parents)."""
+        self._workspace.flush_saving_image_parents()
+
+
 def workspace() -> Workspace:
     """Return the process-wide :class:`Workspace`.
 
