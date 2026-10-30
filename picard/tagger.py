@@ -203,6 +203,7 @@ from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
     MBAPIHelper,
 )
+from picard.workspace import Workspace
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
@@ -286,7 +287,7 @@ class Tagger(QtWidgets.QApplication):
         self._init_fingerprinting()
         self._init_plugins()
         self._init_browser_integration()
-        self._init_tagger_entities()
+        self._init_entities()
 
         self._init_ui(config)
 
@@ -505,26 +506,108 @@ class Tagger(QtWidgets.QApplication):
         """Initialize the ReadTheDocs information"""
         ReadTheDocs.initialize(self.webservice)
 
-    def _init_tagger_entities(self):
+    def _init_entities(self):
         """Initialize tagger objects/entities"""
-        self._pending_files_count = 0
-        # Number of file save tasks currently queued or running. Used to
-        # coalesce the (expensive) selection/metadata-box refresh so it runs
-        # once when a batch save finishes rather than once per saved file.
-        self._saving_files_count = 0
-        # Parent containers (clusters/tracks/albums) whose cover-art image
-        # aggregation was deferred during a batch save; each is refreshed once
-        # when the batch completes (see File._saving_finished).
-        self._saving_dirty_image_parents = set()
-        self.files = {}
-        self.clusters = ClusterList()
-        self.albums = {}
-        self.release_groups = {}
-        self.mbid_redirects = {}
-        self.unclustered_files = UnclusteredFiles()
-        self.nats = None
-        # When True, we are restoring a session; skip auto-matching by MBIDs
-        self._restoring_session = False
+        # The entity registries and batch-save/restore bookkeeping now live on
+        # a Workspace. Tagger owns one and exposes each field as a delegating
+        # property below, so existing self.tagger.<field> access is unchanged.
+        # See picard.workspace.
+        self._workspace = Workspace()
+
+    # --- workspace field delegation -----------------------------------------
+    #
+    # The session registries/bookkeeping live on the Workspace. These properties
+    # keep ``self.tagger.<field>`` working (read and write) as a
+    # backwards-compatible surface for GUI code and plugins; new core code reads
+    # ``workspace().<field>`` directly.
+
+    @property
+    def files(self):
+        return self._workspace.files
+
+    @files.setter
+    def files(self, value):
+        self._workspace.files = value
+
+    @property
+    def clusters(self):
+        return self._workspace.clusters
+
+    @clusters.setter
+    def clusters(self, value):
+        self._workspace.clusters = value
+
+    @property
+    def albums(self):
+        return self._workspace.albums
+
+    @albums.setter
+    def albums(self, value):
+        self._workspace.albums = value
+
+    @property
+    def release_groups(self):
+        return self._workspace.release_groups
+
+    @release_groups.setter
+    def release_groups(self, value):
+        self._workspace.release_groups = value
+
+    @property
+    def mbid_redirects(self):
+        return self._workspace.mbid_redirects
+
+    @mbid_redirects.setter
+    def mbid_redirects(self, value):
+        self._workspace.mbid_redirects = value
+
+    @property
+    def unclustered_files(self):
+        return self._workspace.unclustered_files
+
+    @unclustered_files.setter
+    def unclustered_files(self, value):
+        self._workspace.unclustered_files = value
+
+    @property
+    def nats(self):
+        return self._workspace.nats
+
+    @nats.setter
+    def nats(self, value):
+        self._workspace.nats = value
+
+    @property
+    def _pending_files_count(self):
+        return self._workspace._pending_files_count
+
+    @_pending_files_count.setter
+    def _pending_files_count(self, value):
+        self._workspace._pending_files_count = value
+
+    @property
+    def _saving_files_count(self):
+        return self._workspace._saving_files_count
+
+    @_saving_files_count.setter
+    def _saving_files_count(self, value):
+        self._workspace._saving_files_count = value
+
+    @property
+    def _saving_dirty_image_parents(self):
+        return self._workspace._saving_dirty_image_parents
+
+    @_saving_dirty_image_parents.setter
+    def _saving_dirty_image_parents(self, value):
+        self._workspace._saving_dirty_image_parents = value
+
+    @property
+    def _restoring_session(self):
+        return self._workspace._restoring_session
+
+    @_restoring_session.setter
+    def _restoring_session(self, value):
+        self._workspace._restoring_session = value
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
