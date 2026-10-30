@@ -485,7 +485,7 @@ class File(MetadataItem):
         # Track in-flight saves so _saving_finished can coalesce the expensive
         # selection/metadata-box refresh to once per batch (see PICARD
         # batch-save memory profiling).
-        self.tagger._saving_files_count += 1
+        workspace()._saving_files_count += 1
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
@@ -627,16 +627,16 @@ class File(MetadataItem):
         # This save task has finished; decrement the in-flight counter so the
         # selection/metadata-box refresh can be coalesced to run only once,
         # when the last file of a batch save completes.
-        if self.tagger._saving_files_count > 0:
-            self.tagger._saving_files_count -= 1
-        batch_done = self.tagger._saving_files_count == 0
+        if workspace()._saving_files_count > 0:
+            workspace()._saving_files_count -= 1
+        batch_done = workspace()._saving_files_count == 0
         # Handle file removed before save
         # Result is None if save was skipped
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
             # Still flush any deferred image aggregation if this was the last
             # file of the batch, so earlier files' parents are not left stale.
             if batch_done:
-                self.tagger.flush_saving_image_parents()
+                workspace().flush_saving_image_parents()
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -695,7 +695,7 @@ class File(MetadataItem):
             workspace().files[new_filename] = self
 
         if batch_done:
-            self.tagger.flush_saving_image_parents()
+            workspace().flush_saving_image_parents()
 
         if self.tagger.stopping:
             log.debug("Save of %r completed before stopping Picard", self.filename)
@@ -706,11 +706,11 @@ class File(MetadataItem):
 
         Instead of emitting metadata_images_changed now (which would make each
         parent rebuild its image list over all children), the parent chain is
-        collected on the tagger and refreshed once when the batch finishes.
+        collected on the workspace and refreshed once when the batch finishes.
         """
         parent = self.parent_item
         while parent is not None:
-            self.tagger._saving_dirty_image_parents.add(parent)
+            workspace()._saving_dirty_image_parents.add(parent)
             # Both Cluster and Track expose the containing album via .album
             # (None when there is none), so the chain ends at the album.
             parent = getattr(parent, 'album', None)

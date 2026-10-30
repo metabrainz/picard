@@ -1287,16 +1287,7 @@ class Tagger(QtWidgets.QApplication):
         image list over all children once per saved file). This performs that
         rebuild a single time when the batch completes.
         """
-        parents = self._saving_dirty_image_parents
-        if not parents:
-            return
-        # Copy and clear first: update_metadata_images() may emit signals that
-        # trigger further updates; we don't want to iterate a mutating set.
-        self._saving_dirty_image_parents = set()
-        for parent in parents:
-            update = getattr(parent, 'update_metadata_images', None)
-            if update is not None:
-                update()
+        self._workspace.flush_saving_image_parents()
 
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()

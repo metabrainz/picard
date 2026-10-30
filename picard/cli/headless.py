@@ -41,8 +41,8 @@ core code reaching services via ``services()`` transparently uses it.
 
 This object intentionally holds no GUI, no session/registry orchestration and
 no album/cluster state beyond ``files`` — it is scoped to the file tag
-read/write pipeline. Broader headless tagging (album loading, matching) is a
-later step.
+read/write pipeline. Richer headless workflows (album loading, matching) are
+driven on top of it by the command engine rather than baked into this object.
 """
 
 import time
@@ -65,6 +65,10 @@ from picard.formats.registry import FormatRegistry
 from picard.options import init_options
 from picard.services import set_services_provider
 from picard.util import thread
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+)
 
 
 class HeadlessTagger(QtCore.QCoreApplication):
@@ -81,12 +85,13 @@ class HeadlessTagger(QtCore.QCoreApplication):
         self.stopping = False
         self.exit_cleanup = []
 
-        # File registry (filename -> File), as read by the save path.
-        self.files = {}
-
-        # Batch-save bookkeeping read by File._saving_finished.
-        self._saving_files_count = 0
-        self._saving_dirty_image_parents = set()
+        # The working set (file/album/cluster registries + batch-save
+        # bookkeeping) lives on a Workspace, as in the GUI Tagger. Own one and
+        # install it as the process-wide provider so core code reaching the
+        # working set via workspace() — and the registry/bookkeeping fields the
+        # File save path reads via tagger_instance() — all see this instance.
+        self._workspace = Workspace()
+        set_workspace_provider(self._workspace)
 
         # Services are created lazily (see the properties below) so a command
         # that needs none (e.g. profiles) pays for none, and one that needs only
@@ -262,19 +267,38 @@ class HeadlessTagger(QtCore.QCoreApplication):
                 return False
 
     # --- save bookkeeping ---------------------------------------------------
+    #
+    # The registry and batch-save bookkeeping live on the Workspace; expose the
+    # fields the File save path reads via tagger_instance() as delegating
+    # properties (mirroring the GUI Tagger).
+
+    @property
+    def files(self):
+        return self._workspace.files
+
+    @files.setter
+    def files(self, value):
+        self._workspace.files = value
+
+    @property
+    def _saving_files_count(self):
+        return self._workspace._saving_files_count
+
+    @_saving_files_count.setter
+    def _saving_files_count(self, value):
+        self._workspace._saving_files_count = value
+
+    @property
+    def _saving_dirty_image_parents(self):
+        return self._workspace._saving_dirty_image_parents
+
+    @_saving_dirty_image_parents.setter
+    def _saving_dirty_image_parents(self, value):
+        self._workspace._saving_dirty_image_parents = value
 
     def flush_saving_image_parents(self):
-        """Rebuild deferred cover-art image aggregation for a completed batch.
-
-        Mirrors Tagger.flush_saving_image_parents. For standalone files (no
-        album/cluster parent) the set stays empty and this is a no-op.
-        """
-        parents = self._saving_dirty_image_parents
-        if not parents:
-            return
-        self._saving_dirty_image_parents = set()
-        for parent in parents:
-            parent.update_metadata_images()
+        """Delegate to the Workspace (see Workspace.flush_saving_image_parents)."""
+        self._workspace.flush_saving_image_parents()
 
     # --- lifecycle ----------------------------------------------------------
 
@@ -291,3 +315,4 @@ class HeadlessTagger(QtCore.QCoreApplication):
         # Clear the providers we installed so a later app/test starts clean.
         set_services_provider(None)
         set_tagger_provider(None)
+        set_workspace_provider(None)

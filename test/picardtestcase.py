@@ -125,12 +125,12 @@ def MockTagger():
     tagger.priority_thread_pool = FakeThreadPool()
     tagger.get_release_group_by_id = MagicMock(side_effect=lambda rg_id: ReleaseGroup(rg_id))
     tagger.stopping = False
+    # A real dict so code reading the file registry off the mock tagger (e.g.
+    # browser.addrelease, session code) behaves like a registry. The batch-save
+    # bookkeeping and the canonical files registry now live on the Workspace
+    # (installed per-test in PicardTestCase.setUp); File reads those via
+    # workspace(). This attribute is only for consumers still on self.tagger.
     tagger.files = {}
-    tagger._saving_files_count = 0
-    tagger._saving_dirty_image_parents = set()
-    # Use the real implementation so batch-save image-aggregation coalescing
-    # behaves correctly in tests (it operates on _saving_dirty_image_parents).
-    tagger.flush_saving_image_parents = MagicMock(side_effect=lambda: Tagger.flush_saving_image_parents(tagger))
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     return tagger
