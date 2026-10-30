@@ -47,6 +47,26 @@ that ``clear_session`` resets. ``stopping`` is application lifecycle (not
 workspace) and stays on the application object.
 """
 
+from __future__ import annotations
+
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
+
+
+if TYPE_CHECKING:
+    from picard.album import (
+        Album,
+        NatAlbum,
+    )
+    from picard.cluster import (
+        ClusterList,
+        UnclusteredFiles,
+    )
+    from picard.file import File
+    from picard.releasegroup import ReleaseGroup
+
 
 class Workspace:
     """The mutable working set of a tagging run.
@@ -71,34 +91,34 @@ class Workspace:
 
         # Entity registries ---------------------------------------------------
         # filename -> File
-        self.files = {}
+        self.files: dict[str, File] = {}
         # left-pane clusters
-        self.clusters = ClusterList()
+        self.clusters: ClusterList = ClusterList()
         # release_id -> Album
-        self.albums = {}
+        self.albums: dict[str, Album] = {}
         # release_group_id -> ReleaseGroup
-        self.release_groups = {}
+        self.release_groups: dict[str, ReleaseGroup] = {}
         # old release_id -> new release_id (release redirects)
-        self.mbid_redirects = {}
+        self.mbid_redirects: dict[str, str] = {}
         # the "unclustered files" bucket
-        self.unclustered_files = UnclusteredFiles()
+        self.unclustered_files: UnclusteredFiles = UnclusteredFiles()
         # the non-album-tracks container, created on first use
-        self.nats = None
+        self.nats: NatAlbum | None = None
 
         # Bookkeeping ---------------------------------------------------------
         # Number of files currently queued/loading. Drives post-load actions
         # (e.g. auto-clustering of newly added files).
-        self._pending_files_count = 0
+        self._pending_files_count: int = 0
         # Number of file save tasks currently queued or running. Used to
         # coalesce the (expensive) selection/metadata-box refresh so it runs
         # once when a batch save finishes rather than once per saved file.
-        self._saving_files_count = 0
+        self._saving_files_count: int = 0
         # Parent containers (clusters/tracks/albums) whose cover-art image
         # aggregation was deferred during a batch save; each is refreshed once
         # when the batch completes (see File._saving_finished).
-        self._saving_dirty_image_parents = set()
+        self._saving_dirty_image_parents: set[Any] = set()
         # When True, we are restoring a session; skip auto-matching by MBIDs.
-        self._restoring_session = False
+        self._restoring_session: bool = False
 
 
 _workspace: Workspace | None = None
