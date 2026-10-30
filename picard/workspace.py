@@ -54,6 +54,7 @@ from typing import (
     Any,
 )
 
+from picard import log
 from picard.services import services
 from picard.workspace_events import workspace_events
 
@@ -150,6 +151,33 @@ class Workspace:
                 acoustid_client.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
+        workspace_events().tagger_stats_changed.emit()
+
+    def remove_album(self, album) -> None:
+        """Remove ``album`` from the working set.
+
+        Stops any in-flight loading, removes the album's files, clears the
+        album from the registry and its release group, drops the NAT reference
+        if applicable, announces the removal and runs post-removal processors.
+        """
+        # Local imports break cycles: picard.album imports this module, and
+        # the ISRC manager is reached as a service.
+        from picard.album import run_album_post_removal_processors
+
+        log.debug("Removing %r", album)
+        if album.id not in self.albums:
+            return
+        album.stop_loading()
+        album.cancel_tasks()
+        self.remove_files(list(album.iterfiles()))
+        services().isrc_submit_manager.remove_album(album)
+        del self.albums[album.id]
+        if album.release_group:
+            album.release_group.remove_album(album.id)
+        if album == self.nats:
+            self.nats = None
+        workspace_events().album_removed.emit(album)
+        run_album_post_removal_processors(album)
         workspace_events().tagger_stats_changed.emit()
 
 

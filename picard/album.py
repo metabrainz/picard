@@ -530,7 +530,7 @@ class Album(MetadataItem):
             log.debug("Release %r already loaded", release_id)
             album.match_files(self.unmatched_files.files)
             album.update()
-            self.tagger.remove_album(self)
+            workspace().remove_album(self)
             return True
 
         del workspace().albums[self.id]
@@ -616,7 +616,7 @@ class Album(MetadataItem):
                             if nat_album is not None:
                                 nat_album.update()
                     if nats and not self.get_num_unmatched_files():
-                        self.tagger.remove_album(self)
+                        workspace().remove_album(self)
                         error = False
             else:
                 try:
@@ -1204,7 +1204,7 @@ class Album(MetadataItem):
         if album:
             album.match_files(self.unmatched_files.files)
             album.update()
-            self.tagger.remove_album(self)
+            workspace().remove_album(self)
         else:
             del workspace().albums[self.id]
             self.release_group.loaded_albums.discard(self.id)

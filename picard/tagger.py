@@ -84,7 +84,6 @@ from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
     Album,
     NatAlbum,
-    run_album_post_removal_processors,
 )
 from picard.audit import setup_audit
 from picard.browser.filelookup import FileLookup
@@ -1402,21 +1401,7 @@ class Tagger(QtWidgets.QApplication):
 
     def remove_album(self, album):
         """Remove the specified album."""
-        log.debug("Removing %r", album)
-        if album.id not in self.albums:
-            return
-        album.stop_loading()
-        album.cancel_tasks()
-        self.remove_files(list(album.iterfiles()))
-        self.isrc_submit_manager.remove_album(album)
-        del self.albums[album.id]
-        if album.release_group:
-            album.release_group.remove_album(album.id)
-        if album == self.nats:
-            self.nats = None
-        workspace_events().album_removed.emit(album)
-        run_album_post_removal_processors(album)
-        workspace_events().tagger_stats_changed.emit()
+        self._workspace.remove_album(album)
 
     def remove_nat(self, track):
         """Remove the specified non-album track."""
