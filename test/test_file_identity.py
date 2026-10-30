@@ -177,6 +177,7 @@ class TestFileIdentity(PicardTestCase):
         self.assertFalse(id2)
 
     @unittest.skipIf(IS_WIN, "chmod doesn't work the same on Windows")
+    @unittest.skipIf(os.geteuid() == 0, "test fails for root user")
     def test_identity_comparison_unreadable_file(self):
         """Test that comparing identities raises FileIdentityError if file becomes unreadable."""
         fname = self._write_temp(b"content")
