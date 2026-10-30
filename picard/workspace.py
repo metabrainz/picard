@@ -120,6 +120,20 @@ class Workspace:
         # When True, we are restoring a session; skip auto-matching by MBIDs.
         self._restoring_session: bool = False
 
+    # --- registry orchestration ---------------------------------------------
+
+    def get_release_group_by_id(self, rg_id: str) -> ReleaseGroup:
+        """Return the ReleaseGroup for ``rg_id``, creating it if unknown.
+
+        The release-group registry is keyed by MBID; a new ReleaseGroup is
+        created and cached on first request for an id.
+        """
+        # Imported here, not at module level, to avoid an import cycle
+        # (picard.releasegroup -> picard.item -> ... -> picard.workspace).
+        from picard.releasegroup import ReleaseGroup
+
+        return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
+
 
 _workspace: Workspace | None = None
 

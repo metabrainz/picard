@@ -1231,7 +1231,7 @@ class File(MetadataItem):
                     self.metadata['acoustid_id'] = acoustid
                     services().acoustid_manager.add(self, recording_id)
                 if release_group_id is not None:
-                    releasegroup = self.tagger.get_release_group_by_id(release_group_id)
+                    releasegroup = workspace().get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
                     self.tagger.move_file_to_track(self, release_id, recording_id)
                 else:

@@ -156,7 +156,6 @@ from picard.notification import (
     notifier,
     set_notifier_sink,
 )
-from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import (
@@ -1336,7 +1335,7 @@ class Tagger(QtWidgets.QApplication):
                     return nat
 
     def get_release_group_by_id(self, rg_id):
-        return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
+        return self._workspace.get_release_group_by_id(rg_id)
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""

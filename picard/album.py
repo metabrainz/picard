@@ -551,7 +551,7 @@ class Album(MetadataItem):
     def _setup_release_group(self, release_node):
         """Process and setup release group data"""
         rg_node = release_node['release-group']
-        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
+        rg = self.release_group = workspace().get_release_group_by_id(rg_node['id'])
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
         _copy_artist_nodes(self._release_artist_nodes, rg_node)
