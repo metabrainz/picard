@@ -240,6 +240,9 @@ class Plugins3OptionsPage(OptionsPage):
         self._show_status(_("Refreshing plugin registry, list, and checking for updates…"))
 
         def on_registry_refreshed(success, error):
+            if self.deleted:
+                return
+
             try:
                 if not success:
                     log.error('Failed to refresh registry: %s', error)
@@ -284,6 +287,9 @@ class Plugins3OptionsPage(OptionsPage):
         Args:
             new_updates (dict): Updated plugins.
         """
+        if self.deleted:
+            return
+
         # Save updates to config
         self._save_updates(new_updates)
 
