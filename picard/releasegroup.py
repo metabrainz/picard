@@ -48,6 +48,7 @@ from picard.util import (
     uniqify,
 )
 from picard.webservice import PendingRequest
+from picard.workspace import workspace
 
 
 VERSIONS_MAX_TRACKS = 10
@@ -189,4 +190,4 @@ class ReleaseGroup(MetadataItem):
         self.loaded_albums.discard(album_id)
         self.refcount -= 1
         if self.refcount == 0:
-            del self.tagger.release_groups[self.id]
+            del workspace().release_groups[self.id]
