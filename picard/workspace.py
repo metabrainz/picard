@@ -387,6 +387,20 @@ class Workspace:
                 self.remove_files(files)
             notifier().status_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
+    def load_cluster(self, name, artist):
+        """Return the cluster matching ``name``/``artist``, creating it if new."""
+        # Imported here to avoid the cluster <-> workspace import cycle.
+        from picard.cluster import Cluster
+
+        for cluster in self.clusters:
+            cm = cluster.metadata
+            if name == cm['album'] and artist == cm['albumartist']:
+                return cluster
+        cluster = Cluster(name, artist)
+        self.clusters.append(cluster)
+        workspace_events().cluster_added.emit(cluster)
+        return cluster
+
 
 _workspace: Workspace | None = None
 

@@ -1599,14 +1599,7 @@ class Tagger(QtWidgets.QApplication):
         cluster.add_files(files)
 
     def load_cluster(self, name, artist):
-        for cluster in self.clusters:
-            cm = cluster.metadata
-            if name == cm['album'] and artist == cm['albumartist']:
-                return cluster
-        cluster = Cluster(name, artist)
-        self.clusters.append(cluster)
-        workspace_events().cluster_added.emit(cluster)
-        return cluster
+        return self._workspace.load_cluster(name, artist)
 
     # =======================================================================
     #  Utils
