@@ -50,13 +50,19 @@ workspace) and stays on the application object.
 from __future__ import annotations
 
 from functools import partial
+import os
 from typing import (
     TYPE_CHECKING,
     Any,
 )
 
+from PyQt6 import QtCore
+
 from picard import log
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.notification import notifier
 from picard.services import services
 from picard.view_updates import view_updates
@@ -356,6 +362,30 @@ class Workspace:
                     self.remove_cluster(obj)
             if files:
                 self.remove_files(files)
+
+    def trash_files(self, files) -> None:
+        """Move ``files`` to the system trash and remove them from the set."""
+        with view_updates().suspend_selection():
+            files_removed = []
+            for file in files:
+                success, new_location = QtCore.QFile.moveToTrash(file.filename)
+                # If the old file still exists, consider this an error. Moving to
+                # trash without write permission on the file can fail on Linux with
+                # success still being set to True.
+                if success and not os.path.exists(file.filename):
+                    # While the file has not been fully removed, update the location
+                    # to the trash location. Removing the files completely will be done
+                    # afterwards.
+                    del self.files[file.filename]
+                    file.filename = new_location
+                    self.files[new_location] = file
+                    files_removed.append(file)
+                else:
+                    notifier().status_message(_('Failed moving "%(filename)s" to trash'), {'filename': file.filename})
+
+            if files_removed:
+                self.remove_files(files)
+            notifier().status_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
 
 _workspace: Workspace | None = None

@@ -1374,29 +1374,7 @@ class Tagger(QtWidgets.QApplication):
         self._workspace.remove(objects)
 
     def trash_files(self, files):
-        with view_updates().suspend_selection():
-            files_removed = []
-            for file in files:
-                success, new_location = QtCore.QFile.moveToTrash(file.filename)
-                # If the old file still exists, consider this an error. Moving to
-                # trash without write permission on the file can fail on Linux with
-                # success still being set to True.
-                if success and not os.path.exists(file.filename):
-                    # While the file has not been fully removed, update the location
-                    # to the trash location. Removing the files completely will be done
-                    # afterwards.
-                    del self.files[file.filename]
-                    file.filename = new_location
-                    self.files[new_location] = file
-                    files_removed.append(file)
-                else:
-                    self.window.set_statusbar_message(
-                        _('Failed moving "%(filename)s" to trash'), {'filename': file.filename}
-                    )
-
-            if files_removed:
-                self.remove_files(files)
-            self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
+        self._workspace.trash_files(files)
 
     def _lookup_disc(self, disc, result=None, error=None):
         busy_cursor_stop()
