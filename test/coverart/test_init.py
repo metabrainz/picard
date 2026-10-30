@@ -31,7 +31,6 @@ class CoverArtAllImagesSatisfiedTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.coverart')
         album = Mock()
         album.tagger = Mock()
         metadata = Mock()
