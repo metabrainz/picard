@@ -73,6 +73,7 @@ from picard.util import (
     format_time,
     iter_files_from_objects,
 )
+from picard.workspace import workspace
 
 
 if TYPE_CHECKING:
@@ -210,7 +211,7 @@ class Cluster(FileList):
             self._update_related_album(removed_files=[file])
         notifier().set_processing(False)
         if not self.special and self.get_num_files() == 0:
-            self.tagger.remove_cluster(self)
+            workspace().remove_cluster(self)
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)

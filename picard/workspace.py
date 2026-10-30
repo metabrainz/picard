@@ -180,6 +180,23 @@ class Workspace:
         run_album_post_removal_processors(album)
         workspace_events().tagger_stats_changed.emit()
 
+    def remove_cluster(self, cluster) -> None:
+        """Remove ``cluster`` from the working set.
+
+        Special clusters (the unclustered bucket) are never removed. Clears the
+        cluster's files, removes them from the working set, drops the cluster
+        from the registry and announces the change.
+        """
+        if cluster.special:
+            return
+        log.debug("Removing %r", cluster)
+        files = list(cluster.files)
+        cluster.files = []
+        cluster.clear()
+        self.remove_files(files, from_parent=False)
+        self.clusters.remove(cluster)
+        workspace_events().cluster_removed.emit(cluster)
+
 
 _workspace: Workspace | None = None
 

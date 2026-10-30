@@ -1420,14 +1420,7 @@ class Tagger(QtWidgets.QApplication):
 
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
-        if not cluster.special:
-            log.debug("Removing %r", cluster)
-            files = list(cluster.files)
-            cluster.files = []
-            cluster.clear()
-            self.remove_files(files, from_parent=False)
-            self.clusters.remove(cluster)
-            workspace_events().cluster_removed.emit(cluster)
+        self._workspace.remove_cluster(cluster)
 
     def remove(self, objects):
         """Remove the specified objects."""
