@@ -116,22 +116,6 @@ class TaggerClusterActionsFlashTest(PicardTestCase):
             Tagger.cluster(tagger, object())
         self.mock_flash.assert_not_called()
 
-    def test_autotag_flashes_once_for_batch(self):
-        tagger = self._mock_self()
-        obj1 = MagicMock(can_autotag=True)
-        obj2 = MagicMock(can_autotag=True)
-        Tagger.autotag(tagger, [obj1, obj2])
-        self.mock_flash.assert_called_once_with()
-        obj1.lookup_metadata.assert_called_once_with()
-        obj2.lookup_metadata.assert_called_once_with()
-
-    def test_autotag_does_not_flash_when_nothing_taggable(self):
-        tagger = self._mock_self()
-        obj = MagicMock(can_autotag=False)
-        Tagger.autotag(tagger, [obj])
-        self.mock_flash.assert_not_called()
-        obj.lookup_metadata.assert_not_called()
-
     def test_analyze_flashes_once_for_batch(self):
         tagger = self._mock_self()
         tagger.use_acoustid = True

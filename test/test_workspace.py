@@ -15,6 +15,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard.cluster import (
@@ -26,6 +31,30 @@ from picard.workspace import (
     set_workspace_provider,
     workspace,
 )
+
+
+class WorkspaceAutotagTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        # autotag flashes via notifier().flash_busy(); patch the accessor in
+        # picard.workspace and assert on the facade's method.
+        patcher = patch('picard.workspace.notifier')
+        self.mock_flash = patcher.start().return_value.flash_busy
+        self.addCleanup(patcher.stop)
+
+    def test_autotag_flashes_once_for_batch(self):
+        obj1 = MagicMock(can_autotag=True)
+        obj2 = MagicMock(can_autotag=True)
+        Workspace().autotag([obj1, obj2])
+        self.mock_flash.assert_called_once_with()
+        obj1.lookup_metadata.assert_called_once_with()
+        obj2.lookup_metadata.assert_called_once_with()
+
+    def test_autotag_does_not_flash_when_nothing_taggable(self):
+        obj = MagicMock(can_autotag=False)
+        Workspace().autotag([obj])
+        self.mock_flash.assert_not_called()
+        obj.lookup_metadata.assert_not_called()
 
 
 class WorkspaceTest(PicardTestCase):

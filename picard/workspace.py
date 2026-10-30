@@ -56,6 +56,7 @@ from typing import (
 )
 
 from picard import log
+from picard.notification import notifier
 from picard.services import services
 from picard.workspace_events import workspace_events
 
@@ -287,6 +288,21 @@ class Workspace:
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
             nats.update()
+
+    def autotag(self, objects):
+        """Look up metadata for each taggable object in ``objects``.
+
+        Flashes the busy cursor once per batch (fire-and-forget feedback) and
+        delegates the actual lookup to each object.
+        """
+        flashed = False
+        for obj in objects:
+            if obj.can_autotag:
+                if not flashed:
+                    # Result appears asynchronously; acknowledge the action once.
+                    notifier().flash_busy()
+                    flashed = True
+                obj.lookup_metadata()
 
 
 _workspace: Workspace | None = None

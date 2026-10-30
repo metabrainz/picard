@@ -616,7 +616,7 @@ class UnclusteredFiles(Cluster):
         notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def lookup_metadata(self):
-        self.tagger.autotag(self.files)
+        workspace().autotag(self.files)
 
     @property
     def can_edit_tags(self):
