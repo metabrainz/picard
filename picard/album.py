@@ -108,6 +108,7 @@ from picard.util import (
 from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
+from picard.view_sync import view_sync
 from picard.view_updates import view_updates
 from picard.webservice import PendingRequest
 from picard.workspace import workspace
@@ -880,8 +881,8 @@ class Album(MetadataItem):
         self._after_load_callbacks = []
         self._submit_disc_isrcs()
         if self.ui_item and self.ui_item.isSelected():
-            self.tagger.window.refresh_metadatabox()
-            self.tagger.window.cover_art_box.update_metadata()
+            view_sync().refresh_metadata_box()
+            view_sync().update_cover_art()
 
     def _finalize_loading(self, error):
         if self.loaded:

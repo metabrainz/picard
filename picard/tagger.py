@@ -189,6 +189,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
     view_updates,
@@ -657,6 +658,9 @@ class Tagger(QtWidgets.QApplication):
         # Route core view-update suspensions (e.g. batch file moves) to the
         # main window. In headless mode no sink is installed and they no-op.
         set_view_updates_sink(self.window)
+        # Route core view-refresh requests (metadata box / cover-art box after
+        # load/edit) to the main window. In headless mode they no-op.
+        set_view_sync_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
