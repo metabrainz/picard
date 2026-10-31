@@ -19,6 +19,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import io
 import os
 import struct
 
@@ -30,6 +31,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.formats.wav import (
     RiffListInfo,
+    WAVFile,
     repair_wav_chunk_sizes,
 )
 from picard.metadata import Metadata
@@ -212,3 +214,27 @@ class RepairWavChunkSizesTest(PicardTestCase):
         with open(filename, 'wb') as fileobj:
             fileobj.write(b'NOTARIFFFILECONTENTS' * 4)
         repair_wav_chunk_sizes(filename)  # Must not raise.
+
+
+class WAVScoreTest(PicardTestCase):
+    @staticmethod
+    def _score(filename, header):
+        return WAVFile.score(filename, io.BytesIO(header), header)
+
+    def test_score_wav_header(self):
+        # A real RIFF/WAVE header must score positively.
+        header = b'RIFF' + struct.pack('<I', 0x1234) + b'WAVEfmt '
+        self.assertGreater(self._score('test.wav', header), 0)
+
+    def test_score_webp_not_detected_as_wav(self):
+        # Regression test for PICARD-3534: a WebP file is a RIFF container
+        # (starts with b'RIFF') but its form type is b'WEBP', not b'WAVE'.
+        # Picard must not detect it as a WAV file, otherwise cover art appears
+        # as damaged files and exceptions are logged.
+        header = b'RIFF' + struct.pack('<I', 0x1234) + b'WEBPVP8L' + b'\x00' * 32
+        self.assertEqual(self._score('cover.webp', header), 0)
+
+    def test_score_other_riff_not_detected_as_wav(self):
+        # Any non-WAVE RIFF container (e.g. AVI) must not score as WAV either.
+        header = b'RIFF' + struct.pack('<I', 0x1234) + b'AVI LIST'
+        self.assertEqual(self._score('movie.avi', header), 0)

@@ -309,6 +309,17 @@ class WAVFile(NonCompatID3File):
     NAME = "Microsoft WAVE"
     _File = mutagen.wave.WAVE
 
+    @classmethod
+    def score(cls, filename, fileobj, header_data) -> int:
+        # PICARD-3534: WAV is a RIFF container identified by the b'WAVE' form
+        # type at bytes 8-12. mutagen's WAVE.score scores any file starting
+        # with b'RIFF' positively, so other RIFF containers (e.g. WebP, which
+        # uses b'WEBP') get mis-detected as WAV. Reject anything whose form
+        # type isn't b'WAVE' before delegating to the mutagen-backed base.
+        if header_data[8:12] != b'WAVE':
+            return 0
+        return super().score(filename, fileobj, header_data)
+
     def _info(self, metadata, file):
         super()._info(metadata, file)
         metadata['~format'] = self.NAME
