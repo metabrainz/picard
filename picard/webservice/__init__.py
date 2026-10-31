@@ -92,6 +92,20 @@ COUNT_REQUESTS_DELAY_MS = 250
 
 TEMP_ERRORS_RETRIES = 5
 MAX_PENDING_AUTHORIZATION_REQUESTS = 1000
+
+# HTTP redirect status codes that indicate a *permanent* move. For these the
+# new location should be remembered so the old URL is not requested again.
+# 302/303/307 are temporary and must not be cached. See PICARD-816.
+HTTP_PERMANENT_REDIRECT_CODES = frozenset({301, 308})
+
+# HTTP redirect status codes that must preserve the original method and body
+# (307 Temporary Redirect, 308 Permanent Redirect). For the others (301/302/303)
+# the follow-up request is issued as GET without a body. See PICARD-816.
+HTTP_METHOD_PRESERVING_REDIRECT_CODES = frozenset({307, 308})
+
+# Maximum number of redirect hops to follow before giving up with
+# TooManyRedirectsError. See PICARD-816.
+MAX_REDIRECTS = 10
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
     PICARD_ORG_NAME,
     PICARD_APP_NAME,
@@ -153,6 +167,10 @@ class WSRequest(QNetworkRequest):
     _high_prio_no_cache = True
     _mblogin = False
     _retries = 0
+
+    # Set of normalized URLs already visited while following redirects for this
+    # logical request; used for multi-hop loop detection. See PICARD-816.
+    redirect_history: frozenset[str] = frozenset()
 
     response_mimetype = None
     response_parser = None
@@ -418,6 +436,10 @@ class WebService(QtCore.QObject):
             'PUT': self.manager.put,
             'DELETE': self.manager.deleteResource,
         }
+        # Maps a normalized source URL to the permanent (HTTP 301/308) target it
+        # redirects to. Populated as permanent redirects are observed and applied
+        # to later requests so the old URL is not requested again. See PICARD-816.
+        self._permanent_redirects: dict[str, str] = {}
         self._init_queues()
         self._init_timers()
 
@@ -548,6 +570,10 @@ class WebService(QtCore.QObject):
             log.debug("Skipping aborted task for %s", request.url().toString())
             return
 
+        # Rewrite the URL to a previously observed permanent (301/308) target so
+        # we do not request the stale URL and re-follow the redirect. See PICARD-816.
+        self._apply_known_redirects(request)
+
         if request.mblogin:
             # Only authenticate against servers that advertise an auth scheme
             # Picard can perform. Other servers (e.g. an unofficial mirror, or the
@@ -586,15 +612,56 @@ class WebService(QtCore.QObject):
         log.debug("Sending request without authentication: %s", request.url().toString())
 
     @staticmethod
-    def urls_equivalent(leftUrl: QUrl, rightUrl: QUrl) -> bool:
+    def _normalize_url_key(url: QUrl) -> str:
+        """Return a stable string key for a URL, used for redirect bookkeeping."""
+        return url.toString(QUrl.UrlFormattingOption.RemoveUserInfo)
+
+    @staticmethod
+    def _same_origin(left: QUrl, right: QUrl) -> bool:
+        """Return True if both URLs share the same origin (scheme, host, port).
+
+        Ports are compared using their scheme defaults (443 for https, 80 for
+        http) so an explicit default port is treated as equal to an implicit one.
+        Used to decide whether credentials may be carried across a redirect.
         """
-        Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
-        that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
-        from QT 4.7
+        return (
+            left.scheme() == right.scheme()
+            and left.host() == right.host()
+            and port_from_qurl(left) == port_from_qurl(right)
+        )
+
+    def _remember_permanent_redirect(self, source_url: QUrl, target_url: QUrl):
+        """Record a permanent (301/308) redirect so later requests to
+        ``source_url`` are rewritten to ``target_url`` without a round-trip.
+        See PICARD-816.
         """
-        return leftUrl.port(80) == rightUrl.port(80) and leftUrl.toString(
-            QUrl.UrlFormattingOption.RemovePort
-        ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
+        source_key = self._normalize_url_key(source_url)
+        target_value = self._normalize_url_key(target_url)
+        if source_key == target_value:
+            return
+        self._permanent_redirects[source_key] = target_value
+        log.debug("Remembering permanent redirect %s -> %s", source_key, target_value)
+
+    def _apply_known_redirects(self, request: WSRequest) -> bool:
+        """Rewrite ``request``'s URL in place to the final known permanent target.
+
+        Follows a chain of recorded permanent redirects, guarding against loops.
+        Returns ``True`` if the request URL was changed. See PICARD-816.
+        """
+        seen = set()
+        changed = False
+        while True:
+            key = self._normalize_url_key(request.url())
+            if key in seen:
+                log.error("Permanent redirect loop detected for %s", key)
+                break
+            seen.add(key)
+            target = self._permanent_redirects.get(key)
+            if target is None:
+                break
+            request.setUrl(QUrl(target))
+            changed = True
+        return changed
 
     def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect: QUrl):
         # merge with base url (to cover the possibility of the URL being relative)
@@ -602,30 +669,82 @@ class WebService(QtCore.QObject):
         reply_url = reply.request().url()
         display_redirect_url = self.display_url(redirect_url)
         display_reply_url = self.display_url(reply_url)
-        if not WebService.urls_equivalent(redirect_url, reply_url):
-            log.debug("Redirect to %s requested", display_redirect_url)
 
-            redirect_request = WSRequest(
-                method='GET',
-                url=redirect_url,
-                handler=request.handler,
-                parse_response_type=request.parse_response_type,
-                priority=True,
-                important=True,
-                mblogin=request.mblogin,
-                cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
-                refresh=request.refresh,
-            )
+        status_code = self.http_response_code(reply)
 
-            ratecontrol.copy_minimal_delay(
-                request.get_host_key(),
-                redirect_request.get_host_key(),
-            )
+        # Track the full chain of URLs visited while following this logical
+        # request so a multi-hop loop (e.g. A -> B -> A) is detected, not just
+        # an immediate self-redirect. See PICARD-816.
+        redirect_history = request.redirect_history | {self._normalize_url_key(reply_url)}
+        is_loop = self._normalize_url_key(redirect_url) in redirect_history
+        too_many = len(redirect_history) > MAX_REDIRECTS
 
-            self.add_request(redirect_request)
-        else:
-            log.error("Redirect loop: %s", display_reply_url)
+        if is_loop or too_many:
+            if is_loop:
+                log.error("Redirect loop: %s", display_reply_url)
+            else:
+                log.error("Too many redirects (%d) for %s", len(redirect_history), display_reply_url)
             request.handler(reply.readAll().data(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
+            return
+
+        log.debug("Redirect to %s requested", display_redirect_url)
+
+        # Remember permanent (301/308) redirects so future requests to the
+        # original URL skip the redirect entirely. See PICARD-816.
+        if status_code in HTTP_PERMANENT_REDIRECT_CODES:
+            self._remember_permanent_redirect(request.url(), redirect_url)
+
+        # Decide the method/body for the follow-up request per RFC 9110 section
+        # 15.4 "Redirection 3xx" (https://www.rfc-editor.org/rfc/rfc9110#section-15.4):
+        #   - 307 Temporary Redirect and 308 Permanent Redirect: the user agent
+        #     MUST NOT change the request method, so the original method, body and
+        #     content type are preserved (RFC 9110 sections 15.4.8 and 15.4.9).
+        #   - 301/302/303: re-issued as GET without a body. 303 See Other mandates
+        #     GET (section 15.4.4); for 301/302 changing POST to GET is the long
+        #     standing, RFC-permitted behavior under the "change the request method
+        #     according to the redirecting status code's semantics, if applicable"
+        #     clause of RFC 9110 section 15.4. In practice Picard only sends GET
+        #     requests to servers that answer with 301/302, so this is lossless.
+        # See PICARD-816 and PICARD-967.
+        if status_code in HTTP_METHOD_PRESERVING_REDIRECT_CODES:
+            method = request.method
+            data = request.data
+            request_mimetype = request.request_mimetype
+        else:
+            method = 'GET'
+            data = None
+            request_mimetype = None
+
+        # Do not forward credentials across an origin boundary. RFC 9110 section
+        # 15.4 says a user agent SHOULD remove resource-specific header fields such
+        # as Authorization when automatically following a redirect, and SHOULD
+        # consider removing Authorization where there are security implications
+        # (i.e. a cross-origin redirect). Only carry the mblogin flag when the
+        # redirect stays on the same origin; otherwise send unauthenticated.
+        # See PICARD-816 and PICARD-967.
+        mblogin = request.mblogin and self._same_origin(request.url(), redirect_url)
+
+        redirect_request = WSRequest(
+            method=method,
+            url=redirect_url,
+            handler=request.handler,
+            parse_response_type=request.parse_response_type,
+            data=data,
+            request_mimetype=request_mimetype,
+            priority=True,
+            important=True,
+            mblogin=mblogin,
+            cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
+            refresh=request.refresh,
+        )
+        redirect_request.redirect_history = redirect_history
+
+        ratecontrol.copy_minimal_delay(
+            request.get_host_key(),
+            redirect_request.get_host_key(),
+        )
+
+        self.add_request(redirect_request)
 
     def _handle_reply(self, reply: QNetworkReply, request: WSRequest):
         hostkey = request.get_host_key()
