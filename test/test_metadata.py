@@ -517,6 +517,94 @@ class CommonTests:
             m2["title"] = "t"
             self.assertLess(m1.compare_changes(m2), 1.0)
 
+        def _ripped_file_vs_release(self):
+            # PICARD-3537: a freshly ripped file carries only a handful of basic
+            # tags. All of them match the MB release track, but the lookup adds
+            # many new tags (performers, MBIDs, label, barcode, ...). Those are
+            # enrichment, not evidence of a wrong match.
+            orig = Metadata()
+            orig["title"] = "Good Times Bad Times"
+            orig["artist"] = "Led Zeppelin"
+            orig["album"] = "Boxed Set 2"
+            orig["tracknumber"] = "1"
+            orig["comment"] = "ExactAudioCopy v1.3"
+            orig.length = 167000
+
+            new = Metadata()
+            new.copy(orig)
+            # Enrichment tags added by the MB lookup (present on new only).
+            new["albumartist"] = "Led Zeppelin"
+            new["albumartists"] = "Led Zeppelin"
+            new["artists"] = "Led Zeppelin"
+            new["barcode"] = "075678247729"
+            new["catalognumber"] = "7 82477-2"
+            new["label"] = "Atlantic"
+            new["musicbrainz_albumid"] = "c6ce30ec-ecfd-481c-b666-eea02373c66f"
+            new["musicbrainz_artistid"] = "678d88b2-87b0-403b-b63d-5da7465aecc3"
+            new["performer:guitar"] = "Jimmy Page"
+            new["performer:lead vocals"] = "Robert Plant"
+            new["releasecountry"] = "US"
+            new["releasetype"] = ["album", "compilation"]
+            new["script"] = "Latn"
+            new["totaldiscs"] = "2"
+            # The EAC comment will be removed on save.
+            del new["comment"]
+            return orig, new
+
+        def test_compare_changes_ripped_file_added_tags_is_good_match(self):
+            # PICARD-3537 regression: adding many enrichment tags to a correctly
+            # matched, minimally tagged file must still read as a good match.
+            # Added tags (present only on the target) are enrichment, not a
+            # mismatch, so they must not drag the match indicator down.
+            orig, new = self._ripped_file_vs_release()
+            # Essential tags all match -> high confidence it is the right track.
+            self.assertGreaterEqual(orig.compare_changes(new), 0.9)
+
+        def test_compare_changes_added_tag_does_not_penalize(self):
+            # A single added auxiliary tag on an otherwise identical file must
+            # not lower the match indicator: adding data is not a mismatch.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["artist"] = "artist1"
+            new = Metadata()
+            new.copy(orig)
+            new["albumartists"] = "artist1"
+            self.assertEqual(orig.compare_changes(new), 1.0)
+
+        def test_compare_changes_conflicting_tag_still_penalizes(self):
+            # A tag present on both sides with *different* values is a genuine
+            # conflict and must still lower the score, even outside the
+            # weighted set.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["albumartist"] = "Wrong Artist"
+            new = Metadata()
+            new["title"] = "title1"
+            new["albumartist"] = "Right Artist"
+            self.assertLess(orig.compare_changes(new), 1.0)
+
+        def test_compare_changes_removed_auxiliary_tag_penalizes(self):
+            # Dropping an existing auxiliary file tag (present on the file,
+            # absent on what will be written) is a real change and must lower
+            # the score -- unlike a plain addition, which is enrichment.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["comment"] = "my note"
+            new = Metadata()
+            new["title"] = "title1"
+            self.assertLess(orig.compare_changes(new), 1.0)
+
+        def test_compare_changes_removed_weighted_tag_penalizes(self):
+            # Dropping an existing *weighted* file tag must also register. This
+            # guards the clear-existing-tags path (``penalize_removed``): the
+            # match indicator still reflects that existing data is being lost.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["album"] = "AlbumA"
+            new = Metadata()
+            new["title"] = "title1"
+            self.assertLess(orig.compare_changes(new), 1.0)
+
         def test_compare_changes_weighted_tag_not_double_counted(self):
             # A changed *weighted* tag must be scored exactly once, at its own
             # weight. It must NOT also be scored a second time by the auxiliary
