@@ -42,6 +42,8 @@ def dummy_handler(*args, **kwargs):
 # HTTP status codes
 HTTP_MOVED_PERMANENTLY = 301
 HTTP_FOUND = 302
+HTTP_SEE_OTHER = 303
+HTTP_TEMPORARY_REDIRECT = 307
 HTTP_PERMANENT_REDIRECT = 308
 
 
@@ -152,4 +154,105 @@ class WebServiceRedirectTest(PicardTestCase):
             second_request.url().toString(),
             old_url,
             "A temporary (302) redirect must not be remembered",
+        )
+
+    def test_307_preserves_method_and_body(self):
+        """PICARD-816: a 307 Temporary Redirect must preserve the original
+        method and request body. Picard re-issued everything as GET and dropped
+        the body, which corrupts a redirected POST/PUT."""
+        old_url = 'https://musicbrainz.org/ws/2/submit'
+        new_url = 'https://other.musicbrainz.org/ws/2/submit'
+        payload = '<xml>data</xml>'
+        request = WSRequest(
+            method='POST',
+            url=old_url,
+            handler=dummy_handler,
+            data=payload,
+            request_mimetype='application/xml',
+        )
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_TEMPORARY_REDIRECT)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertEqual(follow_up.method, 'POST', "307 must preserve the HTTP method")
+        self.assertEqual(follow_up.data, payload, "307 must preserve the request body")
+        self.assertEqual(follow_up.request_mimetype, 'application/xml')
+
+    def test_308_preserves_method_and_body(self):
+        """A 308 Permanent Redirect must also preserve method and body."""
+        old_url = 'https://musicbrainz.org/ws/2/submit'
+        new_url = 'https://other.musicbrainz.org/ws/2/submit'
+        payload = '<xml>data</xml>'
+        request = WSRequest(
+            method='PUT',
+            url=old_url,
+            handler=dummy_handler,
+            data=payload,
+            request_mimetype='application/xml',
+        )
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_PERMANENT_REDIRECT)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertEqual(follow_up.method, 'PUT')
+        self.assertEqual(follow_up.data, payload)
+
+    def test_303_downgrades_to_get(self):
+        """A 303 See Other must change the method to GET and drop the body,
+        per HTTP semantics."""
+        old_url = 'https://musicbrainz.org/ws/2/submit'
+        new_url = 'https://other.musicbrainz.org/ws/2/result'
+        request = WSRequest(
+            method='POST',
+            url=old_url,
+            handler=dummy_handler,
+            data='<xml>data</xml>',
+            request_mimetype='application/xml',
+        )
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_SEE_OTHER)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertEqual(follow_up.method, 'GET', "303 must downgrade to GET")
+        self.assertIsNone(follow_up.data, "303 must drop the request body")
+
+    def test_multi_hop_redirect_loop_detected(self):
+        """PICARD-816: a multi-hop redirect loop (A -> B -> A) must be detected.
+
+        The old self-redirect check only caught an immediate A -> A loop. A
+        request that bounces A -> B -> A would otherwise redirect forever."""
+        url_a = 'https://a.musicbrainz.org/resource'
+        url_b = 'https://b.musicbrainz.org/resource'
+
+        captured = []
+
+        def capture_handler(document, reply, error):
+            captured.append(error)
+
+        # Hop 1: request to A redirects to B.
+        request_a = WSRequest(method='GET', url=url_a, handler=capture_handler)
+        reply_a = self._make_reply(url_a, url_b, status_code=HTTP_FOUND)
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply_a, request_a, QUrl(url_b))
+        request_b = mock_add_request.call_args[0][0]
+
+        # Hop 2: B redirects back to A, which is already in the chain -> loop.
+        reply_b = self._make_reply(url_b, url_a, status_code=HTTP_FOUND)
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply_b, request_b, QUrl(url_a))
+
+        self.assertFalse(
+            mock_add_request.called,
+            "A multi-hop redirect loop must not enqueue another request",
+        )
+        self.assertEqual(
+            captured,
+            [QNetworkReply.NetworkError.TooManyRedirectsError],
+            "A multi-hop loop should report TooManyRedirectsError to the handler",
         )
