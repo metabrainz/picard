@@ -669,6 +669,17 @@ class RegistryPlugin(InstallablePlugin):
         return self._data.get('versioning_scheme')
 
     @property
+    def signing_keys(self):
+        """Get the plugin's trusted signing keys (empty list if none)."""
+        keys = self._data.get('signing_keys') or []
+        return keys if isinstance(keys, list) else []
+
+    @property
+    def require_signature(self):
+        """Whether a valid signature is required to install/update."""
+        return bool(self._data.get('require_signature', False))
+
+    @property
     def refs(self):
         """Get plugin refs."""
         return self._data.get('refs', [{'name': 'main'}])
