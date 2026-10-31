@@ -134,6 +134,7 @@ from picard.util.cdrom import (
 )
 from picard.util.isrc import valid_isrc
 from picard.util.qt import (
+    create_qmenu,
     reconnect,
     throttle,
 )
@@ -835,8 +836,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def create_lookup_by_menu(self, parent):
         """Create a 'Lookup by…' submenu for use in context menus."""
-        lookup_menu = QtWidgets.QMenu(_("Lookup by…"), parent)
-        lookup_menu.setIcon(icontheme.lookup('system-search'))
+        lookup_menu = create_qmenu(_("Lookup by…"), icontheme.lookup('system-search'), parent)
         lookup_menu.addAction(self.action_map[MainAction.LOOKUP_ISRC])
         return lookup_menu
 
@@ -844,8 +844,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = dict(create_actions(self))
 
     def _create_cd_lookup_menu(self):
-        menu = QtWidgets.QMenu(_("Lookup &CD…"))
-        menu.setIcon(icontheme.lookup('media-optical'))
+        menu = create_qmenu(_("Lookup &CD…"), icontheme.lookup('media-optical'))
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
 
@@ -854,8 +853,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         The menu content is populated from the persisted recent sessions list.
         """
-        self.recent_sessions_menu = QtWidgets.QMenu(_("Recent Sessions"))
-        self.recent_sessions_menu.setIcon(icontheme.lookup('document-open-recent'))
+        self.recent_sessions_menu = create_qmenu(_("Recent Sessions"), icontheme.lookup('document-open-recent'))
         self._populate_recent_sessions_menu()
         return self.recent_sessions_menu
 
@@ -1075,24 +1073,22 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
-        self.file_naming_scripts_menu = QtWidgets.QMenu(_("File naming &scripts"))
-        self.file_naming_scripts_menu.setIcon(icontheme.lookup('document-open'))
+        self.file_naming_scripts_menu = create_qmenu(_("File naming &scripts"), icontheme.lookup('document-open'))
         self._script_actions = []
         self._make_script_selector_menu()
         self.file_naming_scripts_menu.addSeparator()
         self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
-        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Profiles"))
-        self.profile_quick_selector_menu.setIcon(
-            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
+        self.profile_quick_selector_menu = create_qmenu(
+            _("&Profiles"), self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
         self._make_profile_selector_menu()
 
-        self.quick_settings_menu = QtWidgets.QMenu(_("&Quick settings"))
-        self.quick_settings_menu.setIcon(icontheme.lookup('applications-system'))
+        self.quick_settings_menu = create_qmenu(_("&Quick settings"), icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
         self.options_menu = self.menuBar().addMenu(_("&Options"))
+        self.options_menu.menuAction().setMenuRole(QtGui.QAction.MenuRole.NoRole)
         menu_builder(
             self.options_menu,
             self.action_map,
@@ -2392,10 +2388,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             placeholder = QtGui.QAction(_("No profiles configured"), self.profile_quick_selector_menu)
             placeholder.setEnabled(False)
+            placeholder.setMenuRole(QtGui.QAction.MenuRole.NoRole)
             self.profile_quick_selector_menu.addAction(placeholder)
 
         self.profile_quick_selector_menu.addSeparator()
         edit_action = QtGui.QAction(_("Configure profiles…"), self.profile_quick_selector_menu)
+        edit_action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
         edit_action.triggered.connect(lambda: self.show_options('profiles'))
         self.profile_quick_selector_menu.addAction(edit_action)
 
@@ -2464,11 +2462,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.quick_settings_menu.addAction(action)
         else:
             placeholder = QtGui.QAction(_("No quick settings configured"), self.quick_settings_menu)
+            placeholder.setMenuRole(QtGui.QAction.MenuRole.NoRole)
             placeholder.setEnabled(False)
             self.quick_settings_menu.addAction(placeholder)
 
         self.quick_settings_menu.addSeparator()
         edit_action = QtGui.QAction(_("Configure quick settings…"), self.quick_settings_menu)
+        edit_action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
         edit_action.triggered.connect(lambda: self.show_options('interface_quick_menu'))
         self.quick_settings_menu.addAction(edit_action)
 
