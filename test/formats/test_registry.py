@@ -25,7 +25,9 @@ from unittest.mock import (
 )
 
 from picard.file import File
+from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
+from picard.formats.wav import WAVFile
 
 
 class MockFormat1(File):
@@ -668,3 +670,41 @@ class TestFormatRegistry:
         registry.formats_changed.connect(mock_slot)
         registry.rebuild_extension_map()
         mock_slot.assert_called_once()
+
+
+class TestGuessFormatWebp:
+    """Regression tests for PICARD-3534.
+
+    WebP is a RIFF container (starts with b'RIFF') like WAV, but its form type
+    at bytes 8-12 is b'WEBP' rather than b'WAVE'. guess_format() must not
+    identify a WebP file as a WAV file, otherwise cover art is treated as a
+    damaged audio file and exceptions are logged.
+    """
+
+    @staticmethod
+    def _real_registry():
+        registry = FormatRegistry()
+        for file_format in DEFAULT_FORMATS:
+            registry.register(file_format)
+        return registry
+
+    def _assert_not_wav(self, fixture):
+        registry = self._real_registry()
+        path = os.path.join('test', 'data', fixture)
+        result = registry.guess_format(path)
+        if result is not None:
+            assert not isinstance(result, WAVFile), (
+                f"{fixture} was mistakenly detected as WAV ({type(result).__name__})"
+            )
+
+    def test_guess_format_webp_vp8l_not_wav(self):
+        # Lossless WebP (VP8L), as produced by `cwebp -lossless` in the ticket.
+        self._assert_not_wav('mb-vp8l.webp')
+
+    def test_guess_format_webp_vp8_not_wav(self):
+        # Lossy WebP (VP8).
+        self._assert_not_wav('mb-vp8.webp')
+
+    def test_guess_format_webp_vp8x_not_wav(self):
+        # Extended WebP (VP8X).
+        self._assert_not_wav('mb-vp8x.webp')
