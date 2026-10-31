@@ -408,14 +408,21 @@ class Cluster(FileList):
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 
-    def _match_to_release(self, releases, min_similarity=0, min_margin=0):
-        """Match cluster to best release candidate.
+    def rank_release_candidates(self, releases, min_similarity=0, min_margin=0):
+        """Score and rank release candidates for this cluster.
 
-        Returns:
-            (release_dict, None) on success,
-            (None, reason) on rejection.
+        Returns ``(ranked, best)`` where ``ranked`` is the full list of
+        :class:`~picard.matching.SimMatchRelease` sorted by descending
+        similarity, and ``best`` is the
+        :class:`~picard.matching.MatchResult` from
+        :func:`find_best_match_with_margin` (its ``reason`` is ``None`` when
+        confident, ``'ambiguous'`` when the margin is too small but a match is
+        still chosen, or ``'below_floor'`` when nothing passes the floor —
+        ``best.result`` is then the no-match sentinel).
+
+        Shared by the auto-apply path (:meth:`_match_to_release`) and the
+        headless lookup command, which also needs the non-winning candidates.
         """
-        # multiple matches -- calculate similarities to each of them
         all_matches = [compare_to_release(self.metadata, release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
@@ -456,8 +463,20 @@ class Cluster(FileList):
         best_match = find_best_match_with_margin(
             iter(all_matches), no_match, min_similarity=min_similarity, min_margin=min_margin
         )
+        return all_matches, best_match
 
-        if best_match.result is no_match:
+    def _match_to_release(self, releases, min_similarity=0, min_margin=0):
+        """Match cluster to best release candidate.
+
+        Returns:
+            (release_dict, None) on success,
+            (None, reason) on rejection.
+        """
+        _ranked, best_match = self.rank_release_candidates(
+            releases, min_similarity=min_similarity, min_margin=min_margin
+        )
+
+        if best_match.result.release is None:
             log.debug_if(
                 DebugOpt.MATCHING,
                 "  REJECTED (%s): best=%.4f",

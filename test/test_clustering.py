@@ -32,6 +32,59 @@ from picard.cluster import (
 from picard.file import File
 
 
+class RankReleaseCandidatesTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.set_config_values(
+            setting={
+                'preferred_release_countries': [],
+                'preferred_release_formats': [],
+                'preferred_release_types': [],
+                'discouraged_release_types': [],
+                'standardize_artists': False,
+            }
+        )
+        self.cluster = Cluster('Greatest Hits', 'The Artist')
+
+    @staticmethod
+    def _release(mbid, title, artist='The Artist', score=100):
+        # A minimal MB release search node sufficient for compare_to_release.
+        return {
+            'id': mbid,
+            'title': title,
+            'score': score,
+            'artist-credit': [{'artist': {'name': artist, 'sort-name': artist}, 'name': artist}],
+        }
+
+    def test_returns_full_ranked_list_sorted_desc(self):
+        releases = [
+            self._release('mbid-far', 'Something Totally Different'),
+            self._release('mbid-exact', 'Greatest Hits'),
+            self._release('mbid-close', 'Greatest Hit'),
+        ]
+        ranked, best = self.cluster.rank_release_candidates(releases, min_similarity=0, min_margin=0)
+        # All candidates kept (not just the winner).
+        self.assertEqual(3, len(ranked))
+        # Sorted by descending similarity.
+        sims = [m.similarity for m in ranked]
+        self.assertEqual(sims, sorted(sims, reverse=True))
+        # The exact title ranks first.
+        self.assertEqual('mbid-exact', ranked[0].release['id'])
+        self.assertIs(best.result, ranked[0])
+
+    def test_below_floor_reason_and_sentinel(self):
+        releases = [self._release('mbid-far', 'Nothing Alike At All')]
+        _ranked, best = self.cluster.rank_release_candidates(releases, min_similarity=0.99, min_margin=0)
+        self.assertEqual('below_floor', best.reason)
+        self.assertIsNone(best.result.release)
+
+    def test_empty_releases(self):
+        ranked, best = self.cluster.rank_release_candidates([], min_similarity=0, min_margin=0)
+        self.assertEqual([], ranked)
+        self.assertIsNone(best.result.release)
+
+
 class TokenizeTest(PicardTestCase):
     def test_tokenize(self):
         token = tokenize("")
