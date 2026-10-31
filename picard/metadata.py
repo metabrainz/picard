@@ -144,13 +144,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             other_length = other.length
 
         # A weighted tag present on only one side is ignored unless the other
-        # side explicitly deleted it (penalize_missing=False): a candidate that
-        # merely lacks a tag the file carries must not be penalized.
+        # side explicitly deleted it: a candidate that merely lacks a tag the
+        # file carries must not be penalized (see _compare_weighted).
         parts = self._compare_weighted(
             self_store,
             other_store,
             ignored,
-            penalize_missing=False,
             deleted_a=self_deleted,
             deleted_b=other_deleted,
         )
@@ -166,10 +165,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
     _CHANGE_DEFAULT_WEIGHT = 5
 
     def compare_changes(self, other: 'Metadata', ignored: Iterable[str] | None = None):
-        """Score how much ``self`` differs from ``other``, for the display differ.
+        """Score the confidence that ``self`` and ``other`` are the same track.
 
-        This drives the per-track "Match" indicator after editing, and differs
-        from :meth:`compare` (used by the matching pipeline) in two ways:
+        This drives the per-track "Match" indicator. It expresses *how
+        confident we are that the file matches the right track*, not how much
+        metadata will change on save. It differs from :meth:`compare` (used by
+        the matching/lookup pipeline) in three ways:
 
         * ``~length`` and other hidden (``~``-prefixed) tags are not scored.
           These are read-only / Picard-computed tags the user never edits;
@@ -177,15 +178,29 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
           and the MB recording length almost always differ by sub-second
           rounding. Scoring it made two tracks with the *same* single edit show
           different saturation. Skipping it is the actual fix for PICARD-3527.
-        * Changed tags *outside* the weighted set (e.g. ``albumartists``) are
-          scored too, at ``_CHANGE_DEFAULT_WEIGHT``, so such an edit registers.
+        * Tags *outside* the weighted set are considered too, so a genuine
+          conflict on an auxiliary field (e.g. a differing ``albumartist``)
+          still registers at ``_CHANGE_DEFAULT_WEIGHT``.
+        * A weighted tag present only on the file (``self``) and dropped on
+          save (``penalize_removed=True``) is penalized, so clearing existing
+          tags (e.g. ``clear_existing_tags``) still registers as a change.
+
+        Only genuine *conflicts* lower the score: a tag present on both sides
+        with differing values, a tag explicitly deleted on one side, or an
+        existing file tag that will be dropped (e.g. ``clear_existing_tags``).
+        A tag that is merely *added* (present only on the lookup result, absent
+        on the file) is enrichment -- Picard filling in data the file lacked --
+        and must NOT be treated as a mismatch.  Penalizing additions is what
+        regressed PICARD-3537: freshly ripped, minimally tagged files that
+        matched the correct track were shown as a red "bad match" purely
+        because the lookup adds many new tags.
 
         A field that genuinely differs is scored exactly as :meth:`compare`
         scores it, via :func:`_field_similarity` (numeric equality for
-        track/disc numbers, :func:`similarity2` otherwise, 0.0 for an
-        added/removed tag). Unchanged fields contribute a perfect 1.0 without
-        calling :func:`similarity2` (equal values always score 1.0 there, so
-        this is only a shortcut), which keeps this fast on heavily tagged files.
+        track/disc numbers, :func:`similarity2` otherwise). Unchanged fields
+        contribute a perfect 1.0 without calling :func:`similarity2` (equal
+        values always score 1.0 there, so this is only a shortcut), which keeps
+        this fast on heavily tagged files.
         """
         ignored = set(ignored or [])
 
@@ -199,19 +214,28 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             other_store = dict(other._store)
             other_deleted = set(other.deleted_tags)
 
-        # Known weighted fields always contribute, so that unchanged metadata
-        # forms a stable baseline and a single changed field only moves the
-        # score proportionally to its weight. Here an added or removed weighted
-        # tag is a genuine change, so one-sided tags are penalized
-        # (penalize_missing=True).
-        parts = self._compare_weighted(self_store, other_store, ignored, penalize_missing=True)
+        # Known weighted fields form the confidence baseline. ``self`` is the
+        # file side and ``other`` is what will be written. A tag present only
+        # on ``self`` is existing data being removed -> penalized
+        # (penalize_removed=True) or, if explicitly deleted, scored 0.0. A tag
+        # present only on ``other`` is enrichment the lookup adds and is NOT
+        # penalized.
+        parts = self._compare_weighted(
+            self_store,
+            other_store,
+            ignored,
+            penalize_removed=True,
+            deleted_a=self_deleted,
+            deleted_b=other_deleted,
+        )
 
-        # Any tag outside the weighted set only matters when it changed
-        # (added, removed or modified); unchanged auxiliary tags are not scored
-        # so they cannot introduce per-track jitter. Hidden (``~``-prefixed)
-        # tags are skipped entirely (see the docstring: ``~length`` is the main
-        # jitter source, and these tags are never user-edited anyway). The
-        # metadata box applies the same rule.
+        # Auxiliary (non-weighted) tags only lower the score on a genuine
+        # conflict: present on both sides with differing values, removed from
+        # the file side, or explicitly deleted. A plain addition (present only
+        # on ``other``, the lookup result) is enrichment and is skipped. Hidden
+        # (``~``-prefixed) tags are skipped entirely (see the docstring:
+        # ``~length`` is the main jitter source, and these tags are never
+        # user-edited anyway). The metadata box applies the same rule.
         weighted_names = {name for name, _weight in self.__weights}
         names = set(self_store) | set(other_store) | self_deleted | other_deleted
         for name in names:
@@ -219,8 +243,17 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 continue
             sa = self_store.get(name)
             sb = other_store.get(name)
-            if sa != sb:
-                parts.append((_changed_score(name, sa, sb), self._CHANGE_DEFAULT_WEIGHT))
+            if sa == sb:
+                continue
+            if sa is None or sb is None:
+                # Present on one side only. Count it when it is an explicit
+                # deletion, or an existing file tag (``sa``) being dropped;
+                # skip a plain addition (``sb`` only), which is enrichment.
+                deleted = (sa is None and name in self_deleted) or (sb is None and name in other_deleted)
+                removed = sb is None  # present on file side, absent on write side
+                if not (deleted or removed):
+                    continue
+            parts.append((_changed_score(name, sa, sb), self._CHANGE_DEFAULT_WEIGHT))
 
         if not parts:
             return 1.0
@@ -231,23 +264,25 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         store_a: dict[str, str | list[str]],
         store_b: dict[str, str | list[str]],
         ignored: set[str],
-        penalize_missing: bool,
         deleted_a: set[str] | None = None,
         deleted_b: set[str] | None = None,
+        penalize_removed: bool = False,
     ) -> list[tuple[float, int]]:
         """Compare all weighted fields in ``store_a`` and ``store_b`` and return a list of (score, weight) pairs.
 
-        A weighted tag present on both sides is always scored. The two callers
-        differ in how a tag present on only *one* side is treated:
+        A weighted tag present on both sides is always scored. A tag present on
+        only *one* side is ignored *unless* the other side explicitly deleted
+        it (``deleted_a`` / ``deleted_b``), in which case it scores 0.0. A tag
+        that is merely absent -- a candidate lacking a tag the file carries, or
+        the lookup adding a tag the file lacked -- is not penalized. This
+        expresses match confidence rather than how much data changes, and is
+        shared by :meth:`compare` and :meth:`compare_changes`.
 
-        * :meth:`compare_changes` (``penalize_missing=True``) scores every
-          one-sided tag as a change (0.0), so an added or removed field
-          registers in the display differ.
-        * :meth:`compare` (``penalize_missing=False``) ignores a one-sided tag
-          *unless* the other side explicitly deleted it (``deleted_a`` /
-          ``deleted_b``). A candidate that merely lacks a tag the file carries
-          is not penalized, but an explicit deletion scores 0.0. This preserves
-          the matching pipeline's behaviour.
+        ``penalize_removed=True`` (set by :meth:`compare_changes`) additionally
+        penalizes a tag present in ``store_a`` (the file) but absent from
+        ``store_b`` (what will be written): that is existing file data being
+        dropped (e.g. ``clear_existing_tags``), a real change. A tag present
+        only in ``store_b`` (enrichment added by the lookup) is still ignored.
         """
         deleted_a = deleted_a or set()
         deleted_b = deleted_b or set()
@@ -260,12 +295,13 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             sb = store_b.get(name)
             if sa is None and sb is None:
                 continue
-            if (sa is None or sb is None) and not penalize_missing:
-                # Tag present on one side only: for compare() this counts only
-                # when the missing side explicitly deleted it; a tag that is
-                # simply absent is ignored (not scored at all).
+            if sa is None or sb is None:
+                # Tag present on one side only.
                 deleted = (sa is None and name in deleted_a) or (sb is None and name in deleted_b)
-                if not deleted:
+                # ``store_a`` is the file side; a tag only there is existing
+                # data being removed, which ``penalize_removed`` counts.
+                removed = penalize_removed and sb is None
+                if not (deleted or removed):
                     continue
             score = 1.0 if sa == sb else _changed_score(name, sa, sb)
             parts.append((score, weight))
