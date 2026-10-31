@@ -612,17 +612,6 @@ class WebService(QtCore.QObject):
         log.debug("Sending request without authentication: %s", request.url().toString())
 
     @staticmethod
-    def urls_equivalent(leftUrl: QUrl, rightUrl: QUrl) -> bool:
-        """
-        Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
-        that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
-        from QT 4.7
-        """
-        return leftUrl.port(80) == rightUrl.port(80) and leftUrl.toString(
-            QUrl.UrlFormattingOption.RemovePort
-        ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
-
-    @staticmethod
     def _normalize_url_key(url: QUrl) -> str:
         """Return a stable string key for a URL, used for redirect bookkeeping."""
         return url.toString(QUrl.UrlFormattingOption.RemoveUserInfo)
