@@ -616,6 +616,20 @@ class WebService(QtCore.QObject):
         """Return a stable string key for a URL, used for redirect bookkeeping."""
         return url.toString(QUrl.UrlFormattingOption.RemoveUserInfo)
 
+    @staticmethod
+    def _same_origin(left: QUrl, right: QUrl) -> bool:
+        """Return True if both URLs share the same origin (scheme, host, port).
+
+        Ports are compared using their scheme defaults (443 for https, 80 for
+        http) so an explicit default port is treated as equal to an implicit one.
+        Used to decide whether credentials may be carried across a redirect.
+        """
+        return (
+            left.scheme() == right.scheme()
+            and left.host() == right.host()
+            and port_from_qurl(left) == port_from_qurl(right)
+        )
+
     def _remember_permanent_redirect(self, source_url: QUrl, target_url: QUrl):
         """Record a permanent (301/308) redirect so later requests to
         ``source_url`` are rewritten to ``target_url`` without a round-trip.
@@ -680,8 +694,18 @@ class WebService(QtCore.QObject):
         if status_code in HTTP_PERMANENT_REDIRECT_CODES:
             self._remember_permanent_redirect(request.url(), redirect_url)
 
-        # 307/308 must preserve the method and body; 301/302/303 are re-issued
-        # as GET without a body. See PICARD-816.
+        # Decide the method/body for the follow-up request per RFC 9110 section
+        # 15.4 "Redirection 3xx" (https://www.rfc-editor.org/rfc/rfc9110#section-15.4):
+        #   - 307 Temporary Redirect and 308 Permanent Redirect: the user agent
+        #     MUST NOT change the request method, so the original method, body and
+        #     content type are preserved (RFC 9110 sections 15.4.8 and 15.4.9).
+        #   - 301/302/303: re-issued as GET without a body. 303 See Other mandates
+        #     GET (section 15.4.4); for 301/302 changing POST to GET is the long
+        #     standing, RFC-permitted behavior under the "change the request method
+        #     according to the redirecting status code's semantics, if applicable"
+        #     clause of RFC 9110 section 15.4. In practice Picard only sends GET
+        #     requests to servers that answer with 301/302, so this is lossless.
+        # See PICARD-816 and PICARD-967.
         if status_code in HTTP_METHOD_PRESERVING_REDIRECT_CODES:
             method = request.method
             data = request.data
@@ -690,6 +714,15 @@ class WebService(QtCore.QObject):
             method = 'GET'
             data = None
             request_mimetype = None
+
+        # Do not forward credentials across an origin boundary. RFC 9110 section
+        # 15.4 says a user agent SHOULD remove resource-specific header fields such
+        # as Authorization when automatically following a redirect, and SHOULD
+        # consider removing Authorization where there are security implications
+        # (i.e. a cross-origin redirect). Only carry the mblogin flag when the
+        # redirect stays on the same origin; otherwise send unauthenticated.
+        # See PICARD-816 and PICARD-967.
+        mblogin = request.mblogin and self._same_origin(request.url(), redirect_url)
 
         redirect_request = WSRequest(
             method=method,
@@ -700,7 +733,7 @@ class WebService(QtCore.QObject):
             request_mimetype=request_mimetype,
             priority=True,
             important=True,
-            mblogin=request.mblogin,
+            mblogin=mblogin,
             cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
             refresh=request.refresh,
         )

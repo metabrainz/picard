@@ -256,3 +256,60 @@ class WebServiceRedirectTest(PicardTestCase):
             [QNetworkReply.NetworkError.TooManyRedirectsError],
             "A multi-hop loop should report TooManyRedirectsError to the handler",
         )
+
+    def test_same_origin_redirect_keeps_authentication(self):
+        """A redirect that stays on the same origin keeps the mblogin flag, so
+        authenticated MusicBrainz requests still work across e.g. an http->https
+        upgrade on the same host."""
+        old_url = 'https://musicbrainz.org/ws/2/release/abc'
+        new_url = 'https://musicbrainz.org/ws/2/release/xyz'
+        request = WSRequest(method='GET', url=old_url, handler=dummy_handler, mblogin=True)
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_FOUND)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertTrue(follow_up.mblogin, "Same-origin redirect must keep authentication")
+
+    def test_cross_origin_redirect_drops_authentication(self):
+        """RFC 9110 15.4: credentials must not be forwarded across an origin
+        boundary. A redirect to a different host must drop the mblogin flag."""
+        old_url = 'https://musicbrainz.org/ws/2/release/abc'
+        new_url = 'https://evil.example.com/ws/2/release/abc'
+        request = WSRequest(method='GET', url=old_url, handler=dummy_handler, mblogin=True)
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_FOUND)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertFalse(follow_up.mblogin, "Cross-origin redirect must drop authentication")
+
+    def test_cross_scheme_redirect_drops_authentication(self):
+        """A redirect that changes the scheme (https -> http) is cross-origin and
+        must drop authentication."""
+        old_url = 'https://musicbrainz.org/ws/2/release/abc'
+        new_url = 'http://musicbrainz.org/ws/2/release/abc'
+        request = WSRequest(method='GET', url=old_url, handler=dummy_handler, mblogin=True)
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_FOUND)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertFalse(follow_up.mblogin, "Cross-scheme redirect must drop authentication")
+
+    def test_same_origin_default_port_keeps_authentication(self):
+        """An explicit default port must be treated as the same origin as an
+        implicit one (https://host and https://host:443)."""
+        old_url = 'https://musicbrainz.org/ws/2/release/abc'
+        new_url = 'https://musicbrainz.org:443/ws/2/release/xyz'
+        request = WSRequest(method='GET', url=old_url, handler=dummy_handler, mblogin=True)
+        reply = self._make_reply(old_url, new_url, status_code=HTTP_FOUND)
+
+        with patch.object(self.ws, 'add_request') as mock_add_request:
+            self.ws._handle_redirect(reply, request, QUrl(new_url))
+
+        follow_up = mock_add_request.call_args[0][0]
+        self.assertTrue(follow_up.mblogin, "Explicit default port must count as same origin")
