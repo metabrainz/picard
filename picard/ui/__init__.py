@@ -80,6 +80,27 @@ def modal_options():
     return parse_bool_env('PICARD_MODAL_OPTIONS', default=IS_MACOS)
 
 
+def set_windowmodal_safe(widget):
+    """Make a dialog window-modal without rendering as a native macOS sheet.
+
+    ``WindowModal`` dialogs block only their parent window (the desired
+    behaviour, see PICARD-3302). On macOS such a dialog is rendered as a native
+    Cocoa sheet, and tearing that sheet down while the parent window's
+    key-window/focus state is unstable (at startup, or during window activation
+    changes) crashes inside the Cocoa platform plugin
+    (``NSWindowEndWindowModalSession`` -> ``becomeKeyWindow`` -> dangling
+    ``objc_msgSend``, see PICARD-3536 and the related focus crash PICARD-3479).
+
+    Adding the ``Window`` flag on macOS makes Qt render the dialog as a
+    standalone window instead of a sheet, avoiding the crash while keeping the
+    ``WindowModal`` semantics. This mirrors the Options dialog (see
+    ``picard.ui.options.dialog``).
+    """
+    widget.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+    if IS_MACOS:
+        widget.setWindowFlags(widget.windowFlags() | QtCore.Qt.WindowType.Window)
+
+
 class PreserveGeometry:
     defaultsize = None
 
@@ -222,6 +243,11 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.setWindowModality(self.modality)
         elif parent is not None:
             self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        # A WindowModal dialog renders as a native sheet on macOS, which can
+        # crash on teardown during focus changes (PICARD-3536 / -3479); render
+        # it as a standalone window instead.
+        if self.windowModality() == QtCore.Qt.WindowModality.WindowModal:
+            set_windowmodal_safe(self)
         if parent is None:
             self._register_parentless()
 
@@ -258,7 +284,11 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         return super().showEvent(event)
 
     def _show_with_modality(self, modality):
-        self.setWindowModality(modality)
+        if modality == QtCore.Qt.WindowModality.WindowModal:
+            # Avoids native macOS sheets for window-modal dialogs (PICARD-3536).
+            set_windowmodal_safe(self)
+        else:
+            self.setWindowModality(modality)
         self.show()
         self.raise_()
         self.activateWindow()

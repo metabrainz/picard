@@ -71,6 +71,7 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
     modal_options,
+    set_windowmodal_safe,
 )
 from picard.ui.colors import interface_colors as _interface_colors
 from picard.ui.forms.ui_options import Ui_OptionsDialog
@@ -557,7 +558,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def display_simple_message_box(self, window_title, message):
         message_box = QtWidgets.QMessageBox(self)
         message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
-        message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(message_box)
         message_box.setWindowTitle(window_title)
         message_box.setText(message)
         message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
@@ -1026,7 +1027,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def _show_dialog(self, msg, function):
         message_box = QtWidgets.QMessageBox(self)
         message_box.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-        message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(message_box)
         message_box.setWindowTitle(_("Confirm Reset"))
         message_box.setText(_("Are you sure?") + "\n\n" + msg)
         message_box.setStandardButtons(

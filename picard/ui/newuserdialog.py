@@ -27,6 +27,8 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 from picard.util import get_url
 
+from picard.ui import set_windowmodal_safe
+
 
 class NewUserDialog:
     def __init__(self, parent):
@@ -56,7 +58,7 @@ class NewUserDialog:
         )
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Warning"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(self.msg)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)
         self.cb.setChecked(self.show_again)

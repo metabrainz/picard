@@ -200,6 +200,7 @@ import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
+    set_windowmodal_safe,
     theme,
 )
 from picard.ui.mainwindow import MainWindow
@@ -669,7 +670,7 @@ class Tagger(QtWidgets.QApplication):
         if not parent:
             parent = self.window
         dialog = QtWidgets.QInputDialog(parent)
-        dialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(dialog)
         dialog.setWindowTitle(_("MusicBrainz Account"))
         dialog.setLabelText(_("Authorization code:"))
         status = dialog.exec()
