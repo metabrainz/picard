@@ -173,6 +173,7 @@ from picard.util import (
     periodictouch,
     pipe,
     resolve_fs_path,
+    scan_paths_recursive,
     system_supports_long_paths,
     thread,
     unset_env_vars,
@@ -1073,28 +1074,9 @@ class Tagger(QtWidgets.QApplication):
         callback = partial(self._file_loaded, target=target, unmatched_files=unmatched_files)
         self._process_in_batches(files, lambda f: f.load(callback), "File load dispatch")
 
-    @staticmethod
-    def _scan_paths_recursive(paths, recursive, ignore_hidden):
-        local_paths = list(paths)
-        while local_paths:
-            current_path = normpath(local_paths.pop(0))
-            try:
-                if os.path.isdir(current_path):
-                    for entry in os.scandir(current_path):
-                        if ignore_hidden and is_hidden(entry.path):
-                            continue
-                        if recursive and entry.is_dir():
-                            local_paths.append(entry.path)
-                        else:
-                            yield entry.path
-                else:
-                    yield current_path
-            except OSError as err:
-                log.warning(err)
-
     def add_paths(self, paths, target=None):
         config = get_config()
-        files = self._scan_paths_recursive(
+        files = scan_paths_recursive(
             paths, config.setting['recursively_add_files'], config.setting["ignore_hidden_files"]
         )
         self.add_files(files, target=target)
