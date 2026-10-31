@@ -46,6 +46,7 @@ import weakref
 
 from picard import log
 from picard.config import get_config
+from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.file import File
 from picard.i18n import (
@@ -64,14 +65,14 @@ from picard.matching import (
     compare_to_release,
     find_best_match_with_margin,
 )
+from picard.notification import notifier
+from picard.services import services
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
     format_time,
     iter_files_from_objects,
 )
-
-from picard.ui.enums import MainAction
 
 
 if TYPE_CHECKING:
@@ -192,12 +193,12 @@ class Cluster(FileList):
         self.add_files([file], new_album=new_album)
 
     def remove_file(self, file: File, new_album=True):
-        self.tagger.window.set_processing(True)
+        notifier().set_processing(True)
         try:
             self.files.remove(file)
         except ValueError as e:
             log.debug("File %r already removed from cluster %r: %s", file, self, e)
-            self.tagger.window.set_processing(False)
+            notifier().set_processing(False)
             return
         self.update(signal=False)
         if self.ui_item:
@@ -207,7 +208,7 @@ class Cluster(FileList):
             self.remove_metadata_images_from_children([file])
         if new_album:
             self._update_related_album(removed_files=[file])
-        self.tagger.window.set_processing(False)
+        notifier().set_processing(False)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
@@ -383,7 +384,7 @@ class Cluster(FileList):
             releases = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 message,
                 {'album': self.metadata['album']},
                 timeout=3000,
@@ -496,13 +497,13 @@ class Cluster(FileList):
         """Try to identify the cluster using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
         )
         config = get_config()
         freq = self._most_frequent_values(('catalognumber', 'label'))
-        self._lookup_task = self.tagger.mb_api.find_releases(
+        self._lookup_task = services().mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
@@ -516,7 +517,7 @@ class Cluster(FileList):
 
     def _clear_lookup_task(self):
         if self._lookup_task:
-            self.tagger.webservice.abort_task(self._lookup_task)
+            services().webservice.abort_task(self._lookup_task)
             self._lookup_task = None
 
     @staticmethod
@@ -607,11 +608,11 @@ class UnclusteredFiles(Cluster):
 
     def add_files(self, files, new_album=True):
         super().add_files(files, new_album=new_album)
-        self.tagger.window.enable_action(MainAction.CLUSTER, self.files)
+        notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def remove_file(self, file, new_album=True):
         super().remove_file(file, new_album=new_album)
-        self.tagger.window.enable_action(MainAction.CLUSTER, self.files)
+        notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)

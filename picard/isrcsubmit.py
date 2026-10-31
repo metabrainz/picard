@@ -18,19 +18,16 @@
 
 from typing import NamedTuple
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
+from picard.const.actions import MainAction
 from picard.debug_opts import DebugOpt
 from picard.i18n import N_
+from picard.notification import notifier
 from picard.util.isrc import (
     NormalizedISRC,
     normalized_isrcs,
     valid_isrc,
 )
-
-from picard.ui.enums import MainAction
 
 
 class ISRCTrackDetail(NamedTuple):
@@ -66,7 +63,6 @@ class ISRCSubmitManager:
     """
 
     def __init__(self, mb_api):
-        self.tagger = tagger_instance()
         self._mb_api = mb_api
         self._entries: dict[object, ISRCSubmitEntry] = {}
         self._last_submitted: dict[str, list[str]] = {}
@@ -319,7 +315,7 @@ class ISRCSubmitManager:
             "ISRC submission payload: %r",
             pending,
         )
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_("Submitting ISRCs …"),
             echo=None,
         )
@@ -330,7 +326,7 @@ class ISRCSubmitManager:
         """Handle submission response."""
         if error:
             log.error("ISRC submission failed: %r", http.errorString() if http else error)
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_("ISRC submission failed"),
                 echo=None,
                 timeout=3000,
@@ -345,7 +341,7 @@ class ISRCSubmitManager:
             # Clean up fully submitted entries
             self._entries = {k: v for k, v in self._entries.items() if not v.is_submitted}
             log.debug("ISRC submission finished successfully")
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_("ISRC submission finished successfully"),
                 echo=None,
                 timeout=3000,
@@ -356,4 +352,4 @@ class ISRCSubmitManager:
     def _check_unsubmitted(self) -> None:
         """Update the UI action state based on pending submissions."""
         enabled = self.unsubmitted_count > 0
-        self.tagger.window.enable_action(MainAction.SUBMIT_ISRC, enabled)
+        notifier().enable_action(MainAction.SUBMIT_ISRC, enabled)

@@ -95,8 +95,10 @@ from picard.matching import (
     find_best_match_with_margin,
 )
 from picard.metadata import Metadata
+from picard.notification import notifier
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
+from picard.services import services
 from picard.tags import (
     ALL_TAGS,
     calculated_tag_names,
@@ -124,8 +126,6 @@ from picard.util.filenaming import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
-
-from picard.ui.filter import Filter
 
 
 if TYPE_CHECKING:
@@ -379,7 +379,7 @@ class File(MetadataItem):
 
             # If loading failed, force format guessing and try loading again
             try:
-                alternative_file = self.tagger.format_registry.guess_format(self.filename)
+                alternative_file = services().format_registry.guess_format(self.filename)
             except (FileNotFoundError, OSError):
                 log.error("Guessing format of %s failed", self.filename, exc_info=True)
                 alternative_file = None
@@ -395,7 +395,7 @@ class File(MetadataItem):
                     alternative_file.remove()  # cleanup unused File object
 
             file_name, file_extension = os.path.splitext(self.base_filename)
-            if file_extension not in self.tagger.format_registry.supported_extensions():
+            if file_extension not in services().format_registry.supported_extensions():
                 log.error("Unsupported media file %r wrongly loaded. Removing …", self)
                 callback(self, remove_file=True)
                 return
@@ -415,7 +415,7 @@ class File(MetadataItem):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         callback(self)
-        Filter.apply_filters()
+        self.tagger.file_loaded.emit(self)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
@@ -539,8 +539,12 @@ class File(MetadataItem):
         """Ask the internal player to release the file handle if it holds it.
 
         Must be called from the main thread (e.g. from save()).
+
+        The player is a GUI-only feature; in headless mode there is no window
+        (and no player), so this is a no-op.
         """
-        player = self.tagger.window.player
+        window = getattr(self.tagger, 'window', None)
+        player = getattr(window, 'player', None)
         if player:
             player.release_file(filename)
 
@@ -901,8 +905,8 @@ class File(MetadataItem):
         if from_parent_item and self.parent_item:
             log.debug("Removing %r from %r", self, self.parent_item)
             self.parent_item.remove_file(self)
-        self.tagger.acoustidmanager.remove(self)
-        self.tagger.isrc_submit_manager.remove(self)
+        services().acoustidmanager.remove(self)
+        services().isrc_submit_manager.remove(self)
         self.state = File.State.REMOVED
 
     def move(self, to_parent_item):
@@ -910,7 +914,7 @@ class File(MetadataItem):
         if hasattr(to_parent_item, 'add_file') and to_parent_item != self.parent_item:
             log.debug("Moving %r from %r to %r", self, self.parent_item, to_parent_item)
             self.clear_lookup_task()
-            self.tagger._acoustid.stop_analyze(self)
+            services().acoustid_client.stop_analyze(self)
             new_album = True
             if self.parent_item:
                 new_album = self.parent_item.album != to_parent_item.album
@@ -938,11 +942,11 @@ class File(MetadataItem):
         if not fingerprint:
             self.acoustid_fingerprint = None
             self.acoustid_length = 0
-            self.tagger.acoustidmanager.remove(self)
+            services().acoustidmanager.remove(self)
         elif fingerprint != self.acoustid_fingerprint:
             self.acoustid_fingerprint = fingerprint
             self.acoustid_length = length or self.metadata.length // 1000
-            self.tagger.acoustidmanager.add(self, None)
+            services().acoustidmanager.add(self, None)
             self.acoustid_update()
         config = get_config()
         if config.setting['save_acoustid_fingerprints']:
@@ -954,13 +958,13 @@ class File(MetadataItem):
             recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
-        self.tagger.acoustidmanager.update(self, recording_id)
+        services().acoustidmanager.update(self, recording_id)
         self.update_item()
 
     def isrc_update(self):
         """Update ISRC submission state based on current file-to-track match."""
         if not self.parent_item or not self.parent_item.can_link_fingerprint:
-            self.tagger.isrc_submit_manager.remove(self)
+            services().isrc_submit_manager.remove(self)
             return
         recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
         if not recording_id:
@@ -983,7 +987,7 @@ class File(MetadataItem):
             file_isrcs,
             mb_isrcs,
         )
-        self.tagger.isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
+        services().isrc_submit_manager.add(self, recording_id, file_isrcs, mb_isrcs)
 
     @classmethod
     def supports_tag(cls, name: str) -> bool:
@@ -1198,7 +1202,7 @@ class File(MetadataItem):
             tracks = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 message,
                 {'filename': self.filename},
                 timeout=3000,
@@ -1224,7 +1228,7 @@ class File(MetadataItem):
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
-                    self.tagger.acoustidmanager.add(self, recording_id)
+                    services().acoustidmanager.add(self, recording_id)
                 if release_group_id is not None:
                     releasegroup = self.tagger.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
@@ -1313,7 +1317,7 @@ class File(MetadataItem):
         """Try to identify the file using the existing metadata."""
         if self._lookup_task:
             return
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_("Looking up the metadata for file %(filename)s …"),
             {'filename': self.filename},
         )
@@ -1321,7 +1325,7 @@ class File(MetadataItem):
         metadata = self.metadata
         self.set_pending()
         config = get_config()
-        self._lookup_task = self.tagger.mb_api.find_tracks(
+        self._lookup_task = services().mb_api.find_tracks(
             partial(self._lookup_finished, File.LookupType.METADATA),
             track=metadata['title'],
             artist=metadata['artist'],
@@ -1335,7 +1339,7 @@ class File(MetadataItem):
 
     def clear_lookup_task(self):
         if self._lookup_task:
-            self.tagger.webservice.abort_task(self._lookup_task)
+            services().webservice.abort_task(self._lookup_task)
             self._lookup_task = None
 
     def set_pending(self):

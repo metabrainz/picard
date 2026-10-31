@@ -45,74 +45,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from enum import (
-    Enum,
-    unique,
-)
+# MainAction has no UI/Qt dependency and was moved to picard.const.actions so
+# that non-UI (core) modules can reference it without importing from picard.ui.
+# It is re-exported here for backward compatibility (e.g. existing plugins).
+from picard.const.actions import MainAction
 
 
-# TODO: when Python 3.11 will the lowest version supported move this to StrEnum
-# see https://tsak.dev/posts/python-enum/
-
-
-@unique
-class MainAction(str, Enum):
-    ABOUT = 'about_action'
-    ADD_DIRECTORY = 'add_directory_action'
-    ADD_FILES = 'add_files_action'
-    ALBUM_OTHER_VERSIONS = 'album_other_versions_action'
-    ALBUM_SEARCH = 'album_search_action'
-    ANALYZE = 'analyze_action'
-    AUTOTAG = 'autotag_action'
-    BROWSER_LOOKUP = 'browser_lookup_action'
-    CD_LOOKUP = 'cd_lookup_action'
-    CHECK_UPDATE = 'check_update_action'
-    SHOW_SETUP_WIZARD = 'show_setup_wizard_action'
-    CLOSE_WINDOW = 'close_window_action'
-    CLUSTER = 'cluster_action'
-    CUT = 'cut_action'
-    DISCID_FROM_LOGFILE = 'discid_from_logfile_action'
-    DISCID_FROM_TAGS = 'discid_from_tags_action'
-    DONATE = 'donate_action'
-    EXIT = 'exit_action'
-    GENERATE_FINGERPRINTS = 'generate_fingerprints_action'
-    HELP = 'help_action'
-    OPEN_COLLECTION_IN_BROWSER = 'open_collection_in_browser_action'
-    OPEN_FOLDER = 'open_folder_action'
-    OPTIONS = 'options_action'
-    PASTE = 'paste_action'
-    PLAY = 'play_action'
-    PLAY_FILE_EXTERNAL = 'play_file_external_action'
-    PLAYER_TOOLBAR_TOGGLE = 'player_toolbar_toggle_action'  # defined in MainWindow
-    REFRESH = 'refresh_action'
-    REMOVE = 'remove_action'
-    REPORT_BUG = 'report_bug_action'
-    SAVE = 'save_action'
-    SEARCH = 'search_action'
-    SEARCH_TOOLBAR_TOGGLE = 'search_toolbar_toggle_action'  # defined in MainWindow
-    SHOW_COVER_ART = 'show_cover_art_action'
-    SHOW_FILE_BROWSER = 'show_file_browser_action'
-    SHOW_METADATA_VIEW = 'show_metadata_view_action'
-    SHOW_SCRIPT_EDITOR = 'show_script_editor_action'
-    SHOW_FILTERBAR = 'show_filter_bar_action'
-    SHOW_TOOLBAR = 'show_toolbar_action'
-    SIMILAR_ITEMS_SEARCH = 'similar_items_search_action'
-    SUBMIT_ACOUSTID = 'submit_acoustid_action'
-    SUBMIT_CLUSTER = 'submit_cluster_action'
-    SUBMIT_FILE_AS_RECORDING = 'submit_file_as_recording_action'
-    SUBMIT_FILE_AS_RELEASE = 'submit_file_as_release_action'
-    SUBMIT_ISRC = 'submit_isrc_action'
-    SUPPORT_FORUM = 'support_forum_action'
-    TAGS_FROM_FILENAMES = 'tags_from_filenames_action'
-    TRASH = 'trash_action'
-    TRACK_SEARCH = 'track_search_action'
-    VIEW_HISTORY = 'view_history_action'
-    VIEW_INFO = 'view_info_action'
-    VIEW_LOG = 'view_log_action'
-    # Session management
-    SAVE_SESSION_AS = 'save_session_action'
-    SAVE_SESSION = 'quick_save_session_action'
-    LOAD_SESSION = 'load_session_action'
-    LOOKUP_ISRC = 'lookup_isrc_action'
-    NEW_SESSION = 'close_session_action'
-    CLEAR_RECENT_SESSIONS = 'clear_recent_sessions_action'
+__all__ = ('MainAction',)

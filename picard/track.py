@@ -82,6 +82,7 @@ from picard.script import (
     ScriptParser,
     iter_active_tagging_scripts,
 )
+from picard.services import services
 from picard.util import (
     pattern_as_regex,
     titlecase,
@@ -469,7 +470,7 @@ class NonAlbumTrack(Track):
         if config.setting['enable_ratings']:
             require_authentication = True
             inc |= {'user-ratings'}
-        self.tagger.mb_api.get_track_by_id(
+        services().mb_api.get_track_by_id(
             self.id,
             self._recording_request_finished,
             inc=inc,

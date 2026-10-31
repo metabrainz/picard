@@ -24,14 +24,11 @@
 
 from functools import partial
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
+from picard.const.actions import MainAction
 from picard.i18n import N_
+from picard.notification import notifier
 from picard.util import load_json
-
-from picard.ui.enums import MainAction
 
 
 # Maximum difference between file duration and MB recording length.
@@ -112,7 +109,6 @@ class AcoustIDManager:
     BATCH_SIZE_REDUCTION_FACTOR = 0.7
 
     def __init__(self, acoustid_api):
-        self.tagger = tagger_instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api
 
@@ -156,7 +152,7 @@ class AcoustIDManager:
 
     def _check_unsubmitted(self):
         enabled = next(self._unsubmitted(), None) is not None
-        self.tagger.window.enable_action(MainAction.SUBMIT_ACOUSTID, enabled)
+        notifier().enable_action(MainAction.SUBMIT_ACOUSTID, enabled)
 
     def submit(self):
         self.max_batch_size = self.MAX_PAYLOAD
@@ -192,7 +188,7 @@ class AcoustIDManager:
             else:
                 log_msg = N_("AcoustID submission finished successfully")
             log.debug(log_msg)
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 log_msg,
                 echo=None,
                 timeout=3000,
@@ -208,7 +204,7 @@ class AcoustIDManager:
             else:
                 log_msg = N_("AcoustID submission failed permanently, probably too many retries")
             log.error(log_msg)
-            self.tagger.window.set_statusbar_message(
+            notifier().status_message(
                 log_msg,
                 echo=None,
                 timeout=3000,
@@ -217,7 +213,7 @@ class AcoustIDManager:
             return
 
         log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…", len(batch), len(submissions))
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_("Submitting AcoustIDs …"),
             echo=None,
         )
@@ -250,7 +246,7 @@ class AcoustIDManager:
                 previous_errors.append(mparms)
                 log_msg = N_('AcoustID submission failed with error "%(error)s": %(message)s')
                 log.error(log_msg, mparms)
-                self.tagger.window.set_statusbar_message(
+                notifier().status_message(
                     log_msg,
                     mparms,
                     echo=None,

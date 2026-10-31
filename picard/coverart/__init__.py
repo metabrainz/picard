@@ -30,7 +30,6 @@ import traceback
 
 from picard import (
     log,
-    tagger_instance,
 )
 from picard.album import Album
 from picard.album_requests import TaskType
@@ -56,6 +55,7 @@ from picard.debug_opts import DebugOpt
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
+from picard.notification import notifier
 from picard.util import (
     imageinfo,
     resolve_fs_path,
@@ -353,8 +353,7 @@ class CoverArt:
 
     def _message(self, *args, **kwargs):
         """Display message to status bar"""
-        tagger = tagger_instance()
-        tagger.window.set_statusbar_message(*args, **kwargs)
+        notifier().status_message(*args, **kwargs)
 
 
 def _retrieve_coverart(album, metadata, release):

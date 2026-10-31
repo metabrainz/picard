@@ -15,32 +15,77 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+"""Regression test for PICARD-3446: headless CLI bootstrap must migrate config.
 
-from unittest import (
-    TestCase,
-    mock,
-)
+The headless application (HeadlessTagger) must run config upgrades
+non-interactively, so an old config file used via picard-cli is migrated rather
+than silently left stale (and must never block on an upgrade dialog).
 
-from picard.cli import _bootstrap
+HeadlessTagger is a QCoreApplication subclass, so it runs in a subprocess (only
+one Qt application may exist per process, and the suite already runs under a
+QApplication).
+"""
+
+import os
+import subprocess
+import sys
+
+from test.picardtestcase import PicardTestCase
 
 
-class TestCliBootstrapConfigUpgrade(TestCase):
-    """The CLI bootstrap must run config upgrades non-interactively.
+# Build a HeadlessTagger against a config file whose stored version is old, then
+# print the version after migration. PICARD-3446: the version must be bumped to
+# the current one, proving run_config_upgrades ran (non-interactively).
+_PROGRAM = """
+import sys
+from PyQt6 import QtCore
 
-    Regression test for PICARD-3446: minimal_init previously loaded the config
-    without calling run_config_upgrades, so an old config used via the CLI was
-    never migrated. External Qt/config setup is patched out so this stays a
-    fast unit test of the wiring only.
-    """
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
 
-    def test_minimal_init_runs_config_upgrades_non_interactively(self):
-        with (
-            mock.patch.object(_bootstrap.QtCore, 'QCoreApplication'),
-            mock.patch.object(_bootstrap, 'init_options'),
-            mock.patch.object(_bootstrap, 'setup_config'),
-            mock.patch.object(_bootstrap, 'get_config', return_value=mock.sentinel.config),
-            mock.patch.object(_bootstrap, 'run_config_upgrades') as run_config_upgrades,
-        ):
-            _bootstrap.minimal_init('some.ini')
+from picard import PICARD_VERSION
+from picard.cli.headless import HeadlessTagger
+from picard.config import get_config
 
-        run_config_upgrades.assert_called_once_with(mock.sentinel.config, interactive=False)
+config_file = sys.argv[1]
+app = HeadlessTagger([], config_file=config_file)
+version = get_config().application['version']
+print('VERSION=' + str(version))
+print('CURRENT=' + str(PICARD_VERSION))
+app.run_cleanup()
+"""
+
+
+class HeadlessConfigUpgradeTest(PicardTestCase):
+    def test_headless_tagger_migrates_old_config_non_interactively(self):
+        config_file = os.path.join(self.mktmpdir(), 'old-config.ini')
+        # A plausible old release version; well below the current one, so the
+        # upgrade hooks must run and bump the stored version.
+        with open(config_file, 'w', encoding='utf-8') as f:
+            f.write('[application]\nversion=1.0.0\n')
+
+        result = subprocess.run(
+            [sys.executable, '-c', _PROGRAM, config_file],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+
+        version = current = None
+        for line in result.stdout.splitlines():
+            if line.startswith('VERSION='):
+                version = line[len('VERSION=') :]
+            elif line.startswith('CURRENT='):
+                current = line[len('CURRENT=') :]
+
+        self.assertIsNotNone(version)
+        self.assertIsNotNone(current)
+        # Migration ran: the stale 1.0.0 version was bumped to the current one.
+        self.assertNotEqual('1.0.0', version)
+        self.assertEqual(current, version)

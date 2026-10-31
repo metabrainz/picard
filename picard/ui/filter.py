@@ -28,7 +28,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import (
     N_,
@@ -92,10 +95,12 @@ class Filter(QtWidgets.QWidget):
     filterable_tags: ClassVar[set[str]] = set()
     instances: ClassVar[set] = set()
     suspended = False
+    _file_loaded_connected: ClassVar[bool] = False
 
     def __init__(self, parent=None):
         super().__init__(parent)
         Filter.instances.add(self)
+        self._connect_file_loaded()
         self.saved_filters_key = f"filters_{type(parent).__name__}"
         self.initializing = True
         layout = QtWidgets.QHBoxLayout(self)
@@ -147,6 +152,27 @@ class Filter(QtWidgets.QWidget):
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.filter_query_box.text())
+
+    @classmethod
+    def _connect_file_loaded(cls):
+        """Connect the tagger's file_loaded signal to re-apply filters.
+
+        Connected once for the whole class (filters are applied globally
+        across all instances), the first time a Filter is created. This keeps
+        the "a file finished loading" event flowing from core (picard.file)
+        to the UI via a Tagger signal, instead of core calling into the UI.
+        """
+        if cls._file_loaded_connected:
+            return
+        tagger = tagger_instance()
+        if tagger is None:
+            return
+        tagger.file_loaded.connect(cls._on_file_loaded)
+        cls._file_loaded_connected = True
+
+    @classmethod
+    def _on_file_loaded(cls, file):
+        cls.apply_filters()
 
     @classmethod
     def apply_filters(cls):

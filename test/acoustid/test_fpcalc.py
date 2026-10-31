@@ -56,7 +56,6 @@ Task = namedtuple('Task', ('file', 'next_func'))
 class FpcalcCallbackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.acoustid')
         self.client = AcoustIDClient(object())
 
     def _task(self):
@@ -105,7 +104,6 @@ class FpcalcCallbackTest(PicardTestCase):
 class FpcalcRunTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.acoustid')
         self.set_config_values({'fpcalc_threads': 1})
         self.client = AcoustIDClient(object())
         self.client._fpcalc = '/usr/bin/fpcalc'

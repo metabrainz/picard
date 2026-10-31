@@ -69,13 +69,38 @@ api_versions = ("3.0",)
 api_versions_tuple = tuple(Version.from_string(v) for v in api_versions)
 
 
-def tagger_instance() -> 'Tagger':
-    """Returns an instance of Tagger.
+_tagger_provider = None
 
-    Tagger is the main application instance and a subclass of QApplication.
-    Use this only in GUI code that needs the full Tagger.
-    For code that must work in both GUI and CLI mode, use app_instance() instead.
+
+def set_tagger_provider(provider) -> None:
+    """Install the object that ``tagger_instance()`` should return.
+
+    Both the GUI ``Tagger`` and the headless application object register
+    themselves here, so core code that reaches the running application via
+    ``tagger_instance()`` works in either mode. Passing ``None`` clears the
+    registration (``tagger_instance()`` then falls back to ``Tagger.instance()``).
+
+    This mirrors the injected-provider pattern used by ``picard.services`` and
+    ``picard.notification``.
     """
+    global _tagger_provider
+    _tagger_provider = provider
+
+
+def tagger_instance() -> 'Tagger':
+    """Returns the running application object.
+
+    In GUI mode this is the ``Tagger`` (a ``QApplication`` subclass); in
+    headless mode it is the object registered via :func:`set_tagger_provider`
+    (e.g. the CLI's headless application), which provides the subset of the
+    ``Tagger`` surface the tagging core needs.
+
+    For code that only needs shared services, prefer ``picard.services`` or
+    ``app_instance()``.
+    """
+    if _tagger_provider is not None:
+        return _tagger_provider
+
     from picard.tagger import Tagger  # avoid circular imports
 
     return Tagger.instance()

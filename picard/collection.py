@@ -28,31 +28,27 @@ from typing import Any
 
 from PyQt6.QtNetwork import QNetworkReply
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
 from picard.config import get_config
 from picard.i18n import (
     N_,
     ngettext,
 )
+from picard.notification import notifier
+from picard.services import services
 from picard.webservice import ReplyHandler
-from picard.webservice.api_helpers import MBAPIHelper
 
 
 user_collections: dict[str, 'Collection'] = {}
 
 
 class Collection:
-    def __init__(self, collection_id: str, mb_api: MBAPIHelper) -> None:
-        self.tagger = tagger_instance()
+    def __init__(self, collection_id: str) -> None:
         self.id = collection_id
         self.name = ''
         self.size = 0
         self.pending_releases: set[str] = set()
         self.releases: set[str] = set()
-        self._mb_api = mb_api
 
     @property
     def size(self) -> int:
@@ -79,11 +75,11 @@ class Collection:
             api_method(self.id, list(releases), when_done)
 
     def add_releases(self, releases: set[str], callback: Callable) -> None:
-        api_method = self._mb_api.put_to_collection
+        api_method = services().mb_api.put_to_collection
         self._modify(api_method, self._success_add, set(releases), callback)
 
     def remove_releases(self, releases: set[str], callback: Callable) -> None:
-        api_method = self._mb_api.delete_from_collection
+        api_method = services().mb_api.delete_from_collection
         self._modify(api_method, self._success_remove, set(releases), callback)
 
     def _finished(
@@ -102,7 +98,7 @@ class Collection:
             self._error(reply)
 
     def _error(self, reply: QNetworkReply) -> None:
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},
             echo=log.error,
@@ -139,7 +135,7 @@ class Collection:
             'name': self.name,
         }
         log.debug(debug_msg % mparms)
-        self.tagger.window.set_statusbar_message(
+        notifier().status_message(
             status_msg,
             mparms,
             translate=None,
@@ -150,18 +146,16 @@ class Collection:
 def get_user_collection(collection_id: str) -> Collection:
     collection = user_collections.get(collection_id)
     if collection is None:
-        tagger = tagger_instance()
-        collection = user_collections[collection_id] = Collection(collection_id, tagger.mb_api)
+        collection = user_collections[collection_id] = Collection(collection_id)
     return collection
 
 
 def load_user_collections(callback: Callable | None = None) -> None:
-    tagger = tagger_instance()
     config = get_config()
 
     def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
         if error:
-            tagger.window.set_statusbar_message(
+            notifier().status_message(
                 N_("Error loading collections: %(error)s"),
                 {'error': reply.errorString()},
                 echo=log.error,
@@ -189,8 +183,8 @@ def load_user_collections(callback: Callable | None = None) -> None:
         if callback:
             callback()
 
-    if tagger.webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
-        tagger.mb_api.get_collection_list(partial(request_finished))
+    if services().webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
+        services().mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
 

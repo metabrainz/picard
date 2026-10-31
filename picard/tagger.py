@@ -152,6 +152,10 @@ except ImportError:
     PluginCLI = None
     PluginManager = None
 
+from picard.notification import (
+    notifier,
+    set_notifier_sink,
+)
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -190,6 +194,10 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_updates import (
+    set_view_updates_sink,
+    view_updates,
+)
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -210,7 +218,6 @@ from picard.ui.util import (
     FileDialog,
     busy_cursor_start,
     busy_cursor_stop,
-    flash_busy_cursor,
     show_session_not_found_dialog,
 )
 
@@ -234,6 +241,7 @@ class Tagger(QtWidgets.QApplication):
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
+    file_loaded = QtCore.pyqtSignal(File)
     _qt_translators_updated = QtCore.pyqtSignal()
 
     __instance: 'Tagger'
@@ -447,9 +455,9 @@ class Tagger(QtWidgets.QApplication):
     def _init_fingerprinting(self):
         """Initialize fingerprinting"""
         acoustid_api = AcoustIdAPIHelper(self.webservice)
-        self._acoustid = acoustid.AcoustIDClient(acoustid_api)
-        self._acoustid.init()
-        self.register_cleanup(self._acoustid.done)
+        self.acoustid_client = acoustid.AcoustIDClient(acoustid_api)
+        self.acoustid_client.init()
+        self.register_cleanup(self.acoustid_client.done)
         self.acoustidmanager = AcoustIDManager(acoustid_api)
         self.isrc_submit_manager = ISRCSubmitManager(self.mb_api)
 
@@ -522,6 +530,12 @@ class Tagger(QtWidgets.QApplication):
         """Initialize User Interface / Main Window"""
         self.enable_menu_icons(config.setting['show_menu_icons'])
         self.window = MainWindow(disable_player=self._no_player)
+        # Route core status/progress/action notifications to the main window.
+        # In headless mode no sink is installed and the facade only logs.
+        set_notifier_sink(self.window)
+        # Route core view-update suspensions (e.g. batch file moves) to the
+        # main window. In headless mode no sink is installed and they no-op.
+        set_view_updates_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -595,7 +609,7 @@ class Tagger(QtWidgets.QApplication):
                                 or self.thread_pool.activeThreadCount() > original_main_thread_count
                                 or self.save_thread_pool.activeThreadCount() > original_save_thread_count
                                 or self.webservice.num_pending_web_requests
-                                or self._acoustid._running
+                                or self.acoustid_client._running
                             ):
                                 continue
                             break
@@ -637,7 +651,7 @@ class Tagger(QtWidgets.QApplication):
 
     def clear_session(self) -> None:
         """Remove all files, clusters and albums from current UI state."""
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             # Remove all albums (includes NAT)
             for album in list(self.albums.values()):
                 self.remove_album(album)
@@ -938,7 +952,7 @@ class Tagger(QtWidgets.QApplication):
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
-                self.window.suspend_while_loading_exit()
+                view_updates().suspend_while_loading_exit()
 
         if remove_file:
             file.remove()
@@ -1020,8 +1034,8 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Aborting move since target is invalid")
             return
         with (
-            self.window.suspend_while_loading,
-            self.window.ignore_selection_changes,
+            view_updates().suspend_while_loading(),
+            view_updates().suspend_selection(),
         ):
             if isinstance(target, Cluster):
                 for file in process_events_iter(files):
@@ -1074,7 +1088,7 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
-            self.window.suspend_while_loading_enter()
+            view_updates().suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
             self._load_files_batch(new_files, target, unmatched_files)
@@ -1116,14 +1130,14 @@ class Tagger(QtWidgets.QApplication):
             # the fallback below opens a modal dialog, which is its own
             # immediate feedback and needs no cursor flash.
             if lookup.mbid_lookup(text, search['entity'], mbid_matched_callback=mbid_matched_callback):
-                flash_busy_cursor()
+                notifier().flash_busy()
             else:
                 dialog = search['dialog'](self.window)
                 dialog.search(text)
                 dialog.exec()
         else:
             # Opens the browser / dispatches an entity search asynchronously.
-            flash_busy_cursor()
+            notifier().flash_busy()
             lookup.search_entity(
                 search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback, force_browser=force_browser
             )
@@ -1133,7 +1147,7 @@ class Tagger(QtWidgets.QApplication):
         lookup = self.get_file_lookup()
         config = get_config()
         # Result appears asynchronously; acknowledge the action immediately.
-        flash_busy_cursor()
+        notifier().flash_busy()
         lookup.collection_lookup(config.persist['oauth_username'])
 
     def browser_lookup(self, item):
@@ -1142,7 +1156,7 @@ class Tagger(QtWidgets.QApplication):
         metadata = item.metadata
         # Result appears asynchronously (browser opens / network lookup);
         # acknowledge the action immediately.
-        flash_busy_cursor()
+        notifier().flash_busy()
         # Only lookup via MB IDs if matched to a Track or Album;
         # otherwise ignore and search by metadata details
         is_track = isinstance(item, Track)
@@ -1240,7 +1254,7 @@ class Tagger(QtWidgets.QApplication):
         for file in files:
             if file.filename in self.files:
                 file.clear_lookup_task()
-                self._acoustid.stop_analyze(file)
+                self.acoustid_client.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
         self.tagger_stats_changed.emit()
@@ -1314,7 +1328,7 @@ class Tagger(QtWidgets.QApplication):
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             for obj in objects:
                 if isinstance(obj, File):
                     files.append(obj)
@@ -1336,7 +1350,7 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_files(files)
 
     def trash_files(self, files):
-        with self.window.ignore_selection_changes:
+        with view_updates().suspend_selection():
             files_removed = []
             for file in files:
                 success, new_location = QtCore.QFile.moveToTrash(file.filename)
@@ -1511,10 +1525,10 @@ class Tagger(QtWidgets.QApplication):
             if file.can_analyze:
                 if not flashed:
                     # Result appears asynchronously; acknowledge the action once.
-                    flash_busy_cursor()
+                    notifier().flash_busy()
                     flashed = True
                 file.set_pending()
-                self._acoustid.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
+                self.acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
 
     def generate_fingerprints(self, objs):
         """Generate the fingerprints without matching the files."""
@@ -1526,7 +1540,7 @@ class Tagger(QtWidgets.QApplication):
 
         for file in iter_files_from_objects(objs):
             file.set_pending()
-            self._acoustid.fingerprint(file, partial(finished, file))
+            self.acoustid_client.fingerprint(file, partial(finished, file))
 
     # =======================================================================
     #  Metadata-based lookups
@@ -1538,7 +1552,7 @@ class Tagger(QtWidgets.QApplication):
             if obj.can_autotag:
                 if not flashed:
                     # Result appears asynchronously; acknowledge the action once.
-                    flash_busy_cursor()
+                    notifier().flash_busy()
                     flashed = True
                 obj.lookup_metadata()
 
@@ -1551,7 +1565,7 @@ class Tagger(QtWidgets.QApplication):
         files = tuple(iter_files_from_objects(objs))
         if files:
             # Clustering runs on a background thread; acknowledge the action.
-            flash_busy_cursor()
+            notifier().flash_busy()
         if log.is_debug():
             limit = 5
             count = len(files)
@@ -1572,10 +1586,10 @@ class Tagger(QtWidgets.QApplication):
             return
 
         clusters = list(result)
-        self.window.suspend_while_loading_enter()
+        view_updates().suspend_while_loading_enter()
 
         def on_complete():
-            self.window.suspend_while_loading_exit()
+            view_updates().suspend_while_loading_exit()
             if callback:
                 callback()
 
@@ -1816,22 +1830,6 @@ def setup_pipe_handler(cmdline_args):
         is_remote = False
 
     return PipeStatus(handler=pipe_handler, is_remote=is_remote)
-
-
-def minimal_init(config_file=None):
-    """Minimal initialization for CLI commands without GUI.
-
-    Returns a QCoreApplication instance with config initialized.
-    """
-    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
-    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
-
-    app = QtCore.QCoreApplication(sys.argv)
-
-    init_options()
-    setup_config(app=app, filename=config_file)
-
-    return app
 
 
 def setup_application():
