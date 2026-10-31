@@ -38,7 +38,11 @@ from functools import wraps
 from time import monotonic
 from typing import Any
 
-from PyQt6 import QtCore
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
 from PyQt6.QtNetwork import QNetworkReply
 
 from picard import log
@@ -312,3 +316,41 @@ def install_qt_message_handler() -> None:
     instead of printed raw to stderr.
     """
     QtCore.qInstallMessageHandler(_qt_message_handler)
+
+
+def create_qmenu(
+    title: str, icon: QtGui.QIcon | None = None, parent: QtWidgets.QWidget | None = None
+) -> QtWidgets.QMenu:
+    """Convenience method to create a QMenu entry.
+
+    Unlike using the QMenu constructor directly, this function returns a QMenu where
+    the MenuRole of the menu action is set to MenuRole.NoRole. Hence it is recommended
+    to use this function for all menus created for the main menu bar, as otherwise
+    the menu will have the TextHeuristicRole, which can cause role detection issues.
+    """
+    menu = QtWidgets.QMenu(title, parent=parent)
+    if icon:
+        menu.setIcon(icon)
+    action = menu.menuAction()
+    if action:
+        action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
+    return menu
+
+
+def create_qaction(text: str, icon: QtGui.QIcon | None = None, parent: QtCore.QObject | None = None) -> QtGui.QAction:
+    """Convenience method to create a QAction entry.
+
+    Unlike using the QAction constructor directly, this function returns a QAction
+    where the MenuRole is set to MenuRole.NoRole. Hence it is recommended
+    to use this function for all menus created for the main menu bar, as otherwise
+    the menu will have the TextHeuristicRole, which can cause role detection issues.
+    """
+    if icon:
+        action = QtGui.QAction(icon, text, parent=parent)
+    else:
+        action = QtGui.QAction(text, parent=parent)
+    # Default to no menu role. The default would be TextHeuristicRole, which can cause
+    # issues on macOS automatic menu role detection and is also suspected to causing
+    # crashes. Instead the expected role must be set explicitly if it matters.
+    action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
+    return action

@@ -134,6 +134,7 @@ from picard.util.cdrom import (
 )
 from picard.util.isrc import valid_isrc
 from picard.util.qt import (
+    create_qmenu,
     reconnect,
     throttle,
 )
@@ -835,7 +836,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def create_lookup_by_menu(self, parent):
         """Create a 'Lookup by…' submenu for use in context menus."""
-        lookup_menu = _create_qmenu(_("Lookup by…"), icontheme.lookup('system-search'), parent)
+        lookup_menu = create_qmenu(_("Lookup by…"), icontheme.lookup('system-search'), parent)
         lookup_menu.addAction(self.action_map[MainAction.LOOKUP_ISRC])
         return lookup_menu
 
@@ -843,7 +844,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = dict(create_actions(self))
 
     def _create_cd_lookup_menu(self):
-        menu = _create_qmenu(_("Lookup &CD…"), icontheme.lookup('media-optical'))
+        menu = create_qmenu(_("Lookup &CD…"), icontheme.lookup('media-optical'))
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
 
@@ -852,7 +853,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         The menu content is populated from the persisted recent sessions list.
         """
-        self.recent_sessions_menu = _create_qmenu(_("Recent Sessions"), icontheme.lookup('document-open-recent'))
+        self.recent_sessions_menu = create_qmenu(_("Recent Sessions"), icontheme.lookup('document-open-recent'))
         self._populate_recent_sessions_menu()
         return self.recent_sessions_menu
 
@@ -1072,18 +1073,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
-        self.file_naming_scripts_menu = _create_qmenu(_("File naming &scripts"), icontheme.lookup('document-open'))
+        self.file_naming_scripts_menu = create_qmenu(_("File naming &scripts"), icontheme.lookup('document-open'))
         self._script_actions = []
         self._make_script_selector_menu()
         self.file_naming_scripts_menu.addSeparator()
         self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
-        self.profile_quick_selector_menu = _create_qmenu(
+        self.profile_quick_selector_menu = create_qmenu(
             _("&Profiles"), self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
         self._make_profile_selector_menu()
 
-        self.quick_settings_menu = _create_qmenu(_("&Quick settings"), icontheme.lookup('applications-system'))
+        self.quick_settings_menu = create_qmenu(_("&Quick settings"), icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
         self.options_menu = self.menuBar().addMenu(_("&Options"))
@@ -2514,12 +2515,3 @@ def update_last_check_date(is_success):
         config.persist['last_update_check'] = datetime.date.today().toordinal()
     else:
         log.debug('The update check was unsuccessful. The last update date will not be changed.')
-
-
-def _create_qmenu(title: str, icon: QtGui.QIcon, parent: QtCore.QObject | None = None) -> QtWidgets.QMenu:
-    menu = QtWidgets.QMenu(title)
-    menu.setIcon(icon)
-    action = menu.menuAction()
-    if action:
-        action.setMenuRole(QtGui.QAction.MenuRole.NoRole)
-    return menu
