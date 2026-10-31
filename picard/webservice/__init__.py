@@ -97,6 +97,15 @@ MAX_PENDING_AUTHORIZATION_REQUESTS = 1000
 # new location should be remembered so the old URL is not requested again.
 # 302/303/307 are temporary and must not be cached. See PICARD-816.
 HTTP_PERMANENT_REDIRECT_CODES = frozenset({301, 308})
+
+# HTTP redirect status codes that must preserve the original method and body
+# (307 Temporary Redirect, 308 Permanent Redirect). For the others (301/302/303)
+# the follow-up request is issued as GET without a body. See PICARD-816.
+HTTP_METHOD_PRESERVING_REDIRECT_CODES = frozenset({307, 308})
+
+# Maximum number of redirect hops to follow before giving up with
+# TooManyRedirectsError. See PICARD-816.
+MAX_REDIRECTS = 10
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
     PICARD_ORG_NAME,
     PICARD_APP_NAME,
@@ -158,6 +167,10 @@ class WSRequest(QNetworkRequest):
     _high_prio_no_cache = True
     _mblogin = False
     _retries = 0
+
+    # Set of normalized URLs already visited while following redirects for this
+    # logical request; used for multi-hop loop detection. See PICARD-816.
+    redirect_history: frozenset[str] = frozenset()
 
     response_mimetype = None
     response_parser = None
@@ -653,35 +666,63 @@ class WebService(QtCore.QObject):
         reply_url = reply.request().url()
         display_redirect_url = self.display_url(redirect_url)
         display_reply_url = self.display_url(reply_url)
-        if not WebService.urls_equivalent(redirect_url, reply_url):
-            log.debug("Redirect to %s requested", display_redirect_url)
 
-            # Remember permanent (301/308) redirects so future requests to the
-            # original URL skip the redirect entirely. See PICARD-816.
-            if self.http_response_code(reply) in HTTP_PERMANENT_REDIRECT_CODES:
-                self._remember_permanent_redirect(request.url(), redirect_url)
+        status_code = self.http_response_code(reply)
 
-            redirect_request = WSRequest(
-                method='GET',
-                url=redirect_url,
-                handler=request.handler,
-                parse_response_type=request.parse_response_type,
-                priority=True,
-                important=True,
-                mblogin=request.mblogin,
-                cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
-                refresh=request.refresh,
-            )
+        # Track the full chain of URLs visited while following this logical
+        # request so a multi-hop loop (e.g. A -> B -> A) is detected, not just
+        # an immediate self-redirect. See PICARD-816.
+        redirect_history = request.redirect_history | {self._normalize_url_key(reply_url)}
+        is_loop = self._normalize_url_key(redirect_url) in redirect_history
+        too_many = len(redirect_history) > MAX_REDIRECTS
 
-            ratecontrol.copy_minimal_delay(
-                request.get_host_key(),
-                redirect_request.get_host_key(),
-            )
-
-            self.add_request(redirect_request)
-        else:
-            log.error("Redirect loop: %s", display_reply_url)
+        if is_loop or too_many:
+            if is_loop:
+                log.error("Redirect loop: %s", display_reply_url)
+            else:
+                log.error("Too many redirects (%d) for %s", len(redirect_history), display_reply_url)
             request.handler(reply.readAll().data(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
+            return
+
+        log.debug("Redirect to %s requested", display_redirect_url)
+
+        # Remember permanent (301/308) redirects so future requests to the
+        # original URL skip the redirect entirely. See PICARD-816.
+        if status_code in HTTP_PERMANENT_REDIRECT_CODES:
+            self._remember_permanent_redirect(request.url(), redirect_url)
+
+        # 307/308 must preserve the method and body; 301/302/303 are re-issued
+        # as GET without a body. See PICARD-816.
+        if status_code in HTTP_METHOD_PRESERVING_REDIRECT_CODES:
+            method = request.method
+            data = request.data
+            request_mimetype = request.request_mimetype
+        else:
+            method = 'GET'
+            data = None
+            request_mimetype = None
+
+        redirect_request = WSRequest(
+            method=method,
+            url=redirect_url,
+            handler=request.handler,
+            parse_response_type=request.parse_response_type,
+            data=data,
+            request_mimetype=request_mimetype,
+            priority=True,
+            important=True,
+            mblogin=request.mblogin,
+            cacheloadcontrol=request.attribute(QNetworkRequest.Attribute.CacheLoadControlAttribute),
+            refresh=request.refresh,
+        )
+        redirect_request.redirect_history = redirect_history
+
+        ratecontrol.copy_minimal_delay(
+            request.get_host_key(),
+            redirect_request.get_host_key(),
+        )
+
+        self.add_request(redirect_request)
 
     def _handle_reply(self, reply: QNetworkReply, request: WSRequest):
         hostkey = request.get_host_key()
