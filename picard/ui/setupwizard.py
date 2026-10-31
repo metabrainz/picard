@@ -38,6 +38,7 @@ from picard.util import (
 )
 from picard.util.readthedocs import ReadTheDocs
 
+from picard.ui import set_windowmodal_safe
 from picard.ui.theme import theme
 
 
@@ -598,7 +599,7 @@ class SetupWizard(QtWidgets.QWizard):
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(self)
         # Pages scroll when their content does not fit (see
         # SetupWizardPage._body_layout), so the dialog can be shrunk by the
         # user below the comfortable default size set via resize() below.

@@ -49,6 +49,7 @@ from picard.plugin3.plugin_metadata import (
 from picard.plugin3.ref_item import RefItem
 from picard.util.qt import temporary_disconnect
 
+from picard.ui import set_windowmodal_safe
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
@@ -971,7 +972,7 @@ class PluginListWidget(QtWidgets.QWidget):
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setText(_("There were no installed metadata processing plugins found."))
             msg.setWindowTitle(_("No Data"))
-            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+            set_windowmodal_safe(msg)
             msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.show()
@@ -1031,7 +1032,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(self)
         self.resize(font_scaled_size(self, 50, 20))
         self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()

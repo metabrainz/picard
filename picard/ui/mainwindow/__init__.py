@@ -144,6 +144,7 @@ from picard.ui import (
     PicardDialog,
     PreserveGeometry,
     modal_options,
+    set_windowmodal_safe,
 )
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
@@ -531,7 +532,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if unsaved_files > 0:
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Question)
-            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+            set_windowmodal_safe(msg)
             msg.setWindowTitle(_("Unsaved Changes"))
             msg.setText(_("Are you sure you want to quit Picard?"))
             txt = (
@@ -577,7 +578,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         QMessageBox = QtWidgets.QMessageBox
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Question)
-        msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        set_windowmodal_safe(msg)
         msg.setWindowTitle(_("Close Session"))
         msg.setText(_("Do you want to save the current session before continuing?"))
         msg.setInformativeText(_("Closing the session will clear all files, clusters and albums from the view."))
@@ -782,7 +783,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if not config.setting['acoustid_apikey']:
                 msg = QtWidgets.QMessageBox(self)
                 msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
-                msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+                set_windowmodal_safe(msg)
                 msg.setWindowTitle(_("AcoustID submission not configured"))
                 msg.setText(_("You need to configure your AcoustID API key before you can submit fingerprints."))
                 open_options = QtWidgets.QPushButton(
