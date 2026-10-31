@@ -92,6 +92,11 @@ COUNT_REQUESTS_DELAY_MS = 250
 
 TEMP_ERRORS_RETRIES = 5
 MAX_PENDING_AUTHORIZATION_REQUESTS = 1000
+
+# HTTP redirect status codes that indicate a *permanent* move. For these the
+# new location should be remembered so the old URL is not requested again.
+# 302/303/307 are temporary and must not be cached. See PICARD-816.
+HTTP_PERMANENT_REDIRECT_CODES = frozenset({301, 308})
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
     PICARD_ORG_NAME,
     PICARD_APP_NAME,
@@ -418,6 +423,10 @@ class WebService(QtCore.QObject):
             'PUT': self.manager.put,
             'DELETE': self.manager.deleteResource,
         }
+        # Maps a normalized source URL to the permanent (HTTP 301/308) target it
+        # redirects to. Populated as permanent redirects are observed and applied
+        # to later requests so the old URL is not requested again. See PICARD-816.
+        self._permanent_redirects: dict[str, str] = {}
         self._init_queues()
         self._init_timers()
 
@@ -548,6 +557,10 @@ class WebService(QtCore.QObject):
             log.debug("Skipping aborted task for %s", request.url().toString())
             return
 
+        # Rewrite the URL to a previously observed permanent (301/308) target so
+        # we do not request the stale URL and re-follow the redirect. See PICARD-816.
+        self._apply_known_redirects(request)
+
         if request.mblogin:
             # Only authenticate against servers that advertise an auth scheme
             # Picard can perform. Other servers (e.g. an unofficial mirror, or the
@@ -596,6 +609,44 @@ class WebService(QtCore.QObject):
             QUrl.UrlFormattingOption.RemovePort
         ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
+    @staticmethod
+    def _normalize_url_key(url: QUrl) -> str:
+        """Return a stable string key for a URL, used for redirect bookkeeping."""
+        return url.toString(QUrl.UrlFormattingOption.RemoveUserInfo)
+
+    def _remember_permanent_redirect(self, source_url: QUrl, target_url: QUrl):
+        """Record a permanent (301/308) redirect so later requests to
+        ``source_url`` are rewritten to ``target_url`` without a round-trip.
+        See PICARD-816.
+        """
+        source_key = self._normalize_url_key(source_url)
+        target_value = self._normalize_url_key(target_url)
+        if source_key == target_value:
+            return
+        self._permanent_redirects[source_key] = target_value
+        log.debug("Remembering permanent redirect %s -> %s", source_key, target_value)
+
+    def _apply_known_redirects(self, request: WSRequest) -> bool:
+        """Rewrite ``request``'s URL in place to the final known permanent target.
+
+        Follows a chain of recorded permanent redirects, guarding against loops.
+        Returns ``True`` if the request URL was changed. See PICARD-816.
+        """
+        seen = set()
+        changed = False
+        while True:
+            key = self._normalize_url_key(request.url())
+            if key in seen:
+                log.error("Permanent redirect loop detected for %s", key)
+                break
+            seen.add(key)
+            target = self._permanent_redirects.get(key)
+            if target is None:
+                break
+            request.setUrl(QUrl(target))
+            changed = True
+        return changed
+
     def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect: QUrl):
         # merge with base url (to cover the possibility of the URL being relative)
         redirect_url = request.url().resolved(redirect)
@@ -604,6 +655,11 @@ class WebService(QtCore.QObject):
         display_reply_url = self.display_url(reply_url)
         if not WebService.urls_equivalent(redirect_url, reply_url):
             log.debug("Redirect to %s requested", display_redirect_url)
+
+            # Remember permanent (301/308) redirects so future requests to the
+            # original URL skip the redirect entirely. See PICARD-816.
+            if self.http_response_code(reply) in HTTP_PERMANENT_REDIRECT_CODES:
+                self._remember_permanent_redirect(request.url(), redirect_url)
 
             redirect_request = WSRequest(
                 method='GET',
