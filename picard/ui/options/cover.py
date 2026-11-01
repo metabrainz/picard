@@ -135,28 +135,27 @@ class CoverOptionsPage(OptionsPage):
         those entries, losing the user's position and enabled state when the
         plugin is re-enabled (PICARD-3498).
 
-        Here we preserve stored entries whose provider is not currently shown,
-        keeping their original position relative to the stored order, and
-        append any newly-registered providers not present in the stored config.
+        The UI list is the source of truth for the order and enabled state of
+        currently-visible providers, so reordering in the list widget is
+        honoured (PICARD-3538). Hidden entries stay pinned at their stored
+        index, while the slots occupied by visible providers are refilled in
+        the current UI order. Duplicate stored names (possible via a
+        hand-edited config) collapse to a single entry.
         """
-        ui_providers = {name: enabled for name, enabled in self._ca_providers()}
+        ui_order = list(self._ca_providers())
+        ui_names = {name for name, _enabled in ui_order}
+        visible_slots = iter(ui_order)
         seen = set()
         merged = []
-        # Walk the stored order: substitute UI state for visible providers,
-        # keep stored entries verbatim for inactive (hidden) ones.
         for name, enabled in stored:
             if name in seen:
                 continue
             seen.add(name)
-            if name in ui_providers:
-                merged.append((name, ui_providers[name]))
-            else:
-                merged.append((name, enabled))
-        # Append providers shown in the UI but absent from the stored config.
-        for name, enabled in self._ca_providers():
-            if name not in seen:
-                seen.add(name)
-                merged.append((name, enabled))
+            # Refill slots held by visible providers from the current UI order;
+            # keep hidden (inactive plugin) entries pinned at their stored index.
+            merged.append(next(visible_slots) if name in ui_names else (name, enabled))
+        # Append any UI providers absent from the stored config.
+        merged.extend(entry for entry in visible_slots if entry[0] not in seen)
         return merged
 
     def save(self):

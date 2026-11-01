@@ -188,3 +188,73 @@ def test_load_disables_remove_when_embed_enabled(cover_options_page):
 
     cover_options_page.ui.save_images_to_tags.setChecked(False)
     assert cover_options_page.ui.remove_images_from_tags.isEnabled()
+
+
+def _provider_names(page):
+    return [item.data(Qt.ItemDataRole.UserRole) for item in qlistwidget_items(page.ui.ca_providers_list)]
+
+
+def _reverse_list(page):
+    """Reverse the provider list widget, preserving each item's state."""
+    widget = page.ui.ca_providers_list
+    items = [widget.takeItem(0) for _ in range(widget.count())]
+    for item in items:
+        widget.insertItem(0, item)
+
+
+def test_reordering_providers_is_saved(cover_options_page):
+    """PICARD-3538: reordering cover art providers must persist on save().
+
+    Regression for the bug where save() anchored the output order to the
+    stored config instead of the UI list, so any reorder in the list widget
+    was discarded.
+    """
+    config = get_config()
+
+    # Seed a stored config that matches the registered providers exactly,
+    # so there are no hidden (stored-only) entries to interleave.
+    config.setting['ca_providers'] = [
+        ('Cover Art Archive', True),
+        ('CaaReleaseGroup', True),
+        ('UrlRelationships', True),
+        ('Local Files', False),
+    ]
+    cover_options_page.load()
+
+    expected = list(reversed(_provider_names(cover_options_page)))
+    _reverse_list(cover_options_page)
+    cover_options_page.save()
+
+    saved = [name for name, _enabled in config.setting['ca_providers']]
+    assert saved == expected, f"reordering was lost on save: {saved}"
+
+
+def test_reordering_preserves_hidden_plugin_provider(cover_options_page, plugin_ca_provider):
+    """Reordering visible providers must keep a hidden plugin entry (PICARD-3498 + 3538)."""
+    config = get_config()
+
+    # Plugin disabled: its provider is stored but absent from the UI list.
+    plugin_ca_provider.disable()
+    config.setting['ca_providers'] = [
+        ('Cover Art Archive', True),
+        ('FakePluginProvider', True),
+        ('CaaReleaseGroup', True),
+        ('UrlRelationships', True),
+        ('Local Files', False),
+    ]
+    cover_options_page.load()
+
+    # The UI only shows the four registered providers; reverse them.
+    expected_visible = list(reversed(_provider_names(cover_options_page)))
+    _reverse_list(cover_options_page)
+    cover_options_page.save()
+
+    saved = dict(config.setting['ca_providers'])
+    saved_names = list(saved)
+
+    # The hidden plugin entry survived at its stored index with its state.
+    assert saved['FakePluginProvider'] is True
+    assert saved_names.index('FakePluginProvider') == 1
+
+    # The visible providers are saved in the new (reversed) order.
+    assert [name for name in saved_names if name != 'FakePluginProvider'] == expected_visible
