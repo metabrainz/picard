@@ -79,10 +79,6 @@ PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AA
 # prevent unittest to run tests in those classes
 class CommonVorbisTests:
     class VorbisTestCase(CommonTests.TagFormatsTestCase):
-        def setUp(self):
-            super().setUp()
-            self.patch_tagger_instance('picard.formats.vorbis')
-
         def test_invalid_rating(self):
             filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
             metadata = load_metadata(self.format_registry, filename)
@@ -511,7 +507,6 @@ class OggAudioVideoFileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-        self.patch_tagger_instance('picard.formats.vorbis')
         self.setup_test_format_registry()
 
     def test_ogg_audio(self):
