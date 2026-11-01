@@ -32,6 +32,7 @@ import PyQt6.QtCore
 
 import picard.config as picard_config
 from picard.metadata import Metadata
+from picard.services import set_services_provider
 from picard.session.session_loader import SessionLoader
 from picard.workspace import (
     Workspace,
@@ -56,6 +57,21 @@ def session_loader() -> SessionLoader:
     """Provide a SessionLoader instance."""
     tagger_mock = MockQtTagger()
     return SessionLoader(tagger_mock)  # type: ignore
+
+
+@pytest.fixture
+def services_provider(session_loader: SessionLoader):
+    """Install the loader's tagger mock as the services provider.
+
+    The session loader reads ``services().webservice`` to count pending web
+    requests; route it to the mock tagger's webservice so tests can set
+    ``num_pending_web_requests`` on ``session_loader.tagger.webservice``.
+    """
+    set_services_provider(session_loader.tagger)
+    try:
+        yield session_loader.tagger
+    finally:
+        set_services_provider(None)
 
 
 @pytest.fixture
@@ -93,7 +109,7 @@ def test_session_loader_schedule_metadata_application_empty_map(
 
 
 def test_session_loader_unset_restoring_flag_when_idle_pending_files(
-    session_loader: SessionLoader, workspace_provider, mock_single_shot, cfg_options
+    session_loader: SessionLoader, workspace_provider, services_provider, mock_single_shot, cfg_options
 ) -> None:
     """Test unsetting restoring flag when files are still pending."""
     # Set the config value for this test
@@ -111,7 +127,7 @@ def test_session_loader_unset_restoring_flag_when_idle_pending_files(
 
 
 def test_session_loader_unset_restoring_flag_when_idle_pending_requests(
-    session_loader: SessionLoader, workspace_provider, mock_single_shot, cfg_options
+    session_loader: SessionLoader, workspace_provider, services_provider, mock_single_shot, cfg_options
 ) -> None:
     """Test unsetting restoring flag when web requests are still pending."""
     # Set the config value for this test
@@ -129,7 +145,7 @@ def test_session_loader_unset_restoring_flag_when_idle_pending_requests(
 
 
 def test_session_loader_unset_restoring_flag_when_idle_all_done(
-    session_loader: SessionLoader, workspace_provider, cfg_options
+    session_loader: SessionLoader, workspace_provider, services_provider, cfg_options
 ) -> None:
     """Test unsetting restoring flag when all operations are complete."""
     # Set the config value for this test
