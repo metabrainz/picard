@@ -34,7 +34,17 @@ from collections import OrderedDict
 
 from picard.const import appdirs
 from picard.const.attributes import MB_ATTRIBUTES
-from picard.i18n import N_
+
+# Import N_ from the gettext submodule rather than the picard.i18n package.
+# picard.i18n's package __init__ imports picard.i18n.collate and
+# picard.i18n.gettext, both of which import picard.const.sys — importing that
+# submodule runs this picard.const package __init__. Importing N_ from the
+# picard.i18n package here would therefore require picard.i18n.__init__ to have
+# finished, which it has not during that chain (circular import). The gettext
+# submodule only depends on stdlib/Qt and picard.const.sys, so importing N_
+# from it directly is safe and breaks the cycle. N_ is a no-op extraction
+# marker, so this does not affect translation behaviour.
+from picard.i18n.gettext import N_
 
 
 # Config directory

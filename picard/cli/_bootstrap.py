@@ -17,64 +17,14 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-"""Shared bootstrap for Picard CLI commands (picard-cli).
+"""Shared helpers for Picard CLI commands (picard-cli).
 
-Provides minimal initialization of QCoreApplication and Picard config
-without starting the full GUI application.
+Logging and color-detection helpers shared by the CLI subcommand handlers.
+Headless application bootstrap lives in picard.cli.headless.HeadlessTagger.
 """
 
 import logging
 import os
-import sys
-
-from PyQt6 import QtCore
-
-from picard import (
-    PICARD_APP_NAME,
-    PICARD_ORG_NAME,
-)
-from picard.config import (
-    get_config,
-    setup_config,
-)
-from picard.config_upgrade import run_config_upgrades
-from picard.options import init_options
-
-
-def minimal_init(config_file=None, *, with_webservice=False):
-    """Minimal initialization for CLI commands without GUI.
-
-    Sets up QCoreApplication, registers options, and loads config.
-    Optionally initializes WebService for network operations.
-
-    Args:
-        config_file: Path to config file, or None for default location.
-        with_webservice: If True, initialize WebService on the app instance.
-
-    Returns:
-        QCoreApplication instance (must stay alive for Qt event processing).
-    """
-    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
-    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
-
-    app = QtCore.QCoreApplication(sys.argv)
-
-    init_options()
-    setup_config(app=app, filename=config_file)
-
-    # Migrate the config like the GUI does, so even read-only commands (e.g.
-    # profiles list) operate on current-format data. Non-interactive: the CLI
-    # is headless and must not block on an upgrade dialog.
-    run_config_upgrades(get_config(), interactive=False)
-
-    if with_webservice:
-        # Import here to avoid circular imports and unnecessary loading
-        # when webservice is not needed
-        from picard.webservice import WebService
-
-        app.webservice = WebService()
-
-    return app
 
 
 def init_logging(args):
@@ -116,22 +66,3 @@ def is_color_disabled(args):
         True if color should be disabled, False otherwise.
     """
     return getattr(args, 'no_color', False) or 'NO_COLOR' in os.environ
-
-
-def init_cli(args, *, with_webservice=False):
-    """Full CLI initialization: app bootstrap + logging + color detection.
-
-    Convenience function combining minimal_init() and init_logging().
-    Use this in subcommand handlers instead of calling each step manually.
-
-    Args:
-        args: Parsed argparse namespace (must have config_file, debug, debug_opts).
-        with_webservice: If True, initialize WebService on the app instance.
-
-    Returns:
-        QCoreApplication instance.
-    """
-    config_file = getattr(args, 'config_file', None)
-    app = minimal_init(config_file, with_webservice=with_webservice)
-    init_logging(args)
-    return app

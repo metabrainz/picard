@@ -17,10 +17,13 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections import defaultdict
-
 from PyQt6 import QtGui
 
+# The default color values are UI-independent and live in picard.colors so
+# that core modules (e.g. picard.options) can obtain them without importing
+# the GUI layer. The human-readable descriptions stay here because they are
+# only meaningful in the UI.
+from picard.colors import DEFAULT_INTERFACE_COLORS
 from picard.config import get_config
 from picard.i18n import (
     N_,
@@ -64,61 +67,24 @@ _COLOR_DESCRIPTIONS = {
     'syntax_hl_var': ColorDescription(title=N_("Variable syntax highlight"), group=N_("Syntax Highlighting")),
 }
 
-_DEFAULT_COLORS: dict[str, dict] = defaultdict(dict)
-
 
 class DefaultColor:
     def __init__(self, value, description):
-        qcolor = QtGui.QColor(value)
-        self.value = qcolor.name()
+        self.value = value
         self.description = description
 
 
-def register_color(themes, name, value):
-    description = _COLOR_DESCRIPTIONS.get(name, "FIXME: color desc for %s" % name)
-    for theme_name in themes:
-        _DEFAULT_COLORS[theme_name][name] = DefaultColor(value, description)
+def _build_default_colors():
+    colors: dict[str, dict] = {}
+    for theme_name, values in DEFAULT_INTERFACE_COLORS.items():
+        colors[theme_name] = {
+            name: DefaultColor(value, _COLOR_DESCRIPTIONS.get(name, "FIXME: color desc for %s" % name))
+            for name, value in values.items()
+        }
+    return colors
 
 
-_DARK = ('dark',)
-_LIGHT = ('light',)
-_ALL = _DARK + _LIGHT
-
-register_color(_ALL, 'entity_error', '#C80000')
-register_color(_ALL, 'entity_pending', '#808080')
-register_color(_ALL, 'entity_saved', '#00AA00')
-register_color(_LIGHT, 'log_debug', 'purple')
-register_color(_DARK, 'log_debug', 'plum')
-register_color(_ALL, 'log_error', 'red')
-register_color(_LIGHT, 'log_info', 'black')
-register_color(_DARK, 'log_info', 'white')
-register_color(_ALL, 'log_warning', 'darkorange')
-register_color(_ALL, 'tagstatus_added', 'green')
-register_color(_ALL, 'tagstatus_changed', 'darkgoldenrod')
-register_color(_ALL, 'tagstatus_removed', 'red')
-register_color(_DARK, 'profile_hl_fg', '#ffffff')
-register_color(_LIGHT, 'profile_hl_fg', '#000000')
-register_color(_DARK, 'profile_hl_bg', '#1c71d8')
-register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
-register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
-register_color(_DARK, 'first_cover_hl', 'orange')
-register_color(_ALL, 'match_similarity_low', '#DF7D7D')
-
-# syntax highlighting colors
-register_color(_LIGHT, 'syntax_hl_error', 'red')
-register_color(_LIGHT, 'syntax_hl_escape', 'darkRed')
-register_color(_LIGHT, 'syntax_hl_func', 'blue')
-register_color(_LIGHT, 'syntax_hl_noop', 'darkGray')
-register_color(_LIGHT, 'syntax_hl_special', 'blue')
-register_color(_LIGHT, 'syntax_hl_unicode', 'darkRed')
-register_color(_LIGHT, 'syntax_hl_var', 'darkCyan')
-register_color(_DARK, 'syntax_hl_error', '#F16161')
-register_color(_DARK, 'syntax_hl_escape', '#4BEF1F')
-register_color(_DARK, 'syntax_hl_func', '#FF57A0')
-register_color(_DARK, 'syntax_hl_noop', '#04E7D5')
-register_color(_DARK, 'syntax_hl_special', '#FF57A0')
-register_color(_DARK, 'syntax_hl_unicode', '#4BEF1F')
-register_color(_DARK, 'syntax_hl_var', '#FCBB51')
+_DEFAULT_COLORS = _build_default_colors()
 
 
 class InterfaceColors:

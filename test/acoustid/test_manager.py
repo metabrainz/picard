@@ -21,6 +21,7 @@
 from unittest.mock import (
     MagicMock,
     Mock,
+    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -60,7 +61,7 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.item', 'picard.acoustid.manager')
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(
             {
                 "clear_existing_tags": False,
@@ -71,7 +72,10 @@ class AcoustIDManagerTest(PicardTestCase):
         self.mock_api_helper.submit_acoustid_fingerprints = Mock(wraps=mock_succeed_submission)
         self.acoustidmanager = AcoustIDManager(self.mock_api_helper)
         self.tagger.window = MagicMock()
-        self.tagger.window.enable_action = MagicMock()
+        self.notifier = MagicMock()
+        patcher = patch('picard.acoustid.manager.notifier', return_value=self.notifier)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         AcoustIDManager.MAX_PAYLOAD = FINGERPRINT_SIZE * 5
         AcoustIDManager.MAX_ATTEMPTS = 3
 
@@ -88,25 +92,25 @@ class AcoustIDManagerTest(PicardTestCase):
     def test_add_invalid(self):
         file = File('foo.flac')
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.enable_action.assert_not_called()
+        self.notifier.enable_action.assert_not_called()
 
     def test_add_and_update(self):
         file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
 
     def test_add_and_remove(self):
         file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, True)
         self.acoustidmanager.remove(file)
-        self.tagger.window.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
+        self.notifier.enable_action.assert_called_with(MainAction.SUBMIT_ACOUSTID, False)
 
     def test_is_submitted(self):
         file = dummy_file(0)

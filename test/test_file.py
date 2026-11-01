@@ -57,7 +57,7 @@ class FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-        self.tagger.acoustidmanager = MagicMock()
+        self.tagger.acoustid_manager = MagicMock()
         self.file = File('somepath/somefile.mp3')
         self.set_config_values(
             {
@@ -97,11 +97,11 @@ class FileTest(PicardTestCase):
         self.file.set_acoustid_fingerprint(fingerprint, length)
         self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
         self.assertEqual(length, self.file.acoustid_length)
-        self.tagger.acoustidmanager.add.assert_called_with(self.file, None)
-        self.tagger.acoustidmanager.add.reset_mock()
+        self.tagger.acoustid_manager.add.assert_called_with(self.file, None)
+        self.tagger.acoustid_manager.add.reset_mock()
         self.file.set_acoustid_fingerprint(fingerprint, length)
-        self.tagger.acoustidmanager.add.assert_not_called()
-        self.tagger.acoustidmanager.remove.assert_not_called()
+        self.tagger.acoustid_manager.add.assert_not_called()
+        self.tagger.acoustid_manager.remove.assert_not_called()
         self.assertEqual(fingerprint, self.file.metadata['acoustid_fingerprint'])
 
     def test_set_acoustid_fingerprint_no_length(self):
@@ -115,8 +115,8 @@ class FileTest(PicardTestCase):
     def test_set_acoustid_fingerprint_unset(self):
         self.file.acoustid_fingerprint = 'foo'
         self.file.set_acoustid_fingerprint(None, 42)
-        self.tagger.acoustidmanager.add.assert_not_called()
-        self.tagger.acoustidmanager.remove.assert_called_with(self.file)
+        self.tagger.acoustid_manager.add.assert_not_called()
+        self.tagger.acoustid_manager.remove.assert_called_with(self.file)
         self.assertEqual(None, self.file.acoustid_fingerprint)
         self.assertEqual(0, self.file.acoustid_length)
         self.assertEqual('', self.file.metadata['acoustid_fingerprint'])
@@ -1229,7 +1229,7 @@ class FileIdentityLifecycleTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.patch_tagger_instance('picard.item')
-        self.tagger.acoustidmanager = MagicMock()
+        self.tagger.acoustid_manager = MagicMock()
         self.file = FakeMp3File('somepath/somefile.mp3')
         self.tagger.files[self.file.filename] = self.file
         self.set_config_values(
@@ -1250,9 +1250,8 @@ class FileIdentityLifecycleTest(PicardTestCase):
         """A freshly constructed File has _file_identity set to None."""
         self.assertIsNone(self.file._file_identity)
 
-    @patch('picard.file.Filter.apply_filters')
     @patch('picard.file.run_file_post_load_processors')
-    def test_file_identity_set_after_failed_load(self, mock_post_load, mock_filters):
+    def test_file_identity_set_after_failed_load(self, mock_post_load):
         """After a failed load, _file_identity must be set (not None) so a
         later save does not raise AttributeError."""
         # Prevent the format-guessing retry path from doing anything.

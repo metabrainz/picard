@@ -39,6 +39,7 @@ from PyQt6.QtCore import QStandardPaths
 from picard.const import (
     CACHE_SIZE_DISPLAY_UNIT,
 )
+from picard.const.actions import MainAction
 from picard.const.cover_processing import (
     ImageFormat,
     ResizeModes,
@@ -51,7 +52,6 @@ from picard.i18n import N_
 from picard.util import system_supports_long_paths
 from picard.util.cdrom import get_default_cdrom_drives
 
-from picard.ui.enums import MainAction
 from picard.ui.theme import UiTheme
 
 

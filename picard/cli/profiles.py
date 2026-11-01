@@ -303,23 +303,28 @@ def _run_profiles(args):
     """Initialize and run the profiles CLI."""
     # Lazy imports: avoid loading heavy dependencies at parse time
     from picard.cli._bootstrap import (
-        init_cli,
+        init_logging,
         is_color_disabled,
     )
+    from picard.cli.headless import HeadlessTagger
     from picard.cli.output import CliOutput
 
-    # Bootstrap app
-    app = init_cli(args)  # noqa: F841
+    # Headless application: sets up config; services are built lazily (profiles
+    # touches none).
+    app = HeadlessTagger([], config_file=getattr(args, 'config_file', None))
+    init_logging(args)
 
     # Create output
     output = CliOutput(color=False if is_color_disabled(args) else None)
 
-    verb = args.verb
-    if verb == 'list':
-        return cmd_list(output)
-    elif verb == 'export':
-        return cmd_export(args, output)
-    elif verb == 'import':
-        return cmd_import(args, output)
-
-    return ExitCode.ERROR
+    try:
+        verb = args.verb
+        if verb == 'list':
+            return cmd_list(output)
+        elif verb == 'export':
+            return cmd_export(args, output)
+        elif verb == 'import':
+            return cmd_import(args, output)
+        return ExitCode.ERROR
+    finally:
+        app.run_cleanup()
