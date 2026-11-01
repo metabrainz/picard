@@ -562,14 +562,56 @@ class CommonTests:
 
         def test_compare_changes_added_tag_does_not_penalize(self):
             # A single added auxiliary tag on an otherwise identical file must
-            # not lower the match indicator: adding data is not a mismatch.
+            # not be scored per-tag as a mismatch. It is capped at the
+            # added-tags ceiling (just below a perfect match), not dragged down
+            # proportionally.
             orig = Metadata()
             orig["title"] = "title1"
             orig["artist"] = "artist1"
             new = Metadata()
             new.copy(orig)
             new["albumartists"] = "artist1"
+            self.assertEqual(orig.compare_changes(new), Metadata._ADDED_TAGS_CEILING)
+
+        def test_compare_changes_no_change_is_perfect(self):
+            # With no changes at all the score is a perfect 1.0 (solid green),
+            # distinct from the added-tags ceiling below.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["artist"] = "artist1"
+            new = Metadata()
+            new.copy(orig)
             self.assertEqual(orig.compare_changes(new), 1.0)
+
+        def test_compare_changes_added_tags_capped_below_perfect(self):
+            # PICARD-3537 review follow-up: a change-set that consists solely of
+            # added tags must not read as a fully solid-green (1.0) match, so it
+            # is capped just below 1.0 -- but still clearly above a mismatch.
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["artist"] = "artist1"
+            new = Metadata()
+            new.copy(orig)
+            new["albumartists"] = "artist1"
+            score = orig.compare_changes(new)
+            self.assertLess(score, 1.0)
+            self.assertEqual(score, Metadata._ADDED_TAGS_CEILING)
+
+        def test_compare_changes_added_tags_ceiling_not_per_tag(self):
+            # The ceiling is a single cap, NOT a per-tag penalty: adding many
+            # tags must not score lower than adding one (that per-tag scaling is
+            # exactly what regressed PICARD-3527).
+            orig = Metadata()
+            orig["title"] = "title1"
+            orig["artist"] = "artist1"
+            one = Metadata()
+            one.copy(orig)
+            one["albumartists"] = "artist1"
+            many = Metadata()
+            many.copy(orig)
+            for i in range(20):
+                many["aux%d" % i] = "value"
+            self.assertEqual(orig.compare_changes(one), orig.compare_changes(many))
 
         def test_compare_changes_conflicting_tag_still_penalizes(self):
             # A tag present on both sides with *different* values is a genuine
