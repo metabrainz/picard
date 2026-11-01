@@ -458,7 +458,7 @@ class Tagger(QtWidgets.QApplication):
         self.acoustid_client = acoustid.AcoustIDClient(acoustid_api)
         self.acoustid_client.init()
         self.register_cleanup(self.acoustid_client.done)
-        self.acoustidmanager = AcoustIDManager(acoustid_api)
+        self.acoustid_manager = AcoustIDManager(acoustid_api)
         self.isrc_submit_manager = ISRCSubmitManager(self.mb_api)
 
     def _init_plugins(self):

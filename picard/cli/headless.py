@@ -27,7 +27,7 @@ thread-pool callbacks would never be delivered and service lookups would fail.
 subset of the ``Tagger`` surface the file load/save pipeline needs:
 
 - the long-lived services (``webservice``, ``mb_api``, ``format_registry``,
-  ``acoustidmanager``, ``isrc_submit_manager``, ``acoustid_client``),
+  ``acoustid_manager``, ``isrc_submit_manager``, ``acoustid_client``),
 - the thread pools (``thread_pool``, ``priority_thread_pool``,
   ``save_thread_pool``),
 - the small amount of save/stop bookkeeping the ``File`` save path reads
@@ -97,7 +97,7 @@ class HeadlessTagger(QtCore.QCoreApplication):
         self._format_registry = None
         self._acoustid_api = None
         self._acoustid_client = None
-        self._acoustidmanager = None
+        self._acoustid_manager = None
         self._isrc_submit_manager = None
 
         # Config must be set up before any service (WebService reads config).
@@ -169,12 +169,12 @@ class HeadlessTagger(QtCore.QCoreApplication):
         return self._acoustid_client
 
     @property
-    def acoustidmanager(self):
-        if self._acoustidmanager is None:
+    def acoustid_manager(self):
+        if self._acoustid_manager is None:
             from picard.acoustid.manager import AcoustIDManager
 
-            self._acoustidmanager = AcoustIDManager(self._acoustid_api_helper)
-        return self._acoustidmanager
+            self._acoustid_manager = AcoustIDManager(self._acoustid_api_helper)
+        return self._acoustid_manager
 
     @property
     def isrc_submit_manager(self):

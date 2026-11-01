@@ -798,7 +798,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 if msg.clickedButton() == open_options:
                     self.show_options('fingerprinting')
             else:
-                self.tagger.acoustidmanager.submit()
+                self.tagger.acoustid_manager.submit()
 
     def _on_submit_isrc(self):
         manager = self.tagger.isrc_submit_manager

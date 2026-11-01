@@ -291,7 +291,7 @@ class RemoteCommandHandlers:
 
     @remote_command("Submit outstanding acoustic fingerprints for all (matched) files in the album pane.")
     def submit_fingerprints(self, argstring):
-        self.tagger.acoustidmanager.submit()
+        self.tagger.acoustid_manager.submit()
 
     @remote_command(
         "Write Picard logs to a given path.",

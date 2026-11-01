@@ -48,7 +48,7 @@ app = HeadlessTagger(sys.argv, config_file=None)
 # All services are present and identical to the view resolved via services().
 for name in (
     'format_registry', 'mb_api', 'webservice',
-    'acoustid_client', 'acoustidmanager', 'isrc_submit_manager',
+    'acoustid_client', 'acoustid_manager', 'isrc_submit_manager',
 ):
     assert getattr(services(), name) is getattr(app, name), name
 print('SERVICES_OK')
@@ -91,7 +91,7 @@ assert app._webservice is None
 assert app._mb_api is None
 assert app._format_registry is None
 assert app._acoustid_client is None
-assert app._acoustidmanager is None
+assert app._acoustid_manager is None
 assert app._isrc_submit_manager is None
 print('LAZY_UNBUILT_OK')
 

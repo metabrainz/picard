@@ -850,7 +850,7 @@ class FileItem(TreeItem):
     def decide_fingerprint_icon_info(file):
         if file.acoustid_fingerprint:
             tagger = tagger_instance()
-            if tagger.acoustidmanager.is_submitted(file):
+            if tagger.acoustid_manager.is_submitted(file):
                 icon = FileItem.icon_fingerprint_gray
                 tooltip = _("Fingerprint has already been submitted")
             else:

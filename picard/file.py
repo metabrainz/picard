@@ -905,7 +905,7 @@ class File(MetadataItem):
         if from_parent_item and self.parent_item:
             log.debug("Removing %r from %r", self, self.parent_item)
             self.parent_item.remove_file(self)
-        services().acoustidmanager.remove(self)
+        services().acoustid_manager.remove(self)
         services().isrc_submit_manager.remove(self)
         self.state = File.State.REMOVED
 
@@ -942,11 +942,11 @@ class File(MetadataItem):
         if not fingerprint:
             self.acoustid_fingerprint = None
             self.acoustid_length = 0
-            services().acoustidmanager.remove(self)
+            services().acoustid_manager.remove(self)
         elif fingerprint != self.acoustid_fingerprint:
             self.acoustid_fingerprint = fingerprint
             self.acoustid_length = length or self.metadata.length // 1000
-            services().acoustidmanager.add(self, None)
+            services().acoustid_manager.add(self, None)
             self.acoustid_update()
         config = get_config()
         if config.setting['save_acoustid_fingerprints']:
@@ -958,7 +958,7 @@ class File(MetadataItem):
             recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
-        services().acoustidmanager.update(self, recording_id)
+        services().acoustid_manager.update(self, recording_id)
         self.update_item()
 
     def isrc_update(self):
@@ -1228,7 +1228,7 @@ class File(MetadataItem):
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
-                    services().acoustidmanager.add(self, recording_id)
+                    services().acoustid_manager.add(self, recording_id)
                 if release_group_id is not None:
                     releasegroup = self.tagger.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)

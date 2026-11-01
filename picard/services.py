@@ -64,7 +64,7 @@ _SERVICE_ATTRS = (
     'webservice',
     'mb_api',
     'format_registry',
-    'acoustidmanager',
+    'acoustid_manager',
     'isrc_submit_manager',
     'acoustid_client',
 )
@@ -84,7 +84,7 @@ class TaggingServices(Protocol):
     def format_registry(self) -> 'FormatRegistry': ...
 
     @property
-    def acoustidmanager(self) -> 'AcoustIDManager': ...
+    def acoustid_manager(self) -> 'AcoustIDManager': ...
 
     @property
     def acoustid_client(self) -> 'AcoustIDClient': ...

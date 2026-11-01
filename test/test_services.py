@@ -34,14 +34,14 @@ class TaggingServicesAppInstanceWrapperTest(PicardTestCase):
             webservice='WS',
             mb_api='MB',
             format_registry='FR',
-            acoustidmanager='AM',
+            acoustid_manager='AM',
             isrc_submit_manager='ISM',
         )
         svc = TaggingServicesAppInstanceWrapper(provider)
         self.assertEqual(svc.webservice, 'WS')
         self.assertEqual(svc.mb_api, 'MB')
         self.assertEqual(svc.format_registry, 'FR')
-        self.assertEqual(svc.acoustidmanager, 'AM')
+        self.assertEqual(svc.acoustid_manager, 'AM')
         self.assertEqual(svc.isrc_submit_manager, 'ISM')
         self.assertTrue(svc.available)
 
