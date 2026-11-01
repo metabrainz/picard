@@ -70,6 +70,7 @@ from picard.i18n import (
 )
 from picard.track import Track
 from picard.util import icontheme
+from picard.workspace_events import workspace_events
 
 from picard.ui.colors import interface_colors
 from picard.ui.columns import (
@@ -372,8 +373,8 @@ class FileTreeView(BaseTreeView):
         self.clusters = ClusterListItem(self.tagger.clusters, filterable=False, parent=self)
         self.clusters.update()
         self.clusters.setExpanded(True)
-        self.tagger.cluster_added.connect(self.add_file_cluster)
-        self.tagger.cluster_removed.connect(self.remove_file_cluster)
+        workspace_events().cluster_added.connect(self.add_file_cluster)
+        workspace_events().cluster_removed.connect(self.remove_file_cluster)
 
     def add_file_cluster(self, cluster, parent_item=None):
         self.add_cluster(cluster, parent_item)
@@ -398,8 +399,8 @@ class AlbumTreeView(BaseTreeView):
 
     def __init__(self, columns, window, parent=None):
         super().__init__(columns, window, parent=parent)
-        self.tagger.album_added.connect(self.add_album)
-        self.tagger.album_removed.connect(self.remove_album)
+        workspace_events().album_added.connect(self.add_album)
+        workspace_events().album_removed.connect(self.remove_album)
 
     def add_album(self, album):
         if isinstance(album, NatAlbum):

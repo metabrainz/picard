@@ -127,6 +127,7 @@ from picard.util.filenaming import (
 from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.workspace import workspace
+from picard.workspace_events import workspace_events
 
 
 if TYPE_CHECKING:
@@ -416,7 +417,7 @@ class File(MetadataItem):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         callback(self)
-        self.tagger.file_loaded.emit(self)
+        workspace_events().file_loaded.emit(self)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
@@ -1158,10 +1159,10 @@ class File(MetadataItem):
             return
         if state == File.State.PENDING:
             File.num_pending_files += 1
-            self.tagger.tagger_stats_changed.emit()
+            workspace_events().tagger_stats_changed.emit()
         elif self._state == File.State.PENDING:
             File.num_pending_files -= 1
-            self.tagger.tagger_stats_changed.emit()
+            workspace_events().tagger_stats_changed.emit()
         self._state = state
 
     def column(self, column: str) -> str:

@@ -206,6 +206,9 @@ from picard.workspace import (
     Workspace,
     set_workspace_provider,
 )
+from picard.workspace_events import (
+    workspace_events,
+)
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
@@ -283,6 +286,7 @@ class Tagger(QtWidgets.QApplication):
 
         self._qt_translators = Translators(self)
 
+        self._init_workspace_events()
         self._init_webservice()
         self._init_readthedocs()
         self._init_format_registry()
@@ -445,7 +449,7 @@ class Tagger(QtWidgets.QApplication):
         """Initialize web service/API"""
         self.webservice = WebService()
         self.register_cleanup(self.webservice.stop)
-        self.webservice.pending_requests_changed.connect(self.tagger_stats_changed)
+        self.webservice.pending_requests_changed.connect(workspace_events().tagger_stats_changed)
         self.mb_api = MBAPIHelper(self.webservice)
         load_user_collections()
 
@@ -518,6 +522,39 @@ class Tagger(QtWidgets.QApplication):
         # See picard.workspace.
         self._workspace = Workspace()
         set_workspace_provider(self._workspace)
+
+    def _init_workspace_events(self):
+        """Forward the shared WorkspaceEvents signals onto Tagger's own signals.
+
+        The working-set-changed signals (album_added/removed,
+        cluster_added/removed, file_loaded, tagger_stats_changed) live on the
+        process-wide WorkspaceEvents facade; core emitters and GUI connectors
+        use workspace_events() directly.
+
+        Tagger keeps declaring the same signals and re-emits each facade signal
+        on its own, as a BACKWARD-COMPATIBILITY surface: plugins reach the
+        application object via PluginApi.tagger and may connect to
+        ``tagger.album_added`` / ``tagger.file_loaded`` etc. Forwarding
+        facade -> Tagger keeps those connections working even though nothing
+        emits on the Tagger signals directly anymore. (Headless has no Tagger,
+        so this forwarding simply does not exist there.)
+        """
+        events = workspace_events()
+        # Re-emit facade signals on the matching Tagger signal for plugin
+        # backward compatibility (see docstring).
+        #
+        # The facade signals carry ``object`` (PyQt_PyObject) to stay free of
+        # core-entity imports, while the Tagger signals are typed
+        # (Album/Cluster/File, i.e. QObject*). A direct signal -> signal
+        # connect is rejected by Qt as "Incompatible sender/receiver arguments"
+        # because those C++ signatures differ, so we forward through Python
+        # slots that re-emit on the typed Tagger signal instead.
+        events.album_added.connect(lambda obj: self.album_added.emit(obj))
+        events.album_removed.connect(lambda obj: self.album_removed.emit(obj))
+        events.cluster_added.connect(lambda obj: self.cluster_added.emit(obj))
+        events.cluster_removed.connect(lambda obj: self.cluster_removed.emit(obj))
+        events.file_loaded.connect(lambda obj: self.file_loaded.emit(obj))
+        events.tagger_stats_changed.connect(self.tagger_stats_changed)
 
     # --- workspace field delegation -----------------------------------------
     #
@@ -843,7 +880,7 @@ class Tagger(QtWidgets.QApplication):
         if self.nats is None:
             self.nats = NatAlbum()
             self.albums['NATS'] = self.nats
-            self.album_added.emit(self.nats)
+            workspace_events().album_added.emit(self.nats)
             self.nats.ui_item.setExpanded(True)
         return self.nats
 
@@ -1309,7 +1346,7 @@ class Tagger(QtWidgets.QApplication):
             return album
         album = Album(album_id, discid=discid, disc_isrcs=disc_isrcs)
         self.albums[album_id] = album
-        self.album_added.emit(album)
+        workspace_events().album_added.emit(album)
         album.load()
         return album
 
@@ -1345,7 +1382,7 @@ class Tagger(QtWidgets.QApplication):
                 self.acoustid_client.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
-        self.tagger_stats_changed.emit()
+        workspace_events().tagger_stats_changed.emit()
 
     def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.
@@ -1383,9 +1420,9 @@ class Tagger(QtWidgets.QApplication):
             album.release_group.remove_album(album.id)
         if album == self.nats:
             self.nats = None
-        self.album_removed.emit(album)
+        workspace_events().album_removed.emit(album)
         run_album_post_removal_processors(album)
-        self.tagger_stats_changed.emit()
+        workspace_events().tagger_stats_changed.emit()
 
     def remove_nat(self, track):
         """Remove the specified non-album track."""
@@ -1411,7 +1448,7 @@ class Tagger(QtWidgets.QApplication):
             cluster.clear()
             self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
-            self.cluster_removed.emit(cluster)
+            workspace_events().cluster_removed.emit(cluster)
 
     def remove(self, objects):
         """Remove the specified objects."""
@@ -1698,7 +1735,7 @@ class Tagger(QtWidgets.QApplication):
                 return cluster
         cluster = Cluster(name, artist)
         self.clusters.append(cluster)
-        self.cluster_added.emit(cluster)
+        workspace_events().cluster_added.emit(cluster)
         return cluster
 
     # =======================================================================

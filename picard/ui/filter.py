@@ -30,7 +30,6 @@ from PyQt6 import (
 
 from picard import (
     log,
-    tagger_instance,
 )
 from picard.config import get_config
 from picard.i18n import (
@@ -42,6 +41,7 @@ from picard.tags import (
     filterable_tag_names,
 )
 from picard.tags.docs import display_tag_tooltip
+from picard.workspace_events import workspace_events
 
 from picard.ui import PicardDialog
 from picard.ui.util import (
@@ -164,10 +164,7 @@ class Filter(QtWidgets.QWidget):
         """
         if cls._file_loaded_connected:
             return
-        tagger = tagger_instance()
-        if tagger is None:
-            return
-        tagger.file_loaded.connect(cls._on_file_loaded)
+        workspace_events().file_loaded.connect(cls._on_file_loaded)
         cls._file_loaded_connected = True
 
     @classmethod
