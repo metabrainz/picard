@@ -21,12 +21,17 @@ import weakref
 
 from PyQt6 import (
     QtCore,
+    QtGui,
+    QtWidgets,
     sip,
 )
 
+from picard.util import icontheme
 from picard.util.qt import (
     _qt_message_handler,
     cancel_on_destroyed,
+    create_qaction,
+    create_qmenu,
     install_qt_message_handler,
 )
 
@@ -148,3 +153,39 @@ class TestQtMessageHandler:
             install_qt_message_handler()
         finally:
             QtCore.qInstallMessageHandler(previous)
+
+
+class TestCreateQMenu:
+    def test_create_qmenu(self):
+        icon = icontheme.lookup('document-open')
+        parent = QtWidgets.QWidget()
+        menu = create_qmenu('test', icon, parent)
+        assert isinstance(menu, QtWidgets.QMenu)
+        assert menu.parent() == parent
+        assert not menu.icon().isNull()
+        action = menu.menuAction()
+        assert action and action.menuRole() == QtGui.QAction.MenuRole.NoRole
+
+    def test_create_qmenu_no_icon_no_parent(self):
+        menu = create_qmenu('test')
+        assert menu.parent() is None
+        assert menu.icon().isNull()
+        action = menu.menuAction()
+        assert action and action.menuRole() == QtGui.QAction.MenuRole.NoRole
+
+
+class TestCreateQAction:
+    def test_create_qaction(self):
+        icon = icontheme.lookup('document-open')
+        parent = QtWidgets.QWidget()
+        action = create_qaction('test', icon, parent)
+        assert isinstance(action, QtGui.QAction)
+        assert action.parent() == parent
+        assert not action.icon().isNull()
+        assert action.menuRole() == QtGui.QAction.MenuRole.NoRole
+
+    def test_create_qaction_no_icon_no_parent(self):
+        action = create_qaction('test')
+        assert action.parent() is None
+        assert action.icon().isNull()
+        assert action.menuRole() == QtGui.QAction.MenuRole.NoRole
