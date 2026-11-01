@@ -37,6 +37,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.services import services
 from picard.util import webbrowser2
 from picard.version import (
     Version,
@@ -88,7 +89,7 @@ class UpdateCheckManager:
     def _query_available_updates(self, callback=None):
         """Gets list of releases from specified website api."""
         log.debug("Getting Picard release information from %s", PLUGINS_API['urls']['releases'])
-        self.tagger.webservice.get_url(
+        services().webservice.get_url(
             url=PLUGINS_API['urls']['releases'],
             handler=partial(self._releases_json_loaded, callback=callback),
             priority=True,

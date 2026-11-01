@@ -53,6 +53,7 @@ from picard import (
 )
 from picard.const.sys import IS_WIN
 from picard.file import File
+from picard.services import services
 from picard.util import thread
 from picard.util.cdrom import (
     DISCID_NOT_LOADED_MESSAGE,
@@ -291,7 +292,7 @@ class RemoteCommandHandlers:
 
     @remote_command("Submit outstanding acoustic fingerprints for all (matched) files in the album pane.")
     def submit_fingerprints(self, argstring):
-        self.tagger.acoustid_manager.submit()
+        services().acoustid_manager.submit()
 
     @remote_command(
         "Write Picard logs to a given path.",

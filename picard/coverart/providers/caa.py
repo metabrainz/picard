@@ -61,6 +61,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.services import services
 from picard.webservice import ratecontrol
 
 from picard.ui.caa_types_selector import CAATypesSelectorDialog
@@ -291,7 +292,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         task_id = f'caa_json_{self.metadata["musicbrainz_albumid"]}'
 
         def create_request():
-            return self.album.tagger.webservice.get_url(
+            return services().webservice.get_url(
                 url=CAA_URL + self._caa_path,
                 handler=self._caa_json_downloaded,
                 priority=True,

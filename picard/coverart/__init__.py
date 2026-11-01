@@ -56,6 +56,7 @@ from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.notification import notifier
+from picard.services import services
 from picard.util import (
     imageinfo,
     resolve_fs_path,
@@ -250,7 +251,7 @@ class CoverArt:
             task_id = f'coverart_{id(image)}'
 
             def create_request():
-                return self.album.tagger.webservice.download_url(
+                return services().webservice.download_url(
                     url=image.url,
                     handler=partial(self._coverart_downloaded, image),
                     priority=True,

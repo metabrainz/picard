@@ -43,10 +43,7 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
 from picard.config import get_config
 from picard.const import RATING_STEPS
 from picard.coverart.image import (
@@ -57,6 +54,7 @@ from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.i18n import N_
 from picard.metadata import Metadata
+from picard.services import services
 from picard.util import sanitize_date
 
 
@@ -563,5 +561,4 @@ class OggContainerFile(_OggFactoryFile):
 
 
 def _guess_format(filename, options):
-    tagger = tagger_instance()
-    return tagger.format_registry.guess_format(filename, options)
+    return services().format_registry.guess_format(filename, options)
