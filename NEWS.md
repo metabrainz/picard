@@ -1,5 +1,14 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.4 - 2026-11-01
+
+### Bugfixes
+- [PICARD-3479](https://tickets.metabrainz.org/browse/PICARD-3479) - Crash on macOS every time you switch app focus
+- [PICARD-3533](https://tickets.metabrainz.org/browse/PICARD-3533) - Crash when closing options during plugin refresh
+- [PICARD-3534](https://tickets.metabrainz.org/browse/PICARD-3534) - Picard mistakenly treats .webp files as WAV
+- [PICARD-3537](https://tickets.metabrainz.org/browse/PICARD-3537) - Track match indicator shows bad match on newly ripped files
+
+
 ## Version 3.0.3 - 2026-10-29
 
 ### Bugfixes
