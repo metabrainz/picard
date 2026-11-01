@@ -22,13 +22,13 @@ from unittest.mock import patch
 from test.picardtestcase import PicardTestCase
 
 from picard.services import (
-    TaggingServices,
+    TaggingServicesAppInstanceWrapper,
     services,
     set_services_provider,
 )
 
 
-class TaggingServicesTest(PicardTestCase):
+class TaggingServicesAppInstanceWrapperTest(PicardTestCase):
     def test_delegates_to_explicit_provider(self):
         provider = SimpleNamespace(
             webservice='WS',
@@ -37,7 +37,7 @@ class TaggingServicesTest(PicardTestCase):
             acoustidmanager='AM',
             isrc_submit_manager='ISM',
         )
-        svc = TaggingServices(provider)
+        svc = TaggingServicesAppInstanceWrapper(provider)
         self.assertEqual(svc.webservice, 'WS')
         self.assertEqual(svc.mb_api, 'MB')
         self.assertEqual(svc.format_registry, 'FR')
@@ -48,25 +48,25 @@ class TaggingServicesTest(PicardTestCase):
     def test_resolves_from_app_instance_when_no_provider(self):
         provider = SimpleNamespace(webservice='WS-from-app')
         with patch('picard.services.app_instance', return_value=provider):
-            svc = TaggingServices()
+            svc = TaggingServicesAppInstanceWrapper()
             self.assertTrue(svc.available)
             self.assertEqual(svc.webservice, 'WS-from-app')
 
     def test_unavailable_without_provider_or_app(self):
         with patch('picard.services.app_instance', return_value=None):
-            svc = TaggingServices()
+            svc = TaggingServicesAppInstanceWrapper()
             self.assertFalse(svc.available)
             with self.assertRaises(RuntimeError):
                 _ = svc.webservice
 
     def test_unknown_attribute_raises_attribute_error(self):
-        svc = TaggingServices(SimpleNamespace())
+        svc = TaggingServicesAppInstanceWrapper(SimpleNamespace())
         with self.assertRaises(AttributeError):
             _ = svc.not_a_service
 
     def test_process_wide_accessor_is_stable(self):
         self.assertIs(services(), services())
-        self.assertIsInstance(services(), TaggingServices)
+        self.assertIsInstance(services(), TaggingServicesAppInstanceWrapper)
 
     def test_set_services_provider_installs_and_clears(self):
         provider = SimpleNamespace(mb_api='installed-mb')
