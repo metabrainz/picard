@@ -42,6 +42,7 @@ QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
 from picard.cli.headless import HeadlessTagger
 from picard.services import services
 from picard.util import thread
+from picard.workspace import workspace
 
 app = HeadlessTagger(sys.argv, config_file=None)
 
@@ -66,8 +67,8 @@ print('EVENT_OK')
 # Save bookkeeping surface exists and flush is a no-op with no dirty parents.
 assert app.stopping is False
 assert app.files == {}
-assert app._saving_files_count == 0
-app.flush_saving_image_parents()
+assert workspace()._saving_files_count == 0
+workspace().flush_saving_image_parents()
 print('BOOKKEEPING_OK')
 
 app.run_cleanup()

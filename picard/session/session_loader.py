@@ -55,6 +55,7 @@ from picard.session.session_data import (
     GroupedItems,
 )
 from picard.session.track_mover import TrackMover
+from picard.workspace import workspace
 
 
 if TYPE_CHECKING:
@@ -169,7 +170,7 @@ class ConfigurationManager:
         """
         tagger.clear_session()
         if get_config().setting['session_safe_restore']:
-            tagger._restoring_session = True
+            workspace().restoring_session = True
 
     def restore_options(self, options: dict[str, Any]) -> None:
         """Restore core configuration options from the session payload.
@@ -750,8 +751,8 @@ class SessionLoader(QtCore.QObject):
         This method checks if all file loads and web requests are finished
         before unsetting the session restoring flag.
         """
-        if self.tagger._pending_files_count == 0 and not self.tagger.webservice.num_pending_web_requests:
-            self.tagger._restoring_session = False
+        if workspace().pending_files_count == 0 and not self.tagger.webservice.num_pending_web_requests:
+            workspace().restoring_session = False
             self._progress.emit('restored')
         else:
             QtCore.QTimer.singleShot(SessionConstants.DEFAULT_RETRY_DELAY_MS, self._unset_restoring_flag_when_idle)

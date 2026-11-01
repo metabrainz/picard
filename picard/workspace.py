@@ -136,12 +136,44 @@ class Workspace:
 
     # --- registry orchestration ---------------------------------------------
 
+    # --- save-batch coordination --------------------------------------------
+    #
+    # File saves run on a thread pool. The selection/metadata-box refresh and
+    # the per-parent cover-art image rebuild are expensive, so instead of doing
+    # them once per saved file they are coalesced to run once when the whole
+    # batch finishes. Files call begin_save()/end_save() around each save and
+    # defer_image_parent() for the parents to refresh; end_save() reports when
+    # the batch is complete.
+
+    def begin_save(self) -> None:
+        """Record that a file save task has been queued."""
+        self._saving_files_count += 1
+
+    def end_save(self) -> bool:
+        """Record that a file save task finished; return True if the batch is done.
+
+        "Done" means no save tasks remain in flight, so the caller can run the
+        coalesced end-of-batch refresh (see :meth:`flush_saving_image_parents`).
+        """
+        if self._saving_files_count > 0:
+            self._saving_files_count -= 1
+        return self._saving_files_count == 0
+
+    def defer_image_parent(self, parent) -> None:
+        """Register ``parent`` for a single cover-art rebuild at batch end.
+
+        During a batch save, a file registers its parent containers here
+        instead of emitting ``metadata_images_changed`` per file; they are
+        rebuilt once by :meth:`flush_saving_image_parents`.
+        """
+        self._saving_dirty_image_parents.add(parent)
+
     def flush_saving_image_parents(self):
         """Rebuild cover-art image aggregation once for each container whose
         update was deferred during a batch save, then clear the set.
 
         During a batch save, files register their parent containers (clusters,
-        tracks, albums) in ``_saving_dirty_image_parents`` instead of emitting
+        tracks, albums) via :meth:`defer_image_parent` instead of emitting
         ``metadata_images_changed`` per file (which would rebuild each parent's
         image list over all children once per saved file). This performs that
         rebuild a single time when the batch completes. For standalone files
@@ -157,6 +189,36 @@ class Workspace:
             update = getattr(parent, 'update_metadata_images', None)
             if update is not None:
                 update()
+
+    # --- session-restore bookkeeping ----------------------------------------
+    #
+    # While a saved session is being restored, auto-matching by MBID is
+    # suppressed until all file loads and web requests settle. The session
+    # loader sets ``restoring_session`` and later clears it once
+    # ``pending_files_count`` reaches zero.
+
+    @property
+    def pending_files_count(self) -> int:
+        """Number of files currently queued/loading."""
+        return self._pending_files_count
+
+    def add_pending_files(self, count: int) -> None:
+        """Increase the pending-files counter by ``count``."""
+        self._pending_files_count += count
+
+    def file_pending_done(self) -> int:
+        """Record one pending file as settled; return the remaining count."""
+        self._pending_files_count -= 1
+        return self._pending_files_count
+
+    @property
+    def restoring_session(self) -> bool:
+        """True while a saved session is being restored."""
+        return self._restoring_session
+
+    @restoring_session.setter
+    def restoring_session(self, value: bool) -> None:
+        self._restoring_session = value
 
     def iter_album_files(self):
         """Yield every file matched to a loaded album."""
@@ -460,10 +522,12 @@ class WorkspaceHost:
 
     Both the GUI ``Tagger`` and the headless ``HeadlessTagger`` own a
     :class:`Workspace` as ``self._workspace`` and historically exposed each of
-    its registries/bookkeeping fields as ``self.<field>`` (so core code reaching
+    its entity registries as ``self.<field>`` (so core code and plugins reaching
     the running app via ``tagger_instance()`` — e.g. ``self.tagger.albums`` —
-    keeps working). This mixin provides those delegating properties once, shared
-    by both app objects, instead of duplicating the boilerplate in each.
+    keep working). This mixin provides those delegating properties once, shared
+    by both app objects, instead of duplicating the boilerplate in each. The
+    save-batch / session-restore bookkeeping is not delegated; it is reached
+    through the :class:`Workspace` public methods (``begin_save`` etc.).
 
     Requires the host to set ``self._workspace`` (a :class:`Workspace`) before
     these are used.
@@ -526,42 +590,6 @@ class WorkspaceHost:
     @nats.setter
     def nats(self, value):
         self._workspace.nats = value
-
-    @property
-    def _pending_files_count(self):
-        return self._workspace._pending_files_count
-
-    @_pending_files_count.setter
-    def _pending_files_count(self, value):
-        self._workspace._pending_files_count = value
-
-    @property
-    def _saving_files_count(self):
-        return self._workspace._saving_files_count
-
-    @_saving_files_count.setter
-    def _saving_files_count(self, value):
-        self._workspace._saving_files_count = value
-
-    @property
-    def _saving_dirty_image_parents(self):
-        return self._workspace._saving_dirty_image_parents
-
-    @_saving_dirty_image_parents.setter
-    def _saving_dirty_image_parents(self, value):
-        self._workspace._saving_dirty_image_parents = value
-
-    @property
-    def _restoring_session(self):
-        return self._workspace._restoring_session
-
-    @_restoring_session.setter
-    def _restoring_session(self, value):
-        self._workspace._restoring_session = value
-
-    def flush_saving_image_parents(self):
-        """Delegate to the Workspace (see Workspace.flush_saving_image_parents)."""
-        self._workspace.flush_saving_image_parents()
 
 
 def workspace() -> Workspace:

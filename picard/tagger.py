@@ -203,6 +203,7 @@ from picard.workspace import (
     Workspace,
     WorkspaceHost,
     set_workspace_provider,
+    workspace,
 )
 from picard.workspace_events import (
     workspace_events,
@@ -961,8 +962,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
-        self._pending_files_count -= 1
-        if self._pending_files_count == 0:
+        if workspace().file_pending_done() == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
                 view_updates().suspend_while_loading_exit()
 
@@ -978,7 +978,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting['ignore_file_mbids'] and not self._restoring_session:
+        if not config.setting['ignore_file_mbids'] and not workspace().restoring_session:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -1009,12 +1009,17 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if not file_moved and not self._restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
+        if (
+            not file_moved
+            and not workspace().restoring_session
+            and config.setting['analyze_new_files']
+            and file.can_analyze
+        ):
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if self._pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
+        if workspace().pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
 
     def move_file(self, file, target):
@@ -1024,7 +1029,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         """
         if isinstance(target, Album):
             # During restore place into album's unmatched bucket without matching
-            if self._restoring_session:
+            if workspace().restoring_session:
                 file.move(target.unmatched_files)
             else:
                 self.move_files_to_album([file], album=target)
@@ -1101,7 +1106,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
             view_updates().suspend_while_loading_enter()
-            self._pending_files_count += len(new_files)
+            workspace().add_pending_files(len(new_files))
             unmatched_files = []
             self._load_files_batch(new_files, target, unmatched_files)
 

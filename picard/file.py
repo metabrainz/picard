@@ -485,7 +485,7 @@ class File(MetadataItem):
         # Track in-flight saves so _saving_finished can coalesce the expensive
         # selection/metadata-box refresh to once per batch (see PICARD
         # batch-save memory profiling).
-        workspace()._saving_files_count += 1
+        workspace().begin_save()
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
@@ -624,12 +624,10 @@ class File(MetadataItem):
             return self.orig_metadata.images.copy()
 
     def _saving_finished(self, result=None, error=None):
-        # This save task has finished; decrement the in-flight counter so the
-        # selection/metadata-box refresh can be coalesced to run only once,
-        # when the last file of a batch save completes.
-        if workspace()._saving_files_count > 0:
-            workspace()._saving_files_count -= 1
-        batch_done = workspace()._saving_files_count == 0
+        # This save task has finished; mark it done so the selection/metadata-box
+        # refresh can be coalesced to run only once, when the last file of a
+        # batch save completes.
+        batch_done = workspace().end_save()
         # Handle file removed before save
         # Result is None if save was skipped
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
@@ -710,7 +708,7 @@ class File(MetadataItem):
         """
         parent = self.parent_item
         while parent is not None:
-            workspace()._saving_dirty_image_parents.add(parent)
+            workspace().defer_image_parent(parent)
             # Both Cluster and Track expose the containing album via .album
             # (None when there is none), so the chain ends at the album.
             parent = getattr(parent, 'album', None)

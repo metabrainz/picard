@@ -30,9 +30,9 @@ subset of the ``Tagger`` surface the file load/save pipeline needs:
   ``acoustid_manager``, ``isrc_submit_manager``, ``acoustid_client``),
 - the thread pools (``thread_pool``, ``priority_thread_pool``,
   ``save_thread_pool``),
-- the small amount of save/stop bookkeeping the ``File`` save path reads
-  (``stopping``, ``files``, ``_saving_files_count``,
-  ``_saving_dirty_image_parents``, ``flush_saving_image_parents``),
+- the save/stop state the ``File`` save path needs: ``stopping`` on the app
+  object, and the working set (``files``) and its save-batch bookkeeping on
+  the owned :class:`~picard.workspace.Workspace` (reached via ``workspace()``),
 - delivery of ``ProxyToMainEvent`` so thread-pool callbacks run on the main
   thread.
 

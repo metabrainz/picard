@@ -33,6 +33,11 @@ import PyQt6.QtCore
 import picard.config as picard_config
 from picard.metadata import Metadata
 from picard.session.session_loader import SessionLoader
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+    workspace,
+)
 
 import pytest
 
@@ -51,6 +56,20 @@ def session_loader() -> SessionLoader:
     """Provide a SessionLoader instance."""
     tagger_mock = MockQtTagger()
     return SessionLoader(tagger_mock)  # type: ignore
+
+
+@pytest.fixture
+def workspace_provider():
+    """Install a fresh Workspace as the process-wide provider for the test.
+
+    The session loader reads/writes the pending-files count and the
+    restoring-session flag through ``workspace()``; drive that real object.
+    """
+    set_workspace_provider(Workspace())
+    try:
+        yield workspace()
+    finally:
+        set_workspace_provider(None)
 
 
 def test_session_loader_schedule_metadata_application(session_loader: SessionLoader, mock_single_shot) -> None:
@@ -74,14 +93,14 @@ def test_session_loader_schedule_metadata_application_empty_map(
 
 
 def test_session_loader_unset_restoring_flag_when_idle_pending_files(
-    session_loader: SessionLoader, mock_single_shot, cfg_options
+    session_loader: SessionLoader, workspace_provider, mock_single_shot, cfg_options
 ) -> None:
     """Test unsetting restoring flag when files are still pending."""
     # Set the config value for this test
     cfg = picard_config.get_config()
     cfg.setting['session_safe_restore'] = True
 
-    session_loader.tagger._pending_files_count = 1
+    workspace_provider.add_pending_files(1)
     session_loader.tagger.webservice.num_pending_web_requests = 0
 
     with patch("PyQt6.QtCore.QTimer.singleShot", mock_single_shot):
@@ -92,14 +111,14 @@ def test_session_loader_unset_restoring_flag_when_idle_pending_files(
 
 
 def test_session_loader_unset_restoring_flag_when_idle_pending_requests(
-    session_loader: SessionLoader, mock_single_shot, cfg_options
+    session_loader: SessionLoader, workspace_provider, mock_single_shot, cfg_options
 ) -> None:
     """Test unsetting restoring flag when web requests are still pending."""
     # Set the config value for this test
     cfg = picard_config.get_config()
     cfg.setting['session_safe_restore'] = True
 
-    session_loader.tagger._pending_files_count = 0
+    # No pending files (fresh workspace), but a web request is still in flight.
     session_loader.tagger.webservice.num_pending_web_requests = 1
 
     with patch("PyQt6.QtCore.QTimer.singleShot", mock_single_shot):
@@ -109,19 +128,22 @@ def test_session_loader_unset_restoring_flag_when_idle_pending_requests(
     mock_single_shot.assert_called_once()
 
 
-def test_session_loader_unset_restoring_flag_when_idle_all_done(session_loader: SessionLoader, cfg_options) -> None:
+def test_session_loader_unset_restoring_flag_when_idle_all_done(
+    session_loader: SessionLoader, workspace_provider, cfg_options
+) -> None:
     """Test unsetting restoring flag when all operations are complete."""
     # Set the config value for this test
     cfg = picard_config.get_config()
     cfg.setting['session_safe_restore'] = True
 
-    session_loader.tagger._pending_files_count = 0
+    # Fresh workspace: no pending files; mark a restore in progress.
+    workspace_provider.restoring_session = True
     session_loader.tagger.webservice.num_pending_web_requests = 0
 
     session_loader._unset_restoring_flag_when_idle()
 
     # Should unset the flag
-    assert session_loader.tagger._restoring_session is False
+    assert workspace_provider.restoring_session is False
 
 
 def test_session_loader_finalize_loading(session_loader: SessionLoader, mock_single_shot) -> None:
