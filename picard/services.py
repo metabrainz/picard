@@ -38,7 +38,22 @@ behaviour change. A dedicated headless provider (the CLI's
 install the mock ``Tagger`` the same way.
 """
 
+from typing import (
+    TYPE_CHECKING,
+    Protocol,
+    cast,
+)
+
 from picard import app_instance
+
+
+if TYPE_CHECKING:  # avoid circular imports
+    from picard.acoustid import AcoustIDClient
+    from picard.acoustid.manager import AcoustIDManager
+    from picard.formats.registry import FormatRegistry
+    from picard.isrcsubmit import ISRCSubmitManager
+    from picard.webservice import WebService
+    from picard.webservice.api_helpers import MBAPIHelper
 
 
 # The attribute names the services view exposes, as they currently exist on
@@ -55,7 +70,30 @@ _SERVICE_ATTRS = (
 )
 
 
-class TaggingServices:
+class TaggingServices(Protocol):
+    @property
+    def available(self) -> bool: ...
+
+    @property
+    def webservice(self) -> 'WebService': ...
+
+    @property
+    def mb_api(self) -> 'MBAPIHelper': ...
+
+    @property
+    def format_registry(self) -> 'FormatRegistry': ...
+
+    @property
+    def acoustidmanager(self) -> 'AcoustIDManager': ...
+
+    @property
+    def acoustid_client(self) -> 'AcoustIDClient': ...
+
+    @property
+    def isrc_submit_manager(self) -> 'ISRCSubmitManager': ...
+
+
+class TaggingServicesAppInstanceWrapper:
     """Read-only view over the long-lived tagging services.
 
     The services are resolved lazily from a *provider* object (by default the
@@ -93,12 +131,12 @@ class TaggingServices:
         return self._resolve_provider() is not None
 
 
-_services = TaggingServices()
+_services = TaggingServicesAppInstanceWrapper()
 
 
 def services() -> TaggingServices:
     """Return the process-wide tagging services accessor."""
-    return _services
+    return cast(TaggingServices, _services)
 
 
 def set_services_provider(provider) -> None:
