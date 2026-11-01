@@ -752,8 +752,9 @@ class SessionLoader(QtCore.QObject):
         This method checks if all file loads and web requests are finished
         before unsetting the session restoring flag.
         """
-        if workspace().pending_files_count == 0 and not services().webservice.num_pending_web_requests:
-            workspace().restoring_session = False
+        wks = workspace()
+        if wks.pending_files_count == 0 and not services().webservice.num_pending_web_requests:
+            wks.restoring_session = False
             self._progress.emit('restored')
         else:
             QtCore.QTimer.singleShot(SessionConstants.DEFAULT_RETRY_DELAY_MS, self._unset_restoring_flag_when_idle)

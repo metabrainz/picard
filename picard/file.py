@@ -627,14 +627,15 @@ class File(MetadataItem):
         # This save task has finished; mark it done so the selection/metadata-box
         # refresh can be coalesced to run only once, when the last file of a
         # batch save completes.
-        batch_done = workspace().end_save()
+        wks = workspace()
+        batch_done = wks.end_save()
         # Handle file removed before save
         # Result is None if save was skipped
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
             # Still flush any deferred image aggregation if this was the last
             # file of the batch, so earlier files' parents are not left stale.
             if batch_done:
-                workspace().flush_saving_image_parents()
+                wks.flush_saving_image_parents()
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -689,11 +690,11 @@ class File(MetadataItem):
         self.update(update_selection=batch_done)
 
         if self.state != File.State.REMOVED:
-            del workspace().files[old_filename]
-            workspace().files[new_filename] = self
+            del wks.files[old_filename]
+            wks.files[new_filename] = self
 
         if batch_done:
-            workspace().flush_saving_image_parents()
+            wks.flush_saving_image_parents()
 
         if self.tagger.stopping:
             log.debug("Save of %r completed before stopping Picard", self.filename)
@@ -1230,9 +1231,10 @@ class File(MetadataItem):
                     self.metadata['acoustid_id'] = acoustid
                     services().acoustid_manager.add(self, recording_id)
                 if release_group_id is not None:
-                    releasegroup = workspace().get_release_group_by_id(release_group_id)
+                    wks = workspace()
+                    releasegroup = wks.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
-                    workspace().move_file_to_track(self, release_id, recording_id)
+                    wks.move_file_to_track(self, release_id, recording_id)
                 else:
                     workspace().move_file_to_nat(self, recording_id)
         else:

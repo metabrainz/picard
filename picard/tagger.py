@@ -962,7 +962,8 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
-        if workspace().file_pending_done() == 0:
+        wks = workspace()
+        if wks.file_pending_done() == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
                 view_updates().suspend_while_loading_exit()
 
@@ -978,7 +979,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting['ignore_file_mbids'] and not workspace().restoring_session:
+        if not config.setting['ignore_file_mbids'] and not wks.restoring_session:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -1009,17 +1010,12 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if (
-            not file_moved
-            and not workspace().restoring_session
-            and config.setting['analyze_new_files']
-            and file.can_analyze
-        ):
+        if not file_moved and not wks.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if workspace().pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
+        if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
 
     def move_file(self, file, target):

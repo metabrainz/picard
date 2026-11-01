@@ -525,17 +525,18 @@ class Album(MetadataItem):
         if release_id == self.id:
             return False
 
-        workspace().mbid_redirects[self.id] = release_id
-        album = workspace().albums.get(release_id)
+        wks = workspace()
+        wks.mbid_redirects[self.id] = release_id
+        album = wks.albums.get(release_id)
         if album:
             log.debug("Release %r already loaded", release_id)
             album.match_files(self.unmatched_files.files)
             album.update()
-            workspace().remove_album(self)
+            wks.remove_album(self)
             return True
 
-        del workspace().albums[self.id]
-        workspace().albums[release_id] = self
+        del wks.albums[self.id]
+        wks.albums[release_id] = self
         self.id = release_id
         return False
 
@@ -604,6 +605,7 @@ class Album(MetadataItem):
                 self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
+                    wks = workspace()
                     config = get_config()
                     nats = False
                     nat_name = config.setting['nat_name']
@@ -612,12 +614,12 @@ class Album(MetadataItem):
                         recordingid = file.metadata['musicbrainz_recordingid']
                         if mbid_validate(recordingid) and file.metadata['album'] == nat_name:
                             nats = True
-                            workspace().move_file_to_nat(file, recordingid)
-                            nat_album = workspace().nats
+                            wks.move_file_to_nat(file, recordingid)
+                            nat_album = wks.nats
                             if nat_album is not None:
                                 nat_album.update()
                     if nats and not self.get_num_unmatched_files():
-                        workspace().remove_album(self)
+                        wks.remove_album(self)
                         error = False
             else:
                 try:
@@ -1201,16 +1203,17 @@ class Album(MetadataItem):
             return
         for file in list(self.iterfiles(True)):
             file.move(self.unmatched_files)
-        album = workspace().albums.get(mbid)
+        wks = workspace()
+        album = wks.albums.get(mbid)
         if album:
             album.match_files(self.unmatched_files.files)
             album.update()
-            workspace().remove_album(self)
+            wks.remove_album(self)
         else:
-            del workspace().albums[self.id]
+            del wks.albums[self.id]
             self.release_group.loaded_albums.discard(self.id)
             self.id = mbid
-            workspace().albums[mbid] = self
+            wks.albums[mbid] = self
             self.load(priority=True, refresh=True)
 
     def update_metadata_images(self):
