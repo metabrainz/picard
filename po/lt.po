@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-29 18:53+0100\n"
-"PO-Revision-Date: 2026-09-14 10:13+0000\n"
+"PO-Revision-Date: 2026-11-01 11:45+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -24,9 +24,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 2026.9.1\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 2026.10.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:219
@@ -222,7 +222,7 @@ msgstr "Atitinka"
 
 #: picard/debug_opts.py:179
 msgid "Log similarity scores and match decisions"
-msgstr ""
+msgstr "Žurnaluoti panašumo balus ir atitikimo sprendimus"
 
 #: picard/debug_opts.py:180
 msgid "Plugin Development"
@@ -230,11 +230,11 @@ msgstr "Įskiepių kūrimas"
 
 #: picard/debug_opts.py:180
 msgid "Log plugin details typically only used during development"
-msgstr ""
+msgstr "Žurnaluoti įskiepio duomenis, paprastai naudojami tik kūrimo metu"
 
 #: picard/debug_opts.py:181
 msgid "Timings"
-msgstr ""
+msgstr "Laikai"
 
 #: picard/debug_opts.py:181
 msgid "Log timing information for operations affecting UI responsiveness"
@@ -250,10 +250,8 @@ msgid "Log ISRC processing, submission, and lookup details"
 msgstr ""
 
 #: picard/debug_opts.py:183
-#, fuzzy
-#| msgid "Release Country"
 msgid "Rate Control"
-msgstr "Leidinio šalis"
+msgstr "Spartos valdymas"
 
 #: picard/debug_opts.py:183
 msgid "Log request throttling, congestion window, and backoff details"
@@ -261,7 +259,7 @@ msgstr ""
 
 #: picard/debug_opts.py:184
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: picard/debug_opts.py:184
 msgid ""
@@ -300,10 +298,9 @@ msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Nėra atitinkamų takelių failui „%(filename)s“."
 
 #: picard/file.py:1221
-#, fuzzy, python-format
-#| msgid "No matching tracks for file \"%(filename)s\""
+#, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr "Nėra atitinkamų takelių failui „%(filename)s“."
+msgstr "Geriausias atitikmuo failui „%(filename)s“ yra dviprasmiškas"
 
 #: picard/file.py:1223
 #, python-format
@@ -317,7 +314,7 @@ msgstr "Ieškoma metaduomenų failui „%(filename)s“…"
 
 #: picard/isrcsubmit.py:270
 msgid "Same ISRC found for different recordings"
-msgstr ""
+msgstr "Tas pats ISRC skirtingiems įrašams."
 
 #: picard/isrcsubmit.py:276
 msgid "ISRC already assigned to another track on this release"
@@ -398,7 +395,7 @@ msgstr "Netikėta užklausos klaida (HTTP kodas %s)."
 
 #: picard/options.py:155
 msgid "Plugins to exclude from updates"
-msgstr ""
+msgstr "Įskiepiai neįtraukti į atnaujinimus"
 
 #: picard/options.py:184
 msgid "Save APEv2 tags to AAC"
@@ -419,10 +416,8 @@ msgid "Allow selecting multiple directories"
 msgstr "Leisti pasirinkti kelis katalogus"
 
 #: picard/options.py:196 picard/ui/forms/ui_options_metadata.py:195
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Always standardize multi-valued artist tags"
-msgstr "Naudoti tipinius instrumentų ir vokalo įvardijimus"
+msgstr "Visada standartizuoti daugiareikšmes atlikėjo žymes"
 
 #: picard/options.py:199 picard/ui/forms/ui_options_lookup.py:86
 msgid "Automatically scan all new files"
@@ -437,10 +432,8 @@ msgid "Replace non-ASCII characters"
 msgstr "Pakeisti ne ASCII simbolius"
 
 #: picard/options.py:206
-#, fuzzy
-#| msgid "Automatic configuration backups directory:"
 msgid "Configuration backup directory"
-msgstr "Automatinių konfigūracijos atsarginių kopijų katalogas:"
+msgstr "Konfigūracijos atsarginių kopijų katalogas"
 
 #: picard/options.py:210
 msgid "Browser integration"
@@ -479,10 +472,8 @@ msgid "Cover art image types to omit"
 msgstr "Viršelio vaizdų tipai, kuriuos reikia praleisti"
 
 #: picard/options.py:234
-#, fuzzy
-#| msgid "Never replace cover images of these types"
 msgid "Restrict cover art image types"
-msgstr "Niekada nepakeisti šių tipų viršelio vaizdų"
+msgstr "Apriboti viršelių vaizdų tipus"
 
 #: picard/options.py:235
 msgid "CD lookup device"
@@ -529,28 +520,20 @@ msgid "Completeness ignore: Video tracks"
 msgstr "Išbaigtumo nepaisymas: vaizdo įrašų takeliai"
 
 #: picard/options.py:252 picard/ui/setupwizard.py:561
-#, fuzzy
-#| msgid "Convert Unicode punctuation characters to ASCII"
 msgid "Convert Unicode punctuation to ASCII"
-msgstr "Konvertuoti Unikodo skyrybos ženklus į ASCII"
+msgstr "Konvertuoti Unikodo skyrybą į ASCII"
 
 #: picard/options.py:253
-#, fuzzy
-#| msgid "All supported image formats"
 msgid "Convert file image format"
-msgstr "Visi palaikomi vaizdų formatai"
+msgstr "Konvertuoti failo vaizdo formatą"
 
 #: picard/options.py:258
-#, fuzzy
-#| msgid "All supported image formats"
 msgid "New file image format"
-msgstr "Visi palaikomi vaizdų formatai"
+msgstr "Naujas failo vaizdo formatas"
 
 #: picard/options.py:261
-#, fuzzy
-#| msgid "Allow selecting multiple directories"
 msgid "Allow enlarging file images"
-msgstr "Leisti pasirinkti kelis katalogus"
+msgstr "Leisti didinti failų vaizdus"
 
 #: picard/options.py:262
 msgid "Allow resizing file images"
