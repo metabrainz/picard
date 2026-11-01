@@ -164,6 +164,16 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
     # auxiliary field change registers without dominating the score.
     _CHANGE_DEFAULT_WEIGHT = 5
 
+    # Ceiling applied by :meth:`compare_changes` when the only difference is
+    # added tags (enrichment). Added tags are deliberately not scored per-tag
+    # (that caused the PICARD-3527 regression), so a pure-addition change-set
+    # would otherwise score a perfect 1.0. Capping it just below 1.0 drops the
+    # indicator one match level (out of fully solid green) so "Picard will add
+    # some tags" is distinct from "no change". The exact value only needs to be
+    # below 1.0 and within the top non-perfect match band; it is not scaled by
+    # how many tags are added.
+    _ADDED_TAGS_CEILING = 0.95
+
     def compare_changes(self, other: 'Metadata', ignored: Iterable[str] | None = None):
         """Score the confidence that ``self`` and ``other`` are the same track.
 
@@ -194,6 +204,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         regressed PICARD-3537: freshly ripped, minimally tagged files that
         matched the correct track were shown as a red "bad match" purely
         because the lookup adds many new tags.
+
+        As a nuance, a change-set that consists *solely* of added tags (no
+        conflict, nothing removed) is capped at ``_ADDED_TAGS_CEILING`` rather
+        than a perfect 1.0, so the indicator is not fully solid green when
+        Picard will still write new tags. The cap is a single ceiling, not a
+        per-tag penalty, so it does not reintroduce the regression.
 
         A field that genuinely differs is scored exactly as :meth:`compare`
         scores it, via :func:`_field_similarity` (numeric equality for
@@ -255,9 +271,23 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                     continue
             parts.append((_changed_score(name, sa, sb), self._CHANGE_DEFAULT_WEIGHT))
 
-        if not parts:
-            return 1.0
-        return linear_combination_of_weights(parts)
+        score = linear_combination_of_weights(parts) if parts else 1.0
+
+        # If nothing conflicts or is removed the score is a perfect 1.0, but the
+        # file and the lookup result may still differ by *added* tags (present
+        # only on ``other``). Those are enrichment and are deliberately not
+        # scored per-tag (doing so caused the PICARD-3527 regression), yet the
+        # indicator should not read as a fully solid-green "no change". Cap such
+        # pure-addition change-sets just below a perfect match so they stay one
+        # match level down. Ignored and hidden (``~``) tags don't count as an
+        # addition, matching how they are excluded from scoring above.
+        if score == 1.0:
+            added = any(
+                name not in self_store and name not in ignored and not name.startswith('~') for name in other_store
+            )
+            if added:
+                score = self._ADDED_TAGS_CEILING
+        return score
 
     def _compare_weighted(
         self,
