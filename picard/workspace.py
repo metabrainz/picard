@@ -320,6 +320,29 @@ class Workspace:
         run_album_post_removal_processors(album)
         workspace_events().tagger_stats_changed.emit()
 
+    def remove_album_if_complete(self, obj: File) -> None:
+        """Remove the album containing ``obj`` once it is fully saved.
+
+        A file-post-save processor: when ``remove_complete_albums_after_save``
+        is set and the file's album is loaded, complete and has no unsaved
+        files left, remove the album from the working set. The removal goes
+        through the view-presentation facade so a GUI frontend can keep its
+        tree selection consistent; headless removes straight from the
+        workspace.
+        """
+        config = get_config()
+        if not config.setting['remove_complete_albums_after_save']:
+            return
+
+        # The saved file's parent is a Track only when matched to an album; a
+        # Cluster/unclustered parent (or no album) has no album to remove.
+        album = getattr(obj.parent_item, 'album', None)
+        if album is None or album.id not in self.albums:
+            return
+
+        if album.is_complete() and album.get_num_unsaved_files() == 0:
+            view_presentation().remove([album])
+
     def remove_cluster(self, cluster: Cluster) -> None:
         """Remove ``cluster`` from the working set.
 

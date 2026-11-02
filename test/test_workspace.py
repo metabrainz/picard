@@ -303,3 +303,62 @@ class WorkspaceLoadMbidTest(PicardTestCase):
             wks.load_mbid('bogus', 'x')
             mock_load_album.assert_not_called()
             mock_load_nat.assert_not_called()
+
+
+class WorkspaceRemoveAlbumIfCompleteTest(PicardTestCase):
+    """remove_album_if_complete: a file-post-save processor honouring the
+    remove_complete_albums_after_save setting and going through the
+    view-presentation facade.
+    """
+
+    def _file_with_album(self, album):
+        obj = MagicMock()
+        obj.parent_item.album = album
+        return obj
+
+    def test_removes_when_enabled_complete_and_saved(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1', is_complete=MagicMock(return_value=True))
+        album.get_num_unsaved_files.return_value = 0
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_called_once_with([album])
+
+    def test_noop_when_setting_disabled(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': False})
+        wks = Workspace()
+        album = MagicMock(id='rel-1')
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_no_album(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        obj = MagicMock()
+        obj.parent_item = None
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(obj)
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_album_not_loaded(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1')
+        # album not in wks.albums
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_incomplete_or_unsaved(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1', is_complete=MagicMock(return_value=True))
+        album.get_num_unsaved_files.return_value = 2
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()

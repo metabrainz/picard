@@ -15,7 +15,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -52,3 +55,19 @@ class ViewPresentationTest(PicardTestCase):
         self.assertTrue(view_presentation().has_sink)
         set_view_presentation_sink(None)
         self.assertFalse(view_presentation().has_sink)
+
+    def test_remove_forwards_to_panel_with_sink(self):
+        facade = ViewPresentation()
+        sink = MagicMock()
+        facade.set_sink(sink)
+        objs = [object()]
+        facade.remove(objs)
+        sink.panel.remove.assert_called_once_with(objs)
+
+    def test_remove_falls_back_to_workspace_without_sink(self):
+        facade = ViewPresentation()
+        self.assertFalse(facade.has_sink)
+        objs = [object()]
+        with patch('picard.workspace.workspace') as mock_workspace:
+            facade.remove(objs)
+            mock_workspace.return_value.remove.assert_called_once_with(objs)

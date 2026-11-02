@@ -18,10 +18,10 @@
 
 A few core operations ask the frontend to perform a user-visible *presentation*
 action that only makes sense when there is a window / tree view, such as raising
-the application window to the front when a load is triggered from outside.
-Historically core did this by reaching into ``self.tagger.window`` /
-``self.tagger.bring_tagger_front()``, which does nothing useful in headless/CLI
-mode.
+the application window to the front when a load is triggered from outside, or
+removing items from the working set while keeping the tree view's selection
+sane. Historically core did this by reaching into ``self.tagger.window`` /
+``self.tagger.window.panel``, which does not exist in headless/CLI mode.
 
 This module provides a small process-wide facade whose methods core code calls
 unconditionally:
@@ -29,10 +29,12 @@ unconditionally:
     from picard.view_presentation import view_presentation
 
     view_presentation().bring_to_front()
+    view_presentation().remove([album])
 
 A GUI frontend installs a sink (the application object); the facade forwards to
-it. With no sink (headless), the calls are no-ops. Mirrors the injected-sink
-pattern of :mod:`picard.notification`, :mod:`picard.view_updates` and
+it. With no sink (headless), ``bring_to_front`` is a no-op and ``remove`` falls
+back to removing straight from the workspace. Mirrors the injected-sink pattern
+of :mod:`picard.notification`, :mod:`picard.view_updates` and
 :mod:`picard.view_sync`.
 
 This is distinct from :mod:`picard.view_updates` (which SUSPENDS view updates
@@ -41,6 +43,7 @@ refresh of the current selection): this facade performs a discrete presentation
 ACTION on behalf of core.
 """
 
+from collections.abc import Iterable
 from typing import (
     Protocol,
     runtime_checkable,
@@ -52,10 +55,15 @@ class ViewPresentationSink(Protocol):
     """Interface a frontend provides to perform presentation actions.
 
     The GUI application satisfies this structurally: ``bring_tagger_front``
-    raises and activates the main window.
+    raises and activates the main window, and ``panel`` exposes a ``remove``
+    that removes objects while suspending the tree's own selection-change
+    handling and then fixing up the current selection.
     """
 
     def bring_tagger_front(self) -> None: ...
+
+    @property
+    def panel(self): ...
 
 
 class ViewPresentation:
@@ -85,6 +93,23 @@ class ViewPresentation:
         """
         if self._sink is not None:
             self._sink.bring_tagger_front()
+
+    def remove(self, objects: Iterable) -> None:
+        """Remove ``objects`` from the working set, keeping the view consistent.
+
+        With a GUI sink, delegates to the panel's ``remove`` (which suspends the
+        tree's own selection-change handling and then fixes up the current
+        selection). In headless mode there is no tree, so it removes straight
+        from the workspace.
+        """
+        if self._sink is not None:
+            self._sink.panel.remove(objects)
+        else:
+            # Imported here to avoid an import cycle: picard.workspace reaches
+            # this facade, so it must not be imported at module load time.
+            from picard.workspace import workspace
+
+            workspace().remove(objects)
 
 
 _view_presentation = ViewPresentation()

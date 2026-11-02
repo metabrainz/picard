@@ -295,7 +295,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
         self._init_ui(config)
 
-        register_file_post_save_processor(self._remove_album_if_complete)
+        register_file_post_save_processor(self._workspace.remove_album_if_complete)
 
     def _bootstrap(self):
         """Bootstraping"""
@@ -1085,28 +1085,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 '' if item.is_album_like else str(metadata.length),
                 item.filename if isinstance(item, File) else '',
             )
-
-    def _remove_album_if_complete(self, obj: File):
-        """Remove the album containing the file if conditions are met.
-
-        Args:
-            obj (File): File that was saved.
-        """
-        config = get_config()
-        if not config.setting['remove_complete_albums_after_save']:
-            return
-
-        # Try getting the related album
-        try:
-            album = obj.parent_item.album
-        except AttributeError:
-            return
-
-        if album.id not in self.albums:
-            return
-
-        if album.is_complete() and album.get_num_unsaved_files() == 0:
-            self.window.panel.remove([album])
 
     def _lookup_disc(self, disc, result=None, error=None):
         busy_cursor_stop()
