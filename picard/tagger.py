@@ -167,7 +167,6 @@ from picard.util import (
     cli,
     is_hidden,
     iter_files_from_objects,
-    mbid_validate,
     normpath,
     periodictouch,
     pipe,
@@ -943,41 +942,9 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             self.unclustered_files.add_file(file)
             return
 
-        file_moved = False
-        if not config.setting['ignore_file_mbids'] and not wks.restoring_session:
-            recordingid = file.metadata.getall('musicbrainz_recordingid')
-            recordingid = recordingid[0] if recordingid else ''
-            is_valid_recordingid = mbid_validate(recordingid)
-
-            albumid = file.metadata.getall('musicbrainz_albumid')
-            albumid = albumid[0] if albumid else ''
-            is_valid_albumid = mbid_validate(albumid)
-
-            if is_valid_albumid and is_valid_recordingid:
-                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…", file, albumid, recordingid)
-                self.move_file_to_track(file, albumid, recordingid)
-                file_moved = True
-            elif is_valid_albumid:
-                log.debug("%r has only release MBID (%s), moving to album…", file, albumid)
-                self.move_file_to_album(file, albumid)
-                file_moved = True
-            elif is_valid_recordingid:
-                log.debug("%r has only recording MBID (%s), moving to non-album track…", file, recordingid)
-                self.move_file_to_nat(file, recordingid)
-                file_moved = True
-
-        if not file_moved:
-            target = self.move_file(file, target)
-            if target and target != self.unclustered_files:
-                file_moved = True
-
-        if not file_moved and unmatched_files is not None:
-            unmatched_files.append(file)
-
-        # fallback on analyze if nothing else worked
-        if not file_moved and not wks.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
-            log.debug("Trying to analyze %r …", file)
-            self.analyze([file])
+        # Place the file (MBID auto-move / move_file / analyze fallback); the
+        # UI-agnostic policy lives on the Workspace.
+        wks.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
         if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:

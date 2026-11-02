@@ -75,6 +75,7 @@ from picard.services import services
 from picard.util import (
     IterableFiles,
     iter_files_from_objects,
+    mbid_validate,
 )
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
@@ -631,6 +632,64 @@ class Workspace:
         for file in iter_files_from_objects(objs):
             file.set_pending()
             services().acoustid_client.fingerprint(file, partial(finished, file))
+
+    def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
+        """Place a freshly loaded ``file`` into the working set.
+
+        Implements the per-file placement policy applied right after a file
+        loads: honour embedded MusicBrainz IDs (move to the matching track,
+        album or non-album track), otherwise move it to ``target`` (falling
+        back to the unclustered bucket), and — when nothing matched — optionally
+        queue an AcoustID analyze. Files that errored go to the unclustered
+        bucket. ``file`` must be a successfully loaded, error-free file.
+
+        When ``unmatched_files`` is given, a file that could not be placed
+        anywhere meaningful is appended to it (the caller uses this to decide
+        whether to auto-cluster the leftovers).
+
+        Returns True if the file was moved somewhere other than the unclustered
+        bucket. This is the UI-agnostic core of the GUI ``Tagger._file_loaded``
+        callback; the GUI keeps the view-suspend bookkeeping and the auto-cluster
+        of the leftovers around this call.
+        """
+        config = get_config()
+        file_moved = False
+        if not config.setting['ignore_file_mbids'] and not self.restoring_session:
+            recordingid = file.metadata.getall('musicbrainz_recordingid')
+            recordingid = recordingid[0] if recordingid else ''
+            is_valid_recordingid = mbid_validate(recordingid)
+
+            albumid = file.metadata.getall('musicbrainz_albumid')
+            albumid = albumid[0] if albumid else ''
+            is_valid_albumid = mbid_validate(albumid)
+
+            if is_valid_albumid and is_valid_recordingid:
+                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…", file, albumid, recordingid)
+                self.move_file_to_track(file, albumid, recordingid)
+                file_moved = True
+            elif is_valid_albumid:
+                log.debug("%r has only release MBID (%s), moving to album…", file, albumid)
+                self.move_file_to_album(file, albumid)
+                file_moved = True
+            elif is_valid_recordingid:
+                log.debug("%r has only recording MBID (%s), moving to non-album track…", file, recordingid)
+                self.move_file_to_nat(file, recordingid)
+                file_moved = True
+
+        if not file_moved:
+            target = self.move_file(file, target)
+            if target and target != self.unclustered_files:
+                file_moved = True
+
+        if not file_moved and unmatched_files is not None:
+            unmatched_files.append(file)
+
+        # fallback on analyze if nothing else worked
+        if not file_moved and not self.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
+            log.debug("Trying to analyze %r …", file)
+            self.analyze([file])
+
+        return file_moved
 
 
 _workspace: Workspace | None = None
