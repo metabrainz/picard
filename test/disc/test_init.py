@@ -45,10 +45,6 @@ def mock_disc_submission_url():
 
 
 class DiscTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.patch_tagger_instance('picard.disc')
-
     def test_static_submission_url_no_config(self):
         with patch.object(
             picard.util.mbserver.submission, 'get_submission_server', return_value=ServerTuple('example.com', 443)
@@ -188,10 +184,6 @@ class MockDiscNoIsrcAttr:
 
 
 class DiscIsrcTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.patch_tagger_instance('picard.disc')
-
     @patch.object(picard.disc, 'discid')
     def test_read_with_isrc_feature(self, mock_discid):
         self.set_config_values(
@@ -281,3 +273,61 @@ class DiscIsrcTest(PicardTestCase):
         result = picard.disc.Disc._extract_isrcs(tracks)
         # Duplicate ISRC removed, unique one kept
         self.assertEqual({3: 'GBAYE0000351'}, result)
+
+
+class DiscLookupCallbackTest(PicardTestCase):
+    """Disc web-service callbacks delegate presentation to the facade."""
+
+    def test_lookup_finished_presents_releases(self):
+        disc = picard.disc.Disc(id='disc-1')
+        document = {'releases': [{'id': 'r1'}, {'id': 'r2'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._lookup_finished(document, Mock(), None)
+            mock_dp.return_value.lookup_finished.assert_called_once_with()
+            mock_dp.return_value.present_releases.assert_called_once_with(disc, [{'id': 'r1'}, {'id': 'r2'}])
+
+    def test_lookup_finished_on_error_presents_empty(self):
+        disc = picard.disc.Disc(id='disc-1')
+        http = Mock()
+        http.errorString.return_value = 'boom'
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._lookup_finished(None, http, error=True)
+            mock_dp.return_value.present_releases.assert_called_once_with(disc, [])
+
+    def test_toc_lookup_skip_dialog_single_match_autoloads(self):
+        disc = picard.disc.Disc(id='disc-1')
+        files = [Mock()]
+        disc._skip_dialog = True
+        disc._files_to_match = files
+        document = {'releases': [{'id': 'rel-1'}]}
+        with (
+            patch('picard.disc.disc_presentation') as mock_dp,
+            patch('picard.workspace.workspace') as mock_ws,
+        ):
+            album = mock_ws.return_value.load_album.return_value
+            disc._toc_lookup_finished(document, Mock(), None)
+            mock_ws.return_value.load_album.assert_called_once_with('rel-1')
+            mock_ws.return_value.move_files_to_album.assert_called_once_with(files, album=album)
+            # Auto-loaded, so no picker presentation.
+            mock_dp.return_value.present_releases.assert_not_called()
+
+    def test_toc_lookup_multiple_matches_presents(self):
+        disc = picard.disc.Disc(id='disc-1')
+        disc._skip_dialog = True
+        disc._files_to_match = None
+        document = {'releases': [{'id': 'r1'}, {'id': 'r2'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._toc_lookup_finished(document, Mock(), None)
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'r1'}, {'id': 'r2'}], files_to_match=None
+            )
+
+    def test_toc_lookup_without_skip_dialog_presents(self):
+        disc = picard.disc.Disc(id='disc-1')
+        files = [Mock()]
+        disc._skip_dialog = False
+        disc._files_to_match = files
+        document = {'releases': [{'id': 'rel-1'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._toc_lookup_finished(document, Mock(), None)
+            mock_dp.return_value.present_releases.assert_called_once_with(disc, [{'id': 'rel-1'}], files_to_match=files)

@@ -192,6 +192,7 @@ from picard.ui.theme import theme
 from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
+    busy_cursor_stop,
     find_starting_directory,
     flash_busy_cursor,
     is_keyboard_context_menu_event,
@@ -459,6 +460,32 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def flash_busy_cursor(self):
         flash_busy_cursor()
+
+    def disc_lookup_finished(self):
+        """Sink for picard.disc.presentation: end the lookup busy cursor."""
+        busy_cursor_stop()
+
+    def present_disc_releases(self, disc, releases, files_to_match=None):
+        """Sink for picard.disc.presentation: show the CD lookup release picker.
+
+        Shows the modal :class:`CDLookupDialog` for the user to choose a
+        release; when ``files_to_match`` is given, matches them to the chosen
+        release once the user accepts.
+        """
+        # Imported here (not at module load) to keep the dialog dependency local
+        # to this presentation sink.
+        from picard.ui.cdlookup import CDLookupDialog
+
+        dialog = CDLookupDialog(releases, disc, parent=self)
+        if files_to_match:
+            dialog.accepted.connect(partial(self._disc_dialog_accepted, dialog, files_to_match))
+        dialog.exec()
+
+    def _disc_dialog_accepted(self, dialog, files_to_match):
+        release_id = dialog.get_selected_release_id()
+        if release_id and files_to_match:
+            album = self.tagger.load_album(release_id)
+            self.tagger.move_files_to_album(files_to_match, album=album)
 
     def set_sorting(self, sorting=True):
         self.panel.set_sorting(sorting)

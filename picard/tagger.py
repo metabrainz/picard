@@ -118,6 +118,7 @@ from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
 )
+from picard.disc.presentation import set_disc_presentation_sink
 from picard.extension_points.disc_log_readers import ext_point_disc_log_readers
 from picard.extension_points.event_hooks import register_file_post_save_processor
 from picard.file import File
@@ -571,6 +572,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         # externally triggered load) to this application object. In headless
         # mode no sink is installed and they no-op.
         set_view_presentation_sink(self)
+        # Route CD/disc lookup result presentation (the release picker dialog +
+        # the lookup busy cursor) to the main window. In headless mode no sink
+        # is installed and the single unambiguous match is auto-loaded.
+        set_disc_presentation_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
