@@ -49,11 +49,16 @@ workspace) and stays on the application object.
 
 from __future__ import annotations
 
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from functools import partial
 import os
 from typing import (
     TYPE_CHECKING,
     Any,
+    cast,
 )
 
 from PyQt6 import QtCore
@@ -63,6 +68,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.item import ListOfMetadataItems
 from picard.notification import notifier
 from picard.services import services
 from picard.view_updates import view_updates
@@ -75,11 +81,13 @@ if TYPE_CHECKING:
         NatAlbum,
     )
     from picard.cluster import (
+        Cluster,
         ClusterList,
         UnclusteredFiles,
     )
     from picard.file import File
     from picard.releasegroup import ReleaseGroup
+    from picard.track import NonAlbumTrack
 
 
 class Workspace:
@@ -220,14 +228,16 @@ class Workspace:
     def restoring_session(self, value: bool) -> None:
         self._restoring_session = value
 
-    def iter_album_files(self):
+    def iter_album_files(self) -> Iterator[File]:
         """Yield every file matched to a loaded album."""
         for album in self.albums.values():
             yield from album.iterfiles()
 
-    def iter_all_files(self):
+    def iter_all_files(self) -> Iterator[File]:
         """Yield every file in the working set (unclustered, album, cluster)."""
-        yield from self.unclustered_files.files
+        # unclustered_files.files is a ListOfMetadataItems (typed MetadataItem)
+        # but only ever holds File at runtime; narrow to File.
+        yield from cast("Iterator[File]", self.unclustered_files.files)
         yield from self.iter_album_files()
         yield from self.clusters.iterfiles()
 
@@ -256,7 +266,7 @@ class Workspace:
 
         return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
 
-    def remove_files(self, files, from_parent: bool = True) -> None:
+    def remove_files(self, files: Iterable, from_parent: bool = True) -> None:
         """Remove ``files`` from the working set.
 
         Cancels any pending lookup/fingerprint work, drops each file from the
@@ -271,7 +281,7 @@ class Workspace:
                 file.remove(from_parent)
         workspace_events().tagger_stats_changed.emit()
 
-    def remove_album(self, album) -> None:
+    def remove_album(self, album: Album) -> None:
         """Remove ``album`` from the working set.
 
         Stops any in-flight loading, removes the album's files, clears the
@@ -298,7 +308,7 @@ class Workspace:
         run_album_post_removal_processors(album)
         workspace_events().tagger_stats_changed.emit()
 
-    def remove_cluster(self, cluster) -> None:
+    def remove_cluster(self, cluster: Cluster) -> None:
         """Remove ``cluster`` from the working set.
 
         Special clusters (the unclustered bucket) are never removed. Clears the
@@ -309,13 +319,13 @@ class Workspace:
             return
         log.debug("Removing %r", cluster)
         files = list(cluster.files)
-        cluster.files = []
+        cluster.files = ListOfMetadataItems()
         cluster.clear()
         self.remove_files(files, from_parent=False)
         self.clusters.remove(cluster)
         workspace_events().cluster_removed.emit(cluster)
 
-    def load_album(self, album_id: str, discid=None, disc_isrcs=None):
+    def load_album(self, album_id: str, discid=None, disc_isrcs: dict[int, str] | None = None) -> Album:
         """Load the release ``album_id`` into the working set.
 
         Resolves release redirects, returns the already-loaded album if present
@@ -337,7 +347,9 @@ class Workspace:
         album.load()
         return album
 
-    def move_files_to_album(self, files, albumid: str | None = None, album=None):
+    def move_files_to_album(
+        self, files: Iterable[File], albumid: str | None = None, album: Album | None = None
+    ) -> None:
         """Move ``files`` to tracks on album ``albumid`` (or a given album).
 
         Exactly one of ``albumid`` / ``album`` is expected; when no album is
@@ -348,13 +360,13 @@ class Workspace:
             album = self.load_album(albumid)
         album.match_files(files)
 
-    def move_file_to_track(self, file, albumid, recordingid):
+    def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
         """Move ``file`` to recording ``recordingid`` on album ``albumid``."""
         album = self.load_album(albumid)
         file.match_recordingid = recordingid
         album.match_files([file])
 
-    def move_file_to_album(self, file, albumid):
+    def move_file_to_album(self, file: File, albumid: str) -> None:
         """Move ``file`` to a track on album ``albumid``."""
         self.move_files_to_album([file], albumid)
 
@@ -373,15 +385,18 @@ class Workspace:
                 self.nats.ui_item.setExpanded(True)
         return self.nats
 
-    def get_nat_by_id(self, nat_id):
+    def get_nat_by_id(self, nat_id: str) -> NonAlbumTrack | None:
         """Return the already-loaded NAT with ``nat_id``, or None."""
         if self.nats is not None:
             for nat in self.nats.tracks:
                 if nat.id == nat_id:
-                    return nat
+                    # NatAlbum.tracks is typed list[Track] (shared base), but by
+                    # construction a NATs container only ever holds
+                    # NonAlbumTrack (see load_nat); narrow to the real type.
+                    return cast("NonAlbumTrack", nat)
         return None
 
-    def load_nat(self, nat_id, node=None):
+    def load_nat(self, nat_id: str, node=None) -> NonAlbumTrack:
         """Load the non-album track ``nat_id`` into the NATs container."""
         # Imported here to avoid the track <-> workspace import cycle.
         from picard.track import NonAlbumTrack
@@ -400,7 +415,7 @@ class Workspace:
             nat.load()
         return nat
 
-    def move_file_to_nat(self, file, recordingid, node=None):
+    def move_file_to_nat(self, file: File, recordingid: str, node=None) -> None:
         """Move ``file`` to the non-album track ``recordingid``."""
         nats = self.create_nats()
         file.move(nats.unmatched_files)
@@ -409,7 +424,7 @@ class Workspace:
         if nat.loaded:
             nats.update()
 
-    def autotag(self, objects):
+    def autotag(self, objects: Iterable[Any]) -> None:
         """Look up metadata for each taggable object in ``objects``.
 
         Flashes the busy cursor once per batch (fire-and-forget feedback) and
@@ -424,7 +439,7 @@ class Workspace:
                     flashed = True
                 obj.lookup_metadata()
 
-    def remove_nat(self, track) -> None:
+    def remove_nat(self, track: NonAlbumTrack) -> None:
         """Remove the non-album track ``track`` from the working set."""
         log.debug("Removing %r", track)
         self.remove_files(list(track.iterfiles()))
@@ -439,7 +454,7 @@ class Workspace:
         else:
             self.nats.update(True)
 
-    def remove(self, objects) -> None:
+    def remove(self, objects: Iterable[Any]) -> None:
         """Remove ``objects`` (files, tracks, albums, clusters) from the set."""
         # Imported here to avoid cycles with the entity modules.
         from picard.album import Album
@@ -453,7 +468,7 @@ class Workspace:
             Track,
         )
 
-        files = []
+        files: list = []
         with view_updates().suspend_selection():
             for obj in objects:
                 if isinstance(obj, File):
@@ -475,7 +490,7 @@ class Workspace:
             if files:
                 self.remove_files(files)
 
-    def trash_files(self, files) -> None:
+    def trash_files(self, files: Iterable) -> None:
         """Move ``files`` to the system trash and remove them from the set."""
         with view_updates().suspend_selection():
             files_removed = []
@@ -499,7 +514,7 @@ class Workspace:
                 self.remove_files(files)
             notifier().status_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
-    def load_cluster(self, name, artist):
+    def load_cluster(self, name: str, artist: str) -> Cluster:
         """Return the cluster matching ``name``/``artist``, creating it if new."""
         # Imported here to avoid the cluster <-> workspace import cycle.
         from picard.cluster import Cluster
@@ -536,59 +551,59 @@ class WorkspaceHost:
     _workspace: Workspace
 
     @property
-    def files(self):
+    def files(self) -> dict[str, File]:
         return self._workspace.files
 
     @files.setter
-    def files(self, value):
+    def files(self, value: dict[str, File]) -> None:
         self._workspace.files = value
 
     @property
-    def clusters(self):
+    def clusters(self) -> ClusterList:
         return self._workspace.clusters
 
     @clusters.setter
-    def clusters(self, value):
+    def clusters(self, value: ClusterList) -> None:
         self._workspace.clusters = value
 
     @property
-    def albums(self):
+    def albums(self) -> dict[str, Album]:
         return self._workspace.albums
 
     @albums.setter
-    def albums(self, value):
+    def albums(self, value: dict[str, Album]) -> None:
         self._workspace.albums = value
 
     @property
-    def release_groups(self):
+    def release_groups(self) -> dict[str, ReleaseGroup]:
         return self._workspace.release_groups
 
     @release_groups.setter
-    def release_groups(self, value):
+    def release_groups(self, value: dict[str, ReleaseGroup]) -> None:
         self._workspace.release_groups = value
 
     @property
-    def mbid_redirects(self):
+    def mbid_redirects(self) -> dict[str, str]:
         return self._workspace.mbid_redirects
 
     @mbid_redirects.setter
-    def mbid_redirects(self, value):
+    def mbid_redirects(self, value: dict[str, str]) -> None:
         self._workspace.mbid_redirects = value
 
     @property
-    def unclustered_files(self):
+    def unclustered_files(self) -> UnclusteredFiles:
         return self._workspace.unclustered_files
 
     @unclustered_files.setter
-    def unclustered_files(self, value):
+    def unclustered_files(self, value: UnclusteredFiles) -> None:
         self._workspace.unclustered_files = value
 
     @property
-    def nats(self):
+    def nats(self) -> NatAlbum | None:
         return self._workspace.nats
 
     @nats.setter
-    def nats(self, value):
+    def nats(self, value: NatAlbum | None) -> None:
         self._workspace.nats = value
 
     # --- working-set operations (shared plugin/GUI compatibility surface) ----
@@ -598,73 +613,146 @@ class WorkspaceHost:
     # workspace().<op> directly; these keep tagger.<op> working for plugins and
     # existing GUI callers.
 
-    def iter_album_files(self):
+    def iter_album_files(self) -> Iterator[File]:
+        """Yield every file matched to a loaded album.
+
+        Delegates to :meth:`Workspace.iter_album_files`.
+        """
         return self._workspace.iter_album_files()
 
-    def iter_all_files(self):
+    def iter_all_files(self) -> Iterator[File]:
+        """Yield every file in the working set.
+
+        Delegates to :meth:`Workspace.iter_all_files`.
+        """
         return self._workspace.iter_all_files()
 
     def clear_session(self) -> None:
-        """Remove all files, clusters and albums from the working set."""
+        """Remove all files, clusters and albums from the working set.
+
+        Delegates to :meth:`Workspace.clear_session`.
+        """
         self._workspace.clear_session()
 
-    def get_release_group_by_id(self, rg_id):
+    def get_release_group_by_id(self, rg_id: str) -> ReleaseGroup:
+        """Return the ReleaseGroup for ``rg_id``, creating it if unknown.
+
+        Delegates to :meth:`Workspace.get_release_group_by_id`.
+        """
         return self._workspace.get_release_group_by_id(rg_id)
 
-    def load_album(self, album_id, discid=None, disc_isrcs=None):
+    def load_album(self, album_id: str, discid=None, disc_isrcs: dict[int, str] | None = None) -> Album:
+        """Load the release ``album_id`` into the working set.
+
+        Delegates to :meth:`Workspace.load_album`.
+        """
         return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
 
-    def load_nat(self, nat_id, node=None):
+    def load_nat(self, nat_id: str, node=None) -> NonAlbumTrack:
+        """Load the non-album track ``nat_id`` into the NATs container.
+
+        Delegates to :meth:`Workspace.load_nat`.
+        """
         return self._workspace.load_nat(nat_id, node=node)
 
-    def get_nat_by_id(self, nat_id):
+    def get_nat_by_id(self, nat_id: str) -> NonAlbumTrack | None:
+        """Return the already-loaded NAT with ``nat_id``, or None.
+
+        Delegates to :meth:`Workspace.get_nat_by_id`.
+        """
         return self._workspace.get_nat_by_id(nat_id)
 
-    def create_nats(self):
+    def create_nats(self) -> NatAlbum:
+        """Return the Non-Album-Tracks container, creating it on first use.
+
+        Delegates to :meth:`Workspace.create_nats`.
+        """
         return self._workspace.create_nats()
 
-    def load_cluster(self, name, artist):
+    def load_cluster(self, name: str, artist: str) -> Cluster:
+        """Return the cluster matching ``name``/``artist``, creating it if new.
+
+        Delegates to :meth:`Workspace.load_cluster`.
+        """
         return self._workspace.load_cluster(name, artist)
 
-    def move_files_to_album(self, files, albumid=None, album=None):
-        """Move `files` to tracks on album `albumid`."""
+    def move_files_to_album(
+        self, files: Iterable[File], albumid: str | None = None, album: Album | None = None
+    ) -> None:
+        """Move ``files`` to tracks on album ``albumid`` (or a given album).
+
+        Delegates to :meth:`Workspace.move_files_to_album`.
+        """
         self._workspace.move_files_to_album(files, albumid=albumid, album=album)
 
-    def move_file_to_album(self, file, albumid):
-        """Move `file` to a track on album `albumid`."""
+    def move_file_to_album(self, file: File, albumid: str) -> None:
+        """Move ``file`` to a track on album ``albumid``.
+
+        Delegates to :meth:`Workspace.move_file_to_album`.
+        """
         self._workspace.move_file_to_album(file, albumid)
 
-    def move_file_to_track(self, file, albumid, recordingid):
-        """Move `file` to recording `recordingid` on album `albumid`."""
+    def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
+        """Move ``file`` to recording ``recordingid`` on album ``albumid``.
+
+        Delegates to :meth:`Workspace.move_file_to_track`.
+        """
         self._workspace.move_file_to_track(file, albumid, recordingid)
 
-    def move_file_to_nat(self, file, recordingid, node=None):
+    def move_file_to_nat(self, file: File, recordingid: str, node=None) -> None:
+        """Move ``file`` to the non-album track ``recordingid``.
+
+        Delegates to :meth:`Workspace.move_file_to_nat`.
+        """
         self._workspace.move_file_to_nat(file, recordingid, node=node)
 
-    def autotag(self, objects):
+    def autotag(self, objects: Iterable[Any]) -> None:
+        """Look up metadata for each taggable object in ``objects``.
+
+        Delegates to :meth:`Workspace.autotag`.
+        """
         self._workspace.autotag(objects)
 
-    def remove_files(self, files, from_parent=True):
-        """Remove files from the working set."""
+    def remove_files(self, files: Iterable, from_parent: bool = True) -> None:
+        """Remove ``files`` from the working set.
+
+        Delegates to :meth:`Workspace.remove_files`.
+        """
         self._workspace.remove_files(files, from_parent=from_parent)
 
-    def remove_album(self, album):
-        """Remove the specified album."""
+    def remove_album(self, album: Album) -> None:
+        """Remove ``album`` from the working set.
+
+        Delegates to :meth:`Workspace.remove_album`.
+        """
         self._workspace.remove_album(album)
 
-    def remove_nat(self, track):
-        """Remove the specified non-album track."""
+    def remove_nat(self, track: NonAlbumTrack) -> None:
+        """Remove the non-album track ``track`` from the working set.
+
+        Delegates to :meth:`Workspace.remove_nat`.
+        """
         self._workspace.remove_nat(track)
 
-    def remove_cluster(self, cluster):
-        """Remove the specified cluster."""
+    def remove_cluster(self, cluster: Cluster) -> None:
+        """Remove ``cluster`` from the working set.
+
+        Delegates to :meth:`Workspace.remove_cluster`.
+        """
         self._workspace.remove_cluster(cluster)
 
-    def remove(self, objects):
-        """Remove the specified objects."""
+    def remove(self, objects: Iterable[Any]) -> None:
+        """Remove ``objects`` (files, tracks, albums, clusters) from the set.
+
+        Delegates to :meth:`Workspace.remove`.
+        """
         self._workspace.remove(objects)
 
-    def trash_files(self, files):
+    def trash_files(self, files: Iterable) -> None:
+        """Move ``files`` to the system trash and remove them from the set.
+
+        Delegates to :meth:`Workspace.trash_files`.
+        """
         self._workspace.trash_files(files)
 
 

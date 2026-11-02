@@ -38,7 +38,10 @@ from collections import (
     Counter,
     defaultdict,
 )
-from collections.abc import Iterable
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from operator import attrgetter
 import re
 from typing import TYPE_CHECKING
@@ -588,7 +591,7 @@ class TempItemList(MetadataItem):
         # Display-only aggregate; nothing to update in the tree.
         pass
 
-    def iterfiles(self, save=False):
+    def iterfiles(self, save=False) -> Iterator[File]:
         yield from iter_files_from_objects(self.items, save=save)
 
     def children_metadata_items(self):
@@ -663,7 +666,7 @@ class ClusterList(list, Item):
         else:
             return ''
 
-    def iterfiles(self, save=False):
+    def iterfiles(self, save=False) -> Iterator[File]:
         for cluster in self:
             yield from cluster.iterfiles(save)
 
