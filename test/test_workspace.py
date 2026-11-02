@@ -222,3 +222,45 @@ class WorkspaceAsyncClusterTest(PicardTestCase):
             mock_vu.return_value.suspend_while_loading_enter.assert_not_called()
             mock_thread.process_in_batches.assert_not_called()
             on_complete.assert_not_called()
+
+
+class WorkspaceAnalyzeFlashTest(PicardTestCase):
+    """analyze() (the AcoustID 'Scan' action) should flash the busy cursor once
+    per user action to acknowledge the async work, and only when AcoustID is
+    enabled and there is something to analyze.
+    """
+
+    def test_analyze_flashes_once_for_batch(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = True
+        file1 = MagicMock(can_analyze=True)
+        file2 = MagicMock(can_analyze=True)
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.services'),
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_called_once_with()
+
+    def test_analyze_does_not_flash_when_acoustid_disabled(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = False
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((MagicMock(),))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_not_called()
+
+    def test_analyze_does_not_flash_when_nothing_analyzable(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = True
+        file = MagicMock(can_analyze=False)
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.services'),
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((file,))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_not_called()

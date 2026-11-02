@@ -24,7 +24,6 @@ from test.picardtestcase import PicardTestCase
 
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.tagger import Tagger
-from picard.workspace import Workspace
 
 from picard.ui.util import (
     busy_cursor_start,
@@ -78,79 +77,6 @@ class FlashBusyCursorTest(PicardTestCase):
         self.tagger.restoreOverrideCursor.assert_not_called()
         captured['callback']()
         self.tagger.restoreOverrideCursor.assert_called_once_with()
-
-
-class TaggerClusterActionsFlashTest(PicardTestCase):
-    """Cluster-panel actions (cluster, lookup/autotag, analyze) should flash the
-    busy cursor once per user action to acknowledge the async work.
-    """
-
-    def setUp(self):
-        super().setUp()
-        # The Tagger methods flash via notifier().flash_busy(); patch the
-        # notifier accessor in picard.tagger and assert on the facade's method.
-        patcher = patch('picard.tagger.notifier')
-        self.mock_flash = patcher.start().return_value.flash_busy
-        self.addCleanup(patcher.stop)
-
-    def _mock_self(self):
-        # Use a mock in place of a real Tagger so we can call the unbound
-        # methods without constructing the whole application.
-        return MagicMock(spec=Tagger)
-
-    def test_cluster_flashes_when_files_present(self):
-        tagger = self._mock_self()
-        files = (MagicMock(), MagicMock())
-        with (
-            patch('picard.tagger.iter_files_from_objects', return_value=iter(files)),
-            patch('picard.tagger.thread'),
-        ):
-            Tagger.cluster(tagger, object())
-        self.mock_flash.assert_called_once_with()
-
-    def test_cluster_does_not_flash_when_no_files(self):
-        tagger = self._mock_self()
-        with (
-            patch('picard.tagger.iter_files_from_objects', return_value=iter(())),
-            patch('picard.tagger.thread'),
-        ):
-            Tagger.cluster(tagger, object())
-        self.mock_flash.assert_not_called()
-
-    def test_analyze_flashes_once_for_batch(self):
-        wks = MagicMock(spec=Workspace)
-        wks.use_acoustid = True
-        file1 = MagicMock(can_analyze=True)
-        file2 = MagicMock(can_analyze=True)
-        with (
-            patch('picard.workspace.notifier') as mock_notifier,
-            patch('picard.workspace.services'),
-            patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))),
-        ):
-            Workspace.analyze(wks, object())
-            mock_notifier.return_value.flash_busy.assert_called_once_with()
-
-    def test_analyze_does_not_flash_when_acoustid_disabled(self):
-        wks = MagicMock(spec=Workspace)
-        wks.use_acoustid = False
-        with (
-            patch('picard.workspace.notifier') as mock_notifier,
-            patch('picard.workspace.iter_files_from_objects', return_value=iter((MagicMock(),))),
-        ):
-            Workspace.analyze(wks, object())
-            mock_notifier.return_value.flash_busy.assert_not_called()
-
-    def test_analyze_does_not_flash_when_nothing_analyzable(self):
-        wks = MagicMock(spec=Workspace)
-        wks.use_acoustid = True
-        file = MagicMock(can_analyze=False)
-        with (
-            patch('picard.workspace.notifier') as mock_notifier,
-            patch('picard.workspace.services'),
-            patch('picard.workspace.iter_files_from_objects', return_value=iter((file,))),
-        ):
-            Workspace.analyze(wks, object())
-            mock_notifier.return_value.flash_busy.assert_not_called()
 
 
 class TaggerSearchFlashTest(PicardTestCase):

@@ -1051,6 +1051,14 @@ class WorkspaceHost:
         """
         self._workspace.generate_fingerprints(objs)
 
+    def cluster(self, objs: Iterable[IterableFiles], callback: Callable[[], Any] | None = None) -> None:
+        """Group the files reachable from ``objs`` into clusters asynchronously.
+
+        Delegates to :meth:`Workspace.cluster`. ``callback`` is the completion
+        callback (named ``callback`` here for the documented plugin/GUI API).
+        """
+        self._workspace.cluster(objs, on_complete=callback)
+
 
 def workspace() -> Workspace:
     """Return the process-wide :class:`Workspace`.

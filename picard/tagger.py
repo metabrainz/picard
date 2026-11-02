@@ -166,7 +166,6 @@ from picard.util import (
     check_io_encoding,
     cli,
     is_hidden,
-    iter_files_from_objects,
     normpath,
     periodictouch,
     pipe,
@@ -1254,48 +1253,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     #  Clusters
     # =======================================================================
 
-    def cluster(self, objs, callback=None):
-        """Group files with similar metadata to 'clusters'."""
-        files = tuple(iter_files_from_objects(objs))
-        if files:
-            # Clustering runs on a background thread; acknowledge the action.
-            notifier().flash_busy()
-        if log.is_debug():
-            limit = 5
-            count = len(files)
-            remain = max(0, count - limit)
-            log.debug(
-                "Clustering %d files: %r%s", count, files[:limit], f" and {remain} more files..." if remain else ""
-            )
-        thread.run_task(partial(self._do_clustering, files), partial(self._clustering_finished, callback))
-
-    def _do_clustering(self, files):
-        # The clustering algorithm should completely run in the thread,
-        # hence do not return the iterator.
-        return tuple(Cluster.cluster(files))
-
-    def _clustering_finished(self, callback, result=None, error=None):
-        if error:
-            log.error("Error while clustering: %r", error)
-            return
-
-        clusters = list(result)
-        view_updates().suspend_while_loading_enter()
-
-        def on_complete():
-            view_updates().suspend_while_loading_exit()
-            if callback:
-                callback()
-
-        self._process_in_batches(clusters, self._apply_cluster, "Clustering", on_complete=on_complete)
-
-    def _apply_cluster(self, file_cluster):
-        files = set(file_cluster.files)
-        if len(files) > 1:
-            cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-        else:
-            cluster = self.unclustered_files
-        cluster.add_files(files)
+    # Clustering (sync cluster_files + async cluster + the apply/finish steps)
+    # lives on the Workspace; Tagger inherits the cluster() delegator from
+    # WorkspaceHost. It is kept as a delegator because api.tagger.cluster(objs)
+    # is documented plugin API.
 
     # =======================================================================
     #  Utils
