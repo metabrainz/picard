@@ -51,6 +51,7 @@ from picard.tags import (
     file_info_tag_names,
 )
 from picard.util.imagelist import ImageList
+from picard.workspace import workspace
 
 
 class FileTest(PicardTestCase):
@@ -798,7 +799,7 @@ class FileSavingFinishedImagesTest(PicardTestCase):
         super().setUp()
         self.patch_tagger_instance('picard.item')
         self.file = FakeMp3File('somepath/somefile.mp3')
-        self.tagger.files[self.file.filename] = self.file
+        workspace().files[self.file.filename] = self.file
         self.set_config_values(
             {
                 'clear_existing_tags': False,
@@ -911,7 +912,7 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
 
     def _make_file(self, path):
         f = FakeMp3File(path)
-        self.tagger.files[f.filename] = f
+        workspace().files[f.filename] = f
         # Observe update_item calls without touching a real UI item.
         f.update_item = MagicMock()
         return f
@@ -920,26 +921,26 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
         f1 = self._make_file('a.mp3')
         f2 = self._make_file('b.mp3')
         # Simulate two saves dispatched (as File.save() would).
-        self.tagger._saving_files_count = 2
+        workspace()._saving_files_count = 2
 
         f1._saving_finished(result=f1.filename)
         # First file finishing must NOT trigger a selection refresh.
         f1.update_item.assert_called_once_with(update_selection=False)
-        self.assertEqual(1, self.tagger._saving_files_count)
+        self.assertEqual(1, workspace()._saving_files_count)
 
         f2._saving_finished(result=f2.filename)
         # Last file finishing DOES trigger the selection refresh.
         f2.update_item.assert_called_once_with(update_selection=True)
-        self.assertEqual(0, self.tagger._saving_files_count)
+        self.assertEqual(0, workspace()._saving_files_count)
 
     def test_single_save_refreshes_selection(self):
         f = self._make_file('a.mp3')
-        self.tagger._saving_files_count = 1
+        workspace()._saving_files_count = 1
 
         f._saving_finished(result=f.filename)
 
         f.update_item.assert_called_once_with(update_selection=True)
-        self.assertEqual(0, self.tagger._saving_files_count)
+        self.assertEqual(0, workspace()._saving_files_count)
 
     def _make_image_changing_file(self, path):
         """A file whose embedded image changes on save (so _saving_finished
@@ -971,19 +972,19 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
         f1.metadata_images_changed.connect(lambda: f1_emitted.append(True))
         f2.metadata_images_changed.connect(lambda: f2_emitted.append(True))
 
-        self.tagger._saving_files_count = 2
+        workspace()._saving_files_count = 2
 
         f1._saving_finished(result=f1.filename)
         # Intermediate save: no per-file image emit, parent marked dirty,
         # parent NOT yet rebuilt.
         self.assertEqual([], f1_emitted)
-        self.assertIn(parent, self.tagger._saving_dirty_image_parents)
+        self.assertIn(parent, workspace()._saving_dirty_image_parents)
         parent.update_metadata_images.assert_not_called()
 
         f2._saving_finished(result=f2.filename)
         # Last save flushes: parent rebuilt exactly once, dirty set cleared.
         parent.update_metadata_images.assert_called_once_with()
-        self.assertEqual(set(), self.tagger._saving_dirty_image_parents)
+        self.assertEqual(set(), workspace()._saving_dirty_image_parents)
 
 
 class FileCopyMetadataTest(PicardTestCase):
@@ -1231,7 +1232,7 @@ class FileIdentityLifecycleTest(PicardTestCase):
         self.patch_tagger_instance('picard.item')
         self.tagger.acoustid_manager = MagicMock()
         self.file = FakeMp3File('somepath/somefile.mp3')
-        self.tagger.files[self.file.filename] = self.file
+        workspace().files[self.file.filename] = self.file
         self.set_config_values(
             {
                 'ignore_existing_acoustid_fingerprints': True,

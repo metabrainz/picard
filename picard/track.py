@@ -89,6 +89,7 @@ from picard.util import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
+from picard.view_sync import view_sync
 
 
 if TYPE_CHECKING:
@@ -236,7 +237,7 @@ class Track(FileListItem):
         run_file_post_removal_from_track_processors(self, file)
         self.update()
         if self.ui_item and self.ui_item.isSelected():
-            self.tagger.window.refresh_metadatabox()
+            view_sync().refresh_metadata_box()
 
     @staticmethod
     def run_scripts(metadata, strip_whitespace=False):

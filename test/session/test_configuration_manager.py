@@ -27,9 +27,26 @@ from unittest.mock import (
 
 import picard.config as picard_config
 from picard.session.session_loader import ConfigurationManager
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+    workspace,
+)
+
+import pytest
 
 
-def test_configuration_manager_prepare_session(cfg_options) -> None:
+@pytest.fixture
+def workspace_provider():
+    """Install a fresh Workspace provider; prepare_session sets its flag."""
+    set_workspace_provider(Workspace())
+    try:
+        yield workspace()
+    finally:
+        set_workspace_provider(None)
+
+
+def test_configuration_manager_prepare_session(workspace_provider, cfg_options) -> None:
     cfg = picard_config.get_config()
     cfg.setting['session_safe_restore'] = True
 
@@ -38,10 +55,10 @@ def test_configuration_manager_prepare_session(cfg_options) -> None:
     manager.prepare_session(tagger)
 
     tagger.clear_session.assert_called_once()
-    assert tagger._restoring_session is True
+    assert workspace_provider.restoring_session is True
 
 
-def test_configuration_manager_prepare_session_safe_restore_disabled(cfg_options) -> None:
+def test_configuration_manager_prepare_session_safe_restore_disabled(workspace_provider, cfg_options) -> None:
     cfg = picard_config.get_config()
     cfg.setting['session_safe_restore'] = False
 
@@ -50,8 +67,7 @@ def test_configuration_manager_prepare_session_safe_restore_disabled(cfg_options
     manager.prepare_session(tagger)
 
     tagger.clear_session.assert_called_once()
-    if hasattr(tagger, '_restoring_session'):
-        assert tagger._restoring_session is not True
+    assert workspace_provider.restoring_session is False
 
 
 @patch("picard.session.session_loader.get_config")

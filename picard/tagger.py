@@ -83,8 +83,6 @@ from picard import (
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
     Album,
-    NatAlbum,
-    run_album_post_removal_processors,
 )
 from picard.audit import setup_audit
 from picard.browser.filelookup import FileLookup
@@ -93,7 +91,6 @@ from picard.cli import get_subcommands_help
 from picard.cluster import (
     Cluster,
     ClusterList,
-    UnclusteredFiles,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -156,7 +153,6 @@ from picard.notification import (
     notifier,
     set_notifier_sink,
 )
-from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import (
@@ -164,7 +160,6 @@ from picard.session.session_manager import (
     save_session_to_path,
 )
 from picard.track import (
-    NonAlbumTrack,
     Track,
 )
 from picard.util import (
@@ -194,6 +189,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
     view_updates,
@@ -202,6 +198,15 @@ from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
     MBAPIHelper,
+)
+from picard.workspace import (
+    Workspace,
+    WorkspaceHost,
+    set_workspace_provider,
+    workspace,
+)
+from picard.workspace_events import (
+    workspace_events,
 )
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
@@ -234,7 +239,7 @@ _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
 
-class Tagger(QtWidgets.QApplication):
+class Tagger(WorkspaceHost, QtWidgets.QApplication):
     tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
@@ -280,13 +285,14 @@ class Tagger(QtWidgets.QApplication):
 
         self._qt_translators = Translators(self)
 
+        self._init_workspace_events()
         self._init_webservice()
         self._init_readthedocs()
         self._init_format_registry()
         self._init_fingerprinting()
         self._init_plugins()
         self._init_browser_integration()
-        self._init_tagger_entities()
+        self._init_entities()
 
         self._init_ui(config)
 
@@ -442,7 +448,7 @@ class Tagger(QtWidgets.QApplication):
         """Initialize web service/API"""
         self.webservice = WebService()
         self.register_cleanup(self.webservice.stop)
-        self.webservice.pending_requests_changed.connect(self.tagger_stats_changed)
+        self.webservice.pending_requests_changed.connect(workspace_events().tagger_stats_changed)
         self.mb_api = MBAPIHelper(self.webservice)
         load_user_collections()
 
@@ -505,26 +511,49 @@ class Tagger(QtWidgets.QApplication):
         """Initialize the ReadTheDocs information"""
         ReadTheDocs.initialize(self.webservice)
 
-    def _init_tagger_entities(self):
+    def _init_entities(self):
         """Initialize tagger objects/entities"""
-        self._pending_files_count = 0
-        # Number of file save tasks currently queued or running. Used to
-        # coalesce the (expensive) selection/metadata-box refresh so it runs
-        # once when a batch save finishes rather than once per saved file.
-        self._saving_files_count = 0
-        # Parent containers (clusters/tracks/albums) whose cover-art image
-        # aggregation was deferred during a batch save; each is refreshed once
-        # when the batch completes (see File._saving_finished).
-        self._saving_dirty_image_parents = set()
-        self.files = {}
-        self.clusters = ClusterList()
-        self.albums = {}
-        self.release_groups = {}
-        self.mbid_redirects = {}
-        self.unclustered_files = UnclusteredFiles()
-        self.nats = None
-        # When True, we are restoring a session; skip auto-matching by MBIDs
-        self._restoring_session = False
+        # The entity registries and batch-save/restore bookkeeping now live on
+        # a Workspace. Tagger subclasses WorkspaceHost, which exposes each field
+        # as a delegating property, so existing self.tagger.<field> access is
+        # unchanged. The Workspace is also installed as the process-wide
+        # workspace provider so core code reaching the working set via
+        # workspace() sees the same object. See picard.workspace.
+        self._workspace = Workspace()
+        set_workspace_provider(self._workspace)
+
+    def _init_workspace_events(self):
+        """Forward the shared WorkspaceEvents signals onto Tagger's own signals.
+
+        The working-set-changed signals (album_added/removed,
+        cluster_added/removed, file_loaded, tagger_stats_changed) live on the
+        process-wide WorkspaceEvents facade; core emitters and GUI connectors
+        use workspace_events() directly.
+
+        Tagger keeps declaring the same signals and re-emits each facade signal
+        on its own, as a BACKWARD-COMPATIBILITY surface: plugins reach the
+        application object via PluginApi.tagger and may connect to
+        ``tagger.album_added`` / ``tagger.file_loaded`` etc. Forwarding
+        facade -> Tagger keeps those connections working even though nothing
+        emits on the Tagger signals directly anymore. (Headless has no Tagger,
+        so this forwarding simply does not exist there.)
+        """
+        events = workspace_events()
+        # Re-emit facade signals on the matching Tagger signal for plugin
+        # backward compatibility (see docstring).
+        #
+        # The facade signals carry ``object`` (PyQt_PyObject) to stay free of
+        # core-entity imports, while the Tagger signals are typed
+        # (Album/Cluster/File, i.e. QObject*). A direct signal -> signal
+        # connect is rejected by Qt as "Incompatible sender/receiver arguments"
+        # because those C++ signatures differ, so we forward through Python
+        # slots that re-emit on the typed Tagger signal instead.
+        events.album_added.connect(lambda obj: self.album_added.emit(obj))
+        events.album_removed.connect(lambda obj: self.album_removed.emit(obj))
+        events.cluster_added.connect(lambda obj: self.cluster_added.emit(obj))
+        events.cluster_removed.connect(lambda obj: self.cluster_removed.emit(obj))
+        events.file_loaded.connect(lambda obj: self.file_loaded.emit(obj))
+        events.tagger_stats_changed.connect(self.tagger_stats_changed)
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -536,6 +565,9 @@ class Tagger(QtWidgets.QApplication):
         # Route core view-update suspensions (e.g. batch file moves) to the
         # main window. In headless mode no sink is installed and they no-op.
         set_view_updates_sink(self.window)
+        # Route core view-refresh requests (metadata box / cover-art box after
+        # load/edit) to the main window. In headless mode they no-op.
+        set_view_sync_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -640,28 +672,6 @@ class Tagger(QtWidgets.QApplication):
         RemoteCommands.parse_commands_to_queue(commands)
         self.start_process_commands()
 
-    def iter_album_files(self):
-        for album in self.albums.values():
-            yield from album.iterfiles()
-
-    def iter_all_files(self):
-        yield from self.unclustered_files.files
-        yield from self.iter_album_files()
-        yield from self.clusters.iterfiles()
-
-    def clear_session(self) -> None:
-        """Remove all files, clusters and albums from current UI state."""
-        with view_updates().suspend_selection():
-            # Remove all albums (includes NAT)
-            for album in list(self.albums.values()):
-                self.remove_album(album)
-            # Remove all left-pane clusters
-            for cluster in list(self.clusters):
-                self.remove_cluster(cluster)
-            # Remove all unclustered files
-            if self.unclustered_files.files:
-                self.remove_files(list(self.unclustered_files.files))
-
     def _init_remote_commands(self):
         self.commands = RemoteCommands.commands()
 
@@ -734,38 +744,6 @@ class Tagger(QtWidgets.QApplication):
         if successful:
             load_user_collections()
         callback(successful, error_msg)
-
-    def move_files_to_album(self, files, albumid=None, album=None):
-        """Move `files` to tracks on album `albumid`."""
-        if album is None:
-            album = self.load_album(albumid)
-        album.match_files(files)
-
-    def move_file_to_album(self, file, albumid):
-        """Move `file` to a track on album `albumid`."""
-        self.move_files_to_album([file], albumid)
-
-    def move_file_to_track(self, file, albumid, recordingid):
-        """Move `file` to recording `recordingid` on album `albumid`."""
-        album = self.load_album(albumid)
-        file.match_recordingid = recordingid
-        album.match_files([file])
-
-    def create_nats(self):
-        if self.nats is None:
-            self.nats = NatAlbum()
-            self.albums['NATS'] = self.nats
-            self.album_added.emit(self.nats)
-            self.nats.ui_item.setExpanded(True)
-        return self.nats
-
-    def move_file_to_nat(self, file, recordingid, node=None):
-        self.create_nats()
-        file.move(self.nats.unmatched_files)
-        nat = self.load_nat(recordingid, node=node)
-        nat.run_when_loaded(partial(file.move, nat))
-        if nat.loaded:
-            self.nats.update()
 
     def quit(self):
         self.exit()
@@ -949,8 +927,8 @@ class Tagger(QtWidgets.QApplication):
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
-        self._pending_files_count -= 1
-        if self._pending_files_count == 0:
+        wks = workspace()
+        if wks.file_pending_done() == 0:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
                 view_updates().suspend_while_loading_exit()
 
@@ -966,7 +944,7 @@ class Tagger(QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting['ignore_file_mbids'] and not self._restoring_session:
+        if not config.setting['ignore_file_mbids'] and not wks.restoring_session:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -997,37 +975,13 @@ class Tagger(QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if not file_moved and not self._restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
+        if not file_moved and not wks.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if self._pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
+        if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
-
-    def move_file(self, file, target):
-        """Moves a file to target, if possible
-
-        Returns the actual target the files has been moved to or None
-        """
-        if isinstance(target, Album):
-            # During restore place into album's unmatched bucket without matching
-            if self._restoring_session:
-                file.move(target.unmatched_files)
-            else:
-                self.move_files_to_album([file], album=target)
-        else:
-            if isinstance(target, File) and target.parent_item:
-                target = target.parent_item
-            if not file.move(target):
-                # Ensure a file always has a parent so it shows up in UI
-                if not file.parent_item:
-                    target = self.unclustered_files
-                    file.move(target)
-                # Unsupported target, do not move the file
-                else:
-                    target = None
-        return target
 
     def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
@@ -1089,7 +1043,7 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding %d files", len(new_files))
             new_files.sort(key=lambda x: x.filename)
             view_updates().suspend_while_loading_enter()
-            self._pending_files_count += len(new_files)
+            workspace().add_pending_files(len(new_files))
             unmatched_files = []
             self._load_files_batch(new_files, target, unmatched_files)
 
@@ -1182,27 +1136,6 @@ class Tagger(QtWidgets.QApplication):
         for file in iter_files_from_objects(objects, save=True):
             file.save()
 
-    def flush_saving_image_parents(self):
-        """Rebuild cover-art image aggregation once for each container whose
-        update was deferred during a batch save, then clear the set.
-
-        During a batch save, files register their parent containers (clusters,
-        tracks, albums) in ``_saving_dirty_image_parents`` instead of emitting
-        ``metadata_images_changed`` per file (which would rebuild each parent's
-        image list over all children once per saved file). This performs that
-        rebuild a single time when the batch completes.
-        """
-        parents = self._saving_dirty_image_parents
-        if not parents:
-            return
-        # Copy and clear first: update_metadata_images() may emit signals that
-        # trigger further updates; we don't want to iterate a mutating set.
-        self._saving_dirty_image_parents = set()
-        for parent in parents:
-            update = getattr(parent, 'update_metadata_images', None)
-            if update is not None:
-                update()
-
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()
         if type == 'album':
@@ -1211,53 +1144,6 @@ class Tagger(QtWidgets.QApplication):
             self.load_nat(mbid)
         else:
             log.warning("Unknown type to load: %s", type)
-
-    def load_album(self, album_id, discid=None, disc_isrcs=None):
-        album_id = self.mbid_redirects.get(album_id, album_id)
-        album = self.albums.get(album_id)
-        if album:
-            log.debug("Album %s already loaded.", album_id)
-            album.add_discid(discid)
-            return album
-        album = Album(album_id, discid=discid, disc_isrcs=disc_isrcs)
-        self.albums[album_id] = album
-        self.album_added.emit(album)
-        album.load()
-        return album
-
-    def load_nat(self, nat_id, node=None):
-        self.create_nats()
-        nat = self.get_nat_by_id(nat_id)
-        if nat:
-            log.debug("NAT %s already loaded.", nat_id)
-            return nat
-        nat = NonAlbumTrack(nat_id)
-        self.nats.tracks.append(nat)
-        self.nats.update(True)
-        if node:
-            nat._parse_recording(node)
-        else:
-            nat.load()
-        return nat
-
-    def get_nat_by_id(self, nat_id):
-        if self.nats is not None:
-            for nat in self.nats.tracks:
-                if nat.id == nat_id:
-                    return nat
-
-    def get_release_group_by_id(self, rg_id):
-        return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
-
-    def remove_files(self, files, from_parent=True):
-        """Remove files from the tagger."""
-        for file in files:
-            if file.filename in self.files:
-                file.clear_lookup_task()
-                self.acoustid_client.stop_analyze(file)
-                del self.files[file.filename]
-                file.remove(from_parent)
-        self.tagger_stats_changed.emit()
 
     def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.
@@ -1280,99 +1166,6 @@ class Tagger(QtWidgets.QApplication):
 
         if album.is_complete() and album.get_num_unsaved_files() == 0:
             self.window.panel.remove([album])
-
-    def remove_album(self, album):
-        """Remove the specified album."""
-        log.debug("Removing %r", album)
-        if album.id not in self.albums:
-            return
-        album.stop_loading()
-        album.cancel_tasks()
-        self.remove_files(list(album.iterfiles()))
-        self.isrc_submit_manager.remove_album(album)
-        del self.albums[album.id]
-        if album.release_group:
-            album.release_group.remove_album(album.id)
-        if album == self.nats:
-            self.nats = None
-        self.album_removed.emit(album)
-        run_album_post_removal_processors(album)
-        self.tagger_stats_changed.emit()
-
-    def remove_nat(self, track):
-        """Remove the specified non-album track."""
-        log.debug("Removing %r", track)
-        self.remove_files(list(track.iterfiles()))
-        if not self.nats:
-            return
-        try:
-            self.nats.tracks.remove(track)
-        except ValueError:
-            return
-        if not self.nats.tracks:
-            self.remove_album(self.nats)
-        else:
-            self.nats.update(True)
-
-    def remove_cluster(self, cluster):
-        """Remove the specified cluster."""
-        if not cluster.special:
-            log.debug("Removing %r", cluster)
-            files = list(cluster.files)
-            cluster.files = []
-            cluster.clear()
-            self.remove_files(files, from_parent=False)
-            self.clusters.remove(cluster)
-            self.cluster_removed.emit(cluster)
-
-    def remove(self, objects):
-        """Remove the specified objects."""
-        files = []
-        with view_updates().suspend_selection():
-            for obj in objects:
-                if isinstance(obj, File):
-                    files.append(obj)
-                elif isinstance(obj, NonAlbumTrack):
-                    self.remove_nat(obj)
-                elif isinstance(obj, Track):
-                    files.extend(obj.files)
-                elif isinstance(obj, Album):
-                    self.window.set_statusbar_message(
-                        N_("Removing album %(id)s: %(artist)s - %(album)s"),
-                        {'id': obj.id, 'artist': obj.metadata['albumartist'], 'album': obj.metadata['album']},
-                    )
-                    self.remove_album(obj)
-                elif isinstance(obj, UnclusteredFiles):
-                    files.extend(list(obj.files))
-                elif isinstance(obj, Cluster):
-                    self.remove_cluster(obj)
-            if files:
-                self.remove_files(files)
-
-    def trash_files(self, files):
-        with view_updates().suspend_selection():
-            files_removed = []
-            for file in files:
-                success, new_location = QtCore.QFile.moveToTrash(file.filename)
-                # If the old file still exists, consider this an error. Moving to
-                # trash without write permission on the file can fail on Linux with
-                # success still being set to True.
-                if success and not os.path.exists(file.filename):
-                    # While the file has not been fully removed, update the location
-                    # to the trash location. Removing the files completely will be done
-                    # afterwards.
-                    del self.files[file.filename]
-                    file.filename = new_location
-                    self.files[new_location] = file
-                    files_removed.append(file)
-                else:
-                    self.window.set_statusbar_message(
-                        _('Failed moving "%(filename)s" to trash'), {'filename': file.filename}
-                    )
-
-            if files_removed:
-                self.remove_files(files)
-            self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
     def _lookup_disc(self, disc, result=None, error=None):
         busy_cursor_stop()
@@ -1543,20 +1336,6 @@ class Tagger(QtWidgets.QApplication):
             self.acoustid_client.fingerprint(file, partial(finished, file))
 
     # =======================================================================
-    #  Metadata-based lookups
-    # =======================================================================
-
-    def autotag(self, objects):
-        flashed = False
-        for obj in objects:
-            if obj.can_autotag:
-                if not flashed:
-                    # Result appears asynchronously; acknowledge the action once.
-                    notifier().flash_busy()
-                    flashed = True
-                obj.lookup_metadata()
-
-    # =======================================================================
     #  Clusters
     # =======================================================================
 
@@ -1602,16 +1381,6 @@ class Tagger(QtWidgets.QApplication):
         else:
             cluster = self.unclustered_files
         cluster.add_files(files)
-
-    def load_cluster(self, name, artist):
-        for cluster in self.clusters:
-            cm = cluster.metadata
-            if name == cm['album'] and artist == cm['albumartist']:
-                return cluster
-        cluster = Cluster(name, artist)
-        self.clusters.append(cluster)
-        self.cluster_added.emit(cluster)
-        return cluster
 
     # =======================================================================
     #  Utils

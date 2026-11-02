@@ -126,6 +126,8 @@ from picard.util.filenaming import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.scripttofilename import script_to_filename_with_metadata
+from picard.workspace import workspace
+from picard.workspace_events import workspace_events
 
 
 if TYPE_CHECKING:
@@ -415,7 +417,7 @@ class File(MetadataItem):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         callback(self)
-        self.tagger.file_loaded.emit(self)
+        workspace_events().file_loaded.emit(self)
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
@@ -483,7 +485,7 @@ class File(MetadataItem):
         # Track in-flight saves so _saving_finished can coalesce the expensive
         # selection/metadata-box refresh to once per batch (see PICARD
         # batch-save memory profiling).
-        self.tagger._saving_files_count += 1
+        workspace().begin_save()
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
@@ -622,19 +624,18 @@ class File(MetadataItem):
             return self.orig_metadata.images.copy()
 
     def _saving_finished(self, result=None, error=None):
-        # This save task has finished; decrement the in-flight counter so the
-        # selection/metadata-box refresh can be coalesced to run only once,
-        # when the last file of a batch save completes.
-        if self.tagger._saving_files_count > 0:
-            self.tagger._saving_files_count -= 1
-        batch_done = self.tagger._saving_files_count == 0
+        # This save task has finished; mark it done so the selection/metadata-box
+        # refresh can be coalesced to run only once, when the last file of a
+        # batch save completes.
+        wks = workspace()
+        batch_done = wks.end_save()
         # Handle file removed before save
         # Result is None if save was skipped
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
             # Still flush any deferred image aggregation if this was the last
             # file of the batch, so earlier files' parents are not left stale.
             if batch_done:
-                self.tagger.flush_saving_image_parents()
+                wks.flush_saving_image_parents()
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -689,11 +690,11 @@ class File(MetadataItem):
         self.update(update_selection=batch_done)
 
         if self.state != File.State.REMOVED:
-            del self.tagger.files[old_filename]
-            self.tagger.files[new_filename] = self
+            del wks.files[old_filename]
+            wks.files[new_filename] = self
 
         if batch_done:
-            self.tagger.flush_saving_image_parents()
+            wks.flush_saving_image_parents()
 
         if self.tagger.stopping:
             log.debug("Save of %r completed before stopping Picard", self.filename)
@@ -704,11 +705,11 @@ class File(MetadataItem):
 
         Instead of emitting metadata_images_changed now (which would make each
         parent rebuild its image list over all children), the parent chain is
-        collected on the tagger and refreshed once when the batch finishes.
+        collected on the workspace and refreshed once when the batch finishes.
         """
         parent = self.parent_item
         while parent is not None:
-            self.tagger._saving_dirty_image_parents.add(parent)
+            workspace().defer_image_parent(parent)
             # Both Cluster and Track expose the containing album via .album
             # (None when there is none), so the chain ends at the album.
             parent = getattr(parent, 'album', None)
@@ -889,7 +890,7 @@ class File(MetadataItem):
     def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
-            if self.tagger.files.get(old_file_path):
+            if workspace().files.get(old_file_path):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
             if not overwrite_existing_files and os.path.exists(new_file_path):
@@ -1157,10 +1158,10 @@ class File(MetadataItem):
             return
         if state == File.State.PENDING:
             File.num_pending_files += 1
-            self.tagger.tagger_stats_changed.emit()
+            workspace_events().tagger_stats_changed.emit()
         elif self._state == File.State.PENDING:
             File.num_pending_files -= 1
-            self.tagger.tagger_stats_changed.emit()
+            workspace_events().tagger_stats_changed.emit()
         self._state = state
 
     def column(self, column: str) -> str:
@@ -1230,11 +1231,12 @@ class File(MetadataItem):
                     self.metadata['acoustid_id'] = acoustid
                     services().acoustid_manager.add(self, recording_id)
                 if release_group_id is not None:
-                    releasegroup = self.tagger.get_release_group_by_id(release_group_id)
+                    wks = workspace()
+                    releasegroup = wks.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
-                    self.tagger.move_file_to_track(self, release_id, recording_id)
+                    wks.move_file_to_track(self, release_id, recording_id)
                 else:
-                    self.tagger.move_file_to_nat(self, recording_id)
+                    workspace().move_file_to_nat(self, recording_id)
         else:
             statusbar(N_('No matching tracks for file "%(filename)s"'))
 

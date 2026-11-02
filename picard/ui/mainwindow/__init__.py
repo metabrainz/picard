@@ -140,6 +140,7 @@ from picard.util.qt import (
 )
 from picard.util.readthedocs import ReadTheDocs
 from picard.webservice.api_helpers import escape_lucene_query
+from picard.workspace_events import workspace_events
 
 from picard.ui import (
     PicardDialog,
@@ -692,7 +693,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.statusBar().addPermanentWidget(self.listening_label)
         self.statusBar().addPermanentWidget(self.plugin_updates_button)
         infostatus.stop_requested.connect(self.stop_network_requests)
-        self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
+        workspace_events().tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self._register_status_indicator(infostatus)
         self._update_statusbar_stats()

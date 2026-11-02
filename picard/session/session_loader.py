@@ -45,6 +45,7 @@ from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
 from picard.metadata import Metadata
+from picard.services import services
 from picard.session.constants import (
     RESTORABLE_CONFIG_KEYS,
     SessionConstants,
@@ -55,6 +56,7 @@ from picard.session.session_data import (
     GroupedItems,
 )
 from picard.session.track_mover import TrackMover
+from picard.workspace import workspace
 
 
 if TYPE_CHECKING:
@@ -106,7 +108,7 @@ class TaggerProgressReporter:
             return _("Loading files and albums ({files} files)…").format(files=(d or {}).get('files', 0))
 
         def msg_finalize(details_unused: dict[str, Any] | None) -> str:
-            pending = getattr(self._tagger.webservice, 'num_pending_web_requests', 0)
+            pending = getattr(services().webservice, 'num_pending_web_requests', 0)
             if pending:
                 return _("Waiting on network ({requests} requests)…").format(requests=pending)
             return _("Finalizing…")
@@ -169,7 +171,7 @@ class ConfigurationManager:
         """
         tagger.clear_session()
         if get_config().setting['session_safe_restore']:
-            tagger._restoring_session = True
+            workspace().restoring_session = True
 
     def restore_options(self, options: dict[str, Any]) -> None:
         """Restore core configuration options from the session payload.
@@ -750,8 +752,9 @@ class SessionLoader(QtCore.QObject):
         This method checks if all file loads and web requests are finished
         before unsetting the session restoring flag.
         """
-        if self.tagger._pending_files_count == 0 and not self.tagger.webservice.num_pending_web_requests:
-            self.tagger._restoring_session = False
+        wks = workspace()
+        if wks.pending_files_count == 0 and not services().webservice.num_pending_web_requests:
+            wks.restoring_session = False
             self._progress.emit('restored')
         else:
             QtCore.QTimer.singleShot(SessionConstants.DEFAULT_RETRY_DELAY_MS, self._unset_restoring_flag_when_idle)

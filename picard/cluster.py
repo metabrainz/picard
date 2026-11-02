@@ -38,7 +38,10 @@ from collections import (
     Counter,
     defaultdict,
 )
-from collections.abc import Iterable
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from operator import attrgetter
 import re
 from typing import TYPE_CHECKING
@@ -73,6 +76,7 @@ from picard.util import (
     format_time,
     iter_files_from_objects,
 )
+from picard.workspace import workspace
 
 
 if TYPE_CHECKING:
@@ -210,7 +214,7 @@ class Cluster(FileList):
             self._update_related_album(removed_files=[file])
         notifier().set_processing(False)
         if not self.special and self.get_num_files() == 0:
-            self.tagger.remove_cluster(self)
+            workspace().remove_cluster(self)
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
@@ -405,7 +409,7 @@ class Cluster(FileList):
                 statusbar(N_("Best match for cluster %(album)s is ambiguous"))
             else:
                 statusbar(N_("Cluster %(album)s identified!"))
-            self.tagger.move_files_to_album(self.files, best_match_release['id'])
+            workspace().move_files_to_album(self.files, best_match_release['id'])
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 
@@ -587,7 +591,7 @@ class TempItemList(MetadataItem):
         # Display-only aggregate; nothing to update in the tree.
         pass
 
-    def iterfiles(self, save=False):
+    def iterfiles(self, save=False) -> Iterator[File]:
         yield from iter_files_from_objects(self.items, save=save)
 
     def children_metadata_items(self):
@@ -615,7 +619,7 @@ class UnclusteredFiles(Cluster):
         notifier().enable_action(MainAction.CLUSTER, self.files)
 
     def lookup_metadata(self):
-        self.tagger.autotag(self.files)
+        workspace().autotag(self.files)
 
     @property
     def can_edit_tags(self):
@@ -662,7 +666,7 @@ class ClusterList(list, Item):
         else:
             return ''
 
-    def iterfiles(self, save=False):
+    def iterfiles(self, save=False) -> Iterator[File]:
         for cluster in self:
             yield from cluster.iterfiles(save)
 

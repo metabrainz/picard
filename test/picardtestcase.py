@@ -53,6 +53,12 @@ from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
 from picard.services import set_services_provider
 from picard.tagger import Tagger
+from picard.workspace import (
+    Workspace,
+    set_workspace_provider,
+)
+import picard.workspace_events as workspace_events_module
+from picard.workspace_events import WorkspaceEvents
 
 
 def subtest_cases(argnames, argvalues):
@@ -121,12 +127,12 @@ def MockTagger():
     tagger.priority_thread_pool = FakeThreadPool()
     tagger.get_release_group_by_id = MagicMock(side_effect=lambda rg_id: ReleaseGroup(rg_id))
     tagger.stopping = False
+    # A real dict so code reading the file registry off the mock tagger (e.g.
+    # browser.addrelease, session code) behaves like a registry. The batch-save
+    # bookkeeping and the canonical files registry now live on the Workspace
+    # (installed per-test in PicardTestCase.setUp); File reads those via
+    # workspace(). This attribute is only for consumers still on self.tagger.
     tagger.files = {}
-    tagger._saving_files_count = 0
-    tagger._saving_dirty_image_parents = set()
-    # Use the real implementation so batch-save image-aggregation coalescing
-    # behaves correctly in tests (it operates on _saving_dirty_image_parents).
-    tagger.flush_saving_image_parents = MagicMock(side_effect=lambda: Tagger.flush_saving_image_parents(tagger))
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     return tagger
@@ -145,6 +151,12 @@ class PicardTestCase(unittest.TestCase):
         # Tagger backs both app_instance() and the services).
         set_services_provider(self.tagger)
         self.addCleanup(set_services_provider, None)
+        # Core reads of the per-run working set (registries + bookkeeping) go
+        # through picard.workspace.workspace(). Install a fresh Workspace for
+        # the duration of each test so those reads resolve to isolated state
+        # (mirroring the services provider above). Reset on cleanup.
+        set_workspace_provider(Workspace())
+        self.addCleanup(set_workspace_provider, None)
         self.init_config()
 
     @staticmethod
@@ -181,6 +193,18 @@ class PicardTestCase(unittest.TestCase):
             patcher = patch(f'{module}.tagger_instance', return_value=self.tagger)
             patcher.start()
             self.addCleanup(patcher.stop)
+
+    def reset_workspace_events(self):
+        """Install a fresh WorkspaceEvents emitter for the duration of the test.
+
+        The process-wide emitter (picard.workspace_events) is an eager
+        singleton that production never replaces; tests that connect listeners
+        to it need a clean instance so connections do not leak between tests.
+        The original emitter is restored on cleanup.
+        """
+        patcher = patch.object(workspace_events_module, '_workspace_events', WorkspaceEvents())
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def patch_app_instance(self, *modules):
         """Patch app_instance in the given module(s) to return self.tagger.

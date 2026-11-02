@@ -108,8 +108,10 @@ from picard.util import (
 from picard.util.datahash import DataHash
 from picard.util.isrc import normalized_isrcs
 from picard.util.textencoding import asciipunct
+from picard.view_sync import view_sync
 from picard.view_updates import view_updates
 from picard.webservice import PendingRequest
+from picard.workspace import workspace
 
 
 RECORDING_QUERY_LIMIT = 100
@@ -198,8 +200,11 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-    def __init__(self, album_id, discid=None, disc_isrcs=None):
+    def __init__(self, album_id: str, discid=None, disc_isrcs=None):
         super().__init__(album_id)
+        # An Album always has a release MBID (str); narrow the base
+        # MetadataItem.id (typed loosely as it is shared across entity types).
+        self.id: str = album_id
         self.tracks: list[Track] = []
         self.loaded = False
         self._load_request = None
@@ -520,17 +525,18 @@ class Album(MetadataItem):
         if release_id == self.id:
             return False
 
-        self.tagger.mbid_redirects[self.id] = release_id
-        album = self.tagger.albums.get(release_id)
+        wks = workspace()
+        wks.mbid_redirects[self.id] = release_id
+        album = wks.albums.get(release_id)
         if album:
             log.debug("Release %r already loaded", release_id)
             album.match_files(self.unmatched_files.files)
             album.update()
-            self.tagger.remove_album(self)
+            wks.remove_album(self)
             return True
 
-        del self.tagger.albums[self.id]
-        self.tagger.albums[release_id] = self
+        del wks.albums[self.id]
+        wks.albums[release_id] = self
         self.id = release_id
         return False
 
@@ -547,7 +553,7 @@ class Album(MetadataItem):
     def _setup_release_group(self, release_node):
         """Process and setup release group data"""
         rg_node = release_node['release-group']
-        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
+        rg = self.release_group = workspace().get_release_group_by_id(rg_node['id'])
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
         _copy_artist_nodes(self._release_artist_nodes, rg_node)
@@ -599,6 +605,7 @@ class Album(MetadataItem):
                 self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
+                    wks = workspace()
                     config = get_config()
                     nats = False
                     nat_name = config.setting['nat_name']
@@ -607,10 +614,12 @@ class Album(MetadataItem):
                         recordingid = file.metadata['musicbrainz_recordingid']
                         if mbid_validate(recordingid) and file.metadata['album'] == nat_name:
                             nats = True
-                            self.tagger.move_file_to_nat(file, recordingid)
-                            self.tagger.nats.update()
+                            wks.move_file_to_nat(file, recordingid)
+                            nat_album = wks.nats
+                            if nat_album is not None:
+                                nat_album.update()
                     if nats and not self.get_num_unmatched_files():
-                        self.tagger.remove_album(self)
+                        wks.remove_album(self)
                         error = False
             else:
                 try:
@@ -874,8 +883,8 @@ class Album(MetadataItem):
         self._after_load_callbacks = []
         self._submit_disc_isrcs()
         if self.ui_item and self.ui_item.isSelected():
-            self.tagger.window.refresh_metadatabox()
-            self.tagger.window.cover_art_box.update_metadata()
+            view_sync().refresh_metadata_box()
+            view_sync().update_cover_art()
 
     def _finalize_loading(self, error):
         if self.loaded:
@@ -1194,16 +1203,17 @@ class Album(MetadataItem):
             return
         for file in list(self.iterfiles(True)):
             file.move(self.unmatched_files)
-        album = self.tagger.albums.get(mbid)
+        wks = workspace()
+        album = wks.albums.get(mbid)
         if album:
             album.match_files(self.unmatched_files.files)
             album.update()
-            self.tagger.remove_album(self)
+            wks.remove_album(self)
         else:
-            del self.tagger.albums[self.id]
+            del wks.albums[self.id]
             self.release_group.loaded_albums.discard(self.id)
             self.id = mbid
-            self.tagger.albums[mbid] = self
+            wks.albums[mbid] = self
             self.load(priority=True, refresh=True)
 
     def update_metadata_images(self):
