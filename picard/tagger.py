@@ -514,11 +514,11 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def _init_entities(self):
         """Initialize tagger objects/entities"""
         # The entity registries and batch-save/restore bookkeeping now live on
-        # a Workspace. Tagger owns one and exposes each field as a delegating
-        # property below, so existing self.tagger.<field> access is unchanged.
-        # It is also installed as the process-wide workspace provider so core
-        # code reaching the working set via workspace() sees the same object.
-        # See picard.workspace.
+        # a Workspace. Tagger subclasses WorkspaceHost, which exposes each field
+        # as a delegating property, so existing self.tagger.<field> access is
+        # unchanged. The Workspace is also installed as the process-wide
+        # workspace provider so core code reaching the working set via
+        # workspace() sees the same object. See picard.workspace.
         self._workspace = Workspace()
         set_workspace_provider(self._workspace)
 
@@ -554,13 +554,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         events.cluster_removed.connect(lambda obj: self.cluster_removed.emit(obj))
         events.file_loaded.connect(lambda obj: self.file_loaded.emit(obj))
         events.tagger_stats_changed.connect(self.tagger_stats_changed)
-
-    # --- workspace field delegation -----------------------------------------
-    #
-    # The session registries/bookkeeping live on the Workspace. These properties
-    # keep ``self.tagger.<field>`` working (read and write) as a
-    # backwards-compatible surface for GUI code and plugins; new core code reads
-    # ``workspace().<field>`` directly.
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -679,16 +672,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         RemoteCommands.parse_commands_to_queue(commands)
         self.start_process_commands()
 
-    def iter_album_files(self):
-        return self._workspace.iter_album_files()
-
-    def iter_all_files(self):
-        return self._workspace.iter_all_files()
-
-    def clear_session(self) -> None:
-        """Remove all files, clusters and albums from current UI state."""
-        self._workspace.clear_session()
-
     def _init_remote_commands(self):
         self.commands = RemoteCommands.commands()
 
@@ -761,24 +744,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         if successful:
             load_user_collections()
         callback(successful, error_msg)
-
-    def move_files_to_album(self, files, albumid=None, album=None):
-        """Move `files` to tracks on album `albumid`."""
-        self._workspace.move_files_to_album(files, albumid=albumid, album=album)
-
-    def move_file_to_album(self, file, albumid):
-        """Move `file` to a track on album `albumid`."""
-        self._workspace.move_file_to_album(file, albumid)
-
-    def move_file_to_track(self, file, albumid, recordingid):
-        """Move `file` to recording `recordingid` on album `albumid`."""
-        self._workspace.move_file_to_track(file, albumid, recordingid)
-
-    def create_nats(self):
-        return self._workspace.create_nats()
-
-    def move_file_to_nat(self, file, recordingid, node=None):
-        self._workspace.move_file_to_nat(file, recordingid, node=node)
 
     def quit(self):
         self.exit()
@@ -1204,22 +1169,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         else:
             log.warning("Unknown type to load: %s", type)
 
-    def load_album(self, album_id, discid=None, disc_isrcs=None):
-        return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
-
-    def load_nat(self, nat_id, node=None):
-        return self._workspace.load_nat(nat_id, node=node)
-
-    def get_nat_by_id(self, nat_id):
-        return self._workspace.get_nat_by_id(nat_id)
-
-    def get_release_group_by_id(self, rg_id):
-        return self._workspace.get_release_group_by_id(rg_id)
-
-    def remove_files(self, files, from_parent=True):
-        """Remove files from the tagger."""
-        self._workspace.remove_files(files, from_parent=from_parent)
-
     def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.
 
@@ -1241,25 +1190,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
         if album.is_complete() and album.get_num_unsaved_files() == 0:
             self.window.panel.remove([album])
-
-    def remove_album(self, album):
-        """Remove the specified album."""
-        self._workspace.remove_album(album)
-
-    def remove_nat(self, track):
-        """Remove the specified non-album track."""
-        self._workspace.remove_nat(track)
-
-    def remove_cluster(self, cluster):
-        """Remove the specified cluster."""
-        self._workspace.remove_cluster(cluster)
-
-    def remove(self, objects):
-        """Remove the specified objects."""
-        self._workspace.remove(objects)
-
-    def trash_files(self, files):
-        self._workspace.trash_files(files)
 
     def _lookup_disc(self, disc, result=None, error=None):
         busy_cursor_stop()
@@ -1430,13 +1360,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             self.acoustid_client.fingerprint(file, partial(finished, file))
 
     # =======================================================================
-    #  Metadata-based lookups
-    # =======================================================================
-
-    def autotag(self, objects):
-        self._workspace.autotag(objects)
-
-    # =======================================================================
     #  Clusters
     # =======================================================================
 
@@ -1482,9 +1405,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         else:
             cluster = self.unclustered_files
         cluster.add_files(files)
-
-    def load_cluster(self, name, artist):
-        return self._workspace.load_cluster(name, artist)
 
     # =======================================================================
     #  Utils

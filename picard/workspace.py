@@ -591,6 +591,82 @@ class WorkspaceHost:
     def nats(self, value):
         self._workspace.nats = value
 
+    # --- working-set operations (shared plugin/GUI compatibility surface) ----
+    #
+    # Thin delegates so both the GUI Tagger and the headless HeadlessTagger
+    # expose the same working-set operations on the app object. Core code calls
+    # workspace().<op> directly; these keep tagger.<op> working for plugins and
+    # existing GUI callers.
+
+    def iter_album_files(self):
+        return self._workspace.iter_album_files()
+
+    def iter_all_files(self):
+        return self._workspace.iter_all_files()
+
+    def clear_session(self) -> None:
+        """Remove all files, clusters and albums from the working set."""
+        self._workspace.clear_session()
+
+    def get_release_group_by_id(self, rg_id):
+        return self._workspace.get_release_group_by_id(rg_id)
+
+    def load_album(self, album_id, discid=None, disc_isrcs=None):
+        return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
+
+    def load_nat(self, nat_id, node=None):
+        return self._workspace.load_nat(nat_id, node=node)
+
+    def get_nat_by_id(self, nat_id):
+        return self._workspace.get_nat_by_id(nat_id)
+
+    def create_nats(self):
+        return self._workspace.create_nats()
+
+    def load_cluster(self, name, artist):
+        return self._workspace.load_cluster(name, artist)
+
+    def move_files_to_album(self, files, albumid=None, album=None):
+        """Move `files` to tracks on album `albumid`."""
+        self._workspace.move_files_to_album(files, albumid=albumid, album=album)
+
+    def move_file_to_album(self, file, albumid):
+        """Move `file` to a track on album `albumid`."""
+        self._workspace.move_file_to_album(file, albumid)
+
+    def move_file_to_track(self, file, albumid, recordingid):
+        """Move `file` to recording `recordingid` on album `albumid`."""
+        self._workspace.move_file_to_track(file, albumid, recordingid)
+
+    def move_file_to_nat(self, file, recordingid, node=None):
+        self._workspace.move_file_to_nat(file, recordingid, node=node)
+
+    def autotag(self, objects):
+        self._workspace.autotag(objects)
+
+    def remove_files(self, files, from_parent=True):
+        """Remove files from the working set."""
+        self._workspace.remove_files(files, from_parent=from_parent)
+
+    def remove_album(self, album):
+        """Remove the specified album."""
+        self._workspace.remove_album(album)
+
+    def remove_nat(self, track):
+        """Remove the specified non-album track."""
+        self._workspace.remove_nat(track)
+
+    def remove_cluster(self, cluster):
+        """Remove the specified cluster."""
+        self._workspace.remove_cluster(cluster)
+
+    def remove(self, objects):
+        """Remove the specified objects."""
+        self._workspace.remove(objects)
+
+    def trash_files(self, files):
+        self._workspace.trash_files(files)
+
 
 def workspace() -> Workspace:
     """Return the process-wide :class:`Workspace`.
