@@ -187,6 +187,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_presentation import set_view_presentation_sink
 from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
@@ -566,6 +567,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         # Route core view-refresh requests (metadata box / cover-art box after
         # load/edit) to the main window. In headless mode they no-op.
         set_view_sync_sink(self.window)
+        # Route core presentation actions (bring the window to front for an
+        # externally triggered load) to this application object. In headless
+        # mode no sink is installed and they no-op.
+        set_view_presentation_sink(self)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -1080,15 +1085,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 '' if item.is_album_like else str(metadata.length),
                 item.filename if isinstance(item, File) else '',
             )
-
-    def load_mbid(self, type, mbid):
-        self.bring_tagger_front()
-        if type == 'album':
-            self.load_album(mbid)
-        elif type == 'nat':
-            self.load_nat(mbid)
-        else:
-            log.warning("Unknown type to load: %s", type)
 
     def _remove_album_if_complete(self, obj: File):
         """Remove the album containing the file if conditions are met.

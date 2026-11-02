@@ -79,6 +79,7 @@ from picard.util import (
     mbid_validate,
     thread,
 )
+from picard.view_presentation import view_presentation
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
 
@@ -461,6 +462,21 @@ class Workspace:
         else:
             nat.load()
         return nat
+
+    def load_mbid(self, type: str, mbid: str) -> None:
+        """Load a release or non-album track by MBID, raising the window first.
+
+        Brings the application window to the front (via the view-presentation
+        facade; a no-op headless) so a load triggered from outside Picard (e.g.
+        the browser integration) surfaces the UI, then loads the album or NAT.
+        """
+        view_presentation().bring_to_front()
+        if type == 'album':
+            self.load_album(mbid)
+        elif type == 'nat':
+            self.load_nat(mbid)
+        else:
+            log.warning("Unknown type to load: %s", type)
 
     def move_file_to_nat(self, file: File, recordingid: str, node=None) -> None:
         """Move ``file`` to the non-album track ``recordingid``."""
@@ -907,6 +923,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.load_album`.
         """
         return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
+
+    def load_mbid(self, type: str, mbid: str) -> None:
+        """Load a release or non-album track by MBID, raising the window first.
+
+        Delegates to :meth:`Workspace.load_mbid`.
+        """
+        self._workspace.load_mbid(type, mbid)
 
     def load_nat(self, nat_id: str, node=None) -> NonAlbumTrack:
         """Load the non-album track ``nat_id`` into the NATs container.

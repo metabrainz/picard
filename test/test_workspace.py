@@ -264,3 +264,42 @@ class WorkspaceAnalyzeFlashTest(PicardTestCase):
         ):
             Workspace.analyze(wks, object())
             mock_notifier.return_value.flash_busy.assert_not_called()
+
+
+class WorkspaceLoadMbidTest(PicardTestCase):
+    """load_mbid brings the window to front (via the facade) then loads."""
+
+    def test_load_mbid_album_brings_front_then_loads_album(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation') as mock_vp,
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('album', 'some-mbid')
+            mock_vp.return_value.bring_to_front.assert_called_once_with()
+            mock_load_album.assert_called_once_with('some-mbid')
+            mock_load_nat.assert_not_called()
+
+    def test_load_mbid_nat_loads_nat(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation') as mock_vp,
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('nat', 'rec-mbid')
+            mock_vp.return_value.bring_to_front.assert_called_once_with()
+            mock_load_nat.assert_called_once_with('rec-mbid')
+            mock_load_album.assert_not_called()
+
+    def test_load_mbid_unknown_type_loads_nothing(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation'),
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('bogus', 'x')
+            mock_load_album.assert_not_called()
+            mock_load_nat.assert_not_called()
