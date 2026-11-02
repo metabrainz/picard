@@ -237,22 +237,12 @@ class Disc:
             except (AttributeError, KeyError) as e:
                 log.error("Error parsing TOC lookup response: %r", e)
 
-        # If we have exactly one match and skip_dialog is True, auto-load it
-        # without presenting a picker (used by the lookup-from-tags flow).
-        if self._skip_dialog and len(releases) == 1:
-            release_id = releases[0].get('id')
-            if release_id:
-                # Imported here (not at module load) to avoid perturbing the
-                # import order of the eager WorkspaceEvents QObject in the
-                # headless CLI, and to keep picard.disc import-light.
-                from picard.workspace import workspace
-
-                album = workspace().load_album(release_id)
-                if self._files_to_match:
-                    workspace().move_files_to_album(self._files_to_match, album=album)
-            return
-
-        disc_presentation().present_releases(self, releases, files_to_match=self._files_to_match)
+        # With skip_dialog, the facade auto-loads a single match without a
+        # picker (the lookup-from-tags / non-interactive behaviour); otherwise
+        # it presents the picker (GUI) or auto-loads a single match (headless).
+        disc_presentation().present_releases(
+            self, releases, files_to_match=self._files_to_match, skip_dialog=self._skip_dialog
+        )
 
 
 discid_version: str | None = None

@@ -294,22 +294,19 @@ class DiscLookupCallbackTest(PicardTestCase):
             disc._lookup_finished(None, http, error=True)
             mock_dp.return_value.present_releases.assert_called_once_with(disc, [])
 
-    def test_toc_lookup_skip_dialog_single_match_autoloads(self):
+    def test_toc_lookup_skip_dialog_delegates_with_skip_flag(self):
         disc = picard.disc.Disc(id='disc-1')
         files = [Mock()]
         disc._skip_dialog = True
         disc._files_to_match = files
         document = {'releases': [{'id': 'rel-1'}]}
-        with (
-            patch('picard.disc.disc_presentation') as mock_dp,
-            patch('picard.workspace.workspace') as mock_ws,
-        ):
-            album = mock_ws.return_value.load_album.return_value
+        with patch('picard.disc.disc_presentation') as mock_dp:
             disc._toc_lookup_finished(document, Mock(), None)
-            mock_ws.return_value.load_album.assert_called_once_with('rel-1')
-            mock_ws.return_value.move_files_to_album.assert_called_once_with(files, album=album)
-            # Auto-loaded, so no picker presentation.
-            mock_dp.return_value.present_releases.assert_not_called()
+            # The skip-dialog single-match auto-load now lives in the facade;
+            # the callback just forwards the skip_dialog flag.
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'rel-1'}], files_to_match=files, skip_dialog=True
+            )
 
     def test_toc_lookup_multiple_matches_presents(self):
         disc = picard.disc.Disc(id='disc-1')
@@ -319,7 +316,7 @@ class DiscLookupCallbackTest(PicardTestCase):
         with patch('picard.disc.disc_presentation') as mock_dp:
             disc._toc_lookup_finished(document, Mock(), None)
             mock_dp.return_value.present_releases.assert_called_once_with(
-                disc, [{'id': 'r1'}, {'id': 'r2'}], files_to_match=None
+                disc, [{'id': 'r1'}, {'id': 'r2'}], files_to_match=None, skip_dialog=True
             )
 
     def test_toc_lookup_without_skip_dialog_presents(self):
@@ -330,7 +327,9 @@ class DiscLookupCallbackTest(PicardTestCase):
         document = {'releases': [{'id': 'rel-1'}]}
         with patch('picard.disc.disc_presentation') as mock_dp:
             disc._toc_lookup_finished(document, Mock(), None)
-            mock_dp.return_value.present_releases.assert_called_once_with(disc, [{'id': 'rel-1'}], files_to_match=files)
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'rel-1'}], files_to_match=files, skip_dialog=False
+            )
 
 
 class DiscReadLogTest(PicardTestCase):

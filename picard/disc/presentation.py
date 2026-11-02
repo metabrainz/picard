@@ -73,10 +73,18 @@ class DiscPresentation:
 
     def __init__(self):
         self._sink: DiscPresentationSink | None = None
+        # The album auto-loaded by the most recent headless present_releases,
+        # or None. Lets a non-interactive caller (the disc commands) learn the
+        # matched album even when load_album returned an already-loaded one.
+        self.last_loaded_album = None
 
     def set_sink(self, sink: DiscPresentationSink | None):
         """Install (or clear, with ``None``) the sink to forward to."""
         self._sink = sink
+
+    def reset_last_loaded(self) -> None:
+        """Clear :attr:`last_loaded_album` before driving a fresh lookup."""
+        self.last_loaded_album = None
 
     @property
     def has_sink(self) -> bool:
@@ -91,43 +99,61 @@ class DiscPresentation:
         if self._sink is not None:
             self._sink.disc_lookup_finished()
 
-    def present_releases(self, disc, releases, files_to_match=None) -> None:
+    def present_releases(self, disc, releases, files_to_match=None, skip_dialog=False) -> None:
         """Present the matching ``releases`` for the user to choose from.
 
         With a GUI sink, shows the release picker and loads the chosen release
-        (matching ``files_to_match`` to it when given). Headless, there is no
-        picker: load the single unambiguous match (and match files to it), or
-        log and load nothing when there is no match or the choice is ambiguous.
+        (matching ``files_to_match`` to it when given) — unless ``skip_dialog``
+        is set and there is exactly one match, in which case that single match
+        is auto-loaded without a picker (the lookup-from-tags / non-interactive
+        behaviour). Headless, there is never a picker: the single unambiguous
+        match is auto-loaded (and files matched to it), or nothing is loaded and
+        the outcome is logged when there is no match or the choice is ambiguous.
+
+        Either way, the auto-load carries the disc id and the ISRCs read from
+        the disc, so they tag the album and get registered for submission.
+
+        Returns the loaded :class:`~picard.album.Album` when a match was
+        auto-loaded headless (so a non-interactive caller knows the outcome even
+        if the release was already in the session), or ``None`` when a GUI
+        picker was shown or nothing was loaded.
         """
-        if self._sink is not None:
-            self._sink.present_disc_releases(disc, releases, files_to_match=files_to_match)
-            return
-        self._auto_load(disc, releases, files_to_match)
+        if self._sink is None or (skip_dialog and len(releases) == 1):
+            album = self._auto_load(disc, releases, files_to_match)
+            self.last_loaded_album = album
+            return album
+        self._sink.present_disc_releases(disc, releases, files_to_match=files_to_match)
+        return None
 
     @staticmethod
-    def _auto_load(disc, releases, files_to_match) -> None:
-        """Headless default: load the single match, or log and do nothing."""
+    def _auto_load(disc, releases, files_to_match):
+        """Headless default: load the single match, or log and do nothing.
+
+        Returns the loaded album, or ``None`` when there is no match or the
+        choice is ambiguous.
+        """
         # Imported here to avoid an import cycle (picard.workspace reaches disc
         # presentation indirectly, and picard.disc imports this module).
         from picard.workspace import workspace
 
         if not releases:
             log.info("Disc lookup for %s returned no matching releases", disc.id)
-            return
+            return None
         if len(releases) > 1:
             log.info(
                 "Disc lookup for %s returned %d releases; headless mode cannot pick, skipping",
                 disc.id,
                 len(releases),
             )
-            return
+            return None
         release_id = releases[0].get('id')
         if not release_id:
             log.warning("Disc lookup match for %s has no release id", disc.id)
-            return
+            return None
         album = workspace().load_album(release_id, discid=disc.id, disc_isrcs=disc.isrcs)
         if files_to_match:
             workspace().move_files_to_album(files_to_match, album=album)
+        return album
 
 
 _disc_presentation = DiscPresentation()
