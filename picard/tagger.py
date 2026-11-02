@@ -872,27 +872,11 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     ) -> None:
         """Process items with a time budget, yielding to the event loop between batches.
 
-        Args:
-            items: List of items to process. Items are popped from the front.
-            process_func: Callable that processes a single item.
-            label: Label for debug timing output.
-            time_budget: Max seconds per batch. Defaults to _BATCH_TIME_BUDGET.
-            on_complete: Optional callable invoked when all items are processed.
+        Thin wrapper around :func:`picard.util.thread.process_in_batches` (the
+        frontend-agnostic batch helper); kept as a method for the existing call
+        sites.
         """
-        if time_budget is None:
-            time_budget = self._BATCH_TIME_BUDGET
-        deadline = time.perf_counter() + time_budget
-        count = 0
-        while items and time.perf_counter() < deadline:
-            process_func(items.pop(0))
-            count += 1
-        log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
-        if items:
-            QtCore.QTimer.singleShot(
-                0, partial(self._process_in_batches, items, process_func, label, time_budget, on_complete)
-            )
-        elif on_complete:
-            on_complete()
+        thread.process_in_batches(items, process_func, label, time_budget=time_budget, on_complete=on_complete)
 
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):

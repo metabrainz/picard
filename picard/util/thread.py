@@ -27,6 +27,7 @@
 
 
 from collections.abc import Callable
+from functools import partial
 import sys
 import threading
 import time
@@ -43,16 +44,61 @@ from PyQt6.QtCore import (
     QEvent,
     QRunnable,
     QThreadPool,
+    QTimer,
 )
 
 from picard import (
     log,
     tagger_instance,
 )
+from picard.debug_opts import DebugOpt
 
 
 P = ParamSpec('P')
 R = TypeVar('R')
+
+
+_BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
+
+
+def process_in_batches(
+    items: list,
+    process_func: Callable[[Any], Any],
+    label: str,
+    time_budget: float | None = None,
+    on_complete: Callable[[], Any] | None = None,
+) -> None:
+    """Process ``items`` with a time budget, yielding to the event loop between batches.
+
+    Pops items from the front of ``items`` and calls ``process_func`` on each,
+    for up to ``time_budget`` seconds, then reschedules itself via
+    ``QTimer.singleShot(0, ...)`` so the event loop can run between batches. When
+    ``items`` is empty, ``on_complete`` (if given) is invoked.
+
+    This keeps a frontend responsive while applying a large batch of changes on
+    the main thread. It relies only on the Qt event loop (``QTimer``), so it
+    works under any ``QCoreApplication`` — the GUI as well as the headless
+    application — not just the GUI. ``items`` is mutated (drained) in place.
+
+    Args:
+        items: List of items to process. Items are popped from the front.
+        process_func: Callable that processes a single item.
+        label: Label for debug timing output.
+        time_budget: Max seconds per batch. Defaults to 50 ms.
+        on_complete: Optional callable invoked once all items are processed.
+    """
+    if time_budget is None:
+        time_budget = _BATCH_TIME_BUDGET
+    deadline = time.perf_counter() + time_budget
+    count = 0
+    while items and time.perf_counter() < deadline:
+        process_func(items.pop(0))
+        count += 1
+    log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
+    if items:
+        QTimer.singleShot(0, partial(process_in_batches, items, process_func, label, time_budget, on_complete))
+    elif on_complete:
+        on_complete()
 
 
 class Callback(Protocol[R]):
