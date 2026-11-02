@@ -374,10 +374,17 @@ class Workspace:
         """Move ``file`` to a track on album ``albumid``."""
         self.move_files_to_album([file], albumid)
 
-    def move_file(self, file, target):
-        """Moves a file to target, if possible
+    def move_file(self, file: File, target: Item | None) -> Item | None:
+        """Move ``file`` to ``target``, if possible.
 
-        Returns the actual target the files has been moved to or None
+        ``target`` may be an album (the file goes to a matching track, or to the
+        album's unmatched bucket while a session is being restored) or any other
+        container the file can be moved into. If the move is rejected and the
+        file would be left without a parent, it falls back to the unclustered
+        bucket so it still appears in the working set.
+
+        Returns the container the file actually ended up in, or ``None`` if the
+        target was unsupported and no move happened.
         """
         # Imported here to avoid the album/file <-> workspace import cycle.
         from picard.album import Album
@@ -740,8 +747,8 @@ class WorkspaceHost:
         """
         self._workspace.move_file_to_nat(file, recordingid, node=node)
 
-    def move_file(self, file, target):
-        """Moves a file to target, if possible
+    def move_file(self, file: File, target: Item | None) -> Item | None:
+        """Move ``file`` to ``target``, if possible.
 
         Delegates to :meth:`Workspace.move_file`.
         """
