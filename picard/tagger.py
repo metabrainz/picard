@@ -1299,37 +1299,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc = Disc()
         disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=list(files))
 
-    @property
-    def use_acoustid(self):
-        config = get_config()
-        return config.setting['fingerprinting_system'] == 'acoustid'
-
-    def analyze(self, objs):
-        """Analyze the file(s)."""
-        if not self.use_acoustid:
-            return
-        flashed = False
-        for file in iter_files_from_objects(objs):
-            if file.can_analyze:
-                if not flashed:
-                    # Result appears asynchronously; acknowledge the action once.
-                    notifier().flash_busy()
-                    flashed = True
-                file.set_pending()
-                self.acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
-
-    def generate_fingerprints(self, objs):
-        """Generate the fingerprints without matching the files."""
-        if not self.use_acoustid:
-            return
-
-        def finished(file, result):
-            file.clear_pending()
-
-        for file in iter_files_from_objects(objs):
-            file.set_pending()
-            self.acoustid_client.fingerprint(file, partial(finished, file))
-
     # =======================================================================
     #  Clusters
     # =======================================================================

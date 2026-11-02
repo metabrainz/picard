@@ -64,6 +64,7 @@ from typing import (
 from PyQt6 import QtCore
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -586,6 +587,51 @@ class Workspace:
         for file in iter_files_from_objects(objects, save=True):
             file.save()
 
+    @property
+    def use_acoustid(self) -> bool:
+        """True when AcoustID is the configured fingerprinting system."""
+        return get_config().setting['fingerprinting_system'] == 'acoustid'
+
+    def analyze(self, objs: Iterable[IterableFiles]) -> None:
+        """Identify files by AcoustID fingerprint (the GUI "Scan" action).
+
+        For each analyzable file reachable from ``objs``, compute its AcoustID
+        fingerprint and look up matching recordings, applying the result via
+        the file's usual ACOUSTID lookup handler. No-op unless AcoustID is the
+        configured fingerprinting system. UI-agnostic: the fingerprint work
+        runs on the AcoustID client (a service) and results arrive
+        asynchronously.
+        """
+        if not self.use_acoustid:
+            return
+        # Imported here to avoid the file <-> workspace import cycle.
+        from picard.file import File
+
+        flashed = False
+        for file in iter_files_from_objects(objs):
+            if file.can_analyze:
+                if not flashed:
+                    # Result appears asynchronously; acknowledge the action once.
+                    notifier().flash_busy()
+                    flashed = True
+                file.set_pending()
+                services().acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
+
+    def generate_fingerprints(self, objs: Iterable[IterableFiles]) -> None:
+        """Compute AcoustID fingerprints for files without matching them.
+
+        No-op unless AcoustID is the configured fingerprinting system.
+        """
+        if not self.use_acoustid:
+            return
+
+        def finished(file, result):
+            file.clear_pending()
+
+        for file in iter_files_from_objects(objs):
+            file.set_pending()
+            services().acoustid_client.fingerprint(file, partial(finished, file))
+
 
 _workspace: Workspace | None = None
 
@@ -826,6 +872,28 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.save`.
         """
         self._workspace.save(objects)
+
+    @property
+    def use_acoustid(self) -> bool:
+        """True when AcoustID is the configured fingerprinting system.
+
+        Delegates to :attr:`Workspace.use_acoustid`.
+        """
+        return self._workspace.use_acoustid
+
+    def analyze(self, objs: Iterable[IterableFiles]) -> None:
+        """Identify files by AcoustID fingerprint (the "Scan" action).
+
+        Delegates to :meth:`Workspace.analyze`.
+        """
+        self._workspace.analyze(objs)
+
+    def generate_fingerprints(self, objs: Iterable[IterableFiles]) -> None:
+        """Compute AcoustID fingerprints for files without matching them.
+
+        Delegates to :meth:`Workspace.generate_fingerprints`.
+        """
+        self._workspace.generate_fingerprints(objs)
 
 
 def workspace() -> Workspace:
