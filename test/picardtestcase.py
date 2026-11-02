@@ -57,6 +57,8 @@ from picard.workspace import (
     Workspace,
     set_workspace_provider,
 )
+import picard.workspace_events as workspace_events_module
+from picard.workspace_events import WorkspaceEvents
 
 
 def subtest_cases(argnames, argvalues):
@@ -191,6 +193,18 @@ class PicardTestCase(unittest.TestCase):
             patcher = patch(f'{module}.tagger_instance', return_value=self.tagger)
             patcher.start()
             self.addCleanup(patcher.stop)
+
+    def reset_workspace_events(self):
+        """Install a fresh WorkspaceEvents emitter for the duration of the test.
+
+        The process-wide emitter (picard.workspace_events) is an eager
+        singleton that production never replaces; tests that connect listeners
+        to it need a clean instance so connections do not leak between tests.
+        The original emitter is restored on cleanup.
+        """
+        patcher = patch.object(workspace_events_module, '_workspace_events', WorkspaceEvents())
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def patch_app_instance(self, *modules):
         """Patch app_instance in the given module(s) to return self.tagger.

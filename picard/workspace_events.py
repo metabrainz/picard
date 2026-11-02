@@ -81,14 +81,3 @@ _workspace_events = WorkspaceEvents()
 def workspace_events() -> WorkspaceEvents:
     """Return the process-wide :class:`WorkspaceEvents` emitter."""
     return _workspace_events
-
-
-def _reset_workspace_events_for_tests() -> None:
-    """Replace the shared emitter with a fresh one (test isolation only).
-
-    Tests connect listeners to the emitter; a fresh instance drops any
-    connections left by a previous test. Not for production use — the emitter
-    is a process-wide singleton that application code never replaces.
-    """
-    global _workspace_events
-    _workspace_events = WorkspaceEvents()

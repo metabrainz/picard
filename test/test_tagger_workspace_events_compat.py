@@ -26,10 +26,7 @@ from PyQt6 import QtCore
 from test.picardtestcase import PicardTestCase
 
 from picard.tagger import Tagger
-from picard.workspace_events import (
-    _reset_workspace_events_for_tests,
-    workspace_events,
-)
+from picard.workspace_events import workspace_events
 
 
 class _TaggerSignalStand(QtCore.QObject):
@@ -51,8 +48,8 @@ class TaggerWorkspaceEventsCompatTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         # _init_workspace_events connects forwarders to the shared emitter;
-        # reset it afterwards so those connections don't leak into other tests.
-        self.addCleanup(_reset_workspace_events_for_tests)
+        # install a fresh one so those connections don't leak into other tests.
+        self.reset_workspace_events()
 
     def test_facade_emissions_reach_tagger_signal_listeners(self):
         stand = _TaggerSignalStand()

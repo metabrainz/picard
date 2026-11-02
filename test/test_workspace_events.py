@@ -19,7 +19,6 @@ from test.picardtestcase import PicardTestCase
 
 from picard.workspace_events import (
     WorkspaceEvents,
-    _reset_workspace_events_for_tests,
     workspace_events,
 )
 
@@ -29,10 +28,9 @@ class WorkspaceEventsTest(PicardTestCase):
         self.assertIs(workspace_events(), workspace_events())
         self.assertIsInstance(workspace_events(), WorkspaceEvents)
 
-    def test_reset_for_tests_swaps_in_a_fresh_emitter(self):
+    def test_reset_workspace_events_swaps_in_a_fresh_emitter(self):
         before = workspace_events()
-        self.addCleanup(_reset_workspace_events_for_tests)
-        _reset_workspace_events_for_tests()
+        self.reset_workspace_events()
         after = workspace_events()
         self.assertIsNot(after, before)
         self.assertIsInstance(after, WorkspaceEvents)
