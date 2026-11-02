@@ -331,3 +331,42 @@ class DiscLookupCallbackTest(PicardTestCase):
         with patch('picard.disc.disc_presentation') as mock_dp:
             disc._toc_lookup_finished(document, Mock(), None)
             mock_dp.return_value.present_releases.assert_called_once_with(disc, [{'id': 'rel-1'}], files_to_match=files)
+
+
+class DiscReadLogTest(PicardTestCase):
+    """Disc.read_log parses a ripper log via the extension point into a TOC."""
+
+    def test_read_log_uses_first_successful_reader(self):
+        disc = picard.disc.Disc()
+        good_reader = Mock(return_value=test_toc)
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [good_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            disc.read_log('/some/path.log')
+            good_reader.assert_called_once_with('/some/path.log')
+            mock_put.assert_called_once_with(test_toc)
+
+    def test_read_log_skips_failing_readers(self):
+        disc = picard.disc.Disc()
+        bad_reader = Mock(side_effect=ValueError("nope"))
+        good_reader = Mock(return_value=test_toc)
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [bad_reader, good_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            disc.read_log('/some/path.log')
+            bad_reader.assert_called_once()
+            good_reader.assert_called_once()
+            mock_put.assert_called_once_with(test_toc)
+
+    def test_read_log_raises_when_all_readers_fail(self):
+        disc = picard.disc.Disc()
+        bad_reader = Mock(side_effect=ValueError("nope"))
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [bad_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            with self.assertRaisesRegex(Exception, "Failed parsing ripping log"):
+                disc.read_log('/some/path.log')
+            mock_put.assert_not_called()

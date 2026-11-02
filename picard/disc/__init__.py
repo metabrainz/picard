@@ -38,7 +38,14 @@ from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
 from picard.disc.presentation import disc_presentation
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
-from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.extension_points.disc_log_readers import (
+    ext_point_disc_log_readers,
+    register_disc_log_reader,
+)
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.services import services
 from picard.util.cdrom import (
     discid,
@@ -91,6 +98,29 @@ class Disc:
         except ValueError as e:
             log.error("Error while processing TOC %r: %s", toc, e)
             raise discid.TOCError(e) from e
+
+    def read_log(self, path):
+        """Read a disc TOC from a CD ripper log file and compute the disc ID.
+
+        Tries each registered disc-log reader (the ``disc_log_readers``
+        extension point) until one parses ``path`` into a MusicBrainz TOC, then
+        computes the disc ID from it (via :meth:`put`). Raises if no reader can
+        parse the file. UI-agnostic: callers run this on a worker thread and
+        report errors through their own frontend.
+        """
+        for reader in ext_point_disc_log_readers:
+            module_name = reader.__module__
+            try:
+                log.debug('Trying to parse "%s" with %s…', path, module_name)
+                toc = reader(path)
+                break
+            except Exception:
+                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
+        else:
+            msg = N_('Failed parsing ripping log "%s"')
+            log.warning(msg, path)
+            raise Exception(_(msg) % path)
+        self.put(toc)
 
     def _set_disc_details(self, disc):
         self.id = disc.id

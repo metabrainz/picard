@@ -119,7 +119,6 @@ from picard.disc import (
     Disc,
 )
 from picard.disc.presentation import set_disc_presentation_sink
-from picard.extension_points.disc_log_readers import ext_point_disc_log_readers
 from picard.extension_points.event_hooks import register_file_post_save_processor
 from picard.file import File
 from picard.formats import DEFAULT_FORMATS
@@ -1137,25 +1136,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc = Disc()
         busy_cursor_start()
         thread.run_task(
-            partial(self._parse_disc_ripping_log, disc, filepath),
+            partial(disc.read_log, filepath),
             partial(self._lookup_disc, disc),
             traceback=log.is_debug(),
         )
-
-    def _parse_disc_ripping_log(self, disc, path):
-        for reader in ext_point_disc_log_readers:
-            module_name = reader.__module__
-            try:
-                log.debug('Trying to parse "%s" with %s…', path, module_name)
-                toc = reader(path)
-                break
-            except Exception:
-                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
-        else:
-            msg = N_('Failed parsing ripping log "%s"')
-            log.warning(msg, path)
-            raise Exception(_(msg) % path)
-        disc.put(toc)
 
     def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
