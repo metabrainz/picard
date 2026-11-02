@@ -374,6 +374,34 @@ class Workspace:
         """Move ``file`` to a track on album ``albumid``."""
         self.move_files_to_album([file], albumid)
 
+    def move_file(self, file, target):
+        """Moves a file to target, if possible
+
+        Returns the actual target the files has been moved to or None
+        """
+        # Imported here to avoid the album/file <-> workspace import cycle.
+        from picard.album import Album
+        from picard.file import File
+
+        if isinstance(target, Album):
+            # During restore place into album's unmatched bucket without matching
+            if self.restoring_session:
+                file.move(target.unmatched_files)
+            else:
+                self.move_files_to_album([file], album=target)
+        else:
+            if isinstance(target, File) and target.parent_item:
+                target = target.parent_item
+            if not file.move(target):
+                # Ensure a file always has a parent so it shows up in UI
+                if not file.parent_item:
+                    target = self.unclustered_files
+                    file.move(target)
+                # Unsupported target, do not move the file
+                else:
+                    target = None
+        return target
+
     def create_nats(self) -> NatAlbum:
         """Return the Non-Album-Tracks container, creating it on first use."""
         # Imported here to avoid the album <-> workspace import cycle.
@@ -711,6 +739,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.move_file_to_nat`.
         """
         self._workspace.move_file_to_nat(file, recordingid, node=node)
+
+    def move_file(self, file, target):
+        """Moves a file to target, if possible
+
+        Delegates to :meth:`Workspace.move_file`.
+        """
+        return self._workspace.move_file(file, target)
 
     def autotag(self, objects: Iterable[Item]) -> None:
         """Look up metadata for each taggable object in ``objects``.

@@ -983,30 +983,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
 
-    def move_file(self, file, target):
-        """Moves a file to target, if possible
-
-        Returns the actual target the files has been moved to or None
-        """
-        if isinstance(target, Album):
-            # During restore place into album's unmatched bucket without matching
-            if workspace().restoring_session:
-                file.move(target.unmatched_files)
-            else:
-                self.move_files_to_album([file], album=target)
-        else:
-            if isinstance(target, File) and target.parent_item:
-                target = target.parent_item
-            if not file.move(target):
-                # Ensure a file always has a parent so it shows up in UI
-                if not file.parent_item:
-                    target = self.unclustered_files
-                    file.move(target)
-                # Unsupported target, do not move the file
-                else:
-                    target = None
-        return target
-
     def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
             log.debug("Aborting move since target is invalid")
