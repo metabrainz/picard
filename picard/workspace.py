@@ -71,6 +71,10 @@ from picard.i18n import (
 from picard.item import ListOfMetadataItems
 from picard.notification import notifier
 from picard.services import services
+from picard.util import (
+    IterableFiles,
+    iter_files_from_objects,
+)
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
 
@@ -569,6 +573,19 @@ class Workspace:
         workspace_events().cluster_added.emit(cluster)
         return cluster
 
+    def save(self, objects: Iterable[IterableFiles]) -> None:
+        """Save every file reachable from ``objects`` to disk.
+
+        ``objects`` may be any mix of files, tracks, albums and clusters (any
+        object exposing ``iterfiles``); each contained file is saved. The
+        per-file threading (the save thread pool) and the batch coalescing of
+        shared cover-art parents live in :class:`~picard.file.File` and the
+        begin_save/end_save bookkeeping, so this is a thin, UI-agnostic driver
+        usable from the GUI and headless.
+        """
+        for file in iter_files_from_objects(objects, save=True):
+            file.save()
+
 
 _workspace: Workspace | None = None
 
@@ -802,6 +819,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.trash_files`.
         """
         self._workspace.trash_files(files)
+
+    def save(self, objects: Iterable[IterableFiles]) -> None:
+        """Save every file reachable from ``objects`` to disk.
+
+        Delegates to :meth:`Workspace.save`.
+        """
+        self._workspace.save(objects)
 
 
 def workspace() -> Workspace:

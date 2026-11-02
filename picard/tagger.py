@@ -1131,11 +1131,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '',
             )
 
-    def save(self, objects):
-        """Save the specified objects."""
-        for file in iter_files_from_objects(objects, save=True):
-            file.save()
-
     def load_mbid(self, type, mbid):
         self.bring_tagger_front()
         if type == 'album':
