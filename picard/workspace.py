@@ -86,6 +86,7 @@ if TYPE_CHECKING:
         UnclusteredFiles,
     )
     from picard.file import File
+    from picard.item import Item
     from picard.releasegroup import ReleaseGroup
     from picard.track import NonAlbumTrack
 
@@ -252,7 +253,9 @@ class Workspace:
                 self.remove_cluster(cluster)
             # Remove all unclustered files
             if self.unclustered_files.files:
-                self.remove_files(list(self.unclustered_files.files))
+                # ListOfMetadataItems holds MetadataItem; the unclustered bucket
+                # only ever contains File at runtime.
+                self.remove_files(cast("list[File]", list(self.unclustered_files.files)))
 
     def get_release_group_by_id(self, rg_id: str) -> ReleaseGroup:
         """Return the ReleaseGroup for ``rg_id``, creating it if unknown.
@@ -266,7 +269,7 @@ class Workspace:
 
         return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
 
-    def remove_files(self, files: Iterable, from_parent: bool = True) -> None:
+    def remove_files(self, files: Iterable[File], from_parent: bool = True) -> None:
         """Remove ``files`` from the working set.
 
         Cancels any pending lookup/fingerprint work, drops each file from the
@@ -318,7 +321,8 @@ class Workspace:
         if cluster.special:
             return
         log.debug("Removing %r", cluster)
-        files = list(cluster.files)
+        # cluster.files is a ListOfMetadataItems (MetadataItem) but holds File.
+        files = cast("list[File]", list(cluster.files))
         cluster.files = ListOfMetadataItems()
         cluster.clear()
         self.remove_files(files, from_parent=False)
@@ -424,7 +428,7 @@ class Workspace:
         if nat.loaded:
             nats.update()
 
-    def autotag(self, objects: Iterable[Any]) -> None:
+    def autotag(self, objects: Iterable[Item]) -> None:
         """Look up metadata for each taggable object in ``objects``.
 
         Flashes the busy cursor once per batch (fire-and-forget feedback) and
@@ -454,7 +458,7 @@ class Workspace:
         else:
             self.nats.update(True)
 
-    def remove(self, objects: Iterable[Any]) -> None:
+    def remove(self, objects: Iterable[Item]) -> None:
         """Remove ``objects`` (files, tracks, albums, clusters) from the set."""
         # Imported here to avoid cycles with the entity modules.
         from picard.album import Album
@@ -468,7 +472,7 @@ class Workspace:
             Track,
         )
 
-        files: list = []
+        files = []
         with view_updates().suspend_selection():
             for obj in objects:
                 if isinstance(obj, File):
@@ -488,9 +492,11 @@ class Workspace:
                 elif isinstance(obj, Cluster):
                     self.remove_cluster(obj)
             if files:
-                self.remove_files(files)
+                # files accumulated above are all File at runtime, but the
+                # Track/UnclusteredFiles .files sources are typed MetadataItem.
+                self.remove_files(cast("list[File]", files))
 
-    def trash_files(self, files: Iterable) -> None:
+    def trash_files(self, files: Iterable[File]) -> None:
         """Move ``files`` to the system trash and remove them from the set."""
         with view_updates().suspend_selection():
             files_removed = []
@@ -706,14 +712,14 @@ class WorkspaceHost:
         """
         self._workspace.move_file_to_nat(file, recordingid, node=node)
 
-    def autotag(self, objects: Iterable[Any]) -> None:
+    def autotag(self, objects: Iterable[Item]) -> None:
         """Look up metadata for each taggable object in ``objects``.
 
         Delegates to :meth:`Workspace.autotag`.
         """
         self._workspace.autotag(objects)
 
-    def remove_files(self, files: Iterable, from_parent: bool = True) -> None:
+    def remove_files(self, files: Iterable[File], from_parent: bool = True) -> None:
         """Remove ``files`` from the working set.
 
         Delegates to :meth:`Workspace.remove_files`.
@@ -741,14 +747,14 @@ class WorkspaceHost:
         """
         self._workspace.remove_cluster(cluster)
 
-    def remove(self, objects: Iterable[Any]) -> None:
+    def remove(self, objects: Iterable[Item]) -> None:
         """Remove ``objects`` (files, tracks, albums, clusters) from the set.
 
         Delegates to :meth:`Workspace.remove`.
         """
         self._workspace.remove(objects)
 
-    def trash_files(self, files: Iterable) -> None:
+    def trash_files(self, files: Iterable[File]) -> None:
         """Move ``files`` to the system trash and remove them from the set.
 
         Delegates to :meth:`Workspace.trash_files`.

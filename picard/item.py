@@ -139,6 +139,15 @@ class Item:
     def load(self, priority=False, refresh=False):
         pass
 
+    def lookup_metadata(self):
+        """Look up metadata for this item from MusicBrainz.
+
+        Taggable subtypes (File, Track, Album, Cluster) override this; the base
+        is a no-op so callers can treat any Item guarded by ``can_autotag``
+        uniformly.
+        """
+        pass
+
     @property
     def errors(self) -> list[str]:
         if not hasattr(self, '_errors'):
