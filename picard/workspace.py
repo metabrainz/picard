@@ -575,6 +575,49 @@ class Workspace:
         workspace_events().cluster_added.emit(cluster)
         return cluster
 
+    def apply_file_cluster(self, file_cluster) -> Cluster | UnclusteredFiles:
+        """Place one computed ``file_cluster`` group into the working set.
+
+        A group of more than one file becomes a cluster (created or reused via
+        :meth:`load_cluster`); a single-file group stays in the unclustered
+        bucket. Returns the container the files were added to. This is the
+        per-group application step shared by the synchronous
+        :meth:`cluster_files` and the asynchronous :meth:`cluster`.
+        """
+        files = set(file_cluster.files)
+        if len(files) > 1:
+            container: Cluster | UnclusteredFiles = self.load_cluster(file_cluster.title, file_cluster.artist)
+        else:
+            container = self.unclustered_files
+        container.add_files(files)
+        return container
+
+    def cluster_files(self, files) -> list:
+        """Group ``files`` into clusters by metadata and apply the result synchronously.
+
+        Runs the clustering algorithm inline (it is CPU-bound metadata grouping,
+        not I/O — no event loop needed) and applies each resulting group via
+        :meth:`apply_file_cluster`. Returns the list of clusters that received
+        files (new or existing), in creation order; single-file groups stay in
+        the unclustered bucket and are not included.
+
+        This is the blocking variant, for callers that want the result
+        immediately (e.g. a headless command). The GUI and other event-loop
+        frontends use the asynchronous :meth:`cluster` instead.
+        """
+        # Imported here to avoid the cluster <-> workspace import cycle.
+        from picard.cluster import (
+            Cluster,
+            UnclusteredFiles,
+        )
+
+        touched: list = []
+        for file_cluster in Cluster.cluster(files):
+            container = self.apply_file_cluster(file_cluster)
+            if not isinstance(container, UnclusteredFiles) and container not in touched:
+                touched.append(container)
+        return touched
+
     def save(self, objects: Iterable[IterableFiles]) -> None:
         """Save every file reachable from ``objects`` to disk.
 

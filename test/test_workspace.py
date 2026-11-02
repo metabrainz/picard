@@ -104,3 +104,57 @@ class WorkspaceAccessorTest(PicardTestCase):
         set_workspace_provider(None)
         self.assertIsNot(workspace(), provider)
         self.assertEqual(workspace().files, {})
+
+
+class WorkspaceClusterFilesTest(PicardTestCase):
+    """Synchronous cluster_files + the shared per-group apply_file_cluster."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.set_config_values(setting={'va_name': 'Various Artists', 'nat_name': 'Standalone Recordings'})
+        # File._move touches the acoustid/isrc managers via services(); the mock
+        # tagger is the services provider in tests, so stub them.
+        self.tagger.acoustid_manager = MagicMock()
+        self.tagger.isrc_submit_manager = MagicMock()
+        self.wks = Workspace()
+        self.addCleanup(set_workspace_provider, None)
+        set_workspace_provider(self.wks)
+
+    def _add_unclustered(self, album, artist, name):
+        from picard.file import File
+
+        f = File(name)
+        f.metadata['album'] = album
+        f.metadata['albumartist'] = artist
+        self.wks.files[f.filename] = f
+        self.wks.unclustered_files.add_file(f)
+        return f
+
+    def test_cluster_files_groups_multi_file_albums(self):
+        self._add_unclustered('Album A', 'Artist A', 'a1.flac')
+        self._add_unclustered('Album A', 'Artist A', 'a2.flac')
+        self._add_unclustered('Album B', 'Artist B', 'b1.flac')
+        self._add_unclustered('Album B', 'Artist B', 'b2.flac')
+        touched = self.wks.cluster_files(list(self.wks.unclustered_files.files))
+        self.assertEqual(2, len(touched))
+        self.assertEqual(2, len(list(self.wks.clusters)))
+
+    def test_cluster_files_single_file_group_stays_unclustered(self):
+        self._add_unclustered('Album A', 'Artist A', 'a1.flac')
+        self._add_unclustered('Album A', 'Artist A', 'a2.flac')
+        self._add_unclustered('Lonely', 'Nobody', 'solo.flac')
+        touched = self.wks.cluster_files(list(self.wks.unclustered_files.files))
+        # Only the 2-file album clusters; the lone file does not.
+        self.assertEqual(1, len(touched))
+        self.assertEqual(1, len(list(self.wks.clusters)))
+
+    def test_cluster_files_empty_returns_empty(self):
+        self.assertEqual([], self.wks.cluster_files([]))
+        self.assertEqual(0, len(list(self.wks.clusters)))
+
+    def test_apply_file_cluster_single_file_returns_unclustered(self):
+        f = self._add_unclustered('Lonely', 'Nobody', 'solo.flac')
+        file_cluster = MagicMock(files=[f], title='Lonely', artist='Nobody')
+        container = self.wks.apply_file_cluster(file_cluster)
+        self.assertIs(container, self.wks.unclustered_files)
