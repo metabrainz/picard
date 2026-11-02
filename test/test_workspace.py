@@ -158,3 +158,67 @@ class WorkspaceClusterFilesTest(PicardTestCase):
         file_cluster = MagicMock(files=[f], title='Lonely', artist='Nobody')
         container = self.wks.apply_file_cluster(file_cluster)
         self.assertIs(container, self.wks.unclustered_files)
+
+
+class WorkspaceAsyncClusterTest(PicardTestCase):
+    """Asynchronous cluster(): dispatch on a worker thread, apply in batches."""
+
+    def setUp(self):
+        super().setUp()
+        self.wks = Workspace()
+        self.addCleanup(set_workspace_provider, None)
+        set_workspace_provider(self.wks)
+
+    def test_cluster_flashes_and_dispatches_when_files_present(self):
+        files = (MagicMock(), MagicMock())
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter(files)),
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks.cluster(object())
+            mock_notifier.return_value.flash_busy.assert_called_once_with()
+            mock_thread.run_task.assert_called_once()
+
+    def test_cluster_does_not_flash_when_no_files(self):
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter(())),
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks.cluster(object())
+            mock_notifier.return_value.flash_busy.assert_not_called()
+            # Empty is still dispatched; the worker simply finds nothing.
+            mock_thread.run_task.assert_called_once()
+
+    def test_clustering_finished_applies_in_batches_and_calls_on_complete(self):
+        on_complete = MagicMock()
+        fc1 = MagicMock()
+        fc2 = MagicMock()
+        with (
+            patch('picard.workspace.view_updates') as mock_vu,
+            patch('picard.workspace.thread') as mock_thread,
+            patch.object(self.wks, 'apply_file_cluster') as mock_apply,
+        ):
+            self.wks._clustering_finished(on_complete, result=(fc1, fc2))
+            mock_vu.return_value.suspend_while_loading_enter.assert_called_once_with()
+            # Application is handed to the batch helper with our apply function.
+            mock_thread.process_in_batches.assert_called_once()
+            args, kwargs = mock_thread.process_in_batches.call_args
+            self.assertEqual([fc1, fc2], args[0])
+            self.assertIs(mock_apply, args[1])
+            # The finished callback exits the suspension and runs on_complete.
+            kwargs['on_complete']()
+            mock_vu.return_value.suspend_while_loading_exit.assert_called_once_with()
+            on_complete.assert_called_once_with()
+
+    def test_clustering_finished_logs_and_returns_on_error(self):
+        on_complete = MagicMock()
+        with (
+            patch('picard.workspace.view_updates') as mock_vu,
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks._clustering_finished(on_complete, error=RuntimeError("boom"))
+            mock_vu.return_value.suspend_while_loading_enter.assert_not_called()
+            mock_thread.process_in_batches.assert_not_called()
+            on_complete.assert_not_called()

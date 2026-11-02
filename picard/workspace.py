@@ -50,6 +50,7 @@ workspace) and stays on the application object.
 from __future__ import annotations
 
 from collections.abc import (
+    Callable,
     Iterable,
     Iterator,
 )
@@ -76,6 +77,7 @@ from picard.util import (
     IterableFiles,
     iter_files_from_objects,
     mbid_validate,
+    thread,
 )
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
@@ -617,6 +619,58 @@ class Workspace:
             if not isinstance(container, UnclusteredFiles) and container not in touched:
                 touched.append(container)
         return touched
+
+    def cluster(self, objs: Iterable[IterableFiles], on_complete: Callable[[], Any] | None = None) -> None:
+        """Group the files reachable from ``objs`` into clusters asynchronously.
+
+        The clustering algorithm is CPU-bound, so it runs on a worker thread
+        (via :func:`picard.util.thread.run_task`); the resulting groups are then
+        applied on the main thread in time-budgeted batches (via
+        :func:`picard.util.thread.process_in_batches`) so a frontend stays
+        responsive while many clusters are created. ``on_complete`` (if given)
+        is called once all groups have been applied.
+
+        This is frontend-agnostic: the threading and batching rely only on the
+        application's thread pool and Qt event loop (present in the GUI and the
+        headless application alike), and user feedback goes through the
+        notification/view facades. The synchronous :meth:`cluster_files` is the
+        blocking alternative for callers that want the result immediately.
+        """
+        # Imported here to avoid the cluster <-> workspace import cycle.
+        from picard.cluster import Cluster
+
+        files = tuple(iter_files_from_objects(objs))
+        if files:
+            # Clustering runs on a background thread; acknowledge the action.
+            notifier().flash_busy()
+        if log.is_debug():
+            limit = 5
+            count = len(files)
+            remain = max(0, count - limit)
+            log.debug(
+                "Clustering %d files: %r%s", count, files[:limit], f" and {remain} more files..." if remain else ""
+            )
+
+        def compute():
+            # Run fully in the worker thread; do not return the iterator.
+            return tuple(Cluster.cluster(files))
+
+        thread.run_task(compute, partial(self._clustering_finished, on_complete))
+
+    def _clustering_finished(self, on_complete, result=None, error=None) -> None:
+        """Apply computed clusters on the main thread, in batches."""
+        if error:
+            log.error("Error while clustering: %r", error)
+            return
+        clusters = list(result or ())
+        view_updates().suspend_while_loading_enter()
+
+        def finished():
+            view_updates().suspend_while_loading_exit()
+            if on_complete:
+                on_complete()
+
+        thread.process_in_batches(clusters, self.apply_file_cluster, "Clustering", on_complete=finished)
 
     def save(self, objects: Iterable[IterableFiles]) -> None:
         """Save every file reachable from ``objects`` to disk.
