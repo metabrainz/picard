@@ -639,7 +639,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                                 or self.thread_pool.activeThreadCount() > original_main_thread_count
                                 or self.save_thread_pool.activeThreadCount() > original_save_thread_count
                                 or self.webservice.num_pending_web_requests
-                                or self.acoustid_client._running
+                                or self.acoustid_client.is_fingerprinting
                             ):
                                 continue
                             break

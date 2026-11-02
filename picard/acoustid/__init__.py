@@ -88,6 +88,17 @@ class AcoustIDClient(QtCore.QObject):
         self._acoustid_api = acoustid_api
         self._fpcalc_runner = ExternalCommandRunner(max_concurrent=self.get_max_processes(), parent=self)
 
+    @property
+    def is_fingerprinting(self) -> bool:
+        """True while fpcalc fingerprint computation is queued or running.
+
+        This covers only the local fingerprint-calculation stage; the
+        subsequent AcoustID network lookup is tracked separately as a pending
+        web request. The headless event-loop driver checks both to know when a
+        scan has fully drained.
+        """
+        return self._fpcalc_runner.busy
+
     def init(self):
         pass
 
