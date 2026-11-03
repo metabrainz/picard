@@ -35,19 +35,25 @@ def register_options_page(page_class: type[OptionsPage]) -> None:
     section = page_class.OPTION_SECTION
     options = page_class.OPTIONS
 
-    # Which options "Restore Defaults" resets (see PICARD-3525):
-    #   * plugin pages -> every option registered in the 'plugin.<uuid>'
-    #     section, so a single-page plugin resets correctly with no extra
-    #     declaration;
-    #   * core pages -> the OPTIONS keys, since scanning the shared 'setting'
-    #     section would mean "reset every setting in Picard".
-    if section.startswith('plugin.'):
-        reset_names = {name for sect, name in Option.registry if sect == section}
+    # Which options "Restore Defaults" resets, driven by the optional 'restore'
+    # key on OPTIONS entries (see PICARD-3525):
+    #   * any entry with restore=True -> reset ONLY the restore=True options;
+    #   * otherwise -> the automatic default (plugin pages: every option in the
+    #     'plugin.<uuid>' section; core pages: the OPTIONS keys) MINUS any
+    #     option marked restore=False.
+    if any(info.get('restore') is True for info in options.values()):
+        reset_names = {name for name, info in options.items() if info.get('restore') is True}
     else:
-        reset_names = set(options)
+        excluded = {name for name, info in options.items() if info.get('restore') is False}
+        if section.startswith('plugin.'):
+            candidates = {name for sect, name in Option.registry if sect == section}
+        else:
+            candidates = set(options)
+        reset_names = candidates - excluded
 
-    # Register every OPTIONS entry for profile highlighting, then add any
-    # remaining reset-only options (plugin section members not in OPTIONS).
+    # Register every OPTIONS entry for profile highlighting, marking those in
+    # the reset set as restorable; then add any remaining reset-only options
+    # (plugin section members not listed in OPTIONS).
     for opt_name, opt_info in options.items():
         widgets = opt_info.get('widgets')
         if widgets:
@@ -59,6 +65,6 @@ def register_options_page(page_class: type[OptionsPage]) -> None:
                     page_class.NAME,
                 )
                 widgets = None
-        page_class.register_setting(opt_name, widgets)
+        page_class.register_setting(opt_name, widgets, restorable=opt_name in reset_names)
     for opt_name in reset_names - set(options):
         page_class.register_setting(opt_name)
