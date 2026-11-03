@@ -308,6 +308,33 @@ class MyOptionsPage(OptionsPage):
 
 **Note**: Values are stored in Qt settings format. Complex types (lists, dicts) are automatically serialized.
 
+#### Restore Defaults
+
+The options dialog's **Restore Defaults** button resets a plugin's options to
+the default values passed to `register_option`. By default this resets **every
+option registered in the plugin's configuration section** (`plugin.<uuid>`) — a
+single-page plugin needs no extra declaration, and options are restored whether
+or not they appear in the page's `OPTIONS` dict.
+
+```python
+def enable(api):
+    # Both are reset to the defaults below, regardless of OPTIONS membership.
+    api.plugin_config.register_option('greeting', 'Hello World')
+    api.plugin_config.register_option('api_key', '')
+    api.register_options_page(MyOptionsPage)
+```
+
+The `OPTIONS` dict (see *Profile support* below) is only for profile
+highlighting; it does not control which options are restored.
+
+**Where to keep non-setting state (`plugin_persist`)**
+
+Restore Defaults only scans `plugin_config` (`plugin.<uuid>`). It never touches
+`plugin_persist` (`plugin_persist.<uuid>`), the section meant for discardable,
+non-setting data such as cached tokens, timestamps, window geometry or other UI
+state. Keep non-setting data in `plugin_persist` and it is safe from Restore
+Defaults — only genuine user settings belong in `plugin_config`.
+
 #### Profile support
 
 Plugin options can participate in Picard's user profiles system. When an option is profile-eligible, users can override its value per-profile from the Profiles options page.

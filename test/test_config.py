@@ -1305,6 +1305,226 @@ class TestRestoreDefaults(TestPicardConfigCommon):
         with self.config.setting.no_profile():
             self.assertEqual(section['opt'], 'plug_base')
 
+    def test_restore_defaults_plugin_option_without_widgets(self):
+        """Plugin page: an option listed in OPTIONS with no 'widgets' is reset.
+
+        The 'widgets' key is optional and only drives profile highlighting; a
+        bare ``{}`` entry must still be restored to its registered default (it
+        is also covered by the default section scan). See PICARD-3525.
+        """
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section = ProfileConfigSection(self.config, 'plugin.test-rd3')
+        TextOption('plugin.test-rd3', 'opt', 'opt_default')
+
+        with self.config.setting.no_profile():
+            section['opt'] = 'opt_user'
+
+        class PlugPage3(OptionsPage):
+            NAME = 'test_rd_plug3_page'
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd3'
+            # Listed, but with no highlight widgets.
+            OPTIONS: ClassVar[PageOptionConfigs] = {'opt': {}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(PlugPage3)
+
+        seen = {}
+
+        class FakeApi:
+            plugin_config = section
+
+        page = PlugPage3.__new__(PlugPage3)
+        page.api = FakeApi()
+        # Capture the value seen by load() (while the default is applied),
+        # since restore_defaults rolls the value back afterwards.
+        page.load = lambda: seen.update(opt=section['opt'])
+
+        page.restore_defaults()
+
+        # During the preview the option was reset to its default...
+        self.assertEqual(seen['opt'], 'opt_default')
+        # ...and rolled back afterwards (nothing saved yet).
+        with self.config.setting.no_profile():
+            self.assertEqual(section['opt'], 'opt_user')
+
+    def test_restore_defaults_plugin_auto_section_scan(self):
+        """Plugin page: every option in the plugin's section resets.
+
+        Regression test for PICARD-3525. An option registered in the plugin's
+        section but absent from OPTIONS is still restored to its default.
+        """
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section = ProfileConfigSection(self.config, 'plugin.test-rd-auto')
+        TextOption('plugin.test-rd-auto', 'listed', 'listed_default')
+        TextOption('plugin.test-rd-auto', 'unlisted', 'unlisted_default')
+
+        with self.config.setting.no_profile():
+            section['listed'] = 'listed_user'
+            section['unlisted'] = 'unlisted_user'
+
+        class AutoPage(OptionsPage):
+            NAME = 'test_rd_auto_page'
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd-auto'
+            # Only 'listed' is in OPTIONS; 'unlisted' is omitted on purpose.
+            OPTIONS: ClassVar[PageOptionConfigs] = {'listed': {}}
+            # No per-page override -> auto section scan.
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(AutoPage)
+
+        seen = {}
+
+        class FakeApi:
+            plugin_config = section
+
+        page = AutoPage.__new__(AutoPage)
+        page.api = FakeApi()
+
+        def capture_load():
+            seen['listed'] = section['listed']
+            seen['unlisted'] = section['unlisted']
+
+        page.load = capture_load
+
+        page.restore_defaults()
+
+        # Both options reset during the preview, including the unlisted one.
+        self.assertEqual(seen['listed'], 'listed_default')
+        self.assertEqual(seen['unlisted'], 'unlisted_default')
+        with self.config.setting.no_profile():
+            self.assertEqual(section['listed'], 'listed_user')
+            self.assertEqual(section['unlisted'], 'unlisted_user')
+
+    def test_restore_defaults_plugin_isolation_same_option_name(self):
+        """Restoring one plugin's page must not touch another plugin's options,
+        even when both plugins use the same option name.
+
+        The auto section scan is keyed on the option's config section
+        (plugin.<uuid>), so an identically-named option in a different plugin's
+        section is a distinct registry entry and must be left alone.
+        """
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section_a = ProfileConfigSection(self.config, 'plugin.test-rd-iso-a')
+        section_b = ProfileConfigSection(self.config, 'plugin.test-rd-iso-b')
+        # Same option name 'shared' registered in both plugin sections.
+        TextOption('plugin.test-rd-iso-a', 'shared', 'a_default')
+        TextOption('plugin.test-rd-iso-b', 'shared', 'b_default')
+
+        with self.config.setting.no_profile():
+            section_a['shared'] = 'a_user'
+            section_b['shared'] = 'b_user'
+
+        class PageA(OptionsPage):
+            NAME = 'test_rd_iso_a_page'
+            TITLE = 'Plugin A'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd-iso-a'
+            OPTIONS: ClassVar[PageOptionConfigs] = {}
+
+        class PageB(OptionsPage):
+            NAME = 'test_rd_iso_b_page'
+            TITLE = 'Plugin B'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd-iso-b'
+            OPTIONS: ClassVar[PageOptionConfigs] = {}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(PageA)
+        register_options_page(PageB)
+
+        # Each page must register only its own section's option.
+        reg_a = {o.section for o in OptionsPage._registered_settings['test_rd_iso_a_page']}
+        reg_b = {o.section for o in OptionsPage._registered_settings['test_rd_iso_b_page']}
+        self.assertEqual(reg_a, {'plugin.test-rd-iso-a'})
+        self.assertEqual(reg_b, {'plugin.test-rd-iso-b'})
+
+        seen = {}
+
+        class FakeApiA:
+            plugin_config = section_a
+
+        page_a = PageA.__new__(PageA)
+        page_a.api = FakeApiA()
+
+        def capture_load():
+            # While plugin A previews its defaults, plugin B must be unaffected.
+            seen['a'] = section_a['shared']
+            seen['b'] = section_b['shared']
+
+        page_a.load = capture_load
+
+        page_a.restore_defaults()
+
+        # Plugin A's option was reset to its default during the preview...
+        self.assertEqual(seen['a'], 'a_default')
+        # ...but plugin B's identically-named option kept its user value.
+        self.assertEqual(seen['b'], 'b_user')
+        with self.config.setting.no_profile():
+            self.assertEqual(section_b['shared'], 'b_user')
+
+    def test_restore_defaults_core_page_not_section_scanned(self):
+        """Core page (section 'setting'): no section scan.
+
+        A core page must never auto-scan the shared 'setting' section (that
+        would mean resetting every setting in Picard). Only the options listed
+        in OPTIONS are registered for reset; an unrelated 'setting' option is
+        not pulled in.
+        """
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        TextOption('setting', 'test_rd_core_listed', 'listed_default')
+        TextOption('setting', 'test_rd_core_other', 'other_default')
+
+        class CoreScanPage(OptionsPage):
+            NAME = 'test_rd_core_scan_page'
+            TITLE = 'Core'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'setting'
+            OPTIONS: ClassVar[PageOptionConfigs] = {'test_rd_core_listed': {}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(CoreScanPage)
+
+        registered = {o.name for o in OptionsPage._registered_settings['test_rd_core_scan_page']}
+        # Only the OPTIONS-listed option is registered; the unrelated 'setting'
+        # option must not have been swept in by a section scan.
+        self.assertIn('test_rd_core_listed', registered)
+        self.assertNotIn('test_rd_core_other', registered)
+
 
 class TestObsoleteOptionsCleanup(TestPicardConfigCommon):
     """Removal of options declared via obsolete_options.
