@@ -32,10 +32,26 @@ ext_point_options_pages = ExtensionPoint[type[OptionsPage]](label='options_pages
 
 def register_options_page(page_class: type[OptionsPage]) -> None:
     ext_point_options_pages.register(page_class.__module__, page_class)
-    for opt_name, opt_info in page_class.OPTIONS.items():
+    section = page_class.OPTION_SECTION
+    options = page_class.OPTIONS
+
+    # Which options "Restore Defaults" resets (see PICARD-3525):
+    #   * plugin pages -> every option registered in the 'plugin.<uuid>'
+    #     section, so a single-page plugin resets correctly with no extra
+    #     declaration;
+    #   * core pages -> the OPTIONS keys, since scanning the shared 'setting'
+    #     section would mean "reset every setting in Picard".
+    if section.startswith('plugin.'):
+        reset_names = {name for sect, name in Option.registry if sect == section}
+    else:
+        reset_names = set(options)
+
+    # Register every OPTIONS entry for profile highlighting, then add any
+    # remaining reset-only options (plugin section members not in OPTIONS).
+    for opt_name, opt_info in options.items():
         widgets = opt_info.get('widgets')
         if widgets:
-            opt = Option.get(page_class.OPTION_SECTION, opt_name)
+            opt = Option.get(section, opt_name)
             if opt and not opt.in_profile:
                 log.warning(
                     "Option '%s' has highlight widgets on page '%s' but in_profile=False; widgets ignored",
@@ -44,3 +60,5 @@ def register_options_page(page_class: type[OptionsPage]) -> None:
                 )
                 widgets = None
         page_class.register_setting(opt_name, widgets)
+    for opt_name in reset_names - set(options):
+        page_class.register_setting(opt_name)

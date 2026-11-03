@@ -157,6 +157,9 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         section = self._config_section(config)
         # Save current values (profile-aware), write defaults, load UI, then restore.
         # This gives the user a preview of defaults without permanently changing anything.
+        # The reset set (_registered_settings) is populated by register_options_page
+        # from OPTIONS plus, for plugin pages, the options in the plugin's section.
+        # See PICARD-3525.
         old_options = {}
         for option in self._registered_settings[self.NAME]:
             default_value = option.default
