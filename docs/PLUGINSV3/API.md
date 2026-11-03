@@ -324,16 +324,69 @@ def enable(api):
     api.register_options_page(MyOptionsPage)
 ```
 
-The `OPTIONS` dict (see *Profile support* below) is only for profile
-highlighting; it does not control which options are restored.
+The `OPTIONS` dict's `widgets` entries (see *Profile support* below) are only
+for profile highlighting; by default they do not control which options are
+restored.
+
+**Narrowing the reset with the `restore` key**
+
+Resetting the whole section is right for a single-page plugin, but two cases
+need explicit control:
+
+- a plugin with **several pages sharing one section** — each page should reset
+  only its own options, not the others';
+- a plugin that must keep **some non-setting values inside `plugin_config`**
+  (see the note below) that a reset should not touch.
+
+Add a `restore` key to the relevant `OPTIONS` entries. The rule is:
+
+- if **no** `OPTIONS` entry has a `restore` key, the automatic default applies
+  (a plugin page resets its whole section, a core page resets its `OPTIONS`);
+- if **at least one** entry has a `restore` key, the automatic reset is
+  disabled and Restore Defaults resets **only** the options with
+  `'restore': True`.
+
+```python
+from typing import ClassVar
+
+from picard.plugin3.api import OptionsPage, PageOptionConfigs
+
+
+class MyOptionsPage(OptionsPage):
+    NAME = 'my_plugin'
+    TITLE = 'My Plugin'
+    PARENT = 'plugins'
+    OPTIONS: ClassVar[PageOptionConfigs] = {
+        'greeting': {'widgets': ['greeting_input'], 'restore': True},
+        'api_key': {'restore': True},
+        # 'api_token' is intentionally omitted / not flagged, so it is kept.
+    }
+```
+
+> **Important:** the presence of *any* `restore` key switches the whole page to
+> this explicit mode. Once you add one, an entry **without** `'restore': True` —
+> including a widget-only entry like `{'widgets': [...]}` — is **not** reset. If
+> a page mixes highlighting and resetting, flag every option it should reset
+> with `'restore': True`.
 
 **Where to keep non-setting state (`plugin_persist`)**
 
 Restore Defaults only scans `plugin_config` (`plugin.<uuid>`). It never touches
 `plugin_persist` (`plugin_persist.<uuid>`), the section meant for discardable,
 non-setting data such as cached tokens, timestamps, window geometry or other UI
-state. Keep non-setting data in `plugin_persist` and it is safe from Restore
-Defaults — only genuine user settings belong in `plugin_config`.
+state. Keep that data in `plugin_persist` and it is safe from Restore Defaults
+without any `restore` declaration — use the `restore` key only when a
+non-resettable value genuinely has to live in `plugin_config` itself.
+
+**Version compatibility (`restore` key)**
+
+The `restore` key is an optional `OPTIONS` entry field, so it is safe to use on
+any plugin: a Picard version that predates it simply ignores the key (that
+older Picard resets only the options listed in `OPTIONS`, as it always did).
+Conversely, a plugin written for an older Picard that did not use `restore`
+gets the default whole-section reset on a newer Picard — so if such a plugin
+stored non-setting values in `plugin_config`, move them to `plugin_persist`
+(preferred) or flag the resettable options with `restore`.
 
 #### Profile support
 

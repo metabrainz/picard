@@ -63,6 +63,8 @@ class OptionsCheckError(Exception):
 
 class OptionConfig(TypedDict, total=False):
     widgets: list[str] | tuple[str, ...]
+    # Whether "Restore Defaults" resets this option. Optional; see OptionsPage.
+    restore: bool
 
 
 PageOptionConfigs: TypeAlias = dict[str, OptionConfig]
@@ -76,6 +78,19 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     HELP_URL = None
 
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
+    # Per-option config for this page. Each key is an option name; the value may
+    # declare:
+    #   'widgets': the widget attribute names highlighted when a profile
+    #              overrides the option.
+    #   'restore': whether "Restore Defaults" resets this option.
+    #
+    # Restore Defaults reset set:
+    #   * if any entry has 'restore': True -> reset ONLY the 'restore': True
+    #     options (entries that are unflagged or 'restore': False are not
+    #     reset).
+    #   * otherwise -> automatic default (plugin pages reset every option in
+    #     their 'plugin.<uuid>' section; core pages reset the options listed in
+    #     OPTIONS) MINUS any option marked 'restore': False.
     OPTIONS: ClassVar[PageOptionConfigs] = {}
 
     # Config section where this page's options are stored.
@@ -158,8 +173,8 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         # Save current values (profile-aware), write defaults, load UI, then restore.
         # This gives the user a preview of defaults without permanently changing anything.
         # The reset set (_registered_settings) is populated by register_options_page
-        # from OPTIONS plus, for plugin pages, the options in the plugin's section.
-        # See PICARD-3525.
+        # from OPTIONS (see its 'restore' key) and, for plugin pages in automatic
+        # mode, every option in the plugin's section. See PICARD-3525.
         old_options = {}
         for option in self._registered_settings[self.NAME]:
             default_value = option.default
@@ -208,14 +223,25 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         regex_edit.textChanged.connect(live_checker)
 
     @classmethod
-    def register_setting(cls, name, highlights=None):
-        """Register a setting edited in the page, used to restore defaults
-        and to highlight when profiles are used"""
+    def register_setting(cls, name, highlights=None, restorable=True):
+        """Register a setting edited in the page.
+
+        Used to restore defaults and to highlight when profiles are used.
+
+        Args:
+            name: Option name in this page's section.
+            highlights: Widget attribute names to highlight when a profile
+                overrides the option.
+            restorable: Whether "Restore Defaults" resets this option. When
+                False, the option is still set up for profile highlighting but
+                is not added to the page's reset set.
+        """
         section = cls.OPTION_SECTION
         option = Option.get(section, name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
-        OptionsPage._registered_settings[cls.NAME].append(option)
+        if restorable:
+            OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
         pkey = setting_profile_key(name, section)
         if option.in_profile and pkey not in profile_groups_all_settings():

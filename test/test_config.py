@@ -1491,6 +1491,131 @@ class TestRestoreDefaults(TestPicardConfigCommon):
         with self.config.setting.no_profile():
             self.assertEqual(section_b['shared'], 'b_user')
 
+    @subtest_cases(
+        'flags,expected',
+        {
+            # (restore flag for a, b, c) -> set of options reset.
+            # None means the OPTIONS entry has no 'restore' key.
+            'case 1: none -> all': ((None, None, None), {'a', 'b', 'c'}),
+            'case 2: one false -> all but it': ((False, None, None), {'b', 'c'}),
+            'case 3: one true -> only it': ((True, None, None), {'a'}),
+            'case 4: two false -> only the third': ((False, False, None), {'c'}),
+            'case 5: two true -> only those two': ((True, True, None), {'a', 'b'}),
+            'case 6: true+false+none -> only true': ((True, False, None), {'a'}),
+        },
+    )
+    def test_restore_defaults_restore_key_matrix(self, flags, expected):
+        """The OPTIONS 'restore' key selects the reset set (PICARD-3525).
+
+        Rule: if any entry is restore=True, reset only the True ones; otherwise
+        reset the default set (here the whole plugin section) minus entries
+        marked restore=False.
+        """
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        # Unique section per subcase so registrations don't collide.
+        suffix = '-'.join('x' if f is None else str(f)[0] for f in flags)
+        section_name = f'plugin.test-rd-matrix-{suffix}'
+        section = ProfileConfigSection(self.config, section_name)
+        defaults = {'a': 'a_default', 'b': 'b_default', 'c': 'c_default'}
+        for name, default in defaults.items():
+            TextOption(section_name, name, default)
+        with self.config.setting.no_profile():
+            for name in defaults:
+                section[name] = f'{name}_user'
+
+        options = {}
+        for name, flag in zip(('a', 'b', 'c'), flags, strict=True):
+            options[name] = {} if flag is None else {'restore': flag}
+
+        page_name = f'test_rd_matrix_{suffix}_page'
+
+        class MatrixPage(OptionsPage):
+            NAME = page_name
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = section_name
+            OPTIONS: ClassVar[PageOptionConfigs] = options
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(MatrixPage)
+
+        seen = {}
+
+        class FakeApi:
+            plugin_config = section
+
+        page = MatrixPage.__new__(MatrixPage)
+        page.api = FakeApi()
+        page.load = lambda: seen.update({n: section[n] for n in defaults})
+
+        page.restore_defaults()
+
+        # An option was reset iff it is in the expected set: during the preview
+        # a reset option reads its default, an untouched one keeps its user value.
+        for name in defaults:
+            if name in expected:
+                self.assertEqual(seen[name], f'{name}_default', f'{name} should have been reset')
+            else:
+                self.assertEqual(seen[name], f'{name}_user', f'{name} should not have been reset')
+
+    def test_restore_defaults_restore_false_keeps_section_scan_for_others(self):
+        """restore=False excludes only that option; the section scan still
+        resets the rest, including options not listed in OPTIONS.
+
+        This is the no-True branch: a listed option opts out with restore=False,
+        but an unlisted option in the same plugin section is still reset.
+        """
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section = ProfileConfigSection(self.config, 'plugin.test-rd-false-scan')
+        TextOption('plugin.test-rd-false-scan', 'kept', 'kept_default')
+        TextOption('plugin.test-rd-false-scan', 'unlisted', 'unlisted_default')
+
+        with self.config.setting.no_profile():
+            section['kept'] = 'kept_user'
+            section['unlisted'] = 'unlisted_user'
+
+        class FalseScanPage(OptionsPage):
+            NAME = 'test_rd_false_scan_page'
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd-false-scan'
+            # 'kept' opts out; 'unlisted' is not mentioned at all.
+            OPTIONS: ClassVar[PageOptionConfigs] = {'kept': {'restore': False}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(FalseScanPage)
+
+        seen = {}
+
+        class FakeApi:
+            plugin_config = section
+
+        page = FalseScanPage.__new__(FalseScanPage)
+        page.api = FakeApi()
+        page.load = lambda: seen.update(kept=section['kept'], unlisted=section['unlisted'])
+
+        page.restore_defaults()
+
+        # kept opted out -> untouched; unlisted still reset by the section scan.
+        self.assertEqual(seen['kept'], 'kept_user')
+        self.assertEqual(seen['unlisted'], 'unlisted_default')
+
     def test_restore_defaults_core_page_not_section_scanned(self):
         """Core page (section 'setting'): no section scan.
 
