@@ -52,7 +52,7 @@ from picard import (
 
 
 P = ParamSpec('P')
-R = TypeVar('R')
+R = TypeVar('R', contravariant=True)
 
 
 class Callback(Protocol[R]):
