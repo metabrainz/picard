@@ -60,6 +60,7 @@ from picard.config import (
     setup_config,
 )
 from picard.config_upgrade import run_config_upgrades
+from picard.extension_points.event_hooks import register_file_post_save_processor
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
 from picard.options import init_options
@@ -117,6 +118,10 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
         run_config_upgrades(get_config(), interactive=False)
 
         self._init_threads()
+
+        # Honour "remove complete albums after saving", as the GUI Tagger does.
+        # Headless the removal goes straight to the workspace (no view sink).
+        register_file_post_save_processor(self._workspace.remove_album_if_complete)
 
         # Make this object discoverable to core code that reaches the running
         # application via tagger_instance() (e.g. File state bookkeeping), and

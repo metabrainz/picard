@@ -157,7 +157,69 @@ app.run_cleanup()
 """
 
 
+_POST_SAVE_PROGRAM = """
+import sys
+import tempfile
+from pathlib import Path
+from types import SimpleNamespace
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+from picard.config import get_config
+from picard.file import run_file_post_save_processors
+from picard.workspace import workspace
+
+# Isolated config so the test neither reads nor persists shared settings.
+config_dir = tempfile.TemporaryDirectory()
+app = HeadlessTagger(sys.argv, config_file=str(Path(config_dir.name) / 'picard.ini'))
+
+album = SimpleNamespace(
+    id='rel-1',
+    is_complete=lambda: True,
+    get_num_unsaved_files=lambda: 0,
+)
+file = SimpleNamespace(parent_item=SimpleNamespace(album=album))
+wks = workspace()
+wks.albums['rel-1'] = album
+removed = []
+wks.remove = removed.append
+
+# Setting off (the default): a complete, fully saved album is kept.
+run_file_post_save_processors(file)
+assert removed == [], removed
+print('KEPT_OK')
+
+# Setting on: the post-save processor removes it straight from the workspace.
+get_config().setting['remove_complete_albums_after_save'] = True
+run_file_post_save_processors(file)
+assert removed == [[album]], removed
+print('REMOVED_OK')
+
+app.run_cleanup()
+config_dir.cleanup()
+"""
+
+
 class HeadlessTaggerSubprocessTest(PicardTestCase):
+    def test_remove_complete_albums_after_save_works_headless(self):
+        result = subprocess.run(
+            [sys.executable, '-c', _POST_SAVE_PROGRAM],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        for marker in ('KEPT_OK', 'REMOVED_OK'):
+            self.assertIn(marker, result.stdout)
+
     def test_headless_tagger_boots_and_wires_services(self):
         result = subprocess.run(
             [sys.executable, '-c', _SUBPROCESS_PROGRAM],
