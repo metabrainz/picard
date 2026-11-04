@@ -92,6 +92,18 @@ class DiscPresentationTest(PicardTestCase):
         set_disc_presentation_sink(None)
         self.assertFalse(disc_presentation().has_sink)
 
+    def test_main_window_satisfies_the_sink_protocol(self):
+        # The other tests use a MagicMock sink, which answers any attribute and
+        # so cannot notice drift between the protocol and the real GUI sink.
+        # Check the real class provides every protocol member.
+        from picard.disc.presentation import DiscPresentationSink
+
+        from picard.ui.mainwindow import MainWindow
+
+        for member in ('disc_lookup_finished', 'present_disc_releases'):
+            self.assertTrue(hasattr(DiscPresentationSink, member), member)
+            self.assertTrue(callable(getattr(MainWindow, member, None)), member)
+
 
 class DiscPresentationHeadlessAutoLoadTest(PicardTestCase):
     """Without a sink, present_releases auto-loads a single unambiguous match."""
