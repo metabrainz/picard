@@ -208,11 +208,17 @@ def process_in_batches(
         items: List of items to process. Items are popped from the front.
         process_func: Callable that processes a single item.
         label: Label for debug timing output.
-        time_budget: Max seconds per batch. Defaults to 50 ms.
+        time_budget: Max seconds per batch, must be positive. Defaults to 50 ms.
         on_complete: Optional callable invoked once all items are processed.
+
+    Raises:
+        ValueError: if ``time_budget`` is zero or negative (no item could ever
+            be processed, so the batches would reschedule forever).
     """
     if time_budget is None:
         time_budget = _BATCH_TIME_BUDGET
+    elif time_budget <= 0:
+        raise ValueError(f"time_budget must be positive, got {time_budget!r}")
     deadline = time.perf_counter() + time_budget
     count = 0
     while items and time.perf_counter() < deadline:

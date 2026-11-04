@@ -23,6 +23,7 @@ from queue import (
     Empty,
     Queue,
 )
+from unittest.mock import Mock
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -128,3 +129,17 @@ class ThreadTest(PicardTestCase):
             self.result_queue.put(i)
         task_counter.wait_for_tasks()
         self.assertEqual(task_counter.count, 0)
+
+    def test_process_in_batches_rejects_non_positive_time_budget(self):
+        for bad_budget in (0, -1, -0.5):
+            with self.subTest(bad_budget=bad_budget):
+                with self.assertRaises(ValueError):
+                    thread.process_in_batches([1, 2, 3], mock_function, "test", time_budget=bad_budget)
+
+    def test_process_in_batches_processes_all_items(self):
+        processed = []
+        on_complete = Mock()
+        thread.process_in_batches([1, 2, 3], processed.append, "test", on_complete=on_complete)
+        QTest.qWait(50)
+        self.assertEqual(processed, [1, 2, 3])
+        on_complete.assert_called_once_with()
