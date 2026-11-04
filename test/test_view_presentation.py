@@ -56,13 +56,41 @@ class ViewPresentationTest(PicardTestCase):
         set_view_presentation_sink(None)
         self.assertFalse(view_presentation().has_sink)
 
-    def test_remove_forwards_to_panel_with_sink(self):
+    def test_remove_forwards_to_sink_with_selection(self):
         facade = ViewPresentation()
         sink = MagicMock()
         facade.set_sink(sink)
         objs = [object()]
         facade.remove(objs)
-        sink.panel.remove.assert_called_once_with(objs)
+        sink.remove_with_selection.assert_called_once_with(objs)
+
+    def test_remove_works_with_a_plain_protocol_sink(self):
+        # Regression: a MagicMock sink accepts any attribute, which hid a real
+        # AttributeError (the Tagger sink has no `panel`). Use a plain object
+        # implementing exactly the sink protocol so a missing member fails.
+        removed = []
+
+        class PlainSink:
+            def bring_tagger_front(self):
+                pass
+
+            def remove_with_selection(self, objects):
+                removed.extend(objects)
+
+        facade = ViewPresentation()
+        facade.set_sink(PlainSink())
+        objs = [object(), object()]
+        facade.remove(objs)
+        self.assertEqual(objs, removed)
+
+    def test_tagger_satisfies_the_sink_protocol(self):
+        # The real GUI sink must provide every protocol member.
+        from picard.tagger import Tagger
+        from picard.view_presentation import ViewPresentationSink
+
+        for member in ('bring_tagger_front', 'remove_with_selection'):
+            self.assertTrue(callable(getattr(Tagger, member, None)), member)
+        self.assertTrue(hasattr(ViewPresentationSink, 'remove_with_selection'))
 
     def test_remove_falls_back_to_workspace_without_sink(self):
         facade = ViewPresentation()

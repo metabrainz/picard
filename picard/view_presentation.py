@@ -62,15 +62,14 @@ class ViewPresentationSink(Protocol):
     """Interface a frontend provides to perform presentation actions.
 
     The GUI application satisfies this structurally: ``bring_tagger_front``
-    raises and activates the main window, and ``panel`` exposes a ``remove``
-    that removes objects while suspending the tree's own selection-change
-    handling and then fixing up the current selection.
+    raises and activates the main window, and ``remove_with_selection`` removes
+    objects while suspending the tree's own selection-change handling and then
+    fixing up the current selection.
     """
 
     def bring_tagger_front(self) -> None: ...
 
-    @property
-    def panel(self): ...
+    def remove_with_selection(self, objects: Iterable[Item]) -> None: ...
 
 
 class ViewPresentation:
@@ -104,13 +103,13 @@ class ViewPresentation:
     def remove(self, objects: Iterable[Item]) -> None:
         """Remove ``objects`` from the working set, keeping the view consistent.
 
-        With a GUI sink, delegates to the panel's ``remove`` (which suspends the
-        tree's own selection-change handling and then fixes up the current
-        selection). In headless mode there is no tree, so it removes straight
-        from the workspace.
+        With a GUI sink, delegates to the sink's ``remove_with_selection`` (the
+        GUI suspends the tree's own selection-change handling and then fixes up
+        the current selection). In headless mode there is no tree, so it removes
+        straight from the workspace.
         """
         if self._sink is not None:
-            self._sink.panel.remove(objects)
+            self._sink.remove_with_selection(objects)
         else:
             # Imported here to avoid an import cycle: picard.workspace reaches
             # this facade, so it must not be imported at module load time.

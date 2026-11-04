@@ -1237,6 +1237,15 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         self.window.raise_()
         self.window.activateWindow()
 
+    def remove_with_selection(self, objects):
+        """Remove ``objects`` keeping the tree view's selection consistent.
+
+        Sink method for :mod:`picard.view_presentation`: the main panel suspends
+        its own selection-change handling around the removal and then fixes up
+        the current selection.
+        """
+        self.window.panel.remove(objects)
+
     @staticmethod
     def instance() -> 'Tagger':
         return Tagger.__instance
