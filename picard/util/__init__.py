@@ -679,6 +679,42 @@ def is_hidden(filepath: str) -> bool:
     return (not IS_WIN and name.startswith('.')) or _has_hidden_attribute(filepath)
 
 
+def compile_ignore_regex(pattern: str) -> re.Pattern | None:
+    """Compile the ``ignore_regex`` setting; ``None`` if empty or invalid.
+
+    An invalid expression is logged and ignored rather than raised, so a bad
+    setting never prevents files from being added.
+    """
+    if not pattern:
+        return None
+    try:
+        return re.compile(pattern)
+    except re.error as e:
+        log.error("Failed evaluating regular expression for ignore_regex: %s", e)
+        return None
+
+
+def is_ignored_file(filename: str, ignore_hidden: bool, ignoreregex: re.Pattern | None) -> bool:
+    """Return True (and log why) if ``filename`` must not be added to the tagger.
+
+    Applies the rules shared by the GUI and the headless engine when adding
+    files: hidden files (if ``ignore_hidden``), the ``.smbdelete*`` files Apple
+    iOS SMB creates by renaming a file it cannot delete, and files matching the
+    ``ignore_regex`` setting (``ignoreregex``, see :func:`compile_ignore_regex`).
+    """
+    if ignore_hidden and is_hidden(filename):
+        log.debug("File ignored (hidden): %r", filename)
+        return True
+    # Ignore .smbdelete* files which Apple iOS SMB creates by renaming a file when it cannot delete it
+    if os.path.basename(filename).startswith(".smbdelete"):
+        log.debug("File ignored (.smbdelete): %r", filename)
+        return True
+    if ignoreregex is not None and ignoreregex.search(filename):
+        log.info("File ignored (matching %r): %r", ignoreregex.pattern, filename)
+        return True
+    return False
+
+
 def scan_paths_recursive(paths: Iterable[str], recursive: bool, ignore_hidden: bool) -> Iterator[str]:
     """Yield file paths from ``paths``, descending into directories.
 

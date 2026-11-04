@@ -1250,3 +1250,34 @@ class RunCommandOutputTest(PicardTestCase):
 
     def test_missing_executable_returns_none(self):
         self.assertIsNone(run_command_output(["definitely-not-a-real-command-xyz"]))
+
+
+class CompileIgnoreRegexTest(PicardTestCase):
+    def test_empty_pattern_is_none(self):
+        self.assertIsNone(util.compile_ignore_regex(''))
+
+    def test_valid_pattern_is_compiled(self):
+        regex = util.compile_ignore_regex(r'\.bak$')
+        self.assertTrue(regex.search('song.bak'))
+        self.assertFalse(regex.search('song.flac'))
+
+    def test_invalid_pattern_is_logged_and_ignored(self):
+        self.assertIsNone(util.compile_ignore_regex('(unclosed'))
+
+
+class IsIgnoredFileTest(PicardTestCase):
+    def test_regular_file_is_not_ignored(self):
+        self.assertFalse(util.is_ignored_file('/music/song.flac', True, None))
+
+    def test_smbdelete_file_is_ignored(self):
+        self.assertTrue(util.is_ignored_file('/music/.smbdelete1234', False, None))
+
+    def test_file_matching_regex_is_ignored(self):
+        regex = util.compile_ignore_regex(r'\.bak$')
+        self.assertTrue(util.is_ignored_file('/music/song.bak', False, regex))
+        self.assertFalse(util.is_ignored_file('/music/song.flac', False, regex))
+
+    @unittest.skipIf(IS_WIN, "hidden files are flagged by attribute on Windows")
+    def test_hidden_file_is_ignored_only_if_requested(self):
+        self.assertTrue(util.is_ignored_file('/music/.hidden.flac', True, None))
+        self.assertFalse(util.is_ignored_file('/music/.hidden.flac', False, None))

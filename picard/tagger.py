@@ -55,7 +55,6 @@ import logging
 import os
 from pathlib import Path
 import platform
-import re
 import shutil
 import signal
 import sys
@@ -165,7 +164,8 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    is_hidden,
+    compile_ignore_regex,
+    is_ignored_file,
     normpath,
     periodictouch,
     pipe,
@@ -969,28 +969,14 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        ignoreregex = None
         config = get_config()
-        pattern = config.setting['ignore_regex']
-        if pattern:
-            try:
-                ignoreregex = re.compile(pattern)
-            except re.error as e:
-                log.error("Failed evaluating regular expression for ignore_regex: %s", e)
+        ignoreregex = compile_ignore_regex(config.setting['ignore_regex'])
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
             filename = resolve_fs_path(filename)
             filename = normpath(filename)
-            if ignore_hidden and is_hidden(filename):
-                log.debug("File ignored (hidden): %r", filename)
-                continue
-            # Ignore .smbdelete* files which Applie iOS SMB creates by renaming a file when it cannot delete it
-            if os.path.basename(filename).startswith(".smbdelete"):
-                log.debug("File ignored (.smbdelete): %r", filename)
-                continue
-            if ignoreregex is not None and ignoreregex.search(filename):
-                log.info("File ignored (matching %r): %r", pattern, filename)
+            if is_ignored_file(filename, ignore_hidden, ignoreregex):
                 continue
             if filename not in self.files:
                 file = self.format_registry.open(filename)
