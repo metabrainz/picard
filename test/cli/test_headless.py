@@ -203,7 +203,43 @@ config_dir.cleanup()
 """
 
 
+_QT_MESSAGE_PROGRAM = """
+import sys
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+
+app = HeadlessTagger(sys.argv, config_file=None)
+
+# A known-benign Qt-internal warning is dropped, any other one is kept.
+QtCore.qWarning('QIODevice::read (QSslSocket): device not open')
+QtCore.qWarning('some other Qt warning')
+
+app.run_cleanup()
+"""
+
+
 class HeadlessTaggerSubprocessTest(PicardTestCase):
+    def test_qt_messages_go_through_the_message_handler(self):
+        result = subprocess.run(
+            [sys.executable, '-c', _QT_MESSAGE_PROGRAM],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        output = result.stdout + result.stderr
+        self.assertNotIn('device not open', output)
+        self.assertIn('some other Qt warning', output)
+
     def test_remove_complete_albums_after_save_works_headless(self):
         result = subprocess.run(
             [sys.executable, '-c', _POST_SAVE_PROGRAM],
