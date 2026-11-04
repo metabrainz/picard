@@ -53,6 +53,7 @@ from functools import partial
 import itertools
 import os.path
 from pathlib import Path
+from typing import cast
 
 import yaml
 
@@ -1846,7 +1847,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         try:
             file = next(files)
         except StopIteration:
-            files = self.tagger.unclustered_files.files
+            # unclustered_files.files is a ListOfMetadataItems (typed
+            # MetadataItem) but only ever holds File at runtime.
+            files = cast("list[File]", self.tagger.unclustered_files.files)
         else:
             files = itertools.chain([file], files)
         self.tagger.cluster(files, self._cluster_finished)
