@@ -92,6 +92,7 @@ if TYPE_CHECKING:
     from picard.cluster import (
         Cluster,
         ClusterList,
+        FileCluster,
         UnclusteredFiles,
     )
     from picard.file import File
@@ -616,7 +617,7 @@ class Workspace:
         workspace_events().cluster_added.emit(cluster)
         return cluster
 
-    def apply_file_cluster(self, file_cluster) -> Cluster | UnclusteredFiles:
+    def apply_file_cluster(self, file_cluster: FileCluster) -> Cluster | UnclusteredFiles:
         """Place one computed ``file_cluster`` group into the working set.
 
         A group of more than one file becomes a cluster (created or reused via
