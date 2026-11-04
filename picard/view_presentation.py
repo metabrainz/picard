@@ -43,11 +43,18 @@ refresh of the current selection): this facade performs a discrete presentation
 ACTION on behalf of core.
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 from typing import (
+    TYPE_CHECKING,
     Protocol,
     runtime_checkable,
 )
+
+
+if TYPE_CHECKING:
+    from picard.item import Item
 
 
 @runtime_checkable
@@ -94,7 +101,7 @@ class ViewPresentation:
         if self._sink is not None:
             self._sink.bring_tagger_front()
 
-    def remove(self, objects: Iterable) -> None:
+    def remove(self, objects: Iterable[Item]) -> None:
         """Remove ``objects`` from the working set, keeping the view consistent.
 
         With a GUI sink, delegates to the panel's ``remove`` (which suspends the
