@@ -326,6 +326,11 @@ class ExternalCommandRunner(QtCore.QObject):
     def max_concurrent(self) -> int:
         return self._max_concurrent
 
+    @property
+    def busy(self) -> bool:
+        """True while any command is queued or running."""
+        return bool(self._queue or self._running)
+
     def set_max_concurrent(self, value: int) -> None:
         self._max_concurrent = max(1, int(value))
         self._pump()

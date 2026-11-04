@@ -118,7 +118,7 @@ from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
 )
-from picard.extension_points.disc_log_readers import ext_point_disc_log_readers
+from picard.disc.presentation import set_disc_presentation_sink
 from picard.extension_points.event_hooks import register_file_post_save_processor
 from picard.file import File
 from picard.formats import DEFAULT_FORMATS
@@ -166,8 +166,6 @@ from picard.util import (
     check_io_encoding,
     cli,
     is_hidden,
-    iter_files_from_objects,
-    mbid_validate,
     normpath,
     periodictouch,
     pipe,
@@ -189,6 +187,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
     parse_toc_itunes_cddb,
 )
+from picard.view_presentation import set_view_presentation_sink
 from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
@@ -296,7 +295,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
         self._init_ui(config)
 
-        register_file_post_save_processor(self._remove_album_if_complete)
+        register_file_post_save_processor(self._workspace.remove_album_if_complete)
 
     def _bootstrap(self):
         """Bootstraping"""
@@ -568,6 +567,14 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         # Route core view-refresh requests (metadata box / cover-art box after
         # load/edit) to the main window. In headless mode they no-op.
         set_view_sync_sink(self.window)
+        # Route core presentation actions (bring the window to front for an
+        # externally triggered load) to this application object. In headless
+        # mode no sink is installed and they no-op.
+        set_view_presentation_sink(self)
+        # Route CD/disc lookup result presentation (the release picker dialog +
+        # the lookup busy cursor) to the main window. In headless mode no sink
+        # is installed and the single unambiguous match is auto-loaded.
+        set_disc_presentation_sink(self.window)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -641,7 +648,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                                 or self.thread_pool.activeThreadCount() > original_main_thread_count
                                 or self.save_thread_pool.activeThreadCount() > original_save_thread_count
                                 or self.webservice.num_pending_web_requests
-                                or self.acoustid_client._running
+                                or self.acoustid_client.is_fingerprinting
                             ):
                                 continue
                             break
@@ -873,27 +880,11 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     ) -> None:
         """Process items with a time budget, yielding to the event loop between batches.
 
-        Args:
-            items: List of items to process. Items are popped from the front.
-            process_func: Callable that processes a single item.
-            label: Label for debug timing output.
-            time_budget: Max seconds per batch. Defaults to _BATCH_TIME_BUDGET.
-            on_complete: Optional callable invoked when all items are processed.
+        Thin wrapper around :func:`picard.util.thread.process_in_batches` (the
+        frontend-agnostic batch helper); kept as a method for the existing call
+        sites.
         """
-        if time_budget is None:
-            time_budget = self._BATCH_TIME_BUDGET
-        deadline = time.perf_counter() + time_budget
-        count = 0
-        while items and time.perf_counter() < deadline:
-            process_func(items.pop(0))
-            count += 1
-        log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
-        if items:
-            QtCore.QTimer.singleShot(
-                0, partial(self._process_in_batches, items, process_func, label, time_budget, on_complete)
-            )
-        elif on_complete:
-            on_complete()
+        thread.process_in_batches(items, process_func, label, time_budget=time_budget, on_complete=on_complete)
 
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
@@ -943,41 +934,9 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             self.unclustered_files.add_file(file)
             return
 
-        file_moved = False
-        if not config.setting['ignore_file_mbids'] and not wks.restoring_session:
-            recordingid = file.metadata.getall('musicbrainz_recordingid')
-            recordingid = recordingid[0] if recordingid else ''
-            is_valid_recordingid = mbid_validate(recordingid)
-
-            albumid = file.metadata.getall('musicbrainz_albumid')
-            albumid = albumid[0] if albumid else ''
-            is_valid_albumid = mbid_validate(albumid)
-
-            if is_valid_albumid and is_valid_recordingid:
-                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…", file, albumid, recordingid)
-                self.move_file_to_track(file, albumid, recordingid)
-                file_moved = True
-            elif is_valid_albumid:
-                log.debug("%r has only release MBID (%s), moving to album…", file, albumid)
-                self.move_file_to_album(file, albumid)
-                file_moved = True
-            elif is_valid_recordingid:
-                log.debug("%r has only recording MBID (%s), moving to non-album track…", file, recordingid)
-                self.move_file_to_nat(file, recordingid)
-                file_moved = True
-
-        if not file_moved:
-            target = self.move_file(file, target)
-            if target and target != self.unclustered_files:
-                file_moved = True
-
-        if not file_moved and unmatched_files is not None:
-            unmatched_files.append(file)
-
-        # fallback on analyze if nothing else worked
-        if not file_moved and not wks.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
-            log.debug("Trying to analyze %r …", file)
-            self.analyze([file])
+        # Place the file (MBID auto-move / move_file / analyze fallback); the
+        # UI-agnostic policy lives on the Workspace.
+        wks.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
 
         # Auto cluster newly added files if they are not explicitly moved elsewhere
         if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
@@ -1131,42 +1090,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '',
             )
 
-    def save(self, objects):
-        """Save the specified objects."""
-        for file in iter_files_from_objects(objects, save=True):
-            file.save()
-
-    def load_mbid(self, type, mbid):
-        self.bring_tagger_front()
-        if type == 'album':
-            self.load_album(mbid)
-        elif type == 'nat':
-            self.load_nat(mbid)
-        else:
-            log.warning("Unknown type to load: %s", type)
-
-    def _remove_album_if_complete(self, obj: File):
-        """Remove the album containing the file if conditions are met.
-
-        Args:
-            obj (File): File that was saved.
-        """
-        config = get_config()
-        if not config.setting['remove_complete_albums_after_save']:
-            return
-
-        # Try getting the related album
-        try:
-            album = obj.parent_item.album
-        except AttributeError:
-            return
-
-        if album.id not in self.albums:
-            return
-
-        if album.is_complete() and album.get_num_unsaved_files() == 0:
-            self.window.panel.remove([album])
-
     def _lookup_disc(self, disc, result=None, error=None):
         busy_cursor_stop()
         if error is not None:
@@ -1213,25 +1136,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc = Disc()
         busy_cursor_start()
         thread.run_task(
-            partial(self._parse_disc_ripping_log, disc, filepath),
+            partial(disc.read_log, filepath),
             partial(self._lookup_disc, disc),
             traceback=log.is_debug(),
         )
-
-    def _parse_disc_ripping_log(self, disc, path):
-        for reader in ext_point_disc_log_readers:
-            module_name = reader.__module__
-            try:
-                log.debug('Trying to parse "%s" with %s…', path, module_name)
-                toc = reader(path)
-                break
-            except Exception:
-                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
-        else:
-            msg = N_('Failed parsing ripping log "%s"')
-            log.warning(msg, path)
-            raise Exception(_(msg) % path)
-        disc.put(toc)
 
     def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
@@ -1304,83 +1212,14 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc = Disc()
         disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=list(files))
 
-    @property
-    def use_acoustid(self):
-        config = get_config()
-        return config.setting['fingerprinting_system'] == 'acoustid'
-
-    def analyze(self, objs):
-        """Analyze the file(s)."""
-        if not self.use_acoustid:
-            return
-        flashed = False
-        for file in iter_files_from_objects(objs):
-            if file.can_analyze:
-                if not flashed:
-                    # Result appears asynchronously; acknowledge the action once.
-                    notifier().flash_busy()
-                    flashed = True
-                file.set_pending()
-                self.acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
-
-    def generate_fingerprints(self, objs):
-        """Generate the fingerprints without matching the files."""
-        if not self.use_acoustid:
-            return
-
-        def finished(file, result):
-            file.clear_pending()
-
-        for file in iter_files_from_objects(objs):
-            file.set_pending()
-            self.acoustid_client.fingerprint(file, partial(finished, file))
-
     # =======================================================================
     #  Clusters
     # =======================================================================
 
-    def cluster(self, objs, callback=None):
-        """Group files with similar metadata to 'clusters'."""
-        files = tuple(iter_files_from_objects(objs))
-        if files:
-            # Clustering runs on a background thread; acknowledge the action.
-            notifier().flash_busy()
-        if log.is_debug():
-            limit = 5
-            count = len(files)
-            remain = max(0, count - limit)
-            log.debug(
-                "Clustering %d files: %r%s", count, files[:limit], f" and {remain} more files..." if remain else ""
-            )
-        thread.run_task(partial(self._do_clustering, files), partial(self._clustering_finished, callback))
-
-    def _do_clustering(self, files):
-        # The clustering algorithm should completely run in the thread,
-        # hence do not return the iterator.
-        return tuple(Cluster.cluster(files))
-
-    def _clustering_finished(self, callback, result=None, error=None):
-        if error:
-            log.error("Error while clustering: %r", error)
-            return
-
-        clusters = list(result)
-        view_updates().suspend_while_loading_enter()
-
-        def on_complete():
-            view_updates().suspend_while_loading_exit()
-            if callback:
-                callback()
-
-        self._process_in_batches(clusters, self._apply_cluster, "Clustering", on_complete=on_complete)
-
-    def _apply_cluster(self, file_cluster):
-        files = set(file_cluster.files)
-        if len(files) > 1:
-            cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-        else:
-            cluster = self.unclustered_files
-        cluster.add_files(files)
+    # Clustering (sync cluster_files + async cluster + the apply/finish steps)
+    # lives on the Workspace; Tagger inherits the cluster() delegator from
+    # WorkspaceHost. It is kept as a delegator because api.tagger.cluster(objs)
+    # is documented plugin API.
 
     # =======================================================================
     #  Utils
@@ -1397,6 +1236,15 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         )
         self.window.raise_()
         self.window.activateWindow()
+
+    def remove_with_selection(self, objects):
+        """Remove ``objects`` keeping the tree view's selection consistent.
+
+        Sink method for :mod:`picard.view_presentation`: the main panel suspends
+        its own selection-change handling around the removal and then fixes up
+        the current selection.
+        """
+        self.window.panel.remove(objects)
 
     @staticmethod
     def instance() -> 'Tagger':

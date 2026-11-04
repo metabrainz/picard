@@ -27,21 +27,25 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from functools import partial
 import traceback
 
-from picard import (
-    log,
-    tagger_instance,
-)
+from picard import log
 from picard.config import get_config
 from picard.debug_opts import DebugOpt
 from picard.disc.cyanriplog import toc_from_file as _cyanrip_toc_from_file
 from picard.disc.dbpoweramplog import toc_from_file as _dbpoweramp_toc_from_file
 from picard.disc.eaclog import toc_from_file as _eac_toc_from_file
+from picard.disc.presentation import disc_presentation
 from picard.disc.scsitoc import toc_from_file as _scsitoc_toc_from_file
 from picard.disc.whipperlog import toc_from_file as _whipper_toc_from_file
-from picard.extension_points.disc_log_readers import register_disc_log_reader
+from picard.extension_points.disc_log_readers import (
+    ext_point_disc_log_readers,
+    register_disc_log_reader,
+)
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.services import services
 from picard.util.cdrom import (
     discid,
@@ -53,13 +57,9 @@ from picard.util.isrc import (
 )
 from picard.util.mbserver import build_submission_url
 
-from picard.ui.cdlookup import CDLookupDialog
-from picard.ui.util import busy_cursor_stop
-
 
 class Disc:
     def __init__(self, id: str | None = None):
-        self.tagger = tagger_instance()
         self.id = id
         self.mcn = None
         self.tracks = 0
@@ -98,6 +98,29 @@ class Disc:
         except ValueError as e:
             log.error("Error while processing TOC %r: %s", toc, e)
             raise discid.TOCError(e) from e
+
+    def read_log(self, path):
+        """Read a disc TOC from a CD ripper log file and compute the disc ID.
+
+        Tries each registered disc-log reader (the ``disc_log_readers``
+        extension point) until one parses ``path`` into a MusicBrainz TOC, then
+        computes the disc ID from it (via :meth:`put`). Raises if no reader can
+        parse the file. UI-agnostic: callers run this on a worker thread and
+        report errors through their own frontend.
+        """
+        for reader in ext_point_disc_log_readers:
+            module_name = reader.__module__
+            try:
+                log.debug('Trying to parse "%s" with %s…', path, module_name)
+                toc = reader(path)
+                break
+            except Exception:
+                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
+        else:
+            msg = N_('Failed parsing ripping log "%s"')
+            log.warning(msg, path)
+            raise Exception(_(msg) % path)
+        self.put(toc)
 
     def _set_disc_details(self, disc):
         self.id = disc.id
@@ -190,7 +213,7 @@ class Disc:
         services().mb_api.lookup_toc(toc_string, self._toc_lookup_finished)
 
     def _lookup_finished(self, document, http, error):
-        busy_cursor_stop()
+        disc_presentation().lookup_finished()
         releases = []
         if error:
             log.error("%r", http.errorString())
@@ -200,12 +223,11 @@ class Disc:
             except (AttributeError, IndexError):
                 log.error(traceback.format_exc())
 
-        dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
-        dialog.exec()
+        disc_presentation().present_releases(self, releases)
 
     def _toc_lookup_finished(self, document, http, error):
         """Handle the result of a TOC lookup."""
-        busy_cursor_stop()
+        disc_presentation().lookup_finished()
         releases = []
         if error:
             log.error("TOC lookup error: %r", http.errorString())
@@ -215,30 +237,12 @@ class Disc:
             except (AttributeError, KeyError) as e:
                 log.error("Error parsing TOC lookup response: %r", e)
 
-        # If we have exactly one match and skip_dialog is True, auto-load it
-        if self._skip_dialog and len(releases) == 1:
-            release = releases[0]
-            release_id = release.get('id')
-            if release_id:
-                album = self.tagger.load_album(release_id)
-                # Match the files if provided
-                if self._files_to_match:
-                    self.tagger.move_files_to_album(self._files_to_match, album=album)
-            return
-
-        # Otherwise show the dialog for user to select
-        dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
-        # If files were provided, match them after user selection
-        if self._files_to_match:
-            dialog.accepted.connect(partial(self._on_dialog_accepted, dialog))
-        dialog.exec()
-
-    def _on_dialog_accepted(self, dialog):
-        """Handle when user accepts a release selection in the TOC lookup dialog."""
-        release_id = dialog.get_selected_release_id()
-        if release_id and self._files_to_match:
-            album = self.tagger.load_album(release_id)
-            self.tagger.move_files_to_album(self._files_to_match, album=album)
+        # With skip_dialog, the facade auto-loads a single match without a
+        # picker (the lookup-from-tags / non-interactive behaviour); otherwise
+        # it presents the picker (GUI) or auto-loads a single match (headless).
+        disc_presentation().present_releases(
+            self, releases, files_to_match=self._files_to_match, skip_dialog=self._skip_dialog
+        )
 
 
 discid_version: str | None = None

@@ -104,3 +104,261 @@ class WorkspaceAccessorTest(PicardTestCase):
         set_workspace_provider(None)
         self.assertIsNot(workspace(), provider)
         self.assertEqual(workspace().files, {})
+
+
+class WorkspaceClusterFilesTest(PicardTestCase):
+    """Synchronous cluster_files + the shared per-group apply_file_cluster."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.set_config_values(setting={'va_name': 'Various Artists', 'nat_name': 'Standalone Recordings'})
+        # File._move touches the acoustid/isrc managers via services(); the mock
+        # tagger is the services provider in tests, so stub them.
+        self.tagger.acoustid_manager = MagicMock()
+        self.tagger.isrc_submit_manager = MagicMock()
+        self.wks = Workspace()
+        self.addCleanup(set_workspace_provider, None)
+        set_workspace_provider(self.wks)
+
+    def _add_unclustered(self, album, artist, name):
+        from picard.file import File
+
+        f = File(name)
+        f.metadata['album'] = album
+        f.metadata['albumartist'] = artist
+        self.wks.files[f.filename] = f
+        self.wks.unclustered_files.add_file(f)
+        return f
+
+    def test_cluster_files_groups_multi_file_albums(self):
+        self._add_unclustered('Album A', 'Artist A', 'a1.flac')
+        self._add_unclustered('Album A', 'Artist A', 'a2.flac')
+        self._add_unclustered('Album B', 'Artist B', 'b1.flac')
+        self._add_unclustered('Album B', 'Artist B', 'b2.flac')
+        touched = self.wks.cluster_files(list(self.wks.unclustered_files.files))
+        self.assertEqual(2, len(touched))
+        self.assertEqual(2, len(list(self.wks.clusters)))
+
+    def test_cluster_files_single_file_group_stays_unclustered(self):
+        self._add_unclustered('Album A', 'Artist A', 'a1.flac')
+        self._add_unclustered('Album A', 'Artist A', 'a2.flac')
+        self._add_unclustered('Lonely', 'Nobody', 'solo.flac')
+        touched = self.wks.cluster_files(list(self.wks.unclustered_files.files))
+        # Only the 2-file album clusters; the lone file does not.
+        self.assertEqual(1, len(touched))
+        self.assertEqual(1, len(list(self.wks.clusters)))
+
+    def test_cluster_files_empty_returns_empty(self):
+        self.assertEqual([], self.wks.cluster_files([]))
+        self.assertEqual(0, len(list(self.wks.clusters)))
+
+    def test_apply_file_cluster_single_file_returns_unclustered(self):
+        f = self._add_unclustered('Lonely', 'Nobody', 'solo.flac')
+        file_cluster = MagicMock(files=[f], title='Lonely', artist='Nobody')
+        container = self.wks.apply_file_cluster(file_cluster)
+        self.assertIs(container, self.wks.unclustered_files)
+
+
+class WorkspaceAsyncClusterTest(PicardTestCase):
+    """Asynchronous cluster(): dispatch on a worker thread, apply in batches."""
+
+    def setUp(self):
+        super().setUp()
+        self.wks = Workspace()
+        self.addCleanup(set_workspace_provider, None)
+        set_workspace_provider(self.wks)
+
+    def test_cluster_flashes_and_dispatches_when_files_present(self):
+        files = (MagicMock(), MagicMock())
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter(files)),
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks.cluster(object())
+            mock_notifier.return_value.flash_busy.assert_called_once_with()
+            mock_thread.run_task.assert_called_once()
+
+    def test_cluster_does_not_flash_when_no_files(self):
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter(())),
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks.cluster(object())
+            mock_notifier.return_value.flash_busy.assert_not_called()
+            # Empty is still dispatched; the worker simply finds nothing.
+            mock_thread.run_task.assert_called_once()
+
+    def test_clustering_finished_applies_in_batches_and_calls_on_complete(self):
+        on_complete = MagicMock()
+        fc1 = MagicMock()
+        fc2 = MagicMock()
+        with (
+            patch('picard.workspace.view_updates') as mock_vu,
+            patch('picard.workspace.thread') as mock_thread,
+            patch.object(self.wks, 'apply_file_cluster') as mock_apply,
+        ):
+            self.wks._clustering_finished(on_complete, result=(fc1, fc2))
+            mock_vu.return_value.suspend_while_loading_enter.assert_called_once_with()
+            # Application is handed to the batch helper with our apply function.
+            mock_thread.process_in_batches.assert_called_once()
+            args, kwargs = mock_thread.process_in_batches.call_args
+            self.assertEqual([fc1, fc2], args[0])
+            self.assertIs(mock_apply, args[1])
+            # The finished callback exits the suspension and runs on_complete.
+            kwargs['on_complete']()
+            mock_vu.return_value.suspend_while_loading_exit.assert_called_once_with()
+            on_complete.assert_called_once_with()
+
+    def test_clustering_finished_logs_and_returns_on_error(self):
+        on_complete = MagicMock()
+        with (
+            patch('picard.workspace.view_updates') as mock_vu,
+            patch('picard.workspace.thread') as mock_thread,
+        ):
+            self.wks._clustering_finished(on_complete, error=RuntimeError("boom"))
+            mock_vu.return_value.suspend_while_loading_enter.assert_not_called()
+            mock_thread.process_in_batches.assert_not_called()
+            on_complete.assert_not_called()
+
+
+class WorkspaceAnalyzeFlashTest(PicardTestCase):
+    """analyze() (the AcoustID 'Scan' action) should flash the busy cursor once
+    per user action to acknowledge the async work, and only when AcoustID is
+    enabled and there is something to analyze.
+    """
+
+    def test_analyze_flashes_once_for_batch(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = True
+        file1 = MagicMock(can_analyze=True)
+        file2 = MagicMock(can_analyze=True)
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.services'),
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_called_once_with()
+
+    def test_analyze_does_not_flash_when_acoustid_disabled(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = False
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((MagicMock(),))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_not_called()
+
+    def test_analyze_does_not_flash_when_nothing_analyzable(self):
+        wks = MagicMock(spec=Workspace)
+        wks.use_acoustid = True
+        file = MagicMock(can_analyze=False)
+        with (
+            patch('picard.workspace.notifier') as mock_notifier,
+            patch('picard.workspace.services'),
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((file,))),
+        ):
+            Workspace.analyze(wks, object())
+            mock_notifier.return_value.flash_busy.assert_not_called()
+
+
+class WorkspaceLoadMbidTest(PicardTestCase):
+    """load_mbid brings the window to front (via the facade) then loads."""
+
+    def test_load_mbid_album_brings_front_then_loads_album(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation') as mock_vp,
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('album', 'some-mbid')
+            mock_vp.return_value.bring_to_front.assert_called_once_with()
+            mock_load_album.assert_called_once_with('some-mbid')
+            mock_load_nat.assert_not_called()
+
+    def test_load_mbid_nat_loads_nat(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation') as mock_vp,
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('nat', 'rec-mbid')
+            mock_vp.return_value.bring_to_front.assert_called_once_with()
+            mock_load_nat.assert_called_once_with('rec-mbid')
+            mock_load_album.assert_not_called()
+
+    def test_load_mbid_unknown_type_loads_nothing(self):
+        wks = Workspace()
+        with (
+            patch('picard.workspace.view_presentation'),
+            patch.object(wks, 'load_album') as mock_load_album,
+            patch.object(wks, 'load_nat') as mock_load_nat,
+        ):
+            wks.load_mbid('bogus', 'x')
+            mock_load_album.assert_not_called()
+            mock_load_nat.assert_not_called()
+
+
+class WorkspaceRemoveAlbumIfCompleteTest(PicardTestCase):
+    """remove_album_if_complete: a file-post-save processor honouring the
+    remove_complete_albums_after_save setting and going through the
+    view-presentation facade.
+    """
+
+    def _file_with_album(self, album):
+        obj = MagicMock()
+        obj.parent_item.album = album
+        return obj
+
+    def test_removes_when_enabled_complete_and_saved(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1', is_complete=MagicMock(return_value=True))
+        album.get_num_unsaved_files.return_value = 0
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_called_once_with([album])
+
+    def test_noop_when_setting_disabled(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': False})
+        wks = Workspace()
+        album = MagicMock(id='rel-1')
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_no_album(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        obj = MagicMock()
+        obj.parent_item = None
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(obj)
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_album_not_loaded(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1')
+        # album not in wks.albums
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()
+
+    def test_noop_when_incomplete_or_unsaved(self):
+        self.set_config_values(setting={'remove_complete_albums_after_save': True})
+        wks = Workspace()
+        album = MagicMock(id='rel-1', is_complete=MagicMock(return_value=True))
+        album.get_num_unsaved_files.return_value = 2
+        wks.albums['rel-1'] = album
+        with patch('picard.workspace.view_presentation') as mock_vp:
+            wks.remove_album_if_complete(self._file_with_album(album))
+            mock_vp.return_value.remove.assert_not_called()

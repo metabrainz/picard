@@ -50,6 +50,7 @@ workspace) and stays on the application object.
 from __future__ import annotations
 
 from collections.abc import (
+    Callable,
     Iterable,
     Iterator,
 )
@@ -64,6 +65,7 @@ from typing import (
 from PyQt6 import QtCore
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -71,6 +73,13 @@ from picard.i18n import (
 from picard.item import ListOfMetadataItems
 from picard.notification import notifier
 from picard.services import services
+from picard.util import (
+    IterableFiles,
+    iter_files_from_objects,
+    mbid_validate,
+    thread,
+)
+from picard.view_presentation import view_presentation
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
 
@@ -83,6 +92,7 @@ if TYPE_CHECKING:
     from picard.cluster import (
         Cluster,
         ClusterList,
+        FileCluster,
         UnclusteredFiles,
     )
     from picard.file import File
@@ -311,6 +321,29 @@ class Workspace:
         run_album_post_removal_processors(album)
         workspace_events().tagger_stats_changed.emit()
 
+    def remove_album_if_complete(self, obj: File) -> None:
+        """Remove the album containing ``obj`` once it is fully saved.
+
+        A file-post-save processor: when ``remove_complete_albums_after_save``
+        is set and the file's album is loaded, complete and has no unsaved
+        files left, remove the album from the working set. The removal goes
+        through the view-presentation facade so a GUI frontend can keep its
+        tree selection consistent; headless removes straight from the
+        workspace.
+        """
+        config = get_config()
+        if not config.setting['remove_complete_albums_after_save']:
+            return
+
+        # The saved file's parent is a Track only when matched to an album; a
+        # Cluster/unclustered parent (or no album) has no album to remove.
+        album = getattr(obj.parent_item, 'album', None)
+        if album is None or album.id not in self.albums:
+            return
+
+        if album.is_complete() and album.get_num_unsaved_files() == 0:
+            view_presentation().remove([album])
+
     def remove_cluster(self, cluster: Cluster) -> None:
         """Remove ``cluster`` from the working set.
 
@@ -454,6 +487,21 @@ class Workspace:
             nat.load()
         return nat
 
+    def load_mbid(self, type: str, mbid: str) -> None:
+        """Load a release or non-album track by MBID, raising the window first.
+
+        Brings the application window to the front (via the view-presentation
+        facade; a no-op headless) so a load triggered from outside Picard (e.g.
+        the browser integration) surfaces the UI, then loads the album or NAT.
+        """
+        view_presentation().bring_to_front()
+        if type == 'album':
+            self.load_album(mbid)
+        elif type == 'nat':
+            self.load_nat(mbid)
+        else:
+            log.warning("Unknown type to load: %s", type)
+
     def move_file_to_nat(self, file: File, recordingid: str, node=None) -> None:
         """Move ``file`` to the non-album track ``recordingid``."""
         nats = self.create_nats()
@@ -568,6 +616,217 @@ class Workspace:
         self.clusters.append(cluster)
         workspace_events().cluster_added.emit(cluster)
         return cluster
+
+    def apply_file_cluster(self, file_cluster: FileCluster) -> Cluster | UnclusteredFiles:
+        """Place one computed ``file_cluster`` group into the working set.
+
+        A group of more than one file becomes a cluster (created or reused via
+        :meth:`load_cluster`); a single-file group stays in the unclustered
+        bucket. Returns the container the files were added to. This is the
+        per-group application step shared by the synchronous
+        :meth:`cluster_files` and the asynchronous :meth:`cluster`.
+        """
+        files = set(file_cluster.files)
+        if len(files) > 1:
+            container: Cluster | UnclusteredFiles = self.load_cluster(file_cluster.title, file_cluster.artist)
+        else:
+            container = self.unclustered_files
+        container.add_files(files)
+        return container
+
+    def cluster_files(self, files: Iterable[File]) -> list[Cluster]:
+        """Group ``files`` into clusters by metadata and apply the result synchronously.
+
+        Runs the clustering algorithm inline (it is CPU-bound metadata grouping,
+        not I/O — no event loop needed) and applies each resulting group via
+        :meth:`apply_file_cluster`. Returns the list of clusters that received
+        files (new or existing), in creation order; single-file groups stay in
+        the unclustered bucket and are not included.
+
+        This is the blocking variant, for callers that want the result
+        immediately (e.g. a headless command). The GUI and other event-loop
+        frontends use the asynchronous :meth:`cluster` instead.
+        """
+        # Imported here to avoid the cluster <-> workspace import cycle.
+        from picard.cluster import (
+            Cluster,
+            UnclusteredFiles,
+        )
+
+        touched: list[Cluster] = []
+        for file_cluster in Cluster.cluster(files):
+            container = self.apply_file_cluster(file_cluster)
+            if not isinstance(container, UnclusteredFiles) and container not in touched:
+                touched.append(container)
+        return touched
+
+    def cluster(self, objs: Iterable[IterableFiles], on_complete: Callable[[], Any] | None = None) -> None:
+        """Group the files reachable from ``objs`` into clusters asynchronously.
+
+        The clustering algorithm is CPU-bound, so it runs on a worker thread
+        (via :func:`picard.util.thread.run_task`); the resulting groups are then
+        applied on the main thread in time-budgeted batches (via
+        :func:`picard.util.thread.process_in_batches`) so a frontend stays
+        responsive while many clusters are created. ``on_complete`` (if given)
+        is called once all groups have been applied.
+
+        This is frontend-agnostic: the threading and batching rely only on the
+        application's thread pool and Qt event loop (present in the GUI and the
+        headless application alike), and user feedback goes through the
+        notification/view facades. The synchronous :meth:`cluster_files` is the
+        blocking alternative for callers that want the result immediately.
+        """
+        # Imported here to avoid the cluster <-> workspace import cycle.
+        from picard.cluster import Cluster
+
+        files = tuple(iter_files_from_objects(objs))
+        if files:
+            # Clustering runs on a background thread; acknowledge the action.
+            notifier().flash_busy()
+        if log.is_debug():
+            limit = 5
+            count = len(files)
+            remain = max(0, count - limit)
+            log.debug(
+                "Clustering %d files: %r%s", count, files[:limit], f" and {remain} more files..." if remain else ""
+            )
+
+        def compute():
+            # Run fully in the worker thread; do not return the iterator.
+            return tuple(Cluster.cluster(files))
+
+        thread.run_task(compute, partial(self._clustering_finished, on_complete))
+
+    def _clustering_finished(self, on_complete, result=None, error=None) -> None:
+        """Apply computed clusters on the main thread, in batches."""
+        if error:
+            log.error("Error while clustering: %r", error)
+            return
+        clusters = list(result or ())
+        view_updates().suspend_while_loading_enter()
+
+        def finished():
+            view_updates().suspend_while_loading_exit()
+            if on_complete:
+                on_complete()
+
+        thread.process_in_batches(clusters, self.apply_file_cluster, "Clustering", on_complete=finished)
+
+    def save(self, objects: Iterable[IterableFiles]) -> None:
+        """Save every file reachable from ``objects`` to disk.
+
+        ``objects`` may be any mix of files, tracks, albums and clusters (any
+        object exposing ``iterfiles``); each contained file is saved. The
+        per-file threading (the save thread pool) and the batch coalescing of
+        shared cover-art parents live in :class:`~picard.file.File` and the
+        begin_save/end_save bookkeeping, so this is a thin, UI-agnostic driver
+        usable from the GUI and headless.
+        """
+        for file in iter_files_from_objects(objects, save=True):
+            file.save()
+
+    @property
+    def use_acoustid(self) -> bool:
+        """True when AcoustID is the configured fingerprinting system."""
+        return get_config().setting['fingerprinting_system'] == 'acoustid'
+
+    def analyze(self, objs: Iterable[IterableFiles]) -> None:
+        """Identify files by AcoustID fingerprint (the GUI "Scan" action).
+
+        For each analyzable file reachable from ``objs``, compute its AcoustID
+        fingerprint and look up matching recordings, applying the result via
+        the file's usual ACOUSTID lookup handler. No-op unless AcoustID is the
+        configured fingerprinting system. UI-agnostic: the fingerprint work
+        runs on the AcoustID client (a service) and results arrive
+        asynchronously.
+        """
+        if not self.use_acoustid:
+            return
+        # Imported here to avoid the file <-> workspace import cycle.
+        from picard.file import File
+
+        flashed = False
+        for file in iter_files_from_objects(objs):
+            if file.can_analyze:
+                if not flashed:
+                    # Result appears asynchronously; acknowledge the action once.
+                    notifier().flash_busy()
+                    flashed = True
+                file.set_pending()
+                services().acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
+
+    def generate_fingerprints(self, objs: Iterable[IterableFiles]) -> None:
+        """Compute AcoustID fingerprints for files without matching them.
+
+        No-op unless AcoustID is the configured fingerprinting system.
+        """
+        if not self.use_acoustid:
+            return
+
+        def finished(file, result):
+            file.clear_pending()
+
+        for file in iter_files_from_objects(objs):
+            file.set_pending()
+            services().acoustid_client.fingerprint(file, partial(finished, file))
+
+    def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
+        """Place a freshly loaded ``file`` into the working set.
+
+        Implements the per-file placement policy applied right after a file
+        loads: honour embedded MusicBrainz IDs (move to the matching track,
+        album or non-album track), otherwise move it to ``target`` (falling
+        back to the unclustered bucket), and — when nothing matched — optionally
+        queue an AcoustID analyze. Files that errored go to the unclustered
+        bucket. ``file`` must be a successfully loaded, error-free file.
+
+        When ``unmatched_files`` is given, a file that could not be placed
+        anywhere meaningful is appended to it (the caller uses this to decide
+        whether to auto-cluster the leftovers).
+
+        Returns True if the file was moved somewhere other than the unclustered
+        bucket. This is the UI-agnostic core of the GUI ``Tagger._file_loaded``
+        callback; the GUI keeps the view-suspend bookkeeping and the auto-cluster
+        of the leftovers around this call.
+        """
+        config = get_config()
+        file_moved = False
+        if not config.setting['ignore_file_mbids'] and not self.restoring_session:
+            recordingid = file.metadata.getall('musicbrainz_recordingid')
+            recordingid = recordingid[0] if recordingid else ''
+            is_valid_recordingid = mbid_validate(recordingid)
+
+            albumid = file.metadata.getall('musicbrainz_albumid')
+            albumid = albumid[0] if albumid else ''
+            is_valid_albumid = mbid_validate(albumid)
+
+            if is_valid_albumid and is_valid_recordingid:
+                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…", file, albumid, recordingid)
+                self.move_file_to_track(file, albumid, recordingid)
+                file_moved = True
+            elif is_valid_albumid:
+                log.debug("%r has only release MBID (%s), moving to album…", file, albumid)
+                self.move_file_to_album(file, albumid)
+                file_moved = True
+            elif is_valid_recordingid:
+                log.debug("%r has only recording MBID (%s), moving to non-album track…", file, recordingid)
+                self.move_file_to_nat(file, recordingid)
+                file_moved = True
+
+        if not file_moved:
+            target = self.move_file(file, target)
+            if target and target != self.unclustered_files:
+                file_moved = True
+
+        if not file_moved and unmatched_files is not None:
+            unmatched_files.append(file)
+
+        # fallback on analyze if nothing else worked
+        if not file_moved and not self.restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
+            log.debug("Trying to analyze %r …", file)
+            self.analyze([file])
+
+        return file_moved
 
 
 _workspace: Workspace | None = None
@@ -689,6 +948,13 @@ class WorkspaceHost:
         """
         return self._workspace.load_album(album_id, discid=discid, disc_isrcs=disc_isrcs)
 
+    def load_mbid(self, type: str, mbid: str) -> None:
+        """Load a release or non-album track by MBID, raising the window first.
+
+        Delegates to :meth:`Workspace.load_mbid`.
+        """
+        self._workspace.load_mbid(type, mbid)
+
     def load_nat(self, nat_id: str, node=None) -> NonAlbumTrack:
         """Load the non-album track ``nat_id`` into the NATs container.
 
@@ -802,6 +1068,43 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.trash_files`.
         """
         self._workspace.trash_files(files)
+
+    def save(self, objects: Iterable[IterableFiles]) -> None:
+        """Save every file reachable from ``objects`` to disk.
+
+        Delegates to :meth:`Workspace.save`.
+        """
+        self._workspace.save(objects)
+
+    @property
+    def use_acoustid(self) -> bool:
+        """True when AcoustID is the configured fingerprinting system.
+
+        Delegates to :attr:`Workspace.use_acoustid`.
+        """
+        return self._workspace.use_acoustid
+
+    def analyze(self, objs: Iterable[IterableFiles]) -> None:
+        """Identify files by AcoustID fingerprint (the "Scan" action).
+
+        Delegates to :meth:`Workspace.analyze`.
+        """
+        self._workspace.analyze(objs)
+
+    def generate_fingerprints(self, objs: Iterable[IterableFiles]) -> None:
+        """Compute AcoustID fingerprints for files without matching them.
+
+        Delegates to :meth:`Workspace.generate_fingerprints`.
+        """
+        self._workspace.generate_fingerprints(objs)
+
+    def cluster(self, objs: Iterable[IterableFiles], callback: Callable[[], Any] | None = None) -> None:
+        """Group the files reachable from ``objs`` into clusters asynchronously.
+
+        Delegates to :meth:`Workspace.cluster`. ``callback`` is the completion
+        callback (named ``callback`` here for the documented plugin/GUI API).
+        """
+        self._workspace.cluster(objs, on_complete=callback)
 
 
 def workspace() -> Workspace:

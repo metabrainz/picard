@@ -176,6 +176,17 @@ class ExternalCommandRunnerTest(ExternalCommandQtTestBase):
         outputs = sorted(r.stdout.strip() for r in collector.results)
         self.assertEqual(outputs, ["0", "1", "2", "3", "4"])
 
+    def test_busy_true_while_work_in_flight_then_false(self):
+        collector = _Collector()
+        runner = ExternalCommandRunner(max_concurrent=1)
+        self.assertFalse(runner.busy)
+        for _ in range(3):
+            runner.run(_py("import time; time.sleep(0.2)"), collector.on_success, collector.on_error)
+        # Something is queued/running right after submitting.
+        self.assertTrue(runner.busy)
+        self._wait_for(lambda: collector.total == 3, timeout_ms=10000)
+        self.assertFalse(runner.busy)
+
     def test_respects_concurrency_limit(self):
         # Each command records concurrent count via a shared marker directory.
         marker_dir = self.mktmpdir()

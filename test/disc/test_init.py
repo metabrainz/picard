@@ -45,10 +45,6 @@ def mock_disc_submission_url():
 
 
 class DiscTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.patch_tagger_instance('picard.disc')
-
     def test_static_submission_url_no_config(self):
         with patch.object(
             picard.util.mbserver.submission, 'get_submission_server', return_value=ServerTuple('example.com', 443)
@@ -188,10 +184,6 @@ class MockDiscNoIsrcAttr:
 
 
 class DiscIsrcTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.patch_tagger_instance('picard.disc')
-
     @patch.object(picard.disc, 'discid')
     def test_read_with_isrc_feature(self, mock_discid):
         self.set_config_values(
@@ -281,3 +273,99 @@ class DiscIsrcTest(PicardTestCase):
         result = picard.disc.Disc._extract_isrcs(tracks)
         # Duplicate ISRC removed, unique one kept
         self.assertEqual({3: 'GBAYE0000351'}, result)
+
+
+class DiscLookupCallbackTest(PicardTestCase):
+    """Disc web-service callbacks delegate presentation to the facade."""
+
+    def test_lookup_finished_presents_releases(self):
+        disc = picard.disc.Disc(id='disc-1')
+        document = {'releases': [{'id': 'r1'}, {'id': 'r2'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._lookup_finished(document, Mock(), None)
+            mock_dp.return_value.lookup_finished.assert_called_once_with()
+            mock_dp.return_value.present_releases.assert_called_once_with(disc, [{'id': 'r1'}, {'id': 'r2'}])
+
+    def test_lookup_finished_on_error_presents_empty(self):
+        disc = picard.disc.Disc(id='disc-1')
+        http = Mock()
+        http.errorString.return_value = 'boom'
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._lookup_finished(None, http, error=True)
+            mock_dp.return_value.present_releases.assert_called_once_with(disc, [])
+
+    def test_toc_lookup_skip_dialog_delegates_with_skip_flag(self):
+        disc = picard.disc.Disc(id='disc-1')
+        files = [Mock()]
+        disc._skip_dialog = True
+        disc._files_to_match = files
+        document = {'releases': [{'id': 'rel-1'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._toc_lookup_finished(document, Mock(), None)
+            # The skip-dialog single-match auto-load now lives in the facade;
+            # the callback just forwards the skip_dialog flag.
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'rel-1'}], files_to_match=files, skip_dialog=True
+            )
+
+    def test_toc_lookup_multiple_matches_presents(self):
+        disc = picard.disc.Disc(id='disc-1')
+        disc._skip_dialog = True
+        disc._files_to_match = None
+        document = {'releases': [{'id': 'r1'}, {'id': 'r2'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._toc_lookup_finished(document, Mock(), None)
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'r1'}, {'id': 'r2'}], files_to_match=None, skip_dialog=True
+            )
+
+    def test_toc_lookup_without_skip_dialog_presents(self):
+        disc = picard.disc.Disc(id='disc-1')
+        files = [Mock()]
+        disc._skip_dialog = False
+        disc._files_to_match = files
+        document = {'releases': [{'id': 'rel-1'}]}
+        with patch('picard.disc.disc_presentation') as mock_dp:
+            disc._toc_lookup_finished(document, Mock(), None)
+            mock_dp.return_value.present_releases.assert_called_once_with(
+                disc, [{'id': 'rel-1'}], files_to_match=files, skip_dialog=False
+            )
+
+
+class DiscReadLogTest(PicardTestCase):
+    """Disc.read_log parses a ripper log via the extension point into a TOC."""
+
+    def test_read_log_uses_first_successful_reader(self):
+        disc = picard.disc.Disc()
+        good_reader = Mock(return_value=test_toc)
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [good_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            disc.read_log('/some/path.log')
+            good_reader.assert_called_once_with('/some/path.log')
+            mock_put.assert_called_once_with(test_toc)
+
+    def test_read_log_skips_failing_readers(self):
+        disc = picard.disc.Disc()
+        bad_reader = Mock(side_effect=ValueError("nope"))
+        good_reader = Mock(return_value=test_toc)
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [bad_reader, good_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            disc.read_log('/some/path.log')
+            bad_reader.assert_called_once()
+            good_reader.assert_called_once()
+            mock_put.assert_called_once_with(test_toc)
+
+    def test_read_log_raises_when_all_readers_fail(self):
+        disc = picard.disc.Disc()
+        bad_reader = Mock(side_effect=ValueError("nope"))
+        with (
+            patch.object(picard.disc, 'ext_point_disc_log_readers', [bad_reader]),
+            patch.object(disc, 'put') as mock_put,
+        ):
+            with self.assertRaisesRegex(Exception, "Failed parsing ripping log"):
+                disc.read_log('/some/path.log')
+            mock_put.assert_not_called()
