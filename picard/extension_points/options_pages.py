@@ -32,10 +32,32 @@ ext_point_options_pages = ExtensionPoint[type[OptionsPage]](label='options_pages
 
 def register_options_page(page_class: type[OptionsPage]) -> None:
     ext_point_options_pages.register(page_class.__module__, page_class)
-    for opt_name, opt_info in page_class.OPTIONS.items():
+    section = page_class.OPTION_SECTION
+    options = page_class.OPTIONS
+
+    # Which options "Restore Defaults" resets, driven by the optional 'restore'
+    # key on OPTIONS entries (see PICARD-3525):
+    #   * any entry with restore=True -> reset ONLY the restore=True options;
+    #   * otherwise -> the automatic default (plugin pages: every option in the
+    #     'plugin.<uuid>' section; core pages: the OPTIONS keys) MINUS any
+    #     option marked restore=False.
+    if any(info.get('restore') is True for info in options.values()):
+        reset_names = {name for name, info in options.items() if info.get('restore') is True}
+    else:
+        excluded = {name for name, info in options.items() if info.get('restore') is False}
+        if section.startswith('plugin.'):
+            candidates = {name for sect, name in Option.registry if sect == section}
+        else:
+            candidates = set(options)
+        reset_names = candidates - excluded
+
+    # Register every OPTIONS entry for profile highlighting, marking those in
+    # the reset set as restorable; then add any remaining reset-only options
+    # (plugin section members not listed in OPTIONS).
+    for opt_name, opt_info in options.items():
         widgets = opt_info.get('widgets')
         if widgets:
-            opt = Option.get(page_class.OPTION_SECTION, opt_name)
+            opt = Option.get(section, opt_name)
             if opt and not opt.in_profile:
                 log.warning(
                     "Option '%s' has highlight widgets on page '%s' but in_profile=False; widgets ignored",
@@ -43,4 +65,6 @@ def register_options_page(page_class: type[OptionsPage]) -> None:
                     page_class.NAME,
                 )
                 widgets = None
-        page_class.register_setting(opt_name, widgets)
+        page_class.register_setting(opt_name, widgets, restorable=opt_name in reset_names)
+    for opt_name in reset_names - set(options):
+        page_class.register_setting(opt_name)
