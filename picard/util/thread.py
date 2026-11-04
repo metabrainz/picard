@@ -62,8 +62,8 @@ _BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
 
 
 def process_in_batches(
-    items: list,
-    process_func: Callable[[Any], Any],
+    items: list[R],
+    process_func: Callable[[R], Any],
     label: str,
     time_budget: float | None = None,
     on_complete: Callable[[], Any] | None = None,
