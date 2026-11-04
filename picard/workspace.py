@@ -634,7 +634,7 @@ class Workspace:
         container.add_files(files)
         return container
 
-    def cluster_files(self, files) -> list:
+    def cluster_files(self, files: Iterable[File]) -> list[Cluster]:
         """Group ``files`` into clusters by metadata and apply the result synchronously.
 
         Runs the clustering algorithm inline (it is CPU-bound metadata grouping,
@@ -653,7 +653,7 @@ class Workspace:
             UnclusteredFiles,
         )
 
-        touched: list = []
+        touched: list[Cluster] = []
         for file_cluster in Cluster.cluster(files):
             container = self.apply_file_cluster(file_cluster)
             if not isinstance(container, UnclusteredFiles) and container not in touched:
