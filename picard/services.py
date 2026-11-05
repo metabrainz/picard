@@ -60,13 +60,15 @@ if TYPE_CHECKING:  # avoid circular imports
 # the Tagger application object. Keeping the list explicit documents exactly
 # what counts as a "service" (vs. per-session working-set state, which is
 # handled separately).
-_SERVICE_ATTRS = (
-    'webservice',
-    'mb_api',
-    'format_registry',
-    'acoustid_manager',
-    'isrc_submit_manager',
-    'acoustid_client',
+_SERVICE_ATTRS = frozenset(
+    {
+        'acoustid_client',
+        'acoustid_manager',
+        'format_registry',
+        'isrc_submit_manager',
+        'mb_api',
+        'webservice',
+    }
 )
 
 
@@ -75,22 +77,22 @@ class TaggingServices(Protocol):
     def available(self) -> bool: ...
 
     @property
-    def webservice(self) -> 'WebService': ...
-
-    @property
-    def mb_api(self) -> 'MBAPIHelper': ...
-
-    @property
-    def format_registry(self) -> 'FormatRegistry': ...
+    def acoustid_client(self) -> 'AcoustIDClient': ...
 
     @property
     def acoustid_manager(self) -> 'AcoustIDManager': ...
 
     @property
-    def acoustid_client(self) -> 'AcoustIDClient': ...
+    def format_registry(self) -> 'FormatRegistry': ...
 
     @property
     def isrc_submit_manager(self) -> 'ISRCSubmitManager': ...
+
+    @property
+    def mb_api(self) -> 'MBAPIHelper': ...
+
+    @property
+    def webservice(self) -> 'WebService': ...
 
 
 class TaggingServicesAppInstanceWrapper:
