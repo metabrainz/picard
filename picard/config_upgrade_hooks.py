@@ -345,7 +345,7 @@ def convert_tagger_scripts_to_list(config):
         if old_script_text:
             old_script = (
                 0,
-                unique_numbered_title(gettext_constants(DEFAULT_SCRIPT_NAME), list_of_scripts),
+                unique_numbered_title(gettext_constants(DEFAULT_SCRIPT_NAME), []),
                 _s['enable_tagger_scripts'],
                 old_script_text,
             )
