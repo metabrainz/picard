@@ -321,6 +321,7 @@ def enable(api):
     # Both are reset to the defaults below, regardless of OPTIONS membership.
     api.plugin_config.register_option('greeting', 'Hello World')
     api.plugin_config.register_option('api_key', '')
+    api.plugin_config.register_option('api_token', '')
     api.register_options_page(MyOptionsPage)
 ```
 
@@ -338,13 +339,27 @@ need explicit control:
 - a plugin that must keep **some non-setting values inside `plugin_config`**
   (see the note below) that a reset should not touch.
 
-Add a `restore` key to the relevant `OPTIONS` entries. The rule is:
+Add a `restore` key to the relevant `OPTIONS` entries. It accepts:
 
-- if **no** `OPTIONS` entry has a `restore` key, the automatic default applies
-  (a plugin page resets its whole section, a core page resets its `OPTIONS`);
-- if **at least one** entry has a `restore` key set to `True`, the automatic reset is
-  disabled and Restore Defaults resets **only** the options with
-  `'restore': True`.
+| Value             | Meaning                                                      |
+|-------------------|--------------------------------------------------------------|
+| *(key omitted)*   | No explicit preference for this option.                      |
+| `'restore': True` | Reset this option. Switches the page to **explicit mode**.   |
+| `'restore': False`| Never reset this option.                                     |
+
+Which options are reset is decided per page:
+
+1. **Explicit mode**: if **at least one** entry has `'restore': True`, Restore
+   Defaults resets **only** the options with `'restore': True`. Every other
+   entry is left alone, whether it omits the key or sets `'restore': False`.
+2. **Automatic mode**: otherwise, the automatic default applies (a plugin page
+   resets its whole section, a core page resets its `OPTIONS`), **except**
+   options marked `'restore': False`, which are skipped.
+
+In short, `True` means "reset only these", and `False` means "reset everything
+except these". Use `False` to protect one or two values; use `True` to list
+exactly what to reset. Mixing them is allowed, but `True` wins: once any entry
+is `True`, the `False` entries are redundant.
 
 ```python
 from typing import ClassVar
