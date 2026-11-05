@@ -687,7 +687,7 @@ class PluginApi:
 
     @property
     def api_version(self) -> str:
-        """Get the API version string.
+        """Get the current API version string.
 
         Returns:
             str: API version string (e.g., '3.0')
@@ -696,12 +696,30 @@ class PluginApi:
 
     @property
     def api_version_tuple(self) -> Version:
-        """Get the API version as a tuple.
+        """Get the current API version as a tuple.
 
         Returns:
             tuple: API version as a tuple of integers (e.g., (3, 0))
         """
         return api_versions_tuple[-1]
+
+    @property
+    def api_supported_versions(self) -> tuple[str, ...]:
+        """Get the supported API version strings.
+
+        Returns:
+            tuple: API version strings (e.g., ('3.0', '3.1'))
+        """
+        return api_versions
+
+    @property
+    def api_supported_version_tuples(self) -> tuple[Version, ...]:
+        """Get the supported API version tuples.
+
+        Returns:
+            tuple: API version tuples as a tuple of Versions
+        """
+        return api_versions_tuple
 
     @classmethod
     def get_api(cls) -> 'PluginApi':

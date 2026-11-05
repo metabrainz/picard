@@ -168,7 +168,33 @@ def enable(api):
     api.logger.info(f"Picard plugin API version tuple: {api.api_version_tuple}")
 ```
 
-**Value**: Picard's current API version tuple (e.g., `Version(major, minor, patch, identifier, revision)`)
+**Value**: Picard's current API version tuple (e.g., `Version(3, 0)`)
+
+---
+
+### `api_supported_versions: tuple[str, ...]`
+
+Current Picard supported plugin API versions.
+
+```python
+def enable(api):
+    api.logger.info(f"Picard supported plugin API versions: {api.api_supported_versions}")
+```
+
+**Value**: Picard's current supported API versions (e.g., `('3.0', '3.1')`)
+
+---
+
+### `api_supported_version_tuples: tuple[Version, ...]`
+
+Current Picard supported plugin API version tuples.
+
+```python
+def enable(api):
+    api.logger.info(f"Picard supported plugin API version tuples: {api.api_supported_version_tuples}")
+```
+
+**Value**: Picard's current API version tuple (e.g., `(Version(3, 0), Version(3, 1))`)
 
 ---
 

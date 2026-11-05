@@ -230,6 +230,8 @@ class TestPluginApi(PicardTestCase):
         self.assertIsNotNone(api.plugin_config)
         self.assertIsNotNone(api.api_version)
         self.assertIsNotNone(api.api_version_tuple)
+        self.assertIsNotNone(api.api_supported_versions)
+        self.assertIsNotNone(api.api_supported_version_tuples)
 
     def test_logger_propagates_to_main(self):
         """Test that plugin logger messages propagate to main logger."""
