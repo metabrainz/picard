@@ -46,6 +46,8 @@ from PyQt6.QtCore import QLocale
 from picard import (
     api_versions,
     api_versions_tuple,
+    latest_api_version,
+    latest_api_version_tuple,
     log,
 )
 from picard.album import Album
@@ -692,7 +694,7 @@ class PluginApi:
         Returns:
             str: API version string (e.g., '3.0')
         """
-        return api_versions[-1]
+        return latest_api_version
 
     @property
     def api_version_tuple(self) -> Version:
@@ -701,7 +703,7 @@ class PluginApi:
         Returns:
             tuple: API version as a tuple of integers (e.g., (3, 0))
         """
-        return api_versions_tuple[-1]
+        return latest_api_version_tuple
 
     @property
     def api_supported_versions(self) -> tuple[str, ...]:

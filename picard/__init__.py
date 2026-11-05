@@ -68,6 +68,10 @@ api_versions = ("3.0",)
 
 api_versions_tuple = tuple(Version.from_string(v) for v in api_versions)
 
+# Newest supported plugin API version, computed so it doesn't depend on ordering
+latest_api_version_tuple = max(api_versions_tuple)
+latest_api_version = api_versions[api_versions_tuple.index(latest_api_version_tuple)]
+
 
 _tagger_provider = None
 
