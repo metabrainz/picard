@@ -342,7 +342,7 @@ Add a `restore` key to the relevant `OPTIONS` entries. The rule is:
 
 - if **no** `OPTIONS` entry has a `restore` key, the automatic default applies
   (a plugin page resets its whole section, a core page resets its `OPTIONS`);
-- if **at least one** entry has a `restore` key, the automatic reset is
+- if **at least one** entry has a `restore` key set to `True`, the automatic reset is
   disabled and Restore Defaults resets **only** the options with
   `'restore': True`.
 
