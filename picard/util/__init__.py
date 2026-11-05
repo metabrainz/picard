@@ -1166,7 +1166,7 @@ def _get_default_numbered_title_format() -> str:
     return gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
 
 
-def unique_numbered_title(default_title: str, existing_titles: set[str], fmt: str | None = None) -> str:
+def unique_numbered_title(default_title: str, existing_titles: Iterable[str], fmt: str | None = None) -> str:
     """Generate a new unique and numbered title
     based on given default title and existing titles
     """
