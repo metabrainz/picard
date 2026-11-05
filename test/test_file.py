@@ -389,6 +389,25 @@ class FileNamingTest(PicardTestCase):
         filename = self.file.make_filename(self.file.filename, self.metadata)
         self.assertEqual(os.path.normpath('/somepath/subdir/somealbum/somefile.mp3'), filename)
 
+    def test_make_filename_without_any_configured_script_uses_the_default(self):
+        # A configuration the GUI never saw has no scripts and no active one
+        # (e.g. a new one used from the command line): files must still get
+        # the default layout instead of a flat name.
+        config.setting['move_files'] = True
+        config.setting['rename_files'] = True
+        config.setting['file_renaming_scripts'] = {}
+        config.setting['active_file_naming_script_id'] = ''
+        metadata = Metadata(
+            {
+                'albumartist': 'Some Artist',
+                'album': 'Some Album',
+                'tracknumber': '1',
+                'title': 'Some Title',
+            }
+        )
+        filename = self.file.make_filename(self.file.filename, metadata)
+        self.assertEqual(os.path.normpath('/media/music/Some Artist/Some Album/01 Some Title.mp3'), filename)
+
     def test_make_filename_empty_script(self):
         config.setting['rename_files'] = True
         config.setting['file_renaming_scripts'] = {'test_id': {'script': '$noop()'}}

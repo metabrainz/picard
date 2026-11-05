@@ -154,7 +154,11 @@ def get_file_naming_script(settings):
         settings (ConfigSection): Object containing the user settings
 
     Returns:
-        str: The text of the file naming script if available, otherwise None
+        str: The text of the selected file naming script. If none is selected,
+            or the selected one cannot be found, the first configured script,
+            or else the default one: the same fallback the GUI applies when it
+            starts, so a configuration it has never seen (e.g. a new one used
+            from the command line) names files properly rather than not at all.
     """
     # Self-import for forward reference to presets defined later in this module
     from picard.script import get_file_naming_script_presets
@@ -167,8 +171,10 @@ def get_file_naming_script(settings):
         for item in get_file_naming_script_presets():
             if item['id'] == selected_id:
                 return str(item['script'])
-    log.error("Unable to retrieve the file naming script '%s'", selected_id)
-    return None
+        log.warning("File naming script '%s' not found, using a fallback", selected_id)
+    if scripts:
+        return next(iter(scripts.values()))['script']
+    return DEFAULT_FILE_NAMING_FORMAT
 
 
 def get_file_naming_script_presets():
