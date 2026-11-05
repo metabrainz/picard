@@ -43,7 +43,11 @@ from typing import (
 
 from PyQt6.QtCore import QLocale
 
-from picard import log
+from picard import (
+    api_versions,
+    api_versions_tuple,
+    log,
+)
 from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import (
@@ -123,6 +127,7 @@ from picard.util.externalcommand import (
     find_executable,
 )
 from picard.util.imageinfo import ImageInfo
+from picard.version import Version
 from picard.webservice import (
     PendingRequest,
     WebService,
@@ -679,6 +684,24 @@ class PluginApi:
 
         # Fall back to system locale
         return QLocale().name()
+
+    @property
+    def api_version(self) -> str:
+        """Get the API version string.
+
+        Returns:
+            str: API version string (e.g., '3.0')
+        """
+        return api_versions[-1]
+
+    @property
+    def api_version_tuple(self) -> Version:
+        """Get the API version as a tuple.
+
+        Returns:
+            tuple: API version as a tuple of integers (e.g., (3, 0))
+        """
+        return api_versions_tuple[-1]
 
     @classmethod
     def get_api(cls) -> 'PluginApi':

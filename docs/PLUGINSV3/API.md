@@ -146,6 +146,32 @@ def enable(api):
 
 ---
 
+### `api_version: str`
+
+Current Picard plugin API version.
+
+```python
+def enable(api):
+    api.logger.info(f"Picard plugin API version: {api.api_version}")
+```
+
+**Value**: Picard's current API version (e.g., `'3.0'`)
+
+---
+
+### `api_version_tuple: Version`
+
+Current Picard plugin API version tuple.
+
+```python
+def enable(api):
+    api.logger.info(f"Picard plugin API version tuple: {api.api_version_tuple}")
+```
+
+**Value**: Picard's current API version tuple (e.g., `Version(major, minor, patch, identifier, revision)`)
+
+---
+
 ### `plugin_id: str`
 
 Plugin identifier (module name).
