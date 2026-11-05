@@ -66,6 +66,7 @@ from picard.formats.registry import FormatRegistry
 from picard.options import init_options
 from picard.services import set_services_provider
 from picard.util import thread
+from picard.util.qt import install_qt_message_handler
 from picard.workspace import (
     Workspace,
     WorkspaceHost,
@@ -86,6 +87,12 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
         super().__init__(argv)
         self.stopping = False
         self.exit_cleanup = []
+
+        # Route Qt's own log messages through Picard's logging and drop the
+        # known-benign Qt-internal warnings (e.g. the spurious QSslSocket
+        # "device not open" read warning emitted on HTTP/2 error replies), as
+        # the GUI Tagger does.
+        install_qt_message_handler()
 
         # The working set (file/album/cluster registries + batch-save
         # bookkeeping) lives on a Workspace, as in the GUI Tagger. Own one and
