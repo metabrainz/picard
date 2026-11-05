@@ -698,10 +698,10 @@ class PluginApi:
 
     @property
     def api_version_tuple(self) -> Version:
-        """Get the current API version as a tuple.
+        """Get the current API version as a Version object.
 
         Returns:
-            tuple: API version as a tuple of integers (e.g., (3, 0))
+            Version: API version (e.g., Version(3, 0))
         """
         return latest_api_version_tuple
 
@@ -716,10 +716,10 @@ class PluginApi:
 
     @property
     def api_supported_version_tuples(self) -> tuple[Version, ...]:
-        """Get the supported API version tuples.
+        """Get the supported API versions as Version objects.
 
         Returns:
-            tuple: API version tuples as a tuple of Versions
+            tuple: Supported API versions as a tuple of Version objects
         """
         return api_versions_tuple
 

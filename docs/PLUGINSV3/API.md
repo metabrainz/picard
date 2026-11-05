@@ -161,14 +161,14 @@ def enable(api):
 
 ### `api_version_tuple: Version`
 
-Current Picard plugin API version tuple.
+Current Picard plugin API version as a `Version` object (a named tuple).
 
 ```python
 def enable(api):
-    api.logger.info(f"Picard plugin API version tuple: {api.api_version_tuple}")
+    api.logger.info(f"Picard plugin API version: {api.api_version_tuple}")
 ```
 
-**Value**: Picard's current API version tuple (e.g., `Version(3, 0)`)
+**Value**: Picard's current API version (e.g., `Version(3, 0)`)
 
 ---
 
@@ -187,14 +187,14 @@ def enable(api):
 
 ### `api_supported_version_tuples: tuple[Version, ...]`
 
-Current Picard supported plugin API version tuples.
+Current Picard supported plugin API versions as `Version` objects.
 
 ```python
 def enable(api):
-    api.logger.info(f"Picard supported plugin API version tuples: {api.api_supported_version_tuples}")
+    api.logger.info(f"Picard supported plugin API versions: {api.api_supported_version_tuples}")
 ```
 
-**Value**: Picard's current API version tuple (e.g., `(Version(3, 0), Version(3, 1))`)
+**Value**: Picard's supported API versions (e.g., `(Version(3, 0), Version(3, 1))`)
 
 ---
 
