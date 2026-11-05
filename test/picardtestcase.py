@@ -135,6 +135,7 @@ def MockTagger():
     tagger.files = {}
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
+    tagger.mb_api = MagicMock()
     return tagger
 
 
