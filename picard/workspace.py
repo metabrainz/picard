@@ -746,6 +746,7 @@ class Workspace:
         from picard.file import File
 
         flashed = False
+        acoustid_client = services().acoustid_client
         for file in iter_files_from_objects(objs):
             if file.can_analyze:
                 if not flashed:
@@ -753,7 +754,7 @@ class Workspace:
                     notifier().flash_busy()
                     flashed = True
                 file.set_pending()
-                services().acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
+                acoustid_client.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
 
     def generate_fingerprints(self, objs: Iterable[IterableFiles]) -> None:
         """Compute AcoustID fingerprints for files without matching them.
@@ -766,9 +767,10 @@ class Workspace:
         def finished(file, result):
             file.clear_pending()
 
+        acoustid_client = services().acoustid_client
         for file in iter_files_from_objects(objs):
             file.set_pending()
-            services().acoustid_client.fingerprint(file, partial(finished, file))
+            acoustid_client.fingerprint(file, partial(finished, file))
 
     def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
         """Place a freshly loaded ``file`` into the working set.
