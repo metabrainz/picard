@@ -789,7 +789,10 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("✓ Converted config.setting to api.global_config.setting")
 
     if has_tagger_import:
-        all_warnings.append("⚠️  Tagger import found - use api._tagger (review if needed)")
+        all_warnings.append("⚠️  Tagger import found - review how the Tagger is used")
+        all_warnings.append("   v2: tagger.webservice / tagger.mb_api")
+        all_warnings.append("   v3: api.web_service / api.mb_api")
+        all_warnings.append("   Other Tagger access is still available via api.tagger (review if needed).")
 
     # Check for deprecated album._requests pattern
     if 'album._requests' in content or 'album.tagger.webservice' in content:

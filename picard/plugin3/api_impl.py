@@ -113,6 +113,7 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
+from picard.services import services
 from picard.track import Track
 from picard.util.display_title_base import HasDisplayTitle
 from picard.util.externalcommand import (
@@ -304,7 +305,6 @@ class PluginApi:
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path = plugin_dir
         self._qt_translator: PluginTranslator | None = None
-        self._mb_api: MBAPIHelper | None = None
         self._command_runner: ExternalCommandRunner | None = None
 
     @staticmethod
@@ -551,7 +551,7 @@ class PluginApi:
                     important=False,
                 )
         """
-        return self._tagger.webservice
+        return services().webservice
 
     @property
     def mb_api(self) -> MBAPIHelper:
@@ -571,9 +571,7 @@ class PluginApi:
                     inc=['artists', 'recordings'],
                 )
         """
-        if not self._mb_api:
-            self._mb_api = MBAPIHelper(self._tagger.webservice)
-        return self._mb_api
+        return services().mb_api
 
     @property
     def logger(self) -> PluginLogger:
@@ -1299,7 +1297,7 @@ class PluginApi:
             def enable(api):
                 api.register_format(MyFormat)
         """
-        return self._tagger.format_registry.register(format)
+        return services().format_registry.register(format)
 
     # Disc log readers
     def register_disc_log_reader(self, function: Callable[['PluginApi', Path], 'TocNumbers']) -> None:
