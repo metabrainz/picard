@@ -70,6 +70,7 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.i18n import (
     N_,
     gettext as _,
@@ -875,7 +876,8 @@ class Workspace:
         ignore_hidden = config.setting['ignore_hidden_files']
         registry = services().format_registry
         result = OpenedFiles()
-        for filename in filenames:
+        # Keep a frontend responsive while a large number of paths are checked.
+        for filename in process_events_iter(filenames):
             filename = normpath(resolve_fs_path(filename))
             if is_ignored_file(filename, ignore_hidden, ignoreregex):
                 result.ignored.append(filename)
@@ -894,6 +896,75 @@ class Workspace:
         result.opened.sort(key=lambda f: f.filename)
         return result
 
+    def file_load_finished(
+        self,
+        file: File | None,
+        target: Item | None = None,
+        remove_file: bool = False,
+        unmatched_files: list | None = None,
+    ) -> None:
+        """Handle a file that finished loading (the callback of ``File.load``).
+
+        Settles one pending file (resuming the views when it was the last one),
+        then drops the file if it was found unsupported, parks it in the
+        unclustered files if it failed to load, and otherwise places it with
+        :meth:`place_loaded_file`. Once the last pending file is done, the files
+        that could not be placed are clustered if ``cluster_new_files`` is set.
+
+        ``target`` and ``unmatched_files`` are the ones given to
+        :meth:`load_files`.
+        """
+        config = get_config()
+        if self.file_pending_done() == 0:
+            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
+                view_updates().suspend_while_loading_exit()
+
+        if remove_file:
+            assert file is not None
+            file.remove()
+            return
+
+        if file is None:
+            return
+
+        if file.has_error():
+            self.unclustered_files.add_file(file)
+            return
+
+        self.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
+
+        # Auto cluster newly added files if they are not explicitly moved elsewhere
+        if self.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
+            self.cluster(unmatched_files)
+
+    def load_files(self, files: list[File], target: Item | None = None) -> None:
+        """Load ``files`` and place each one when it is loaded.
+
+        The files must already be registered, as :meth:`open_files` does. They
+        are counted as pending, the views are told to wait for them, and their
+        loads are dispatched in time-budgeted batches so a frontend stays
+        responsive; :meth:`file_load_finished` then handles each one as it completes.
+        With a ``target``, the files go there rather than the unclustered files.
+        """
+        if not files:
+            return
+        view_updates().suspend_while_loading_enter()
+        self.add_pending_files(len(files))
+        callback = partial(self.file_load_finished, target=target, unmatched_files=[])
+        thread.process_in_batches(list(files), lambda f: f.load(callback), "File load dispatch")
+
+    def add_files(self, filenames: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Open the new files among ``filenames`` and load them.
+
+        Does :meth:`open_files` then :meth:`load_files`, and returns what the
+        former reported. The files are placed asynchronously, as they load.
+        """
+        opened = self.open_files(filenames)
+        if opened.opened:
+            log.debug("Adding %d files", len(opened.opened))
+            self.load_files(opened.opened, target=target)
+        return opened
+
     def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
         """Place a freshly loaded ``file`` into the working set.
 
@@ -909,9 +980,7 @@ class Workspace:
         whether to auto-cluster the leftovers).
 
         Returns True if the file was moved somewhere other than the unclustered
-        bucket. This is the UI-agnostic core of the GUI ``Tagger._file_loaded``
-        callback; the GUI keeps the view-suspend bookkeeping and the auto-cluster
-        of the leftovers around this call.
+        bucket. :meth:`file_load_finished` calls this for each file that loaded.
         """
         config = get_config()
         file_moved = False
@@ -1150,6 +1219,20 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.move_file`.
         """
         return self._workspace.move_file(file, target)
+
+    def load_files(self, files: list[File], target: Item | None = None) -> None:
+        """Load ``files`` and place each one when it is loaded.
+
+        Delegates to :meth:`Workspace.load_files`.
+        """
+        self._workspace.load_files(files, target=target)
+
+    def add_files(self, filenames: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Open the new files among ``filenames`` and load them.
+
+        Delegates to :meth:`Workspace.add_files`.
+        """
+        return self._workspace.add_files(filenames, target=target)
 
     def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
         """Open ``filenames`` as new files and register them in the working set.

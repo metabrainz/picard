@@ -175,7 +175,6 @@ from picard.util.checkupdate import UpdateCheckManager
 from picard.util.datahash import DataHash
 from picard.util.qt import (
     install_qt_message_handler,
-    process_events_iter,
 )
 from picard.util.readthedocs import ReadTheDocs
 from picard.util.toc import (
@@ -185,7 +184,6 @@ from picard.view_presentation import set_view_presentation_sink
 from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
-    view_updates,
 )
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
@@ -869,17 +867,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     _callback_queue: ClassVar[list] = []
     _callback_timer_running: bool = False
 
-    def _process_in_batches(
-        self, items: list, process_func, label: str, time_budget: float | None = None, on_complete=None
-    ) -> None:
-        """Process items with a time budget, yielding to the event loop between batches.
-
-        Thin wrapper around :func:`picard.util.thread.process_in_batches` (the
-        frontend-agnostic batch helper); kept as a method for the existing call
-        sites.
-        """
-        thread.process_in_batches(items, process_func, label, time_budget=time_budget, on_complete=on_complete)
-
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
             self._callback_queue.append(event)
@@ -909,49 +896,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             QtCore.QTimer.singleShot(0, self._process_callback_batch)
         else:
             self._callback_timer_running = False
-
-    def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
-        config = get_config()
-        wks = workspace()
-        if wks.file_pending_done() == 0:
-            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
-                view_updates().suspend_while_loading_exit()
-
-        if remove_file:
-            file.remove()
-            return
-
-        if file is None:
-            return
-
-        if file.has_error():
-            self.unclustered_files.add_file(file)
-            return
-
-        # Place the file (MBID auto-move / move_file / analyze fallback); the
-        # UI-agnostic policy lives on the Workspace.
-        wks.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
-
-        # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
-            self.cluster(unmatched_files)
-
-    def add_files(self, filenames, target=None):
-        """Add files to the tagger."""
-        # Keep the UI responsive while a large number of paths are checked.
-        opened = workspace().open_files(process_events_iter(filenames))
-        new_files = opened.opened
-        if new_files:
-            log.debug("Adding %d files", len(new_files))
-            view_updates().suspend_while_loading_enter()
-            workspace().add_pending_files(len(new_files))
-            unmatched_files = []
-            self._load_files_batch(new_files, target, unmatched_files)
-
-    def _load_files_batch(self, files: list, target: object, unmatched_files: list) -> None:
-        """Dispatch file loads using time-budgeted batching."""
-        callback = partial(self._file_loaded, target=target, unmatched_files=unmatched_files)
-        self._process_in_batches(files, lambda f: f.load(callback), "File load dispatch")
 
     def add_paths(self, paths, target=None):
         self.add_files(workspace().scan_paths(paths), target=target)

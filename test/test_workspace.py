@@ -557,3 +557,143 @@ class WorkspaceScanPathsTest(PicardTestCase):
         with patch('picard.workspace.scan_paths_recursive', return_value=iter(())) as mock_scan:
             list(Workspace().scan_paths(['/music']))
         mock_scan.assert_called_once_with(['/music'], False, True)
+
+
+class WorkspaceFileLoadedTest(PicardTestCase):
+    """file_load_finished(): what happens when a file finishes loading."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'cluster_new_files': False})
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.wks.add_pending_files(1)
+        self.file = MagicMock(name='file')
+        self.file.has_error.return_value = False
+        patcher = patch.object(Workspace, 'place_loaded_file')
+        self.mock_place = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_places_the_file_with_its_target(self):
+        target, unmatched = object(), []
+        self.wks.file_load_finished(self.file, target=target, unmatched_files=unmatched)
+        self.mock_place.assert_called_once_with(self.file, target=target, unmatched_files=unmatched)
+
+    def test_resumes_the_views_after_the_last_pending_file(self):
+        self.wks.add_pending_files(1)
+        self.wks.file_load_finished(self.file)
+        self.mock_view_updates.return_value.suspend_while_loading_exit.assert_not_called()
+        self.wks.file_load_finished(self.file)
+        self.mock_view_updates.return_value.suspend_while_loading_exit.assert_called_once_with()
+        self.assertEqual(self.wks.pending_files_count, 0)
+
+    def test_removes_an_unsupported_file(self):
+        self.wks.file_load_finished(self.file, remove_file=True)
+        self.file.remove.assert_called_once_with()
+        self.mock_place.assert_not_called()
+
+    def test_a_file_with_an_error_goes_to_the_unclustered_files(self):
+        self.file.has_error.return_value = True
+        with patch.object(self.wks.unclustered_files, 'add_file') as mock_add:
+            self.wks.file_load_finished(self.file)
+        mock_add.assert_called_once_with(self.file)
+        self.mock_place.assert_not_called()
+
+    def test_no_file_only_settles_the_pending_count(self):
+        self.wks.file_load_finished(None)
+        self.assertEqual(self.wks.pending_files_count, 0)
+        self.mock_place.assert_not_called()
+
+    def test_clusters_unmatched_files_after_the_last_one_when_asked(self):
+        self.set_config_values({'cluster_new_files': True})
+        unmatched = [object()]
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=unmatched)
+        mock_cluster.assert_called_once_with(unmatched)
+
+    def test_does_not_cluster_while_files_are_still_pending(self):
+        self.set_config_values({'cluster_new_files': True})
+        self.wks.add_pending_files(1)
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[object()])
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_unless_asked(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[object()])
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_when_nothing_is_unmatched(self):
+        self.set_config_values({'cluster_new_files': True})
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[])
+        mock_cluster.assert_not_called()
+
+
+class WorkspaceLoadFilesTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+
+    @staticmethod
+    def _run_batches(items, process_func, label, **kwargs):
+        for item in list(items):
+            process_func(item)
+
+    def test_loads_each_file_and_counts_them_as_pending(self):
+        files = [MagicMock(name=f'file{i}') for i in range(3)]
+        with patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches):
+            self.wks.load_files(files)
+        self.assertEqual(self.wks.pending_files_count, 3)
+        self.mock_view_updates.return_value.suspend_while_loading_enter.assert_called_once_with()
+        for file in files:
+            file.load.assert_called_once()
+
+    def test_loaded_files_are_handled_with_the_target(self):
+        file, target = MagicMock(), object()
+        with (
+            patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches),
+            patch.object(Workspace, 'file_load_finished') as mock_loaded,
+        ):
+            self.wks.load_files([file], target=target)
+            (callback,) = file.load.call_args.args
+            callback(file)
+        mock_loaded.assert_called_once()
+        self.assertIs(mock_loaded.call_args.args[0], file)
+        self.assertIs(mock_loaded.call_args.kwargs['target'], target)
+
+    def test_nothing_to_load(self):
+        with patch('picard.workspace.thread.process_in_batches') as mock_batches:
+            self.wks.load_files([])
+        mock_batches.assert_not_called()
+        self.assertEqual(self.wks.pending_files_count, 0)
+        self.mock_view_updates.return_value.suspend_while_loading_enter.assert_not_called()
+
+
+class WorkspaceAddFilesTest(PicardTestCase):
+    def test_opens_then_loads_the_new_files(self):
+        wks = Workspace()
+        opened = OpenedFiles(opened=[MagicMock()])
+        target = object()
+        with (
+            patch.object(Workspace, 'open_files', return_value=opened) as mock_open,
+            patch.object(Workspace, 'load_files') as mock_load,
+        ):
+            result = wks.add_files(['a'], target=target)
+        mock_open.assert_called_once_with(['a'])
+        mock_load.assert_called_once_with(opened.opened, target=target)
+        self.assertIs(result, opened)
+
+    def test_loads_nothing_when_no_file_is_new(self):
+        wks = Workspace()
+        with (
+            patch.object(Workspace, 'open_files', return_value=OpenedFiles()),
+            patch.object(Workspace, 'load_files') as mock_load,
+        ):
+            wks.add_files(['a'])
+        mock_load.assert_not_called()
