@@ -101,6 +101,10 @@ class MP4File(File):
             'sosn': 'showsort',
             'tvsh': 'show',
             'purl': 'podcasturl',
+            'catg': 'podcastcategory',
+            'ldes': 'podcastdesc',
+            'egid': 'podcastid',
+            'keyw': 'podcastkeywords',
             '\xa9mvn': 'movement',
             '\xa9wrk': 'work',
         }

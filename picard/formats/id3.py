@@ -197,6 +197,13 @@ class ID3File(File):
             'TSO2': 'albumartistsort',
             'MVNM': 'movement',
             'GRP1': 'grouping',
+            # iTunes podcast frames
+            'PCST': 'podcast',
+            'TCAT': 'podcastcategory',
+            'TDES': 'podcastdesc',
+            'TGID': 'podcastid',
+            'TKWD': 'podcastkeywords',
+            'WFED': 'podcasturl',
         }
     )
     # Always read GRP1, but writing depends on itunes_compatible_grouping
@@ -314,6 +321,7 @@ class ID3File(File):
             'POPM': self._load_popm_frame,
             **create_frame_processors(self.__translate, self._load_standard_text_frame),
             **create_frame_processors(self.__tag_re_parse, self._load_tag_regex_frame),
+            'PCST': self._load_pcst_frame,
         }
 
     def build_TXXX(self, encoding, desc, values):
@@ -400,6 +408,12 @@ class ID3File(File):
                     metadata.add(name, text)
         else:
             metadata.add(name, frame)
+
+    def _load_pcst_frame(self, frame, metadata, config_params):
+        """Process an iTunes podcast flag (PCST) frame and add it to metadata.
+        The presence of the frame is what marks the file as a podcast.
+        """
+        metadata['podcast'] = '1'
 
     def _load_tit1_frame(self, frame, metadata, config_params):
         """Process a TIT1 frame and add it to metadata.
@@ -582,6 +596,8 @@ class ID3File(File):
                 self._save_work_tag(tags, name, values, config_params)
             elif name == 'itunes_cddb_1':
                 self._save_itunes_cddb_1_tag(tags, name, values, config_params)
+            elif name == 'podcast':
+                self._save_podcast_tag(tags, name, values, config_params)
             elif name in self.__rtranslate:
                 self._save_standard_tag(tags, name, values, config_params)
             elif name.lower() in self.__rtranslate_freetext_ci:
@@ -837,6 +853,17 @@ class ID3File(File):
         else:
             tags.add(id3.TIT1(encoding=encoding, text=values))
 
+    def _save_podcast_tag(self, tags, name, values, config_params):
+        """Save podcast tag to the iTunes podcast flag (PCST) frame.
+
+        The frame carries no data besides its presence (iTunes writes a value of 0),
+        so it is only written if the tag is set to 1 and removed otherwise.
+        """
+        if values[0] == '1':
+            tags.add(id3.PCST(value=0))
+        else:
+            tags.delall('PCST')
+
     def _save_work_tag(self, tags, name, values, config_params):
         """Save work tag to ID3 frames."""
         encoding = config_params['encoding']
@@ -864,6 +891,9 @@ class ID3File(File):
                 tags.delall('WOAR')
                 for url in values:
                     tags.add(id3.WOAR(url=url))
+            elif frameid == 'WFED' and valid_urls:
+                tags.delall('WFED')
+                tags.add(id3.WFED(url=values[0]))
         elif frameid.startswith('T') or frameid == 'MVNM':
             if write_id3v23:
                 if frameid == 'TMOO':

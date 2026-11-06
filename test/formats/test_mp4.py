@@ -155,6 +155,47 @@ class CommonMP4Tests:
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertNotIn(tag, loaded_metadata)
 
+        @skipUnlessTestfile
+        def test_podcast_tags_atoms(self):
+            metadata = Metadata(
+                {
+                    'podcast': '1',
+                    'podcastcategory': 'Technology',
+                    'podcastdesc': 'Foo description',
+                    'podcastid': 'foo-guid',
+                    'podcastkeywords': 'foo',
+                    'podcasturl': 'http://example.com/feed.xml',
+                }
+            )
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            for name, value in metadata.items():
+                with self.subTest(tag=name):
+                    self.assertEqual(value, loaded_metadata[name])
+            raw_metadata = load_raw(self.filename)
+            self.assertTrue(raw_metadata['pcst'])
+            self.assertEqual(['Technology'], raw_metadata['catg'])
+            self.assertEqual(['Foo description'], raw_metadata['ldes'])
+            self.assertEqual(['foo-guid'], raw_metadata['egid'])
+            self.assertEqual(['foo'], raw_metadata['keyw'])
+            self.assertEqual(['http://example.com/feed.xml'], raw_metadata['purl'])
+
+        @skipUnlessTestfile
+        def test_delete_podcast_tags(self):
+            metadata = Metadata({'podcastcategory': 'Technology', 'podcastdesc': 'Foo', 'podcastid': 'Foo'})
+            save_metadata(self.format_registry, self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            for atom in ('catg', 'ldes', 'egid'):
+                self.assertIn(atom, raw_metadata)
+            metadata = Metadata()
+            for name in ('podcastcategory', 'podcastdesc', 'podcastid'):
+                metadata.delete(name)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            for atom in ('catg', 'ldes', 'egid'):
+                self.assertNotIn(atom, raw_metadata)
+            for name in metadata.deleted_tags:
+                self.assertNotIn(name, loaded_metadata)
+
 
 class M4ATest(CommonMP4Tests.MP4TestCase):
     testfile = 'test.m4a'
