@@ -171,6 +171,7 @@ from picard.util import (
     versions,
     webbrowser2,
 )
+from picard.util.cdrom import get_configured_lookup_device
 from picard.util.checkupdate import UpdateCheckManager
 from picard.util.datahash import DataHash
 from picard.util.qt import (
@@ -980,12 +981,8 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def lookup_cd(self, device=None):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if not device:
-            config = get_config()
-            if device := config.setting['cd_lookup_device']:
-                device = device.split(',', 1)[0]
-            else:
-                # rely on python-discid auto detection
-                device = None
+            # None relies on python-discid auto detection
+            device = get_configured_lookup_device()
 
         self.run_lookup_cd(device)
 
