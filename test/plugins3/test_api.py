@@ -31,7 +31,12 @@ from PyQt6.QtCore import QSettings
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import load_plugin_manifest
 
-from picard import log
+from picard import (
+    api_versions,
+    api_versions_tuple,
+    latest_api_version,
+    log,
+)
 from picard.config import (
     BoolOption,
     ConfigSection,
@@ -40,7 +45,11 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.plugin3.api import PluginApi
+from picard.plugin3.api import (
+    PluginApi,
+    Version as ApiVersion,
+)
+from picard.version import Version
 
 
 class TestPluginApiMethods(PicardTestCase):
@@ -228,6 +237,16 @@ class TestPluginApi(PicardTestCase):
         self.assertEqual(api.plugin_id, 'example')
         self.assertIsNotNone(api.global_config)
         self.assertIsNotNone(api.plugin_config)
+        self.assertEqual(api.api_version, latest_api_version)
+        self.assertEqual(api.api_version_tuple, Version.from_string(api.api_version))
+        self.assertEqual(api.api_supported_versions, api_versions)
+        self.assertEqual(api.api_supported_version_tuples, api_versions_tuple)
+        self.assertIn(api.api_version, api.api_supported_versions)
+        self.assertIn(api.api_version_tuple, api.api_supported_version_tuples)
+
+    def test_version_exported_for_plugins(self):
+        """Test that Version can be imported from the plugin API module."""
+        self.assertIs(ApiVersion, Version)
 
     def test_logger_propagates_to_main(self):
         """Test that plugin logger messages propagate to main logger."""
