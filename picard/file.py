@@ -371,6 +371,12 @@ class File(MetadataItem):
         raise NotImplementedError
 
     def _loading_finished(self, callback, result=None, error=None):
+        if self.state == File.State.REMOVED:
+            # Removed while loading: the caller still counts this file as
+            # pending until its callback runs, so tell it, and let it see the
+            # file is gone.
+            callback(self)
+            return
         if self.state != File.State.PENDING or self.tagger.stopping:
             return
         config = get_config()
