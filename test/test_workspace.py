@@ -15,18 +15,23 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 from unittest.mock import (
     MagicMock,
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    set_hidden_attribute,
+)
 
 from picard.cluster import (
     ClusterList,
     UnclusteredFiles,
 )
 from picard.workspace import (
+    OpenedFiles,
     Workspace,
     set_workspace_provider,
     workspace,
@@ -362,3 +367,74 @@ class WorkspaceRemoveAlbumIfCompleteTest(PicardTestCase):
         with patch('picard.workspace.view_presentation') as mock_vp:
             wks.remove_album_if_complete(self._file_with_album(album))
             mock_vp.return_value.remove.assert_not_called()
+
+
+class WorkspaceOpenFilesTest(PicardTestCase):
+    """open_files(): open and register new files, reporting what was skipped."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'ignore_regex': '', 'ignore_hidden_files': True})
+        self.registry = MagicMock()
+        # Only ".mp3" is "supported"; a fake File remembers its filename.
+        self.registry.open.side_effect = lambda name: MagicMock(filename=name) if name.endswith('.mp3') else None
+        patcher = patch('picard.workspace.services')
+        patcher.start().return_value.format_registry = self.registry
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+
+    def _path(self, name):
+        return os.path.abspath(os.path.join(os.sep, 'music', name))
+
+    def test_opens_and_registers_new_files(self):
+        a, b = self._path('b.mp3'), self._path('a.mp3')
+        result = self.wks.open_files([a, b])
+        self.assertIsInstance(result, OpenedFiles)
+        self.assertEqual(set(self.wks.files), {a, b})
+        self.assertEqual([f.filename for f in result.opened], sorted([a, b]))
+        self.assertEqual((result.ignored, result.already_loaded, result.unsupported), ([], [], []))
+
+    def test_opened_files_are_sorted_by_filename(self):
+        names = [self._path(n) for n in ('c.mp3', 'a.mp3', 'b.mp3')]
+        result = self.wks.open_files(names)
+        self.assertEqual([f.filename for f in result.opened], sorted(names))
+
+    def test_skips_file_already_in_the_working_set(self):
+        path = self._path('a.mp3')
+        existing = MagicMock(filename=path)
+        self.wks.files[path] = existing
+        result = self.wks.open_files([path])
+        self.assertEqual(result.already_loaded, [existing])
+        self.assertEqual(result.opened, [])
+        self.registry.open.assert_not_called()
+
+    def test_reports_unsupported_files(self):
+        path = self._path('cover.jpg')
+        result = self.wks.open_files([path])
+        self.assertEqual(result.unsupported, [path])
+        self.assertEqual(result.opened, [])
+        self.assertNotIn(path, self.wks.files)
+
+    def test_reports_hidden_files(self):
+        path = os.path.join(self.mktmpdir(), '.hidden.mp3')
+        open(path, 'w').close()
+        set_hidden_attribute(path)
+        result = self.wks.open_files([path])
+        # The path is normalised by open_files (a temporary directory may be a junction).
+        self.assertEqual(len(result.ignored), 1)
+        self.assertTrue(os.path.samefile(result.ignored[0], path))
+        self.registry.open.assert_not_called()
+
+    def test_ignore_regex_is_honoured(self):
+        self.set_config_values({'ignore_regex': r'skip'})
+        path = self._path('skip_me.mp3')
+        result = self.wks.open_files([path])
+        self.assertEqual(result.ignored, [path])
+        self.assertEqual(self.wks.files, {})
+
+    def test_same_path_twice_is_opened_once(self):
+        path = self._path('a.mp3')
+        result = self.wks.open_files([path, path])
+        self.assertEqual(len(result.opened), 1)
+        self.assertEqual(len(result.already_loaded), 1)
+        self.assertEqual(self.registry.open.call_count, 1)

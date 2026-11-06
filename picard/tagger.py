@@ -164,12 +164,8 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    compile_ignore_regex,
-    is_ignored_file,
-    normpath,
     periodictouch,
     pipe,
-    resolve_fs_path,
     scan_paths_recursive,
     system_supports_long_paths,
     thread,
@@ -969,24 +965,11 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        config = get_config()
-        ignoreregex = compile_ignore_regex(config.setting['ignore_regex'])
-        ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
-        for filename in filenames:
-            filename = resolve_fs_path(filename)
-            filename = normpath(filename)
-            if is_ignored_file(filename, ignore_hidden, ignoreregex):
-                continue
-            if filename not in self.files:
-                file = self.format_registry.open(filename)
-                if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-                QtCore.QCoreApplication.processEvents()
+        # Keep the UI responsive while a large number of paths are checked.
+        opened = workspace().open_files(process_events_iter(filenames))
+        new_files = opened.opened
         if new_files:
             log.debug("Adding %d files", len(new_files))
-            new_files.sort(key=lambda x: x.filename)
             view_updates().suspend_while_loading_enter()
             workspace().add_pending_files(len(new_files))
             unmatched_files = []

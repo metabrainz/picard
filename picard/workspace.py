@@ -54,6 +54,10 @@ from collections.abc import (
     Iterable,
     Iterator,
 )
+from dataclasses import (
+    dataclass,
+    field,
+)
 from functools import partial
 import os
 from typing import (
@@ -75,8 +79,12 @@ from picard.notification import notifier
 from picard.services import services
 from picard.util import (
     IterableFiles,
+    compile_ignore_regex,
+    is_ignored_file,
     iter_files_from_objects,
     mbid_validate,
+    normpath,
+    resolve_fs_path,
     thread,
 )
 from picard.view_presentation import view_presentation
@@ -99,6 +107,20 @@ if TYPE_CHECKING:
     from picard.item import Item
     from picard.releasegroup import ReleaseGroup
     from picard.track import NonAlbumTrack
+
+
+@dataclass
+class OpenedFiles:
+    """What :meth:`Workspace.open_files` did with the paths it was given."""
+
+    # New files, registered in the working set but not loaded yet, by filename.
+    opened: list[File] = field(default_factory=list)
+    # Paths skipped by the ignore rules (hidden, ``ignore_regex``, ...).
+    ignored: list[str] = field(default_factory=list)
+    # Files already in the working set for a path (nothing was opened again).
+    already_loaded: list[File] = field(default_factory=list)
+    # Paths no registered format handles.
+    unsupported: list[str] = field(default_factory=list)
 
 
 class Workspace:
@@ -772,6 +794,40 @@ class Workspace:
             file.set_pending()
             acoustid_client.fingerprint(file, partial(finished, file))
 
+    def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
+        """Open ``filenames`` as new files and register them in the working set.
+
+        Each path is normalised, checked against the ignore rules, skipped when a
+        file for it is already in the working set, and otherwise opened with the
+        format registry and added to :attr:`files`. The new files are returned
+        sorted by filename and are *not loaded yet*: the caller loads them (the
+        GUI in time-budgeted batches, the headless engine all at once) and then
+        places each one with :meth:`place_loaded_file`.
+        """
+        config = get_config()
+        ignoreregex = compile_ignore_regex(config.setting['ignore_regex'])
+        ignore_hidden = config.setting['ignore_hidden_files']
+        registry = services().format_registry
+        result = OpenedFiles()
+        for filename in filenames:
+            filename = normpath(resolve_fs_path(filename))
+            if is_ignored_file(filename, ignore_hidden, ignoreregex):
+                result.ignored.append(filename)
+                continue
+            existing = self.files.get(filename)
+            if existing is not None:
+                result.already_loaded.append(existing)
+                continue
+            file = registry.open(filename)
+            if file is None:
+                log.debug("File ignored (unsupported format): %r", filename)
+                result.unsupported.append(filename)
+                continue
+            self.files[filename] = file
+            result.opened.append(file)
+        result.opened.sort(key=lambda f: f.filename)
+        return result
+
     def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
         """Place a freshly loaded ``file`` into the working set.
 
@@ -1021,6 +1077,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.move_file`.
         """
         return self._workspace.move_file(file, target)
+
+    def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
+        """Open ``filenames`` as new files and register them in the working set.
+
+        Delegates to :meth:`Workspace.open_files`.
+        """
+        return self._workspace.open_files(filenames)
 
     def autotag(self, objects: Iterable[Item]) -> None:
         """Look up metadata for each taggable object in ``objects``.
