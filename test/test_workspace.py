@@ -608,7 +608,7 @@ class WorkspaceFileLoadedTest(PicardTestCase):
 
     def test_clusters_unmatched_files_after_the_last_one_when_asked(self):
         self.set_config_values({'cluster_new_files': True})
-        unmatched = [object()]
+        unmatched = [MagicMock(state=File.State.NORMAL)]
         with patch.object(Workspace, 'cluster') as mock_cluster:
             self.wks.file_load_finished(self.file, unmatched_files=unmatched)
         mock_cluster.assert_called_once_with(unmatched)
@@ -714,3 +714,97 @@ class WorkspaceFileRemovedWhileLoadingTest(PicardTestCase):
         mock_view_updates.return_value.suspend_while_loading_exit.assert_called_once_with()
         mock_place.assert_not_called()
         removed.remove.assert_not_called()
+
+
+class WorkspaceAutoClusterAfterLastFileTest(PicardTestCase):
+    """cluster_new_files clusters the unmatched files once the last load is done.
+
+    The loads finish in any order, so it must not matter what kind of file is
+    the last one: a file that failed to load, one that turned out unsupported
+    or one removed meanwhile must not stop the others from being clustered.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'cluster_new_files': True})
+        patcher = patch('picard.workspace.view_updates')
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        patcher = patch.object(Workspace, 'place_loaded_file', side_effect=self._place)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.wks.add_pending_files(3)
+        self.unmatched = []
+        self.good = [self._file(), self._file()]
+
+    @staticmethod
+    def _place(file, target=None, unmatched_files=None):
+        # Nothing to place it on: it is left over, as for a file without MBIDs.
+        unmatched_files.append(file)
+        return False
+
+    @staticmethod
+    def _file(state=File.State.NORMAL, error=False):
+        file = MagicMock(state=state)
+        file.has_error.return_value = error
+        return file
+
+    def _finish(self, *finished, **kwargs):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            for file in finished:
+                self.wks.file_load_finished(file, unmatched_files=self.unmatched, **kwargs)
+        return mock_cluster
+
+    def test_clusters_when_the_last_file_failed_to_load(self):
+        failed = self._file(state=File.State.ERROR, error=True)
+        mock_cluster = self._finish(*self.good, failed)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_when_the_last_file_was_removed_while_loading(self):
+        removed = self._file(state=File.State.REMOVED)
+        mock_cluster = self._finish(*self.good, removed)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_when_the_last_file_was_found_unsupported(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            for file in self.good:
+                self.wks.file_load_finished(file, unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self._file(), unmatched_files=self.unmatched, remove_file=True)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_once_whatever_the_order(self):
+        failed = self._file(state=File.State.ERROR, error=True)
+        for position in range(3):
+            with self.subTest(failed_at=position):
+                self.wks = Workspace()
+                self.wks.add_pending_files(3)
+                self.unmatched = []
+                order = list(self.good)
+                order.insert(position, failed)
+                mock_cluster = self._finish(*order)
+                mock_cluster.assert_called_once_with(self.good)
+
+    def test_a_file_removed_after_it_was_placed_is_not_clustered(self):
+        gone = self._file()
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(gone, unmatched_files=self.unmatched)
+            gone.state = File.State.REMOVED  # removed by the user while the others load
+            self.wks.file_load_finished(self.good[0], unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self.good[1], unmatched_files=self.unmatched)
+        mock_cluster.assert_called_once_with([self.good[0], self.good[1]])
+
+    def test_nothing_to_cluster_when_every_unmatched_file_was_removed(self):
+        gone = self._file()
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(gone, unmatched_files=self.unmatched)
+            gone.state = File.State.REMOVED
+            self.wks.file_load_finished(self._file(error=True), unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self._file(error=True), unmatched_files=self.unmatched)
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_when_the_setting_is_off(self):
+        self.set_config_values({'cluster_new_files': False})
+        failed = self._file(state=File.State.ERROR, error=True)
+        mock_cluster = self._finish(*self.good, failed)
+        mock_cluster.assert_not_called()

@@ -908,8 +908,9 @@ class Workspace:
         Settles one pending file (resuming the views when it was the last one),
         then drops the file if it was found unsupported, parks it in the
         unclustered files if it failed to load, and otherwise places it with
-        :meth:`place_loaded_file`. Once the last pending file is done, the files
-        that could not be placed are clustered if ``cluster_new_files`` is set.
+        :meth:`place_loaded_file`. Once the last pending file is done, whatever
+        became of it, the files that could not be placed are clustered if
+        ``cluster_new_files`` is set, except those removed meanwhile.
 
         ``target`` and ``unmatched_files`` are the ones given to
         :meth:`load_files`.
@@ -919,30 +920,27 @@ class Workspace:
             with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
                 view_updates().suspend_while_loading_exit()
 
-        if remove_file:
-            assert file is not None
-            file.remove()
-            return
-
-        if file is None:
-            return
-
         # Imported here to avoid the file <-> workspace import cycle.
         from picard.file import File
 
-        if file.state == File.State.REMOVED:
+        if remove_file:
+            assert file is not None
+            file.remove()
+        elif file is None or file.state == File.State.REMOVED:
             # Removed while it was loading: nothing left to place.
-            return
-
-        if file.has_error():
+            pass
+        elif file.has_error():
             self.unclustered_files.add_file(file)
-            return
+        else:
+            self.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
 
-        self.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
-
-        # Auto cluster newly added files if they are not explicitly moved elsewhere
+        # Auto cluster newly added files if they are not explicitly moved elsewhere.
+        # This waits for the last file whatever it was, as the loads can finish in
+        # any order, and leaves aside the files removed in the meantime.
         if self.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
-            self.cluster(unmatched_files)
+            to_cluster = [f for f in unmatched_files if f.state != File.State.REMOVED]
+            if to_cluster:
+                self.cluster(to_cluster)
 
     def load_files(self, files: list[File], target: Item | None = None) -> None:
         """Load ``files`` and place each one when it is loaded.
