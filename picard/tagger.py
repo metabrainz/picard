@@ -936,6 +936,10 @@ class Tagger(QtWidgets.QApplication):
         if file is None:
             return
 
+        if file.state == File.State.REMOVED:
+            # Removed while it was loading: nothing left to place.
+            return
+
         if file.has_error():
             self.unclustered_files.add_file(file)
             return
