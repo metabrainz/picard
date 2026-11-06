@@ -689,7 +689,7 @@ class PluginApi:
 
     @property
     def api_version(self) -> str:
-        """Get the current API version string.
+        """Get the newest plugin API version string supported by this Picard.
 
         Returns:
             str: API version string (e.g., '3.0')
@@ -698,7 +698,7 @@ class PluginApi:
 
     @property
     def api_version_tuple(self) -> Version:
-        """Get the current API version as a Version object.
+        """Get the newest plugin API version supported by this Picard as a Version object.
 
         Returns:
             Version: API version (e.g., Version(3, 0))
@@ -707,7 +707,7 @@ class PluginApi:
 
     @property
     def api_supported_versions(self) -> tuple[str, ...]:
-        """Get the supported API version strings.
+        """Get all plugin API version strings supported by this Picard.
 
         Returns:
             tuple: API version strings (e.g., ('3.0', '3.1'))
@@ -716,7 +716,7 @@ class PluginApi:
 
     @property
     def api_supported_version_tuples(self) -> tuple[Version, ...]:
-        """Get the supported API versions as Version objects.
+        """Get all plugin API versions supported by this Picard as Version objects.
 
         Returns:
             tuple: Supported API versions as a tuple of Version objects
