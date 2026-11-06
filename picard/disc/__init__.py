@@ -27,6 +27,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Sequence
 import traceback
 
 from picard import log
@@ -56,6 +57,51 @@ from picard.util.isrc import (
     valid_isrc,
 )
 from picard.util.mbserver import build_submission_url
+from picard.util.toc import parse_toc_itunes_cddb
+
+
+class DiscTagsError(Exception):
+    """The disc information could not be read from the tags of some files.
+
+    The message is translated, ready to show.
+    """
+
+
+class NoDiscTags(DiscTagsError):
+    """None of the files has disc information in its tags."""
+
+
+class ConflictingDiscTags(DiscTagsError):
+    """The files do not agree on the disc information in their tags."""
+
+
+def toc_string_from_tags(files: Sequence) -> str:
+    """Build a MusicBrainz TOC string from the disc information in the tags of ``files``.
+
+    Reads the ``itunes_cddb_1`` tag (iTunes CDDB 1). The files that have it must
+    agree on its value, and there must be one file per track of the disc.
+    Returns a TOC string such as ``1+2+44910+150+22337``, to give to
+    :meth:`Disc.lookup_by_toc`. Raises :class:`NoDiscTags`,
+    :class:`ConflictingDiscTags` or, for a tag that cannot be parsed or does not
+    match the files, :class:`DiscTagsError`.
+    """
+    tags = {tag for file in files if (tag := file.metadata.get('itunes_cddb_1'))}
+    if not tags:
+        raise NoDiscTags(_('Disc information could not be found'))
+    if len(tags) != 1:
+        raise ConflictingDiscTags(_('Selected files contain tags with conflicting disc information'))
+    (toc_data,) = tags
+
+    try:
+        num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(toc_data)
+        # Validate track count matches number of files
+        if len(files) != num_tracks:
+            raise ValueError(f"Number of tracks ({num_tracks}) does not match number of selected files ({len(files)})")
+    except Exception as e:
+        raise DiscTagsError(_('Failed to parse disc information from tags: %s') % str(e)) from e
+
+    # MusicBrainz format: first_track last_track leadout_lba track_lba_1 track_lba_2 ...
+    return '+'.join(str(value) for value in (1, num_tracks, leadout_lba, *track_lbas))
 
 
 class Disc:

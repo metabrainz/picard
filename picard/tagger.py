@@ -114,7 +114,11 @@ from picard.const.sys import (
 )
 from picard.debug_opts import DebugOpt
 from picard.disc import (
+    ConflictingDiscTags,
     Disc,
+    DiscTagsError,
+    NoDiscTags,
+    toc_string_from_tags,
 )
 from picard.disc.presentation import set_disc_presentation_sink
 from picard.extension_points.event_hooks import register_file_post_save_processor
@@ -178,9 +182,6 @@ from picard.util.qt import (
     install_qt_message_handler,
 )
 from picard.util.readthedocs import ReadTheDocs
-from picard.util.toc import (
-    parse_toc_itunes_cddb,
-)
 from picard.view_presentation import set_view_presentation_sink
 from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
@@ -1018,67 +1019,16 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
-        # Try to find TOC data in tags from all files
-        toc_data = None
-        toc_source = None
-
-        for file in files:
-            # Check for itunes_cddb_1 format
-            itunes_tag = file.metadata.get('itunes_cddb_1')
-            if itunes_tag:
-                toc_data = itunes_tag
-                toc_source = 'itunes_cddb_1'
-                break
-
-        if not toc_data:
-            msg = _('Disc information could not be found')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Gather tag from all files that have it
-        tags = []
-        for file in files:
-            if toc_source == 'itunes_cddb_1':
-                tag = file.metadata.get('itunes_cddb_1')
-            if tag:
-                tags.append(tag)
-
-        # Abort if no files have the tag
-        if not tags:
-            msg = _('Disc information could not be found')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Ensure all tags found are identical
-        unique_tags = set(tags)
-        if len(unique_tags) != 1:
-            msg = _('Selected files contain tags with conflicting disc information')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Parse the TOC data using the appropriate parser
         try:
-            if toc_source == 'itunes_cddb_1':
-                num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(toc_data)
-
-            # Validate track count matches number of files
-            if len(files) != num_tracks:
-                raise ValueError(
-                    f"Number of tracks ({num_tracks}) does not match number of selected files ({len(files)})"
-                )
-
-        except Exception as e:
-            self.window.set_statusbar_message(_('Failed to parse disc information from tags: %s') % str(e))
+            toc_string = toc_string_from_tags(files)
+        except (NoDiscTags, ConflictingDiscTags) as e:
+            msg = str(e)
+            self.window.set_statusbar_message(msg)
+            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
             return
-
-        # Reconstruct TOC in MusicBrainz format
-        # e.g. first_track last_track leadout_lba track_lba_1 track_lba_2 ...
-        toc_string = f"1+{num_tracks}+{leadout_lba}"
-        for offset in track_lbas:
-            toc_string += f"+{offset}"
+        except DiscTagsError as e:
+            self.window.set_statusbar_message(str(e))
+            return
 
         self.window.set_statusbar_message(N_('Looking up disc from tags…'))
         busy_cursor_start()
