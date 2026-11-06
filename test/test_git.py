@@ -112,6 +112,9 @@ class MockGitRepository(GitRepository):
     def get_commit_author(self, commit_id):
         return ('Test Author', 'test@example.com')  # Mock author
 
+    def get_signature(self, rev):
+        return None  # Mock: unsigned
+
     def fetch_remote(self, remote, refspec=None, callbacks=None):
         pass
 

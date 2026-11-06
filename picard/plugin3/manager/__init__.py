@@ -59,6 +59,7 @@ from picard.plugin3.manager.errors import (  # noqa: F401
     PluginNoUUIDError,
     PluginRefNotFoundError,
     PluginRefSwitchError,
+    PluginSignatureError,
     PluginUUIDConflictError,
 )
 from picard.plugin3.manager.find import PluginFinder
@@ -667,6 +668,7 @@ class PluginManager(QObject):
         discard_changes=False,
         enable_after_install=False,
         no_git=False,
+        allow_unverified=False,
     ):
         """Install a plugin from a git URL or local directory.
 
@@ -678,12 +680,23 @@ class PluginManager(QObject):
             discard_changes: If True, discard uncommitted changes on reinstall
             enable_after_install: If True, enable the plugin after successful installation
             no_git: If True, treat a git directory as a local non-git plugin
+            allow_unverified: If True, allow installation when a required signature
+                is merely unverifiable (verifier unavailable); never bypasses a
+                wrong or missing signature
 
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
+            PluginSignatureError: If a required signature cannot be verified
         """
         return self._installer.install_plugin(
-            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, no_git=no_git
+            url,
+            ref,
+            reinstall,
+            force_blacklisted,
+            discard_changes,
+            enable_after_install,
+            no_git=no_git,
+            allow_unverified=allow_unverified,
         )
 
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):

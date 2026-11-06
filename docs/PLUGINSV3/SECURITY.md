@@ -54,10 +54,10 @@ See [REGISTRY.md](REGISTRY.md) for detailed trust level descriptions.
 - Community reporting
 - Incident response process
 
-#### Layer 5: Code Signing (Future)
-- Sign official plugins
-- Verify signature on load
+#### Layer 5: Code Signing
+- Verify git commit/tag signatures against registry-published keys
 - Proves authenticity (not security)
+- See [SIGNATURES.md](SIGNATURES.md) for the full design
 
 ---
 

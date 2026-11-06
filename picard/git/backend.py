@@ -299,6 +299,27 @@ class GitRepository(ABC):
         """
 
     @abstractmethod
+    def get_signature(self, rev: str) -> tuple[bytes, bytes] | None:
+        """Get the cryptographic signature of a commit or annotated tag.
+
+        Resolves ``rev`` to a commit or annotated tag and returns its embedded
+        signature together with the exact bytes that were signed, so a caller
+        can verify the signature out of band (git itself does not verify
+        signatures; it only stores and extracts them).
+
+        Args:
+            rev: A revision (commit id, branch, tag, or any revspec) pointing at
+                a commit or annotated tag.
+
+        Returns:
+            A ``(signature, signed_payload)`` tuple of raw bytes if the object
+            carries a signature, or ``None`` if it is unsigned or ``rev`` cannot
+            be resolved. ``signature`` is the armored signature block;
+            ``signed_payload`` is the object's content over which the signature
+            was computed.
+        """
+
+    @abstractmethod
     def fetch_remote(self, remote, refspec: str | None = None, callbacks=None):
         """Fetch from remote with optional refspec"""
 
