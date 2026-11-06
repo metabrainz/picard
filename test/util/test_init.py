@@ -50,6 +50,7 @@ from unittest.mock import (
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
+    set_hidden_attribute,
     subtest_cases,
 )
 
@@ -311,11 +312,9 @@ class HiddenFileTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_windows(self):
-        from ctypes import windll
-
         with NamedTemporaryFile() as f:
             self.assertFalse(util.is_hidden(f.name), "%s expected not to be hidden" % f.name)
-            windll.kernel32.SetFileAttributesW(f.name, 2)
+            set_hidden_attribute(f.name)
             self.assertTrue(util.is_hidden(f.name), "%s expected to be hidden" % f.name)
 
     @unittest.skipUnless(IS_MACOS, "macOS test")
