@@ -28,7 +28,6 @@
 
 from collections.abc import Callable
 import os.path
-import re
 
 from picard import (
     log,
@@ -40,27 +39,20 @@ from picard.disc import Disc
 from picard.util import (
     webbrowser2,
 )
+from picard.util.mbentity import (
+    RE_MB_CDTOC,
+    RE_MB_ENTITY,
+    parse_mb_entity,
+)
 from picard.util.qt import build_qurl
 
 from picard.ui.searchdialog.album import AlbumSearchDialog
 
 
 class FileLookup:
-    RE_MB_ENTITY = re.compile(
-        r"""
-        \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?
-        \W*(?P<id>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
-    """,
-        re.VERBOSE | re.IGNORECASE,
-    )
-
-    RE_MB_CDTOC = re.compile(
-        r"""
-        \b(?P<entity>cdtoc)
-        \W*(?P<id>[a-z0-9-_.]{28})
-    """,
-        re.VERBOSE | re.IGNORECASE,
-    )
+    # Kept as class attributes for the code that already uses them.
+    RE_MB_ENTITY = RE_MB_ENTITY
+    RE_MB_CDTOC = RE_MB_CDTOC
 
     def __init__(self, parent: object, server: str, port: int, local_port: int) -> None:
         self.server = server
@@ -129,21 +121,10 @@ class FileLookup:
         If entity type is 'release', it will load corresponding release if
         possible.
         """
-        m = self.RE_MB_ENTITY.search(string)
-        if m is None:
-            m = self.RE_MB_CDTOC.search(string)
-            if m is None:
-                return False
-        entity = m.group('entity')
-        if entity is None:
-            if type_ is None:
-                return False
-            entity = type_
-        else:
-            entity = entity.lower()
-        id = m.group('id')
-        if entity != 'cdtoc':
-            id = id.lower()
+        ref = parse_mb_entity(string, default_entity=type_)
+        if ref is None:
+            return False
+        entity, id = ref
         log.debug("Lookup for %s:%s", entity, id)
         if mbid_matched_callback:
             mbid_matched_callback(entity, id)
