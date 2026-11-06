@@ -45,6 +45,7 @@ from picard.util.externalcommand import (
     CommandError,
     CommandResult,
 )
+from picard.version import Version
 
 from picard.ui.options import PageOptionConfigs
 
@@ -72,5 +73,6 @@ __all__ = [
     'ProviderOptions',
     'ScriptParser',
     'Track',
+    'Version',
     't_',
 ]

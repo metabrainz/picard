@@ -45,7 +45,10 @@ from picard.config import (
     TextOption,
     get_config,
 )
-from picard.plugin3.api import PluginApi
+from picard.plugin3.api import (
+    PluginApi,
+    Version as ApiVersion,
+)
 from picard.version import Version
 
 
@@ -240,6 +243,10 @@ class TestPluginApi(PicardTestCase):
         self.assertEqual(api.api_supported_version_tuples, api_versions_tuple)
         self.assertIn(api.api_version, api.api_supported_versions)
         self.assertIn(api.api_version_tuple, api.api_supported_version_tuples)
+
+    def test_version_exported_for_plugins(self):
+        """Test that Version can be imported from the plugin API module."""
+        self.assertIs(ApiVersion, Version)
 
     def test_logger_propagates_to_main(self):
         """Test that plugin logger messages propagate to main logger."""
