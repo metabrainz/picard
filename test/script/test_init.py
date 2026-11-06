@@ -33,10 +33,16 @@ from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.defaults import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_NAMING_PRESET_ID,
+)
 from picard.extension_points.script_functions import script_function
 from picard.plugin import ExtensionPoint
 from picard.script import (
     ScriptFunctionDocError,
+    get_file_naming_script,
+    get_file_naming_script_presets,
     script_function_documentation,
     script_function_documentation_all,
 )
@@ -160,3 +166,45 @@ class ScriptFunctionDocumentationTest(PicardTestCase):
 
         self.assertStartswith(docall, '<div id="test">w' + pre)
         self.assertEndswith(docall, post + 'somefuncy</div>\n')
+
+
+class GetFileNamingScriptTest(PicardTestCase):
+    """Which file naming script is used, including when none is configured."""
+
+    @staticmethod
+    def _settings(scripts=None, selected=''):
+        return {
+            'file_renaming_scripts': scripts or {},
+            'active_file_naming_script_id': selected,
+        }
+
+    def test_selected_script_of_the_user(self):
+        settings = self._settings({'a': {'script': 'first'}, 'b': {'script': 'second'}}, selected='b')
+        self.assertEqual('second', get_file_naming_script(settings))
+
+    def test_selected_preset(self):
+        preset = next(p for p in get_file_naming_script_presets() if p['id'] != DEFAULT_NAMING_PRESET_ID)
+        settings = self._settings(selected=preset['id'])
+        self.assertEqual(str(preset['script']), get_file_naming_script(settings))
+
+    def test_nothing_configured_uses_the_default_script(self):
+        # A configuration the GUI never saw (e.g. a new one used from the
+        # command line) has no scripts and no active one.
+        with patch('picard.script.log') as mock_log:
+            self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, get_file_naming_script(self._settings()))
+        mock_log.error.assert_not_called()
+        mock_log.warning.assert_not_called()
+
+    def test_no_selection_uses_the_first_script_of_the_user(self):
+        settings = self._settings({'a': {'script': 'first'}, 'b': {'script': 'second'}})
+        self.assertEqual('first', get_file_naming_script(settings))
+
+    def test_unknown_selection_falls_back_and_says_so(self):
+        with patch('picard.script.log') as mock_log:
+            self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, get_file_naming_script(self._settings(selected='gone')))
+        mock_log.warning.assert_called_once()
+        self.assertIn('gone', mock_log.warning.call_args.args[1])
+
+    def test_unknown_selection_prefers_the_first_script_of_the_user(self):
+        settings = self._settings({'a': {'script': 'first'}}, selected='gone')
+        self.assertEqual('first', get_file_naming_script(settings))
