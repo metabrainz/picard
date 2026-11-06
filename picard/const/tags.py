@@ -857,6 +857,30 @@ ALL_TAGS = TagVars(
         is_from_mb=False,
     ),
     TagVar(
+        'podcastcategory',
+        shortdesc=N_('Podcast Category'),
+        longdesc=N_('The category of the podcast, if the recording is a podcast.'),
+        is_from_mb=False,
+    ),
+    TagVar(
+        'podcastdesc',
+        shortdesc=N_('Podcast Description'),
+        longdesc=N_('The description of the podcast episode, if the recording is a podcast.'),
+        is_from_mb=False,
+    ),
+    TagVar(
+        'podcastid',
+        shortdesc=N_('Podcast ID'),
+        longdesc=N_('The unique identifier (GUID) of the podcast episode, if the recording is a podcast.'),
+        is_from_mb=False,
+    ),
+    TagVar(
+        'podcastkeywords',
+        shortdesc=N_('Podcast Keywords'),
+        longdesc=N_('The keywords associated with the podcast, if the recording is a podcast.'),
+        is_from_mb=False,
+    ),
+    TagVar(
         'podcasturl',
         shortdesc=N_('Podcast URL'),
         longdesc=N_('The associated URL if the recording is a podcast.'),
