@@ -50,10 +50,8 @@ from contextlib import suppress
 from copy import deepcopy
 import datetime
 from functools import partial
-import itertools
 import os.path
 from pathlib import Path
-from typing import cast
 
 import yaml
 
@@ -1841,18 +1839,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def cluster(self):
         # Cluster all selected unclustered files. If there are no selected
         # unclustered files cluster all unclustered files.
-        files = (
-            f for f in iter_files_from_objects(self.selected_objects) if f.parent_item == self.tagger.unclustered_files
-        )
-        try:
-            file = next(files)
-        except StopIteration:
-            # unclustered_files.files is a ListOfMetadataItems (typed
-            # MetadataItem) but only ever holds File at runtime.
-            files = cast("list[File]", self.tagger.unclustered_files.files)
-        else:
-            files = itertools.chain([file], files)
-        self.tagger.cluster(files, self._cluster_finished)
+        self.tagger.cluster(self.tagger.files_to_cluster(self.selected_objects), self._cluster_finished)
 
     def _cluster_finished(self):
         self.panel.update_current_view()

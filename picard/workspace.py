@@ -729,6 +729,20 @@ class Workspace:
                 touched.append(container)
         return touched
 
+    def files_to_cluster(self, objs: Iterable[IterableFiles]) -> list[File]:
+        """Return the files the cluster action applies to, for a selection ``objs``.
+
+        These are the selected files that are not clustered yet; when there are
+        none, all the unclustered files.
+        """
+        unclustered = self.unclustered_files
+        selected = [file for file in iter_files_from_objects(objs) if file.parent_item == unclustered]
+        if selected:
+            return selected
+        # unclustered_files.files is a ListOfMetadataItems (typed MetadataItem)
+        # but only ever holds File at runtime.
+        return cast("list[File]", list(unclustered.files))
+
     def cluster(self, objs: Iterable[IterableFiles], on_complete: Callable[[], Any] | None = None) -> None:
         """Group the files reachable from ``objs`` into clusters asynchronously.
 
@@ -1354,6 +1368,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.generate_fingerprints`.
         """
         self._workspace.generate_fingerprints(objs)
+
+    def files_to_cluster(self, objs: Iterable[IterableFiles]) -> list[File]:
+        """Return the files the cluster action applies to, for a selection ``objs``.
+
+        Delegates to :meth:`Workspace.files_to_cluster`.
+        """
+        return self._workspace.files_to_cluster(objs)
 
     def cluster(self, objs: Iterable[IterableFiles], callback: Callable[[], Any] | None = None) -> None:
         """Group the files reachable from ``objs`` into clusters asynchronously.

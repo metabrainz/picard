@@ -837,3 +837,47 @@ class WorkspaceAddPathsTest(PicardTestCase):
         self.assertEqual(list(found), ['a', 'b'])
         self.assertIs(mock_add.call_args.kwargs['target'], target)
         self.assertIs(result, opened)
+
+
+class WorkspaceFilesToClusterTest(PicardTestCase):
+    """The files the cluster action applies to, for a selection."""
+
+    def setUp(self):
+        super().setUp()
+        self.wks = Workspace()
+
+    def _file(self, parent):
+        file = MagicMock(parent_item=parent)
+        file.iterfiles.return_value = iter([file])
+        return file
+
+    def test_selected_unclustered_files(self):
+        loose1, loose2 = self._file(self.wks.unclustered_files), self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.extend([loose1, loose2, self._file(self.wks.unclustered_files)])
+        self.assertEqual(self.wks.files_to_cluster([loose1, loose2]), [loose1, loose2])
+
+    def test_selected_clustered_files_are_left_out(self):
+        loose = self._file(self.wks.unclustered_files)
+        clustered = self._file(MagicMock(name='cluster'))
+        self.assertEqual(self.wks.files_to_cluster([clustered, loose]), [loose])
+
+    def test_all_unclustered_files_when_none_is_selected_unclustered(self):
+        loose1, loose2 = self._file(self.wks.unclustered_files), self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.extend([loose1, loose2])
+        clustered = self._file(MagicMock(name='cluster'))
+        self.assertEqual(self.wks.files_to_cluster([clustered]), [loose1, loose2])
+
+    def test_all_unclustered_files_when_nothing_is_selected(self):
+        loose = self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.append(loose)
+        self.assertEqual(self.wks.files_to_cluster([]), [loose])
+
+    def test_nothing_to_cluster(self):
+        self.assertEqual(self.wks.files_to_cluster([]), [])
+
+    def test_result_is_a_copy_of_the_unclustered_files(self):
+        loose = self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.append(loose)
+        result = self.wks.files_to_cluster([])
+        self.wks.unclustered_files.files.clear()
+        self.assertEqual(result, [loose])
