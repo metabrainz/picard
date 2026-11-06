@@ -970,14 +970,9 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '',
             )
 
-    def _lookup_disc(self, disc, result=None, error=None):
+    def _disc_read_failed(self, error):
         busy_cursor_stop()
-        if error is not None:
-            QtWidgets.QMessageBox.critical(
-                self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
-            )
-        else:
-            disc.lookup()
+        QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
     def lookup_cd(self, device=None):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
@@ -990,7 +985,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def run_lookup_cd(self, device):
         disc = Disc()
         busy_cursor_start()
-        thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
+        disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
@@ -1011,11 +1006,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
         busy_cursor_start()
-        thread.run_task(
-            partial(disc.read_log, filepath),
-            partial(self._lookup_disc, disc),
-            traceback=log.is_debug(),
-        )
+        disc.read_and_lookup(partial(disc.read_log, filepath), on_error=self._disc_read_failed)
 
     def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""

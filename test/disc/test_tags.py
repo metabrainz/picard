@@ -15,12 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard.disc import (
     ConflictingDiscTags,
+    Disc,
     DiscTagsError,
     NoDiscTags,
     toc_string_from_tags,
@@ -79,3 +83,47 @@ class TocStringFromTagsTest(PicardTestCase):
     def test_errors_share_a_base_class(self):
         self.assertTrue(issubclass(NoDiscTags, DiscTagsError))
         self.assertTrue(issubclass(ConflictingDiscTags, DiscTagsError))
+
+
+class DiscReadAndLookupTest(PicardTestCase):
+    """Disc.read_and_lookup(): read in a worker thread, then look the disc up."""
+
+    def setUp(self):
+        super().setUp()
+        self.disc = Disc()
+        self.read = MagicMock(name='read')
+        self.disc.lookup = MagicMock(name='lookup')
+        self.on_error = MagicMock(name='on_error')
+
+    def _start(self, **kwargs):
+        with patch('picard.disc.thread.run_task') as mock_run_task:
+            self.disc.read_and_lookup(self.read, **kwargs)
+        mock_run_task.assert_called_once()
+        work, finished = mock_run_task.call_args.args
+        self.assertIs(work, self.read)
+        return finished
+
+    def test_reads_in_the_worker_thread_and_nothing_else_yet(self):
+        self._start(on_error=self.on_error)
+        self.read.assert_not_called()
+        self.disc.lookup.assert_not_called()
+
+    def test_looks_the_disc_up_once_read(self):
+        finished = self._start(on_error=self.on_error)
+        finished(result=None)
+        self.disc.lookup.assert_called_once_with()
+        self.on_error.assert_not_called()
+
+    def test_reports_the_error_and_looks_nothing_up_when_reading_fails(self):
+        error = OSError('no disc')
+        finished = self._start(on_error=self.on_error)
+        finished(error=error)
+        self.on_error.assert_called_once_with(error)
+        self.disc.lookup.assert_not_called()
+
+    def test_error_without_a_handler_is_logged(self):
+        finished = self._start()
+        with patch('picard.disc.log') as mock_log:
+            finished(error=OSError('no disc'))
+        mock_log.error.assert_called_once()
+        self.disc.lookup.assert_not_called()

@@ -27,7 +27,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Sequence
+from collections.abc import (
+    Callable,
+    Sequence,
+)
+from functools import partial
 import traceback
 
 from picard import log
@@ -48,6 +52,7 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.services import services
+from picard.util import thread
 from picard.util.cdrom import (
     discid,
     has_isrc_support,
@@ -239,6 +244,27 @@ class Disc:
             return self._submission_url(self.id, self.tracks, self.toc_string)
         else:
             return None
+
+    def read_and_lookup(
+        self, read: Callable[[], object], on_error: Callable[[Exception], object] | None = None
+    ) -> None:
+        """Read the disc on a worker thread, then look it up.
+
+        ``read`` is what reads the disc, with its arguments bound: ``partial(disc.read,
+        device)`` for a drive or ``partial(disc.read_log, path)`` for a ripper log.
+        If it fails, ``on_error`` is called with the error and nothing is looked up.
+        The lookup then goes on as for :meth:`lookup`.
+        """
+        thread.run_task(read, partial(self._read_finished, on_error), traceback=log.is_debug())
+
+    def _read_finished(self, on_error, result=None, error=None):
+        if error is not None:
+            if on_error is not None:
+                on_error(error)
+            else:
+                log.error("Error while reading the disc: %s", error)
+            return
+        self.lookup()
 
     def lookup(self):
         if self.id:

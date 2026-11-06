@@ -122,3 +122,41 @@ class TaggerLookupDiscidFromTagsTest(PicardTestCase):
         self.assertIn('Number of tracks (4) does not match number of selected files (2)', message)
         self.QtWidgets.QMessageBox.warning.assert_not_called()
         self.Disc.assert_not_called()
+
+
+class TaggerRunLookupTest(PicardTestCase):
+    """Reading a disc and looking it up: the busy cursor and the error dialog."""
+
+    def setUp(self):
+        super().setUp()
+        self.tagger = MagicMock(spec=Tagger)
+        self.tagger.window = MagicMock()
+        for name in ('Disc', 'busy_cursor_start', 'busy_cursor_stop', 'QtWidgets'):
+            patcher = patch(f'picard.tagger.{name}')
+            setattr(self, name, patcher.start())
+            self.addCleanup(patcher.stop)
+        self.disc = self.Disc.return_value
+
+    def test_cd_is_read_from_the_drive_then_looked_up(self):
+        Tagger.run_lookup_cd(self.tagger, '/dev/sr0')
+        self.busy_cursor_start.assert_called_once_with()
+        self.disc.read_and_lookup.assert_called_once()
+        (read,) = self.disc.read_and_lookup.call_args.args
+        read()
+        self.disc.read.assert_called_once_with('/dev/sr0')
+
+    def test_ripper_log_is_read_then_looked_up(self):
+        Tagger.run_lookup_discid_from_logfile(self.tagger, '/rips/album.log')
+        self.busy_cursor_start.assert_called_once_with()
+        (read,) = self.disc.read_and_lookup.call_args.args
+        read()
+        self.disc.read_log.assert_called_once_with('/rips/album.log')
+
+    def test_read_error_is_reported_with_the_cursor_restored(self):
+        Tagger.run_lookup_cd(self.tagger, None)
+        on_error = self.disc.read_and_lookup.call_args.kwargs['on_error']
+        self.assertEqual(on_error, self.tagger._disc_read_failed)
+        Tagger._disc_read_failed(self.tagger, OSError('no disc'))
+        self.busy_cursor_stop.assert_called_once_with()
+        self.QtWidgets.QMessageBox.critical.assert_called_once()
+        self.assertIn('no disc', self.QtWidgets.QMessageBox.critical.call_args.args[2])
