@@ -20,7 +20,7 @@
 import re
 
 from picard import (
-    api_versions_tuple,
+    latest_api_version_tuple,
     log,
 )
 from picard.util import parse_versioning_scheme
@@ -131,7 +131,7 @@ class PluginRegistryManager:
             return None
 
         # Get latest supported Picard plugin API version
-        current_api = api_versions_tuple[-1] if api_versions_tuple else Version.from_string('0.0')
+        current_api = latest_api_version_tuple
 
         # Find first compatible ref
         for ref in refs:

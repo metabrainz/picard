@@ -148,53 +148,65 @@ def enable(api):
 
 ### `api_version: str`
 
-Current Picard plugin API version.
+Newest plugin API version supported by this Picard.
 
 ```python
 def enable(api):
     api.logger.info(f"Picard plugin API version: {api.api_version}")
 ```
 
-**Value**: Picard's current API version (e.g., `'3.0'`)
+**Value**: Picard's newest supported API version (e.g., `'3.0'`)
 
 ---
 
 ### `api_version_tuple: Version`
 
-Current Picard plugin API version tuple.
+Newest plugin API version supported by this Picard, as a `Version` object.
+`Version` is a named tuple and can be compared with other `Version` objects.
+Don't compare it with a plain tuple such as `(3, 0)`.
 
 ```python
+from picard.plugin3.api import Version
+
+
 def enable(api):
-    api.logger.info(f"Picard plugin API version tuple: {api.api_version_tuple}")
+    if api.api_version_tuple >= Version(3, 1):
+        ...  # use a feature added in API 3.1
+    else:
+        ...  # fall back for API 3.0
 ```
 
-**Value**: Picard's current API version tuple (e.g., `Version(3, 0)`)
+**Value**: Picard's newest supported API version (e.g., `Version(3, 0)`)
 
 ---
 
 ### `api_supported_versions: tuple[str, ...]`
 
-Current Picard supported plugin API versions.
+All plugin API versions supported by this Picard.
 
 ```python
 def enable(api):
     api.logger.info(f"Picard supported plugin API versions: {api.api_supported_versions}")
 ```
 
-**Value**: Picard's current supported API versions (e.g., `('3.0', '3.1')`)
+**Value**: Picard's supported API versions (e.g., `('3.0', '3.1')`)
 
 ---
 
 ### `api_supported_version_tuples: tuple[Version, ...]`
 
-Current Picard supported plugin API version tuples.
+All plugin API versions supported by this Picard, as `Version` objects.
 
 ```python
+from picard.plugin3.api import Version
+
+
 def enable(api):
-    api.logger.info(f"Picard supported plugin API version tuples: {api.api_supported_version_tuples}")
+    if Version(3, 1) in api.api_supported_version_tuples:
+        ...  # API 3.1 is supported by this Picard
 ```
 
-**Value**: Picard's current API version tuple (e.g., `(Version(3, 0), Version(3, 1))`)
+**Value**: Picard's supported API versions (e.g., `(Version(3, 0), Version(3, 1))`)
 
 ---
 
