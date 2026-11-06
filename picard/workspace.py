@@ -85,6 +85,7 @@ from picard.util import (
     mbid_validate,
     normpath,
     resolve_fs_path,
+    scan_paths_recursive,
     thread,
 )
 from picard.util.qt import process_events_iter
@@ -849,6 +850,15 @@ class Workspace:
         for file in iter_files_from_objects(objs):
             file.set_pending()
             acoustid_client.fingerprint(file, partial(finished, file))
+
+    def scan_paths(self, paths: Iterable[str]) -> Iterator[str]:
+        """Yield the file paths found in ``paths``, going into directories.
+
+        Follows the ``recursively_add_files`` and ``ignore_hidden_files``
+        settings; see :func:`picard.util.scan_paths_recursive`.
+        """
+        settings = get_config().setting
+        return scan_paths_recursive(paths, settings['recursively_add_files'], settings['ignore_hidden_files'])
 
     def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
         """Open ``filenames`` as new files and register them in the working set.

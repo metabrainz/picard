@@ -542,3 +542,18 @@ class WorkspaceSaveTest(PicardTestCase):
     def test_nothing_to_save(self):
         with patch('picard.workspace.iter_files_from_objects', return_value=iter(())):
             self.assertEqual(Workspace().save([]), [])
+
+
+class WorkspaceScanPathsTest(PicardTestCase):
+    def test_goes_into_directories_following_the_settings(self):
+        self.set_config_values({'recursively_add_files': True, 'ignore_hidden_files': False})
+        with patch('picard.workspace.scan_paths_recursive', return_value=iter(['a', 'b'])) as mock_scan:
+            found = list(Workspace().scan_paths(['/music']))
+        mock_scan.assert_called_once_with(['/music'], True, False)
+        self.assertEqual(found, ['a', 'b'])
+
+    def test_not_recursive_and_ignoring_hidden_files(self):
+        self.set_config_values({'recursively_add_files': False, 'ignore_hidden_files': True})
+        with patch('picard.workspace.scan_paths_recursive', return_value=iter(())) as mock_scan:
+            list(Workspace().scan_paths(['/music']))
+        mock_scan.assert_called_once_with(['/music'], False, True)

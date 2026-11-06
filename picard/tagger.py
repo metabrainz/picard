@@ -165,7 +165,6 @@ from picard.util import (
     cli,
     periodictouch,
     pipe,
-    scan_paths_recursive,
     system_supports_long_paths,
     thread,
     unset_env_vars,
@@ -955,11 +954,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         self._process_in_batches(files, lambda f: f.load(callback), "File load dispatch")
 
     def add_paths(self, paths, target=None):
-        config = get_config()
-        files = scan_paths_recursive(
-            paths, config.setting['recursively_add_files'], config.setting["ignore_hidden_files"]
-        )
-        self.add_files(files, target=target)
+        self.add_files(workspace().scan_paths(paths), target=target)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
