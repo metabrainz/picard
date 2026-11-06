@@ -697,3 +697,20 @@ class WorkspaceAddFilesTest(PicardTestCase):
         ):
             wks.add_files(['a'])
         mock_load.assert_not_called()
+
+
+class WorkspaceFileRemovedWhileLoadingTest(PicardTestCase):
+    def test_a_removed_file_settles_the_pending_count_and_is_not_placed(self):
+        wks = Workspace()
+        wks.add_pending_files(1)
+        removed = MagicMock(state=File.State.REMOVED)
+        removed.has_error.return_value = False
+        with (
+            patch('picard.workspace.view_updates') as mock_view_updates,
+            patch.object(Workspace, 'place_loaded_file') as mock_place,
+        ):
+            wks.file_load_finished(removed)
+        self.assertEqual(wks.pending_files_count, 0)
+        mock_view_updates.return_value.suspend_while_loading_exit.assert_called_once_with()
+        mock_place.assert_not_called()
+        removed.remove.assert_not_called()

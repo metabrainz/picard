@@ -927,6 +927,13 @@ class Workspace:
         if file is None:
             return
 
+        # Imported here to avoid the file <-> workspace import cycle.
+        from picard.file import File
+
+        if file.state == File.State.REMOVED:
+            # Removed while it was loading: nothing left to place.
+            return
+
         if file.has_error():
             self.unclustered_files.add_file(file)
             return
