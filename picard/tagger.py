@@ -89,7 +89,6 @@ from picard.browser.server import BrowserIntegration
 from picard.cli import get_subcommands_help
 from picard.cluster import (
     Cluster,
-    ClusterList,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -937,31 +936,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         # Auto cluster newly added files if they are not explicitly moved elsewhere
         if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
             self.cluster(unmatched_files)
-
-    def move_files(self, files, target, move_to_multi_tracks=True):
-        if target is None:
-            log.debug("Aborting move since target is invalid")
-            return
-        with (
-            view_updates().suspend_while_loading(),
-            view_updates().suspend_selection(),
-        ):
-            if isinstance(target, Cluster):
-                for file in process_events_iter(files):
-                    file.move(target)
-            elif isinstance(target, Track):
-                album = target.album
-                for file in process_events_iter(files):
-                    file.move(target)
-                    if move_to_multi_tracks:  # Assign next file to following track
-                        target = album.get_next_track(target) or album.unmatched_files
-            elif isinstance(target, File):
-                for file in process_events_iter(files):
-                    file.move(target.parent_item)
-            elif isinstance(target, Album):
-                self.move_files_to_album(files, album=target)
-            elif isinstance(target, ClusterList):
-                self.cluster(files)
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""

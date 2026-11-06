@@ -87,6 +87,7 @@ from picard.util import (
     resolve_fs_path,
     thread,
 )
+from picard.util.qt import process_events_iter
 from picard.view_presentation import view_presentation
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
@@ -418,6 +419,50 @@ class Workspace:
             assert albumid is not None, "move_files_to_album requires albumid or album"
             album = self.load_album(albumid)
         album.match_files(files)
+
+    def move_files(self, files: Iterable[File], target: Item | None, move_to_multi_tracks: bool = True) -> None:
+        """Move ``files`` to ``target``, whatever kind of place it is.
+
+        ``target`` may be a cluster, a track, a file (the files go where that
+        file is), an album (the files are matched to its tracks) or the cluster
+        list (the files are clustered). With a track, ``move_to_multi_tracks``
+        makes each following file go to the next track of the album, then to its
+        unmatched files. Nothing happens when ``target`` is ``None`` or of
+        another kind.
+        """
+        # Imported here to avoid the album/cluster/file <-> workspace import cycle.
+        from picard.album import Album
+        from picard.cluster import (
+            Cluster,
+            ClusterList,
+        )
+        from picard.file import File
+        from picard.track import Track
+
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
+        with (
+            view_updates().suspend_while_loading(),
+            view_updates().suspend_selection(),
+        ):
+            if isinstance(target, Cluster):
+                for file in process_events_iter(files):
+                    file.move(target)
+            elif isinstance(target, Track):
+                # A track in the working set always belongs to an album.
+                album = cast("Album", target.album)
+                for file in process_events_iter(files):
+                    file.move(target)
+                    if move_to_multi_tracks:  # Assign next file to following track
+                        target = album.get_next_track(target) or album.unmatched_files
+            elif isinstance(target, File):
+                for file in process_events_iter(files):
+                    file.move(target.parent_item)
+            elif isinstance(target, Album):
+                self.move_files_to_album(files, album=target)
+            elif isinstance(target, ClusterList):
+                self.cluster(files)
 
     def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
         """Move ``file`` to recording ``recordingid`` on album ``albumid``."""
@@ -1056,6 +1101,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.move_file_to_album`.
         """
         self._workspace.move_file_to_album(file, albumid)
+
+    def move_files(self, files: Iterable[File], target: Item | None, move_to_multi_tracks: bool = True) -> None:
+        """Move ``files`` to ``target``, whatever kind of place it is.
+
+        Delegates to :meth:`Workspace.move_files`.
+        """
+        self._workspace.move_files(files, target, move_to_multi_tracks)
 
     def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
         """Move ``file`` to recording ``recordingid`` on album ``albumid``.

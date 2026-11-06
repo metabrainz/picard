@@ -26,10 +26,14 @@ from test.picardtestcase import (
     set_hidden_attribute,
 )
 
+from picard.album import Album
 from picard.cluster import (
+    Cluster,
     ClusterList,
     UnclusteredFiles,
 )
+from picard.file import File
+from picard.track import Track
 from picard.workspace import (
     OpenedFiles,
     Workspace,
@@ -438,3 +442,73 @@ class WorkspaceOpenFilesTest(PicardTestCase):
         self.assertEqual(len(result.opened), 1)
         self.assertEqual(len(result.already_loaded), 1)
         self.assertEqual(self.registry.open.call_count, 1)
+
+
+class WorkspaceMoveFilesTest(PicardTestCase):
+    """move_files(): dispatch on the kind of place the files are moved to."""
+
+    def setUp(self):
+        super().setUp()
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.files = [MagicMock(name=f'file{i}') for i in range(3)]
+
+    def test_none_target_moves_nothing(self):
+        self.wks.move_files(self.files, None)
+        for file in self.files:
+            file.move.assert_not_called()
+
+    def test_unsupported_target_moves_nothing(self):
+        self.wks.move_files(self.files, object())
+        for file in self.files:
+            file.move.assert_not_called()
+
+    def test_moves_files_to_cluster(self):
+        cluster = MagicMock(spec=Cluster)
+        self.wks.move_files(self.files, cluster)
+        for file in self.files:
+            file.move.assert_called_once_with(cluster)
+
+    def test_moves_files_to_file_parent(self):
+        target = MagicMock(spec=File)
+        target.parent_item = MagicMock(spec=Cluster)
+        self.wks.move_files(self.files, target)
+        for file in self.files:
+            file.move.assert_called_once_with(target.parent_item)
+
+    def test_track_target_spreads_files_over_following_tracks(self):
+        track1, track2 = MagicMock(spec=Track), MagicMock(spec=Track)
+        album = MagicMock(spec=Album)
+        album.get_next_track.side_effect = {track1: track2, track2: None}.get
+        album.unmatched_files = MagicMock(name='unmatched')
+        track1.album = album
+        self.wks.move_files(self.files, track1)
+        self.files[0].move.assert_called_once_with(track1)
+        self.files[1].move.assert_called_once_with(track2)
+        self.files[2].move.assert_called_once_with(album.unmatched_files)
+
+    def test_track_target_without_multi_tracks_keeps_the_track(self):
+        track = MagicMock(spec=Track)
+        track.album = MagicMock(spec=Album)
+        self.wks.move_files(self.files, track, move_to_multi_tracks=False)
+        for file in self.files:
+            file.move.assert_called_once_with(track)
+        track.album.get_next_track.assert_not_called()
+
+    def test_album_target_matches_files_to_tracks(self):
+        album = MagicMock(spec=Album)
+        with patch.object(Workspace, 'move_files_to_album') as mock_move:
+            self.wks.move_files(self.files, album)
+        mock_move.assert_called_once_with(self.files, album=album)
+
+    def test_cluster_list_target_clusters_files(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.move_files(self.files, MagicMock(spec=ClusterList))
+        mock_cluster.assert_called_once_with(self.files)
+
+    def test_suspends_view_updates_while_moving(self):
+        self.wks.move_files(self.files, MagicMock(spec=Cluster))
+        self.mock_view_updates.return_value.suspend_while_loading.assert_called_once_with()
+        self.mock_view_updates.return_value.suspend_selection.assert_called_once_with()
