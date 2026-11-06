@@ -16,9 +16,11 @@
 
 import os
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    set_hidden_attribute,
+)
 
-from picard.const.sys import IS_WIN
 from picard.util import (
     normpath,
     scan_paths_recursive,
@@ -45,17 +47,8 @@ class ScanPathsRecursiveTest(PicardTestCase):
         return path
 
     def _touch_hidden(self, rel):
-        # is_hidden() uses the leading-dot convention only on non-Windows; on
-        # Windows it checks the FILE_ATTRIBUTE_HIDDEN flag, which a plain
-        # open() does not set. Set it explicitly so the file is genuinely
-        # hidden on every platform.
         path = self._touch(rel)
-        if IS_WIN:
-            import ctypes
-
-            FILE_ATTRIBUTE_HIDDEN = 0x02
-            if not ctypes.windll.kernel32.SetFileAttributesW(path, FILE_ATTRIBUTE_HIDDEN):
-                raise ctypes.WinError()
+        set_hidden_attribute(path)
         return path
 
     def _names(self, paths):

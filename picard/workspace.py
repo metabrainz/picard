@@ -54,6 +54,10 @@ from collections.abc import (
     Iterable,
     Iterator,
 )
+from dataclasses import (
+    dataclass,
+    field,
+)
 from functools import partial
 import os
 from typing import (
@@ -66,6 +70,7 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.i18n import (
     N_,
     gettext as _,
@@ -75,10 +80,16 @@ from picard.notification import notifier
 from picard.services import services
 from picard.util import (
     IterableFiles,
+    compile_ignore_regex,
+    is_ignored_file,
     iter_files_from_objects,
     mbid_validate,
+    normpath,
+    resolve_fs_path,
+    scan_paths_recursive,
     thread,
 )
+from picard.util.qt import process_events_iter
 from picard.view_presentation import view_presentation
 from picard.view_updates import view_updates
 from picard.workspace_events import workspace_events
@@ -99,6 +110,20 @@ if TYPE_CHECKING:
     from picard.item import Item
     from picard.releasegroup import ReleaseGroup
     from picard.track import NonAlbumTrack
+
+
+@dataclass
+class OpenedFiles:
+    """What :meth:`Workspace.open_files` did with the paths it was given."""
+
+    # New files, registered in the working set but not loaded yet, by filename.
+    opened: list[File] = field(default_factory=list)
+    # Paths skipped by the ignore rules (hidden, ``ignore_regex``, ...).
+    ignored: list[str] = field(default_factory=list)
+    # Files already in the working set for a path (nothing was opened again).
+    already_loaded: list[File] = field(default_factory=list)
+    # Paths no registered format handles.
+    unsupported: list[str] = field(default_factory=list)
 
 
 class Workspace:
@@ -397,6 +422,50 @@ class Workspace:
             album = self.load_album(albumid)
         album.match_files(files)
 
+    def move_files(self, files: Iterable[File], target: Item | None, move_to_multi_tracks: bool = True) -> None:
+        """Move ``files`` to ``target``, whatever kind of place it is.
+
+        ``target`` may be a cluster, a track, a file (the files go where that
+        file is), an album (the files are matched to its tracks) or the cluster
+        list (the files are clustered). With a track, ``move_to_multi_tracks``
+        makes each following file go to the next track of the album, then to its
+        unmatched files. Nothing happens when ``target`` is ``None`` or of
+        another kind.
+        """
+        # Imported here to avoid the album/cluster/file <-> workspace import cycle.
+        from picard.album import Album
+        from picard.cluster import (
+            Cluster,
+            ClusterList,
+        )
+        from picard.file import File
+        from picard.track import Track
+
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
+        with (
+            view_updates().suspend_while_loading(),
+            view_updates().suspend_selection(),
+        ):
+            if isinstance(target, Cluster):
+                for file in process_events_iter(files):
+                    file.move(target)
+            elif isinstance(target, Track):
+                # A track in the working set always belongs to an album.
+                album = cast("Album", target.album)
+                for file in process_events_iter(files):
+                    file.move(target)
+                    if move_to_multi_tracks:  # Assign next file to following track
+                        target = album.get_next_track(target) or album.unmatched_files
+            elif isinstance(target, File):
+                for file in process_events_iter(files):
+                    file.move(target.parent_item)
+            elif isinstance(target, Album):
+                self.move_files_to_album(files, album=target)
+            elif isinstance(target, ClusterList):
+                self.cluster(files)
+
     def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
         """Move ``file`` to recording ``recordingid`` on album ``albumid``."""
         album = self.load_album(albumid)
@@ -660,6 +729,20 @@ class Workspace:
                 touched.append(container)
         return touched
 
+    def files_to_cluster(self, objs: Iterable[IterableFiles]) -> list[File]:
+        """Return the files the cluster action applies to, for a selection ``objs``.
+
+        These are the selected files that are not clustered yet; when there are
+        none, all the unclustered files.
+        """
+        unclustered = self.unclustered_files
+        selected = [file for file in iter_files_from_objects(objs) if file.parent_item == unclustered]
+        if selected:
+            return selected
+        # unclustered_files.files is a ListOfMetadataItems (typed MetadataItem)
+        # but only ever holds File at runtime.
+        return cast("list[File]", list(unclustered.files))
+
     def cluster(self, objs: Iterable[IterableFiles], on_complete: Callable[[], Any] | None = None) -> None:
         """Group the files reachable from ``objs`` into clusters asynchronously.
 
@@ -712,18 +795,39 @@ class Workspace:
 
         thread.process_in_batches(clusters, self.apply_file_cluster, "Clustering", on_complete=finished)
 
-    def save(self, objects: Iterable[IterableFiles]) -> None:
+    def refresh(self, objs: Iterable[Item]) -> None:
+        """Reload from MusicBrainz the objects of ``objs`` that can be refreshed.
+
+        Only objects that are loaded from MusicBrainz (albums, for instance) can
+        be, the others are left alone.
+        """
+        for obj in objs:
+            if obj.can_refresh:
+                obj.load(priority=True, refresh=True)
+
+    def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.
 
         ``objects`` may be any mix of files, tracks, albums and clusters (any
-        object exposing ``iterfiles``); each contained file is saved. The
-        per-file threading (the save thread pool) and the batch coalescing of
-        shared cover-art parents live in :class:`~picard.file.File` and the
-        begin_save/end_save bookkeeping, so this is a thin, UI-agnostic driver
-        usable from the GUI and headless.
+        object exposing ``iterfiles``); each contained file is saved. The files
+        whose save was started are returned, so a caller can follow them; the
+        writes themselves finish later, on the save thread pool. The per-file
+        threading and the batch coalescing of shared cover-art parents live in
+        :class:`~picard.file.File` and the begin_save/end_save bookkeeping, so
+        this is a thin, UI-agnostic driver usable from the GUI and headless.
         """
+        # TODO: make a long save interruptible. This loop runs on the main thread
+        # without yielding to the event loop and a queued write cannot be
+        # cancelled. Dispatch in time-budgeted batches (see thread.process_in_batches)
+        # under a cancellable operation, check the cancel flag between batches and
+        # before a queued write starts, and keep begin_save/end_save and the
+        # pending state balanced for the files that are not saved. The returned list
+        # already holds only the files whose save was started, not those selected.
+        saved: list[File] = []
         for file in iter_files_from_objects(objects, save=True):
             file.save()
+            saved.append(file)
+        return saved
 
     @property
     def use_acoustid(self) -> bool:
@@ -772,6 +876,131 @@ class Workspace:
             file.set_pending()
             acoustid_client.fingerprint(file, partial(finished, file))
 
+    def scan_paths(self, paths: Iterable[str]) -> Iterator[str]:
+        """Yield the file paths found in ``paths``, going into directories.
+
+        Follows the ``recursively_add_files`` and ``ignore_hidden_files``
+        settings; see :func:`picard.util.scan_paths_recursive`.
+        """
+        settings = get_config().setting
+        return scan_paths_recursive(paths, settings['recursively_add_files'], settings['ignore_hidden_files'])
+
+    def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
+        """Open ``filenames`` as new files and register them in the working set.
+
+        Each path is normalised, checked against the ignore rules, skipped when a
+        file for it is already in the working set, and otherwise opened with the
+        format registry and added to :attr:`files`. The new files are returned
+        sorted by filename and are *not loaded yet*: the caller loads them (the
+        GUI in time-budgeted batches, the headless engine all at once) and then
+        places each one with :meth:`place_loaded_file`.
+        """
+        config = get_config()
+        ignoreregex = compile_ignore_regex(config.setting['ignore_regex'])
+        ignore_hidden = config.setting['ignore_hidden_files']
+        registry = services().format_registry
+        result = OpenedFiles()
+        # Keep a frontend responsive while a large number of paths are checked.
+        for filename in process_events_iter(filenames):
+            filename = normpath(resolve_fs_path(filename))
+            if is_ignored_file(filename, ignore_hidden, ignoreregex):
+                result.ignored.append(filename)
+                continue
+            existing = self.files.get(filename)
+            if existing is not None:
+                result.already_loaded.append(existing)
+                continue
+            file = registry.open(filename)
+            if file is None:
+                log.debug("File ignored (unsupported format): %r", filename)
+                result.unsupported.append(filename)
+                continue
+            self.files[filename] = file
+            result.opened.append(file)
+        result.opened.sort(key=lambda f: f.filename)
+        return result
+
+    def file_load_finished(
+        self,
+        file: File | None,
+        target: Item | None = None,
+        remove_file: bool = False,
+        unmatched_files: list | None = None,
+    ) -> None:
+        """Handle a file that finished loading (the callback of ``File.load``).
+
+        Settles one pending file (resuming the views when it was the last one),
+        then drops the file if it was found unsupported, parks it in the
+        unclustered files if it failed to load, and otherwise places it with
+        :meth:`place_loaded_file`. Once the last pending file is done, whatever
+        became of it, the files that could not be placed are clustered if
+        ``cluster_new_files`` is set, except those removed meanwhile.
+
+        ``target`` and ``unmatched_files`` are the ones given to
+        :meth:`load_files`.
+        """
+        config = get_config()
+        if self.file_pending_done() == 0:
+            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
+                view_updates().suspend_while_loading_exit()
+
+        # Imported here to avoid the file <-> workspace import cycle.
+        from picard.file import File
+
+        if remove_file:
+            assert file is not None
+            file.remove()
+        elif file is None or file.state == File.State.REMOVED:
+            # Removed while it was loading: nothing left to place.
+            pass
+        elif file.has_error():
+            self.unclustered_files.add_file(file)
+        else:
+            self.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
+
+        # Auto cluster newly added files if they are not explicitly moved elsewhere.
+        # This waits for the last file whatever it was, as the loads can finish in
+        # any order, and leaves aside the files removed in the meantime.
+        if self.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
+            to_cluster = [f for f in unmatched_files if f.state != File.State.REMOVED]
+            if to_cluster:
+                self.cluster(to_cluster)
+
+    def load_files(self, files: list[File], target: Item | None = None) -> None:
+        """Load ``files`` and place each one when it is loaded.
+
+        The files must already be registered, as :meth:`open_files` does. They
+        are counted as pending, the views are told to wait for them, and their
+        loads are dispatched in time-budgeted batches so a frontend stays
+        responsive; :meth:`file_load_finished` then handles each one as it completes.
+        With a ``target``, the files go there rather than the unclustered files.
+        """
+        if not files:
+            return
+        view_updates().suspend_while_loading_enter()
+        self.add_pending_files(len(files))
+        callback = partial(self.file_load_finished, target=target, unmatched_files=[])
+        thread.process_in_batches(list(files), lambda f: f.load(callback), "File load dispatch")
+
+    def add_paths(self, paths: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Add the files found in ``paths``, going into directories.
+
+        Does :meth:`scan_paths` then :meth:`add_files`.
+        """
+        return self.add_files(self.scan_paths(paths), target=target)
+
+    def add_files(self, filenames: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Open the new files among ``filenames`` and load them.
+
+        Does :meth:`open_files` then :meth:`load_files`, and returns what the
+        former reported. The files are placed asynchronously, as they load.
+        """
+        opened = self.open_files(filenames)
+        if opened.opened:
+            log.debug("Adding %d files", len(opened.opened))
+            self.load_files(opened.opened, target=target)
+        return opened
+
     def place_loaded_file(self, file: File, target: Item | None = None, unmatched_files: list | None = None) -> bool:
         """Place a freshly loaded ``file`` into the working set.
 
@@ -787,9 +1016,7 @@ class Workspace:
         whether to auto-cluster the leftovers).
 
         Returns True if the file was moved somewhere other than the unclustered
-        bucket. This is the UI-agnostic core of the GUI ``Tagger._file_loaded``
-        callback; the GUI keeps the view-suspend bookkeeping and the auto-cluster
-        of the leftovers around this call.
+        bucket. :meth:`file_load_finished` calls this for each file that loaded.
         """
         config = get_config()
         file_moved = False
@@ -1001,6 +1228,13 @@ class WorkspaceHost:
         """
         self._workspace.move_file_to_album(file, albumid)
 
+    def move_files(self, files: Iterable[File], target: Item | None, move_to_multi_tracks: bool = True) -> None:
+        """Move ``files`` to ``target``, whatever kind of place it is.
+
+        Delegates to :meth:`Workspace.move_files`.
+        """
+        self._workspace.move_files(files, target, move_to_multi_tracks)
+
     def move_file_to_track(self, file: File, albumid: str, recordingid: str) -> None:
         """Move ``file`` to recording ``recordingid`` on album ``albumid``.
 
@@ -1021,6 +1255,34 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.move_file`.
         """
         return self._workspace.move_file(file, target)
+
+    def load_files(self, files: list[File], target: Item | None = None) -> None:
+        """Load ``files`` and place each one when it is loaded.
+
+        Delegates to :meth:`Workspace.load_files`.
+        """
+        self._workspace.load_files(files, target=target)
+
+    def add_files(self, filenames: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Open the new files among ``filenames`` and load them.
+
+        Delegates to :meth:`Workspace.add_files`.
+        """
+        return self._workspace.add_files(filenames, target=target)
+
+    def add_paths(self, paths: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Add the files found in ``paths``, going into directories.
+
+        Delegates to :meth:`Workspace.add_paths`.
+        """
+        return self._workspace.add_paths(paths, target=target)
+
+    def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
+        """Open ``filenames`` as new files and register them in the working set.
+
+        Delegates to :meth:`Workspace.open_files`.
+        """
+        return self._workspace.open_files(filenames)
 
     def autotag(self, objects: Iterable[Item]) -> None:
         """Look up metadata for each taggable object in ``objects``.
@@ -1071,12 +1333,19 @@ class WorkspaceHost:
         """
         self._workspace.trash_files(files)
 
-    def save(self, objects: Iterable[IterableFiles]) -> None:
+    def refresh(self, objs: Iterable[Item]) -> None:
+        """Reload from MusicBrainz the objects of ``objs`` that can be refreshed.
+
+        Delegates to :meth:`Workspace.refresh`.
+        """
+        self._workspace.refresh(objs)
+
+    def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.
 
         Delegates to :meth:`Workspace.save`.
         """
-        self._workspace.save(objects)
+        return self._workspace.save(objects)
 
     @property
     def use_acoustid(self) -> bool:
@@ -1099,6 +1368,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.generate_fingerprints`.
         """
         self._workspace.generate_fingerprints(objs)
+
+    def files_to_cluster(self, objs: Iterable[IterableFiles]) -> list[File]:
+        """Return the files the cluster action applies to, for a selection ``objs``.
+
+        Delegates to :meth:`Workspace.files_to_cluster`.
+        """
+        return self._workspace.files_to_cluster(objs)
 
     def cluster(self, objs: Iterable[IterableFiles], callback: Callable[[], Any] | None = None) -> None:
         """Group the files reachable from ``objs`` into clusters asynchronously.

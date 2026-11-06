@@ -15,18 +15,27 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 from unittest.mock import (
     MagicMock,
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    set_hidden_attribute,
+)
 
+from picard.album import Album
 from picard.cluster import (
+    Cluster,
     ClusterList,
     UnclusteredFiles,
 )
+from picard.file import File
+from picard.track import Track
 from picard.workspace import (
+    OpenedFiles,
     Workspace,
     set_workspace_provider,
     workspace,
@@ -362,3 +371,513 @@ class WorkspaceRemoveAlbumIfCompleteTest(PicardTestCase):
         with patch('picard.workspace.view_presentation') as mock_vp:
             wks.remove_album_if_complete(self._file_with_album(album))
             mock_vp.return_value.remove.assert_not_called()
+
+
+class WorkspaceOpenFilesTest(PicardTestCase):
+    """open_files(): open and register new files, reporting what was skipped."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'ignore_regex': '', 'ignore_hidden_files': True})
+        self.registry = MagicMock()
+        # Only ".mp3" is "supported"; a fake File remembers its filename.
+        self.registry.open.side_effect = lambda name: MagicMock(filename=name) if name.endswith('.mp3') else None
+        patcher = patch('picard.workspace.services')
+        patcher.start().return_value.format_registry = self.registry
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+
+    def _path(self, name):
+        return os.path.abspath(os.path.join(os.sep, 'music', name))
+
+    def test_opens_and_registers_new_files(self):
+        a, b = self._path('b.mp3'), self._path('a.mp3')
+        result = self.wks.open_files([a, b])
+        self.assertIsInstance(result, OpenedFiles)
+        self.assertEqual(set(self.wks.files), {a, b})
+        self.assertEqual([f.filename for f in result.opened], sorted([a, b]))
+        self.assertEqual((result.ignored, result.already_loaded, result.unsupported), ([], [], []))
+
+    def test_opened_files_are_sorted_by_filename(self):
+        names = [self._path(n) for n in ('c.mp3', 'a.mp3', 'b.mp3')]
+        result = self.wks.open_files(names)
+        self.assertEqual([f.filename for f in result.opened], sorted(names))
+
+    def test_skips_file_already_in_the_working_set(self):
+        path = self._path('a.mp3')
+        existing = MagicMock(filename=path)
+        self.wks.files[path] = existing
+        result = self.wks.open_files([path])
+        self.assertEqual(result.already_loaded, [existing])
+        self.assertEqual(result.opened, [])
+        self.registry.open.assert_not_called()
+
+    def test_reports_unsupported_files(self):
+        path = self._path('cover.jpg')
+        result = self.wks.open_files([path])
+        self.assertEqual(result.unsupported, [path])
+        self.assertEqual(result.opened, [])
+        self.assertNotIn(path, self.wks.files)
+
+    def test_reports_hidden_files(self):
+        path = os.path.join(self.mktmpdir(), '.hidden.mp3')
+        open(path, 'w').close()
+        set_hidden_attribute(path)
+        result = self.wks.open_files([path])
+        # The path is normalised by open_files (a temporary directory may be a junction).
+        self.assertEqual(len(result.ignored), 1)
+        self.assertTrue(os.path.samefile(result.ignored[0], path))
+        self.registry.open.assert_not_called()
+
+    def test_ignore_regex_is_honoured(self):
+        self.set_config_values({'ignore_regex': r'skip'})
+        path = self._path('skip_me.mp3')
+        result = self.wks.open_files([path])
+        self.assertEqual(result.ignored, [path])
+        self.assertEqual(self.wks.files, {})
+
+    def test_same_path_twice_is_opened_once(self):
+        path = self._path('a.mp3')
+        result = self.wks.open_files([path, path])
+        self.assertEqual(len(result.opened), 1)
+        self.assertEqual(len(result.already_loaded), 1)
+        self.assertEqual(self.registry.open.call_count, 1)
+
+
+class WorkspaceMoveFilesTest(PicardTestCase):
+    """move_files(): dispatch on the kind of place the files are moved to."""
+
+    def setUp(self):
+        super().setUp()
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.files = [MagicMock(name=f'file{i}') for i in range(3)]
+
+    def test_none_target_moves_nothing(self):
+        self.wks.move_files(self.files, None)
+        for file in self.files:
+            file.move.assert_not_called()
+
+    def test_unsupported_target_moves_nothing(self):
+        self.wks.move_files(self.files, object())
+        for file in self.files:
+            file.move.assert_not_called()
+
+    def test_moves_files_to_cluster(self):
+        cluster = MagicMock(spec=Cluster)
+        self.wks.move_files(self.files, cluster)
+        for file in self.files:
+            file.move.assert_called_once_with(cluster)
+
+    def test_moves_files_to_file_parent(self):
+        target = MagicMock(spec=File)
+        target.parent_item = MagicMock(spec=Cluster)
+        self.wks.move_files(self.files, target)
+        for file in self.files:
+            file.move.assert_called_once_with(target.parent_item)
+
+    def test_track_target_spreads_files_over_following_tracks(self):
+        track1, track2 = MagicMock(spec=Track), MagicMock(spec=Track)
+        album = MagicMock(spec=Album)
+        album.get_next_track.side_effect = {track1: track2, track2: None}.get
+        album.unmatched_files = MagicMock(name='unmatched')
+        track1.album = album
+        self.wks.move_files(self.files, track1)
+        self.files[0].move.assert_called_once_with(track1)
+        self.files[1].move.assert_called_once_with(track2)
+        self.files[2].move.assert_called_once_with(album.unmatched_files)
+
+    def test_track_target_without_multi_tracks_keeps_the_track(self):
+        track = MagicMock(spec=Track)
+        track.album = MagicMock(spec=Album)
+        self.wks.move_files(self.files, track, move_to_multi_tracks=False)
+        for file in self.files:
+            file.move.assert_called_once_with(track)
+        track.album.get_next_track.assert_not_called()
+
+    def test_album_target_matches_files_to_tracks(self):
+        album = MagicMock(spec=Album)
+        with patch.object(Workspace, 'move_files_to_album') as mock_move:
+            self.wks.move_files(self.files, album)
+        mock_move.assert_called_once_with(self.files, album=album)
+
+    def test_cluster_list_target_clusters_files(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.move_files(self.files, MagicMock(spec=ClusterList))
+        mock_cluster.assert_called_once_with(self.files)
+
+    def test_suspends_view_updates_while_moving(self):
+        self.wks.move_files(self.files, MagicMock(spec=Cluster))
+        self.mock_view_updates.return_value.suspend_while_loading.assert_called_once_with()
+        self.mock_view_updates.return_value.suspend_selection.assert_called_once_with()
+
+
+class WorkspaceSaveTest(PicardTestCase):
+    def test_saves_every_file_and_returns_them(self):
+        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        objects = [object()]
+        with patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))) as mock_iter:
+            saved = Workspace().save(objects)
+        mock_iter.assert_called_once_with(objects, save=True)
+        file1.save.assert_called_once_with()
+        file2.save.assert_called_once_with()
+        self.assertEqual(saved, [file1, file2])
+
+    def test_files_are_saved_as_they_are_found(self):
+        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        seen_saved = []
+
+        def found():
+            yield file1
+            # The first file is already being saved when the second one is found.
+            seen_saved.append(file1.save.called)
+            yield file2
+
+        with patch('picard.workspace.iter_files_from_objects', return_value=found()):
+            Workspace().save([object()])
+        self.assertEqual(seen_saved, [True])
+
+    def test_nothing_to_save(self):
+        with patch('picard.workspace.iter_files_from_objects', return_value=iter(())):
+            self.assertEqual(Workspace().save([]), [])
+
+
+class WorkspaceScanPathsTest(PicardTestCase):
+    def test_goes_into_directories_following_the_settings(self):
+        self.set_config_values({'recursively_add_files': True, 'ignore_hidden_files': False})
+        with patch('picard.workspace.scan_paths_recursive', return_value=iter(['a', 'b'])) as mock_scan:
+            found = list(Workspace().scan_paths(['/music']))
+        mock_scan.assert_called_once_with(['/music'], True, False)
+        self.assertEqual(found, ['a', 'b'])
+
+    def test_not_recursive_and_ignoring_hidden_files(self):
+        self.set_config_values({'recursively_add_files': False, 'ignore_hidden_files': True})
+        with patch('picard.workspace.scan_paths_recursive', return_value=iter(())) as mock_scan:
+            list(Workspace().scan_paths(['/music']))
+        mock_scan.assert_called_once_with(['/music'], False, True)
+
+
+class WorkspaceFileLoadedTest(PicardTestCase):
+    """file_load_finished(): what happens when a file finishes loading."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'cluster_new_files': False})
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.wks.add_pending_files(1)
+        self.file = MagicMock(name='file')
+        self.file.has_error.return_value = False
+        patcher = patch.object(Workspace, 'place_loaded_file')
+        self.mock_place = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_places_the_file_with_its_target(self):
+        target, unmatched = object(), []
+        self.wks.file_load_finished(self.file, target=target, unmatched_files=unmatched)
+        self.mock_place.assert_called_once_with(self.file, target=target, unmatched_files=unmatched)
+
+    def test_resumes_the_views_after_the_last_pending_file(self):
+        self.wks.add_pending_files(1)
+        self.wks.file_load_finished(self.file)
+        self.mock_view_updates.return_value.suspend_while_loading_exit.assert_not_called()
+        self.wks.file_load_finished(self.file)
+        self.mock_view_updates.return_value.suspend_while_loading_exit.assert_called_once_with()
+        self.assertEqual(self.wks.pending_files_count, 0)
+
+    def test_removes_an_unsupported_file(self):
+        self.wks.file_load_finished(self.file, remove_file=True)
+        self.file.remove.assert_called_once_with()
+        self.mock_place.assert_not_called()
+
+    def test_a_file_with_an_error_goes_to_the_unclustered_files(self):
+        self.file.has_error.return_value = True
+        with patch.object(self.wks.unclustered_files, 'add_file') as mock_add:
+            self.wks.file_load_finished(self.file)
+        mock_add.assert_called_once_with(self.file)
+        self.mock_place.assert_not_called()
+
+    def test_no_file_only_settles_the_pending_count(self):
+        self.wks.file_load_finished(None)
+        self.assertEqual(self.wks.pending_files_count, 0)
+        self.mock_place.assert_not_called()
+
+    def test_clusters_unmatched_files_after_the_last_one_when_asked(self):
+        self.set_config_values({'cluster_new_files': True})
+        unmatched = [MagicMock(state=File.State.NORMAL)]
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=unmatched)
+        mock_cluster.assert_called_once_with(unmatched)
+
+    def test_does_not_cluster_while_files_are_still_pending(self):
+        self.set_config_values({'cluster_new_files': True})
+        self.wks.add_pending_files(1)
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[object()])
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_unless_asked(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[object()])
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_when_nothing_is_unmatched(self):
+        self.set_config_values({'cluster_new_files': True})
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(self.file, unmatched_files=[])
+        mock_cluster.assert_not_called()
+
+
+class WorkspaceLoadFilesTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        patcher = patch('picard.workspace.view_updates')
+        self.mock_view_updates = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+
+    @staticmethod
+    def _run_batches(items, process_func, label, **kwargs):
+        for item in list(items):
+            process_func(item)
+
+    def test_loads_each_file_and_counts_them_as_pending(self):
+        files = [MagicMock(name=f'file{i}') for i in range(3)]
+        with patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches):
+            self.wks.load_files(files)
+        self.assertEqual(self.wks.pending_files_count, 3)
+        self.mock_view_updates.return_value.suspend_while_loading_enter.assert_called_once_with()
+        for file in files:
+            file.load.assert_called_once()
+
+    def test_loaded_files_are_handled_with_the_target(self):
+        file, target = MagicMock(), object()
+        with (
+            patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches),
+            patch.object(Workspace, 'file_load_finished') as mock_loaded,
+        ):
+            self.wks.load_files([file], target=target)
+            (callback,) = file.load.call_args.args
+            callback(file)
+        mock_loaded.assert_called_once()
+        self.assertIs(mock_loaded.call_args.args[0], file)
+        self.assertIs(mock_loaded.call_args.kwargs['target'], target)
+
+    def test_nothing_to_load(self):
+        with patch('picard.workspace.thread.process_in_batches') as mock_batches:
+            self.wks.load_files([])
+        mock_batches.assert_not_called()
+        self.assertEqual(self.wks.pending_files_count, 0)
+        self.mock_view_updates.return_value.suspend_while_loading_enter.assert_not_called()
+
+
+class WorkspaceAddFilesTest(PicardTestCase):
+    def test_opens_then_loads_the_new_files(self):
+        wks = Workspace()
+        opened = OpenedFiles(opened=[MagicMock()])
+        target = object()
+        with (
+            patch.object(Workspace, 'open_files', return_value=opened) as mock_open,
+            patch.object(Workspace, 'load_files') as mock_load,
+        ):
+            result = wks.add_files(['a'], target=target)
+        mock_open.assert_called_once_with(['a'])
+        mock_load.assert_called_once_with(opened.opened, target=target)
+        self.assertIs(result, opened)
+
+    def test_loads_nothing_when_no_file_is_new(self):
+        wks = Workspace()
+        with (
+            patch.object(Workspace, 'open_files', return_value=OpenedFiles()),
+            patch.object(Workspace, 'load_files') as mock_load,
+        ):
+            wks.add_files(['a'])
+        mock_load.assert_not_called()
+
+
+class WorkspaceFileRemovedWhileLoadingTest(PicardTestCase):
+    def test_a_removed_file_settles_the_pending_count_and_is_not_placed(self):
+        wks = Workspace()
+        wks.add_pending_files(1)
+        removed = MagicMock(state=File.State.REMOVED)
+        removed.has_error.return_value = False
+        with (
+            patch('picard.workspace.view_updates') as mock_view_updates,
+            patch.object(Workspace, 'place_loaded_file') as mock_place,
+        ):
+            wks.file_load_finished(removed)
+        self.assertEqual(wks.pending_files_count, 0)
+        mock_view_updates.return_value.suspend_while_loading_exit.assert_called_once_with()
+        mock_place.assert_not_called()
+        removed.remove.assert_not_called()
+
+
+class WorkspaceAutoClusterAfterLastFileTest(PicardTestCase):
+    """cluster_new_files clusters the unmatched files once the last load is done.
+
+    The loads finish in any order, so it must not matter what kind of file is
+    the last one: a file that failed to load, one that turned out unsupported
+    or one removed meanwhile must not stop the others from being clustered.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({'cluster_new_files': True})
+        patcher = patch('picard.workspace.view_updates')
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        patcher = patch.object(Workspace, 'place_loaded_file', side_effect=self._place)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.wks.add_pending_files(3)
+        self.unmatched = []
+        self.good = [self._file(), self._file()]
+
+    @staticmethod
+    def _place(file, target=None, unmatched_files=None):
+        # Nothing to place it on: it is left over, as for a file without MBIDs.
+        unmatched_files.append(file)
+        return False
+
+    @staticmethod
+    def _file(state=File.State.NORMAL, error=False):
+        file = MagicMock(state=state)
+        file.has_error.return_value = error
+        return file
+
+    def _finish(self, *finished, **kwargs):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            for file in finished:
+                self.wks.file_load_finished(file, unmatched_files=self.unmatched, **kwargs)
+        return mock_cluster
+
+    def test_clusters_when_the_last_file_failed_to_load(self):
+        failed = self._file(state=File.State.ERROR, error=True)
+        mock_cluster = self._finish(*self.good, failed)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_when_the_last_file_was_removed_while_loading(self):
+        removed = self._file(state=File.State.REMOVED)
+        mock_cluster = self._finish(*self.good, removed)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_when_the_last_file_was_found_unsupported(self):
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            for file in self.good:
+                self.wks.file_load_finished(file, unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self._file(), unmatched_files=self.unmatched, remove_file=True)
+        mock_cluster.assert_called_once_with(self.good)
+
+    def test_clusters_once_whatever_the_order(self):
+        failed = self._file(state=File.State.ERROR, error=True)
+        for position in range(3):
+            with self.subTest(failed_at=position):
+                self.wks = Workspace()
+                self.wks.add_pending_files(3)
+                self.unmatched = []
+                order = list(self.good)
+                order.insert(position, failed)
+                mock_cluster = self._finish(*order)
+                mock_cluster.assert_called_once_with(self.good)
+
+    def test_a_file_removed_after_it_was_placed_is_not_clustered(self):
+        gone = self._file()
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(gone, unmatched_files=self.unmatched)
+            gone.state = File.State.REMOVED  # removed by the user while the others load
+            self.wks.file_load_finished(self.good[0], unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self.good[1], unmatched_files=self.unmatched)
+        mock_cluster.assert_called_once_with([self.good[0], self.good[1]])
+
+    def test_nothing_to_cluster_when_every_unmatched_file_was_removed(self):
+        gone = self._file()
+        with patch.object(Workspace, 'cluster') as mock_cluster:
+            self.wks.file_load_finished(gone, unmatched_files=self.unmatched)
+            gone.state = File.State.REMOVED
+            self.wks.file_load_finished(self._file(error=True), unmatched_files=self.unmatched)
+            self.wks.file_load_finished(self._file(error=True), unmatched_files=self.unmatched)
+        mock_cluster.assert_not_called()
+
+    def test_does_not_cluster_when_the_setting_is_off(self):
+        self.set_config_values({'cluster_new_files': False})
+        failed = self._file(state=File.State.ERROR, error=True)
+        mock_cluster = self._finish(*self.good, failed)
+        mock_cluster.assert_not_called()
+
+
+class WorkspaceRefreshTest(PicardTestCase):
+    def test_reloads_the_objects_that_can_be_refreshed(self):
+        album = MagicMock(can_refresh=True)
+        cluster = MagicMock(can_refresh=False)
+        Workspace().refresh([album, cluster])
+        album.load.assert_called_once_with(priority=True, refresh=True)
+        cluster.load.assert_not_called()
+
+    def test_nothing_to_refresh(self):
+        Workspace().refresh([])
+
+
+class WorkspaceAddPathsTest(PicardTestCase):
+    def test_adds_the_files_found_in_the_paths(self):
+        wks = Workspace()
+        target = object()
+        opened = OpenedFiles()
+        with (
+            patch.object(Workspace, 'scan_paths', return_value=iter(['a', 'b'])) as mock_scan,
+            patch.object(Workspace, 'add_files', return_value=opened) as mock_add,
+        ):
+            result = wks.add_paths(['/music'], target=target)
+        mock_scan.assert_called_once_with(['/music'])
+        (found,) = mock_add.call_args.args
+        self.assertEqual(list(found), ['a', 'b'])
+        self.assertIs(mock_add.call_args.kwargs['target'], target)
+        self.assertIs(result, opened)
+
+
+class WorkspaceFilesToClusterTest(PicardTestCase):
+    """The files the cluster action applies to, for a selection."""
+
+    def setUp(self):
+        super().setUp()
+        self.wks = Workspace()
+
+    def _file(self, parent):
+        file = MagicMock(parent_item=parent)
+        file.iterfiles.return_value = iter([file])
+        return file
+
+    def test_selected_unclustered_files(self):
+        loose1, loose2 = self._file(self.wks.unclustered_files), self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.extend([loose1, loose2, self._file(self.wks.unclustered_files)])
+        self.assertEqual(self.wks.files_to_cluster([loose1, loose2]), [loose1, loose2])
+
+    def test_selected_clustered_files_are_left_out(self):
+        loose = self._file(self.wks.unclustered_files)
+        clustered = self._file(MagicMock(name='cluster'))
+        self.assertEqual(self.wks.files_to_cluster([clustered, loose]), [loose])
+
+    def test_all_unclustered_files_when_none_is_selected_unclustered(self):
+        loose1, loose2 = self._file(self.wks.unclustered_files), self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.extend([loose1, loose2])
+        clustered = self._file(MagicMock(name='cluster'))
+        self.assertEqual(self.wks.files_to_cluster([clustered]), [loose1, loose2])
+
+    def test_all_unclustered_files_when_nothing_is_selected(self):
+        loose = self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.append(loose)
+        self.assertEqual(self.wks.files_to_cluster([]), [loose])
+
+    def test_nothing_to_cluster(self):
+        self.assertEqual(self.wks.files_to_cluster([]), [])
+
+    def test_result_is_a_copy_of_the_unclustered_files(self):
+        loose = self._file(self.wks.unclustered_files)
+        self.wks.unclustered_files.files.append(loose)
+        result = self.wks.files_to_cluster([])
+        self.wks.unclustered_files.files.clear()
+        self.assertEqual(result, [loose])

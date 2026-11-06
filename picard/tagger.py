@@ -89,7 +89,6 @@ from picard.browser.server import BrowserIntegration
 from picard.cli import get_subcommands_help
 from picard.cluster import (
     Cluster,
-    ClusterList,
 )
 from picard.collection import load_user_collections
 from picard.config import (
@@ -115,7 +114,11 @@ from picard.const.sys import (
 )
 from picard.debug_opts import DebugOpt
 from picard.disc import (
+    ConflictingDiscTags,
     Disc,
+    DiscTagsError,
+    NoDiscTags,
+    toc_string_from_tags,
 )
 from picard.disc.presentation import set_disc_presentation_sink
 from picard.extension_points.event_hooks import register_file_post_save_processor
@@ -164,34 +167,25 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    compile_ignore_regex,
-    is_ignored_file,
-    normpath,
     periodictouch,
     pipe,
-    resolve_fs_path,
-    scan_paths_recursive,
     system_supports_long_paths,
     thread,
     unset_env_vars,
     versions,
     webbrowser2,
 )
+from picard.util.cdrom import get_configured_lookup_device
 from picard.util.checkupdate import UpdateCheckManager
 from picard.util.datahash import DataHash
 from picard.util.qt import (
     install_qt_message_handler,
-    process_events_iter,
 )
 from picard.util.readthedocs import ReadTheDocs
-from picard.util.toc import (
-    parse_toc_itunes_cddb,
-)
 from picard.view_presentation import set_view_presentation_sink
 from picard.view_sync import set_view_sync_sink
 from picard.view_updates import (
     set_view_updates_sink,
-    view_updates,
 )
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
@@ -202,7 +196,6 @@ from picard.workspace import (
     Workspace,
     WorkspaceHost,
     set_workspace_provider,
-    workspace,
 )
 from picard.workspace_events import (
     workspace_events,
@@ -875,17 +868,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     _callback_queue: ClassVar[list] = []
     _callback_timer_running: bool = False
 
-    def _process_in_batches(
-        self, items: list, process_func, label: str, time_budget: float | None = None, on_complete=None
-    ) -> None:
-        """Process items with a time budget, yielding to the event loop between batches.
-
-        Thin wrapper around :func:`picard.util.thread.process_in_batches` (the
-        frontend-agnostic batch helper); kept as a method for the existing call
-        sites.
-        """
-        thread.process_in_batches(items, process_func, label, time_budget=time_budget, on_complete=on_complete)
-
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
             self._callback_queue.append(event)
@@ -915,94 +897,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             QtCore.QTimer.singleShot(0, self._process_callback_batch)
         else:
             self._callback_timer_running = False
-
-    def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
-        config = get_config()
-        wks = workspace()
-        if wks.file_pending_done() == 0:
-            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
-                view_updates().suspend_while_loading_exit()
-
-        if remove_file:
-            file.remove()
-            return
-
-        if file is None:
-            return
-
-        if file.has_error():
-            self.unclustered_files.add_file(file)
-            return
-
-        # Place the file (MBID auto-move / move_file / analyze fallback); the
-        # UI-agnostic policy lives on the Workspace.
-        wks.place_loaded_file(file, target=target, unmatched_files=unmatched_files)
-
-        # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if wks.pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
-            self.cluster(unmatched_files)
-
-    def move_files(self, files, target, move_to_multi_tracks=True):
-        if target is None:
-            log.debug("Aborting move since target is invalid")
-            return
-        with (
-            view_updates().suspend_while_loading(),
-            view_updates().suspend_selection(),
-        ):
-            if isinstance(target, Cluster):
-                for file in process_events_iter(files):
-                    file.move(target)
-            elif isinstance(target, Track):
-                album = target.album
-                for file in process_events_iter(files):
-                    file.move(target)
-                    if move_to_multi_tracks:  # Assign next file to following track
-                        target = album.get_next_track(target) or album.unmatched_files
-            elif isinstance(target, File):
-                for file in process_events_iter(files):
-                    file.move(target.parent_item)
-            elif isinstance(target, Album):
-                self.move_files_to_album(files, album=target)
-            elif isinstance(target, ClusterList):
-                self.cluster(files)
-
-    def add_files(self, filenames, target=None):
-        """Add files to the tagger."""
-        config = get_config()
-        ignoreregex = compile_ignore_regex(config.setting['ignore_regex'])
-        ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
-        for filename in filenames:
-            filename = resolve_fs_path(filename)
-            filename = normpath(filename)
-            if is_ignored_file(filename, ignore_hidden, ignoreregex):
-                continue
-            if filename not in self.files:
-                file = self.format_registry.open(filename)
-                if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-                QtCore.QCoreApplication.processEvents()
-        if new_files:
-            log.debug("Adding %d files", len(new_files))
-            new_files.sort(key=lambda x: x.filename)
-            view_updates().suspend_while_loading_enter()
-            workspace().add_pending_files(len(new_files))
-            unmatched_files = []
-            self._load_files_batch(new_files, target, unmatched_files)
-
-    def _load_files_batch(self, files: list, target: object, unmatched_files: list) -> None:
-        """Dispatch file loads using time-budgeted batching."""
-        callback = partial(self._file_loaded, target=target, unmatched_files=unmatched_files)
-        self._process_in_batches(files, lambda f: f.load(callback), "File load dispatch")
-
-    def add_paths(self, paths, target=None):
-        config = get_config()
-        files = scan_paths_recursive(
-            paths, config.setting['recursively_add_files'], config.setting["ignore_hidden_files"]
-        )
-        self.add_files(files, target=target)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -1076,31 +970,22 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '',
             )
 
-    def _lookup_disc(self, disc, result=None, error=None):
+    def _disc_read_failed(self, error):
         busy_cursor_stop()
-        if error is not None:
-            QtWidgets.QMessageBox.critical(
-                self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
-            )
-        else:
-            disc.lookup()
+        QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
     def lookup_cd(self, device=None):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if not device:
-            config = get_config()
-            if device := config.setting['cd_lookup_device']:
-                device = device.split(',', 1)[0]
-            else:
-                # rely on python-discid auto detection
-                device = None
+            # None relies on python-discid auto detection
+            device = get_configured_lookup_device()
 
         self.run_lookup_cd(device)
 
     def run_lookup_cd(self, device):
         disc = Disc()
         busy_cursor_start()
-        thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
+        disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
@@ -1121,75 +1006,20 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
         busy_cursor_start()
-        thread.run_task(
-            partial(disc.read_log, filepath),
-            partial(self._lookup_disc, disc),
-            traceback=log.is_debug(),
-        )
+        disc.read_and_lookup(partial(disc.read_log, filepath), on_error=self._disc_read_failed)
 
     def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
-        # Try to find TOC data in tags from all files
-        toc_data = None
-        toc_source = None
-
-        for file in files:
-            # Check for itunes_cddb_1 format
-            itunes_tag = file.metadata.get('itunes_cddb_1')
-            if itunes_tag:
-                toc_data = itunes_tag
-                toc_source = 'itunes_cddb_1'
-                break
-
-        if not toc_data:
-            msg = _('Disc information could not be found')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Gather tag from all files that have it
-        tags = []
-        for file in files:
-            if toc_source == 'itunes_cddb_1':
-                tag = file.metadata.get('itunes_cddb_1')
-            if tag:
-                tags.append(tag)
-
-        # Abort if no files have the tag
-        if not tags:
-            msg = _('Disc information could not be found')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Ensure all tags found are identical
-        unique_tags = set(tags)
-        if len(unique_tags) != 1:
-            msg = _('Selected files contain tags with conflicting disc information')
-            self.window.set_statusbar_message(msg)
-            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-            return
-
-        # Parse the TOC data using the appropriate parser
         try:
-            if toc_source == 'itunes_cddb_1':
-                num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(toc_data)
-
-            # Validate track count matches number of files
-            if len(files) != num_tracks:
-                raise ValueError(
-                    f"Number of tracks ({num_tracks}) does not match number of selected files ({len(files)})"
-                )
-
-        except Exception as e:
-            self.window.set_statusbar_message(_('Failed to parse disc information from tags: %s') % str(e))
+            toc_string = toc_string_from_tags(files)
+        except (NoDiscTags, ConflictingDiscTags) as e:
+            msg = str(e)
+            self.window.set_statusbar_message(msg)
+            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
             return
-
-        # Reconstruct TOC in MusicBrainz format
-        # e.g. first_track last_track leadout_lba track_lba_1 track_lba_2 ...
-        toc_string = f"1+{num_tracks}+{leadout_lba}"
-        for offset in track_lbas:
-            toc_string += f"+{offset}"
+        except DiscTagsError as e:
+            self.window.set_statusbar_message(str(e))
+            return
 
         self.window.set_statusbar_message(N_('Looking up disc from tags…'))
         busy_cursor_start()
@@ -1210,11 +1040,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     # =======================================================================
     #  Utils
     # =======================================================================
-
-    def refresh(self, objs):
-        for obj in objs:
-            if obj.can_refresh:
-                obj.load(priority=True, refresh=True)
 
     def bring_tagger_front(self):
         self.window.setWindowState(

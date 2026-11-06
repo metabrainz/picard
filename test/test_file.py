@@ -1304,3 +1304,29 @@ class FileIdentityLifecycleTest(PicardTestCase):
         self.file._save.assert_called_once()
         # The diagnostic warning was logged instead of propagating the error.
         self.assertTrue(mock_log.warning.called)
+
+
+class FileRemovedWhileLoadingTest(PicardTestCase):
+    """A file removed while it loads still reports back to the caller of load().
+
+    The caller counts the file as pending until its callback runs, so not
+    calling it left that count above zero for good.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.file = FakeMp3File('somepath/somefile.mp3')
+        self.set_config_values({'enabled_plugins': []})
+
+    def test_callback_is_called_when_removed_before_the_load_finished(self):
+        self.file.state = File.State.REMOVED
+        callback = Mock()
+        self.file._loading_finished(callback, result=None)
+        callback.assert_called_once_with(self.file)
+
+    def test_callback_is_not_called_for_a_file_neither_pending_nor_removed(self):
+        self.file.state = File.State.NORMAL
+        callback = Mock()
+        self.file._loading_finished(callback, result=None)
+        callback.assert_not_called()
