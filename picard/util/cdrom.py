@@ -75,6 +75,14 @@ def _generic_iter_drives():
     )
 
 
+def get_configured_lookup_device() -> str | None:
+    """Return the first drive of the ``cd_lookup_device`` setting.
+
+    ``None`` when none is configured, which lets python-discid detect a drive.
+    """
+    return next(_generic_iter_drives(), None)
+
+
 def _parse_linux_cdrom_info(f):
     drive_names = []
     drive_audio_caps = []
