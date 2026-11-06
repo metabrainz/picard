@@ -1107,11 +1107,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     #  Utils
     # =======================================================================
 
-    def refresh(self, objs):
-        for obj in objs:
-            if obj.can_refresh:
-                obj.load(priority=True, refresh=True)
-
     def bring_tagger_front(self):
         self.window.setWindowState(
             self.window.windowState() & ~QtCore.Qt.WindowState.WindowMinimized | QtCore.Qt.WindowState.WindowActive

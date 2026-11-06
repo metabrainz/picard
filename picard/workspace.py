@@ -781,6 +781,16 @@ class Workspace:
 
         thread.process_in_batches(clusters, self.apply_file_cluster, "Clustering", on_complete=finished)
 
+    def refresh(self, objs: Iterable[Item]) -> None:
+        """Reload from MusicBrainz the objects of ``objs`` that can be refreshed.
+
+        Only objects that are loaded from MusicBrainz (albums, for instance) can
+        be, the others are left alone.
+        """
+        for obj in objs:
+            if obj.can_refresh:
+                obj.load(priority=True, refresh=True)
+
     def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.
 
@@ -1294,6 +1304,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.trash_files`.
         """
         self._workspace.trash_files(files)
+
+    def refresh(self, objs: Iterable[Item]) -> None:
+        """Reload from MusicBrainz the objects of ``objs`` that can be refreshed.
+
+        Delegates to :meth:`Workspace.refresh`.
+        """
+        self._workspace.refresh(objs)
 
     def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.

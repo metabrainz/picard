@@ -808,3 +808,15 @@ class WorkspaceAutoClusterAfterLastFileTest(PicardTestCase):
         failed = self._file(state=File.State.ERROR, error=True)
         mock_cluster = self._finish(*self.good, failed)
         mock_cluster.assert_not_called()
+
+
+class WorkspaceRefreshTest(PicardTestCase):
+    def test_reloads_the_objects_that_can_be_refreshed(self):
+        album = MagicMock(can_refresh=True)
+        cluster = MagicMock(can_refresh=False)
+        Workspace().refresh([album, cluster])
+        album.load.assert_called_once_with(priority=True, refresh=True)
+        cluster.load.assert_not_called()
+
+    def test_nothing_to_refresh(self):
+        Workspace().refresh([])
