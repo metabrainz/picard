@@ -512,3 +512,33 @@ class WorkspaceMoveFilesTest(PicardTestCase):
         self.wks.move_files(self.files, MagicMock(spec=Cluster))
         self.mock_view_updates.return_value.suspend_while_loading.assert_called_once_with()
         self.mock_view_updates.return_value.suspend_selection.assert_called_once_with()
+
+
+class WorkspaceSaveTest(PicardTestCase):
+    def test_saves_every_file_and_returns_them(self):
+        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        objects = [object()]
+        with patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))) as mock_iter:
+            saved = Workspace().save(objects)
+        mock_iter.assert_called_once_with(objects, save=True)
+        file1.save.assert_called_once_with()
+        file2.save.assert_called_once_with()
+        self.assertEqual(saved, [file1, file2])
+
+    def test_files_are_saved_as_they_are_found(self):
+        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        seen_saved = []
+
+        def found():
+            yield file1
+            # The first file is already being saved when the second one is found.
+            seen_saved.append(file1.save.called)
+            yield file2
+
+        with patch('picard.workspace.iter_files_from_objects', return_value=found()):
+            Workspace().save([object()])
+        self.assertEqual(seen_saved, [True])
+
+    def test_nothing_to_save(self):
+        with patch('picard.workspace.iter_files_from_objects', return_value=iter(())):
+            self.assertEqual(Workspace().save([]), [])

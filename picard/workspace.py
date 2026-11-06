@@ -779,18 +779,29 @@ class Workspace:
 
         thread.process_in_batches(clusters, self.apply_file_cluster, "Clustering", on_complete=finished)
 
-    def save(self, objects: Iterable[IterableFiles]) -> None:
+    def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.
 
         ``objects`` may be any mix of files, tracks, albums and clusters (any
-        object exposing ``iterfiles``); each contained file is saved. The
-        per-file threading (the save thread pool) and the batch coalescing of
-        shared cover-art parents live in :class:`~picard.file.File` and the
-        begin_save/end_save bookkeeping, so this is a thin, UI-agnostic driver
-        usable from the GUI and headless.
+        object exposing ``iterfiles``); each contained file is saved. The files
+        whose save was started are returned, so a caller can follow them; the
+        writes themselves finish later, on the save thread pool. The per-file
+        threading and the batch coalescing of shared cover-art parents live in
+        :class:`~picard.file.File` and the begin_save/end_save bookkeeping, so
+        this is a thin, UI-agnostic driver usable from the GUI and headless.
         """
+        # TODO: make a long save interruptible. This loop runs on the main thread
+        # without yielding to the event loop and a queued write cannot be
+        # cancelled. Dispatch in time-budgeted batches (see thread.process_in_batches)
+        # under a cancellable operation, check the cancel flag between batches and
+        # before a queued write starts, and keep begin_save/end_save and the
+        # pending state balanced for the files that are not saved. The returned list
+        # already holds only the files whose save was started, not those selected.
+        saved: list[File] = []
         for file in iter_files_from_objects(objects, save=True):
             file.save()
+            saved.append(file)
+        return saved
 
     @property
     def use_acoustid(self) -> bool:
@@ -1186,12 +1197,12 @@ class WorkspaceHost:
         """
         self._workspace.trash_files(files)
 
-    def save(self, objects: Iterable[IterableFiles]) -> None:
+    def save(self, objects: Iterable[IterableFiles]) -> list[File]:
         """Save every file reachable from ``objects`` to disk.
 
         Delegates to :meth:`Workspace.save`.
         """
-        self._workspace.save(objects)
+        return self._workspace.save(objects)
 
     @property
     def use_acoustid(self) -> bool:
