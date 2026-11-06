@@ -968,6 +968,13 @@ class Workspace:
         callback = partial(self.file_load_finished, target=target, unmatched_files=[])
         thread.process_in_batches(list(files), lambda f: f.load(callback), "File load dispatch")
 
+    def add_paths(self, paths: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Add the files found in ``paths``, going into directories.
+
+        Does :meth:`scan_paths` then :meth:`add_files`.
+        """
+        return self.add_files(self.scan_paths(paths), target=target)
+
     def add_files(self, filenames: Iterable[str], target: Item | None = None) -> OpenedFiles:
         """Open the new files among ``filenames`` and load them.
 
@@ -1248,6 +1255,13 @@ class WorkspaceHost:
         Delegates to :meth:`Workspace.add_files`.
         """
         return self._workspace.add_files(filenames, target=target)
+
+    def add_paths(self, paths: Iterable[str], target: Item | None = None) -> OpenedFiles:
+        """Add the files found in ``paths``, going into directories.
+
+        Delegates to :meth:`Workspace.add_paths`.
+        """
+        return self._workspace.add_paths(paths, target=target)
 
     def open_files(self, filenames: Iterable[str]) -> OpenedFiles:
         """Open ``filenames`` as new files and register them in the working set.

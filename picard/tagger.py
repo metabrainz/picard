@@ -194,7 +194,6 @@ from picard.workspace import (
     Workspace,
     WorkspaceHost,
     set_workspace_provider,
-    workspace,
 )
 from picard.workspace_events import (
     workspace_events,
@@ -896,9 +895,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             QtCore.QTimer.singleShot(0, self._process_callback_batch)
         else:
             self._callback_timer_running = False
-
-    def add_paths(self, paths, target=None):
-        self.add_files(workspace().scan_paths(paths), target=target)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""

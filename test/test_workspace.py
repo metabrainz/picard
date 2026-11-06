@@ -820,3 +820,20 @@ class WorkspaceRefreshTest(PicardTestCase):
 
     def test_nothing_to_refresh(self):
         Workspace().refresh([])
+
+
+class WorkspaceAddPathsTest(PicardTestCase):
+    def test_adds_the_files_found_in_the_paths(self):
+        wks = Workspace()
+        target = object()
+        opened = OpenedFiles()
+        with (
+            patch.object(Workspace, 'scan_paths', return_value=iter(['a', 'b'])) as mock_scan,
+            patch.object(Workspace, 'add_files', return_value=opened) as mock_add,
+        ):
+            result = wks.add_paths(['/music'], target=target)
+        mock_scan.assert_called_once_with(['/music'])
+        (found,) = mock_add.call_args.args
+        self.assertEqual(list(found), ['a', 'b'])
+        self.assertIs(mock_add.call_args.kwargs['target'], target)
+        self.assertIs(result, opened)
