@@ -157,6 +157,43 @@ app.run_cleanup()
 """
 
 
+_BATCHES_PROGRAM = """
+import sys
+import time
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+from picard.util import thread
+
+app = HeadlessTagger(sys.argv, config_file=sys.argv[1])
+
+# A chain of batches that does not fit in its first batch continues from a
+# timer on the main thread. run_until_idle() must wait for all of it, and for
+# the completion callback, although no thread or web request is pending.
+processed = []
+completed = []
+
+def work(item):
+    time.sleep(0.03)
+    processed.append(item)
+
+thread.process_in_batches(list(range(10)), work, 'test', on_complete=lambda: completed.append(True))
+assert len(processed) < 10, 'the first batch was expected to leave work for the event loop'
+assert thread.pending_batches() == 1
+
+assert app.run_until_idle(timeout=30)
+assert processed == list(range(10)), processed
+assert completed == [True]
+assert thread.pending_batches() == 0
+print('BATCHES_OK')
+
+app.run_cleanup()
+"""
+
+
 _POST_SAVE_PROGRAM = """
 import sys
 import tempfile
@@ -287,6 +324,23 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
         )
         for marker in ('DRIVER_OK', 'IDLE_OK'):
             self.assertIn(marker, result.stdout)
+
+    def test_run_until_idle_waits_for_the_batches_still_to_run(self):
+        # A temporary configuration file: the program must not use the user's.
+        config_file = self.mktmpdir() + '/Picard.ini'
+        result = subprocess.run(
+            [sys.executable, '-c', _BATCHES_PROGRAM, config_file],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        self.assertIn('BATCHES_OK', result.stdout)
 
     def test_services_are_built_lazily(self):
         result = subprocess.run(
