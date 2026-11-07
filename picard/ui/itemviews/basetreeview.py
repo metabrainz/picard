@@ -769,7 +769,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def filter_items(self, text, filters, status_filters):
         # When text or filters is empty, show all items, unless any status filter is False
-        if (not text or not filters) and status_filters.all_active():
+        if (not text.strip() or not filters) and status_filters.all_active():
             self._restore_all_items()
             return
 
@@ -778,6 +778,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @staticmethod
     def _filter_tree_items(parent, text, filters, status_filters):
         text = text.lower()
+        has_text_filter = bool(text.strip() and filters)
         match_found = False
 
         for i in range(parent.childCount()):
@@ -786,15 +787,27 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
             if hasattr(child, 'obj'):
                 obj = child.obj
-
                 matches_status_filter = BaseTreeView._matches_status_filters(obj, status_filters)
+            else:
+                matches_status_filter = True
 
-                if matches_status_filter:
+            if matches_status_filter:
+                if has_text_filter:
                     text_filters_match = BaseTreeView._match_text_filters(child, text, filters)
+                else:
+                    text_filters_match = True
+                    BaseTreeView._set_item_tooltip(child, '')
+                    if child.childCount() > 0:
+                        BaseTreeView._restore_tree_items(child)
+            else:
+                BaseTreeView._set_item_tooltip(child, '')
 
             # Hide/show based on match
             if child.filterable:
-                child.setHidden(not text_filters_match)
+                if getattr(child.obj, 'is_permanently_hidden', False):
+                    child.setHidden(True)
+                else:
+                    child.setHidden(not text_filters_match)
             match_found |= text_filters_match
 
         return match_found
@@ -898,14 +911,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def _restore_all_items(self):
         """Show all items in the tree."""
-        self._restore_tree_items(self.invisibleRootItem())
+        BaseTreeView._restore_tree_items(self.invisibleRootItem())
 
-    def _restore_tree_items(self, parent):
+    @staticmethod
+    def _restore_tree_items(parent):
         """Recursively show all items."""
         for i in range(parent.childCount()):
             child = parent.child(i)
             if not getattr(child.obj, 'is_permanently_hidden', False):
                 child.setHidden(False)
-            self._set_item_tooltip(child, '')
+            BaseTreeView._set_item_tooltip(child, '')
             if child.childCount() > 0:
-                self._restore_tree_items(child)
+                BaseTreeView._restore_tree_items(child)
