@@ -162,6 +162,11 @@ def _handle_tempitemlist(itemlist: TempItemList, setter) -> bool:
     log.debug("set_coverart_tempitemlist %r", itemlist)
 
     items = set(itemlist.items)
+    # Resolve the underlying files up front. Updating a selected item below
+    # refreshes the selection in the UI, which replaces the cover art box's
+    # aggregate and calls clear() on this one, emptying `itemlist.items`.
+    # Looking the files up afterwards would then find none (PICARD-3511).
+    files = list(itemlist.iterfiles())
     parents = set()
     with ExitStack() as stack:
         stack.enter_context(itemlist.suspend_metadata_images_update)
@@ -186,7 +191,7 @@ def _handle_tempitemlist(itemlist: TempItemList, setter) -> bool:
         # right-pane selection would show the new art but silently fail to embed
         # it (PICARD-3511). file.update(signal=False) keeps the already-set
         # aggregate on the selected items from being rebuilt and wiped.
-        for file in itemlist.iterfiles():
+        for file in files:
             if setter._set_image(file):
                 file.update(signal=False)
 
