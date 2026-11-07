@@ -16,6 +16,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from unittest.mock import patch
+
 from test.picardtestcase import (
     PicardTestCase,
     create_image,
@@ -210,3 +212,29 @@ class TempItemListCoverArtSetterTest(PicardTestCase):
         new_hash = new_image.datahash.hash
         occurrences = [img for img in file.metadata.images if img.datahash.hash == new_hash]
         self.assertEqual(1, len(occurrences))
+
+    def test_aggregate_cleared_during_item_update_still_reaches_files(self):
+        # In the real UI, updating a selected item refreshes the selection,
+        # which replaces the cover art box's TempItemList and calls clear() on
+        # the one the setter is still using. The files must still be resolved,
+        # otherwise the image is shown but never embedded (PICARD-3511).
+        old1 = _front_image('old1', b'old1')
+        old2 = _front_image('old2', b'old2')
+        track1, file1 = self._track_with_file('t1', 'a.flac', old1)
+        track2, file2 = self._track_with_file('t2', 'b.flac', old2)
+
+        temp = TempItemList(items=[track1, track2])
+
+        def update_and_clear(signal=True):
+            temp.clear()
+
+        new_image = _front_image('new', b'new-front')
+        setter = CoverArtSetter(CoverArtSetterMode.REPLACE, new_image, temp)
+        with (
+            patch.object(track1, 'update', side_effect=update_and_clear),
+            patch.object(track2, 'update', side_effect=update_and_clear),
+        ):
+            self.assertTrue(setter.set_coverart())
+
+        for file in (file1, file2):
+            self.assertEqual([new_image.datahash.hash], list(file.metadata.images.hash_dict()))
