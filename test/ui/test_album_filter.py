@@ -110,6 +110,7 @@ def create_fake_album(modified: bool = False, complete: bool = False):
 
     fake_album_class.is_modified.side_effect = is_modified
     fake_album_class.is_complete.side_effect = is_complete
+    fake_album_class.is_permanently_hidden = False
 
     return fake_album_class
 
@@ -421,6 +422,94 @@ class AlbumFilterTestFiltering(PicardTestCase):
             )
         )
 
+    def test_status_filter_only_clears_search_tooltips(self):
+        """PICARD-3532: When only status filters are active, do not display search tooltips."""
+        test_metadata = {
+            'title': 'test_title',
+            'artist': 'test_artist',
+        }
+        test_album = create_fake_album(modified=True, complete=False)
+        test_album.metadata = MultiMetadataProxy(Metadata(test_metadata))
+
+        mock_child = MagicMock()
+        mock_child.obj = MagicMock()
+        mock_child.obj.is_permanently_hidden = False
+        mock_child.childCount.return_value = 0
+        mock_child.columnCount.return_value = 1
+        mock_child.filterable = True
+
+        mock_album_item = MagicMock()
+        mock_album_item.obj = test_album
+        mock_album_item.childCount.return_value = 1
+        mock_album_item.child.return_value = mock_child
+        mock_album_item.columnCount.return_value = 1
+        mock_album_item.filterable = True
+
+        mock_parent = MagicMock()
+        mock_parent.childCount.return_value = 1
+        mock_parent.child.return_value = mock_album_item
+
+        # 1) Filter with empty text and only modified status active
+        matched = BaseTreeView._filter_tree_items(
+            mock_parent, "", filters={'title'}, status_filters=StatusFilters(unmodified=False)
+        )
+        self.assertTrue(matched)
+        mock_album_item.setHidden.assert_called_with(False)
+        mock_album_item.setToolTip.assert_called_with(0, '')
+        mock_child.setHidden.assert_called_with(False)
+        mock_child.setToolTip.assert_called_with(0, '')
+
+        # 2) Filter with whitespace text
+        mock_album_item.reset_mock()
+        mock_child.reset_mock()
+        mock_album_item.childCount.return_value = 1
+        mock_album_item.child.return_value = mock_child
+        mock_album_item.columnCount.return_value = 1
+        mock_child.childCount.return_value = 0
+        mock_child.columnCount.return_value = 1
+
+        matched = BaseTreeView._filter_tree_items(
+            mock_parent, "   ", filters={'title'}, status_filters=StatusFilters(unmodified=False)
+        )
+        self.assertTrue(matched)
+        mock_album_item.setHidden.assert_called_with(False)
+        mock_album_item.setToolTip.assert_called_with(0, '')
+        mock_child.setHidden.assert_called_with(False)
+        mock_child.setToolTip.assert_called_with(0, '')
+
+        # 3) When album does not match status filter
+        mock_album_item.reset_mock()
+        mock_child.reset_mock()
+        mock_album_item.childCount.return_value = 0
+        mock_album_item.columnCount.return_value = 1
+
+        matched = BaseTreeView._filter_tree_items(
+            mock_parent, "", filters={'title'}, status_filters=StatusFilters(modified=False)
+        )
+        self.assertFalse(matched)
+        mock_album_item.setHidden.assert_called_with(True)
+        mock_album_item.setToolTip.assert_called_with(0, '')
+
+    def test_status_filter_preserves_permanently_hidden(self):
+        """PICARD-3532: Permanently hidden items remain hidden under status filtering."""
+        test_album = create_fake_album(modified=True, complete=False)
+        test_album.is_permanently_hidden = True
+
+        mock_album_item = MagicMock()
+        mock_album_item.obj = test_album
+        mock_album_item.childCount.return_value = 0
+        mock_album_item.columnCount.return_value = 1
+        mock_album_item.filterable = True
+
+        mock_parent = MagicMock()
+        mock_parent.childCount.return_value = 1
+        mock_parent.child.return_value = mock_album_item
+
+        BaseTreeView._filter_tree_items(
+            mock_parent, "", filters={'title'}, status_filters=StatusFilters(unmodified=False)
+        )
+        mock_album_item.setHidden.assert_called_with(True)
+
 
 class AlbumStatusFilterPersistenceTest(PicardTestCase):
     """Verify the album status filter actually round-trips through the config.
@@ -513,6 +602,16 @@ class FilterItemsGuardTest(PicardTestCase):
 
     def test_filters_when_text_present(self):
         fake_self, mock_walk = self._call_filter_items('abc', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()
+
+    def test_restores_all_when_whitespace_and_all_active(self):
+        fake_self, mock_walk = self._call_filter_items('   ', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_whitespace_and_status_filter_active(self):
+        fake_self, mock_walk = self._call_filter_items('   ', {'title'}, StatusFilters(modified=False))
         fake_self._restore_all_items.assert_not_called()
         mock_walk.assert_called_once()
 
