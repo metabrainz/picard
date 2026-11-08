@@ -859,7 +859,8 @@ class ID3File(File):
         The frame carries no data besides its presence (iTunes writes a value of 0),
         so it is only written if the tag is set to 1 and removed otherwise.
         """
-        if values[0] == '1':
+
+        if values and values[0] == '1':
             tags.add(id3.PCST(value=0))
         else:
             tags.delall('PCST')
