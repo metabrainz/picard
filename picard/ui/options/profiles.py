@@ -51,6 +51,7 @@ from picard.i18n import (
     N_,
     gettext as _,
     gettext_constants,
+    ngettext,
 )
 from picard.profile import (
     is_plugin_profile_key,
@@ -465,11 +466,21 @@ class ProfilesOptionsPage(OptionsPage):
                 "Removing \"Tagger scripts\" from this profile will delete the following scripts:\n\n"
                 "%s\n\nDo you want to continue?"
             )
-            % "\n".join("• %s" % name for name in names),
+            % self._format_script_names(names),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             QtWidgets.QMessageBox.StandardButton.No,
         )
         return answer == QtWidgets.QMessageBox.StandardButton.Yes
+
+    MAX_LISTED_SCRIPTS = 10
+
+    def _format_script_names(self, names):
+        """Format script names as a bullet list, truncated to keep the dialog small."""
+        lines = ["• %s" % name for name in names[: self.MAX_LISTED_SCRIPTS]]
+        hidden = len(names) - self.MAX_LISTED_SCRIPTS
+        if hidden > 0:
+            lines.append(ngettext("… and %d more script", "… and %d more scripts", hidden) % hidden)
+        return "\n".join(lines)
 
     def _get_global_setting(self, key):
         """Return the value of ``key`` as stored outside of any profile."""

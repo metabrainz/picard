@@ -570,6 +570,16 @@ class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
         q.assert_not_called()
         self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
 
+    def test_long_script_list_is_truncated_in_prompt(self):
+        scripts = [(i, 'Script %d' % i, True, '$noop(%d)' % i) for i in range(13)]
+        page = self._page(scripts)
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.No) as q:
+            page.update_values_in_profile_options()
+        text = q.call_args.args[2]
+        self.assertIn('Script 9', text)
+        self.assertNotIn('Script 10', text)
+        self.assertIn('3 more scripts', text)
+
 
 class TestProfileSettingNamesLostOnRemoval(PicardTestCase):
     """PICARD-3469: only scripts stored nowhere else are reported as lost."""
