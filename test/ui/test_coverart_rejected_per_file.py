@@ -20,6 +20,8 @@
 embedded images, so an item made of several files (album, cluster, multiple
 selection) must not be judged on the union of their images."""
 
+from unittest.mock import MagicMock
+
 from test.picardtestcase import create_image
 from test.ui.test_coverart_removal_display import _RemovalBox
 
@@ -28,6 +30,8 @@ from picard.config import get_config
 from picard.file import File
 
 import pytest
+
+from picard.ui.coverartbox import CoverArtBox
 
 
 def _front(name, size):
@@ -93,3 +97,28 @@ def test_file_without_pending_change_is_ignored(settings):
     unchanged = _file('c', big, big)
     item = TempItemList(items=[_file('a', big, new), unchanged])
     assert _shown(item) == [big]
+
+
+@pytest.fixture
+def real_box(settings, patch_tagger_instance):
+    """A real CoverArtBox, to check what the user actually sees."""
+    patch_tagger_instance('picard.ui.coverartbox', 'picard.ui.coverartbox.coverartthumbnail')
+    settings.setting.setting_changed = MagicMock()
+    box = CoverArtBox()
+    box.show()
+    return box
+
+
+def test_displayed_state_when_rejected(real_box):
+    """The reporter's case: no "New Cover Art" header, no second panel."""
+    big, new = _front(b'big', 1000), _front(b'new', 800)
+    real_box.set_item(TempItemList(items=[_file('a', big, new)]))
+    assert real_box.cover_art_label.text() == ''
+    assert not real_box.orig_cover_art.isVisible()
+
+
+def test_displayed_state_when_one_file_is_replaced(real_box):
+    big, small, new = _front(b'big', 1000), _front(b'small', 500), _front(b'new', 800)
+    real_box.set_item(TempItemList(items=[_file('a', big, new), _file('b', small, new)]))
+    assert real_box.cover_art_label.text() == 'New Cover Art'
+    assert real_box.orig_cover_art.isVisible()
