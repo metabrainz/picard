@@ -50,6 +50,7 @@ from picard.profile import (
     profile_groups_settings,
     profile_groups_update_highlights,
     profile_groups_values,
+    profile_setting_names_lost_on_removal,
 )
 
 from picard.ui.options.profiles import ProfilesOptionsPage
@@ -558,3 +559,19 @@ class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
             page.update_values_in_profile_options()
         q.assert_not_called()
         self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
+
+class TestProfileSettingNamesLostOnRemoval(PicardTestCase):
+    """PICARD-3469: only scripts stored nowhere else are reported as lost."""
+
+    SCRIPTS = ((0, 'One', True, '$noop(1)'), (1, 'Two', False, '$noop(2)'))
+
+    def test_other_keys_lose_nothing(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('enable_tagger_scripts', True), [])
+
+    def test_empty_or_missing_value(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', None), [])
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', []), [])
+
+    def test_scripts_without_global_copy_are_lost(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', self.SCRIPTS), ['One', 'Two'])

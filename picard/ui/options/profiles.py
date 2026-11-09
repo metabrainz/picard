@@ -55,6 +55,7 @@ from picard.i18n import (
 from picard.profile import (
     is_plugin_profile_key,
     profile_groups_values,
+    profile_setting_names_lost_on_removal,
     setting_profile_key,
 )
 from picard.profiles.exporter import (
@@ -449,17 +450,10 @@ class ProfilesOptionsPage(OptionsPage):
             del self.profile_settings[self.current_profile_id][item]
 
     def _confirm_remove_profile_setting(self, key) -> bool:
-        """Ask before dropping a profile setting whose value would be lost.
-
-        Only tagger scripts are guarded: they exist nowhere else, so unchecking
-        "Tagger scripts" for a profile would silently delete them.
-        """
-        if key != 'list_of_scripts':
+        """Ask before dropping a profile setting whose value would be lost."""
+        names = profile_setting_names_lost_on_removal(key, self.profile_settings[self.current_profile_id].get(key))
+        if not names:
             return True
-        scripts = self.profile_settings[self.current_profile_id].get(key) or []
-        if not scripts:
-            return True
-        names = "\n".join("• %s" % name for _pos, name, _enabled, _content in scripts)
         answer = QtWidgets.QMessageBox.question(
             self,
             _("Remove Tagger Scripts"),
@@ -467,7 +461,7 @@ class ProfilesOptionsPage(OptionsPage):
                 "Removing \"Tagger scripts\" from this profile will delete the following scripts:\n\n"
                 "%s\n\nDo you want to continue?"
             )
-            % names,
+            % "\n".join("• %s" % name for name in names),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             QtWidgets.QMessageBox.StandardButton.No,
         )
