@@ -537,6 +537,7 @@ class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
         # The user unchecked "Tagger scripts" in the settings tree.
         page.get_checked_items_from_tree = lambda: {'enable_tagger_scripts'}
         page._set_tree_item_checked = MagicMock()
+        page._get_global_setting = MagicMock(return_value=[])
         return page
 
     def test_keeps_scripts_when_user_declines(self):
@@ -560,6 +561,15 @@ class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
         q.assert_not_called()
         self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
 
+    def test_no_prompt_for_scripts_also_kept_globally(self):
+        script = (0, 'My script', True, '$noop()')
+        page = self._page([script])
+        page._get_global_setting.return_value = [(3, 'My script', False, '$noop()')]
+        with patch.object(QtWidgets.QMessageBox, 'question') as q:
+            page.update_values_in_profile_options()
+        q.assert_not_called()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
 
 class TestProfileSettingNamesLostOnRemoval(PicardTestCase):
     """PICARD-3469: only scripts stored nowhere else are reported as lost."""
@@ -575,3 +585,10 @@ class TestProfileSettingNamesLostOnRemoval(PicardTestCase):
 
     def test_scripts_without_global_copy_are_lost(self):
         self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', self.SCRIPTS), ['One', 'Two'])
+
+    def test_scripts_kept_globally_are_not_lost(self):
+        global_scripts = ((5, 'One', False, '$noop(1)'), (6, 'Two', True, '$noop(changed)'))
+        self.assertEqual(
+            profile_setting_names_lost_on_removal('list_of_scripts', self.SCRIPTS, global_scripts),
+            ['Two'],
+        )

@@ -451,7 +451,11 @@ class ProfilesOptionsPage(OptionsPage):
 
     def _confirm_remove_profile_setting(self, key) -> bool:
         """Ask before dropping a profile setting whose value would be lost."""
-        names = profile_setting_names_lost_on_removal(key, self.profile_settings[self.current_profile_id].get(key))
+        names = profile_setting_names_lost_on_removal(
+            key,
+            self.profile_settings[self.current_profile_id].get(key),
+            self._get_global_setting(key),
+        )
         if not names:
             return True
         answer = QtWidgets.QMessageBox.question(
@@ -466,6 +470,12 @@ class ProfilesOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.StandardButton.No,
         )
         return answer == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def _get_global_setting(self, key):
+        """Return the value of ``key`` as stored outside of any profile."""
+        config = get_config()
+        with config.setting.no_profile():
+            return config.setting[key]
 
     def _find_tree_item(self, key):
         """Return the settings tree item whose setting key is ``key``, or None."""
