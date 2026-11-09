@@ -22,6 +22,12 @@ from enum import Enum
 import logging
 import os
 import shutil
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
+
+from PyQt6 import QtWidgets
 
 from test.picardtestcase import PicardTestCase
 
@@ -45,6 +51,8 @@ from picard.profile import (
     profile_groups_update_highlights,
     profile_groups_values,
 )
+
+from picard.ui.options.profiles import ProfilesOptionsPage
 
 
 class DummyEnum(Enum):
@@ -516,3 +524,37 @@ class TestUserProfiles(TestPicardProfilesCommon):
         # Target plugin keys removed
         self.assertNotIn('plugin.test-uuid/greeting', settings['p1'])
         self.assertNotIn('plugin.test-uuid/other', settings['p1'])
+
+
+class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
+    """PICARD-3469: unchecking "Tagger scripts" must not silently drop scripts."""
+
+    def _page(self, scripts):
+        page = ProfilesOptionsPage.__new__(ProfilesOptionsPage)
+        page.current_profile_id = 'p1'
+        page.profile_settings = {'p1': {'list_of_scripts': scripts, 'enable_tagger_scripts': True}}
+        # The user unchecked "Tagger scripts" in the settings tree.
+        page.get_checked_items_from_tree = lambda: {'enable_tagger_scripts'}
+        page._set_tree_item_checked = MagicMock()
+        return page
+
+    def test_keeps_scripts_when_user_declines(self):
+        page = self._page([(0, 'My script', True, '$noop()')])
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.No) as q:
+            page.update_values_in_profile_options()
+        q.assert_called_once()
+        self.assertEqual(page.profile_settings['p1']['list_of_scripts'], [(0, 'My script', True, '$noop()')])
+        page._set_tree_item_checked.assert_called_once_with('list_of_scripts')
+
+    def test_removes_scripts_when_user_confirms(self):
+        page = self._page([(0, 'My script', True, '$noop()')])
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.Yes):
+            page.update_values_in_profile_options()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
+    def test_no_prompt_for_empty_script_list(self):
+        page = self._page([])
+        with patch.object(QtWidgets.QMessageBox, 'question') as q:
+            page.update_values_in_profile_options()
+        q.assert_not_called()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])

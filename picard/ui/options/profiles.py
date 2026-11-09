@@ -442,7 +442,51 @@ class ProfilesOptionsPage(OptionsPage):
 
         # Remove unchecked items from settings
         for item in settings.difference(checked_items):
+            if not self._confirm_remove_profile_setting(item):
+                # Keep the value and restore the check mark (PICARD-3469).
+                self._set_tree_item_checked(item)
+                continue
             del self.profile_settings[self.current_profile_id][item]
+
+    def _confirm_remove_profile_setting(self, key) -> bool:
+        """Ask before dropping a profile setting whose value would be lost.
+
+        Only tagger scripts are guarded: they exist nowhere else, so unchecking
+        "Tagger scripts" for a profile would silently delete them.
+        """
+        if key != 'list_of_scripts':
+            return True
+        scripts = self.profile_settings[self.current_profile_id].get(key) or []
+        if not scripts:
+            return True
+        names = "\n".join("• %s" % name for _pos, name, _enabled, _content in scripts)
+        answer = QtWidgets.QMessageBox.question(
+            self,
+            _("Remove Tagger Scripts"),
+            _(
+                "Removing \"Tagger scripts\" from this profile will delete the following scripts:\n\n"
+                "%s\n\nDo you want to continue?"
+            )
+            % names,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return answer == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def _set_tree_item_checked(self, key):
+        """Re-check the settings tree item for ``key`` without triggering a change."""
+        tree = self.ui.settings_tree
+        tree.blockSignals(True)
+        try:
+            stack = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
+            while stack:
+                item = stack.pop()
+                if item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole) == key:
+                    item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Checked)
+                    return
+                stack.extend(item.child(j) for j in range(item.childCount()))
+        finally:
+            tree.blockSignals(False)
 
     def profile_item_changed(self, item):
         """Check title is not blank and remove leading and trailing spaces.
