@@ -473,20 +473,26 @@ class ProfilesOptionsPage(OptionsPage):
         )
         return answer == QtWidgets.QMessageBox.StandardButton.Yes
 
+    def _find_tree_item(self, key):
+        """Return the settings tree item whose setting key is ``key``, or None."""
+        tree = self.ui.settings_tree
+        stack = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
+        while stack:
+            item = stack.pop()
+            if item is None:
+                continue
+            if item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole) == key:
+                return item
+            stack.extend(item.child(j) for j in range(item.childCount()))
+        return None
+
     def _set_tree_item_checked(self, key):
         """Re-check the settings tree item for ``key`` without triggering a change."""
-        tree = self.ui.settings_tree
-        tree.blockSignals(True)
-        try:
-            stack = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
-            while stack:
-                item = stack.pop()
-                if item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole) == key:
-                    item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Checked)
-                    return
-                stack.extend(item.child(j) for j in range(item.childCount()))
-        finally:
-            tree.blockSignals(False)
+        item = self._find_tree_item(key)
+        if item is None:
+            return
+        with QtCore.QSignalBlocker(self.ui.settings_tree):
+            item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Checked)
 
     def profile_item_changed(self, item):
         """Check title is not blank and remove leading and trailing spaces.
