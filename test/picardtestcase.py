@@ -20,6 +20,7 @@
 
 
 from collections.abc import Mapping
+import ctypes
 import functools
 import json
 import logging
@@ -46,6 +47,7 @@ from picard import (
     config,
     log,
 )
+from picard.const.sys import IS_WIN
 from picard.coverart.image import CoverArtImage
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
@@ -251,6 +253,19 @@ class PicardTestCase(unittest.TestCase):
         for format in DEFAULT_FORMATS:
             self.format_registry.register(format)
         self.tagger.format_registry = self.format_registry
+
+
+def set_hidden_attribute(path) -> None:
+    """Make the existing file ``path`` hidden, as the platform sees it.
+
+    is_hidden() uses the leading-dot convention only on non-Windows; on Windows
+    it checks the FILE_ATTRIBUTE_HIDDEN flag, which creating a file does not
+    set. Elsewhere there is nothing to do, a name starting with a dot is enough.
+    """
+    if IS_WIN:
+        FILE_ATTRIBUTE_HIDDEN = 0x02
+        if not ctypes.windll.kernel32.SetFileAttributesW(str(path), FILE_ATTRIBUTE_HIDDEN):  # type: ignore[attr-defined]
+            raise ctypes.WinError()  # type: ignore[attr-defined]
 
 
 def get_test_data_path(*paths) -> Path:

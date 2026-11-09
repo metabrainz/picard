@@ -138,3 +138,27 @@ class WindowsGetCdromDrivesTest(PicardTestCase):
         self.assertIsInstance(drives, Iterable)
         # This should not raise
         list(drives)
+
+
+class ConfiguredLookupDeviceTest(PicardTestCase):
+    """The drive used to look up a CD when none is chosen: the first one configured."""
+
+    def _device(self, setting):
+        self.set_config_values({'cd_lookup_device': setting})
+        return cdrom.get_configured_lookup_device()
+
+    def test_first_configured_drive(self):
+        self.assertEqual(self._device('/dev/sr0,/dev/sr1'), '/dev/sr0')
+
+    def test_single_drive(self):
+        self.assertEqual(self._device('/dev/sr1'), '/dev/sr1')
+
+    def test_spaces_around_the_drive_are_dropped(self):
+        self.assertEqual(self._device(' /dev/sr0 , /dev/sr1'), '/dev/sr0')
+
+    def test_empty_items_are_skipped(self):
+        self.assertEqual(self._device(', ,/dev/sr1'), '/dev/sr1')
+
+    def test_none_configured_lets_discid_detect_a_drive(self):
+        self.assertIsNone(self._device(''))
+        self.assertIsNone(self._device('  ,  '))

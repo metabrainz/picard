@@ -23,7 +23,11 @@ from queue import (
     Empty,
     Queue,
 )
-from unittest.mock import Mock
+import time
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -135,6 +139,38 @@ class ThreadTest(PicardTestCase):
             with self.subTest(bad_budget=bad_budget):
                 with self.assertRaises(ValueError):
                     thread.process_in_batches([1, 2, 3], mock_function, "test", time_budget=bad_budget)
+
+    def test_pending_batches_counts_the_chains_waiting_for_the_event_loop(self):
+        processed = []
+
+        def slow(item):
+            time.sleep(0.01)
+            processed.append(item)
+
+        on_complete = Mock()
+        self.assertEqual(0, thread.pending_batches())
+        # Two items do not fit in a 5 ms batch: the rest waits for the event loop.
+        thread.process_in_batches([1, 2, 3, 4], slow, "test", time_budget=0.005, on_complete=on_complete)
+        self.assertEqual(1, thread.pending_batches())
+        self.assertLess(len(processed), 4)
+        on_complete.assert_not_called()
+        while thread.pending_batches():
+            QTest.qWait(5)
+        self.assertEqual([1, 2, 3, 4], processed)
+        on_complete.assert_called_once_with()
+
+    def test_pending_batches_is_zero_when_the_first_batch_does_it_all(self):
+        thread.process_in_batches([1, 2, 3], Mock(), "test")
+        self.assertEqual(0, thread.pending_batches())
+
+    def test_pending_batches_does_not_stay_above_zero_when_a_batch_fails(self):
+        def fail(item):
+            raise RuntimeError("boom")
+
+        with patch.object(thread, '_pending_batches', 1):
+            with self.assertRaises(RuntimeError):
+                thread._next_batch([1, 2], fail, "test", 0.05, None)
+            self.assertEqual(0, thread.pending_batches())
 
     def test_process_in_batches_processes_all_items(self):
         processed = []

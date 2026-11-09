@@ -184,6 +184,10 @@ def to_main_with_blocking(func: Callable[P, Any], *args: P.args, **kwargs: P.kwa
 
 _BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
 
+# Number of process_in_batches chains waiting for the event loop to run their
+# next batch, see pending_batches(). Only touched on the main thread.
+_pending_batches = 0
+
 
 def process_in_batches(
     items: list[R],
@@ -226,6 +230,34 @@ def process_in_batches(
         count += 1
     log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
     if items:
-        QTimer.singleShot(0, partial(process_in_batches, items, process_func, label, time_budget, on_complete))
+        global _pending_batches
+        _pending_batches += 1
+        QTimer.singleShot(0, partial(_next_batch, items, process_func, label, time_budget, on_complete))
     elif on_complete:
         on_complete()
+
+
+def _next_batch(
+    items: list[R],
+    process_func: Callable[[R], Any],
+    label: str,
+    time_budget: float,
+    on_complete: Callable[[], Any] | None,
+) -> None:
+    """Run the batch :func:`process_in_batches` scheduled for the event loop."""
+    global _pending_batches
+    # Counted as running from here on, so an error in process_func does not
+    # leave the count above zero for good.
+    _pending_batches -= 1
+    process_in_batches(items, process_func, label, time_budget, on_complete)
+
+
+def pending_batches() -> int:
+    """Return how many :func:`process_in_batches` chains wait for the event loop.
+
+    A chain that did not finish in its first batch continues on the main thread
+    from a timer, which neither a thread pool nor a web request shows. A caller
+    that waits for the application to be idle (the headless application does)
+    has to look at this too, or it may stop before all items are processed.
+    """
+    return _pending_batches

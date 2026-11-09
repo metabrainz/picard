@@ -236,10 +236,11 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
         """True while background work is still in flight.
 
         Covers the work the tag load/save and scan pipelines produce: active
-        thread-pool tasks, pending web requests, and AcoustID fingerprint
-        computation (fpcalc) in flight. The AcoustID network lookup that follows
-        fingerprinting is itself a pending web request, so it is already
-        covered.
+        thread-pool tasks, pending web requests, AcoustID fingerprint
+        computation (fpcalc) in flight, and the batches (applying a clustering,
+        dispatching file loads) that still wait for the event loop to run their
+        next step. The AcoustID network lookup that follows fingerprinting is
+        itself a pending web request, so it is already covered.
 
         Reads the web service and AcoustID client via their backing fields so
         that merely draining the event loop never forces either (lazy) service
@@ -253,6 +254,7 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
             or self.save_thread_pool.activeThreadCount()
             or pending_requests
             or fingerprinting
+            or thread.pending_batches()
         )
 
     def run_until_idle(self, timeout: float | None = None, interval: float = 0.02) -> bool:
