@@ -24,6 +24,7 @@ from collections import namedtuple
 import os
 from unittest.mock import (
     MagicMock,
+    call,
     patch,
 )
 
@@ -110,8 +111,25 @@ def create_fake_album(modified: bool = False, complete: bool = False):
 
     fake_album_class.is_modified.side_effect = is_modified
     fake_album_class.is_complete.side_effect = is_complete
+    fake_album_class.is_permanently_hidden = False
 
     return fake_album_class
+
+
+def make_tree_item(obj, children=()):
+    """Mock tree item exposing the minimal QTreeWidgetItem API used by the filter."""
+    item = MagicMock()
+    item.obj = obj
+    item.filterable = True
+    item.columnCount.return_value = 1
+    item.childCount.return_value = len(children)
+    item.child.side_effect = lambda i: children[i]
+    return item
+
+
+def tooltips_set(item):
+    """Tooltip texts set on the item, in call order."""
+    return [c.args[1] for c in item.setToolTip.call_args_list]
 
 
 class AlbumFilterTestFiltering(PicardTestCase):
@@ -421,6 +439,51 @@ class AlbumFilterTestFiltering(PicardTestCase):
             )
         )
 
+    def test_status_filter_only_clears_search_tooltips(self):
+        """PICARD-3532: With only status filters active, no search tooltips are set."""
+        for text in ('', '   '):
+            with self.subTest(text=text):
+                track = make_tree_item(MagicMock(is_permanently_hidden=False))
+                album = make_tree_item(create_fake_album(modified=True, complete=False), [track])
+                parent = make_tree_item(None, [album])
+
+                matched = BaseTreeView._filter_tree_items(
+                    parent, text, filters={'title'}, status_filters=StatusFilters(unmodified=False)
+                )
+
+                self.assertTrue(matched)
+                album.setHidden.assert_called_with(False)
+                track.setHidden.assert_called_with(False)
+                # Every tooltip set must be empty, never "Matches on: ..."
+                self.assertEqual(set(tooltips_set(album)), {''})
+                self.assertEqual(set(tooltips_set(track)), {''})
+
+    def test_status_filter_hides_non_matching_album_and_clears_tooltip(self):
+        album = make_tree_item(create_fake_album(modified=True, complete=False))
+        parent = make_tree_item(None, [album])
+
+        matched = BaseTreeView._filter_tree_items(
+            parent, '', filters={'title'}, status_filters=StatusFilters(modified=False)
+        )
+
+        self.assertFalse(matched)
+        album.setHidden.assert_called_with(True)
+        self.assertEqual(set(tooltips_set(album)), {''})
+
+    def test_status_filter_preserves_permanently_hidden(self):
+        """PICARD-3532: Permanently hidden items stay hidden, at top level and nested."""
+        hidden_track = make_tree_item(MagicMock(is_permanently_hidden=True))
+        album = make_tree_item(create_fake_album(modified=True, complete=False), [hidden_track])
+        hidden_album = make_tree_item(create_fake_album(modified=True, complete=False))
+        hidden_album.obj.is_permanently_hidden = True
+        parent = make_tree_item(None, [album, hidden_album])
+
+        BaseTreeView._filter_tree_items(parent, '', filters={'title'}, status_filters=StatusFilters(unmodified=False))
+
+        hidden_album.setHidden.assert_called_with(True)
+        # _restore_tree_items must not un-hide the nested item
+        self.assertNotIn(call(False), hidden_track.setHidden.call_args_list)
+
 
 class AlbumStatusFilterPersistenceTest(PicardTestCase):
     """Verify the album status filter actually round-trips through the config.
@@ -513,6 +576,16 @@ class FilterItemsGuardTest(PicardTestCase):
 
     def test_filters_when_text_present(self):
         fake_self, mock_walk = self._call_filter_items('abc', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_not_called()
+        mock_walk.assert_called_once()
+
+    def test_restores_all_when_whitespace_and_all_active(self):
+        fake_self, mock_walk = self._call_filter_items('   ', {'title'}, StatusFilters())
+        fake_self._restore_all_items.assert_called_once()
+        mock_walk.assert_not_called()
+
+    def test_filters_when_whitespace_and_status_filter_active(self):
+        fake_self, mock_walk = self._call_filter_items('   ', {'title'}, StatusFilters(modified=False))
         fake_self._restore_all_items.assert_not_called()
         mock_walk.assert_called_once()
 
