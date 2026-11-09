@@ -87,10 +87,25 @@ from picard.ui.util import (
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
+def _new_images_rejected_for_tags(metadata, orig_metadata):
+    """True if new images exist but none of them will replace the art embedded
+    in tags (per-file "never replace" filters), and none go to external files."""
+    if not (orig_metadata and orig_metadata.images):
+        return False
+    setting = get_config().setting
+    if not setting['save_images_to_tags'] or setting['save_images_to_files']:
+        return False
+    return not any(metadata.images.to_be_saved_to_tags(previous_images=orig_metadata.images))
+
+
 class CoverArtBox(QtWidgets.QGroupBox):
-    # Settings that affect whether cover art removal is predicted.
+    # Settings that affect whether cover art removal is predicted, or whether
+    # new images are shown at all (per-file "never replace" filters).
     _REMOVAL_SETTINGS = frozenset(
         (
+            'dont_replace_cover_of_types',
+            'dont_replace_included_types',
+            'dont_replace_with_smaller_cover',
             'remove_images_from_tags',
             'save_images_to_files',
             'save_images_to_tags',
@@ -297,7 +312,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
-        if metadata and metadata.images:
+        if metadata and metadata.images and _new_images_rejected_for_tags(metadata, orig_metadata):
+            # Every new image would be discarded by the per-file "never replace"
+            # filters (e.g. dont_replace_with_smaller_cover), so the tags keep the
+            # original art. Show that instead of a misleading "New Cover Art".
+            self.cover_art.set_metadata(orig_metadata)
+            self._exported_images = None
+        elif metadata and metadata.images:
             self.cover_art.set_metadata(metadata)
             self._exported_images = None
         elif orig_metadata and orig_metadata.images:
