@@ -90,12 +90,9 @@ HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 def _new_images_rejected_for_tags(metadata, orig_metadata):
     """True if new images exist but none of them will replace the art embedded
     in tags (per-file "never replace" filters), and none go to external files."""
-    if not (orig_metadata and orig_metadata.images):
+    if not (metadata and orig_metadata):
         return False
-    setting = get_config().setting
-    if not setting['save_images_to_tags'] or setting['save_images_to_files']:
-        return False
-    return not any(metadata.images.to_be_saved_to_tags(previous_images=orig_metadata.images))
+    return metadata.images.all_rejected_for_tags(orig_metadata.images)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
