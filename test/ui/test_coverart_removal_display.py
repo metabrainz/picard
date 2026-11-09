@@ -209,6 +209,7 @@ def _make_item(new_images: list[object], orig_images: list[object]):
     return SimpleNamespace(
         metadata=SimpleNamespace(images=ImageList(new_images)),
         orig_metadata=SimpleNamespace(images=ImageList(orig_images)),
+        iterfiles=lambda save=False: iter(()),
     )
 
 

@@ -87,12 +87,28 @@ from picard.ui.util import (
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
-def _new_images_rejected_for_tags(metadata, orig_metadata):
+def _new_images_rejected_for_tags(item):
     """True if new images exist but none of them will replace the art embedded
-    in tags (per-file "never replace" filters), and none go to external files."""
-    if not (metadata and orig_metadata):
-        return False
-    return metadata.images.all_rejected_for_tags(orig_metadata.images)
+    in tags (per-file "never replace" filters), and none go to external files.
+
+    The filters run on each file against the images embedded in that file, so
+    an item made of several files (album, cluster, multiple selection) cannot
+    be judged on the union of their images: one file may keep its cover while
+    another one gets replaced. It is rejected only if it is for every file
+    that has a pending change.
+    """
+    files = list(item.iterfiles())
+    if not files:
+        # Nothing to save yet, the item's own images are all there is.
+        metadata = item.metadata
+        orig_metadata = getattr(item, 'orig_metadata', None)
+        if not (metadata and orig_metadata):
+            return False
+        return metadata.images.all_rejected_for_tags(orig_metadata.images)
+    pending = [file for file in files if file.metadata.images != file.orig_metadata.images]
+    return bool(pending) and all(
+        file.metadata.images.all_rejected_for_tags(file.orig_metadata.images) for file in pending
+    )
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
@@ -309,7 +325,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
-        if metadata and metadata.images and _new_images_rejected_for_tags(metadata, orig_metadata):
+        if metadata and metadata.images and _new_images_rejected_for_tags(self.item):
             # Every new image would be discarded by the per-file "never replace"
             # filters (e.g. dont_replace_with_smaller_cover), so the tags keep the
             # original art. Show that instead of a misleading "New Cover Art".
