@@ -112,13 +112,15 @@ def _new_images_rejected_for_tags(item):
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
-    # Settings that affect whether cover art removal is predicted, or whether
-    # new images are shown at all (per-file "never replace" filters).
-    _REMOVAL_SETTINGS = frozenset(
+    # Settings that affect what the box shows: whether cover art removal is
+    # predicted, which images are kept in tags (per-file "never replace"
+    # filters, embedding a single front image) and which go to files.
+    _COVER_DISPLAY_SETTINGS = frozenset(
         (
             'dont_replace_cover_of_types',
             'dont_replace_included_types',
             'dont_replace_with_smaller_cover',
+            'embed_only_one_front_image',
             'remove_images_from_tags',
             'save_images_to_files',
             'save_images_to_tags',
@@ -185,7 +187,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         config.setting.setting_changed.connect(self._on_setting_changed)
 
     def _on_setting_changed(self, name, old_value, new_value):
-        if name in self._REMOVAL_SETTINGS:
+        if name in self._COVER_DISPLAY_SETTINGS:
             self.update_metadata()
 
     def show_cover_art_info(self):

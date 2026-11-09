@@ -186,7 +186,7 @@ class _RemovalThumb:
 
 
 class _RemovalBox:
-    _REMOVAL_SETTINGS = CoverArtBox._REMOVAL_SETTINGS
+    _COVER_DISPLAY_SETTINGS = CoverArtBox._COVER_DISPLAY_SETTINGS
     update_metadata = CoverArtBox.update_metadata
 
     def __init__(self, item) -> None:
