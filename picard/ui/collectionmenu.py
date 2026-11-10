@@ -47,7 +47,8 @@ class CollectionMenu(QtWidgets.QMenu):
         self._ignore_hover = False
         self._update_collections()
 
-    def _update_collections(self):
+    def _update_collections(self, error=None):
+        # On an error the collections known so far are shown (the error is in the status bar).
         self._ignore_update = True
         self.clear()
         self.action_list = []

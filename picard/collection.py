@@ -150,16 +150,29 @@ def get_user_collection(collection_id: str) -> Collection:
     return collection
 
 
-def load_user_collections(callback: Callable | None = None) -> None:
+def load_user_collections(callback: Callable[..., Any] | None = None) -> None:
+    """Load the release collections of the user logged in to MusicBrainz into ``user_collections``.
+
+    Without a login, or when ``enable_user_collections`` is off, there are none.
+    ``callback`` is always called once it is done: with no argument when the
+    collections are known, or with ``error`` (the reason, as text) when the
+    request failed, the collections known so far being kept then.
+    """
     config = get_config()
+
+    def finished(**kwargs: Any) -> None:
+        if callback:
+            callback(**kwargs)
 
     def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
         if error:
+            error_text = reply.errorString()
             notifier().status_message(
                 N_("Error loading collections: %(error)s"),
-                {'error': reply.errorString()},
+                {'error': error_text},
                 echo=log.error,
             )
+            finished(error=error_text)
             return
         if document and 'collections' in document:
             collection_list = document['collections']
@@ -180,13 +193,13 @@ def load_user_collections(callback: Callable | None = None) -> None:
                 del user_collections[collection_id]
 
             log.debug("User collections: %r", [(k, v.name) for k, v in user_collections.items()])
-        if callback:
-            callback()
+        finished()
 
     if services().webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
         services().mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
+        finished()
 
 
 def add_release_to_user_collections(release_node: dict[str, Any]) -> None:
