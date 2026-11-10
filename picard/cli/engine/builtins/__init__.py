@@ -26,6 +26,7 @@ group them by what they act on:
 
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
+- :mod:`~picard.cli.engine.builtins.identify`: ``cluster``
 - :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
 
 :mod:`~picard.cli.engine.builtins.helpers` has what they share. Importing the
@@ -35,6 +36,7 @@ with them; both frontends call it so they share one vocabulary.
 
 import picard.cli.engine.builtins.files  # noqa: F401
 from picard.cli.engine.builtins.help import make_help_command
+import picard.cli.engine.builtins.identify  # noqa: F401
 import picard.cli.engine.builtins.listing  # noqa: F401
 from picard.cli.engine.builtins.registry import BUILTIN_COMMANDS
 from picard.cli.engine.commands import (
