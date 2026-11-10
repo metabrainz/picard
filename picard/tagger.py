@@ -78,6 +78,7 @@ from picard import (
     PICARD_ORG_NAME,
     acoustid,
     log,
+    mblogin,
 )
 from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
@@ -98,7 +99,6 @@ from picard.config import (
 from picard.config_upgrade import run_config_upgrades
 from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
-    METABRAINZ_OAUTH_SCOPES,
     USER_DIR,
 )
 from picard.const.appdirs import (
@@ -711,39 +711,19 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             return None
 
     def mb_login(self, callback, parent=None):
-        oauth_manager = self.webservice.oauth_manager
-        scopes = METABRAINZ_OAUTH_SCOPES
-        authorization_url = oauth_manager.get_authorization_url(
-            scopes, partial(self.on_mb_authorization_finished, callback)
-        )
+        # The login itself is in picard.mblogin; here the browser is opened and,
+        # without browser integration to receive its redirect, the code asked for.
+        authorization_url = mblogin.start_login(callback)
         webbrowser2.open(authorization_url)
-        if oauth_manager.is_oob:
+        if self.webservice.oauth_manager.is_oob:
             authorization_code = self._mb_login_dialog(parent)
             if authorization_code is not None:
-                self.webservice.oauth_manager.exchange_authorization_code(
-                    authorization_code, scopes, partial(self.on_mb_authorization_finished, callback)
-                )
+                mblogin.finish_login(authorization_code, callback)
             else:
                 callback(False, None)
 
-    def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
-        if successful:
-            self.webservice.oauth_manager.fetch_username(partial(self.on_mb_login_finished, callback))
-        else:
-            callback(False, error_msg)
-
-    def on_mb_login_finished(self, callback, successful, error_msg):
-        if successful:
-            load_user_collections()
-        callback(successful, error_msg)
-
     def mb_logout(self, callback):
-        self.webservice.oauth_manager.revoke_tokens(partial(self.on_mb_logout_finished, callback))
-
-    def on_mb_logout_finished(self, callback, successful, error_msg):
-        if successful:
-            load_user_collections()
-        callback(successful, error_msg)
+        mblogin.logout(callback)
 
     def quit(self):
         self.exit()

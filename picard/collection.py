@@ -24,7 +24,10 @@
 
 from collections.abc import Callable
 from functools import partial
-from typing import Any
+from typing import (
+    Any,
+    Protocol,
+)
 
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -40,6 +43,12 @@ from picard.webservice import ReplyHandler
 
 
 user_collections: dict[str, 'Collection'] = {}
+
+
+class CollectionsLoaded(Protocol):
+    """The callback of :func:`load_user_collections`: told why the collections could not be loaded, if they could not."""
+
+    def __call__(self, error: str | None = None) -> Any: ...
 
 
 class Collection:
@@ -150,16 +159,36 @@ def get_user_collection(collection_id: str) -> Collection:
     return collection
 
 
-def load_user_collections(callback: Callable | None = None) -> None:
+def load_user_collections(callback: CollectionsLoaded | None = None) -> None:
+    """Load the release collections of the user logged in to MusicBrainz into ``user_collections``.
+
+    Without a login, or when ``enable_user_collections`` is off, there are none.
+    ``callback`` is always called once it is done: with no argument when the
+    collections are known, or with ``error`` (the reason, as text) when the
+    request failed, the collections known so far being kept then.
+    """
     config = get_config()
 
-    def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
+    def finished(error: str | None = None) -> None:
+        if callback:
+            if error is None:
+                callback()
+            else:
+                callback(error=error)
+
+    def request_finished(
+        document: dict[str, Any] | None,
+        reply: QNetworkReply,
+        error: QNetworkReply.NetworkError | Exception | None,
+    ) -> None:
         if error:
+            error_text = reply.errorString()
             notifier().status_message(
                 N_("Error loading collections: %(error)s"),
-                {'error': reply.errorString()},
+                {'error': error_text},
                 echo=log.error,
             )
+            finished(error=error_text)
             return
         if document and 'collections' in document:
             collection_list = document['collections']
@@ -180,13 +209,13 @@ def load_user_collections(callback: Callable | None = None) -> None:
                 del user_collections[collection_id]
 
             log.debug("User collections: %r", [(k, v.name) for k, v in user_collections.items()])
-        if callback:
-            callback()
+        finished()
 
     if services().webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
         services().mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
+        finished()
 
 
 def add_release_to_user_collections(release_node: dict[str, Any]) -> None:

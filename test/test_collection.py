@@ -62,6 +62,7 @@ class CollectionTest(PicardTestCase):
         patcher.start()
         self.addCleanup(patcher.stop)
         picard.collection.user_collections = {}
+        mb_api.reset_mock()
 
     def test_collection_init(self):
         collection = Collection('foo')
@@ -175,5 +176,31 @@ class CollectionTest(PicardTestCase):
         picard.collection.user_collections['old-collection'] = Collection('old-collection')
         callback = MagicMock()
         load_user_collections(callback)
-        callback.assert_not_called()
+        # Told at once: there is nothing to wait for.
+        callback.assert_called_once_with()
         self.assertEqual(0, len(picard.collection.user_collections))
+
+    def test_load_user_collections_disabled(self):
+        self.tagger.webservice.oauth_manager.is_authorized.return_value = True
+        self.set_config_values(setting={'enable_user_collections': False})
+        picard.collection.user_collections['old-collection'] = Collection('old-collection')
+        callback = MagicMock()
+        load_user_collections(callback)
+        callback.assert_called_once_with()
+        self.assertEqual(0, len(picard.collection.user_collections))
+        mb_api.get_collection_list.assert_not_called()
+
+    def test_load_user_collections_error(self):
+        self.tagger.webservice.oauth_manager.is_authorized.return_value = True
+        picard.collection.user_collections['old-collection'] = Collection('old-collection')
+        reply = MagicMock()
+        reply.errorString.return_value = 'Service unavailable'
+        failing_api = MagicMock()
+        failing_api.get_collection_list.side_effect = lambda handler: handler(None, reply, 'error')
+        self.tagger.mb_api = failing_api
+        callback = MagicMock()
+        load_user_collections(callback)
+        # The callback is told why, and the collections known so far are kept.
+        callback.assert_called_once_with(error='Service unavailable')
+        self.assertIn('old-collection', picard.collection.user_collections)
+        self.notifier.status_message.assert_called_once()

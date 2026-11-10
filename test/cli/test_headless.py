@@ -259,6 +259,41 @@ app.run_cleanup()
 """
 
 
+_AUTHORIZATION_PROGRAM = """
+import sys
+from unittest.mock import MagicMock
+from PyQt6 import QtCore
+from PyQt6.QtNetwork import QNetworkReply
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+
+app = HeadlessTagger(sys.argv, config_file=sys.argv[1])
+ws = app.webservice
+
+# As the web service does on a 401: the request waits for a login, and the
+# need for one is signalled. Headless nobody can log in then, so the request
+# must not wait for ever. A POST is not retried without the user's data: its
+# handler gets the error (a GET would be retried, which needs the network).
+handled = []
+request = MagicMock()
+request.method = 'POST'
+request.handler = lambda data, reply, error: handled.append(error)
+ws._awaiting_authorization.append(request)
+ws._authorization_pending = True
+ws.authorization_required.emit()
+
+app.run_until_idle(timeout=10)
+assert handled == [QNetworkReply.NetworkError.AuthenticationRequiredError], handled
+assert ws._awaiting_authorization == [], ws._awaiting_authorization
+assert not ws._authorization_pending
+app.run_cleanup()
+print('AUTHORIZATION_OK')
+"""
+
+
 class HeadlessTaggerSubprocessTest(PicardTestCase):
     def test_qt_messages_go_through_the_message_handler(self):
         result = subprocess.run(
@@ -341,6 +376,22 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
         self.assertIn('BATCHES_OK', result.stdout)
+
+    def test_requests_waiting_for_a_login_do_not_wait_for_ever(self):
+        config_file = self.mktmpdir() + '/Picard.ini'
+        result = subprocess.run(
+            [sys.executable, '-c', _AUTHORIZATION_PROGRAM, config_file],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        self.assertIn('AUTHORIZATION_OK', result.stdout)
 
     def test_services_are_built_lazily(self):
         result = subprocess.run(
