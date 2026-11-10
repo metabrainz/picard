@@ -18,13 +18,22 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from unittest.mock import Mock
+
 from test.picardtestcase import PicardTestCase
 
-from picard.ui.metadatabox.tagdiff import (
+from picard.album import Album
+from picard.cluster import Cluster
+from picard.file import File
+from picard.metadata import Metadata
+from picard.tagdiff import (
     TagCounter,
     TagDiff,
     TagStatus,
+    build_tag_diff,
+    selection_of,
 )
+from picard.track import Track
 
 
 class TestTagCounter(PicardTestCase):
@@ -405,3 +414,173 @@ class TestTagDiff(PicardTestCase):
         self.assertIn("artist", self.tag_diff.removed_tags)
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 1"])
         self.assertNotIn("artist", self.tag_diff.removed_tags)
+
+
+def _metadata(length=200000, **tags):
+    metadata = Metadata()
+    for tag, value in tags.items():
+        metadata[tag] = value
+    metadata.length = length
+    return metadata
+
+
+def _file(name='/music/song.flac', orig=None, new=None, supports=lambda tag: True):
+    """A file loaded with the tags ``orig``, that would be saved with ``new``."""
+    file = Mock()
+    file.filename = name
+    file.orig_metadata = _metadata(**(orig or {}))
+    file.metadata = _metadata(**{**(orig or {}), **(new or {})})
+    file.supports_tag = supports
+    file.format_specific_metadata = lambda metadata, tag, settings: metadata.getall(tag)
+    file.make_filename = lambda filename, metadata: '/new/' + metadata['title'] + '.flac'
+    return file
+
+
+def _track(title, linked_files=0, length=180000):
+    track = Mock()
+    track.num_linked_files = linked_files
+    track.metadata = _metadata(length=length, title=title)
+    track.orig_metadata = _metadata(length=length, title=title)
+    return track
+
+
+_SETTINGS = {
+    'clear_existing_tags': False,
+    'rename_files': False,
+    'move_files': False,
+    'ignore_track_duration_difference_under': 2,
+    'metadatabox_top_tags': ['title', 'artist'],
+}
+
+
+class TestBuildTagDiff(PicardTestCase):
+    """What the metadata box shows for a selection, without any widget."""
+
+    def _build(self, files=(), tracks=(), changes_first=False, **settings):
+        return build_tag_diff(set(files), list(tracks), {**_SETTINGS, **settings}, changes_first=changes_first)
+
+    def test_tags_of_a_file_with_the_top_tags_first_and_the_length(self):
+        file = _file(orig={'zebra': 'z', 'artist': 'Band', 'title': 'Song', 'album': 'LP'})
+        diff = self._build([file])
+        self.assertEqual(
+            ['title', 'artist', 'album', '~length', 'zebra'], [t for t in diff.tag_names if t != '~filepath']
+        )
+
+    def test_changed_added_and_removed_tags(self):
+        file = _file(orig={'title': 'Old', 'genre': 'Rock', 'date': '1999'}, new={'title': 'New', 'album': 'LP'})
+        file.metadata.delete('genre')
+        diff = self._build([file])
+        self.assertEqual(TagStatus.CHANGED, diff.tag_status('title'))
+        self.assertEqual(TagStatus.ADDED, diff.tag_status('album'))
+        self.assertEqual(TagStatus.REMOVED, diff.tag_status('genre'))
+        self.assertEqual(TagStatus.UNCHANGED, diff.tag_status('date'))
+        self.assertEqual(['Old'], diff.old['title'])
+        self.assertEqual(['New'], diff.new['title'])
+
+    def test_changes_first(self):
+        file = _file(orig={'album': 'LP', 'genre': 'Rock', 'title': 'Song'}, new={'genre': 'Jazz'})
+        diff = self._build([file], changes_first=True)
+        self.assertEqual('genre', diff.tag_names[0])
+
+    def test_a_tag_a_format_cannot_save_is_not_shown(self):
+        file = _file(orig={'title': 'Song', 'genre': 'Rock'}, supports=lambda tag: tag != 'genre')
+        self.assertNotIn('genre', self._build([file]).tag_names)
+
+    def test_hidden_tags_are_not_shown_except_the_length_and_the_filepath(self):
+        file = _file(orig={'title': 'Song', '~bitrate': '320'})
+        diff = self._build([file])
+        self.assertIn('~length', diff.tag_names)
+        self.assertIn('~filepath', diff.tag_names)
+        self.assertNotIn('~bitrate', diff.tag_names)
+
+    def test_the_filepath_is_only_shown_for_a_single_file(self):
+        files = [_file('/music/a.flac', orig={'title': 'A'}), _file('/music/b.flac', orig={'title': 'B'})]
+        self.assertNotIn('~filepath', self._build(files).tag_names)
+
+    def test_the_filepath_preview_follows_the_naming_script_when_files_are_renamed(self):
+        file = _file(orig={'title': 'Song'})
+        diff = self._build([file], rename_files=True)
+        self.assertEqual(['/new/Song.flac'], diff.new['~filepath'])
+        self.assertEqual(['/music/song.flac'], diff.old['~filepath'])
+        self.assertEqual(['/music/song.flac'], self._build([file]).new['~filepath'])
+
+    def test_a_tag_emptied_in_the_new_metadata_keeps_the_old_value_unless_existing_tags_are_cleared(self):
+        file = _file(orig={'genre': 'Rock'})
+        file.metadata['genre'] = ''
+        file.format_specific_metadata = lambda metadata, tag, settings: [v for v in metadata.getall(tag) if v]
+        self.assertEqual(['Rock'], self._build([file]).new['genre'])
+        self.assertEqual(TagStatus.REMOVED, self._build([file], clear_existing_tags=True).tag_status('genre'))
+
+    def test_a_track_without_a_file_shows_its_own_tags(self):
+        diff = self._build(tracks=[_track('Track')])
+        self.assertEqual(['Track'], diff.new['title'])
+        self.assertEqual(1, diff.objects)
+
+    def test_a_track_with_a_linked_file_is_left_to_its_file(self):
+        diff = self._build(tracks=[_track('Track', linked_files=1)])
+        self.assertEqual([], diff.tag_names)
+
+    def test_the_length_tolerance_comes_from_the_settings(self):
+        file = _file(orig={'title': 'Song'})
+        file.metadata.length = 201500
+        self.assertEqual(TagStatus.UNCHANGED, self._build([file]).tag_status('~length'))
+        self.assertEqual(
+            TagStatus.CHANGED, self._build([file], ignore_track_duration_difference_under=1).tag_status('~length')
+        )
+
+    def test_the_number_of_objects_is_the_number_of_files_plus_the_tracks_shown(self):
+        diff = self._build([_file(orig={'title': 'A'})], tracks=[_track('T1'), _track('T2', linked_files=2)])
+        self.assertEqual(2, diff.objects)
+
+
+class TestSelectionOf(PicardTestCase):
+    """What the metadata box shows for the selected objects."""
+
+    @staticmethod
+    def _track(files=()):
+        track = Mock(spec=Track)
+        track.files = list(files)
+        return track
+
+    def test_a_file_stands_for_itself(self):
+        file = Mock(spec=File)
+        selection = selection_of([file])
+        self.assertEqual(({file}, set(), {file}), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_track_stands_for_itself_and_its_files(self):
+        file = Mock(spec=File)
+        track = self._track([file])
+        selection = selection_of([track])
+        self.assertEqual(({file}, {track}, {file, track}), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_cluster_stands_for_itself_and_its_files(self):
+        file = Mock(spec=File)
+        cluster = Mock(spec=Cluster, can_edit_tags=True, files=[file])
+        selection = selection_of([cluster])
+        self.assertEqual(({file}, set(), {file, cluster}), (selection.files, selection.tracks, selection.objects))
+
+    def test_the_unclustered_files_are_not_a_cluster_whose_tags_can_be_edited(self):
+        cluster = Mock(spec=Cluster, can_edit_tags=False, files=[Mock(spec=File)])
+        selection = selection_of([cluster])
+        self.assertEqual((set(), set(), set()), (selection.files, selection.tracks, selection.objects))
+
+    def test_an_album_stands_for_itself_its_tracks_and_their_files(self):
+        file1, file2 = Mock(spec=File), Mock(spec=File)
+        track1, track2 = self._track([file1]), self._track([file2])
+        album = Mock(spec=Album, tracks=[track1, track2, self._track()])
+        album.tracks = [track1, track2]
+        selection = selection_of([album])
+        self.assertEqual({file1, file2}, selection.files)
+        self.assertEqual({track1, track2}, selection.tracks)
+        self.assertEqual({album, file1, file2, track1, track2}, selection.objects)
+
+    def test_anything_else_has_no_tags(self):
+        selection = selection_of([object(), Mock()])
+        self.assertEqual((set(), set(), set()), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_selection_is_the_union_of_what_each_object_stands_for(self):
+        file, other = Mock(spec=File), Mock(spec=File)
+        track = self._track([other])
+        selection = selection_of([file, track, file])
+        self.assertEqual({file, other}, selection.files)
+        self.assertEqual({track}, selection.tracks)

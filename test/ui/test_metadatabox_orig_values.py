@@ -21,12 +21,12 @@ from functools import partial
 from test.picardtestcase import PicardTestCase
 
 from picard.metadata import Metadata
-
-from picard.ui.metadatabox import MetadataBox
-from picard.ui.metadatabox.tagdiff import (
+from picard.tagdiff import (
     TagDiff,
     TagStatus,
 )
+
+from picard.ui.metadatabox import MetadataBox
 
 
 class FakeTaggedObject:

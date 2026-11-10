@@ -24,13 +24,13 @@ from PyQt6 import QtCore
 from test.picardtestcase import PicardTestCase
 
 from picard.metadata import MULTI_VALUED_JOINER
-
-from picard.ui.metadatabox import MetadataBox
-from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
-from picard.ui.metadatabox.tagdiff import (
+from picard.tagdiff import (
     TagDiff,
     TagStatus,
 )
+
+from picard.ui.metadatabox import MetadataBox
+from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
 
 
 class FakeMetadataBox:
