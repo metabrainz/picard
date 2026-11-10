@@ -25,6 +25,7 @@ of :mod:`~picard.cli.engine.builtins.registry`. The modules of this package
 group them by what they act on:
 
 - :mod:`~picard.cli.engine.builtins.account`: ``login``, ``logout``
+- :mod:`~picard.cli.engine.builtins.usercollections`: ``collection ls``, ``collection add``, ``collection rm``
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
 - :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load``
@@ -48,6 +49,7 @@ import picard.cli.engine.builtins.listing  # noqa: F401
 import picard.cli.engine.builtins.metadata  # noqa: F401
 import picard.cli.engine.builtins.option  # noqa: F401
 from picard.cli.engine.builtins.registry import BUILTIN_COMMANDS
+import picard.cli.engine.builtins.usercollections  # noqa: F401
 import picard.cli.engine.builtins.versions  # noqa: F401
 from picard.cli.engine.commands import (
     EngineCommandRegistry,

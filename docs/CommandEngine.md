@@ -45,6 +45,9 @@ the metadata box shows), so the two cannot drift apart.
 | `album switch <version>` / `album switch <album> <version\|mbid>` | switch an album to another release of its release group (`v2`, `a1.v2` — which say the album, so it can be left out — an MBID, `release:<mbid>` or a URL); the files are matched again to its tracks. The album keeps its handle unless that release is already loaded: the files go to that album, which is reported |
 | `login [address]` | log in to MusicBrainz: `login` prints the address to open and, once Picard is authorized in the browser, finishes the login; `login <address>` finishes it with the address of the redirect when the browser is on another machine (see Account below) |
 | `logout` | log out and revoke the authorization on MusicBrainz, for every Picard that uses it (destructive) |
+| `collection ls` | the release collections of the user (needs a login), with a `k` handle each, their size and the albums of the working set that are in them |
+| `collection add <k> <albums>` | add the releases of albums to a collection |
+| `collection rm <k> <albums>` | remove the releases of albums from a collection |
 | `disc read [device]` | read the TOC of the CD in a drive (by default the first of the `cd_lookup_device` option, as the GUI does) and load the matching release |
 | `disc read-log <path>` | the same from a CD ripper log file |
 | `disc read-tags <sel>` | the same from the disc information in the tags (`itunes_cddb_1`) of the files of the selection, which are matched to the release; needs no drive |
@@ -155,7 +158,8 @@ format cannot hold a tag is left alone and reported as `unsupported`.
 ### Account
 
 `login` and `logout` give the shell the account of MusicBrainz, which the
-collections need.
+collections need (`collection ls`, `add` and `rm`, which also need the option
+`enable_user_collections`, on by default).
 
 MusicBrainz ends a login by sending the browser back to Picard on the loopback
 address (`http://127.0.0.1:<port>/auth`, a port of the range of the browser
@@ -180,6 +184,11 @@ Forwarding the port over ssh works too.
   MusicBrainz may issue a new refresh token on each use, so one process can
   invalidate the token of the other; a refresh that is rejected logs the user
   out in that configuration.
+- A collection knows which releases are in it only through the albums loaded
+  while logged in: an album loaded before the login is not shown in its
+  collections by `collection ls`, though `collection rm` works on it.
+  `collection add` skips the releases a collection is known to hold, and the
+  sizes shown are those MusicBrainz gives after each change.
 - Without a login, a request that needs one goes on without the user's data
   instead of waiting for a login nobody can give.
 
@@ -238,6 +247,7 @@ renumber; ids are never reused within a session.
 | `a`    | album (incl. NAT) | `albums.values()`            | until removed |
 | `t`    | track             | tracks within albums         | with its album |
 | `m`    | match candidate   | lookup/scan output           | transient (until next lookup of target) |
+| `k`    | collection        | `collection ls` output       | until the collections are loaded again and it is gone from them |
 | `v`    | release version  | `album versions` output      | transient (until the versions of the album are listed again) |
 
 Notes:
@@ -380,8 +390,9 @@ Home: `picard/cli/engine/`; the console is `picard/cli/shell.py` with
    The modules group them by what they act on: `listing` (`ls`, `tree`),
    `files` (`file add`, `save`, `move`, `remove`, `trash`), `identify`
    (`cluster`, `cluster lookup`, `match`, `lookup`, `scan`, `album load`),
-   `versions` (`album versions`, `album switch`), `account` (`login`, `logout`),
-   `metadata`, `option`, `disc`.
+   `versions` (`album versions`, `album switch`), `account` (`login`,
+   `logout`), `usercollections` (`collection ls`, `add`, `rm`), `metadata`,
+   `option`, `disc`.
    `helpers` has what they share, and importing the package declares them all
    in one registry.
 
@@ -463,9 +474,8 @@ On top of what is implemented: ranges (`a1-3`, reversed and cross-namespace
 ones rejected), exclusion (`a*,!3` is all albums but `a3`, a set difference over
 the whole expression), sticky prefixes for bare ordinals (`a1,2,c3,4` is
 `a1,a2,c3,c4`), and `prefix where <field>=<value>` metadata selectors. Further
-handle kinds: `d` (a disc ID / TOC)
-and `k` (collections); at the top level `d` stays reserved for the disc ID, and
-under an album it means a disc of the release. "Every file everywhere" would be
+handle kinds: `d` (a disc ID / TOC); at the top level `d` stays reserved for
+the disc ID, and under an album it means a disc of the release. "Every file everywhere" would be
 a separate token (`files:all`).
 
 ### Capability taxonomy (TARGET — build incrementally)
@@ -525,7 +535,8 @@ their current names (see "Commands"): `file save` is `save`,
 | `option set/get/unset/ls <key> [val]` | `config.setting[...]` | — |
 | `profile ls/use/show <name>` | option profiles | existing CLI machinery |
 | `plugin ls/install/remove/update` | plugin manager | existing `picard-cli plugins` |
-| `collection ls/add/rm/show` | MB user collections | OPEN_COLLECTION_IN_BROWSER etc. |
+| `collection ls/add/rm` | MB user collections (done) | OPEN_COLLECTION_IN_BROWSER etc. |
+| `collection show <k>` | the releases of a collection, from MusicBrainz (not done) | needs a core wrapper of `get_collection` with paging |
 
 #### GUI-only (a remote session only)
 
@@ -590,5 +601,5 @@ MCP (agent):
 ### Not done yet
 
 The rest of the catalog, `RemoteEngineSession` and the pipe response channel,
-gui-only commands, collections, sessions, profiles, the MCP
+gui-only commands, `collection show`, sessions, profiles, the MCP
 frontend, restoring the original value of a tag, and the cover art.

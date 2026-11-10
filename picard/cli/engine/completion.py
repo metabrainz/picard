@@ -44,8 +44,8 @@ from picard.cli.engine.dispatch import split_command_name
 from picard.cli.engine.topics import TOPICS
 
 
-_WILDCARDS = ('*', 'f*', 'c*', 'a*', 't*', 'm*', 'v*', 'u')
-_HANDLE_PREFIXES = ('f', 'c', 'a', 't', 'm', 'v')
+_WILDCARDS = ('*', 'f*', 'c*', 'a*', 't*', 'm*', 'v*', 'k*', 'u')
+_HANDLE_PREFIXES = ('f', 'c', 'a', 't', 'm', 'v', 'k')
 
 
 def _complete_path(text: str) -> list[str]:

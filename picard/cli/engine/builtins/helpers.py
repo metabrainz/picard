@@ -28,6 +28,7 @@ from picard.cli.engine.result import (
     EngineResult,
 )
 from picard.cli.engine.versions import Version
+from picard.collection import Collection
 from picard.file import File
 from picard.track import Track
 
@@ -113,6 +114,27 @@ def _entity_mb_ref(entity: Any) -> 'tuple[str, str] | tuple[None, None]':
     return (None, None)
 
 
+# What the session holds without it being in the working set: it has a handle,
+# but there is nothing to save, move, remove or tag.
+SESSION_OBJECTS = (Candidate, Version, Collection)
+
+
+def session_object_kind(entity: Any) -> 'str | None':
+    """What a session object is, in words ("lookup candidate", ...), or None for a member of the working set."""
+    if isinstance(entity, Candidate):
+        return 'lookup candidate'
+    if isinstance(entity, Version):
+        return 'release version'
+    if isinstance(entity, Collection):
+        return 'collection'
+    return None
+
+
+def describe_collection(collection: Collection) -> dict[str, Any]:
+    """A small, serializable projection of a collection of releases."""
+    return {'entity_type': 'collection', 'mbid': collection.id, 'title': collection.name, 'size': collection.size}
+
+
 def describe_entity(entity: Any) -> dict[str, Any]:
     """A small, serializable summary of an entity for ``ls`` / item data.
 
@@ -124,6 +146,8 @@ def describe_entity(entity: Any) -> dict[str, Any]:
     """
     if isinstance(entity, (Candidate, Version)):
         return entity.describe()
+    if isinstance(entity, Collection):
+        return describe_collection(entity)
 
     data: dict[str, Any] = {}
     entity_type, mbid = _entity_mb_ref(entity)
@@ -156,15 +180,15 @@ def reject_candidates(
     unresolved: list[str],
     what: str = "holds no files",
 ) -> 'EngineResult | None':
-    """A failure if ``entities`` include a lookup candidate or a release version, which ``what`` it lacks.
+    """A failure if ``entities`` include a session object (a lookup candidate, a release version, ...), which ``what`` it lacks.
 
     For the commands that act on the files of a selection (``save``, ``move``,
     ``trash``) or on its tags: ``save m1`` is a mistake worth saying so, not an
     error from deep inside the command.
     """
     for entity in entities:
-        if isinstance(entity, (Candidate, Version)):
-            kind = 'lookup candidate' if isinstance(entity, Candidate) else 'release version'
+        kind = session_object_kind(entity)
+        if kind is not None:
             return EngineResult.failure(
                 f"{command}: {session.handle_for(entity)} is a {kind}, it {what}",
                 unresolved=unresolved,

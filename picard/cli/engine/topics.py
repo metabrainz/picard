@@ -45,6 +45,7 @@ An object is named by its handle, a letter for its kind and a number:
   a1   an album (the standalone recordings are one too)
   t1   a track of an album
   m1   a candidate found by a lookup, see 'help cluster lookup'
+  k1   a collection of releases of the user, see 'help collection ls'
   v1   another release of the release group of an album, see 'help album versions'
 
 The commands print the handles of what they create, and 'ls' lists them. A

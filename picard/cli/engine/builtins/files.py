@@ -26,6 +26,7 @@ from picard.album import (
     NatAlbum,
 )
 from picard.cli.engine.builtins.helpers import (
+    SESSION_OBJECTS,
     TIMEOUT_DEFAULT,
     arg_words,
     drain,
@@ -35,7 +36,6 @@ from picard.cli.engine.builtins.helpers import (
     reject_candidates,
 )
 from picard.cli.engine.builtins.registry import command
-from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import (
     EngineSession,
     UsageError,
@@ -44,7 +44,6 @@ from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
 )
-from picard.cli.engine.versions import Version
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
@@ -293,11 +292,11 @@ def _cmd_remove(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     if not entities:
         return EngineResult(items=[], unresolved=unresolved)
 
-    # Lookup candidates and release versions are session-side objects, not
-    # working-set members: there is nothing to remove, so say so rather than
+    # Lookup candidates, release versions and collections are session-side
+    # objects, not working-set members: there is nothing to remove, so say so rather than
     # report them removed.
-    removable = [e for e in entities if not isinstance(e, (Candidate, Version))]
-    skipped = [e for e in entities if isinstance(e, (Candidate, Version))]
+    removable = [e for e in entities if not isinstance(e, SESSION_OBJECTS)]
+    skipped = [e for e in entities if isinstance(e, SESSION_OBJECTS)]
 
     # Capture handles/descriptions before removal (the entities still exist in
     # this scope; their handles stay valid for the report).
