@@ -59,7 +59,9 @@ from picard.metadata import MULTI_VALUED_JOINER
 from picard.tagdiff import (
     TagDiff,
     TagStatus,
+    apply_tag_values,
     build_tag_diff,
+    merge_values,
     selection_of,
 )
 from picard.tags import display_tag_name
@@ -188,37 +190,6 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
-def apply_tag_values(objects, tag, values):
-    """Apply tag values to objects' metadata without triggering UI updates.
-
-    Sets the tag to the given values on each object's metadata, or deletes the
-    tag if values is empty.  Yields each affected object exactly once.
-
-    This is a pure data-mutation helper: it does not call obj.update() or
-    interact with the UI.  The caller is responsible for triggering updates
-    on the returned objects.
-
-    Args:
-        objects: Iterable of objects with a ``metadata`` attribute.
-        tag: The tag name to set or delete.
-        values: List of values to assign.  An empty list (or ``[""]``)
-            means "delete the tag".
-
-    Yields:
-        Each object whose metadata was modified.
-    """
-    if values == [""]:
-        values = []
-    if not values:
-        for obj in objects:
-            del obj.metadata[tag]
-            yield obj
-    else:
-        for obj in objects:
-            obj.metadata[tag] = values
-            yield obj
-
-
 def interpret_paste_data(data, multi_valued_joiner):
     """Interpret pasted tag data into (tag, values) pairs.
 
@@ -251,27 +222,6 @@ def interpret_paste_data(data, multi_valued_joiner):
             if isinstance(value, list):
                 value = multi_valued_joiner.join(value)
             yield tag, value.split(multi_valued_joiner)
-
-
-def merge_values(orig_values, current_values):
-    """Merge original and current tag values, preserving order and uniqueness.
-
-    Returns a new list starting with all original values, followed by any
-    current values not already present.  This is the logic used by
-    "Merge Original Values" in the metadata box context menu.
-
-    Args:
-        orig_values: The original (saved) values for a tag.
-        current_values: The current (edited) values for the same tag.
-
-    Returns:
-        A merged list of values with no duplicates, preserving insertion order.
-    """
-    merged = list(orig_values)
-    for value in current_values:
-        if value not in merged:
-            merged.append(value)
-    return merged
 
 
 class MetadataBox(QtWidgets.QTableWidget):
@@ -474,7 +424,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 old=value[self.COLUMN_ORIG] if col == self.COLUMN_ORIG else None,
                 new=new,
                 removed=removed if col == self.COLUMN_NEW else False,
-                removable=not (self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE),
+                removable=self.tag_diff.is_removable(tag),
                 readonly=bool(self.tag_diff.status[tag] & TagStatus.READONLY),
             )
 
@@ -881,10 +831,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._remove_tags(self._selected_tags(filter_func=self._tag_is_removable))
 
     def _tag_is_removable(self, tag):
-        return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
+        return self.tag_diff.is_removable(tag)
 
     def _tag_is_editable(self, tag):
-        return self.tag_diff.status[tag] & TagStatus.READONLY == 0
+        return not self.tag_diff.is_readonly(tag)
 
     def _selected_tags(self, filter_func=None):
         for tag in set(self.tag_diff.tag_names[item.row()] for item in self.selectedItems()):

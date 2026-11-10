@@ -224,6 +224,13 @@ class TestTagDiff(PicardTestCase):
         self.assertTrue(self.tag_diff.is_readonly("artist"))
         self.assertFalse(self.tag_diff.is_readonly("unknown"))
 
+    def test_is_removable(self):
+        self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 2"])
+        self.tag_diff.add("~length", old="10000", new="12000", removable=False)
+        self.assertTrue(self.tag_diff.is_removable("artist"))
+        self.assertFalse(self.tag_diff.is_removable("~length"))
+        self.assertTrue(self.tag_diff.is_removable("unknown"))
+
     def test_add_not_removable(self):
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 2"], removable=False)
         self.assertEqual(self.tag_diff.status["artist"], TagStatus.CHANGED | TagStatus.NOTREMOVABLE)
