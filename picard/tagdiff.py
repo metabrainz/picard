@@ -40,6 +40,7 @@ from collections.abc import (
     Callable,
     Collection,
     Iterable,
+    Iterator,
     Mapping,
 )
 import csv
@@ -296,6 +297,18 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
+    def is_removable(self, tag: str) -> bool:
+        """
+        Checks if a tag can be removed (the length and the file path cannot).
+
+        Args:
+            tag: The tag name (string).
+
+        Returns:
+            True if the tag can be removed, False otherwise.
+        """
+        return not self.status[tag] & TagStatus.NOTREMOVABLE
+
     def add(
         self,
         tag: str,
@@ -535,6 +548,58 @@ def build_tag_diff(
 
     tag_diff.update_tag_names(changes_first, top_tags)
     return tag_diff
+
+
+def apply_tag_values(objects: Iterable[Any], tag: str, values: list[str]) -> Iterator[Any]:
+    """Apply tag values to objects' metadata without triggering UI updates.
+
+    Sets the tag to the given values on each object's metadata, or deletes the
+    tag if values is empty.  Yields each affected object exactly once.
+
+    This is a pure data-mutation helper: it does not call obj.update() or
+    interact with the UI.  The caller is responsible for triggering updates
+    on the returned objects.
+
+    Args:
+        objects: Iterable of objects with a ``metadata`` attribute.
+        tag: The tag name to set or delete.
+        values: List of values to assign.  An empty list (or ``[""]``)
+            means "delete the tag".
+
+    Yields:
+        Each object whose metadata was modified.
+    """
+    if values == [""]:
+        values = []
+    if not values:
+        for obj in objects:
+            del obj.metadata[tag]
+            yield obj
+    else:
+        for obj in objects:
+            obj.metadata[tag] = values
+            yield obj
+
+
+def merge_values(orig_values: Iterable[str], current_values: Iterable[str]) -> list[str]:
+    """Merge original and current tag values, preserving order and uniqueness.
+
+    Returns a new list starting with all original values, followed by any
+    current values not already present.  This is the logic used by
+    "Merge Original Values" in the metadata box context menu.
+
+    Args:
+        orig_values: The original (saved) values for a tag.
+        current_values: The current (edited) values for the same tag.
+
+    Returns:
+        A merged list of values with no duplicates, preserving insertion order.
+    """
+    merged = list(orig_values)
+    for value in current_values:
+        if value not in merged:
+            merged.append(value)
+    return merged
 
 
 class Selection(NamedTuple):

@@ -19,12 +19,12 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.metadata import Metadata
-
-from picard.ui.metadatabox import (
+from picard.tagdiff import (
     apply_tag_values,
-    interpret_paste_data,
     merge_values,
 )
+
+from picard.ui.metadatabox import interpret_paste_data
 
 
 class FakeObject:
