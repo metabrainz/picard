@@ -43,6 +43,8 @@ the metadata box shows), so the two cannot drift apart.
 | `album load <mbid\|url>` | load a release as an empty album; the reference may be a bare MBID, `release:<mbid>` or a MusicBrainz release URL |
 | `album versions <album>` | list the other releases of the release group of an album, as the "Other versions" menu of the GUI does and in the same order (as many tracks as the album first, then the preferred countries and formats); each gets a `v` handle and the one the album is now is marked; requested from MusicBrainz the first time |
 | `album switch <version>` / `album switch <album> <version\|mbid>` | switch an album to another release of its release group (`v2`, `a1.v2` — which say the album, so it can be left out — an MBID, `release:<mbid>` or a URL); the files are matched again to its tracks. The album keeps its handle unless that release is already loaded: the files go to that album, which is reported |
+| `login [address]` | log in to MusicBrainz: `login` prints the address to open and, once Picard is authorized in the browser, finishes the login; `login <address>` finishes it with the address of the redirect when the browser is on another machine (see Account below) |
+| `logout` | log out and revoke the authorization on MusicBrainz, for every Picard that uses it (destructive) |
 | `disc read [device]` | read the TOC of the CD in a drive (by default the first of the `cd_lookup_device` option, as the GUI does) and load the matching release |
 | `disc read-log <path>` | the same from a CD ripper log file |
 | `disc read-tags <sel>` | the same from the disc information in the tags (`itunes_cddb_1`) of the files of the selection, which are matched to the release; needs no drive |
@@ -149,6 +151,43 @@ do not agree on them. A tag to set is a name, not a pattern, and cannot start
 with `~` (those are variables of the scripts); `rm` takes patterns, and leaves
 the tags that cannot be removed (the length and the file path). A file whose
 format cannot hold a tag is left alone and reported as `unsupported`.
+
+### Account
+
+`login` and `logout` give the shell the account of MusicBrainz, which the
+collections need.
+
+MusicBrainz ends a login by sending the browser back to Picard on the loopback
+address (`http://127.0.0.1:<port>/auth`, a port of the range of the browser
+integration); it no longer shows a code to copy. `login` listens there, for
+that redirect only, and prints the address to open. Once Picard is authorized
+in the browser, `login` again finishes the login and reports the user name.
+When the browser runs on another machine (the shell is used over ssh), the
+redirect cannot reach the shell and the browser shows an error page: its
+address holds the code, and `login <address>` finishes the login with it.
+Forwarding the port over ssh works too.
+
+- The tokens are stored in the configuration, as the GUI does. So logging in
+  from the shell logs in every Picard that uses the same configuration, and a
+  login made by the GUI is used as it is. This is the one deliberate write to the
+  configuration besides `option save`; use a scratch configuration
+  (`picard-cli -c ...`) to keep them apart.
+- The login has to be finished in the same shell session that printed the
+  address: the secrets that bind them (PKCE, and the state) are kept in memory.
+- `logout` revokes the whole authorization on MusicBrainz, so every Picard that
+  uses it is logged out. The console asks to confirm.
+- With the GUI and the shell running on one configuration at the same time,
+  MusicBrainz may issue a new refresh token on each use, so one process can
+  invalidate the token of the other; a refresh that is rejected logs the user
+  out in that configuration.
+- Without a login, a request that needs one goes on without the user's data
+  instead of waiting for a login nobody can give.
+
+Possible improvements: finishing the login as soon as the browser comes back,
+without a second `login`; the device authorization flow of OAuth, made for
+machines without a browser, if MusicBrainz offers it; tokens kept for the session
+only, so that a login does not touch the configuration; and retrying a refresh
+with the token another process stored, before forgetting it.
 
 ### Options
 
@@ -341,7 +380,8 @@ Home: `picard/cli/engine/`; the console is `picard/cli/shell.py` with
    The modules group them by what they act on: `listing` (`ls`, `tree`),
    `files` (`file add`, `save`, `move`, `remove`, `trash`), `identify`
    (`cluster`, `cluster lookup`, `match`, `lookup`, `scan`, `album load`),
-   `versions` (`album versions`, `album switch`), `metadata`, `option`, `disc`.
+   `versions` (`album versions`, `album switch`), `account` (`login`, `logout`),
+   `metadata`, `option`, `disc`.
    `helpers` has what they share, and importing the package declares them all
    in one registry.
 

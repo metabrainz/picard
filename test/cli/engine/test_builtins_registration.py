@@ -35,6 +35,8 @@ EXPECTED = {
     'file add',
     'help',
     'ls',
+    'login',
+    'logout',
     'lookup',
     'match',
     'metadata add',
@@ -55,7 +57,7 @@ EXPECTED = {
     'tree',
 }
 
-DESTRUCTIVE = {'option save', 'trash'}
+DESTRUCTIVE = {'logout', 'option save', 'trash'}
 
 
 class BuiltinCommandsTest(PicardTestCase):

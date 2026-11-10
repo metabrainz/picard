@@ -24,6 +24,7 @@ A command is declared where it is implemented, with the ``command`` decorator
 of :mod:`~picard.cli.engine.builtins.registry`. The modules of this package
 group them by what they act on:
 
+- :mod:`~picard.cli.engine.builtins.account`: ``login``, ``logout``
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
 - :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load``
@@ -38,6 +39,7 @@ modules declares the commands, and :func:`register_builtins` populates a registr
 with them; both frontends call it so they share one vocabulary.
 """
 
+import picard.cli.engine.builtins.account  # noqa: F401
 import picard.cli.engine.builtins.disc  # noqa: F401
 import picard.cli.engine.builtins.files  # noqa: F401
 from picard.cli.engine.builtins.help import make_help_command

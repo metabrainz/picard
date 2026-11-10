@@ -115,6 +115,35 @@ class ParseLoginRedirectTest(PicardTestCase):
                 self.assertIsNone(mblogin.parse_login_redirect(query))
 
 
+class FinishLoginRedirectTest(PicardTestCase):
+    """A redirect given by hand, when the browser could not reach Picard."""
+
+    def setUp(self):
+        super().setUp()
+        self.oauth = MagicMock()
+        self.tagger.webservice = MagicMock(oauth_manager=self.oauth)
+        self.authorization_finished = MagicMock()
+        self.oauth.verify_state.return_value = self.authorization_finished
+
+    def test_a_code_is_exchanged(self):
+        mblogin.finish_login_redirect(mblogin.LoginRedirect('xyz', 'abc'))
+        self.oauth.verify_state.assert_called_once_with('xyz')
+        self.oauth.exchange_authorization_code.assert_called_once_with(
+            'abc', METABRAINZ_OAUTH_SCOPES, self.authorization_finished
+        )
+
+    def test_a_refusal_is_reported(self):
+        mblogin.finish_login_redirect(mblogin.LoginRedirect('xyz', '', 'access_denied', 'The user said no'))
+        self.oauth.exchange_authorization_code.assert_not_called()
+        self.authorization_finished.assert_called_once_with(successful=False, error_msg='The user said no')
+
+    def test_an_unknown_state_is_refused(self):
+        self.oauth.verify_state.side_effect = OAuthInvalidStateError
+        with self.assertRaises(OAuthInvalidStateError):
+            mblogin.finish_login_redirect(mblogin.LoginRedirect('nope', 'abc'))
+        self.oauth.exchange_authorization_code.assert_not_called()
+
+
 class ReceiveLoginRedirectTest(PicardTestCase):
     """What the browser integration and the receiver do with the redirect of a login."""
 
