@@ -75,6 +75,8 @@ def _format_item_data(data: dict[str, Any]) -> str:
         'title',
         'artist',
         'filename',
+        'username',
+        'url',
         'path',
         'file_count',
         'matched_album',
