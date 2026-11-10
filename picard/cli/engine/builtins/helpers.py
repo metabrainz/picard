@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""What the built-in commands have in common: describing entities in a result."""
+"""What the built-in commands have in common: reading arguments and describing entities in a result."""
 
 from collections.abc import Iterable
 from typing import Any
@@ -37,6 +37,13 @@ def handles_of(session: EngineSession, entities: Iterable[Any]) -> list[str]:
 def entity_item(session: EngineSession, entity: Any, status: str) -> EngineItemResult:
     """A result item for ``entity``: its handle, ``status`` and a description."""
     return EngineItemResult(handle=session.handle_for(entity), status=status, data=describe_entity(entity))
+
+
+def arg_words(arg: Any) -> list[str]:
+    """The words bound to a command argument, which is None, one word or a list of them."""
+    if arg is None:
+        return []
+    return [arg] if isinstance(arg, str) else list(arg)
 
 
 def _entity_mb_ref(entity: Any) -> 'tuple[str, str] | tuple[None, None]':

@@ -25,12 +25,14 @@ of :mod:`~picard.cli.engine.builtins.registry`. The modules of this package
 group them by what they act on:
 
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
+- :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
 
 :mod:`~picard.cli.engine.builtins.helpers` has what they share. Importing the
 modules declares the commands, and :func:`register_builtins` populates a registry
 with them; both frontends call it so they share one vocabulary.
 """
 
+from picard.cli.engine.builtins.help import make_help_command
 import picard.cli.engine.builtins.listing  # noqa: F401
 from picard.cli.engine.builtins.registry import BUILTIN_COMMANDS
 from picard.cli.engine.commands import (
@@ -39,6 +41,7 @@ from picard.cli.engine.commands import (
 
 
 def register_builtins(registry: EngineCommandRegistry) -> None:
-    """Register the built-in commands into ``registry``."""
+    """Register the built-in commands into ``registry``, and the ``help`` that describes them."""
     for command in BUILTIN_COMMANDS:
         registry.register(command)
+    registry.register(make_help_command(registry))
