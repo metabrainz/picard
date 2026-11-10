@@ -42,6 +42,7 @@ from collections.abc import (
     Iterable,
     Iterator,
 )
+from functools import partial
 from operator import attrgetter
 import re
 from typing import TYPE_CHECKING
@@ -493,8 +494,14 @@ class Cluster(FileList):
             )
         return best_match.result.release, best_match.reason
 
-    def lookup_metadata(self):
-        """Try to identify the cluster using the existing metadata."""
+    def lookup_metadata(self, callback=None):
+        """Try to identify the cluster using the existing metadata.
+
+        ``callback`` overrides the default auto-apply handler
+        (:meth:`_lookup_finished`); it receives the usual
+        ``(document, http, error)``. The headless lookup command passes its own
+        callback to capture the ranked candidates.
+        """
         if self._lookup_task:
             return
         notifier().status_message(
@@ -503,8 +510,9 @@ class Cluster(FileList):
         )
         config = get_config()
         freq = self._most_frequent_values(('catalognumber', 'label'))
+        on_reply = self._lookup_finished if callback is None else partial(self._lookup_replied, callback)
         self._lookup_task = services().mb_api.find_releases(
-            self._lookup_finished,
+            on_reply,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
@@ -514,6 +522,14 @@ class Cluster(FileList):
             label=freq.get('label', ''),
             limit=config.setting['query_limit'],
         )
+
+    def _lookup_replied(self, callback, document, http, error):
+        """Pass the reply of the lookup to ``callback``, instead of applying the best match."""
+        # _lookup_finished normally releases the pending-lookup guard; do it here
+        # too, otherwise the next lookup of this cluster would return early
+        # without sending a request.
+        self._lookup_task = None
+        callback(document, http, error)
 
     def _clear_lookup_task(self):
         if self._lookup_task:
@@ -614,7 +630,9 @@ class UnclusteredFiles(Cluster):
         super().remove_file(file, new_album=new_album)
         notifier().enable_action(MainAction.CLUSTER, self.files)
 
-    def lookup_metadata(self):
+    def lookup_metadata(self, callback=None):
+        # Unclustered files autotag instead of doing an MB release lookup, so the
+        # base ``callback`` (used by the headless lookup command) does not apply.
         workspace().autotag(self.files)
 
     @property
