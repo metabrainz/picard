@@ -149,7 +149,24 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
 
             self._webservice = WebService()
             self.register_cleanup(self._webservice.stop)
+            # Queued: the request that needs a login is still being handled when
+            # this is signalled.
+            self._webservice.authorization_required.connect(
+                self._on_authorization_required, QtCore.Qt.ConnectionType.QueuedConnection
+            )
         return self._webservice
+
+    def _on_authorization_required(self):
+        """A request to MusicBrainz needs a login: go on without it.
+
+        The GUI asks the user to log in, and the requests wait for the answer.
+        Headless nobody is asked, so it is as when the user declines: the
+        requests for data are made again without the user's data (personal
+        ratings, collections, ...), the others fail. Otherwise they would wait
+        for ever.
+        """
+        log.warning("MusicBrainz login required (or no longer valid): going on without the user's data")
+        self.webservice.discard_authorized_requests()
 
     @property
     def mb_api(self):
