@@ -70,6 +70,8 @@ def _format_item_data(data: dict[str, Any]) -> str:
     for key in (
         'value',
         'default',
+        'tag',
+        'removed',
         'title',
         'artist',
         'filename',
@@ -79,6 +81,8 @@ def _format_item_data(data: dict[str, Any]) -> str:
         'error',
     ):
         value = data.get(key)
+        if isinstance(value, list):
+            value = ', '.join(str(item) for item in value)
         if value not in (None, ''):
             parts.append(f"{key}={value}")
     return '  '.join(parts)

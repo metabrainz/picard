@@ -103,14 +103,22 @@ Commands print the path next to the handle, and the Tab key completes paths.""",
 
 TAGS = Topic(
     'tags',
-    "How to name the tags 'metadata show' displays",
+    "How to name the tags the 'metadata' commands act on",
     """\
 A tag is not an object and has no handle: it is a word after the selector, as in
 'metadata show a1 artist'. For this reason the selector must be a single word
 there (f1,f2 and not f1, f2).
 
 A tag is its name, or a pattern: * matches any characters, ? one character, and
-[...] one of a set.
+[...] one of a set. 'metadata show' and 'metadata rm' accept patterns; to set a
+tag ('metadata set', 'metadata add') give its name, and its values after it.
+Tags that start with ~ are variables of the scripts and cannot be set.
+
+A tag can have several values. Each word given to 'metadata set' or 'metadata add'
+is one value ('metadata set f1 genre Rock Pop' gives two), 'metadata rm-value'
+takes some out, and 'metadata rm' removes the tag. 'metadata show' joins the
+values with '; ' to display them, but a value is never split on it: "Rock; Pop"
+is one value.
 
   artist            the artist tag
   musicbrainz_*     all the tags that start with musicbrainz_
