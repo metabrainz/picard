@@ -20,7 +20,10 @@ from unittest.mock import MagicMock
 from test.picardtestcase import PicardTestCase
 
 from picard.album import Album
+from picard.cli.engine.builtins import register_builtins
 from picard.cli.engine.candidates import Candidate
+from picard.cli.engine.commands import EngineCommandRegistry
+from picard.cli.engine.dispatch import dispatch
 from picard.cli.engine.selectors import SelectorError
 from picard.cli.engine.session import LocalEngineSession
 from picard.cluster import Cluster
@@ -413,6 +416,38 @@ class PathOfTest(_PathTestBase):
         self.assertEqual('u.f1', self.session.path_of(handle))
         self.loose.move(self.cluster)
         self.assertEqual('c1.f2', self.session.path_of(handle))
+
+
+class ResultPathTest(_PathTestBase):
+    """Items of a command result say where their entity currently is."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values(setting={'va_name': 'Various Artists', 'nat_name': 'Standalone Recordings'})
+        self.reg = EngineCommandRegistry()
+        register_builtins(self.reg)
+        self.album = self._album('rel-1', [(1, 1, 'One'), (1, 2, 'Two')])
+        self.matched = _file(self.wks, 'matched.flac')
+        self.matched.move(self.album.tracks[1])
+
+    def test_items_carry_their_path(self):
+        result = dispatch(self.session, self.reg, 'tree a1')
+        paths = {item.status: item.path for item in result.items if item.status != 'track'}
+        self.assertEqual({'album': '', 'file': 'a1.t2.f1'}, paths)
+        self.assertEqual(['a1.t1', 'a1.t2'], [item.path for item in result.items if item.status == 'track'])
+
+    def test_path_is_part_of_the_serialized_item(self):
+        result = dispatch(self.session, self.reg, 'ls a1.t2')
+        self.assertEqual('a1.t2', result.to_dict()['items'][0]['path'])
+
+    def test_a_failing_path_lookup_does_not_fail_the_command(self):
+        def broken(handle):
+            raise RuntimeError('boom')
+
+        self.session.path_of = broken
+        result = dispatch(self.session, self.reg, 'ls a1.t2')
+        self.assertTrue(result.ok)
+        self.assertEqual([''], [item.path for item in result.items])
 
 
 class SegmentsTest(_PathTestBase):
