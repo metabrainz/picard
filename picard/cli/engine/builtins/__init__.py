@@ -26,7 +26,7 @@ group them by what they act on:
 
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
-- :mod:`~picard.cli.engine.builtins.identify`: ``cluster``
+- :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``
 - :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
 
 :mod:`~picard.cli.engine.builtins.helpers` has what they share. Importing the
