@@ -22,13 +22,18 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
+from picard.album import Album
+from picard.cluster import Cluster
+from picard.file import File
 from picard.metadata import Metadata
 from picard.tagdiff import (
     TagCounter,
     TagDiff,
     TagStatus,
     build_tag_diff,
+    selection_of,
 )
+from picard.track import Track
 
 
 class TestTagCounter(PicardTestCase):
@@ -526,3 +531,56 @@ class TestBuildTagDiff(PicardTestCase):
     def test_the_number_of_objects_is_the_number_of_files_plus_the_tracks_shown(self):
         diff = self._build([_file(orig={'title': 'A'})], tracks=[_track('T1'), _track('T2', linked_files=2)])
         self.assertEqual(2, diff.objects)
+
+
+class TestSelectionOf(PicardTestCase):
+    """What the metadata box shows for the selected objects."""
+
+    @staticmethod
+    def _track(files=()):
+        track = Mock(spec=Track)
+        track.files = list(files)
+        return track
+
+    def test_a_file_stands_for_itself(self):
+        file = Mock(spec=File)
+        selection = selection_of([file])
+        self.assertEqual(({file}, set(), {file}), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_track_stands_for_itself_and_its_files(self):
+        file = Mock(spec=File)
+        track = self._track([file])
+        selection = selection_of([track])
+        self.assertEqual(({file}, {track}, {file, track}), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_cluster_stands_for_itself_and_its_files(self):
+        file = Mock(spec=File)
+        cluster = Mock(spec=Cluster, can_edit_tags=True, files=[file])
+        selection = selection_of([cluster])
+        self.assertEqual(({file}, set(), {file, cluster}), (selection.files, selection.tracks, selection.objects))
+
+    def test_the_unclustered_files_are_not_a_cluster_whose_tags_can_be_edited(self):
+        cluster = Mock(spec=Cluster, can_edit_tags=False, files=[Mock(spec=File)])
+        selection = selection_of([cluster])
+        self.assertEqual((set(), set(), set()), (selection.files, selection.tracks, selection.objects))
+
+    def test_an_album_stands_for_itself_its_tracks_and_their_files(self):
+        file1, file2 = Mock(spec=File), Mock(spec=File)
+        track1, track2 = self._track([file1]), self._track([file2])
+        album = Mock(spec=Album, tracks=[track1, track2, self._track()])
+        album.tracks = [track1, track2]
+        selection = selection_of([album])
+        self.assertEqual({file1, file2}, selection.files)
+        self.assertEqual({track1, track2}, selection.tracks)
+        self.assertEqual({album, file1, file2, track1, track2}, selection.objects)
+
+    def test_anything_else_has_no_tags(self):
+        selection = selection_of([object(), Mock()])
+        self.assertEqual((set(), set(), set()), (selection.files, selection.tracks, selection.objects))
+
+    def test_a_selection_is_the_union_of_what_each_object_stands_for(self):
+        file, other = Mock(spec=File), Mock(spec=File)
+        track = self._track([other])
+        selection = selection_of([file, track, file])
+        self.assertEqual({file, other}, selection.files)
+        self.assertEqual({track}, selection.tracks)

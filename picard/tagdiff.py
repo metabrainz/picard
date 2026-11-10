@@ -41,10 +41,14 @@ import io
 import json
 
 from picard import log
+from picard.album import Album
+from picard.cluster import Cluster
+from picard.file import File
 from picard.i18n import ngettext
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import ScriptError
 from picard.tags import display_tag_name
+from picard.track import Track
 from picard.util import format_time
 
 
@@ -491,3 +495,42 @@ def build_tag_diff(files, tracks, settings, changes_first=False):
 
     tag_diff.update_tag_names(changes_first, top_tags)
     return tag_diff
+
+
+Selection = namedtuple('Selection', ('files', 'tracks', 'objects'))
+
+
+def selection_of(objects):
+    """
+    Return what the metadata box shows for the selected ``objects``.
+
+    A file stands for itself. A track stands for itself and for the files matched
+    to it. A cluster that allows editing tags (not the unclustered files) stands
+    for itself and its files. An album stands for itself, its tracks and their
+    files. Anything else (a lookup candidate, for instance) has no tags.
+
+    Returns:
+        A ``Selection`` of three sets: the ``files`` and ``tracks`` to compare
+        (see :func:`build_tag_diff`), and all the ``objects`` the tags would be
+        edited on, which also holds the selected clusters and albums.
+    """
+    files = set()
+    tracks = set()
+    selected = set()
+    for obj in objects:
+        if isinstance(obj, File):
+            files.add(obj)
+        elif isinstance(obj, Track):
+            tracks.add(obj)
+            files.update(obj.files)
+        elif isinstance(obj, Cluster) and obj.can_edit_tags:
+            selected.add(obj)
+            files.update(obj.files)
+        elif isinstance(obj, Album):
+            selected.add(obj)
+            tracks.update(obj.tracks)
+            for track in obj.tracks:
+                files.update(track.files)
+    selected.update(files)
+    selected.update(tracks)
+    return Selection(files, tracks, selected)

@@ -47,12 +47,9 @@ from picard import (
     log,
     tagger_instance,
 )
-from picard.album import Album
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster
 from picard.config import get_config
 from picard.extension_points.metadata_tag_actions import ext_point_metadata_tag_actions
-from picard.file import File
 from picard.i18n import (
     N_,
     gettext as _,
@@ -63,11 +60,11 @@ from picard.tagdiff import (
     TagDiff,
     TagStatus,
     build_tag_diff,
+    selection_of,
 )
 from picard.tags import display_tag_name
 from picard.tags.docs import display_tag_tooltip
 from picard.tags.preserved import UserPreservedTags
-from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
     format_time,
@@ -899,25 +896,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             # main window not yet available
             # FIXME: early call strictly needed?
             return
-        files = set()
-        tracks = set()
-        objects = set()
-        for obj in self.tagger.window.selected_objects:
-            if isinstance(obj, File):
-                files.add(obj)
-            elif isinstance(obj, Track):
-                tracks.add(obj)
-                files.update(obj.files)
-            elif isinstance(obj, Cluster) and obj.can_edit_tags:
-                objects.add(obj)
-                files.update(obj.files)
-            elif isinstance(obj, Album):
-                objects.add(obj)
-                tracks.update(obj.tracks)
-                for track in obj.tracks:
-                    files.update(track.files)
-        objects.update(files)
-        objects.update(tracks)
+        files, tracks, objects = selection_of(self.tagger.window.selected_objects)
         self.selection_dirty = False
 
         self.selection_mutex.lock()
