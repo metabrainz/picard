@@ -737,7 +737,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # Avoid circular import: ui.itemviews.__init__ imports basetreeview
         from picard.ui.itemviews import ClusterItem
 
-        cluster_item = ClusterItem(cluster, sortable=not cluster.special, parent=parent_item)
+        cluster_item = ClusterItem(
+            cluster, sortable=not cluster.special, filterable=not cluster.hide_if_empty, parent=parent_item
+        )
         if cluster.hide_if_empty and not cluster.files:
             cluster_item.update()
             cluster_item.setHidden(True)
@@ -867,7 +869,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         """Recursively show all items."""
         for i in range(parent.childCount()):
             child = parent.child(i)
-            if not getattr(child.obj, 'is_permanently_hidden', False):
+            if child.filterable:
                 child.setHidden(False)
             self._set_item_tooltip(child, '')
             if child.childCount() > 0:
