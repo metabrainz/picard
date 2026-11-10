@@ -21,6 +21,10 @@ import os
 import re
 from typing import Any
 
+from picard.album import (
+    Album,
+    NatAlbum,
+)
 from picard.cli.engine.builtins.helpers import (
     TIMEOUT_DEFAULT,
     arg_words,
@@ -33,13 +37,17 @@ from picard.cli.engine.builtins.helpers import (
 from picard.cli.engine.builtins.registry import command
 from picard.cli.engine.commands import (
     EngineSession,
+    UsageError,
 )
 from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
 )
+from picard.cluster import Cluster
 from picard.file import File
+from picard.track import Track
 from picard.util import (
+    iter_files_from_objects,
     normpath,
     resolve_fs_path,
 )
@@ -254,6 +262,88 @@ def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     return EngineResult(
         items=items,
         resolved=handles_of(session, entities),
+        unresolved=unresolved,
+        message=join_notes(notes),
+    )
+
+
+@command(
+    'move',
+    usage='move <sources> <destination>',
+    help="Move files into a track, cluster, album or bucket.",
+    args=('selectors',),
+    arg_kinds=('selector',),
+)
+def _cmd_move(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Move files into a track, a cluster, an album or a bucket.
+
+    The last word is the destination, a single place. The words before it select
+    the files to move; the files of albums, clusters and tracks count too.
+
+      a1.d2.t3   attach the files to this track; several files go to the following
+                 tracks of the album, as when they are dropped in the GUI
+      c1         a cluster
+      a1         an album: the files are matched to its tracks
+      u          the files that are in no cluster
+      a1.u       the files of an album that are not matched
+
+    Each file is reported as moved, with where it was, or unchanged if it is
+    already there.
+
+    Examples:
+      move f1 a1.d1.t3
+      move f1,f2,f3 c2
+      move c1 a1
+    """
+    words = arg_words(args.get('selectors'))
+    if len(words) < 2:
+        raise UsageError
+    *source_words, destination_word = words
+
+    destinations = session.resolve_targets(destination_word)
+    if not destinations:
+        return EngineResult.failure(f"move: destination {destination_word!r} matches nothing")
+    if len(destinations) > 1:
+        return EngineResult.failure(
+            f"move: destination {destination_word!r} matches {len(destinations)} places; name one"
+        )
+    (destination,) = destinations
+    if isinstance(destination, NatAlbum):
+        return EngineResult.failure("move: moving files to the non-album tracks is not supported")
+    if not isinstance(destination, (Track, Cluster, Album)):
+        return EngineResult.failure(
+            f"move: {destination_word!r} is not a place files can be moved to (use a track, a cluster, an album or u)"
+        )
+
+    sources, unresolved = session.resolve(source_words)
+    rejected = reject_candidates(session, 'move', sources, unresolved)
+    if rejected is not None:
+        return rejected
+    files = list(iter_files_from_objects(sources))
+
+    wks = workspace()
+    paths_before = {file: session.path_of(session.handle_for(file)) for file in files}
+    parents_before = {file: file.parent_item for file in files}
+    movable = [file for file in files if file.parent_item is not destination]
+    wks.move_files(movable, destination)
+    notes: list[str] = []
+    drain(session, TIMEOUT_DEFAULT, notes)
+
+    items = []
+    for file in files:
+        # Judge by where the file is now: a move can be refused, and matching to
+        # an album can leave a file on the track it was already on.
+        status = 'moved' if file.parent_item is not parents_before[file] else 'unchanged'
+        items.append(
+            EngineItemResult(
+                handle=session.handle_for(file),
+                status=status,
+                data={'filename': file.base_filename, 'from': paths_before[file] or ''},
+            )
+        )
+    return EngineResult(
+        items=items,
+        resolved=[item.handle for item in items],
         unresolved=unresolved,
         message=join_notes(notes),
     )
