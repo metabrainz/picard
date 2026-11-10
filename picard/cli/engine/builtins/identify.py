@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster`` and ``cluster lookup``."""
+"""The commands that identify files: ``cluster``, ``cluster lookup`` and ``match``."""
 
 from typing import Any
 
@@ -33,6 +33,7 @@ from picard.cli.engine.builtins.registry import command
 from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import (
     EngineSession,
+    UsageError,
 )
 from picard.cli.engine.result import (
     EngineItemResult,
@@ -239,4 +240,73 @@ def _cmd_cluster_lookup(session: EngineSession, args: dict[str, Any]) -> EngineR
         unresolved=unresolved,
         mints=mints,
         message=join_notes(notes),
+    )
+
+
+@command(
+    'match',
+    usage='match <cluster> <candidate>',
+    help="Apply another candidate of a cluster lookup.",
+    args=('target', 'candidate'),
+    arg_kinds=('selector', 'handle'),
+)
+def _cmd_match(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Apply another candidate of a cluster lookup.
+
+    'match c1 m2' loads the release of candidate m2, moves the files of cluster c1
+    onto it and marks m2 as the applied candidate. A candidate can only be applied
+    to the cluster it was found for; 'ls c1.m*' lists them.
+
+    Example:
+      match c1 m2
+    """
+    target_sel = args.get('target')
+    candidate_sel = args.get('candidate')
+    if not target_sel or not candidate_sel:
+        raise UsageError
+
+    targets, target_unresolved = session.resolve(target_sel)
+    cands, cand_unresolved = session.resolve(candidate_sel)
+    unresolved = target_unresolved + cand_unresolved
+
+    clusters = [e for e in targets if isinstance(e, Cluster)]
+    candidates = [c for c in cands if isinstance(c, Candidate)]
+    if len(clusters) != 1 or len(candidates) != 1:
+        return EngineResult.failure(
+            "match: need exactly one target cluster and one candidate",
+            unresolved=unresolved,
+        )
+    cluster = clusters[0]
+    candidate = candidates[0]
+    if candidate.release_id is None:
+        return EngineResult.failure("match: candidate has no release", unresolved=unresolved)
+    # A candidate is only an alternative for the cluster it was looked up for.
+    if not any(c is candidate for c in session.candidates_for(cluster)):
+        return EngineResult.failure(
+            f"match: {session.handle_for(candidate)} is not a candidate of {session.handle_for(cluster)}",
+            unresolved=unresolved,
+        )
+
+    notes: list[str] = []
+    album, load_error = _load_release(session, candidate.release_id, notes)
+    if load_error is not None:
+        return EngineResult.failure(f"match: release load failed: {load_error}", unresolved=unresolved)
+    workspace().move_files_to_album(cluster.files, album=album)
+
+    # Reflect the new selection in the target's candidate set.
+    for c in session.candidates_for(cluster):
+        c.applied = c is candidate
+
+    album_handle = session.handle_for(album)
+    return EngineResult(
+        items=[
+            EngineItemResult(
+                handle=session.handle_for(cluster),
+                status='matched',
+                data={'matched_album': album_handle, 'candidate': session.handle_for(candidate)},
+            )
+        ],
+        resolved=[session.handle_for(cluster)],
+        unresolved=unresolved,
+        mints=[album_handle],
     )
