@@ -228,7 +228,7 @@ class MoveErrorsTest(_MoveTestBase):
 
     def test_save_and_trash_refuse_candidates_too(self):
         (handle,) = self.session.set_candidates(self.cluster, [Candidate(MagicMock())])
-        for command in ('save',):
+        for command in ('save', 'trash'):
             with self.subTest(command=command):
                 result = self._move(f'{command} {handle}')
                 self.assertFalse(result.ok)

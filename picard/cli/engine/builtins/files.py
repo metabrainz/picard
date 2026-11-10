@@ -35,6 +35,7 @@ from picard.cli.engine.builtins.helpers import (
     reject_candidates,
 )
 from picard.cli.engine.builtins.registry import command
+from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import (
     EngineSession,
     UsageError,
@@ -268,6 +269,44 @@ def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
 
 
 @command(
+    'remove',
+    usage='remove <selector>',
+    help="Remove objects from the working set.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_remove(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Remove objects from the working set. The files on disk are not touched.
+
+    A selector is required, so that nothing is removed by mistake. Removing an album
+    or a cluster removes the files in it from the working set too.
+
+    Examples:
+      remove c1
+      remove a*
+    """
+    selector = args.get('selector')
+    if not selector:
+        raise UsageError
+    entities, unresolved = session.resolve(selector)
+    if not entities:
+        return EngineResult(items=[], unresolved=unresolved)
+
+    # Lookup candidates are session-side objects, not working-set members:
+    # there is nothing to remove, so say so rather than report them removed.
+    removable = [e for e in entities if not isinstance(e, Candidate)]
+    skipped = [e for e in entities if isinstance(e, Candidate)]
+
+    # Capture handles/descriptions before removal (the entities still exist in
+    # this scope; their handles stay valid for the report).
+    items = [entity_item(session, entity, 'removed') for entity in removable]
+    items.extend(entity_item(session, entity, 'skipped') for entity in skipped)
+    if removable:
+        workspace().remove(removable)
+    return EngineResult(items=items, resolved=[it.handle for it in items], unresolved=unresolved)
+
+
+@command(
     'move',
     usage='move <sources> <destination>',
     help="Move files into a track, cluster, album or bucket.",
@@ -347,3 +386,37 @@ def _cmd_move(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         unresolved=unresolved,
         message=join_notes(notes),
     )
+
+
+@command(
+    'trash',
+    usage='trash <selector>',
+    help="Move files to the system trash.",
+    args=('selector',),
+    arg_kinds=('selector',),
+    destructive=True,
+)
+def _cmd_trash(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Move the selected files to the system trash.
+
+    The files of an album, a cluster or a track are trashed with it, and they leave
+    the working set. They can be restored from the trash with your file manager. A
+    selector is required, and the console asks for a confirmation.
+
+    Example:
+      trash f3
+    """
+    selector = args.get('selector')
+    if not selector:
+        raise UsageError
+    entities, unresolved = session.resolve(selector)
+    rejected = reject_candidates(session, 'trash', entities, unresolved)
+    if rejected is not None:
+        return rejected
+    files = list(iter_files_from_objects(entities))
+    if not files:
+        return EngineResult(items=[], unresolved=unresolved)
+
+    items = [EngineItemResult(handle=session.handle_for(f), status='trashed', data={'path': f.filename}) for f in files]
+    workspace().trash_files(files)
+    return EngineResult(items=items, resolved=[it.handle for it in items], unresolved=unresolved)
