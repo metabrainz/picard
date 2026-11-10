@@ -30,21 +30,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 
 from collections import (
     Counter,
     defaultdict,
-    namedtuple,
+)
+from collections.abc import (
+    Callable,
+    Collection,
+    Iterable,
+    Mapping,
 )
 import csv
 import io
 import json
+from typing import (
+    Any,
+    NamedTuple,
+)
 
 from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
 from picard.i18n import ngettext
+from picard.item import MetadataItem
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import ScriptError
 from picard.tags import display_tag_name
@@ -63,11 +74,24 @@ class TagStatus:
     READONLY = 32
 
 
-TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
-TagCounterStatus = namedtuple('TagCounterStatus', ('is_grouped', 'count', 'is_different', 'missing'))
+# The value(s) of a tag: a list of strings, except for ``~length`` which is a
+# single string (the length in milliseconds).
+TagValues = list[str] | str
 
 
-class TagCounter(dict):
+class TagCounterDisplayValue(NamedTuple):
+    text: str
+    is_grouped: bool
+
+
+class TagCounterStatus(NamedTuple):
+    is_grouped: bool
+    count: int
+    is_different: bool
+    missing: int
+
+
+class TagCounter(dict[str, Any]):
     """
     A specialized dictionary for tracking and displaying tag values across multiple objects.
 
@@ -100,7 +124,7 @@ class TagCounter(dict):
 
     __slots__ = ('parent', 'counts', 'different')
 
-    def __init__(self, parent):
+    def __init__(self, parent: TagDiff) -> None:
         """
         Initializes the TagCounter.
 
@@ -109,10 +133,10 @@ class TagCounter(dict):
                     It is used to access the total number of objects being compared.
         """
         self.parent = parent
-        self.counts = Counter()
-        self.different = set()
+        self.counts: Counter[str] = Counter()
+        self.different: set[str] = set()
 
-    def __getitem__(self, tag):
+    def __getitem__(self, tag: str) -> Any:
         """
         Retrieves the value associated with a tag.
 
@@ -127,7 +151,7 @@ class TagCounter(dict):
         """
         return super().get(tag, [""])
 
-    def add(self, tag, values):
+    def add(self, tag: str, values: TagValues) -> None:
         """
         Adds tag information to the counter.
 
@@ -146,7 +170,7 @@ class TagCounter(dict):
                 self[tag] = [""]
         self.counts[tag] += 1
 
-    def status(self, tag):
+    def status(self, tag: str) -> TagCounterStatus:
         """
         Returns tag status as a named tuple TagCounterStatus
 
@@ -162,7 +186,7 @@ class TagCounter(dict):
         is_grouped = is_different or (count > 0 and missing > 0)
         return TagCounterStatus(is_grouped, count, is_different, missing)
 
-    def display_value(self, tag):
+    def display_value(self, tag: str) -> TagCounterDisplayValue:
         """
         Generates a user-friendly text representation of the tag's value.
 
@@ -223,7 +247,7 @@ class TagDiff:
 
     __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers', 'removed_tags', 'diff_html')
 
-    def __init__(self, max_length_diff=2):
+    def __init__(self, max_length_diff: int = 2) -> None:
         """
         Initializes the TagDiff.
 
@@ -231,19 +255,22 @@ class TagDiff:
             max_length_diff (int): The maximum allowed length difference (in seconds)
                                    for tracks to be considered the same.
         """
-        self.tag_names = []
+        self.tag_names: list[str] = []
         self.new = TagCounter(self)
         self.old = TagCounter(self)
-        self.status = defaultdict(lambda: TagStatus.NONE)
+        self.status: defaultdict[str, int] = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
-        self.removed_tags = set()
-        self.diff_html = {}
-        self.tag_ne_handlers = defaultdict(lambda: lambda old, new: old != new)
+        self.removed_tags: set[str] = set()
+        # Filled in by the metadata box: tag -> (old, new) HTML of the highlighted differences
+        self.diff_html: dict[str, tuple[str | None, str | None]] = {}
+        self.tag_ne_handlers: defaultdict[str, Callable[[Any, Any], bool]] = defaultdict(
+            lambda: lambda old, new: old != new
+        )
         # handling the special case of '~length'
         max_length_delta_ms = max_length_diff * 1000
         self.tag_ne_handlers['~length'] = lambda old, new: abs(int(old) - int(new)) > max_length_delta_ms
 
-    def __tag_ne(self, tag, old, new):
+    def __tag_ne(self, tag: str, old: Any, new: Any) -> bool:
         """
         Checks if two tag values are not equal.
 
@@ -257,7 +284,7 @@ class TagDiff:
         """
         return self.tag_ne_handlers[tag](old, new)
 
-    def is_readonly(self, tag):
+    def is_readonly(self, tag: str) -> bool:
         """
         Checks if a tag is read-only.
 
@@ -269,7 +296,16 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
-    def add(self, tag, old=None, new=None, removable=True, removed=False, readonly=False, top_tags=None):
+    def add(
+        self,
+        tag: str,
+        old: TagValues | None = None,
+        new: TagValues | None = None,
+        removable: bool = True,
+        removed: bool = False,
+        readonly: bool = False,
+        top_tags: Collection[str] | None = None,
+    ) -> None:
         """
         Adds tag information to the TagDiff and updates its status.
 
@@ -280,7 +316,7 @@ class TagDiff:
             removable (bool): Whether the tag can be removed.
             removed (bool): Whether the tag was marked as removed.
             readonly (bool): Whether the tag is read-only.
-            top_tags (set): Set of top level tags
+            top_tags: The top level tags
         """
         if old:
             self.old.add(tag, old)
@@ -289,7 +325,7 @@ class TagDiff:
             self.new.add(tag, new)
 
         if not top_tags:
-            top_tags = set()
+            top_tags = ()
 
         if (old and not new) or removed:
             self.status[tag] |= TagStatus.REMOVED
@@ -313,7 +349,7 @@ class TagDiff:
         if readonly:
             self.status[tag] |= TagStatus.READONLY
 
-    def tag_status(self, tag):
+    def tag_status(self, tag: str) -> int:
         """
         Gets the specific status of a tag.
 
@@ -332,7 +368,7 @@ class TagDiff:
                 return s
         return TagStatus.UNCHANGED
 
-    def update_tag_names(self, changes_first=False, top_tags=None):
+    def update_tag_names(self, changes_first: bool = False, top_tags: Collection[str] | None = None) -> None:
         """
         Updates the list of tag names to be displayed.
 
@@ -341,14 +377,14 @@ class TagDiff:
 
         Args:
             changes_first (bool): Whether to display changed tags first.
-            top_tags (set): Set of tags to always be displayed at the top.
+            top_tags: The tags to always be displayed at the top.
         """
         all_tags = set(list(self.old) + list(self.new) + list(self.removed_tags))
         common_tags = [tag for tag in top_tags if tag in all_tags] if top_tags else []
         tag_names = common_tags + sorted(all_tags.difference(common_tags), key=lambda x: display_tag_name(x).lower())
 
         if changes_first:
-            tags_by_status = {}
+            tags_by_status: dict[int, list[str]] = {}
 
             for tag in tag_names:
                 tags_by_status.setdefault(self.tag_status(tag), []).append(tag)
@@ -358,8 +394,8 @@ class TagDiff:
         else:
             self.tag_names = [tag for tag in tag_names if self.status[tag] != TagStatus.EMPTY]
 
-    def to_json(self):
-        result = {}
+    def to_json(self) -> str:
+        result: dict[str, dict[str, Any]] = {}
         for tag in self.tag_names:
             result[tag] = {}
             if tag in self.old:
@@ -371,7 +407,7 @@ class TagDiff:
 
         return json.dumps(result)
 
-    def handle_length(self, value, prettify_times=True):
+    def handle_length(self, value: Any, prettify_times: bool = True) -> list[str]:
         try:
             if not isinstance(value, str) or not value:
                 return ['']
@@ -380,7 +416,7 @@ class TagDiff:
             log.warning(e)
             return ['']
 
-    def to_tsv(self, prettify_times=True):
+    def to_tsv(self, prettify_times: bool = True) -> str:
         f = io.StringIO()
         writer = csv.writer(f, dialect='excel-tab')
 
@@ -403,7 +439,9 @@ class TagDiff:
         return f.getvalue()
 
 
-def add_files_to_tag_diff(files, tag_diff, settings, top_tags):
+def add_files_to_tag_diff(
+    files: Collection[File], tag_diff: TagDiff, settings: Mapping[str, Any], top_tags: Iterable[str]
+) -> None:
     """
     Add file tags and special tags (~length, ~filepath) to tag_diff.
 
@@ -452,7 +490,7 @@ def add_files_to_tag_diff(files, tag_diff, settings, top_tags):
             tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
 
 
-def add_tracks_to_tag_diff(tracks, tag_diff):
+def add_tracks_to_tag_diff(tracks: Iterable[Track], tag_diff: TagDiff) -> None:
     """
     Add track tags and ~length for tracks without linked files to tag_diff.
     """
@@ -469,7 +507,9 @@ def add_tracks_to_tag_diff(tracks, tag_diff):
         tag_diff.objects += 1
 
 
-def build_tag_diff(files, tracks, settings, changes_first=False):
+def build_tag_diff(
+    files: Collection[File], tracks: Iterable[Track], settings: Mapping[str, Any], changes_first: bool = False
+) -> TagDiff:
     """
     Build a TagDiff representing the differences between original and new metadata
     of ``files`` and of the ``tracks`` that have no file linked to them.
@@ -497,10 +537,13 @@ def build_tag_diff(files, tracks, settings, changes_first=False):
     return tag_diff
 
 
-Selection = namedtuple('Selection', ('files', 'tracks', 'objects'))
+class Selection(NamedTuple):
+    files: set[File]
+    tracks: set[Track]
+    objects: set[MetadataItem]
 
 
-def selection_of(objects):
+def selection_of(objects: Iterable[Any]) -> Selection:
     """
     Return what the metadata box shows for the selected ``objects``.
 
@@ -514,9 +557,9 @@ def selection_of(objects):
         (see :func:`build_tag_diff`), and all the ``objects`` the tags would be
         edited on, which also holds the selected clusters and albums.
     """
-    files = set()
-    tracks = set()
-    selected = set()
+    files: set[File] = set()
+    tracks: set[Track] = set()
+    selected: set[MetadataItem] = set()
     for obj in objects:
         if isinstance(obj, File):
             files.add(obj)
