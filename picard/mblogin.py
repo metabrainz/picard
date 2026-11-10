@@ -33,13 +33,14 @@ Every ``callback`` is called with ``(successful, error_msg)`` when it is done.
 
 from collections.abc import Callable
 from functools import partial
+from typing import Any
 
 from picard.collection import load_user_collections
 from picard.const import METABRAINZ_OAUTH_SCOPES
 from picard.services import services
 
 
-LoginCallback = Callable[[bool, 'str | None'], object]
+LoginCallback = Callable[[bool, str | None], Any]
 
 
 def start_login(callback: LoginCallback) -> str:
@@ -74,20 +75,20 @@ def logout(callback: LoginCallback) -> None:
     services().webservice.oauth_manager.revoke_tokens(partial(_logout_finished, callback))
 
 
-def _authorization_finished(callback: LoginCallback, successful: bool = False, error_msg: 'str | None' = None) -> None:
+def _authorization_finished(callback: LoginCallback, successful: bool = False, error_msg: str | None = None) -> None:
     if successful:
         services().webservice.oauth_manager.fetch_username(partial(_login_finished, callback))
     else:
         callback(False, error_msg)
 
 
-def _login_finished(callback: LoginCallback, successful: bool, error_msg: 'str | None') -> None:
+def _login_finished(callback: LoginCallback, successful: bool, error_msg: str | None) -> None:
     if successful:
         load_user_collections()
     callback(successful, error_msg)
 
 
-def _logout_finished(callback: LoginCallback, successful: bool, error_msg: 'str | None') -> None:
+def _logout_finished(callback: LoginCallback, successful: bool, error_msg: str | None) -> None:
     if successful:
         load_user_collections()
     callback(successful, error_msg)

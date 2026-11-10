@@ -24,7 +24,10 @@
 
 from collections.abc import Callable
 from functools import partial
-from typing import Any
+from typing import (
+    Any,
+    Protocol,
+)
 
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -40,6 +43,12 @@ from picard.webservice import ReplyHandler
 
 
 user_collections: dict[str, 'Collection'] = {}
+
+
+class CollectionsLoaded(Protocol):
+    """The callback of :func:`load_user_collections`: told why the collections could not be loaded, if they could not."""
+
+    def __call__(self, error: str | None = None) -> Any: ...
 
 
 class Collection:
@@ -150,7 +159,7 @@ def get_user_collection(collection_id: str) -> Collection:
     return collection
 
 
-def load_user_collections(callback: Callable[..., Any] | None = None) -> None:
+def load_user_collections(callback: CollectionsLoaded | None = None) -> None:
     """Load the release collections of the user logged in to MusicBrainz into ``user_collections``.
 
     Without a login, or when ``enable_user_collections`` is off, there are none.
@@ -160,11 +169,18 @@ def load_user_collections(callback: Callable[..., Any] | None = None) -> None:
     """
     config = get_config()
 
-    def finished(**kwargs: Any) -> None:
+    def finished(error: str | None = None) -> None:
         if callback:
-            callback(**kwargs)
+            if error is None:
+                callback()
+            else:
+                callback(error=error)
 
-    def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
+    def request_finished(
+        document: dict[str, Any] | None,
+        reply: QNetworkReply,
+        error: QNetworkReply.NetworkError | Exception | None,
+    ) -> None:
         if error:
             error_text = reply.errorString()
             notifier().status_message(

@@ -156,7 +156,7 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
             )
         return self._webservice
 
-    def _on_authorization_required(self):
+    def _on_authorization_required(self) -> None:
         """A request to MusicBrainz needs a login: go on without it.
 
         The GUI asks the user to log in, and the requests wait for the answer.
