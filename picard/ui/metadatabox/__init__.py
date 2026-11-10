@@ -59,10 +59,10 @@ from picard.i18n import (
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER
-from picard.script.parser import ScriptError
 from picard.tagdiff import (
     TagDiff,
     TagStatus,
+    build_tag_diff,
 )
 from picard.tags import display_tag_name
 from picard.tags.docs import display_tag_tooltip
@@ -973,76 +973,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                 return self.tag_diff
 
         config = get_config()
-        tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
-        tag_diff.objects = len(files)
-
-        top_tags = config.setting['metadatabox_top_tags']
-
-        self._add_files_to_tag_diff(files, tag_diff, config, top_tags)
-        self._add_tracks_to_tag_diff(tracks, tag_diff, config)
-
-        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
+        tag_diff = build_tag_diff(
+            files, tracks, config.setting.as_dict(), changes_first=config.persist['show_changes_first']
+        )
         self._compute_diff_html(tag_diff, diff_colors)
         return tag_diff
-
-    def _add_files_to_tag_diff(self, files, tag_diff, config, top_tags):
-        """
-        Add file tags and special tags (~length, ~filepath) to tag_diff.
-        """
-        top_tags_set = set(top_tags)
-        settings = config.setting.as_dict()
-        clear_existing_tags = settings['clear_existing_tags']
-        for file in files:
-            new_metadata = file.metadata
-            orig_metadata = file.orig_metadata
-            tags = set(new_metadata) | set(orig_metadata)
-
-            for tag in tags:
-                if tag.startswith("~") or not file.supports_tag(tag):
-                    continue
-                new_values = file.format_specific_metadata(new_metadata, tag, settings)
-                orig_values = file.format_specific_metadata(orig_metadata, tag, settings)
-
-                if not clear_existing_tags and not new_values:
-                    new_values = list(orig_values or [""])
-
-                removed = tag in new_metadata.deleted_tags
-                tag_diff.add(tag, old=orig_values, new=new_values, removed=removed, top_tags=top_tags_set)
-
-            # Always add length tag
-            tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length), removable=False, readonly=True)
-            # Add filepath tag if only one file
-            if len(files) == 1:
-                if settings['rename_files'] or settings['move_files']:
-                    try:
-                        new_filename = file.make_filename(file.filename, new_metadata)
-                    except ScriptError as why:
-                        # An invalid file naming script (e.g. one referencing an
-                        # unknown function) must not blank the whole metadata
-                        # box. Log the problem and fall back to the current
-                        # filename for the informational ~filepath preview so
-                        # the real tags are still shown.
-                        log.warning("Cannot compute file naming preview for %r: %s", file.filename, why)
-                        new_filename = file.filename
-                else:
-                    new_filename = file.filename
-                tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
-
-    def _add_tracks_to_tag_diff(self, tracks, tag_diff, config):
-        """
-        Add track tags and ~length for tracks without linked files to tag_diff.
-        """
-        for track in tracks:
-            if track.num_linked_files != 0:
-                continue
-            for tag, new_values in track.metadata.rawitems():
-                if tag.startswith("~"):
-                    continue
-                orig_values = track.orig_metadata.getall(tag) if tag in track.orig_metadata else new_values
-                tag_diff.add(tag, old=orig_values, new=new_values)
-            length = str(track.metadata.length)
-            tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
-            tag_diff.objects += 1
 
     def _compute_diff_html(self, tag_diff, diff_colors):
         """Compute diff HTML for all tags in the background thread.

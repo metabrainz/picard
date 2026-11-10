@@ -25,13 +25,10 @@ from picard.script.parser import (
     ScriptUnknownFunction,
     StackItem,
 )
-from picard.tagdiff import TagDiff
-
-from picard.ui.metadatabox import MetadataBox
-
-
-class _FakeMetadataBox:
-    """Minimal stand-in for calling _add_files_to_tag_diff as an unbound method."""
+from picard.tagdiff import (
+    TagDiff,
+    add_files_to_tag_diff,
+)
 
 
 def _make_file(make_filename):
@@ -73,26 +70,9 @@ class TestMetadataBoxNamingScriptError(PicardTestCase):
             'metadatabox_top_tags': [],
         }
 
-    def _make_config(self):
-        settings = dict(self._settings)
-
-        class _Setting(dict):
-            def as_dict(self):
-                return dict(self)
-
-        setting = _Setting(settings)
-        return Mock(setting=setting)
-
     def _add_files(self, file):
-        config = self._make_config()
         tag_diff = TagDiff(max_length_diff=2)
-        MetadataBox._add_files_to_tag_diff(
-            _FakeMetadataBox(),
-            {file},
-            tag_diff,
-            config,
-            top_tags=[],
-        )
+        add_files_to_tag_diff({file}, tag_diff, self._settings, top_tags=[])
         return tag_diff
 
     def test_script_error_does_not_abort_tag_diff(self):
