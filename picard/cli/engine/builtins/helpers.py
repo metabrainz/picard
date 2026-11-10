@@ -87,6 +87,12 @@ def arg_first(arg: Any) -> 'str | None':
     return words[0] if words else None
 
 
+def arg_joined(arg: Any) -> 'str | None':
+    """All the words bound to a command argument as one text (the rest of the line), if any."""
+    words = arg_words(arg)
+    return ' '.join(words) if words else None
+
+
 def _entity_mb_ref(entity: Any) -> 'tuple[str, str] | tuple[None, None]':
     """Return the ``(entity_type, mbid)`` an entity points at, or ``(None, None)``.
 
