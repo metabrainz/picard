@@ -24,7 +24,7 @@ These affect a running Picard instance.
 | --- | --- | --- | --- |
 | `PICARD_DEBUG` | presence | unset | Enable debug logging when set (any value), equivalent to the `--debug` command line option. |
 | `PICARD_MODAL_OPTIONS` | boolean | platform-dependent (modal on macOS, non-modal elsewhere) | Force the Options dialog to be modal (truthy) or non-modal (falsy). |
-| `PICARD_FORCE_FUSION` | boolean | `false` | Force the Qt "Fusion" style on every platform, including macOS and Haiku, which otherwise keep their native style. Mainly useful on macOS; no visible effect where Fusion is already the default. |
+| `PICARD_FORCE_FUSION` | boolean | `false` | If truthy, force the Qt "Fusion" style on every platform, including macOS and Haiku, which otherwise keep their native style. If set falsy, Picard will not force the Fusion style and the system's default will be used instead. If unset, the used style depends on the platform (macOS and Haiku use their native style, Fusion is used on all other platforms). |
 | `PICARD_MAKE_IT_SO` | boolean | `true` | Override the label of dialog accept buttons. When truthy (the default), buttons use the Star Trek themed "Make It So!" label (a long-standing Picard Easter egg); when falsy, they use the conventional native "OK". There is no configuration option, as the reference does not translate well. |
 | `PICARD_COLLATOR` | `qt`, `strxfrm` or `string` | `strxfrm` on Windows, `qt` elsewhere | Select the string collation backend used for sorting. An unrecognized value falls back to the default. |
 | `PICARD_CONFIG_DIR` | path | OS application config location | Override the directory used to store the configuration. |
