@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster``, ``cluster lookup`` and ``match``."""
+"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match`` and ``lookup``."""
 
 from typing import Any
 
@@ -23,6 +23,7 @@ from picard.album import (
     Album,
 )
 from picard.cli.engine.builtins.helpers import (
+    TIMEOUT_LONG,
     TIMEOUT_SHORT,
     drain,
     entity_item,
@@ -106,6 +107,17 @@ def _load_release(session: EngineSession, release_id: str, notes: list[str]) -> 
     return album, None
 
 
+def _matched_album_handle(session: EngineSession, obj: Any, mints: list[str]) -> 'str | None':
+    """The handle of the album a file has been matched to, if any; new albums are added to ``mints``."""
+    album = getattr(obj.parent_item, 'album', None) if isinstance(obj, File) else None
+    if album is None:
+        return None
+    handle = session.handle_for(album)
+    if handle not in mints:
+        mints.append(handle)
+    return handle
+
+
 def _request_error_text(http: Any, error: Any) -> str:
     """Human text for a failed web service request (as the album load reports it)."""
     try:
@@ -132,9 +144,19 @@ def _lookup_cluster(session: EngineSession, cluster: Cluster, notes: list[str]) 
     cluster.lookup_metadata(callback=capture)
     drained = drain(session, TIMEOUT_SHORT, notes)
 
-    if not drained and not captured:
-        # No reply at all before we gave up: neither "no matches" nor a result.
-        return EngineItemResult(handle=session.handle_for(cluster), status='timeout', data={'candidates': []})
+    if not captured:
+        handle = session.handle_for(cluster)
+        if not drained:
+            # No reply at all before we gave up: neither "no matches" nor a result.
+            return EngineItemResult(handle=handle, status='timeout', data={'candidates': []})
+        # Everything finished and nothing replied to us: no request was sent,
+        # because a lookup of this cluster, left running by an earlier command,
+        # was not over. That is not "no matches" either.
+        return EngineItemResult(
+            handle=handle,
+            status='lookup_failed',
+            data={'candidates': [], 'error': "a lookup of this cluster is already running, try again"},
+        )
 
     if captured.get('error'):
         # The search request itself failed (network/server error): say so
@@ -309,4 +331,49 @@ def _cmd_match(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         resolved=[session.handle_for(cluster)],
         unresolved=unresolved,
         mints=[album_handle],
+    )
+
+
+@command(
+    'lookup',
+    usage='lookup [selector]',
+    help="Look objects up on MusicBrainz from their tags.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_lookup(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Look objects up on MusicBrainz from their current tags.
+
+    This is the Lookup action of the GUI: a cluster or a file is matched to a
+    release or a recording, and moved onto it. Without a selector it applies to
+    everything at the top level. Each object is reported as matched, with its album,
+    or done. 'cluster lookup' keeps the alternatives.
+
+    Example:
+      lookup c1
+    """
+    selector = args.get('selector') or '*'
+    entities, unresolved = session.resolve(selector)
+    taggable = [e for e in entities if getattr(e, 'can_autotag', False)]
+    if not taggable:
+        return EngineResult(items=[], resolved=handles_of(session, entities), unresolved=unresolved)
+
+    workspace().autotag(taggable)
+    # autotag dispatches async web lookups (and album loads on a match); drain.
+    notes: list[str] = []
+    drain(session, TIMEOUT_LONG, notes)
+
+    items = []
+    mints = []
+    for obj in taggable:
+        album_handle = _matched_album_handle(session, obj, mints)
+        data = {'album': album_handle} if album_handle else {}
+        status = 'matched' if album_handle else 'done'
+        items.append(EngineItemResult(handle=session.handle_for(obj), status=status, data=data))
+    return EngineResult(
+        items=items,
+        mints=mints,
+        resolved=handles_of(session, taggable),
+        unresolved=unresolved,
+        message=join_notes(notes),
     )
