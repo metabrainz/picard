@@ -21,6 +21,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard.cli.engine.builtins import register_builtins
 from picard.cli.engine.commands import EngineCommandRegistry
+from picard.cli.engine.completion import complete
 from picard.cli.engine.dispatch import dispatch
 from picard.cli.engine.render import render_result
 from picard.cli.engine.session import LocalEngineSession
@@ -55,20 +56,27 @@ class HelpCommandTest(_HelpTestBase):
         self.assertTrue(all(item.data['summary'] for item in result.items))
 
     def test_a_command_is_explained_with_its_usage_and_description(self):
-        (item,) = self._help('help ls').items
-        command = self.reg.get('ls')
+        result = self._help('help move')
+        (item,) = result.items
+        command = self.reg.get('move')
         self.assertEqual('command', item.data['kind'])
         self.assertTrue(item.data['detail'])
         self.assertEqual(command.usage, item.data['usage'])
         self.assertEqual(command.description, item.data['description'])
 
-    def test_commands_of_the_registry_only(self):
-        # help describes the registry it was made for, not all the built-in commands.
-        other = EngineCommandRegistry()
-        register_builtins(other)
-        del other._commands['tree']
-        result = dispatch(self.session, other, 'help tree')
-        self.assertFalse(result.ok)
+    def test_a_two_word_command(self):
+        (item,) = self._help('help option set').items
+        self.assertEqual('option set', item.data['name'])
+
+    def test_a_group_lists_its_commands(self):
+        result = self._help('help option')
+        self.assertEqual(['option get', 'option ls', 'option save', 'option set', 'option unset'], _names(result))
+        self.assertTrue(all(not item.data['detail'] for item in result.items))
+
+    def test_a_command_that_is_also_a_group_shows_both(self):
+        result = self._help('help cluster')
+        self.assertEqual(['cluster', 'cluster lookup'], _names(result))
+        self.assertEqual([True, False], [item.data['detail'] for item in result.items])
 
     def test_a_topic_is_explained(self):
         for topic in TOPICS:
@@ -86,6 +94,14 @@ class HelpCommandTest(_HelpTestBase):
     def test_the_result_is_serializable(self):
         json.dumps(self._help('help move').to_dict())
 
+    def test_commands_of_the_registry_only(self):
+        # help describes the registry it was made for, not all the built-in commands.
+        other = EngineCommandRegistry()
+        register_builtins(other)
+        del other._commands['move']
+        result = dispatch(self.session, other, 'help move')
+        self.assertFalse(result.ok)
+
 
 class HelpRenderTest(_HelpTestBase):
     def _text(self, line='help'):
@@ -99,6 +115,17 @@ class HelpRenderTest(_HelpTestBase):
         self.assertLess(text.index('ls '), text.index('Topics:'))
         self.assertIn('selectors', text)
 
+    def test_a_command_shows_usage_then_description(self):
+        text = self._text('help move')
+        self.assertTrue(text.startswith('move <sources> <destination>\n\n'))
+        self.assertIn('The last word is the destination', text)
+
+    def test_a_group_command_lists_the_related_ones(self):
+        text = self._text('help cluster')
+        self.assertTrue(text.startswith('cluster [selector]\n'))
+        self.assertIn('See also:', text)
+        self.assertIn('cluster lookup', text.split('See also:')[1])
+
     def test_selectors_name_every_kind_of_handle(self):
         lines = self._text('help selectors').splitlines()
         for handle, kind in (('f1', 'file'), ('c1', 'cluster'), ('a1', 'album'), ('t1', 'track'), ('m1', 'candidate')):
@@ -106,10 +133,27 @@ class HelpRenderTest(_HelpTestBase):
                 line = next(line for line in lines if line.startswith(f'  {handle} '))
                 self.assertIn(kind, line)
 
-    def test_a_command_shows_usage_then_description(self):
-        text = self._text('help ls')
-        self.assertTrue(text.startswith('ls [selector]\n\n'))
-        self.assertIn('List the objects of the working set', text)
-
     def test_a_topic_shows_its_text(self):
         self.assertIn('A selector names the objects', self._text('help selectors'))
+
+
+class HelpCompletionTest(_HelpTestBase):
+    def _complete(self, line):
+        text = '' if line.endswith(' ') else line.split(' ')[-1]
+        return complete(line, text, self.reg, self.session)
+
+    def test_first_word_offers_groups_commands_and_topics(self):
+        matches = self._complete('help ')
+        for word in ('file', 'option', 'ls', 'move', 'selectors', 'paths', 'tags'):
+            self.assertIn(word, matches)
+        self.assertEqual(len(matches), len(set(matches)))
+
+    def test_a_prefix_narrows_the_words(self):
+        self.assertEqual(['selectors'], self._complete('help sel'))
+
+    def test_second_word_is_the_verb_of_the_group(self):
+        self.assertEqual(['get', 'ls', 'save', 'set', 'unset'], self._complete('help option '))
+        self.assertEqual(['save', 'set'], self._complete('help option s'))
+
+    def test_a_command_without_verbs_has_no_second_word(self):
+        self.assertEqual([], self._complete('help ls '))
