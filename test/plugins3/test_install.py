@@ -468,6 +468,23 @@ class TestPluginInstall(PicardTestCase):
         self.assertEqual(result, 0)
         mock_manager.uninstall_plugin.assert_called_once()
 
+    def test_uninstall_alias_executes_remove(self):
+        """'uninstall' is an alias of 'remove' and must run the same command (PICARD-3556)."""
+        mock_manager = MockPluginManager()
+
+        mock_plugin = MockPlugin()
+        mock_plugin.plugin_id = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.uninstall_plugin = Mock()
+
+        args = MockCliArgs(verb='uninstall', plugin=['test-plugin'], yes=True)
+
+        output = PluginCliOutput(stdout=StringIO(), stderr=StringIO(), color=False)
+        result = PluginCLI(mock_manager, args, output).run()
+
+        self.assertEqual(result, 0)
+        mock_manager.uninstall_plugin.assert_called_once()
+
     def test_update_command_execution(self):
         """Test update command execution path."""
         mock_tagger = MockPluginTagger()
