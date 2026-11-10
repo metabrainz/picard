@@ -51,6 +51,16 @@ class CollectionsLoaded(Protocol):
     def __call__(self, error: str | None = None) -> Any: ...
 
 
+class CollectionModified(Protocol):
+    """The callback of :meth:`Collection.add_releases` and :meth:`Collection.remove_releases`.
+
+    Called once for each request made (the releases are sent in batches): with no
+    argument when it succeeded, or with ``error`` (the reason, as text) when it failed.
+    """
+
+    def __call__(self, error: str | None = None) -> Any: ...
+
+
 class Collection:
     def __init__(self, collection_id: str) -> None:
         self.id = collection_id
@@ -73,9 +83,9 @@ class Collection:
     def _modify(
         self,
         api_method: Callable[[str, list[str], ReplyHandler], None],
-        success_handler: Callable[[set[str], Callable], None],
+        success_handler: Callable[[set[str], CollectionModified], None],
         releases: set[str],
-        callback: Callable,
+        callback: CollectionModified,
     ) -> None:
         releases -= self.pending_releases
         if releases:
@@ -83,19 +93,19 @@ class Collection:
             when_done = partial(self._finished, success_handler, releases, callback)
             api_method(self.id, list(releases), when_done)
 
-    def add_releases(self, releases: set[str], callback: Callable) -> None:
+    def add_releases(self, releases: set[str], callback: CollectionModified) -> None:
         api_method = services().mb_api.put_to_collection
         self._modify(api_method, self._success_add, set(releases), callback)
 
-    def remove_releases(self, releases: set[str], callback: Callable) -> None:
+    def remove_releases(self, releases: set[str], callback: CollectionModified) -> None:
         api_method = services().mb_api.delete_from_collection
         self._modify(api_method, self._success_remove, set(releases), callback)
 
     def _finished(
         self,
-        success_handler: Callable[[set[str], Callable], None],
+        success_handler: Callable[[set[str], CollectionModified], None],
         releases: set[str],
-        callback: Callable,
+        callback: CollectionModified,
         document: Any,
         reply: QNetworkReply,
         error: QNetworkReply.NetworkError | Exception | None,
@@ -104,16 +114,18 @@ class Collection:
         if not error:
             success_handler(releases, callback)
         else:
-            self._error(reply)
+            self._error(reply, callback)
 
-    def _error(self, reply: QNetworkReply) -> None:
+    def _error(self, reply: QNetworkReply, callback: CollectionModified) -> None:
+        error_text = reply.errorString()
         notifier().status_message(
             N_("Error while modifying collections: %(error)s"),
-            {'error': reply.errorString()},
+            {'error': error_text},
             echo=log.error,
         )
+        callback(error=error_text)
 
-    def _success_add(self, releases: set[str], callback: Callable) -> None:
+    def _success_add(self, releases: set[str], callback: CollectionModified) -> None:
         count = len(releases)
         self.releases |= releases
         self.size += count
@@ -125,7 +137,7 @@ class Collection:
         debug_msg = 'Added %(count)i release(s) to collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
-    def _success_remove(self, releases: set[str], callback: Callable) -> None:
+    def _success_remove(self, releases: set[str], callback: CollectionModified) -> None:
         count = len(releases)
         self.releases -= releases
         self.size -= count
@@ -137,7 +149,7 @@ class Collection:
         debug_msg = 'Removed %(count)i release(s) from collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
-    def _success(self, count: int, callback: Callable, status_msg: str, debug_msg: str) -> None:
+    def _success(self, count: int, callback: CollectionModified, status_msg: str, debug_msg: str) -> None:
         callback()
         mparms = {
             'count': count,
