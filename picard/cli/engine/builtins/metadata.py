@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that show the tags of the entities of the working set: ``metadata show``."""
+"""The commands that show and change the tags of the entities of the working set: ``metadata show``, ``set``, ``add``, ``rm-value`` and ``rm``."""
 
+from collections.abc import Callable
 from fnmatch import fnmatchcase
 from typing import Any
 
@@ -31,6 +32,7 @@ from picard.cli.engine.commands import (
     UsageError,
 )
 from picard.cli.engine.result import (
+    EngineItemResult,
     EngineResult,
 )
 from picard.cluster import Cluster
@@ -40,7 +42,9 @@ from picard.tagdiff import (
     TagCounter,
     TagDiff,
     TagStatus,
+    apply_tag_values,
     build_tag_diff,
+    merge_values,
     selection_of,
 )
 from picard.track import Track
@@ -165,4 +169,209 @@ def _cmd_metadata_show(session: EngineSession, args: dict[str, Any]) -> EngineRe
     shown = {row['tag'] for item in items for row in item.data['tags']}
     unmatched = [pattern for pattern in patterns if not any(fnmatchcase(tag, pattern) for tag in shown)]
     message = f"no tag matches: {', '.join(unmatched)}" if entities and unmatched else ''
+    return EngineResult(items=items, resolved=[item.handle for item in items], unresolved=unresolved, message=message)
+
+
+def _tag_name_error(tag: str) -> 'str | None':
+    """Why ``tag`` cannot be the name of a tag to set, or None if it can."""
+    if any(char in tag for char in '*?['):
+        return f"{tag!r} is a pattern, a tag to set has a name"
+    if tag.startswith('~'):
+        return f"{tag!r} is a variable of the scripts, not a tag that can be set"
+    return None
+
+
+def _resolve_to_edit(
+    session: EngineSession, command: str, selector: str
+) -> 'tuple[list[Any], list[str], EngineResult | None]':
+    """The entities of ``selector`` to change the tags of, those not found and a failure if it is refused."""
+    entities, unresolved = session.resolve(selector)
+    return entities, unresolved, reject_candidates(session, command, entities, unresolved, what="has no tags")
+
+
+def _change_values(
+    session: EngineSession,
+    args: dict[str, Any],
+    command: str,
+    change: Callable[[list[str], list[str]], list[str]],
+    check_support: bool = True,
+) -> EngineResult:
+    """Change the values of a tag on the entities of a selection.
+
+    ``change(current, values)`` gives the values a tag should have, from those it
+    has and those given on the command line.
+    """
+    selector = args.get('selector')
+    tag = args.get('tag')
+    values = arg_words(args.get('values'))
+    if not (selector and tag and values):
+        raise UsageError
+    if '' in values:
+        return EngineResult.failure(f"{command}: a value cannot be empty; to remove the tag use metadata rm")
+    error = _tag_name_error(tag)
+    if error:
+        return EngineResult.failure(f"{command}: {error}")
+    entities, unresolved, rejected = _resolve_to_edit(session, command, selector)
+    if rejected is not None:
+        return rejected
+
+    modified = set()
+    items = []
+    for entity in entities:
+        changed = 0
+        unsupported = 0
+        for obj in selection_of([entity]).objects:
+            # A file whose format cannot hold the tag would not save it: say so, as the box does not show it.
+            if check_support and isinstance(obj, File) and not obj.supports_tag(tag):
+                unsupported += 1
+                continue
+            current = obj.metadata.getall(tag)
+            new = change(current, values)
+            if new != current:
+                modified.update(apply_tag_values([obj], tag, new))
+                changed += 1
+        if isinstance(entity, File) and unsupported:
+            status = 'unsupported'
+        else:
+            status = 'changed' if changed else 'unchanged'
+        item = entity_item(session, entity, status)
+        item.data.update({'tag': tag, 'objects_changed': changed})
+        if unsupported:
+            item.data['files_unsupported'] = unsupported
+        items.append(item)
+    for obj in modified:
+        obj.update()
+    return EngineResult(items=items, resolved=[item.handle for item in items], unresolved=unresolved)
+
+
+@command(
+    'metadata set',
+    usage='metadata set <selector> <tag> <value>...',
+    help="Set the values of a tag.",
+    args=('selector', 'tag', 'values'),
+    arg_kinds=('selector', 'tag', ''),
+)
+def _cmd_metadata_set(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Set a tag of files, tracks, albums or clusters.
+
+    Each word after the tag is a value, so a value with spaces is quoted, and a
+    tag with several values is given them one after the other. A value is never
+    split on '; ', which is only how 'metadata show' joins values for display:
+    "Rock; Pop" is one value, Rock Pop are two. The tag is replaced if it has
+    values already. Like the metadata box of the GUI, it
+    changes what would be saved: look at it with 'metadata show', and write it
+    with 'save'. An album, a track or a cluster is changed together with its
+    files. A file whose format cannot hold the tag is left alone and reported as
+    unsupported.
+
+    Tags that start with ~ are variables of the scripts, not tags, and cannot be
+    set. See 'help tags'.
+
+    Examples:
+      metadata set f1 title "A Song"
+      metadata set c1 genre Rock Pop
+      metadata set a1 albumartist "The Artist"
+    """
+    return _change_values(session, args, 'metadata set', lambda current, values: list(values))
+
+
+@command(
+    'metadata add',
+    usage='metadata add <selector> <tag> <value>...',
+    help="Add values to a tag.",
+    args=('selector', 'tag', 'values'),
+    arg_kinds=('selector', 'tag', ''),
+)
+def _cmd_metadata_add(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Add values to a tag of files, tracks, albums or clusters.
+
+    The values are added after those the tag has, and the ones it has already are
+    not repeated. It is otherwise like 'metadata set', which replaces them.
+
+    Examples:
+      metadata add f1 genre Jazz
+      metadata add c1 performer:guitar "Some One"
+    """
+    return _change_values(session, args, 'metadata add', merge_values)
+
+
+@command(
+    'metadata rm-value',
+    usage='metadata rm-value <selector> <tag> <value>...',
+    help="Remove values from a tag.",
+    args=('selector', 'tag', 'values'),
+    arg_kinds=('selector', 'tag', ''),
+)
+def _cmd_metadata_rm_value(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Remove values from a tag of files, tracks, albums or clusters.
+
+    The values given are taken out of the ones the tag has, and the others stay in
+    their order. A value that is not there is ignored. A tag left with no value is
+    removed, as 'metadata rm' does. It is otherwise like 'metadata add', which
+    puts values in.
+
+    Examples:
+      metadata rm-value f1 genre Pop
+      metadata rm-value c1 performer:guitar "Some One"
+    """
+    return _change_values(
+        session,
+        args,
+        'metadata rm-value',
+        lambda current, values: [value for value in current if value not in values],
+        check_support=False,
+    )
+
+
+@command(
+    'metadata rm',
+    usage='metadata rm <selector> <tag>...',
+    help="Remove tags.",
+    args=('selector', 'tags'),
+    arg_kinds=('selector', 'tag'),
+)
+def _cmd_metadata_rm(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Remove tags from files, tracks, albums or clusters.
+
+    A tag is a name or a pattern (see 'help tags'): 'metadata rm f1 comment' or
+    'metadata rm c1 musicbrainz_*'. The tags removed are those the metadata box
+    shows for the selection, except the ones that cannot be removed (the length
+    and the file path). As with 'metadata set', the files are changed when they
+    are saved, and only then; 'metadata show' shows the tag as removed.
+
+    Examples:
+      metadata rm f1 comment
+      metadata rm c1 musicbrainz_*
+    """
+    selector = args.get('selector')
+    patterns = arg_words(args.get('tags'))
+    if not (selector and patterns):
+        raise UsageError
+    entities, unresolved, rejected = _resolve_to_edit(session, 'metadata rm', selector)
+    if rejected is not None:
+        return rejected
+
+    config = get_config()
+    settings = config.setting.as_dict()
+    modified = set()
+    items: list[EngineItemResult] = []
+    removed_all: set[str] = set()
+    for entity in entities:
+        selection = selection_of([entity])
+        removed = []
+        if selection.files or selection.tracks:
+            tag_diff = build_tag_diff(selection.files, selection.tracks, settings)
+            for tag in tag_diff.tag_names:
+                if _matches(tag, patterns) and tag_diff.is_removable(tag):
+                    modified.update(apply_tag_values(selection.objects, tag, []))
+                    removed.append(tag)
+        removed_all.update(removed)
+        item = entity_item(session, entity, 'removed' if removed else 'unchanged')
+        item.data['removed'] = removed
+        items.append(item)
+    for obj in modified:
+        obj.update()
+
+    unmatched = [pattern for pattern in patterns if not any(fnmatchcase(tag, pattern) for tag in removed_all)]
+    message = f"no tag removed for: {', '.join(unmatched)}" if entities and unmatched else ''
     return EngineResult(items=items, resolved=[item.handle for item in items], unresolved=unresolved, message=message)
