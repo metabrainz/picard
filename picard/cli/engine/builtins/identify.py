@@ -14,22 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster``."""
+"""The commands that identify files: ``cluster`` and ``cluster lookup``."""
 
 from typing import Any
 
+from picard import config
 from picard.album import (
     Album,
 )
 from picard.cli.engine.builtins.helpers import (
+    TIMEOUT_SHORT,
+    drain,
     entity_item,
     handles_of,
+    join_notes,
 )
 from picard.cli.engine.builtins.registry import command
+from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import (
     EngineSession,
 )
 from picard.cli.engine.result import (
+    EngineItemResult,
     EngineResult,
 )
 from picard.cluster import Cluster
@@ -80,3 +86,157 @@ def _cmd_cluster(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         items.append(entity_item(session, cluster, 'clustered'))
         mints.append(items[-1].handle)
     return EngineResult(items=items, mints=mints, resolved=handles_of(session, files), unresolved=unresolved)
+
+
+def _load_release(session: EngineSession, release_id: str, notes: list[str]) -> 'tuple[Album, str | None]':
+    """Load a release, wait for it, and say why it did not load if it did not.
+
+    ``load_album()`` only schedules the request. If it failed (a 503 from the
+    server, say) ``album.errors`` is populated, and if it is slow the album is
+    not loaded yet when we stop waiting: moving files onto it would report a
+    match that did not happen. Returns the album and the reason, or None.
+    """
+    album = workspace().load_album(release_id)
+    loaded = drain(session, TIMEOUT_SHORT, notes)
+    if album.errors:
+        return album, album.errors[-1]
+    if not loaded and not album.loaded:
+        return album, "timed out waiting for the release to load"
+    return album, None
+
+
+def _request_error_text(http: Any, error: Any) -> str:
+    """Human text for a failed web service request (as the album load reports it)."""
+    try:
+        return http.errorString()
+    except AttributeError:
+        return str(error)
+
+
+def _lookup_cluster(session: EngineSession, cluster: Cluster, notes: list[str]) -> EngineItemResult:
+    """Look up one cluster: capture ranked candidates, auto-apply the best.
+
+    Issues the same release search as the GUI cluster lookup but with our own
+    callback to capture all candidates, drains the request, ranks them, mints
+    m handles, and auto-applies the top match (producing an album) when it
+    passes the similarity floor.
+    """
+    captured: dict[str, Any] = {}
+
+    def capture(document, http, error):
+        captured['document'] = document
+        captured['http'] = http
+        captured['error'] = error
+
+    cluster.lookup_metadata(callback=capture)
+    drained = drain(session, TIMEOUT_SHORT, notes)
+
+    if not drained and not captured:
+        # No reply at all before we gave up: neither "no matches" nor a result.
+        return EngineItemResult(handle=session.handle_for(cluster), status='timeout', data={'candidates': []})
+
+    if captured.get('error'):
+        # The search request itself failed (network/server error): say so
+        # instead of reporting it as "no matches".
+        return EngineItemResult(
+            handle=session.handle_for(cluster),
+            status='lookup_failed',
+            data={'candidates': [], 'error': _request_error_text(captured.get('http'), captured['error'])},
+        )
+
+    document = captured.get('document')
+    releases = None
+    if document is not None:
+        try:
+            releases = document['releases']
+        except (KeyError, TypeError):
+            releases = None
+    if not releases:
+        return EngineItemResult(
+            handle=session.handle_for(cluster),
+            status='no_matches',
+            data={'candidates': []},
+        )
+
+    settings = config.get_config().setting
+    ranked, best = cluster.rank_release_candidates(
+        releases,
+        min_similarity=settings['match_min_similarity'],
+        min_margin=settings['match_min_margin'],
+    )
+
+    applied_release = best.result.release  # None when below floor
+    candidates = [Candidate(m, applied=(m.release is applied_release and applied_release is not None)) for m in ranked]
+    candidate_handles = session.set_candidates(cluster, candidates)
+
+    matched_album_handle = None
+    load_error = None
+    if applied_release is not None:
+        album, load_error = _load_release(session, applied_release['id'], notes)
+        if load_error is None:
+            # cluster.files is typed as generic metadata items; only File here.
+            files = [f for f in cluster.files if isinstance(f, File)]
+            workspace().move_files_to_album(files, album=album)
+            matched_album_handle = session.handle_for(album)
+
+    if matched_album_handle:
+        status = 'matched'
+    elif load_error is not None:
+        status = 'load_failed'
+    else:
+        status = 'no_confident_match'
+
+    data = {
+        'reason': best.reason,
+        'matched_album': matched_album_handle,
+        'candidates': [{'handle': h, **c.describe()} for h, c in zip(candidate_handles, candidates, strict=True)],
+    }
+    if load_error is not None:
+        data['error'] = load_error
+    return EngineItemResult(
+        handle=session.handle_for(cluster),
+        status=status,
+        data=data,
+    )
+
+
+@command(
+    'cluster lookup',
+    usage='cluster lookup [selector]',
+    help="Look clusters up on MusicBrainz.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_cluster_lookup(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Look clusters up on MusicBrainz, and apply the best match.
+
+    Without a selector all the clusters are looked up. The releases found for a
+    cluster are ranked: if the best one is confident enough it is loaded and the
+    files of the cluster are matched to it. The other releases are kept as
+    candidates (m1, m2, ...): the console shows the best ten, 'ls c1.m*' lists
+    them all, and 'match' applies another one.
+
+    A cluster is reported as matched, no_confident_match, no_matches (nothing was
+    found), lookup_failed (the request failed), load_failed (the release could not
+    be loaded) or timeout.
+
+    Example:
+      cluster lookup c1
+    """
+    selector = args.get('selector') or 'c*'
+    entities, unresolved = session.resolve(selector)
+    clusters = [e for e in entities if isinstance(e, Cluster)]
+    notes: list[str] = []
+    items = [_lookup_cluster(session, cluster, notes) for cluster in clusters]
+    mints = []
+    for item in items:
+        if item.data.get('matched_album'):
+            mints.append(item.data['matched_album'])
+        mints.extend(c['handle'] for c in item.data.get('candidates', []))
+    return EngineResult(
+        items=items,
+        resolved=handles_of(session, clusters),
+        unresolved=unresolved,
+        mints=mints,
+        message=join_notes(notes),
+    )
