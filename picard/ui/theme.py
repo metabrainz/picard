@@ -22,6 +22,7 @@
 
 from collections.abc import Callable
 from enum import Enum
+import os
 from typing import Literal
 
 from PyQt6 import (
@@ -52,10 +53,12 @@ def _should_use_fusion_style() -> bool:
 
     Fusion is used on all platforms except macOS and Haiku, which keep their
     native style. Setting the ``PICARD_FORCE_FUSION`` environment variable to a
-    truthy value forces Fusion everywhere (notably useful on macOS).
+    truthy value forces Fusion everywhere (notably useful on macOS), setting
+    it to a falsy value explicitly opts-out of the Fusion style and uses
+    the system's default.
     """
-    if parse_bool_env('PICARD_FORCE_FUSION'):
-        return True
+    if 'PICARD_FORCE_FUSION' in os.environ:
+        return parse_bool_env('PICARD_FORCE_FUSION')
     return not IS_MACOS and not IS_HAIKU
 
 

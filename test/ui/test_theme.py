@@ -781,9 +781,9 @@ def test_de_specific_wrappers_only_run_for_matching_de_param(args):
         ("1", True, False, True),
         ("true", True, False, True),
         ("on", False, True, True),
-        # Falsy override keeps the default per-platform behavior.
+        # Falsy override opts-out of forcing the Fusion style.
         ("0", True, False, False),
-        ("false", False, False, True),
+        ("false", False, False, False),
     ],
 )
 def test_should_use_fusion_style(force_env, is_macos, is_haiku, expected):
