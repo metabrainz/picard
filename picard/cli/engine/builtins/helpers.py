@@ -68,11 +68,23 @@ def entity_item(session: EngineSession, entity: Any, status: str) -> EngineItemR
     return EngineItemResult(handle=session.handle_for(entity), status=status, data=describe_entity(entity))
 
 
+def album_result(session: EngineSession, album: Any, status: str, notes: list[str]) -> EngineResult:
+    """The result of a command that brought ``album`` into the working set."""
+    item = entity_item(session, album, status)
+    return EngineResult(items=[item], mints=[item.handle], message=join_notes(notes))
+
+
 def arg_words(arg: Any) -> list[str]:
     """The words bound to a command argument, which is None, one word or a list of them."""
     if arg is None:
         return []
     return [arg] if isinstance(arg, str) else list(arg)
+
+
+def arg_first(arg: Any) -> 'str | None':
+    """The first word bound to a command argument, if any."""
+    words = arg_words(arg)
+    return words[0] if words else None
 
 
 def _entity_mb_ref(entity: Any) -> 'tuple[str, str] | tuple[None, None]':
