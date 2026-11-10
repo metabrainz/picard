@@ -22,6 +22,7 @@ from test.cli.engine.test_options import _OptionsTestBase
 
 from picard.cli.engine.builtins import register_builtins
 from picard.cli.engine.commands import EngineCommandRegistry
+from picard.cli.engine.completion import complete
 from picard.cli.engine.dispatch import dispatch
 from picard.cli.engine.render import render_result
 from picard.cli.engine.session import LocalEngineSession
@@ -244,3 +245,36 @@ class OptionSaveTest(_OptionCommandTestBase):
         self.assertTrue(self.reg.get('option save').destructive)
         for name in ('option ls', 'option get', 'option set', 'option unset'):
             self.assertFalse(self.reg.get(name).destructive, name)
+
+
+class OptionCompletionTest(_OptionCommandTestBase):
+    def _complete(self, line):
+        # Emulate readline: the word being completed is the last one.
+        text = '' if line.endswith(' ') else line.split(' ')[-1]
+        return complete(line, text, self.reg, self.session)
+
+    def test_option_names(self):
+        for command in ('option get', 'option set', 'option unset', 'option save', 'option ls'):
+            with self.subTest(command=command):
+                self.assertEqual(['move_files', 'move_files_to'], self._complete(f'{command} move'))
+
+    def test_every_name_when_nothing_is_typed(self):
+        self.assertEqual(self.session.option_names(), self._complete('option get '))
+
+    def test_save_completes_several_names(self):
+        self.assertIn('query_limit', self._complete('option save move_files qu'))
+
+    def test_value_of_a_yes_no_option(self):
+        self.assertEqual(['false', 'true'], self._complete('option set move_files '))
+        self.assertEqual(['false'], self._complete('option set move_files f'))
+
+    def test_value_of_a_text_or_number_option_is_the_current_one(self):
+        self.assertEqual(['/music'], self._complete('option set move_files_to '))
+        self.assertEqual(['50'], self._complete('option set query_limit '))
+        self._run('option set query_limit 20')
+        self.assertEqual(['20'], self._complete('option set query_limit '))
+
+    def test_no_value_is_offered_for_what_cannot_be_set_or_has_no_obvious_one(self):
+        self.assertEqual([], self._complete('option set ui_theme '))
+        self.assertEqual([], self._complete('option set preserved_tags '))
+        self.assertEqual([], self._complete('option set nonsense '))
