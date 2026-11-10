@@ -27,6 +27,7 @@ group them by what they act on:
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
 - :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load``
+- :mod:`~picard.cli.engine.builtins.disc`: ``disc read``, ``disc read-log``, ``disc read-tags``
 - :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
 
 :mod:`~picard.cli.engine.builtins.helpers` has what they share. Importing the
@@ -34,6 +35,7 @@ modules declares the commands, and :func:`register_builtins` populates a registr
 with them; both frontends call it so they share one vocabulary.
 """
 
+import picard.cli.engine.builtins.disc  # noqa: F401
 import picard.cli.engine.builtins.files  # noqa: F401
 from picard.cli.engine.builtins.help import make_help_command
 import picard.cli.engine.builtins.identify  # noqa: F401
