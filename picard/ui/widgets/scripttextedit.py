@@ -353,6 +353,8 @@ class FunctionScriptToken(DocumentedScriptToken):
         if self._doc.characterAt(position) != '$':
             return None
         function = self._read_allowed_chars(position + 1)
+        if not function:
+            return None
         try:
             return script_function_documentation(function, 'html')
         except ScriptFunctionDocUnknownFunctionError:
@@ -371,6 +373,8 @@ class VariableScriptToken(DocumentedScriptToken):
         if self._doc.characterAt(position) != '%':
             return None
         tag = self._read_allowed_chars(position + 1)
+        if not tag:
+            return None
         return display_tag_tooltip(tag)
 
 
@@ -499,7 +503,9 @@ class ScriptTextEdit(PlainTextEdit):
             char = doc.characterAt(position)
             for token in list(documented_tokens):
                 if token.is_start_char(char):
-                    return token.get_tooltip(position)
+                    tooltip = token.get_tooltip(position)
+                    if tooltip:
+                        return tooltip
                 elif not token.is_allowed_char(char, position):
                     documented_tokens.remove(token)
             position -= 1
