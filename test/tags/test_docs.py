@@ -38,6 +38,10 @@ from picard.tags.tagvar import (
 
 class UtilTagsDocsTest(PicardTestCase):
     def test_display_tag_tooltip(self):
+        # Empty or None tag
+        self.assertIsNone(display_tag_tooltip(''))
+        self.assertIsNone(display_tag_tooltip(None))
+
         # Unknown tag
         self.assertEqual(
             display_tag_tooltip('unknown_test_variable'),

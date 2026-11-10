@@ -31,6 +31,8 @@ from picard.tags.tagvar import (
 
 @cache
 def display_tag_tooltip(tagname):
+    if not tagname:
+        return None
     name, item, tagdesc = _get_tagvar_item(tagname)
     content = ALL_TAGS.tooltip_content(item) if item else None
     return _finalize_tooltip_content(name, content, tagdesc)
