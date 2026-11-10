@@ -31,6 +31,7 @@ from picard.const import (
 
 # Import the functions under test from the refactored module
 import picard.mbjson as mbjson
+from picard.mbjson import TranslationOptions
 from picard.metadata import Metadata
 from picard.options import StandardizeArtistNames
 from picard.track import Track
@@ -57,6 +58,7 @@ def config() -> Any:
             'standardize_vocals': False,
             'release_ars': True,
             'preferred_release_countries': [],
+            'translate_from_sortname': False,
         }
     )
     return cfg
@@ -204,9 +206,10 @@ def test_should_skip_translation_due_to_scripts(
 ) -> None:
     config.setting['translate_artist_names_script_exception'] = enabled
     config.setting['script_exceptions'] = exceptions
+    translation_options = TranslationOptions.from_config(config)
     # Patch detector to return our desired distribution
     monkeypatch.setattr(mbjson, 'detect_script_weighted', lambda _text: detected)
-    result = mbjson._should_skip_translation_due_to_scripts('dummy', config=config)
+    result = mbjson._should_skip_translation_due_to_scripts('dummy', options=translation_options)
     assert result is expected
 
 
@@ -220,7 +223,7 @@ def test_release_to_metadata_respects_script_exceptions(
     # Arrange config and behavior
     config.setting['translate_album_titles'] = True
     config.setting['translation_locales'] = ['en']
-    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: skip)
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, options: skip)
 
     # Album node with localized alias
     node = {
@@ -250,7 +253,7 @@ def test_recording_to_metadata_respects_script_exceptions(
     # Arrange config and behavior
     config.setting['translate_track_titles'] = True
     config.setting['translation_locales'] = ['en']
-    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: skip)
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, options: skip)
 
     node = {
         'id': 'rec-1',
@@ -282,7 +285,7 @@ def test_release_to_metadata_translation_toggle(
     config.setting['translation_locales'] = ['en']
     # Ensure exceptions do not interfere
     config.setting['translate_artist_names_script_exception'] = False
-    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: False)
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, options: False)
 
     node = {
         'id': 'release-1',
@@ -343,7 +346,7 @@ def test_track_to_metadata_translation_honor_script_exception(
     config.setting['translate_track_titles'] = True
     config.setting['translation_locales'] = ['en']
     config.setting['translate_artist_names_script_exception'] = toggle
-    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: toggle)
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, options: toggle)
 
     node = {
         'id': 'track-1',
@@ -403,7 +406,7 @@ def test_recording_to_metadata_translation_toggle(
     config.setting['translate_track_titles'] = toggle
     config.setting['translation_locales'] = ['en']
     config.setting['translate_artist_names_script_exception'] = False
-    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: False)
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, options: False)
 
     node = {
         'id': 'rec-1',

@@ -173,10 +173,35 @@ class AliasMatch:
 
 
 @dataclass
+class TranslationOptions:
+    """Holds the options relevant to translating entities.
+
+    The options are gathered once in this helper class to avoid repeated config lookups.
+    """
+
+    translate_artist_names: bool
+    translate_artist_names_script_exception: bool
+    script_exceptions: list[tuple[str, int]]
+    translation_locales: list[str]
+    translate_from_sortname: bool
+
+    @staticmethod
+    def from_config(config: Config) -> 'TranslationOptions':
+        return TranslationOptions(
+            translate_artist_names=config.setting['translate_artist_names'],
+            translate_artist_names_script_exception=config.setting['translate_artist_names_script_exception'],
+            script_exceptions=config.setting['script_exceptions'],
+            translation_locales=config.setting['translation_locales'],
+            translate_from_sortname=config.setting['translate_from_sortname'],
+        )
+
+
+@dataclass
 class RelFuncContext:
     """Give context for a RelFunc."""
 
     config: Config
+    translation_options: TranslationOptions
     entity: str | None
     instrumental: bool
     standardize_names_mode: StandardizeArtistNames
@@ -223,7 +248,7 @@ def _relation_attributes(relation: Node) -> tuple[str, ...]:
 
 def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     artist = relation['artist']
-    translated_alias = _translate_artist_node(artist, config=context.config)
+    translated_alias = _translate_artist_node(artist, options=context.translation_options)
     has_translation = translated_alias.name != artist['name']
     artist_name = translated_alias.name
     artist_sort_name = translated_alias.sort_name
@@ -232,7 +257,7 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
         use_credited_as = not should_standardize_artist_name(context.standardize_names_mode, credited_as, artist)
         if credited_as and use_credited_as and credited_as != artist['name']:
             artist_name = credited_as
-            artist_sort_name = _select_sort_name_from_aliases(artist, credited_as, config=context.config)
+            artist_sort_name = _select_sort_name_from_aliases(artist, credited_as, options=context.translation_options)
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
@@ -337,12 +362,16 @@ def _relations_to_metadata(
     instrumental: bool = False,
     config: Config | None = None,
     entity: str | None = None,
+    translation_options: TranslationOptions | None = None,
 ) -> RelFuncContext:
     from picard.metadata import Metadata  # inline import to avoid circular imports
 
     config = config or get_config()
+    if not translation_options:
+        translation_options = TranslationOptions.from_config(config)
     context = RelFuncContext(
         config=config,
+        translation_options=translation_options,
         entity=entity,
         instrumental=instrumental,
         standardize_names_mode=config.setting['standardize_artist_names'],
@@ -458,7 +487,7 @@ def _find_localized_alias_name(aliases: list[Node] | None, preferred_locales: li
     return _first_alias_match_in_order(root_order, locales)
 
 
-def _is_script_exception_enabled(config: Config) -> bool:
+def _is_script_exception_enabled(options: TranslationOptions) -> bool:
     """
     Check whether script-exception matching is enabled.
 
@@ -473,10 +502,10 @@ def _is_script_exception_enabled(config: Config) -> bool:
         ``True`` if ``translate_artist_names_script_exception`` is enabled,
         otherwise ``False``.
     """
-    return config.setting['translate_artist_names_script_exception']
+    return options.translate_artist_names_script_exception
 
 
-def _get_script_exceptions(config: Config) -> list[tuple[str, int]]:
+def _get_script_exceptions(options: TranslationOptions) -> list[tuple[str, int]]:
     """
     Get configured script-exception thresholds.
 
@@ -490,7 +519,7 @@ def _get_script_exceptions(config: Config) -> list[tuple[str, int]]:
     list[tuple[str, int]]
         A list of pairs ``(script_id, threshold_percent)``.
     """
-    return config.setting['script_exceptions']
+    return options.script_exceptions
 
 
 def _log_detected_scripts(text: str, detected: dict[str, float]) -> None:
@@ -553,7 +582,7 @@ def _log_selected_scripts_match(exceptions: list[tuple[str, int]], matched: bool
     log.debug("%s found in selected scripts: %s", prefix, details)
 
 
-def _should_skip_translation_due_to_scripts(text: str | None, config: Config | None = None) -> bool:
+def _should_skip_translation_due_to_scripts(text: str | None, options: TranslationOptions) -> bool:
     """
     Determine whether translation should be skipped based on script exceptions.
 
@@ -572,8 +601,7 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Config | N
         selected script at or above the configured threshold; otherwise
         ``False``.
     """
-    config = config or get_config()
-    if not text or not _is_script_exception_enabled(config):
+    if not text or not _is_script_exception_enabled(options):
         return False
 
     detected = detect_script_weighted(text)
@@ -581,7 +609,7 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Config | N
     if not detected:
         return False
 
-    exceptions = _get_script_exceptions(config)
+    exceptions = _get_script_exceptions(options)
     if not exceptions:
         log.warning("No scripts selected for translation exception match check.")
         return False
@@ -591,20 +619,17 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Config | N
     return matched
 
 
-def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
-    config = config or get_config()
-    if config.setting['translate_artist_names'] and not _should_skip_translation_due_to_scripts(
-        node['name'], config=config
-    ):
+def _translate_artist_node(node: Node, options: TranslationOptions) -> Alias:
+    if options.translate_artist_names and not _should_skip_translation_due_to_scripts(node['name'], options=options):
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
-            translated_alias = _find_localized_alias_name(node['aliases'], config.setting['translation_locales'])
+            translated_alias = _find_localized_alias_name(node['aliases'], options.translation_locales)
             if translated_alias:
                 return translated_alias
 
         # No matches found in available alias locales
         sort_name = node['sort-name']
-        if config.setting['translate_from_sortname']:
+        if options.translate_from_sortname:
             translated_name = translate_from_sortname(node['name'] or '', sort_name)
         else:
             translated_name = node['name']
@@ -613,7 +638,7 @@ def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
     return Alias(translated_name or '', sort_name or '')
 
 
-def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None = None) -> str:
+def _select_sort_name_from_aliases(node: Node, name: str, options: TranslationOptions) -> str:
     """Find a sort name matching the given credited name in the artist's aliases.
 
     If translation is enabled, prefers an alias whose locale matches the
@@ -624,12 +649,11 @@ def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None 
         return node['sort-name']
 
     if 'aliases' in node:
-        config = config or get_config()
         candidates = [alias for alias in node['aliases'] if alias['name'] == name and alias['sort-name']]
 
         # If translation is enabled, use alias from preferred locales first
-        if config.setting['translate_artist_names']:
-            if alias := _find_localized_alias_name(candidates, config.setting['translation_locales']):
+        if options.translate_artist_names:
+            if alias := _find_localized_alias_name(candidates, options.translation_locales):
                 return alias.sort_name
 
         # Otherwise, use the first candidate (if any)
@@ -649,6 +673,7 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_comments = []
 
     config = get_config()
+    translation_options = TranslationOptions.from_config(config)
     standardize_names_mode = config.setting['standardize_artist_names']
 
     for artist_info in node:
@@ -660,12 +685,12 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
             artist_countries.append(artist['country'] if 'country' in artist and artist['country'] else 'XX')
             artist_comments.append(artist.get('disambiguation', ''))
-        translated_alias = _translate_artist_node(artist, config=config)
+        translated_alias = _translate_artist_node(artist, options=translation_options)
         has_translation = translated_alias.name != artist['name']
 
         if not has_translation and use_credited_as and 'name' in artist_info:
             name = artist_info['name']
-            sort_name = _select_sort_name_from_aliases(artist, name, config=config)
+            sort_name = _select_sort_name_from_aliases(artist, name, options=translation_options)
         else:
             name = translated_alias.name
             sort_name = translated_alias.sort_name
@@ -830,6 +855,7 @@ def recording_to_metadata(
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     config = get_config()
+    translation_options = TranslationOptions.from_config(config)
     for key, value in _node_skip_empty_iter(node):
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
@@ -846,7 +872,7 @@ def recording_to_metadata(
                     artist_obj = track.append_track_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
-            _relations_to_metadata(value, m, config=config, entity='recording')
+            _relations_to_metadata(value, m, config=config, entity='recording', translation_options=translation_options)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
@@ -855,11 +881,11 @@ def recording_to_metadata(
     # Translate recording title from recording aliases if enabled, unless script exception applies
     recording_title = node.get('title')
     if config.setting['translate_track_titles']:
-        alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
+        alias = _find_localized_alias_name(node.get('aliases'), translation_options.translation_locales)
         if alias:
-            if not _should_skip_translation_due_to_scripts(recording_title, config=config):
+            if not _should_skip_translation_due_to_scripts(recording_title, options=translation_options):
                 recording_title = alias.name
-            if track_title and not _should_skip_translation_due_to_scripts(track_title, config=config):
+            if track_title and not _should_skip_translation_due_to_scripts(track_title, options=translation_options):
                 track_title = alias.name
 
     m['title'] = track_title or recording_title
@@ -923,6 +949,7 @@ def artist_to_metadata(node: Node, m: 'Metadata') -> None:
 def release_to_metadata(node: Node, m: 'Metadata', album: 'Album | None' = None) -> None:
     """Make metadata dict from a JSON 'release' node."""
     config = get_config()
+    translation_options = TranslationOptions.from_config(config)
     m.add_unique('musicbrainz_albumid', node['id'])
     for key, value in _node_skip_empty_iter(node):
         if key in _RELEASE_TO_METADATA:
@@ -938,7 +965,9 @@ def release_to_metadata(node: Node, m: 'Metadata', album: 'Album | None' = None)
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations' and config.setting['release_ars']:
-            context = _relations_to_metadata(value, m, config=config, entity='release')
+            context = _relations_to_metadata(
+                value, m, config=config, entity='release', translation_options=translation_options
+            )
             if album:
                 album.per_medium_metadata = context.per_medium_metadata
         elif key == 'label-info':
@@ -958,7 +987,7 @@ def release_to_metadata(node: Node, m: 'Metadata', album: 'Album | None' = None)
             break
     # Translate album title from release aliases if enabled, unless script exception applies
     if config.setting['translate_album_titles']:
-        if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
+        if not _should_skip_translation_due_to_scripts(node.get('title'), options=translation_options):
             alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
             if alias:
                 m['album'] = alias.name
