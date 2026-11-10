@@ -23,14 +23,24 @@
 
 
 from collections import defaultdict
-from collections.abc import Callable
+from collections.abc import (
+    Callable,
+    Iterable,
+    Iterator,
+)
 from functools import partial
 from itertools import combinations
 import traceback
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    TypedDict,
+)
 
 from PyQt6.QtNetwork import QNetworkReply
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -49,6 +59,11 @@ from picard.util import (
 )
 from picard.webservice import PendingRequest
 from picard.workspace import workspace
+
+
+if TYPE_CHECKING:
+    # Only for the annotations: picard.album imports this module.
+    from picard.album import Album
 
 
 VERSIONS_MAX_TRACKS = 10
@@ -70,7 +85,34 @@ VERSIONS_EXTRA_HEADINGS = {
 VERSIONS_EXTRA_KEYS = ('packaging', 'barcode', 'disambiguation')
 
 
-def prepare_releases_for_versions(releases):
+class ReleaseVersion(TypedDict):
+    """A release of a release group, as offered among the other versions of an album.
+
+    The fields are texts for display (``'????'`` for an unknown year, ``'??'``
+    for an unknown country or packaging, ...). ``name`` joins the fields of
+    :data:`VERSIONS_NAME_KEYS`, plus what tells it apart from a version that
+    would have the same name, and ``extra`` lists those of
+    :data:`VERSIONS_EXTRA_KEYS`, one per line.
+    """
+
+    id: str
+    name: str
+    extra: str
+    tracks: str
+    year: str
+    country: str
+    format: str
+    label: str
+    catnum: str
+    packaging: str
+    barcode: str
+    disambiguation: str
+    totaltracks: int
+    countries: list[str]
+    formats: list[str]
+
+
+def prepare_releases_for_versions(releases: Iterable[dict[str, Any]]) -> Iterator[dict[str, Any]]:
     for node in releases:
         labels, catnums = label_info_from_node(node['label-info'])
 
@@ -110,13 +152,15 @@ class ReleaseGroup(MetadataItem):
     def __init__(self, rg_id: str) -> None:
         super().__init__(rg_id)
         self.loaded = False
-        self.versions: list[dict] = []
+        self.versions: list[ReleaseVersion] = []
         self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
         self.loaded_albums: set[str] = set()
         self.refcount = 0
         self.versions_count: int | None = None
+        # Why the last request for the versions failed, or None.
+        self.load_error: str | None = None
 
-    def load_versions(self, callback: Callable) -> PendingRequest:
+    def load_versions(self, callback: Callable[[], Any]) -> PendingRequest:
         kwargs = {'release-group': self.id, 'limit': 100}
         return services().mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
@@ -157,26 +201,38 @@ class ReleaseGroup(MetadataItem):
                 extra = "\n".join(
                     "%s: %s" % (_(VERSIONS_EXTRA_HEADINGS[k]), release[k]) for k in VERSIONS_EXTRA_KEYS if release[k]
                 )
-                version = {
+                version: ReleaseVersion = {
                     'id': release['id'],
-                    'name': disname.replace("&", "&&"),
+                    'name': disname,
+                    'extra': extra,
+                    # The parts of the name, and of the disambiguation, each on its own.
+                    'tracks': release['tracks'],
+                    'year': release['year'],
+                    'country': release['country'],
+                    'format': release['format'],
+                    'label': release['label'],
+                    'catnum': release['catnum'],
+                    'packaging': release['packaging'],
+                    'barcode': release['barcode'],
+                    'disambiguation': release['disambiguation'],
                     'totaltracks': release['totaltracks'],
                     'countries': release['countries'],
                     'formats': release['formats'],
-                    'extra': extra,
                 }
                 self.versions.append(version)
 
     def _request_finished(
         self,
-        callback: Callable,
+        callback: Callable[[], Any],
         document: dict,
         http: QNetworkReply,
         error: QNetworkReply.NetworkError | Exception | None,
     ) -> None:
+        self.load_error = None
         try:
             if error:
-                log.error("%r", http.errorString())
+                self.load_error = http.errorString()
+                log.error("%r", self.load_error)
             else:
                 try:
                     self._parse_versions(document)
@@ -191,3 +247,48 @@ class ReleaseGroup(MetadataItem):
         self.refcount -= 1
         if self.refcount == 0:
             del workspace().release_groups[self.id]
+
+
+# The group of a version in alternative_versions(): 0 when it is like the album
+# (or what is preferred), 1 when it is not, for the track count, the countries
+# and the formats, in this order.
+VersionGroup = tuple[int, int, int]
+
+
+def alternative_versions(album: 'Album') -> list[tuple[VersionGroup, ReleaseVersion]]:
+    """The versions of the release group of ``album``, in the order to offer them.
+
+    The versions with as many tracks as the album come first, then those of the
+    preferred release countries, then those of the preferred release formats
+    (``preferred_release_countries`` and ``preferred_release_formats``). The
+    versions of a group are ordered by name, then by release ID.
+
+    Returns ``(group, version)`` pairs, ``version`` being an item of
+    ``album.release_group.versions``, so that a list can be divided by group,
+    and nothing for an album whose release group is not known yet.
+    """
+    release_group = album.release_group
+    if release_group is None:
+        return []
+    config = get_config()
+    album_tracks_count = album.get_num_total_files() or len(album.tracks)
+    preferred_countries = set(config.setting['preferred_release_countries'])
+    preferred_formats = set(config.setting['preferred_release_formats'])
+    ORDER_BEFORE, ORDER_AFTER = 0, 1
+
+    alternatives: list[tuple[VersionGroup, ReleaseVersion]] = []
+    for version in release_group.versions:
+        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+        if version['totaltracks'] != album_tracks_count:
+            trackmatch = ORDER_AFTER
+        if preferred_countries:
+            countries = set(version['countries'])
+            if not countries or not countries.intersection(preferred_countries):
+                countrymatch = ORDER_AFTER
+        if preferred_formats:
+            formats = set(version['formats'])
+            if not formats or not formats.intersection(preferred_formats):
+                formatmatch = ORDER_AFTER
+        alternatives.append(((trackmatch, countrymatch, formatmatch), version))
+    alternatives.sort(key=lambda item: (item[0], item[1]['name'], item[1]['id'], item[1]['extra']))
+    return alternatives

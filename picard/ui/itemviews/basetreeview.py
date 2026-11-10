@@ -44,10 +44,6 @@
 
 
 from functools import partial
-from heapq import (
-    heappop,
-    heappush,
-)
 
 from PyQt6 import (
     QtCore,
@@ -80,6 +76,7 @@ from picard.extension_points.item_actions import (
 )
 from picard.file import File
 from picard.i18n import gettext as _
+from picard.releasegroup import alternative_versions
 from picard.script import iter_tagging_scripts_from_tuples
 from picard.track import (
     NonAlbumTrack,
@@ -117,36 +114,6 @@ from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeade
 FILE_FILTERS = {'~filename', '~filepath'}
 
 
-def _alternative_versions(album):
-    config = get_config()
-    versions = album.release_group.versions
-
-    album_tracks_count = album.get_num_total_files() or len(album.tracks)
-    preferred_countries = set(config.setting['preferred_release_countries'])
-    preferred_formats = set(config.setting['preferred_release_formats'])
-    ORDER_BEFORE, ORDER_AFTER = 0, 1
-
-    alternatives = []
-    for version in versions:
-        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
-        if version['totaltracks'] != album_tracks_count:
-            trackmatch = ORDER_AFTER
-        if preferred_countries:
-            countries = set(version['countries'])
-            if not countries or not countries.intersection(preferred_countries):
-                countrymatch = ORDER_AFTER
-        if preferred_formats:
-            formats = set(version['formats'])
-            if not formats or not formats.intersection(preferred_formats):
-                formatmatch = ORDER_AFTER
-        group = (trackmatch, countrymatch, formatmatch)
-        # order by group, name, and id on push
-        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
-
-    while alternatives:
-        yield heappop(alternatives)
-
-
 def _build_other_versions_actions(releases_menu, album, alternative_versions):
     heading = QtGui.QAction(album.release_group.version_headings, parent=releases_menu)
     heading.setDisabled(True)
@@ -156,20 +123,21 @@ def _build_other_versions_actions(releases_menu, album, alternative_versions):
     yield heading
 
     prev_group = None
-    for group, action_text, release_id, extra in alternative_versions:
+    for group, version in alternative_versions:
         if group != prev_group:
             if prev_group is not None:
                 sep = QtGui.QAction(parent=releases_menu)
                 sep.setSeparator(True)
                 yield sep
             prev_group = group
-        action = QtGui.QAction(action_text, parent=releases_menu)
+        # A single & in the text of a menu item marks its shortcut key.
+        action = QtGui.QAction(version['name'].replace('&', '&&'), parent=releases_menu)
         action.setCheckable(True)
-        if extra:
-            action.setToolTip(extra)
-        if album.id == release_id:
+        if version['extra']:
+            action.setToolTip(version['extra'])
+        if album.id == version['id']:
             action.setChecked(True)
-        action.triggered.connect(partial(album.switch_release_version, release_id))
+        action.triggered.connect(partial(album.switch_release_version, version['id']))
         yield action
 
 
@@ -177,7 +145,7 @@ def _add_other_versions(releases_menu, album, action_loading):
     if album.release_group.versions_count is not None:
         releases_menu.setTitle(_("&Other versions (%d)") % album.release_group.versions_count)
 
-    actions = _build_other_versions_actions(releases_menu, album, _alternative_versions(album))
+    actions = _build_other_versions_actions(releases_menu, album, alternative_versions(album))
     releases_menu.insertActions(action_loading, actions)
     releases_menu.removeAction(action_loading)
 
