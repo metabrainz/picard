@@ -59,6 +59,7 @@ def config() -> Any:
             'release_ars': True,
             'preferred_release_countries': [],
             'translate_from_sortname': False,
+            'prefer_latin_sortnames': False,
         }
     )
     return cfg

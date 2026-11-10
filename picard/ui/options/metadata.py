@@ -103,6 +103,7 @@ class MetadataOptionsPage(OptionsPage):
         'always_standardize_multivalue_artist': {'widgets': ['always_standardize_multivalue_artist']},
         'standardize_instruments': {'widgets': ['standardize_instruments']},
         'standardize_vocals': {'widgets': ['standardize_vocals']},
+        'prefer_latin_sortnames': {'widgets': ['prefer_latin_sortnames']},
         'convert_punctuation': {'widgets': ['convert_punctuation']},
         'release_ars': {'widgets': ['release_ars']},
         'track_ars': {'widgets': ['track_ars']},
@@ -144,7 +145,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names_script_exception.setChecked(
             config.setting['translate_artist_names_script_exception']
         )
-
+        self.ui.prefer_latin_sortnames.setChecked(config.setting['prefer_latin_sortnames'])
         self.ui.convert_punctuation.setChecked(config.setting['convert_punctuation'])
         self.ui.release_ars.setChecked(config.setting['release_ars'])
         self.ui.track_ars.setChecked(config.setting['track_ars'])
@@ -210,6 +211,7 @@ class MetadataOptionsPage(OptionsPage):
             self.ui.translate_artist_names_script_exception.isChecked()
         )
         config.setting['script_exceptions'] = self.current_scripts
+        config.setting['prefer_latin_sortnames'] = self.ui.prefer_latin_sortnames.isChecked()
         config.setting['convert_punctuation'] = self.ui.convert_punctuation.isChecked()
         config.setting['release_ars'] = self.ui.release_ars.isChecked()
         config.setting['track_ars'] = self.ui.track_ars.isChecked()

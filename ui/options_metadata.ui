@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>423</width>
-    <height>726</height>
+    <width>435</width>
+    <height>800</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -71,6 +71,13 @@
        <widget class="QCheckBox" name="standardize_vocals">
         <property name="text">
          <string>Use standardized vocal credits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="prefer_latin_sortnames">
+        <property name="text">
+         <string>Prefer sort names in Latin script</string>
         </property>
        </widget>
       </item>
@@ -319,9 +326,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>standardize_artist_names</tabstop>
   <tabstop>always_standardize_multivalue_artist</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>standardize_vocals</tabstop>
+  <tabstop>prefer_latin_sortnames</tabstop>
   <tabstop>convert_punctuation</tabstop>
   <tabstop>release_ars</tabstop>
   <tabstop>track_ars</tabstop>
