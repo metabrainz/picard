@@ -305,7 +305,7 @@ class PluginCLI(BaseCLI):
             return self._cmd_disable(self._args.plugin)
         elif cmd == 'install':
             return self._cmd_install(self._args.source)
-        elif cmd == 'remove':
+        elif cmd in {'remove', 'uninstall'}:
             return self._cmd_remove(self._args.plugin)
         elif cmd == 'update':
             if self._args.update_all or not self._args.plugin:
