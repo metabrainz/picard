@@ -62,7 +62,7 @@ from typing import (
 
 # Handle prefixes the subset recognises. Kept explicit so an unknown prefix is
 # a clear error. Extend here (plus the enumerator) as entity kinds are added.
-KNOWN_PREFIXES = frozenset({'f', 'c', 'a', 't', 'm', 'v', 'd', 'u'})
+KNOWN_PREFIXES = frozenset({'f', 'c', 'a', 't', 'm', 'v', 'k', 'd', 'u'})
 
 # Prefixes that name a single thing in their scope and so take no number: ``u``
 # is the bucket of unplaced files (top level: the unclustered files; under an

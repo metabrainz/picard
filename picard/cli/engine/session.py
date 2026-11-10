@@ -37,6 +37,7 @@ from collections.abc import (
 from typing import Any
 from weakref import WeakKeyDictionary
 
+from picard import collection
 from picard.album import Album
 from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.handles import HandleRegistry
@@ -52,6 +53,7 @@ from picard.cluster import (
     Cluster,
     UnclusteredFiles,
 )
+from picard.collection import Collection
 from picard.file import File
 from picard.track import Track
 from picard.workspace import workspace
@@ -65,7 +67,7 @@ def classify_entity(entity: Any) -> 'str | None':
     unclustered bucket, not a user cluster, so it is NOT handleable as ``c``.
     ``NatAlbum`` is an ``Album`` ('a'); ``NonAlbumTrack`` is a ``Track`` ('t').
     A lookup match :class:`Candidate` is minted as ``m``, a release
-    :class:`Version` as ``v``.
+    :class:`Version` as ``v``, a :class:`Collection` as ``k``.
     """
     if isinstance(entity, File):
         return 'f'
@@ -81,6 +83,8 @@ def classify_entity(entity: Any) -> 'str | None':
         return 'm'
     if isinstance(entity, Version):
         return 'v'
+    if isinstance(entity, Collection):
+        return 'k'
     return None
 
 
@@ -232,6 +236,9 @@ class LocalEngineSession:
         if prefix == 'v':
             # All versions currently held, in mint order.
             return [v for versions in self._versions.values() for v in versions]
+        if prefix == 'k':
+            # The collections of the user, as last loaded.
+            return list(collection.user_collections.values())
         return []
 
     def run_until_idle(self, timeout: float | None = None) -> bool:
