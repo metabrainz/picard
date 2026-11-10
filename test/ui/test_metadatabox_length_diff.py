@@ -18,11 +18,12 @@
 
 from test.picardtestcase import PicardTestCase
 
+from picard.tagdiff import TagDiff
+
 from picard.ui.metadatabox import (
     DiffColors,
     MetadataBox,
 )
-from picard.ui.metadatabox.tagdiff import TagDiff
 
 
 _COLORS = DiffColors(text='#000000', placeholder='#888888', removed_bg='#f00', added_bg='#0f0')

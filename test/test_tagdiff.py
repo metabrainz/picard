@@ -20,7 +20,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.ui.metadatabox.tagdiff import (
+from picard.tagdiff import (
     TagCounter,
     TagDiff,
     TagStatus,

@@ -60,6 +60,10 @@ from picard.i18n import (
 )
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import ScriptError
+from picard.tagdiff import (
+    TagDiff,
+    TagStatus,
+)
 from picard.tags import display_tag_name
 from picard.tags.docs import display_tag_tooltip
 from picard.tags.preserved import UserPreservedTags
@@ -76,10 +80,6 @@ from picard.util.qt import throttle
 from .edittagdialog import (
     EditTagDialog,
     TagEditorDelegate,
-)
-from .tagdiff import (
-    TagDiff,
-    TagStatus,
 )
 
 from picard.ui.colors import interface_colors

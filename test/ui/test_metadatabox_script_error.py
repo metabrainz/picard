@@ -25,9 +25,9 @@ from picard.script.parser import (
     ScriptUnknownFunction,
     StackItem,
 )
+from picard.tagdiff import TagDiff
 
 from picard.ui.metadatabox import MetadataBox
-from picard.ui.metadatabox.tagdiff import TagDiff
 
 
 class _FakeMetadataBox:
