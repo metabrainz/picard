@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""What the built-in commands have in common: reading arguments and describing entities in a result."""
+"""What the built-in commands have in common: reading arguments, waiting for
+background work, and describing entities in a result."""
 
 from collections.abc import Iterable
 from typing import Any
@@ -27,6 +28,33 @@ from picard.cli.engine.result import (
 )
 from picard.file import File
 from picard.track import Track
+
+
+# How long, in seconds, a command waits for the background work it started: one
+# web request (a release, a lookup), files or a disc, work that needs fingerprints
+# or several lookups.
+TIMEOUT_SHORT = 60
+TIMEOUT_DEFAULT = 120
+TIMEOUT_LONG = 300
+
+
+def drain(session: EngineSession, timeout: float, notes: list[str]) -> bool:
+    """Wait for the session's background work; note a timeout for the result.
+
+    Returns True when everything finished. On a timeout the work may still be
+    running, so the command's outcome can be incomplete: a message is added to
+    ``notes`` (deduplicated) for the command to put in its result.
+    """
+    drained = bool(session.run_until_idle(timeout=timeout))
+    if not drained:
+        note = f"timed out after {timeout:g}s waiting for background work; results may be incomplete"
+        if note not in notes:
+            notes.append(note)
+    return drained
+
+
+def join_notes(notes: list[str]) -> str:
+    return '; '.join(notes)
 
 
 def handles_of(session: EngineSession, entities: Iterable[Any]) -> list[str]:
