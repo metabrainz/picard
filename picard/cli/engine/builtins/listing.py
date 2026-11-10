@@ -31,6 +31,7 @@ from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
 )
+from picard.cli.engine.versions import Version
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
@@ -132,6 +133,8 @@ def _cmd_tree(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         elif isinstance(entity, File):
             # Without a selector the files are the unclustered ones.
             items.append(_tree_item(session, entity, 'file' if selector else 'unclustered', 0))
+        elif isinstance(entity, Version):  # nothing below a version
+            items.append(_tree_item(session, entity, 'version', 0))
         else:  # a lookup candidate: nothing below it
             items.append(_tree_item(session, entity, 'candidate', 0))
     return EngineResult(items=items, resolved=handles_of(session, entities), unresolved=unresolved)

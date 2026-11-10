@@ -25,6 +25,8 @@ from picard.cli.engine.commands import EngineCommandRegistry
 
 EXPECTED = {
     'album load',
+    'album switch',
+    'album versions',
     'cluster',
     'cluster lookup',
     'disc read',

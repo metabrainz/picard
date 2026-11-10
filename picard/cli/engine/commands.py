@@ -126,6 +126,18 @@ class EngineSession(Protocol):
         """Return the current candidates held for ``target`` (may be empty)."""
         ...
 
+    def set_versions(self, album: Any, versions: list[Any]) -> list[str]:
+        """Replace the release versions held for ``album``; return their handles."""
+        ...
+
+    def versions_for(self, album: Any) -> list[Any]:
+        """Return the current release versions held for ``album`` (may be empty)."""
+        ...
+
+    def version_owner(self, version: Any) -> Any:
+        """The album ``version`` was listed for, or None if it is no longer held."""
+        ...
+
     def run_until_idle(self, timeout: float | None = None) -> bool:
         """Drain async work (thread pools, pending requests) to completion."""
         ...

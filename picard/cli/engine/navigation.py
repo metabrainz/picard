@@ -24,7 +24,7 @@ parent         children
 =============  =========================================================
 (root)         ``u``: the files not in any cluster
 album          ``d``: a disc; ``t``: a track; ``f``: any of its files;
-               ``u``: its unmatched files
+               ``u``: its unmatched files; ``v``: its release versions
 disc           ``t``: a track on that disc; ``f``: its files
 track          ``f``: the files matched to it
 cluster        ``f``: its files; ``m``: its lookup candidates
@@ -55,6 +55,7 @@ from picard.cli.engine.selectors import (
     Segment,
     SelectorError,
 )
+from picard.cli.engine.versions import Version
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
@@ -141,12 +142,18 @@ class PathNavigator:
         self,
         candidates_for: Callable[[Any], list],
         candidate_owner: 'Callable[[Candidate], Any] | None' = None,
+        versions_for: 'Callable[[Any], list] | None' = None,
+        version_owner: 'Callable[[Version], Any] | None' = None,
     ):
         """``candidates_for(target)`` returns the lookup candidates held for ``target``;
         ``candidate_owner(candidate)`` the target a candidate was found for.
+        ``versions_for(album)`` and ``version_owner(version)`` do the same for the
+        release versions of an album.
         """
         self._candidates_for = candidates_for
         self._candidate_owner = candidate_owner
+        self._versions_for = versions_for or (lambda album: [])
+        self._version_owner = version_owner
 
     # --- Navigator protocol -------------------------------------------------
 
@@ -165,7 +172,7 @@ class PathNavigator:
             return self._cluster_children(node, segment)
         if isinstance(node, File):
             return self._file_children(node, segment)
-        raise SelectorError("a candidate has no children")
+        raise SelectorError("a candidate or a version has no children")
 
     def finish(self, node: Any) -> list:
         if isinstance(node, DiscView):
@@ -201,6 +208,9 @@ class PathNavigator:
 
     def _album_segments(self, album: Album) -> list[str]:
         segments = ['f*', 'u']
+        versions = self._versions_for(album)
+        if versions:
+            segments += ['v*', *_numbered('v', len(versions))]
         if not album.tracks:
             return segments
         if not _is_numbered(album):
@@ -228,6 +238,8 @@ class PathNavigator:
             return self._file_path(entity, handle_for)
         if isinstance(entity, Candidate):
             return self._candidate_path(entity, handle_for)
+        if isinstance(entity, Version):
+            return self._version_path(entity, handle_for)
         return None
 
     def _track_path(self, track: Track, handle_for: Callable[[Any], str]) -> 'str | None':
@@ -273,6 +285,15 @@ class PathNavigator:
         position = _position(self._candidates_for(owner), candidate)
         return None if position is None else f"{handle_for(owner)}.m{position}"
 
+    def _version_path(self, version: Version, handle_for: Callable[[Any], str]) -> 'str | None':
+        if self._version_owner is None:
+            return None
+        owner = self._version_owner(version)
+        if owner is None:
+            return None
+        position = _position(self._versions_for(owner), version)
+        return None if position is None else f"{handle_for(owner)}.v{position}"
+
     # --- children of each kind of node -----------------------------------------
 
     def _album_children(self, album: Album, segment: Segment) -> list:
@@ -282,6 +303,8 @@ class PathNavigator:
         if prefix == 'f':
             files = _files_of_tracks(album.tracks) + list(album.unmatched_files.files)
             return _positional(files, segment)
+        if prefix == 'v':
+            return _positional(self._versions_for(album), segment)
         if prefix not in {'t', 'd'}:
             raise _unsupported('an album', segment)
         if not album.loaded:

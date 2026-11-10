@@ -44,6 +44,7 @@ from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
 )
+from picard.cli.engine.versions import Version
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
@@ -292,10 +293,11 @@ def _cmd_remove(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     if not entities:
         return EngineResult(items=[], unresolved=unresolved)
 
-    # Lookup candidates are session-side objects, not working-set members:
-    # there is nothing to remove, so say so rather than report them removed.
-    removable = [e for e in entities if not isinstance(e, Candidate)]
-    skipped = [e for e in entities if isinstance(e, Candidate)]
+    # Lookup candidates and release versions are session-side objects, not
+    # working-set members: there is nothing to remove, so say so rather than
+    # report them removed.
+    removable = [e for e in entities if not isinstance(e, (Candidate, Version))]
+    skipped = [e for e in entities if isinstance(e, (Candidate, Version))]
 
     # Capture handles/descriptions before removal (the entities still exist in
     # this scope; their handles stay valid for the report).
