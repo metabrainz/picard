@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-10-29 18:53+0100\n"
-"PO-Revision-Date: 2026-10-09 05:31+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-11-10 18:13+0000\n"
+"Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
 "Language: ca\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10\n"
+"X-Generator: Weblate 2026.11.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:219
@@ -3699,42 +3699,36 @@ msgid "License"
 msgstr "Llicència"
 
 #: picard/ui/album_filter.py:77 picard/ui/itemviews/columns.py:154
-#, fuzzy
-#| msgid "Album modified"
 msgid "Modified"
-msgstr "Àlbum modificat"
+msgstr "Modificat"
 
 #: picard/ui/album_filter.py:77
 msgid "Filters on modified albums"
-msgstr ""
+msgstr "Filtra per àlbums modificats"
 
 #: picard/ui/album_filter.py:78
-#, fuzzy
-#| msgid "Album modified"
 msgid "Unmodified"
-msgstr "Àlbum modificat"
+msgstr "Sense modificar"
 
 #: picard/ui/album_filter.py:78
 msgid "Filters on unmodified albums"
-msgstr ""
+msgstr "Filtra per àlbums sense modificar"
 
 #: picard/ui/album_filter.py:79 picard/ui/itemviews/columns.py:163
-#, fuzzy
-#| msgid "Export Complete"
 msgid "Complete"
-msgstr "Exportació completada"
+msgstr "Complet"
 
 #: picard/ui/album_filter.py:79
 msgid "Filters on complete albums"
-msgstr ""
+msgstr "Filtra per àlbums complets"
 
 #: picard/ui/album_filter.py:80
 msgid "Incomplete"
-msgstr ""
+msgstr "Incomplet"
 
 #: picard/ui/album_filter.py:80
 msgid "Filters on incomplete albums"
-msgstr ""
+msgstr "Filtra per àlbums incomplets"
 
 #: picard/ui/album_filter.py:138 picard/ui/album_filter.py:251
 #: picard/ui/searchdialog/album.py:170
@@ -3746,27 +3740,25 @@ msgid ""
 "Drop-down containing Album status filters(modified/unmodified, complete/"
 "incomplete)"
 msgstr ""
+"Desplegable que conté els filtres d'estat dels àlbums (modificat/sense "
+"modificar, complet/incomplet)"
 
 #: picard/ui/album_filter.py:148
-#, fuzzy
-#| msgid "Select Filters"
 msgid "Status Filters"
-msgstr "Seleccioneu els filtres"
+msgstr "Filtres d'estat"
 
 #: picard/ui/album_filter.py:174
-#, fuzzy
-#| msgid "Show Name"
 msgid "Show all"
-msgstr "Mostra el nom"
+msgstr "Mostra-ho tot"
 
 #: picard/ui/album_filter.py:175
 msgid "Enable all status filters (show everything)"
-msgstr ""
+msgstr "Habilita tots els filtres d'estat (mostra-ho tot)"
 
 #: picard/ui/album_filter.py:254
 #, python-format
 msgid "Status (%(active)d/%(total)d)"
-msgstr ""
+msgstr "Estat (%(active)d/%(total)d)"
 
 #: picard/ui/caa_types_selector.py:184
 #: picard/ui/dialogs/cover_types_selector.py:45
@@ -6872,28 +6864,20 @@ msgid "Album unchanged"
 msgstr "Àlbum sense modificar"
 
 #: picard/ui/itemviews/__init__.py:671
-#, fuzzy
-#| msgid "Album modified"
 msgid "Album is modified"
-msgstr "Àlbum modificat"
+msgstr "L'àlbum s'ha modificat"
 
 #: picard/ui/itemviews/__init__.py:671
-#, fuzzy
-#| msgid "Album unchanged"
 msgid "Album is unchanged"
-msgstr "Àlbum sense modificar"
+msgstr "L'àlbum no s'ha modificat"
 
 #: picard/ui/itemviews/__init__.py:674
-#, fuzzy
-#| msgid "Album modified and complete"
 msgid "Album is complete"
-msgstr "Àlbum modificat i completat"
+msgstr "L'àlbum està complet"
 
 #: picard/ui/itemviews/__init__.py:674
-#, fuzzy
-#| msgid "Album modified and complete"
 msgid "Album is incomplete"
-msgstr "Àlbum modificat i completat"
+msgstr "L'àlbum està incomplet"
 
 #: picard/ui/itemviews/__init__.py:716
 msgid "There are no files matched to this track"
@@ -7111,13 +7095,11 @@ msgstr "Fitxers sense coincidències: %(count)d"
 
 #: picard/ui/itemviews/custom_columns/boolean_providers.py:67
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: picard/ui/itemviews/custom_columns/boolean_providers.py:69
-#, fuzzy
-#| msgid "Now"
 msgid "No"
-msgstr "Ara"
+msgstr "No"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
 msgid "Manage Custom Columns"
