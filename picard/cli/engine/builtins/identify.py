@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match``, ``lookup`` and ``scan``."""
+"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan`` and ``album load``."""
 
 from typing import Any
 
@@ -25,6 +25,8 @@ from picard.album import (
 from picard.cli.engine.builtins.helpers import (
     TIMEOUT_LONG,
     TIMEOUT_SHORT,
+    album_result,
+    arg_first,
     drain,
     entity_item,
     handles_of,
@@ -43,6 +45,7 @@ from picard.cli.engine.result import (
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
+from picard.util.mbentity import parse_mb_entity
 from picard.workspace import workspace
 
 
@@ -322,6 +325,48 @@ def _cmd_match(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         unresolved=unresolved,
         mints=[album_handle],
     )
+
+
+@command(
+    'album load',
+    usage='album load <mbid|url>',
+    help="Load a release as an empty album.",
+    args=('mbid',),
+    arg_kinds=('',),
+)
+def _cmd_album_load(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Load a release as an empty album.
+
+    It takes the ID of a release, 'release:<id>' as 'ls' prints it, or the URL of a
+    release on MusicBrainz. Files and clusters can then be moved onto the album.
+
+    Examples:
+      album load release:<mbid>
+      album load https://musicbrainz.org/release/<mbid>
+    """
+    arg = arg_first(args.get('mbid'))
+    if not arg:
+        raise UsageError
+    # Same reading of a MusicBrainz reference as the GUI: a bare MBID, the
+    # ``release:<mbid>`` shown by ``ls`` / ``tree``, a URL, ...
+    ref = parse_mb_entity(arg, default_entity='release')
+    if ref is None:
+        return EngineResult.failure(f"album load: not a release MBID or URL: {arg!r}")
+    if ref.entity != 'release':
+        return EngineResult.failure(f"album load: {arg!r} is a {ref.entity}, not a release")
+    mbid = ref.id
+
+    album = workspace().load_album(mbid)
+    notes: list[str] = []
+    drained = drain(session, TIMEOUT_SHORT, notes)
+
+    if album.errors:
+        status = 'error'
+    elif not drained and not album.loaded:
+        status = 'pending'
+    else:
+        status = 'loaded'
+    return album_result(session, album, status, notes)
 
 
 @command(
