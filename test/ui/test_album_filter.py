@@ -443,7 +443,7 @@ class AlbumFilterTestFiltering(PicardTestCase):
         """PICARD-3532: With only status filters active, no search tooltips are set."""
         for text in ('', '   '):
             with self.subTest(text=text):
-                track = make_tree_item(MagicMock(is_permanently_hidden=False))
+                track = make_tree_item(MagicMock())
                 album = make_tree_item(create_fake_album(modified=True, complete=False), [track])
                 parent = make_tree_item(None, [album])
 
