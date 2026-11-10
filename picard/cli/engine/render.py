@@ -26,6 +26,7 @@ result.
 from typing import Any
 
 from picard.cli.engine.result import (
+    EngineItemResult,
     EngineResult,
 )
 from picard.cli.output import CliOutput
@@ -87,12 +88,39 @@ def _format_item_data(data: dict[str, Any]) -> str:
     return '  '.join(parts)
 
 
+def _render_help(items: list[EngineItemResult], output: CliOutput) -> None:
+    """Render the result of ``help``: the lines of a list, or the whole help of a command or a topic."""
+    width = max((len(item.data['name']) for item in items if not item.data['detail']), default=0)
+    previous = None
+    for item in items:
+        data = item.data
+        if data['detail']:
+            if data['kind'] == 'command':
+                output.print(output.d_command(data['usage']))
+                output.nl()
+            output.print(data['description'])
+            previous = 'detail'
+            continue
+        if previous != data['kind']:
+            if previous is not None:
+                output.nl()
+            header = 'See also:' if previous == 'detail' else {'command': 'Commands:', 'topic': 'Topics:'}[data['kind']]
+            output.print(output.dim(header))
+            previous = data['kind']
+        name = output.d_command(data['name']) if data['kind'] == 'command' else output.d_name(data['name'])
+        output.print(f"  {name}{' ' * (width - len(data['name']))}  {data['summary']}")
+
+
 def render_result(result: EngineResult, output: CliOutput) -> None:
     """Render ``result`` to ``output`` for a human reader."""
     if not result.ok:
         output.error(result.error or "command failed")
         if result.unresolved:
             output.warning("unresolved: " + ', '.join(result.unresolved))
+        return
+
+    if result.items and all(item.status == 'help' for item in result.items):
+        _render_help(result.items, output)
         return
 
     for item in result.items:
