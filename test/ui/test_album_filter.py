@@ -470,19 +470,18 @@ class AlbumFilterTestFiltering(PicardTestCase):
         album.setHidden.assert_called_with(True)
         self.assertEqual(set(tooltips_set(album)), {''})
 
-    def test_status_filter_preserves_permanently_hidden(self):
+    def test_status_filter_preserves_autohide_cluster(self):
         """PICARD-3532: Permanently hidden items stay hidden, at top level and nested."""
-        hidden_track = make_tree_item(MagicMock(is_permanently_hidden=True))
-        album = make_tree_item(create_fake_album(modified=True, complete=False), [hidden_track])
-        hidden_album = make_tree_item(create_fake_album(modified=True, complete=False))
-        hidden_album.obj.is_permanently_hidden = True
-        parent = make_tree_item(None, [album, hidden_album])
+        auto_hide_cluster = make_tree_item(MagicMock())
+        auto_hide_cluster.filterable = False
+        album = make_tree_item(create_fake_album(modified=True, complete=False), [auto_hide_cluster])
+        parent = make_tree_item(None, [album])
 
         BaseTreeView._filter_tree_items(parent, '', filters={'title'}, status_filters=StatusFilters(unmodified=False))
 
-        hidden_album.setHidden.assert_called_with(True)
+        album.setHidden.assert_called_with(False)
         # _restore_tree_items must not un-hide the nested item
-        self.assertNotIn(call(False), hidden_track.setHidden.call_args_list)
+        self.assertNotIn(call(False), auto_hide_cluster.setHidden.call_args_list)
 
 
 class AlbumStatusFilterPersistenceTest(PicardTestCase):

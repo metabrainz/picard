@@ -138,6 +138,7 @@ def MockTagger():
     tagger.window = MagicMock()
     tagger.webservice = MagicMock()
     tagger.mb_api = MagicMock()
+    tagger._no_restore = True
     return tagger
 
 

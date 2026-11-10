@@ -586,7 +586,7 @@ class ClusterItem(TreeItem):
         self.add_files([file])
 
     def add_files(self, files):
-        if not self.obj.is_permanently_hidden:
+        if self.obj.hide_if_empty and self.obj.files:
             self.setHidden(False)
         self.update()
         # addChild used (rather than building an items list and adding with addChildren)
@@ -601,7 +601,7 @@ class ClusterItem(TreeItem):
         file.ui_item.setSelected(False)
         self.removeChild(file.ui_item)
         self.update()
-        if self.obj.is_permanently_hidden:
+        if self.obj.hide_if_empty and not self.obj.files:
             self.setHidden(True)
 
 
