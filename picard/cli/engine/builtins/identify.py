@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match`` and ``lookup``."""
+"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match``, ``lookup`` and ``scan``."""
 
 from typing import Any
 
@@ -321,6 +321,61 @@ def _cmd_match(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         resolved=[session.handle_for(cluster)],
         unresolved=unresolved,
         mints=[album_handle],
+    )
+
+
+@command(
+    'scan',
+    usage='scan [selector]',
+    help="Identify files by AcoustID fingerprint.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_scan(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Identify files by their AcoustID fingerprint.
+
+    This is the Scan action of the GUI. Without a selector it applies to the files
+    that are in no cluster. Each file is fingerprinted and looked up on AcoustID, and
+    a confident match moves it onto its track. Each file is reported as identified,
+    with its album, or no_match. AcoustID must be the fingerprinting system
+    ('option get fingerprinting_system').
+
+    Example:
+      scan f*
+    """
+    wks = workspace()
+    if not wks.use_acoustid:
+        return EngineResult.failure(
+            "scan: AcoustID fingerprinting is not enabled (set the fingerprinting system to AcoustID)"
+        )
+
+    selector = args.get('selector') or 'f*'
+    entities, unresolved = session.resolve(selector)
+    files = [e for e in entities if isinstance(e, File) and e.can_analyze]
+    if not files:
+        return EngineResult(items=[], resolved=handles_of(session, entities), unresolved=unresolved)
+
+    wks.analyze(files)
+    # Drain the fingerprint computation and the follow-up AcoustID lookups, plus
+    # any album loads a confident match scheduled.
+    notes: list[str] = []
+    drain(session, TIMEOUT_LONG, notes)
+
+    items = []
+    mints = []
+    for file in files:
+        album_handle = _matched_album_handle(session, file, mints)
+        data = {'path': file.filename}
+        if album_handle:
+            data['album'] = album_handle
+        status = 'identified' if album_handle else 'no_match'
+        items.append(EngineItemResult(handle=session.handle_for(file), status=status, data=data))
+    return EngineResult(
+        items=items,
+        mints=mints,
+        resolved=handles_of(session, files),
+        unresolved=unresolved,
+        message=join_notes(notes),
     )
 
 
