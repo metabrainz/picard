@@ -45,6 +45,7 @@ An object is named by its handle, a letter for its kind and a number:
   a1   an album (the standalone recordings are one too)
   t1   a track of an album
   m1   a candidate found by a lookup, see 'help cluster lookup'
+  v1   another release of the release group of an album, see 'help album versions'
 
 The commands print the handles of what they create, and 'ls' lists them. A
 handle never changes and is never reused in a session, so a1 keeps naming the
@@ -78,6 +79,7 @@ selecting children of the previous one.
   t<n>   track n (of an album or of one of its discs)
   f<n>   file n (of an album, a disc, a track or a cluster)
   m<n>   candidate n of a lookup (of a cluster or a file)
+  v<n>   version n of an album, a release of its release group, as 'album versions' lists them
   u      the files that are in no cluster; under an album, its unmatched files
 
 A number can be * for all of them: a1.d*.t1 is the first track of every disc.
@@ -89,6 +91,7 @@ Examples:
   a1.u        the files of the album that were not matched to a track
   c1.f2       the second file of cluster c1
   c1.m2       the second candidate found for cluster c1
+  a1.v3       the third version listed for album a1
   u.f*        the files that are in no cluster
 
 Discs and tracks have the numbers the release gives them (the discnumber and

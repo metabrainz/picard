@@ -47,6 +47,7 @@ from picard.cli.engine.selectors import (
     resolve_nodes,
     resolve_selector,
 )
+from picard.cli.engine.versions import Version
 from picard.cluster import (
     Cluster,
     UnclusteredFiles,
@@ -63,7 +64,8 @@ def classify_entity(entity: Any) -> 'str | None':
     disjoint. ``UnclusteredFiles`` is a ``Cluster`` subclass but is the
     unclustered bucket, not a user cluster, so it is NOT handleable as ``c``.
     ``NatAlbum`` is an ``Album`` ('a'); ``NonAlbumTrack`` is a ``Track`` ('t').
-    A lookup match :class:`Candidate` is minted as ``m``.
+    A lookup match :class:`Candidate` is minted as ``m``, a release
+    :class:`Version` as ``v``.
     """
     if isinstance(entity, File):
         return 'f'
@@ -77,6 +79,8 @@ def classify_entity(entity: Any) -> 'str | None':
         return 't'
     if isinstance(entity, Candidate):
         return 'm'
+    if isinstance(entity, Version):
+        return 'v'
     return None
 
 
@@ -94,10 +98,17 @@ class LocalEngineSession:
         # set and is collected. Keying by the object, not id(), also means a
         # new target can never inherit a dead target's candidates.
         self._candidates: WeakKeyDictionary[Any, list[Candidate]] = WeakKeyDictionary()
+        # Likewise the versions of the release group of an album (``album versions``).
+        self._versions: WeakKeyDictionary[Any, list[Version]] = WeakKeyDictionary()
         # The options of the session: values set for it, over the configuration.
         self._options = SessionOptions()
         # Walks selector paths (a1.d2.t3, c1.f*, ...) through the working set.
-        self._navigator = PathNavigator(self.candidates_for, self._candidate_owner)
+        self._navigator = PathNavigator(
+            self.candidates_for,
+            self._candidate_owner,
+            self.versions_for,
+            self.version_owner,
+        )
 
     # --- candidates ---------------------------------------------------------
 
@@ -118,6 +129,27 @@ class LocalEngineSession:
         for target, candidates in list(self._candidates.items()):
             if any(held is candidate for held in candidates):
                 return target
+        return None
+
+    # --- versions -----------------------------------------------------------
+
+    def set_versions(self, album: Any, versions: list[Version]) -> list[str]:
+        """Replace the versions held for ``album`` and return their v handles.
+
+        Dropping the previous versions lets the old v handles expire.
+        """
+        self._versions[album] = versions
+        return [self._handles.handle_for(v) for v in versions]
+
+    def versions_for(self, album: Any) -> list[Version]:
+        """Return the current versions held for ``album`` (may be empty)."""
+        return self._versions.get(album, [])
+
+    def version_owner(self, version: Version) -> Any:
+        """The album ``version`` was listed for, or None if it is no longer held."""
+        for album, versions in list(self._versions.items()):
+            if any(held is version for held in versions):
+                return album
         return None
 
     # --- EngineSession protocol ---------------------------------------------
@@ -197,6 +229,9 @@ class LocalEngineSession:
         if prefix == 'm':
             # All candidates currently held across lookups, in mint order.
             return [c for candidates in self._candidates.values() for c in candidates]
+        if prefix == 'v':
+            # All versions currently held, in mint order.
+            return [v for versions in self._versions.values() for v in versions]
         return []
 
     def run_until_idle(self, timeout: float | None = None) -> bool:

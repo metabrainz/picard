@@ -41,6 +41,8 @@ the metadata box shows), so the two cannot drift apart.
 | `lookup [sel]` | metadata lookup (autotag) of the selected objects |
 | `scan [sel]` | identify files by AcoustID fingerprint |
 | `album load <mbid\|url>` | load a release as an empty album; the reference may be a bare MBID, `release:<mbid>` or a MusicBrainz release URL |
+| `album versions <album>` | list the other releases of the release group of an album, as the "Other versions" menu of the GUI does and in the same order (as many tracks as the album first, then the preferred countries and formats); each gets a `v` handle and the one the album is now is marked; requested from MusicBrainz the first time |
+| `album switch <version>` / `album switch <album> <version\|mbid>` | switch an album to another release of its release group (`v2`, `a1.v2` — which say the album, so it can be left out — an MBID, `release:<mbid>` or a URL); the files are matched again to its tracks. The album keeps its handle unless that release is already loaded: the files go to that album, which is reported |
 | `disc read [device]` | read the TOC of the CD in a drive (by default the first of the `cd_lookup_device` option, as the GUI does) and load the matching release |
 | `disc read-log <path>` | the same from a CD ripper log file |
 | `disc read-tags <sel>` | the same from the disc information in the tags (`itunes_cddb_1`) of the files of the selection, which are matched to the release; needs no drive |
@@ -197,6 +199,7 @@ renumber; ids are never reused within a session.
 | `a`    | album (incl. NAT) | `albums.values()`            | until removed |
 | `t`    | track             | tracks within albums         | with its album |
 | `m`    | match candidate   | lookup/scan output           | transient (until next lookup of target) |
+| `v`    | release version  | `album versions` output      | transient (until the versions of the album are listed again) |
 
 Notes:
 - `f*` is the UNCLUSTERED bucket only; files matched into albums/clusters are
@@ -236,9 +239,10 @@ several commands should keep the handle.
 | `f<n>` | album, disc, track, cluster | the `n`th file (`f*`: all of them) |
 | `u` | album | the album's unmatched files |
 | `m<n>` | cluster, file | the `n`th lookup candidate |
+| `v<n>` | album | the `n`th version listed by `album versions` |
 
 Examples: `a1.d2.t3`, `a1.d2` (the tracks of disc 2), `a1.t3.f1`, `a1.f*` (every
-file of the album, matched or not), `a1.u`, `c1.f*`, `c1.m2`, `u.f*`.
+file of the album, matched or not), `a1.u`, `c1.f*`, `c1.m2`, `a1.v3`, `u.f*`.
 
 - `*` and numbers work in any segment (`a*.t1`, `a1.d*.t1`).
 - Discs and tracks of a release use the numbers MusicBrainz gives them (the
@@ -337,8 +341,9 @@ Home: `picard/cli/engine/`; the console is `picard/cli/shell.py` with
    The modules group them by what they act on: `listing` (`ls`, `tree`),
    `files` (`file add`, `save`, `move`, `remove`, `trash`), `identify`
    (`cluster`, `cluster lookup`, `match`, `lookup`, `scan`, `album load`),
-   `metadata`, `option`, `disc`. `helpers` has what they share, and importing
-   the package declares them all in one registry.
+   `versions` (`album versions`, `album switch`), `metadata`, `option`, `disc`.
+   `helpers` has what they share, and importing the package declares them all
+   in one registry.
 
 ### Rules
 
@@ -418,7 +423,7 @@ On top of what is implemented: ranges (`a1-3`, reversed and cross-namespace
 ones rejected), exclusion (`a*,!3` is all albums but `a3`, a set difference over
 the whole expression), sticky prefixes for bare ordinals (`a1,2,c3,4` is
 `a1,a2,c3,c4`), and `prefix where <field>=<value>` metadata selectors. Further
-handle kinds: `v` (release versions of a release group), `d` (a disc ID / TOC)
+handle kinds: `d` (a disc ID / TOC)
 and `k` (collections); at the top level `d` stays reserved for the disc ID, and
 under an album it means a disc of the release. "Every file everywhere" would be
 a separate token (`files:all`).
@@ -450,8 +455,8 @@ their current names (see "Commands"): `file save` is `save`,
 | `cluster submit <sel>` | submit as release | — | SUBMIT_CLUSTER |
 | `album lookup <sel>` | metadata lookup | `m` | |
 | `album save/remove/refresh <sel>` | File.save / remove_album / reload | — | REFRESH |
-| `album versions <sel>` | release-group versions | `v` | ALBUM_OTHER_VERSIONS |
-| `album switch <a> <v>` | switch_release_version | — | |
+| `album versions <sel>` | release-group versions | `v` | ALBUM_OTHER_VERSIONS (done) |
+| `album switch <a> <v>` | switch_release_version | — | (done) |
 | `track show <sel>` / `track move` | — | — | |
 | `metadata show <sel> [tag...]` | orig/new tags | — | the metadata-box equivalent (done) |
 | `metadata set/add/rm-value/rm <sel> <tag> [value...]` | apply_tag_values / merge_values (done) | — | multi-value via list, not joiner |
@@ -545,5 +550,5 @@ MCP (agent):
 ### Not done yet
 
 The rest of the catalog, `RemoteEngineSession` and the pipe response channel,
-gui-only commands, release versions, collections, sessions, profiles, the MCP
+gui-only commands, collections, sessions, profiles, the MCP
 frontend, restoring the original value of a tag, and the cover art.

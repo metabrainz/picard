@@ -171,6 +171,18 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
             output.print(f"    {mark} {chandle}  {ref_s}{title}{score_s}")
         if len(shown) < len(candidates):
             output.print(output.dim(f"      … {len(candidates) - len(shown)} more: ls {item.handle}.m*"))
+        # The versions of an album: all of them, the one it is now marked.
+        versions = item.data.get('versions', [])
+        for version in versions:
+            mark = '*' if version.get('current') else ' '
+            vhandle = output.d_id(version.get('handle', '?'))
+            ref = _entity_ref(version)
+            ref_s = f"{output.dim(ref)}  " if ref else ''
+            output.print(f"    {mark} {vhandle}  {ref_s}{version.get('title', '')}")
+        if item.data.get('total', 0) > len(versions) > 0:
+            output.print(
+                output.dim(f"      … {item.data['total']} releases in the group, the first {len(versions)} are listed")
+            )
 
     if result.mints:
         minted = ', '.join(result.mints[:_MINTED_SHOWN])

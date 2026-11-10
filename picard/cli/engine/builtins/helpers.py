@@ -27,6 +27,7 @@ from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
 )
+from picard.cli.engine.versions import Version
 from picard.file import File
 from picard.track import Track
 
@@ -118,9 +119,10 @@ def describe_entity(entity: Any) -> dict[str, Any]:
     Uses the entity's own ``column()`` accessors where available (the same
     source the GUI columns use), falling back to a filename for files. A lookup
     :class:`Candidate` is projected via its own ``describe()`` so ``ls m*``
-    shows the same release reference/title/score as the lookup listing.
+    shows the same release reference/title/score as the lookup listing. A release
+    :class:`Version` is likewise projected via its own ``describe()``.
     """
-    if isinstance(entity, Candidate):
+    if isinstance(entity, (Candidate, Version)):
         return entity.describe()
 
     data: dict[str, Any] = {}
@@ -154,16 +156,17 @@ def reject_candidates(
     unresolved: list[str],
     what: str = "holds no files",
 ) -> 'EngineResult | None':
-    """A failure if ``entities`` include a lookup candidate, which ``what`` it lacks.
+    """A failure if ``entities`` include a lookup candidate or a release version, which ``what`` it lacks.
 
     For the commands that act on the files of a selection (``save``, ``move``,
     ``trash``) or on its tags: ``save m1`` is a mistake worth saying so, not an
     error from deep inside the command.
     """
     for entity in entities:
-        if isinstance(entity, Candidate):
+        if isinstance(entity, (Candidate, Version)):
+            kind = 'lookup candidate' if isinstance(entity, Candidate) else 'release version'
             return EngineResult.failure(
-                f"{command}: {session.handle_for(entity)} is a lookup candidate, it {what}",
+                f"{command}: {session.handle_for(entity)} is a {kind}, it {what}",
                 unresolved=unresolved,
             )
     return None
