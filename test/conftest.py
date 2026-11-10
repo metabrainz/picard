@@ -95,6 +95,11 @@ def _make_defaulting_section(section_name, initial=None):
             with suppress(KeyError):
                 del self[name]
 
+        def as_dict(self):
+            from picard.config import Option
+
+            return {key: self[key] for section, key in list(Option.registry) if section == self._section_name}
+
     return _Section(section_name, initial)
 
 

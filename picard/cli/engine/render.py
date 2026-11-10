@@ -70,8 +70,6 @@ def _format_item_data(data: dict[str, Any]) -> str:
     for key in (
         'value',
         'default',
-        'tag',
-        'removed',
         'title',
         'artist',
         'filename',
@@ -81,11 +79,25 @@ def _format_item_data(data: dict[str, Any]) -> str:
         'error',
     ):
         value = data.get(key)
-        if isinstance(value, list):
-            value = ', '.join(str(item) for item in value)
         if value not in (None, ''):
             parts.append(f"{key}={value}")
     return '  '.join(parts)
+
+
+def _tag_line(row: dict[str, Any], width: int, output: CliOutput) -> str:
+    """One line for a tag of ``metadata show``: its name and its value, or what changed."""
+    orig = row['orig']
+    new = row['new']
+    status = row['status']
+    if status == 'changed':
+        value = f"{orig} {output.d_arrow()} {new}"
+    elif status == 'added':
+        value = f"+ {new}"
+    elif status == 'removed':
+        value = f"- {orig}"
+    else:
+        value = new
+    return f"{output.d_name(row['tag'])}{' ' * (width - len(row['tag']))}  {value}"
 
 
 def _render_help(items: list[EngineItemResult], output: CliOutput) -> None:
@@ -133,6 +145,11 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
         if summary:
             line += f"  {summary}"
         output.print(line)
+        # The tags of an entity (metadata show), one per line under it.
+        tags = item.data.get('tags', [])
+        width = max((len(row['tag']) for row in tags), default=0)
+        for row in tags:
+            output.print(f"{indent}    {_tag_line(row, width, output)}")
         # Lookup items carry a candidate list; show it indented.
         candidates = item.data.get('candidates', [])
         shown = _candidates_to_show(candidates)
