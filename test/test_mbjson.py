@@ -42,6 +42,7 @@ from picard.mbjson import (
     Alias,
     AliasMatch,
     ArtistCreditInfo,
+    TranslationOptions,
     _locales_from_aliases,
     _node_skip_empty_iter,
     _parse_attributes,
@@ -863,74 +864,58 @@ class ArtistTranslationTest(MBJSONTest):
     filename = 'artist.json'
 
     def test_locale_specific_match_first(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": False,
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_CA', 'en'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=False,
+            script_exceptions=[],
+            translation_locales=['en_CA', 'en'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en_CA)')
 
     def test_locale_specific_match_first_exc(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": True,
-            "script_exceptions": [("LATIN", 0)],
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_CA', 'en'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=True,
+            script_exceptions=[("LATIN", 0)],
+            translation_locales=['en_CA', 'en'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran')
 
     def test_locale_specific_match_second(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": False,
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_UK', 'en'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=False,
+            script_exceptions=[],
+            translation_locales=['en_UK', 'en'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en)')
 
     def test_artist_match_root_locale_fallback(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": False,
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_UK'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=False,
+            script_exceptions=[],
+            translation_locales=['en_UK'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en)')
 
     def test_artist_no_match(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": False,
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['de'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=False,
+            script_exceptions=[],
+            translation_locales=['de'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran')
 
 
@@ -938,33 +923,25 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
     filename = 'artist_arabic.json'
 
     def test_locale_specific_match_first_exc1(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": True,
-            "script_exceptions": [("LATIN", 0)],
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_CA', 'en'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=True,
+            script_exceptions=[("LATIN", 0)],
+            translation_locales=['en_CA', 'en'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Mohamed Mounir')
 
     def test_locale_specific_match_first_exc2(self):
-        settings = {
-            "standardize_artist_names": StandardizeArtistNames.NONE,
-            "translate_artist_names": True,
-            "translate_artist_names_script_exception": True,
-            "script_exceptions": [("ARABIC", 0)],
-            "standardize_instruments": True,
-            "release_ars": True,
-            "preferred_release_countries": [],
-            "translation_locales": ['en_CA', 'en'],
-        }
-        self.set_config_values(settings)
-        alias = _translate_artist_node(self.json_doc)
+        translation_options = TranslationOptions(
+            translate_artist_names=True,
+            translate_artist_names_script_exception=True,
+            script_exceptions=[("ARABIC", 0)],
+            translation_locales=['en_CA', 'en'],
+            translate_from_sortname=False,
+        )
+        alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'محمد منير')
 
 
@@ -1310,6 +1287,30 @@ class RelationsToMetadataTargetTypeArtistTest(PicardTestCase):
 
         self.assertEqual(m.getall('composer'), ['Ludwig van Beethoven'])
         self.assertEqual(m.getall('musicbrainz_composerid'), ['12345678-1234-1234-1234-123456789abc'])
+
+
+class TranslationOptionsTest(PicardTestCase):
+    def test_from_config(self):
+        settings = {
+            "standardize_artist_names": StandardizeArtistNames.NONE,
+            "translate_artist_names": True,
+            "translate_artist_names_script_exception": True,
+            "script_exceptions": [("LATIN", 0)],
+            "standardize_instruments": True,
+            "translation_locales": ['en_CA', 'en'],
+            "translate_from_sortname": True,
+        }
+        self.set_config_values(settings)
+        assert config.config
+        translation_options = TranslationOptions.from_config(config.config)
+        self.assertEqual(settings['translate_artist_names'], translation_options.translate_artist_names)
+        self.assertEqual(
+            settings['translate_artist_names_script_exception'],
+            translation_options.translate_artist_names_script_exception,
+        )
+        self.assertEqual(settings['script_exceptions'], translation_options.script_exceptions)
+        self.assertEqual(settings['translation_locales'], translation_options.translation_locales)
+        self.assertEqual(settings['translate_from_sortname'], translation_options.translate_from_sortname)
 
 
 class ShouldStandardizeArtistNameTest(PicardTestCase):
