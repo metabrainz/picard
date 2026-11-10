@@ -27,10 +27,15 @@ from collections.abc import Callable
 from functools import partial
 from itertools import combinations
 import traceback
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
 
 from PyQt6.QtNetwork import QNetworkReply
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -49,6 +54,11 @@ from picard.util import (
 )
 from picard.webservice import PendingRequest
 from picard.workspace import workspace
+
+
+if TYPE_CHECKING:
+    # Only for the annotations: picard.album imports this module.
+    from picard.album import Album
 
 
 VERSIONS_MAX_TRACKS = 10
@@ -115,6 +125,8 @@ class ReleaseGroup(MetadataItem):
         self.loaded_albums: set[str] = set()
         self.refcount = 0
         self.versions_count: int | None = None
+        # Why the last request for the versions failed, or None.
+        self.load_error: str | None = None
 
     def load_versions(self, callback: Callable) -> PendingRequest:
         kwargs = {'release-group': self.id, 'limit': 100}
@@ -159,12 +171,15 @@ class ReleaseGroup(MetadataItem):
                 )
                 version = {
                     'id': release['id'],
-                    'name': disname.replace("&", "&&"),
+                    'name': disname,
                     'totaltracks': release['totaltracks'],
                     'countries': release['countries'],
                     'formats': release['formats'],
                     'extra': extra,
                 }
+                # The parts of the name, and of the disambiguation, each on its own.
+                for key in VERSIONS_NAME_KEYS + VERSIONS_EXTRA_KEYS:
+                    version[key] = release[key]
                 self.versions.append(version)
 
     def _request_finished(
@@ -174,9 +189,11 @@ class ReleaseGroup(MetadataItem):
         http: QNetworkReply,
         error: QNetworkReply.NetworkError | Exception | None,
     ) -> None:
+        self.load_error = None
         try:
             if error:
-                log.error("%r", http.errorString())
+                self.load_error = http.errorString()
+                log.error("%r", self.load_error)
             else:
                 try:
                     self._parse_versions(document)
@@ -191,3 +208,48 @@ class ReleaseGroup(MetadataItem):
         self.refcount -= 1
         if self.refcount == 0:
             del workspace().release_groups[self.id]
+
+
+# The group of a version in alternative_versions(): 0 when it is like the album
+# (or what is preferred), 1 when it is not, for the track count, the countries
+# and the formats, in this order.
+VersionGroup = tuple[int, int, int]
+
+
+def alternative_versions(album: 'Album') -> list[tuple[VersionGroup, dict[str, Any]]]:
+    """The versions of the release group of ``album``, in the order to offer them.
+
+    The versions with as many tracks as the album come first, then those of the
+    preferred release countries, then those of the preferred release formats
+    (``preferred_release_countries`` and ``preferred_release_formats``). The
+    versions of a group are ordered by name, then by release ID.
+
+    Returns ``(group, version)`` pairs, ``version`` being an item of
+    ``album.release_group.versions``, so that a list can be divided by group,
+    and nothing for an album whose release group is not known yet.
+    """
+    release_group = album.release_group
+    if release_group is None:
+        return []
+    config = get_config()
+    album_tracks_count = album.get_num_total_files() or len(album.tracks)
+    preferred_countries = set(config.setting['preferred_release_countries'])
+    preferred_formats = set(config.setting['preferred_release_formats'])
+    ORDER_BEFORE, ORDER_AFTER = 0, 1
+
+    alternatives = []
+    for version in release_group.versions:
+        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+        if version['totaltracks'] != album_tracks_count:
+            trackmatch = ORDER_AFTER
+        if preferred_countries:
+            countries = set(version['countries'])
+            if not countries or not countries.intersection(preferred_countries):
+                countrymatch = ORDER_AFTER
+        if preferred_formats:
+            formats = set(version['formats'])
+            if not formats or not formats.intersection(preferred_formats):
+                formatmatch = ORDER_AFTER
+        alternatives.append(((trackmatch, countrymatch, formatmatch), version))
+    alternatives.sort(key=lambda item: (item[0], item[1]['name'], item[1]['id'], item[1]['extra']))
+    return alternatives
