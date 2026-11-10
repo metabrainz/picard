@@ -25,6 +25,7 @@ from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import EngineSession
 from picard.cli.engine.result import (
     EngineItemResult,
+    EngineResult,
 )
 from picard.file import File
 from picard.track import Track
@@ -126,3 +127,25 @@ def describe_entity(entity: Any) -> dict[str, Any]:
     if files is not None:
         data['file_count'] = len(files)
     return data
+
+
+def reject_candidates(
+    session: EngineSession,
+    command: str,
+    entities: list,
+    unresolved: list[str],
+    what: str = "holds no files",
+) -> 'EngineResult | None':
+    """A failure if ``entities`` include a lookup candidate, which ``what`` it lacks.
+
+    For the commands that act on the files of a selection (``save``, ``move``,
+    ``trash``) or on its tags: ``save m1`` is a mistake worth saying so, not an
+    error from deep inside the command.
+    """
+    for entity in entities:
+        if isinstance(entity, Candidate):
+            return EngineResult.failure(
+                f"{command}: {session.handle_for(entity)} is a lookup candidate, it {what}",
+                unresolved=unresolved,
+            )
+    return None

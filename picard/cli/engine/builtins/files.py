@@ -26,7 +26,9 @@ from picard.cli.engine.builtins.helpers import (
     arg_words,
     drain,
     entity_item,
+    handles_of,
     join_notes,
+    reject_candidates,
 )
 from picard.cli.engine.builtins.registry import command
 from picard.cli.engine.commands import (
@@ -208,3 +210,50 @@ def _cmd_file_add(session: EngineSession, args: dict[str, Any]) -> EngineResult:
 
     ok = any(it.status in {'added', 'pending'} for it in items) or (not opened.opened and not unmatched)
     return EngineResult(ok=ok, items=items, mints=mints, unresolved=unmatched, message=join_notes(notes))
+
+
+@command(
+    'save',
+    usage='save [selector]',
+    help="Write tag changes to disk.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Write the tag changes of the selected objects to disk.
+
+    The files of an album, a cluster or a track are saved with it. Without a
+    selector everything at the top level is saved. The files are renamed and moved
+    as the options say ('option ls rename'), so look at the result with 'metadata
+    show' first. Each file is reported as saved, error, or pending if it was still
+    being saved when the command stopped waiting.
+
+    Examples:
+      save
+      save a1
+      save f1,f2
+    """
+    selector = args.get('selector') or '*'
+    entities, unresolved = session.resolve(selector)
+    rejected = reject_candidates(session, 'save', entities, unresolved)
+    if rejected is not None:
+        return rejected
+    saved = workspace().save(entities)
+    notes: list[str] = []
+    drain(session, TIMEOUT_DEFAULT, notes)
+
+    items = []
+    for file in saved:
+        if file.state == File.State.ERROR:
+            status = 'error'
+        elif file.state == File.State.PENDING:
+            status = 'pending'  # still being saved when we stopped waiting
+        else:
+            status = 'saved'
+        items.append(EngineItemResult(handle=session.handle_for(file), status=status, data={'path': file.filename}))
+    return EngineResult(
+        items=items,
+        resolved=handles_of(session, entities),
+        unresolved=unresolved,
+        message=join_notes(notes),
+    )
