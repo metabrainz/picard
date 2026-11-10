@@ -318,9 +318,9 @@ columnar==1.4.1 \
     --hash=sha256:8efb692a7e6ca07dcc8f4ea889960421331a5dffa8e5af81f0a67ad8ea1fc798 \
     --hash=sha256:c3cb57273333b2ff9cfaafc86f09307419330c97faa88dcfe23df05e6fbb9c72
     # via pymarkdownlnt
-comtypes==1.4.17 ; sys_platform == 'win32' \
-    --hash=sha256:3d9c1e92ad8daf7600d371e76ee16161a627a5fb70c3144f6e52e78af6034363 \
-    --hash=sha256:4e0a221dde2c589b82977bed802efd71cd5eb67a380347b732e02735e597f586
+comtypes==1.5.0 ; sys_platform == 'win32' \
+    --hash=sha256:831ddb867bc17bc89cac525b4f32132ebd4bef1ffe6432406ec9f5d858c1a122 \
+    --hash=sha256:c648ed3b243b1eb3b7cb893a873d1b35104ca1c8922061f4b1efafeb255bacb5
     # via picard (pyproject.toml)
 coverage==7.16.2 ; python_full_version < '3.11' \
     --hash=sha256:00d3eb96e9988c45f50cccd1f1496571ac5c1f91386ac02c4d55516eeda19a24 \
@@ -588,9 +588,9 @@ filelock==4.1.0 ; python_full_version < '3.11' \
     # via
     #   python-discovery
     #   virtualenv
-filelock==4.2.9 ; python_full_version >= '3.11' \
-    --hash=sha256:96530b7c538d4ea08493ab067247aab7948c54d8cd622cce711c97cccc5d9896 \
-    --hash=sha256:a379c50a729e5b68c8519a4d26489f755d9769960a236ecd838190e2a78db2e9
+filelock==4.2.10 ; python_full_version >= '3.11' \
+    --hash=sha256:9479aaeb4db20b5a53e3da28493edd24720b66b8a0b84030aa56ccdf243d6857 \
+    --hash=sha256:fcc3c0cb8bfe7f4b3bb0e231c04b15dbad068cb3c2515f343d8fde4dce93bd5d
     # via
     #   python-discovery
     #   virtualenv
@@ -616,9 +616,9 @@ markdown==3.10.3 ; python_full_version < '3.11' \
     --hash=sha256:3589362618f743188b4d955b874402bc814f4f83f544dc207719f4baa7d9c45f \
     --hash=sha256:fa6c92a00a4a3c98b22728c64a935ae1928250ae65058a6ded814d2cc29a4cea
     # via picard (pyproject.toml)
-markdown==3.11.2 ; python_full_version >= '3.11' \
-    --hash=sha256:87bf5d90f2d2882e2c02fcda182c2800456b985bff38913867c49706481514b0 \
-    --hash=sha256:f80390747a2a0ff2ba54da074ce4f862f72a6685f608cd2637b646a6d83993f5
+markdown==3.11.3 ; python_full_version >= '3.11' \
+    --hash=sha256:81eb91631dc97ad1efbc76019ef0f80fe90ca49ddf81546752d79989c3bfff3e \
+    --hash=sha256:e1a31a112232504d753e5c01bb8c2de90d3f0ba986b063e10770cf7695b09e73
     # via picard (pyproject.toml)
 mutagen==1.48.1 \
     --hash=sha256:4f077fe87d3fc7fba259aa63d8c026b18382ca6a42ef37c61e16f1b1b5b82fe7 \
@@ -830,9 +830,9 @@ pyinstaller==6.22.3 \
     --hash=sha256:ea240b5dfa831ff673c97505eee0ec24670bccf71396c83109440348944c83d0 \
     --hash=sha256:f82d0fb89f21c3ed6f482ee16f341bc59e8a31dbabb9bae9ef04e53ade4dc0d9
     # via picard (pyproject.toml:dev)
-pyinstaller-hooks-contrib==2026.9 \
-    --hash=sha256:2748767901acb5cecd1304652b6c7add5bffcff1d71d01207fe24a5d42942a56 \
-    --hash=sha256:fb3e67dd64122561724c48ad0366ac9e8c16e638b63bf7d85de03bf3fdbf06c3
+pyinstaller-hooks-contrib==2026.10 \
+    --hash=sha256:7e906c659522e592a1680f30f709ffb6333277141a695926aa7190592205c5e3 \
+    --hash=sha256:dfc3cde20a7ce6c92e803016e66eed4b7050467e2c5f886a3745d89b258c6d6d
     # via pyinstaller
 pyjson5==2.0.1 \
     --hash=sha256:0213a9203cf045c5a3678facbbd164d9f00d645e55e707e36dd3b916a9e05002 \
@@ -1172,9 +1172,13 @@ pytest-cov==7.1.0 \
     --hash=sha256:30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2 \
     --hash=sha256:a0461110b7865f9a271aa1b51e516c9a95de9d696734a2f71e3e78f46e1d4678
     # via picard (pyproject.toml:dev)
-pytest-randomly==5.0.0 \
+pytest-randomly==5.0.0 ; python_full_version < '3.11' \
     --hash=sha256:8a0d4703115c0c25b38b6e129fc16b1947b9643ff26a41bc1d185d7e5a7689c1 \
     --hash=sha256:e9c575a5873ef168ddbe340ed9e97ce9edb4492ccc821e4b2ac6bb1f0ed515d2
+    # via picard (pyproject.toml:dev)
+pytest-randomly==5.1.0 ; python_full_version >= '3.11' \
+    --hash=sha256:cdf8af20419969d273b97c8e7c8d688200807e815bdc733cf2a6af183080ad58 \
+    --hash=sha256:fb9004e6821422291087d0294fd62f45ff304094db11fbdff8f2fe1ed20764d8
     # via picard (pyproject.toml:dev)
 pytest-xdist==3.8.0 \
     --hash=sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88 \
@@ -1188,9 +1192,9 @@ python-dateutil==4.0.0 ; python_full_version >= '3.11' \
     --hash=sha256:a5e246f79eb80475e691bf93862cead98decd8a498cf53ba0516fcdc0f50dc1c \
     --hash=sha256:d7295ff14fdc0f92f662100bfb6c551d160ca090f2939f1ec5b9794265c03f06
     # via wlc
-python-discovery==1.9.4 \
-    --hash=sha256:b468f365040b40f4cb39918b0766d3e5a2f340968e07df752fbc96f1bb4641ab \
-    --hash=sha256:c01b45fe515c1d268b57c57d554bb0e1d320b8e9eb5490bb2f4f577be26e4380
+python-discovery==1.9.5 \
+    --hash=sha256:86279f5d2728bc067de28b7ddc571be2eacc2ae0e7048f8629d2481a0f8848a2 \
+    --hash=sha256:a1fae8fca11e4bc61e38491c2aafff29e430b3c5e272d51ae52fb895bc4c0fac
     # via virtualenv
 pywin32==312 ; sys_platform == 'win32' \
     --hash=sha256:02ebca0f0242b75292e218065004310d6a477407c09fa449bfe4f6022bc0c0fc \
@@ -1305,25 +1309,25 @@ requests==2.34.2 \
     --hash=sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0 \
     --hash=sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed
     # via wlc
-ruff==0.17.3 \
-    --hash=sha256:029c37cbd3de48ca37aa12117bead2d065f15da17d66bf84e0d4274013705db2 \
-    --hash=sha256:27bb571ac78fef178fe5118d2827df95c2aae74a48fff2b15f6acd03af5ff5bb \
-    --hash=sha256:39405f341deec934b4289634324ad695f72df2970f9121582872eaf5b722f0f5 \
-    --hash=sha256:4590b9d86c0b1543ebb09094254e191cd43fe8edaf330baa035aab03da251532 \
-    --hash=sha256:46539cb031b01fd29ae0a02142483c46640b233ee12bb1c1b690bffa1555d5ca \
-    --hash=sha256:56b8ffb3f3b3cbccb8b76b71b38261b7ed982ef5d20f5b447b1b61a7f4949b24 \
-    --hash=sha256:68074094f55ca3d29ab19491f640282f7a84061c4c7977aa5094b968ca457e9a \
-    --hash=sha256:692fdb46d0fd9c71e380947dc5fc72f2c3f881073bc1f739e4579376231affbe \
-    --hash=sha256:6a754c0341bc9ca151b7b335988b3263921c08859f84ca219b70cee825571b6f \
-    --hash=sha256:7fa4b0f931cdbcb8a52044f370a3eb429fb42eb88807b0e800fcaa98dd42b24e \
-    --hash=sha256:81fce74bcd6be0e9da7c67c7553fd0f1f12964a2052cd728ef917b937a5ca1d9 \
-    --hash=sha256:a57049c8addb3662073859bb55a7ad35aa54f8a7c9ed268911d1333c5aadaaa9 \
-    --hash=sha256:ab5fa7ed5ce18554ea69d850ad162cbaa0c85fc47c08d83a569f806681c9a6ad \
-    --hash=sha256:ab86b84cd9d05e56d329742c0cabdcbe2d1d56c98f4a04aab9b5b66196febfb4 \
-    --hash=sha256:b75cc113b3aca388933d8296b667b1ac401a80317ea3074c9b0a66541199da29 \
-    --hash=sha256:bbde18beccd98c29a227c63c99022e3443b99258e08326df6425dfe0443705ef \
-    --hash=sha256:c673c170e27834d1262e3a9c1e97bdc9b9c3b180c63d89173ce69747232474c1 \
-    --hash=sha256:e407b4a6852853a9a2cdce96963e94ad9775578bb44e7561a0f2829f3cc04b11
+ruff==0.17.4 \
+    --hash=sha256:0d1f4848fd2ec0499be4046db9b7dfcc952666885f00233cc7033515282556a8 \
+    --hash=sha256:13e781c3c5f663e7fba737eaaeb70dd943dd55171daf316afb25cd5268cfe0c7 \
+    --hash=sha256:181ae38a9a8fb94925bf7d0794327b48d7fd7f4b50cfd84c0e999cc09ef8d131 \
+    --hash=sha256:20e43d7a08e712e33067ba887e6574546c79bd4831596ce8f16803ac7ff9ad90 \
+    --hash=sha256:2b08c4ff98dc234f4a3871a3105353b922fa875ea1073ca31001eb8c06bb4d89 \
+    --hash=sha256:2cd025509b2e15721b426fc70fd946d71f43b3db3b08e946dfec2d696d911690 \
+    --hash=sha256:3971a78cba76298b284c8321e6d40d93045ed348bec5c369d85099efc97fb7cf \
+    --hash=sha256:49b77f7b3921669466882a4881168801bdb06ec2cd83fb936049016cf5fdece1 \
+    --hash=sha256:5f28cf0dd37cb172fa5a8d2e92e6ada3a9dbd0609f094ed24039929eef0b7524 \
+    --hash=sha256:6007e7f3a0e55b0fbdb947af69cf24c21b4928df6be8ef3e767c69b5ccccf496 \
+    --hash=sha256:67c5a894fc054cf41f75f7afa24815de5a74329d97634126c2a1015740ff4e8c \
+    --hash=sha256:6b21c771b296888e8a35c6f48555f4b44e4483f61675d6ed51810a5203469ce6 \
+    --hash=sha256:7e061dcc0933c7031a616ac8d66ac540309b2aa21ab558101a8f53e9ac7a1185 \
+    --hash=sha256:7ed2f416349944f908f9574215994602242b0836844eba48eec61473033afca0 \
+    --hash=sha256:8ea6e0017c785f7282092b11e46338e4ebed1b9e575ebf2e55a8a1eda968241a \
+    --hash=sha256:e3b84eb74f260d1c2dbd236fd9d4c011d4fdd0a52bdf8aea57a10e3a1b71fca5 \
+    --hash=sha256:f32d178b50e826e00f6c6c1be3f56333068acb9b67fe167143527fa9b81e890d \
+    --hash=sha256:f99e95a1515161138be3cbd1b06c06e739d8feb38ade35564556999fffc3686e
     # via picard (pyproject.toml:dev)
 setuptools==84.2.1 \
     --hash=sha256:3ff8b3b5492a0aa66960f4419365a86b84e013070d4313e4d4a6894f5d64d6bc \
@@ -1438,9 +1442,9 @@ urllib3==2.8.0 \
     # via
     #   requests
     #   wlc
-virtualenv==21.15.5 \
-    --hash=sha256:bcf98c32139cf3df7f0cc2c8c48ca150645c20e66f8c4fe6c1e5e40bcae73947 \
-    --hash=sha256:fb869ea32930530ccc87549877b53268c2a4d4a7d7f2c384042eca05170350e6
+virtualenv==21.15.6 \
+    --hash=sha256:4b99ab9b95ff11043939bb4cad2fa0449175fa5a478372864f62160cb6c1a7ed \
+    --hash=sha256:c8b65c7d206ca6ef18de9352c160b3f04f66fff9f6b0ec8fd31f14688eba52c4
     # via pre-commit
 wcwidth==0.9.4 \
     --hash=sha256:093469e01d881bff3db93ff3f56c364dc87c441ea01f9f41c22de0c0bdf5c6ef \

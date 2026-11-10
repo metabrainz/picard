@@ -290,9 +290,9 @@ colorama==0.4.6 ; sys_platform == 'win32' \
     --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
     --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
     # via pytest
-comtypes==1.4.17 ; sys_platform == 'win32' \
-    --hash=sha256:3d9c1e92ad8daf7600d371e76ee16161a627a5fb70c3144f6e52e78af6034363 \
-    --hash=sha256:4e0a221dde2c589b82977bed802efd71cd5eb67a380347b732e02735e597f586
+comtypes==1.5.0 ; sys_platform == 'win32' \
+    --hash=sha256:831ddb867bc17bc89cac525b4f32132ebd4bef1ffe6432406ec9f5d858c1a122 \
+    --hash=sha256:c648ed3b243b1eb3b7cb893a873d1b35104ca1c8922061f4b1efafeb255bacb5
     # via picard (pyproject.toml)
 discid==1.4.2 \
     --hash=sha256:0cbb4b96949c68cbc63c9fc4585ef9b7ec2b9d39e23bce0b4db5d61c6f7b81e6 \
@@ -314,9 +314,9 @@ markdown==3.10.3 ; python_full_version < '3.11' \
     --hash=sha256:3589362618f743188b4d955b874402bc814f4f83f544dc207719f4baa7d9c45f \
     --hash=sha256:fa6c92a00a4a3c98b22728c64a935ae1928250ae65058a6ded814d2cc29a4cea
     # via picard (pyproject.toml)
-markdown==3.11.2 ; python_full_version >= '3.11' \
-    --hash=sha256:87bf5d90f2d2882e2c02fcda182c2800456b985bff38913867c49706481514b0 \
-    --hash=sha256:f80390747a2a0ff2ba54da074ce4f862f72a6685f608cd2637b646a6d83993f5
+markdown==3.11.3 ; python_full_version >= '3.11' \
+    --hash=sha256:81eb91631dc97ad1efbc76019ef0f80fe90ca49ddf81546752d79989c3bfff3e \
+    --hash=sha256:e1a31a112232504d753e5c01bb8c2de90d3f0ba986b063e10770cf7695b09e73
     # via picard (pyproject.toml)
 mutagen==1.48.1 \
     --hash=sha256:4f077fe87d3fc7fba259aa63d8c026b18382ca6a42ef37c61e16f1b1b5b82fe7 \
@@ -499,9 +499,9 @@ pyinstaller==6.22.3 \
     --hash=sha256:ea240b5dfa831ff673c97505eee0ec24670bccf71396c83109440348944c83d0 \
     --hash=sha256:f82d0fb89f21c3ed6f482ee16f341bc59e8a31dbabb9bae9ef04e53ade4dc0d9
     # via picard (pyproject.toml:build)
-pyinstaller-hooks-contrib==2026.9 \
-    --hash=sha256:2748767901acb5cecd1304652b6c7add5bffcff1d71d01207fe24a5d42942a56 \
-    --hash=sha256:fb3e67dd64122561724c48ad0366ac9e8c16e638b63bf7d85de03bf3fdbf06c3
+pyinstaller-hooks-contrib==2026.10 \
+    --hash=sha256:7e906c659522e592a1680f30f709ffb6333277141a695926aa7190592205c5e3 \
+    --hash=sha256:dfc3cde20a7ce6c92e803016e66eed4b7050467e2c5f886a3745d89b258c6d6d
     # via pyinstaller
 pyjwt==2.15.1 \
     --hash=sha256:42d59d631f7768a1028a64c7ff581a9bf7519804daf91fc5b6c56e30eec5e193 \
