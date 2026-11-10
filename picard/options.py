@@ -483,6 +483,7 @@ BoolOption('setting', 'player_now_playing', True, title=N_('Enable "now playing"
 ListOption('setting', 'plugins3_enabled_plugins', [])
 Option('setting', 'plugins3_exec_order', dict(), title=N_("Plugins execution order"), in_profile=True)
 Option('setting', 'plugins3_metadata', {})
+BoolOption('setting', 'prefer_latin_sortnames', True, title=N_("Prefer sort names in Latin script"), in_profile=True)
 ListOption('setting', 'preferred_release_countries', [], title=N_("Preferred release countries"), in_profile=True)
 ListOption('setting', 'preferred_release_formats', [], title=N_("Preferred medium formats"), in_profile=True)
 ListOption('setting', 'preferred_release_types', [], title=N_("Preferred release types"), in_profile=True)

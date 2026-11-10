@@ -184,6 +184,7 @@ class TranslationOptions:
     script_exceptions: list[tuple[str, int]]
     translation_locales: list[str]
     translate_from_sortname: bool
+    prefer_latin_sortnames: bool
 
     @staticmethod
     def from_config(config: Config) -> 'TranslationOptions':
@@ -193,6 +194,7 @@ class TranslationOptions:
             script_exceptions=config.setting['script_exceptions'],
             translation_locales=config.setting['translation_locales'],
             translate_from_sortname=config.setting['translate_from_sortname'],
+            prefer_latin_sortnames=config.setting['prefer_latin_sortnames'],
         )
 
 
@@ -638,6 +640,18 @@ def _translate_artist_node(node: Node, options: TranslationOptions) -> Alias:
     return Alias(translated_name or '', sort_name or '')
 
 
+def _is_preferred_sort_name(alias: dict, name: str, options: TranslationOptions) -> bool:
+    """Verifies whether the given alias is a preferred sort name for the given name."""
+    if alias['name'] != name or not alias['sort-name']:
+        return False
+
+    if options.prefer_latin_sortnames:
+        scripts = detect_script_weighted(alias['sort-name'], 0.7)
+        return 'LATIN' in scripts
+
+    return True
+
+
 def _select_sort_name_from_aliases(node: Node, name: str, options: TranslationOptions) -> str:
     """Find a sort name matching the given credited name in the artist's aliases.
 
@@ -649,7 +663,7 @@ def _select_sort_name_from_aliases(node: Node, name: str, options: TranslationOp
         return node['sort-name']
 
     if 'aliases' in node:
-        candidates = [alias for alias in node['aliases'] if alias['name'] == name and alias['sort-name']]
+        candidates = [alias for alias in node['aliases'] if _is_preferred_sort_name(alias, name, options)]
 
         # If translation is enabled, use alias from preferred locales first
         if options.translate_artist_names:

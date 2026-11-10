@@ -637,6 +637,28 @@ class RecordingArtistNameChangeTest(MBJSONTest):
         self.assertEqual(m['artist'], 'Blind Boy Grunt')
         self.assertEqual(m['artistsort'], 'Grunt, Blind Boy')
 
+    def test_non_latin_sortname(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+        config.setting['prefer_latin_sortnames'] = False
+        self.json_doc['artist-credit'][0]['name'] = 'Боб Дилан'
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'Боб Дилан')
+        self.assertEqual(m['artistsort'], 'Дилан, Боб')
+
+    def test_latin_sortname_fallback(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+        config.setting['prefer_latin_sortnames'] = True
+        self.json_doc['artist-credit'][0]['name'] = 'Боб Дилан'
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'Боб Дилан')
+        self.assertEqual(m['artistsort'], 'Dylan, Bob')
+
 
 class RecordingArtistAliasesLocalesTest(MBJSONTest):
     filename = 'recording_artist_aliases_locales.json'
@@ -663,6 +685,28 @@ class RecordingArtistAliasesLocalesTest(MBJSONTest):
         self.assertEqual(m['artist'], '後ろから這いより隊C')
         self.assertEqual(m['artists'], '後ろから這いより隊C')
         self.assertEqual(m['artistsort'], 'ウシロカラハイヨリタイC')
+
+    def test_use_credited_as_uses_localized_sortname(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+        config.setting['prefer_latin_sortnames'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], '後ろから這いより隊C')
+        self.assertEqual(m['artists'], '後ろから這いより隊C')
+        self.assertEqual(m['artistsort'], 'ウシロカラハイヨリタイC')
+
+    def test_use_credited_as_uses_latin_sortname(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+        config.setting['prefer_latin_sortnames'] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], '後ろから這いより隊C')
+        self.assertEqual(m['artists'], '後ろから這いより隊C')
+        self.assertEqual(m['artistsort'], 'Ushirokara Haiyoritai C')
 
 
 class RecordingInstrumentalTest(MBJSONTest):
@@ -870,6 +914,7 @@ class ArtistTranslationTest(MBJSONTest):
             script_exceptions=[],
             translation_locales=['en_CA', 'en'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en_CA)')
@@ -881,6 +926,7 @@ class ArtistTranslationTest(MBJSONTest):
             script_exceptions=[("LATIN", 0)],
             translation_locales=['en_CA', 'en'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran')
@@ -892,6 +938,7 @@ class ArtistTranslationTest(MBJSONTest):
             script_exceptions=[],
             translation_locales=['en_UK', 'en'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en)')
@@ -903,6 +950,7 @@ class ArtistTranslationTest(MBJSONTest):
             script_exceptions=[],
             translation_locales=['en_UK'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran (en)')
@@ -914,6 +962,7 @@ class ArtistTranslationTest(MBJSONTest):
             script_exceptions=[],
             translation_locales=['de'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Ed Sheeran')
@@ -929,6 +978,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             script_exceptions=[("LATIN", 0)],
             translation_locales=['en_CA', 'en'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'Mohamed Mounir')
@@ -940,6 +990,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             script_exceptions=[("ARABIC", 0)],
             translation_locales=['en_CA', 'en'],
             translate_from_sortname=False,
+            prefer_latin_sortnames=False,
         )
         alias = _translate_artist_node(self.json_doc, translation_options)
         self.assertEqual(alias.name, 'محمد منير')
@@ -1299,6 +1350,7 @@ class TranslationOptionsTest(PicardTestCase):
             "standardize_instruments": True,
             "translation_locales": ['en_CA', 'en'],
             "translate_from_sortname": True,
+            "prefer_latin_sortnames": True,
         }
         self.set_config_values(settings)
         assert config.config
@@ -1311,6 +1363,7 @@ class TranslationOptionsTest(PicardTestCase):
         self.assertEqual(settings['script_exceptions'], translation_options.script_exceptions)
         self.assertEqual(settings['translation_locales'], translation_options.translation_locales)
         self.assertEqual(settings['translate_from_sortname'], translation_options.translate_from_sortname)
+        self.assertEqual(settings['prefer_latin_sortnames'], translation_options.prefer_latin_sortnames)
 
 
 class ShouldStandardizeArtistNameTest(PicardTestCase):

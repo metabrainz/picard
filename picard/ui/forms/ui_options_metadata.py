@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created by: PyQt6 UI code generator 6.11.0
+# Created by: PyQt6 UI code generator 6.12.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -17,7 +17,7 @@ from picard.i18n import gettext as _
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(423, 726)
+        MetadataOptionsPage.resize(435, 800)
         self.verticalLayout = QtWidgets.QVBoxLayout(MetadataOptionsPage)
         self.verticalLayout.setObjectName("verticalLayout")
         self.metadata_groupbox = QtWidgets.QGroupBox(parent=MetadataOptionsPage)
@@ -53,6 +53,9 @@ class Ui_MetadataOptionsPage(object):
         self.standardize_vocals = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.standardize_vocals.setObjectName("standardize_vocals")
         self.verticalLayout_3.addWidget(self.standardize_vocals)
+        self.prefer_latin_sortnames = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
+        self.prefer_latin_sortnames.setObjectName("prefer_latin_sortnames")
+        self.verticalLayout_3.addWidget(self.prefer_latin_sortnames)
         self.convert_punctuation = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.convert_punctuation.setObjectName("convert_punctuation")
         self.verticalLayout_3.addWidget(self.convert_punctuation)
@@ -169,9 +172,11 @@ class Ui_MetadataOptionsPage(object):
         self.retranslateUi(MetadataOptionsPage)
         self.standardize_artist_names.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
+        MetadataOptionsPage.setTabOrder(self.standardize_artist_names, self.always_standardize_multivalue_artist)
         MetadataOptionsPage.setTabOrder(self.always_standardize_multivalue_artist, self.standardize_instruments)
         MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.standardize_vocals)
-        MetadataOptionsPage.setTabOrder(self.standardize_vocals, self.convert_punctuation)
+        MetadataOptionsPage.setTabOrder(self.standardize_vocals, self.prefer_latin_sortnames)
+        MetadataOptionsPage.setTabOrder(self.prefer_latin_sortnames, self.convert_punctuation)
         MetadataOptionsPage.setTabOrder(self.convert_punctuation, self.release_ars)
         MetadataOptionsPage.setTabOrder(self.release_ars, self.track_ars)
         MetadataOptionsPage.setTabOrder(self.track_ars, self.guess_tracknumber_and_title)
@@ -195,6 +200,7 @@ class Ui_MetadataOptionsPage(object):
         self.always_standardize_multivalue_artist.setText(_("Always standardize multi-valued artist tags"))
         self.standardize_instruments.setText(_("Use standardized instrument credits"))
         self.standardize_vocals.setText(_("Use standardized vocal credits"))
+        self.prefer_latin_sortnames.setText(_("Prefer sort names in Latin script"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))
