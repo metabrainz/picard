@@ -25,7 +25,7 @@ of :mod:`~picard.cli.engine.builtins.registry`. The modules of this package
 group them by what they act on:
 
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
-- :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``
+- :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``
 - :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
 
 :mod:`~picard.cli.engine.builtins.helpers` has what they share. Importing the
