@@ -15,6 +15,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 import json
+from unittest.mock import MagicMock
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -22,6 +23,11 @@ from test.picardtestcase import (
 )
 
 from picard.cli.engine.candidates import Candidate
+from picard.cli.engine.session import (
+    LocalEngineSession,
+    classify_entity,
+)
+from picard.cluster import Cluster
 from picard.matching import SimMatchRelease
 
 
@@ -61,3 +67,43 @@ class CandidateTest(PicardTestCase):
         data = c.describe()
         self.assertFalse(data.get('applied'))
         json.dumps(data)
+
+    def test_classified_as_m(self):
+        self.assertEqual('m', classify_entity(self._candidate()))
+
+
+class SessionCandidateStoreTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.release = load_test_json('release.json')
+        self.session = LocalEngineSession(MagicMock())
+        self.target = Cluster('Album', 'Artist')  # the looked-up cluster
+
+    def _candidate(self, similarity):
+        return Candidate(SimMatchRelease(similarity=similarity, release=self.release))
+
+    def test_set_candidates_mints_m_handles(self):
+        cands = [self._candidate(0.9), self._candidate(0.5)]
+        handles = self.session.set_candidates(self.target, cands)
+        self.assertEqual(['m1', 'm2'], handles)
+        self.assertEqual(cands, self.session.candidates_for(self.target))
+
+    def test_enumerate_m_lists_candidates(self):
+        cands = [self._candidate(0.9)]
+        self.session.set_candidates(self.target, cands)
+        self.assertEqual(cands, list(self.session.enumerate_prefix('m')))
+
+    def test_resolve_candidate_handle(self):
+        c = self._candidate(0.9)
+        (handle,) = self.session.set_candidates(self.target, [c])
+        entities, unresolved = self.session.resolve(handle)
+        self.assertEqual([c], entities)
+        self.assertEqual([], unresolved)
+
+    def test_relookup_replaces_candidates(self):
+        first = [self._candidate(0.9)]
+        self.session.set_candidates(self.target, first)
+        # A new lookup of the same target replaces its candidates.
+        second = [self._candidate(0.8), self._candidate(0.7)]
+        self.session.set_candidates(self.target, second)
+        self.assertEqual(second, self.session.candidates_for(self.target))
