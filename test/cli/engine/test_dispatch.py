@@ -85,6 +85,15 @@ class DispatchTest(PicardTestCase):
         self.assertFalse(r.ok)
         self.assertIn('unknown command', r.error)
 
+    def test_group_alone_lists_its_commands(self):
+        for name in ('album load', 'album versions'):
+            self.reg.register(EngineCommand(name=name, run=lambda session, args: EngineResult()))
+        r = dispatch(self.session, self.reg, 'album')
+        self.assertFalse(r.ok)
+        self.assertEqual("album: needs a command: load, versions (see 'help album')", r.error)
+        # With something after it, it is still an unknown command.
+        self.assertIn('unknown command', dispatch(self.session, self.reg, 'album bogus').error)
+
     def test_empty_line_is_failure(self):
         self.assertFalse(dispatch(self.session, self.reg, '   ').ok)
 

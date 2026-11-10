@@ -110,6 +110,10 @@ def dispatch(session: EngineSession, registry: EngineCommandRegistry, line: str)
     name, rest = split_command_name(tokens, registry)
     command = registry.get(name)
     if command is None:
+        verbs = sorted(c.verb for c in registry if c.noun == name and c.verb)
+        if verbs and not rest:
+            # A group on its own ('album'): say what can follow, rather than "unknown".
+            return EngineResult.failure(f"{name}: needs a command: {', '.join(verbs)} (see 'help {name}')")
         return EngineResult.failure(f"unknown command: {name!r}")
 
     args = _bind_args(command.args, rest)
