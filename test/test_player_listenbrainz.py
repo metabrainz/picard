@@ -31,6 +31,7 @@ from PyQt6.QtNetwork import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.appdirs import cache_folder
 from picard.metadata import Metadata
 from picard.webservice.api_helpers.listenbrainz import (
     ListenPayload,
@@ -144,6 +145,11 @@ class TestListenQueue(TempQueueFileMixin, PicardTestCase):
         payload = ListenPayload(track_metadata=TrackMetadata(artist_name="Test", track_name="Song"))
         self.queue.add(payload)
         return payload
+
+    def test_queue_file_is_isolated_from_user_cache_folder(self):
+        queue_file = ListenQueue(self.lbapi).get_listen_queue_file_path()
+        self.assertEqual(self.queue_file, queue_file)
+        self.assertNotIn(Path(cache_folder()), queue_file.parents)
 
     def test_add(self):
         self.queue._on_submit_listen_response = Mock()
