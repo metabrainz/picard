@@ -48,10 +48,13 @@ from picard.browser import (
     addrelease,
     auth_responses,
 )
+from picard.browser.ports import (
+    create_listening_server,
+    port_range,
+)
 from picard.config import get_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALIP,
-    BROWSER_INTEGRATION_MAX_PORT,
     METABRAINZ_OAUTH_SCOPES,
 )
 from picard.debug_opts import DebugOpt
@@ -109,8 +112,6 @@ class BrowserIntegration(QtCore.QObject):
         config = get_config()
 
         LISTEN_ALL = '0.0.0.0'
-        MIN_PORT = config.setting["browser_integration_port"]
-        MAX_PORT = BROWSER_INTEGRATION_MAX_PORT
 
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
@@ -118,21 +119,17 @@ class BrowserIntegration(QtCore.QObject):
             host_address = LISTEN_ALL
 
         try:
-            for port in range(MIN_PORT, MAX_PORT + 1):
-                try:
-                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
-                except OSError:
-                    continue
+            self.server = create_listening_server(ThreadingHTTPServer, host_address, RequestHandler)
+            if self.server:
+                port = self.port
                 log.info("%s: Starting, listening on address %s and port %d", LOG_PREFIX, host_address, port)
                 self.listen_port_changed.emit(port)
                 threading.Thread(target=self.server.serve_forever).start()
-                break
             else:
                 log.error(
                     "%s: Failed to find an available port in range %s-%s on address %s",
                     LOG_PREFIX,
-                    MIN_PORT,
-                    MAX_PORT,
+                    *port_range(),
                     host_address,
                 )
                 self.stop()
