@@ -48,14 +48,14 @@ from picard.browser import (
     addrelease,
     auth_responses,
 )
-from picard.config import get_config
-from picard.const import (
-    BROWSER_INTEGRATION_LOCALIP,
-    BROWSER_INTEGRATION_MAX_PORT,
-    METABRAINZ_OAUTH_SCOPES,
+from picard.browser.ports import (
+    create_listening_server,
+    port_range,
 )
+from picard.config import get_config
+from picard.const import BROWSER_INTEGRATION_LOCALIP
 from picard.debug_opts import DebugOpt
-from picard.oauth import OAuthInvalidStateError
+from picard.mblogin import receive_login_redirect
 from picard.util import mbid_validate
 from picard.util.thread import to_main
 
@@ -109,8 +109,6 @@ class BrowserIntegration(QtCore.QObject):
         config = get_config()
 
         LISTEN_ALL = '0.0.0.0'
-        MIN_PORT = config.setting["browser_integration_port"]
-        MAX_PORT = BROWSER_INTEGRATION_MAX_PORT
 
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
@@ -118,21 +116,17 @@ class BrowserIntegration(QtCore.QObject):
             host_address = LISTEN_ALL
 
         try:
-            for port in range(MIN_PORT, MAX_PORT + 1):
-                try:
-                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
-                except OSError:
-                    continue
+            self.server = create_listening_server(ThreadingHTTPServer, host_address, RequestHandler)
+            if self.server:
+                port = self.port
                 log.info("%s: Starting, listening on address %s and port %d", LOG_PREFIX, host_address, port)
                 self.listen_port_changed.emit(port)
                 threading.Thread(target=self.server.serve_forever).start()
-                break
             else:
                 log.error(
                     "%s: Failed to find an available port in range %s-%s on address %s",
                     LOG_PREFIX,
-                    MIN_PORT,
-                    MAX_PORT,
+                    *port_range(),
                     host_address,
                 )
                 self.stop()
@@ -227,7 +221,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif action == '/add' and addrelease.is_available():
             self._add_release(args)
         elif action == '/auth':
-            self._auth(args)
+            self._auth(parsed.query)
         elif action == '/favicon.ico':
             self._response(200, auth_responses.logo_svg(), 'image/svg+xml')
         else:
@@ -257,46 +251,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self._response(400, 'Missing parameter "token".')
 
-    _OAUTH_CALLBACK_PARAMS = frozenset(('code', 'error'))
-
-    def _auth(self, args):
-        if not args.keys() & self._OAUTH_CALLBACK_PARAMS:
-            # Neither 'code' nor 'error' present: the endpoint was likely called
-            # by something other than the MusicBrainz OAuth redirect.
-            log.warning("%s: Invalid OAuth callback parameters", LOG_PREFIX)
-            self._response(400, auth_responses.error_page(), 'text/html')
-            return
-
-        def qs_value(key):
-            return args.get(key, [''])[0]
-
-        tagger = tagger_instance()
-        oauth_manager = tagger.webservice.oauth_manager
-        try:
-            callback = oauth_manager.verify_state(qs_value('state'))
-        except OAuthInvalidStateError:
-            # An invalid state often means a different Picard instance is
-            # responding (e.g. Picard was restarted during the auth flow).
-            log.warning("%s: Invalid OAuth state parameter", LOG_PREFIX)
-            self._response(400, auth_responses.error_page(), 'text/html')
-            return
-
-        code = qs_value('code')
-        if code:
-            to_main(
-                oauth_manager.exchange_authorization_code,
-                authorization_code=code,
-                scopes=METABRAINZ_OAUTH_SCOPES,
-                callback=callback,
-            )
-            self._response(200, auth_responses.success_page(), 'text/html')
-        else:
-            error_code = qs_value('error')
-            error_description = qs_value('error_description')
-            error_msg = error_description or error_code
-            log.info("%s: Authorization denied: %s", LOG_PREFIX, error_msg)
-            to_main(callback, successful=False, error_msg=error_msg)
-            self._response(200, auth_responses.cancelled_page(error_code, error_description), 'text/html')
+    def _auth(self, query):
+        # The redirect of the browser at the end of a login (see picard.mblogin).
+        status, page = receive_login_redirect(query)
+        self._response(status, page, 'text/html')
 
     def _response(self, code, content='', content_type='text/plain'):
         self.server_version = SERVER_VERSION

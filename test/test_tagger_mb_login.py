@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The GUI part of the MusicBrainz login (Tagger.mb_login): the browser and the dialog."""
+"""The GUI part of the MusicBrainz login (Tagger.mb_login): the browser and what receives its redirect."""
 
 from unittest.mock import (
     MagicMock,
@@ -31,6 +31,9 @@ class TaggerMBLoginTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.app = MagicMock()
+        self.app.browser_integration.is_running = True
+        self.app._mb_login_receiver.start.return_value = True
+        self.app._mb_login_receiver.redirect_uri = 'http://127.0.0.1:8001/auth'
         self.callback = MagicMock()
         for target in ('picard.tagger.mblogin', 'picard.tagger.webbrowser2'):
             patcher = patch(target)
@@ -43,25 +46,29 @@ class TaggerMBLoginTest(PicardTestCase):
         self.mblogin.start_login.assert_called_once_with(self.callback)
         self.webbrowser2.open.assert_called_once_with('https://musicbrainz.org/oauth2/authorize?x')
 
-    def test_without_redirect_the_code_is_asked_for(self):
-        self.app.webservice.oauth_manager.is_oob = True
-        self.app._mb_login_dialog.return_value = 'the-code'
-        Tagger.mb_login(self.app, self.callback, parent='parent')
-        self.app._mb_login_dialog.assert_called_once_with('parent')
-        self.mblogin.finish_login.assert_called_once_with('the-code', self.callback)
-
-    def test_a_cancelled_dialog_fails_the_login(self):
-        self.app.webservice.oauth_manager.is_oob = True
-        self.app._mb_login_dialog.return_value = None
+    def test_with_the_browser_integration_it_receives_the_redirect(self):
         Tagger.mb_login(self.app, self.callback)
-        self.mblogin.finish_login.assert_not_called()
-        self.callback.assert_called_once_with(False, None)
+        self.app._mb_login_receiver.start.assert_not_called()
 
-    def test_with_the_browser_integration_the_redirect_completes_the_login(self):
-        self.app.webservice.oauth_manager.is_oob = False
+    def test_without_the_browser_integration_a_receiver_listens(self):
+        # MusicBrainz no longer accepts the out-of-band flow (a code to copy).
+        for integration in (None, MagicMock(is_running=False)):
+            with self.subTest(integration=integration):
+                self.app.browser_integration = integration
+                self.app._mb_login_receiver.start.reset_mock()
+                Tagger.mb_login(self.app, self.callback)
+                self.app._mb_login_receiver.start.assert_called_once_with()
+                self.assertEqual('http://127.0.0.1:8001/auth', self.app.webservice.oauth_manager.redirect_uri)
+
+    def test_no_free_port_fails_the_login(self):
+        self.app.browser_integration.is_running = False
+        self.app._mb_login_receiver.start.return_value = False
         Tagger.mb_login(self.app, self.callback)
-        self.app._mb_login_dialog.assert_not_called()
-        self.mblogin.finish_login.assert_not_called()
+        self.mblogin.start_login.assert_not_called()
+        self.webbrowser2.open.assert_not_called()
+        successful, error_msg = self.callback.call_args.args
+        self.assertFalse(successful)
+        self.assertTrue(error_msg)
 
     def test_logout(self):
         Tagger.mb_logout(self.app, self.callback)

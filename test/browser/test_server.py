@@ -56,6 +56,10 @@ class RequestHandlerAuthTest(PicardTestCase):
         self.oauth_manager.verify_state.return_value = self.callback
         self.tagger.webservice.oauth_manager = self.oauth_manager
         self.patch_tagger_instance('picard.browser.server')
+        # The login is completed on the main thread: here, at once.
+        patcher = patch('picard.mblogin.to_main', side_effect=lambda func, *args, **kwargs: func(*args, **kwargs))
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def _make_handler(self, path):
         """Create a RequestHandler instance without starting a real HTTP server."""
@@ -72,8 +76,7 @@ class RequestHandlerAuthTest(PicardTestCase):
         handler.client_address = ('127.0.0.1', 0)
         return handler
 
-    @patch('picard.browser.server.to_main')
-    def test_auth_cancelled_calls_callback(self, mock_to_main):
+    def test_auth_cancelled_calls_callback(self):
         """When auth is cancelled (error=access_denied), the callback should be
         called with successful=False so pending requests are released."""
         handler = self._make_handler('/auth?error=access_denied&state=valid_state')
@@ -81,13 +84,13 @@ class RequestHandlerAuthTest(PicardTestCase):
         handler._handle_get()
 
         self.oauth_manager.verify_state.assert_called_once_with('valid_state')
-        mock_to_main.assert_called_once_with(self.callback, successful=False, error_msg='access_denied')
+        self.callback.assert_called_once_with(successful=False, error_msg='access_denied')
+        self.oauth_manager.exchange_authorization_code.assert_not_called()
         response = handler.wfile.getvalue()
         self.assertIn(b'Authentication cancelled', response)
         self.assertIn(b'<!doctype html>', response)
 
-    @patch('picard.browser.server.to_main')
-    def test_auth_cancelled_with_error_description(self, mock_to_main):
+    def test_auth_cancelled_with_error_description(self):
         """When auth error includes error_description, it should be in the callback."""
         handler = self._make_handler(
             '/auth?error=access_denied&error_description=The+user+denied+the+request&state=valid_state'
@@ -95,23 +98,23 @@ class RequestHandlerAuthTest(PicardTestCase):
 
         handler._handle_get()
 
-        mock_to_main.assert_called_once_with(self.callback, successful=False, error_msg='The user denied the request')
+        self.callback.assert_called_once_with(successful=False, error_msg='The user denied the request')
 
-    @patch('picard.browser.server.to_main')
-    def test_auth_success_still_works(self, mock_to_main):
+    def test_auth_success_still_works(self):
         """Ensure normal auth success flow is not broken."""
         handler = self._make_handler('/auth?code=auth_code_123&state=valid_state')
 
         handler._handle_get()
 
         self.oauth_manager.verify_state.assert_called_once_with('valid_state')
-        mock_to_main.assert_called_once()
         self.callback.assert_not_called()
         # The code exchange must request the same prefixed scopes as the
         # authorization request; a mismatch yields a token without the
         # expected permissions (e.g. collection access fails with 401).
-        self.assertEqual(mock_to_main.call_args.kwargs['scopes'], METABRAINZ_OAUTH_SCOPES)
-        self.assertIn('musicbrainz:collection', mock_to_main.call_args.kwargs['scopes'])
+        self.oauth_manager.exchange_authorization_code.assert_called_once_with(
+            'auth_code_123', METABRAINZ_OAUTH_SCOPES, self.callback
+        )
+        self.assertIn('musicbrainz:collection', METABRAINZ_OAUTH_SCOPES)
         response = handler.wfile.getvalue()
         self.assertIn(b'Authentication successful', response)
         self.assertIn(b'<!doctype html>', response)
@@ -133,6 +136,7 @@ class RequestHandlerAuthTest(PicardTestCase):
 
         self.oauth_manager.verify_state.assert_called_once_with('bad')
         self.callback.assert_not_called()
+        self.oauth_manager.exchange_authorization_code.assert_not_called()
         response = handler.wfile.getvalue()
         self.assertIn(b'400', response)
         self.assertIn(b'<!doctype html>', response)

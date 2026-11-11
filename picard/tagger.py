@@ -498,6 +498,9 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         self.browser_integration = BrowserIntegration()
         self.register_cleanup(self.browser_integration.stop)
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
+        # Receives the redirect of a login when the browser integration does not run.
+        self._mb_login_receiver = mblogin.LoginRedirectReceiver()
+        self.register_cleanup(self._mb_login_receiver.stop)
 
     def _init_readthedocs(self):
         """Initialize the ReadTheDocs information"""
@@ -689,38 +692,27 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         self.webservice.oauth_manager.redirect_uri = self._mb_login_redirect_uri()
         self.listen_port_changed.emit(port)
 
-    def _mb_login_dialog(self, parent):
-        if not parent:
-            parent = self.window
-        dialog = QtWidgets.QInputDialog(parent)
-        dialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        dialog.setWindowTitle(_("MusicBrainz Account"))
-        dialog.setLabelText(_("Authorization code:"))
-        status = dialog.exec()
-        if status == QtWidgets.QDialog.DialogCode.Accepted:
-            return dialog.textValue()
-        else:
-            return None
-
     def _mb_login_redirect_uri(self):
         if self.browser_integration and self.browser_integration.is_running:
             return f'http://{BROWSER_INTEGRATION_LOCALHOST}:{self.browser_integration.port}/auth'
         else:
-            # If browser integration is disabled or not running on the standard
-            # port use out-of-band flow (with manual copying of the token).
+            # Without the browser integration, a login is received by
+            # self._mb_login_receiver (see mb_login).
             return None
 
     def mb_login(self, callback, parent=None):
-        # The login itself is in picard.mblogin; here the browser is opened and,
-        # without browser integration to receive its redirect, the code asked for.
+        # The login itself is in picard.mblogin; here the browser is opened. Its
+        # redirect is received by the browser integration if it runs, else by a
+        # receiver listening only for the time of the login: MusicBrainz no
+        # longer accepts the out-of-band flow, where a code was shown to copy.
+        if not (self.browser_integration and self.browser_integration.is_running):
+            receiver = self._mb_login_receiver
+            if not receiver.start():
+                callback(False, _("No free port to receive the authorization from the browser"))
+                return
+            self.webservice.oauth_manager.redirect_uri = receiver.redirect_uri
         authorization_url = mblogin.start_login(callback)
         webbrowser2.open(authorization_url)
-        if self.webservice.oauth_manager.is_oob:
-            authorization_code = self._mb_login_dialog(parent)
-            if authorization_code is not None:
-                mblogin.finish_login(authorization_code, callback)
-            else:
-                callback(False, None)
 
     def mb_logout(self, callback):
         mblogin.logout(callback)
