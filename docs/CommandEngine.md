@@ -198,6 +198,22 @@ machines without a browser, if MusicBrainz offers it; tokens kept for the sessio
 only, so that a login does not touch the configuration; and retrying a refresh
 with the token another process stored, before forgetting it.
 
+Possible improvements to the collections:
+
+- `collection show <k>`: the releases of a collection, one line each (the
+  `release:<mbid>` reference, title, artist, date, country, format, tracks,
+  and the handle of the album when it is loaded). MusicBrainz gives them 100 at
+  a time (`mb_api.get_collection(id, handler, limit, offset)`, which has no
+  caller yet), so it needs a function of `picard/collection.py` that fetches
+  every page and calls back with the releases or an error, as
+  `load_user_collections` does. Large collections take many requests, paced
+  by the rate limit of the web service: a `--limit` may be needed.
+- With the contents known, the collection knows which releases it holds, so
+  `collection ls` and `collection add` no longer depend on the albums having
+  been loaded while logged in.
+- `collection load <k>`: load the releases of a collection as albums (today,
+  `album load release:<mbid>` for each one).
+
 ### Options
 
 Behaviour that depends on settings (where `save` puts files and how it names
@@ -536,7 +552,7 @@ their current names (see "Commands"): `file save` is `save`,
 | `profile ls/use/show <name>` | option profiles | existing CLI machinery |
 | `plugin ls/install/remove/update` | plugin manager | existing `picard-cli plugins` |
 | `collection ls/add/rm` | MB user collections (done) | OPEN_COLLECTION_IN_BROWSER etc. |
-| `collection show <k>` | the releases of a collection, from MusicBrainz (not done) | needs a core wrapper of `get_collection` with paging |
+| `collection show <k>` | the releases of a collection, from MusicBrainz (not done, see Account) | needs a core wrapper of `get_collection` with paging |
 
 #### GUI-only (a remote session only)
 
