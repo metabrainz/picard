@@ -16,7 +16,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Generator
+from contextlib import contextmanager
 import json
+from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
     patch,
@@ -114,9 +118,6 @@ class TestListenQueue(PicardTestCase):
         self.set_config_values({"listenbrainz_token": "test_token"})
         self.lbapi = FakeListenBrainzAPIHelper()
         self.queue = ListenQueue(self.lbapi)
-        self.queue_file = self.queue.get_listen_queue_file_path()
-        self.queue_file.parent.mkdir(parents=True, exist_ok=True)
-        self.queue_file.unlink(missing_ok=True)
 
     def _queue_with_pending_listen(self):
         self.lbapi = FakeListenBrainzAPIHelper(
@@ -126,6 +127,13 @@ class TestListenQueue(PicardTestCase):
         payload = ListenPayload(track_metadata=TrackMetadata(artist_name="Test", track_name="Song"))
         self.queue.add(payload)
         return payload
+
+    @contextmanager
+    def with_temp_queue_file(self) -> Generator[Path, None, None]:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / 'listenbrainz-queue.json'
+            with patch.object(self.queue, 'get_listen_queue_file_path', lambda: path):
+                yield path
 
     def test_add(self):
         self.queue._on_submit_listen_response = Mock()
@@ -143,25 +151,28 @@ class TestListenQueue(PicardTestCase):
         self.assertEqual(1, len(self.queue._queue))
 
     def test_save_does_not_create_file_when_queue_empty(self):
-        self.queue.save()
-        self.assertFalse(self.queue_file.exists())
+        with self.with_temp_queue_file() as qf:
+            self.queue.save()
+            self.assertFalse(qf.exists())
 
     def test_save_writes_non_empty_queue(self):
         self._queue_with_pending_listen()
-        self.queue.save()
-        self.assertTrue(self.queue_file.exists())
-        with open(self.queue_file) as f:
-            data = json.load(f)
-        self.assertEqual(len(data), 1)
+        with self.with_temp_queue_file() as qf:
+            self.queue.save()
+            self.assertTrue(qf.exists())
+            with open(qf) as f:
+                data = json.load(f)
+            self.assertEqual(len(data), 1)
 
     def test_queue_file_removed_after_successful_submission(self):
         self._queue_with_pending_listen()
-        self.queue.save()
-        self.assertTrue(self.queue_file.exists())
-        # Simulate successful submission draining the queue
-        self.queue._queue.clear()
-        self.queue._on_listen_queue_drained()
-        self.assertFalse(self.queue_file.exists())
+        with self.with_temp_queue_file() as qf:
+            self.queue.save()
+            self.assertTrue(qf.exists())
+            # Simulate successful submission draining the queue
+            self.queue._queue.clear()
+            self.queue._on_listen_queue_drained()
+            self.assertFalse(qf.exists())
 
     def test_single_listen_permanent_error_keeps_listen_without_scheduling(self):
         # A 401 must not drop the listen; it stays queued, but the retry timer
