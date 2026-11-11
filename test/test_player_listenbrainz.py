@@ -253,7 +253,7 @@ class TestIsTemporarySubmissionError(PicardTestCase):
         self.assertFalse(_is_temporary_submission_error(0))
 
 
-class TestSubmissionServiceTokenRearm(PicardTestCase):
+class TestSubmissionServiceTokenRearm(TempQueueFileMixin, PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({"listenbrainz_token": "test_token"})
