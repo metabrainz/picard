@@ -261,9 +261,11 @@ class HeadlessTagger(WorkspaceHost, QtCore.QCoreApplication):
 
         Reads the web service and AcoustID client via their backing fields so
         that merely draining the event loop never forces either (lazy) service
-        to be created.
+        to be created. The requests are counted as they are now, not as the
+        status bar shows them: a request queued by an event handled while
+        waiting would not be in that count yet.
         """
-        pending_requests = self._webservice.num_pending_web_requests if self._webservice is not None else 0
+        pending_requests = self._webservice.pending_requests_count() if self._webservice is not None else 0
         fingerprinting = self._acoustid_client is not None and self._acoustid_client.is_fingerprinting
         return bool(
             self.thread_pool.activeThreadCount()

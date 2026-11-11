@@ -194,6 +194,60 @@ app.run_cleanup()
 """
 
 
+_QUEUED_WHILE_WAITING_PROGRAM = """
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import sys
+import threading
+import time
+from PyQt6 import QtCore
+
+QtCore.QCoreApplication.setApplicationName('MusicBrainz-Picard-headless-test')
+QtCore.QCoreApplication.setOrganizationName('MusicBrainz-headless-test')
+
+from picard.cli.headless import HeadlessTagger
+from picard.util import thread
+
+app = HeadlessTagger(sys.argv, config_file=sys.argv[1])
+
+
+class SlowHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        time.sleep(0.5)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(b'{}')
+
+    def log_message(self, *args):
+        pass
+
+
+server = HTTPServer(('127.0.0.1', 0), SlowHandler)
+threading.Thread(target=server.serve_forever, daemon=True).start()
+url = QtCore.QUrl(f'http://127.0.0.1:{server.server_address[1]}/')
+# Build the web service now: what is measured is the wait, not its creation.
+webservice = app.webservice
+answered = []
+
+def request():
+    webservice.get_url(url=url, handler=lambda document, reply, error: answered.append(error))
+
+# A request queued by an event handled while waiting (as a callback, or the
+# redirect of a login, does) is waited for, although nothing else was pending.
+# The count of pending requests of the web service is refreshed by a timer, for
+# the status bar: while it runs (here for longer than the request takes), a
+# request queued meanwhile is not counted yet.
+webservice._timer_count_pending_requests.start(5000)
+thread.to_main(request)
+assert app.run_until_idle(timeout=30)
+assert answered == [None], answered
+print('QUEUED_WHILE_WAITING_OK')
+
+server.shutdown()
+app.run_cleanup()
+"""
+
+
 _POST_SAVE_PROGRAM = """
 import sys
 import tempfile
@@ -376,6 +430,22 @@ class HeadlessTaggerSubprocessTest(PicardTestCase):
             msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
         self.assertIn('BATCHES_OK', result.stdout)
+
+    def test_run_until_idle_waits_for_a_request_queued_while_waiting(self):
+        config_file = self.mktmpdir() + '/Picard.ini'
+        result = subprocess.run(
+            [sys.executable, '-c', _QUEUED_WHILE_WAITING_PROGRAM, config_file],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=120,
+        )
+        self.assertEqual(
+            0,
+            result.returncode,
+            msg=f"subprocess failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+        )
+        self.assertIn('QUEUED_WHILE_WAITING_OK', result.stdout)
 
     def test_requests_waiting_for_a_login_do_not_wait_for_ever(self):
         config_file = self.mktmpdir() + '/Picard.ini'

@@ -921,8 +921,16 @@ class WebService(QtCore.QObject):
         self._notify_on_cancel = False
         self._init_queues()
 
+    def pending_requests_count(self) -> int:
+        """The number of the requests queued or being made, now.
+
+        ``num_pending_web_requests`` is refreshed by a timer, for the status
+        bar, so it can lag behind: a request queued since is not in it yet.
+        """
+        return len(self._active_requests) + self._queue.count()
+
     def _count_pending_requests(self):
-        count = len(self._active_requests) + self._queue.count()
+        count = self.pending_requests_count()
         if count != self.num_pending_web_requests:
             self.num_pending_web_requests = count
             self.pending_requests_changed.emit()
