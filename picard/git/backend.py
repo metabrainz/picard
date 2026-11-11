@@ -60,6 +60,8 @@ class GitStatusFlag(Enum):
 
 
 class GitResetMode(Enum):
+    SOFT = "soft"
+    MIXED = "mixed"
     HARD = "hard"
 
 
@@ -222,10 +224,9 @@ class GitRepository(ABC):
     def reset(self, commit_id: str, mode: GitResetMode):
         """Reset repository to commit"""
 
-    def reset_to_commit(self, commit_id: str, hard: bool = False):
-        """Reset repository to commit with simplified API"""
-        mode = GitResetMode.HARD if hard else GitResetMode.HARD  # Only HARD mode is defined
-        self.reset(commit_id, mode)
+    def reset_hard(self, commit_id: str):
+        """Hard reset: move HEAD, reset index and working tree to commit"""
+        self.reset(commit_id, GitResetMode.HARD)
 
     @abstractmethod
     def checkout_tree(self, obj: GitObject):
@@ -358,10 +359,6 @@ class GitBackend(ABC):
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
         """Add all files and create commit"""
-
-    @abstractmethod
-    def reset_hard(self, repo: GitRepository, commit_id: str):
-        """Reset repository to commit (hard reset)"""
 
     @abstractmethod
     def create_reference(self, repo: GitRepository, ref_name: str, commit_id: str):
