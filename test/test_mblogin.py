@@ -21,10 +21,16 @@ from unittest.mock import (
     MagicMock,
     patch,
 )
+from urllib.error import HTTPError
+from urllib.request import (
+    ProxyHandler,
+    build_opener,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard import mblogin
+from picard.browser.ports import port_range
 from picard.const import METABRAINZ_OAUTH_SCOPES
 from picard.oauth import OAuthInvalidStateError
 
@@ -41,11 +47,8 @@ class MBLoginTest(PicardTestCase):
         self.callback = MagicMock()
 
     def _authorized(self, successful=True, error_msg=None):
-        """Answer the request for the tokens: the exchange of a code, or the redirect of the browser."""
-        if self.oauth.exchange_authorization_code.called:
-            on_done = self.oauth.exchange_authorization_code.call_args.args[2]
-        else:
-            on_done = self.oauth.get_authorization_url.call_args.args[1]
+        """Answer the request for the tokens, made once the redirect of the browser is received."""
+        on_done = self.oauth.get_authorization_url.call_args.args[1]
         on_done(successful=successful, error_msg=error_msg)
 
     def _username_fetched(self, successful=True, error_msg=None):
@@ -58,15 +61,8 @@ class MBLoginTest(PicardTestCase):
         self.assertEqual(METABRAINZ_OAUTH_SCOPES, self.oauth.get_authorization_url.call_args.args[0])
         self.callback.assert_not_called()
 
-    def test_finish_login_exchanges_the_code(self):
-        mblogin.start_login(self.callback)
-        mblogin.finish_login('the-code', self.callback)
-        args = self.oauth.exchange_authorization_code.call_args.args
-        self.assertEqual(('the-code', METABRAINZ_OAUTH_SCOPES), args[:2])
-
     def test_a_login_fetches_the_username_then_the_collections(self):
         mblogin.start_login(self.callback)
-        mblogin.finish_login('the-code', self.callback)
         self._authorized()
         self.oauth.fetch_username.assert_called_once()
         self.callback.assert_not_called()
@@ -74,16 +70,8 @@ class MBLoginTest(PicardTestCase):
         self.load_user_collections.assert_called_once_with()
         self.callback.assert_called_once_with(True, None)
 
-    def test_the_redirect_of_the_browser_completes_a_login_too(self):
-        # With a redirect URI, the browser integration calls the state's callback itself.
-        mblogin.start_login(self.callback)
-        self._authorized()
-        self._username_fetched()
-        self.callback.assert_called_once_with(True, None)
-
     def test_a_refused_code_is_reported(self):
         mblogin.start_login(self.callback)
-        mblogin.finish_login('bad-code', self.callback)
         self._authorized(successful=False, error_msg='invalid_grant')
         self.oauth.fetch_username.assert_not_called()
         self.load_user_collections.assert_not_called()
@@ -91,7 +79,6 @@ class MBLoginTest(PicardTestCase):
 
     def test_a_failure_to_get_the_username_is_reported(self):
         mblogin.start_login(self.callback)
-        mblogin.finish_login('the-code', self.callback)
         self._authorized()
         self._username_fetched(successful=False, error_msg='no user')
         self.load_user_collections.assert_not_called()
@@ -183,3 +170,99 @@ class ReceiveLoginRedirectTest(PicardTestCase):
                 self.assertEqual(400, mblogin.receive_login_redirect(query)[0])
         self.oauth.verify_state.assert_not_called()
         self.assertEqual([], self.on_main)
+
+
+class LoginRedirectReceiverTest(PicardTestCase):
+    """A real receiver on the loopback address."""
+
+    def setUp(self):
+        super().setUp()
+        self.oauth = MagicMock()
+        self.tagger.webservice = MagicMock(oauth_manager=self.oauth)
+        # A state is valid once, as with the real OAuth manager.
+        self.states = {'xyz': MagicMock(name='authorization_finished')}
+
+        def verify_state(state):
+            try:
+                return self.states.pop(state)
+            except KeyError as e:
+                raise OAuthInvalidStateError from e
+
+        self.oauth.verify_state.side_effect = verify_state
+        self.on_main = []
+        patcher = patch('picard.mblogin.to_main', side_effect=lambda *call, **kwargs: self.on_main.append(call))
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.receiver = mblogin.LoginRedirectReceiver()
+        self.addCleanup(self.receiver.stop)
+        if not self.receiver.start():
+            self.skipTest("no free port")
+        self.uri = self.receiver.redirect_uri
+
+    def get(self, path):
+        url = self.uri.replace('/auth', path)
+        try:
+            # No proxy: the receiver is on the loopback address.
+            with build_opener(ProxyHandler({})).open(url, timeout=5) as reply:
+                return reply.status
+        except HTTPError as e:
+            return e.code
+
+    def run_on_main(self):
+        calls, self.on_main = self.on_main, []
+        for func, *args in calls:
+            func(*args)
+
+    def test_redirect_uri(self):
+        self.assertTrue(self.uri.startswith('http://127.0.0.1:'), self.uri)
+        self.assertTrue(self.uri.endswith('/auth'), self.uri)
+        port = int(self.uri.rsplit(':', 1)[1].split('/')[0])
+        first, last = port_range()
+        self.assertTrue(first <= port <= last)
+
+    def test_completes_the_login_then_stops(self):
+        self.assertEqual(200, self.get('/auth?code=abc&state=xyz'))
+        self.assertTrue(self.receiver.is_running)
+        self.run_on_main()
+        self.oauth.exchange_authorization_code.assert_called_once()
+        self.assertEqual('abc', self.oauth.exchange_authorization_code.call_args.args[0])
+        self.assertFalse(self.receiver.is_running)
+
+    def test_a_redirect_is_used_once(self):
+        self.assertEqual(200, self.get('/auth?code=abc&state=xyz'))
+        # Its state is used: a second redirect with it is refused.
+        self.assertEqual(400, self.get('/auth?code=other&state=xyz'))
+
+    def test_a_redirect_of_another_login_is_refused(self):
+        self.assertEqual(400, self.get('/auth?code=abc&state=other'))
+        self.assertEqual([], self.on_main)
+        self.assertTrue(self.receiver.is_running)
+
+    def test_receives_a_refusal(self):
+        self.assertEqual(200, self.get('/auth?error=access_denied&state=xyz'))
+        self.run_on_main()
+        self.oauth.exchange_authorization_code.assert_not_called()
+        self.assertFalse(self.receiver.is_running)
+
+    def test_ignores_other_requests(self):
+        self.assertEqual(404, self.get('/openalbum?id=x'))
+        self.assertEqual(400, self.get('/auth?foo=bar'))
+        self.assertEqual([], self.on_main)
+
+    def test_a_new_login_is_not_stopped_by_the_previous_one(self):
+        self.assertEqual(200, self.get('/auth?code=abc&state=xyz'))
+        # A new login begins before the main thread handled the redirect.
+        self.receiver.start()
+        self.run_on_main()
+        self.assertTrue(self.receiver.is_running)
+
+    def test_no_free_port(self):
+        self.receiver.stop()
+        with patch('picard.mblogin.create_listening_server', return_value=None):
+            self.assertFalse(self.receiver.start())
+        self.assertIsNone(self.receiver.redirect_uri)
+
+    def test_stop(self):
+        self.receiver.stop()
+        self.assertFalse(self.receiver.is_running)
+        self.assertIsNone(self.receiver.redirect_uri)
