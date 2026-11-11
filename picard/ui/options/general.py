@@ -148,6 +148,8 @@ class GeneralOptionsPage(OptionsPage):
         self.tagger.mb_logout(self.on_logout_finished)
 
     def on_logout_finished(self, successful, error_msg=None):
+        if self.deleted:
+            return
         if not successful:
             msg = QtWidgets.QMessageBox(self)
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
