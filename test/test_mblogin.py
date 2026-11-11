@@ -26,6 +26,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard import mblogin
 from picard.const import METABRAINZ_OAUTH_SCOPES
+from picard.oauth import OAuthInvalidStateError
 
 
 class MBLoginTest(PicardTestCase):
@@ -109,3 +110,76 @@ class MBLoginTest(PicardTestCase):
         on_done(successful=False, error_msg='offline')
         self.load_user_collections.assert_not_called()
         self.callback.assert_called_once_with(False, 'offline')
+
+
+class ParseLoginRedirectTest(PicardTestCase):
+    def test_a_code(self):
+        for query in ('code=abc&state=xyz', 'state=xyz&code=abc'):
+            with self.subTest(query=query):
+                self.assertEqual(mblogin.LoginRedirect('xyz', 'abc'), mblogin.parse_login_redirect(query))
+
+    def test_a_refusal(self):
+        redirect = mblogin.parse_login_redirect('error=access_denied&error_description=No&state=xyz')
+        self.assertEqual(mblogin.LoginRedirect('xyz', '', 'access_denied', 'No'), redirect)
+
+    def test_not_a_redirect(self):
+        for query in ('', 'abc', 'code=abc', 'state=xyz', 'foo=bar&state=xyz'):
+            with self.subTest(query=query):
+                self.assertIsNone(mblogin.parse_login_redirect(query))
+
+
+class ReceiveLoginRedirectTest(PicardTestCase):
+    """What the browser integration and the receiver do with the redirect of a login."""
+
+    def setUp(self):
+        super().setUp()
+        self.oauth = MagicMock()
+        self.tagger.webservice = MagicMock(oauth_manager=self.oauth)
+        self.authorization_finished = MagicMock()
+        self.oauth.verify_state.return_value = self.authorization_finished
+        # What is to run on the main thread, run when the test says so.
+        self.on_main = []
+        patcher = patch('picard.mblogin.to_main', side_effect=lambda *call, **kwargs: self.on_main.append(call))
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def run_on_main(self):
+        for func, *args in self.on_main:
+            func(*args)
+
+    def test_a_code_is_exchanged_on_the_main_thread(self):
+        status, page = mblogin.receive_login_redirect('code=abc&state=xyz')
+        self.assertEqual(200, status)
+        self.assertIn('Authentication successful', page)
+        # The state is checked at once, the code exchanged on the main thread.
+        self.oauth.verify_state.assert_called_once_with('xyz')
+        self.oauth.exchange_authorization_code.assert_not_called()
+        self.run_on_main()
+        self.oauth.exchange_authorization_code.assert_called_once_with(
+            'abc', METABRAINZ_OAUTH_SCOPES, self.authorization_finished
+        )
+
+    def test_a_refusal_is_reported(self):
+        status, page = mblogin.receive_login_redirect('error=access_denied&error_description=No&state=xyz')
+        self.assertEqual(200, status)
+        self.assertIn('Authentication cancelled', page)
+        self.run_on_main()
+        self.authorization_finished.assert_called_once_with(successful=False, error_msg='No')
+        self.oauth.exchange_authorization_code.assert_not_called()
+
+    def test_an_unknown_state_is_an_error_page(self):
+        # Not reported as successful: the login would not happen.
+        self.oauth.verify_state.side_effect = OAuthInvalidStateError
+        for query in ('code=abc&state=nope', 'error=access_denied&state=nope'):
+            with self.subTest(query=query):
+                status, page = mblogin.receive_login_redirect(query)
+                self.assertEqual(400, status)
+                self.assertIn('Authentication error', page)
+        self.assertEqual([], self.on_main)
+
+    def test_not_a_redirect_is_an_error_page(self):
+        for query in ('', 'foo=bar', 'state=xyz', 'code=abc'):
+            with self.subTest(query=query):
+                self.assertEqual(400, mblogin.receive_login_redirect(query)[0])
+        self.oauth.verify_state.assert_not_called()
+        self.assertEqual([], self.on_main)
