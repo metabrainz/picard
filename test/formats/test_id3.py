@@ -761,7 +761,7 @@ class CommonId3Tests:
                 self.assertNotIn('TXXX:' + name, raw_metadata)
 
         @skipUnlessTestfile
-        def test_podcast_flag_not_set(self):
+        def test_podcast_flag_presence(self):
             tags = mutagen.id3.ID3Tags()
             tags.add(mutagen.id3.PCST(value=0))
             save_raw(self.filename, tags)
