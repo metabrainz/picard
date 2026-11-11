@@ -592,7 +592,7 @@ class PluginManager(QObject):
         try:
 
             def rollback_operation(repo):
-                repo.reset_to_commit(commit_id, hard=True)
+                repo.reset_hard(commit_id)
 
             self._with_plugin_repo(plugin.local_path, rollback_operation)
             log.debug('Git rollback completed for plugin %s', plugin.plugin_id)

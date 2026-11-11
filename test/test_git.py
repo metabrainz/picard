@@ -20,6 +20,7 @@
 
 import os
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import (
     Mock,
@@ -35,6 +36,7 @@ from picard.git.backend import (
     GitRef,
     GitRefType,
     GitRepository,
+    GitResetMode,
     GitStatusFlag,
 )
 from picard.git.backends import pygit2 as pygit2_backend
@@ -170,9 +172,6 @@ class MockGitBackend(GitBackend):
 
     def add_and_commit_files(self, repo, message, author_name="Test", author_email="test@example.com"):
         return "abc123"
-
-    def reset_hard(self, repo, commit_id):
-        pass
 
     def create_reference(self, repo, ref_name, commit_id):
         pass
@@ -468,6 +467,51 @@ class TestGitNetworkTimeouts(unittest.TestCase):
             with patch.object(pygit2_backend.pygit2, 'settings', OldSettings()):
                 # Must not raise even though the settings are unsupported.
                 pygit2_backend.Pygit2Backend._apply_network_timeouts()
+
+
+class TestPygit2ResetModes(unittest.TestCase):
+    """Each GitResetMode must map to the matching libgit2 reset behavior."""
+
+    def setUp(self):
+        skip_if_no_git_backend()
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.path = Path(self._tmp.name)
+        self.backend = pygit2_backend.Pygit2Backend()
+        self.repo = self.backend.init_repository(self.path)
+        self.addCleanup(self.repo.free)
+        self.file = self.path / 'file.txt'
+        self.file.write_text('one')
+        self.first = self.backend.add_and_commit_files(self.repo, 'first')
+        self.file.write_text('two')
+        self.second = self.backend.add_and_commit_files(self.repo, 'second')
+
+    def _raw_status(self):
+        return pygit2_backend.pygit2.Repository(str(self.path)).status()
+
+    def test_reset_hard_helper(self):
+        self.repo.reset_hard(self.first)
+        self.assertEqual(self.repo.get_head_target(), self.first)
+        self.assertEqual(self.file.read_text(), 'one')
+        self.assertEqual(self._raw_status(), {})
+
+    def test_hard_resets_head_index_and_worktree(self):
+        self.repo.reset(self.first, GitResetMode.HARD)
+        self.assertEqual(self.repo.get_head_target(), self.first)
+        self.assertEqual(self.file.read_text(), 'one')
+        self.assertEqual(self._raw_status(), {})
+
+    def test_mixed_resets_head_and_index_keeps_worktree(self):
+        self.repo.reset(self.first, GitResetMode.MIXED)
+        self.assertEqual(self.repo.get_head_target(), self.first)
+        self.assertEqual(self.file.read_text(), 'two')
+        self.assertEqual(self._raw_status(), {'file.txt': pygit2_backend.pygit2.enums.FileStatus.WT_MODIFIED})
+
+    def test_soft_resets_head_only(self):
+        self.repo.reset(self.first, GitResetMode.SOFT)
+        self.assertEqual(self.repo.get_head_target(), self.first)
+        self.assertEqual(self.file.read_text(), 'two')
+        self.assertEqual(self._raw_status(), {'file.txt': pygit2_backend.pygit2.enums.FileStatus.INDEX_MODIFIED})
 
 
 if __name__ == '__main__':

@@ -76,6 +76,15 @@ DEFAULT_GIT_SERVER_TIMEOUT = 60
 MAX_GIT_TIMEOUT = 3600
 
 
+def _to_pygit2_reset_mode(mode: GitResetMode):
+    """Map a GitResetMode to pygit2's ResetMode (resolved lazily, pygit2 is optional)"""
+    return {
+        GitResetMode.SOFT: pygit2.enums.ResetMode.SOFT,
+        GitResetMode.MIXED: pygit2.enums.ResetMode.MIXED,
+        GitResetMode.HARD: pygit2.enums.ResetMode.HARD,
+    }[mode]
+
+
 class Pygit2RemoteCallbacks(GitRemoteCallbacks):
     def __init__(self):
         if not HAS_PYGIT2:
@@ -165,7 +174,7 @@ class Pygit2Repository(GitRepository):
 
     def reset(self, commit_id: str, mode: GitResetMode):
         _log_git_call("reset", commit_id, mode.value)
-        self._repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
+        self._repo.reset(commit_id, _to_pygit2_reset_mode(mode))
 
     def checkout_tree(self, obj: GitObject):
         _log_git_call("checkout_tree", obj)
@@ -499,11 +508,6 @@ class Pygit2Backend(GitBackend):
             return ret
         except pygit2.GitError as e:
             raise GitCommitError(f"Failed to create commit: {e}") from e
-
-    def reset_hard(self, repo: GitRepository, commit_id: str):
-        _log_git_call("reset_hard", commit_id)
-        pygit_repo = self._raw(repo)
-        pygit_repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
 
     def create_reference(self, repo: GitRepository, ref_name: str, commit_id: str):
         _log_git_call("create_reference", ref_name, commit_id)

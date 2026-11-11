@@ -37,7 +37,6 @@ from picard.git.backend import (
     GitBackendError,
     GitRefType,
     GitRepository,
-    GitResetMode,
 )
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
@@ -389,7 +388,7 @@ class PluginSourceGit(PluginSource):
 
         if commit is None:
             return None
-        repo.reset(commit.id, GitResetMode.HARD)
+        repo.reset_hard(commit.id)
         commit_id = commit.id
         repo.free()
         return commit_id
@@ -463,7 +462,7 @@ class PluginSourceGit(PluginSource):
             # No specific ref, use HEAD
             commit = repo.revparse_to_commit('HEAD')
 
-        repo.reset(commit.id, GitResetMode.HARD)
+        repo.reset_hard(commit.id)
         new_commit = commit.id
         repo.free()
 

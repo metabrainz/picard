@@ -201,7 +201,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Reset to clean state
             backend = git_backend()
             repo = backend.create_repository(repo_dir)
-            backend.reset_hard(repo, commit_id)
+            repo.reset_hard(commit_id)
             repo.free()
 
             changes = GitOperations.check_dirty_working_dir(repo_dir)
@@ -346,7 +346,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Reset to clean state
             backend = git_backend()
             repo = backend.create_repository(existing)
-            backend.reset_hard(repo, commit_id)
+            repo.reset_hard(commit_id)
             repo.free()
 
             # Modify file (uncommitted change)
@@ -538,7 +538,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._rollback_plugin_to_commit(plugin, commit_id)
 
         # Verify git reset was called
-        mock_repo.reset_to_commit.assert_called_once_with(commit_id, hard=True)
+        mock_repo.reset_hard.assert_called_once_with(commit_id)
 
         # Verify manifest was re-read
         plugin.read_manifest.assert_called_once()
@@ -582,7 +582,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                 manager._validate_manifest_or_rollback(plugin, 'old_commit')
 
             # Verify rollback was attempted
-            mock_repo.reset_to_commit.assert_called_once_with('old_commit', hard=True)
+            mock_repo.reset_hard.assert_called_once_with('old_commit')
 
             # Verify plugin was NOT re-enabled here (wrapper handles it)
             mock_enable.assert_not_called()
