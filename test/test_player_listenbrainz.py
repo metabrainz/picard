@@ -17,6 +17,8 @@
 
 
 import json
+from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
     patch,
@@ -29,6 +31,7 @@ from PyQt6.QtNetwork import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.appdirs import cache_folder
 from picard.metadata import Metadata
 from picard.webservice.api_helpers.listenbrainz import (
     ListenPayload,
@@ -108,15 +111,31 @@ class FakeListenBrainzAPIHelper:
         callback(self._data, reply, self._error)
 
 
-class TestListenQueue(PicardTestCase):
+class TempQueueFileMixin:
+    """Redirects the ListenQueue file to a temporary directory.
+
+    ListenQueue stores its queue in the user's cache folder. Tests must never
+    touch that file, as this could drop or submit real listens. The path is
+    patched on the class, so it applies to every ListenQueue instance created
+    during the test, whatever the order of creation.
+    """
+
+    def setUp(self):
+        super().setUp()
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        self.queue_file = Path(tmpdir.name) / 'listenbrainz-queue.json'
+        patcher = patch.object(ListenQueue, 'get_listen_queue_file_path', return_value=self.queue_file)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+
+class TestListenQueue(TempQueueFileMixin, PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({"listenbrainz_token": "test_token"})
         self.lbapi = FakeListenBrainzAPIHelper()
         self.queue = ListenQueue(self.lbapi)
-        self.queue_file = self.queue.get_listen_queue_file_path()
-        self.queue_file.parent.mkdir(parents=True, exist_ok=True)
-        self.queue_file.unlink(missing_ok=True)
 
     def _queue_with_pending_listen(self):
         self.lbapi = FakeListenBrainzAPIHelper(
@@ -126,6 +145,11 @@ class TestListenQueue(PicardTestCase):
         payload = ListenPayload(track_metadata=TrackMetadata(artist_name="Test", track_name="Song"))
         self.queue.add(payload)
         return payload
+
+    def test_queue_file_is_isolated_from_user_cache_folder(self):
+        queue_file = ListenQueue(self.lbapi).get_listen_queue_file_path()
+        self.assertEqual(self.queue_file, queue_file)
+        self.assertNotIn(Path(cache_folder()), queue_file.parents)
 
     def test_add(self):
         self.queue._on_submit_listen_response = Mock()
@@ -235,7 +259,7 @@ class TestIsTemporarySubmissionError(PicardTestCase):
         self.assertFalse(_is_temporary_submission_error(0))
 
 
-class TestSubmissionServiceTokenRearm(PicardTestCase):
+class TestSubmissionServiceTokenRearm(TempQueueFileMixin, PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({"listenbrainz_token": "test_token"})
