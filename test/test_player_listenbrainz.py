@@ -16,8 +16,6 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Generator
-from contextlib import contextmanager
 import json
 from pathlib import Path
 import tempfile
@@ -112,7 +110,26 @@ class FakeListenBrainzAPIHelper:
         callback(self._data, reply, self._error)
 
 
-class TestListenQueue(PicardTestCase):
+class TempQueueFileMixin:
+    """Redirects the ListenQueue file to a temporary directory.
+
+    ListenQueue stores its queue in the user's cache folder. Tests must never
+    touch that file, as this could drop or submit real listens. The path is
+    patched on the class, so it applies to every ListenQueue instance created
+    during the test, whatever the order of creation.
+    """
+
+    def setUp(self):
+        super().setUp()
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        self.queue_file = Path(tmpdir.name) / 'listenbrainz-queue.json'
+        patcher = patch.object(ListenQueue, 'get_listen_queue_file_path', return_value=self.queue_file)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+
+class TestListenQueue(TempQueueFileMixin, PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values({"listenbrainz_token": "test_token"})
@@ -127,13 +144,6 @@ class TestListenQueue(PicardTestCase):
         payload = ListenPayload(track_metadata=TrackMetadata(artist_name="Test", track_name="Song"))
         self.queue.add(payload)
         return payload
-
-    @contextmanager
-    def with_temp_queue_file(self) -> Generator[Path, None, None]:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            path = Path(tmpdir) / 'listenbrainz-queue.json'
-            with patch.object(self.queue, 'get_listen_queue_file_path', lambda: path):
-                yield path
 
     def test_add(self):
         self.queue._on_submit_listen_response = Mock()
@@ -151,28 +161,25 @@ class TestListenQueue(PicardTestCase):
         self.assertEqual(1, len(self.queue._queue))
 
     def test_save_does_not_create_file_when_queue_empty(self):
-        with self.with_temp_queue_file() as qf:
-            self.queue.save()
-            self.assertFalse(qf.exists())
+        self.queue.save()
+        self.assertFalse(self.queue_file.exists())
 
     def test_save_writes_non_empty_queue(self):
         self._queue_with_pending_listen()
-        with self.with_temp_queue_file() as qf:
-            self.queue.save()
-            self.assertTrue(qf.exists())
-            with open(qf) as f:
-                data = json.load(f)
-            self.assertEqual(len(data), 1)
+        self.queue.save()
+        self.assertTrue(self.queue_file.exists())
+        with open(self.queue_file) as f:
+            data = json.load(f)
+        self.assertEqual(len(data), 1)
 
     def test_queue_file_removed_after_successful_submission(self):
         self._queue_with_pending_listen()
-        with self.with_temp_queue_file() as qf:
-            self.queue.save()
-            self.assertTrue(qf.exists())
-            # Simulate successful submission draining the queue
-            self.queue._queue.clear()
-            self.queue._on_listen_queue_drained()
-            self.assertFalse(qf.exists())
+        self.queue.save()
+        self.assertTrue(self.queue_file.exists())
+        # Simulate successful submission draining the queue
+        self.queue._queue.clear()
+        self.queue._on_listen_queue_drained()
+        self.assertFalse(self.queue_file.exists())
 
     def test_single_listen_permanent_error_keeps_listen_without_scheduling(self):
         # A 401 must not drop the listen; it stays queued, but the retry timer
