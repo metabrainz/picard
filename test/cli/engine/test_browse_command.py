@@ -170,6 +170,20 @@ class OpenCommandTest(_BrowseTestCase):
         self.assertIn('at most 5', result.error)
         self.open.assert_not_called()
 
+    def test_the_limit_is_a_setting(self):
+        refs = ' '.join(f'recording:{n:08x}-5e6f-7a8b-9c0d-1e2f3a4b5c6d' for n in range(8))
+        self.session.settings.set('open_max', '8')
+        self.assertTrue(self.run_command(f'open {refs}').ok)
+        self.assertEqual(8, self.open.call_count)
+        self.session.settings.set('open_max', '7')
+        self.assertIn('at most 7', self.run_command(f'open {refs}').error)
+
+    def test_the_limit_can_be_removed(self):
+        refs = ' '.join(f'recording:{n:08x}-5e6f-7a8b-9c0d-1e2f3a4b5c6d' for n in range(20))
+        self.session.settings.set('open_max', '-1')
+        self.assertTrue(self.run_command(f'open {refs}').ok)
+        self.assertEqual(20, self.open.call_count)
+
     def test_five_pages_are_opened(self):
         refs = ' '.join(f'recording:{n:08x}-5e6f-7a8b-9c0d-1e2f3a4b5c6d' for n in range(5))
         result = self.run_command(f'open {refs}')

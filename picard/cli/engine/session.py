@@ -48,6 +48,7 @@ from picard.cli.engine.selectors import (
     resolve_nodes,
     resolve_selector,
 )
+from picard.cli.engine.settings import ConsoleSettings
 from picard.cli.engine.versions import Version
 from picard.cluster import (
     Cluster,
@@ -96,6 +97,8 @@ class LocalEngineSession:
         self._app = app
         # What the running command is waiting for, for a frontend to show.
         self.activity: str | None = None
+        # The settings of the console, for this session only.
+        self.settings = ConsoleSettings()
         self._handles = HandleRegistry(classify_entity)
         # Current lookup candidates, keyed (weakly) by the looked-up target
         # (cluster/file). The candidates themselves are held with strong refs so
