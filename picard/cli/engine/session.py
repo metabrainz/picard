@@ -179,6 +179,14 @@ class LocalEngineSession:
         """Return (minting if needed) the session handle for ``entity``."""
         return self._handles.handle_for(entity)
 
+    def mint_mark(self) -> int:
+        """A mark of the handles minted so far, for :meth:`minted_since`."""
+        return self._handles.mint_mark()
+
+    def minted_since(self, mark: int) -> list[str]:
+        """The handles minted after ``mark``, in order."""
+        return self._handles.minted_since(mark)
+
     def option_names(self) -> list[str]:
         """The names of all the options, sorted, for completion."""
         return self._options.names()

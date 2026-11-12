@@ -89,3 +89,17 @@ class HandleRegistryTest(PicardTestCase):
     def test_unclassifiable_entity_raises(self):
         with self.assertRaises(ValueError):
             self.reg.handle_for(_Entity(None))
+
+
+class MintMarkTest(PicardTestCase):
+    def test_minted_since_a_mark_are_the_handles_minted_after_it(self):
+        reg = HandleRegistry(_classifier)
+        first = _Entity('f')
+        reg.handle_for(first)
+        mark = reg.mint_mark()
+        second, third = _Entity('f'), _Entity('c')
+        reg.handle_for(second)
+        reg.handle_for(first)  # not minted again
+        reg.handle_for(third)
+        self.assertEqual(['f2', 'c1'], reg.minted_since(mark))
+        self.assertEqual([], reg.minted_since(reg.mint_mark()))
