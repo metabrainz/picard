@@ -186,3 +186,96 @@ class RenderResultTest(PicardTestCase):
         out, buf = _output()
         render_result(EngineResult(), out)
         self.assertIn('(nothing)', buf.getvalue())
+
+
+def _color_output():
+    buf = io.StringIO()
+    return CliOutput(stdout=buf, stderr=buf, color=True), buf
+
+
+class RenderColorTest(PicardTestCase):
+    GREEN = CliOutput.GREEN
+    YELLOW = CliOutput.YELLOW
+    RED = CliOutput.RED
+
+    def _render(self, item):
+        out, buf = _color_output()
+        render_result(EngineResult(items=[item]), out)
+        return buf.getvalue()
+
+    def test_status_is_colored_by_meaning(self):
+        for status, code in (
+            ('matched', self.GREEN),
+            ('pending', self.YELLOW),
+            ('load_failed', self.RED),
+            ('listed', CliOutput.DIM),
+        ):
+            with self.subTest(status=status):
+                self.assertIn(f'{code}{status}{CliOutput.RESET}', self._render(EngineItemResult('a1', status)))
+
+    def test_error_value_is_red(self):
+        text = self._render(EngineItemResult('a1', 'error', {'error': 'boom'}))
+        self.assertIn(f'{self.RED}error=boom{CliOutput.RESET}', text)
+
+    def test_tag_diffs_are_colored(self):
+        rows = [
+            {'tag': 'a', 'orig': 'x', 'new': 'y', 'status': 'changed'},
+            {'tag': 'b', 'orig': '', 'new': 'n', 'status': 'added'},
+            {'tag': 'c', 'orig': 'o', 'new': '', 'status': 'removed'},
+        ]
+        text = self._render(EngineItemResult('a1', 'listed', {'tags': rows}))
+        self.assertIn(f'{CliOutput.DIM}x{CliOutput.RESET}', text)
+        self.assertIn(f'{self.GREEN}y{CliOutput.RESET}', text)
+        self.assertIn(f'{self.GREEN}+ n{CliOutput.RESET}', text)
+        self.assertIn(f'{self.RED}- o{CliOutput.RESET}', text)
+
+    def test_candidate_score_is_graded_and_applied_mark_is_green(self):
+        cands = [
+            {'handle': 'm1', 'title': 'A', 'similarity': 0.95, 'applied': True},
+            {'handle': 'm2', 'title': 'B', 'similarity': 0.75},
+            {'handle': 'm3', 'title': 'C', 'similarity': 0.2},
+        ]
+        text = self._render(EngineItemResult('c1', 'matched', {'candidates': cands}))
+        self.assertIn(f'{self.GREEN}0.95{CliOutput.RESET}', text)
+        self.assertIn(f'{self.YELLOW}0.75{CliOutput.RESET}', text)
+        self.assertIn(f'{self.RED}0.2{CliOutput.RESET}', text)
+        self.assertIn(f'{self.GREEN}{CliOutput.BOLD}*{CliOutput.RESET}', text)
+
+    def test_current_version_mark_is_green(self):
+        versions = [{'handle': 'v1', 'title': 'A', 'current': True}]
+        text = self._render(EngineItemResult('a1', 'listed', {'versions': versions}))
+        self.assertIn(f'{self.GREEN}{CliOutput.BOLD}*{CliOutput.RESET}', text)
+
+    def test_title_and_artist_values_are_bold(self):
+        text = self._render(EngineItemResult('f1', 'added', {'title': 'Gypsy', 'artist': 'Uriah Heep'}))
+        self.assertIn(f'title={CliOutput.BOLD}Gypsy{CliOutput.RESET}', text)
+        self.assertIn(f'artist={CliOutput.BOLD}Uriah Heep{CliOutput.RESET}', text)
+
+    def test_candidate_and_version_titles_are_bold(self):
+        cands = [{'handle': 'm1', 'title': 'Release A'}]
+        versions = [{'handle': 'v1', 'title': 'Release B'}]
+        text = self._render(EngineItemResult('c1', 'matched', {'candidates': cands, 'versions': versions}))
+        self.assertIn(f'{CliOutput.BOLD}Release A{CliOutput.RESET}', text)
+        self.assertIn(f'{CliOutput.BOLD}Release B{CliOutput.RESET}', text)
+
+    def test_mb_references_are_colored_in_summaries_candidates_and_messages(self):
+        mbid = '0bad6e23-1234-4abc-8def-0123456789ab'
+        colored = f'{CliOutput.CYAN}release{CliOutput.RESET}:{CliOutput.DIM}{mbid}{CliOutput.RESET}'
+        item = EngineItemResult(
+            'a1',
+            'loaded',
+            {
+                'entity_type': 'release',
+                'mbid': mbid,
+                'candidates': [dict(handle='m1', entity_type='release', mbid=mbid)],
+            },
+        )
+        out, buf = _color_output()
+        render_result(EngineResult(items=[item], message=f'loaded release:{mbid}'), out)
+        self.assertEqual(3, buf.getvalue().count(colored))
+
+    def test_bare_mbid_in_an_error_is_dimmed(self):
+        mbid = '0bad6e23-1234-4abc-8def-0123456789ab'
+        out, buf = _color_output()
+        render_result(EngineResult.failure(f'not found: {mbid}'), out)
+        self.assertIn(f'{CliOutput.DIM}{mbid}{CliOutput.RESET}', buf.getvalue())

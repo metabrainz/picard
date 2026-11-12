@@ -315,6 +315,17 @@ class MetadataShowRenderTest(_MetadataShowTestCase):
         output = MagicMock()
         output.print.side_effect = lines.append
         output.d_id.side_effect = output.dim.side_effect = output.d_name.side_effect = lambda text: text
+        for name in (
+            'd_uuid',
+            'd_mb_entity',
+            'd_added',
+            'd_removed',
+            'd_replaced',
+            'd_status_ok',
+            'd_status_pending',
+            'd_status_failed',
+        ):
+            getattr(output, name).side_effect = lambda text: text
         output.d_arrow.return_value = '->'
         self.run_command('ls')
         render_result(self.run_command(line), output)

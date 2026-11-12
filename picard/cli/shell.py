@@ -35,6 +35,7 @@ A line that starts with ``!`` is run by the shell of the system, as it is, excep
 
 from argparse import ArgumentParser
 import os
+import re
 import subprocess
 
 from PyQt6.QtCore import pyqtRemoveInputHook
@@ -51,6 +52,9 @@ from picard.cli.subcommand import Subcommand
 
 
 _PROMPT = 'picard> '
+
+# A color escape sequence, as written by CliOutput.
+_ANSI_ESCAPE = re.compile(r'\033\[[0-9;]*m')
 
 # What a console has that the engine does not, said after the list of the commands.
 _CONSOLE_HELP = (
@@ -103,6 +107,11 @@ def _ask_yes_no(question: str) -> bool:
     except EOFError:
         return False
     return answer.strip().lower() in {'y', 'yes'}
+
+
+def _prompt(output) -> str:
+    """The prompt, colored by the output; readline needs the escapes marked as zero-width to keep the line aligned."""
+    return _ANSI_ESCAPE.sub(lambda match: f'\001{match.group()}\002', output.d_input_prompt(_PROMPT))
 
 
 def _always_yes(question: str) -> bool:
@@ -272,7 +281,7 @@ def _run_shell(args):
     output.print(output.dim("Picard engine shell — type 'help', 'quit' to exit."))
 
     def read_line():
-        return input(_PROMPT)
+        return input(_prompt(output))
 
     # --yes skips the confirmation of destructive commands
     confirm = _always_yes if getattr(args, 'yes', False) else _ask_yes_no

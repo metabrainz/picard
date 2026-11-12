@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+import io
 import os
 from unittest.mock import (
     MagicMock,
@@ -33,7 +34,9 @@ from picard.cli.engine.result import (
     EngineResult,
 )
 from picard.cli.engine.session import LocalEngineSession
+from picard.cli.output import CliOutput
 from picard.cli.shell import (
+    _prompt,
     run_repl,
     run_system_command,
 )
@@ -325,3 +328,13 @@ class ChangeDirectoryTest(PicardTestCase):
         self._run(f'!cd {self.tmp} && ls')
         self.assertEqual([f'cd {self.tmp} && ls'], self.ran)
         self.assertEqual(start, os.getcwd())
+
+
+class PromptTest(PicardTestCase):
+    def test_prompt_escapes_are_zero_width_for_readline(self):
+        prompt = _prompt(CliOutput(stdout=io.StringIO(), color=True))
+        self.assertTrue(prompt.startswith('\001'))
+        self.assertIn('\002picard> \001', prompt)
+
+    def test_prompt_is_plain_without_color(self):
+        self.assertEqual('picard> ', _prompt(CliOutput(stdout=io.StringIO(), color=False)))

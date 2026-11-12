@@ -30,6 +30,7 @@ from picard.cli.engine.result import (
     EngineResult,
 )
 from picard.cli.output import CliOutput
+from picard.util.mbentity import RE_MB_ENTITY
 
 
 # A lookup can return dozens of candidates, most of them hopeless; show the best
@@ -37,10 +38,67 @@ from picard.cli.output import CliOutput
 _CANDIDATES_SHOWN = 10
 _MINTED_SHOWN = 12
 
+# What identifies an item in a one-line summary: its value is displayed as a name.
+_NAME_KEYS = frozenset({'title', 'artist'})
+
+# Statuses of the engine by what they mean for the user; any other is dimmed.
+_STATUS_DONE = frozenset({'matched', 'identified', 'saved', 'loaded', 'switched', 'moved', 'trashed'})
+_STATUS_PENDING = frozenset({'pending', 'changed', 'not_loaded'})
+_STATUS_FAILED = frozenset(
+    {
+        'error',
+        'timeout',
+        'load_failed',
+        'lookup_failed',
+        'unsupported',
+        'no_match',
+        'no_matches',
+        'no_confident_match',
+        'no_versions',
+    }
+)
+
 
 def _candidates_to_show(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The first candidates, plus the applied one if it is further down the list."""
     return [cand for index, cand in enumerate(candidates) if index < _CANDIDATES_SHOWN or cand.get('applied')]
+
+
+def _status(status: str, output: CliOutput) -> str:
+    """A status, green when done, yellow when pending, red when failed."""
+    if status in _STATUS_DONE:
+        return output.d_status_ok(status)
+    if status in _STATUS_PENDING:
+        return output.d_status_pending(status)
+    if status in _STATUS_FAILED:
+        return output.d_status_failed(status)
+    return output.dim(status)
+
+
+def _score(score: float, output: CliOutput) -> str:
+    """A similarity score (0 to 1), green when high, yellow when middling, red when low."""
+    if score >= 0.9:
+        return output.d_status_ok(score)
+    if score >= 0.7:
+        return output.d_status_pending(score)
+    return output.d_status_failed(score)
+
+
+def _highlight_mb_refs(text: str, output: CliOutput) -> str:
+    """Colorize the MusicBrainz references (``release:<mbid>``, a bare MBID, ...) found in ``text``.
+
+    Uses the same matcher as the commands that read such references
+    (:data:`picard.util.mbentity.RE_MB_ENTITY`): the entity type is colored, and the MBID is dimmed.
+    """
+
+    def colorize(match) -> str:
+        entity = match.group('entity')
+        prefix = match.string[match.start() : match.start('id')]
+        if entity:
+            prefix = output.d_mb_entity(entity) + prefix[len(entity) :]
+        return prefix + output.d_uuid(match.group('id'))
+
+    return RE_MB_ENTITY.sub(colorize, text)
 
 
 def _entity_ref(item: dict[str, Any]) -> str:
@@ -57,14 +115,19 @@ def _entity_ref(item: dict[str, Any]) -> str:
     return f"{entity_type}:{mbid}" if entity_type else str(mbid)
 
 
-def _format_item_data(data: dict[str, Any]) -> str:
+def _colored_entity_ref(item: dict[str, Any], output: CliOutput) -> str:
+    """The ``<type>:<mbid>`` reference of an item with its colors, or ``''`` if it has none."""
+    return _highlight_mb_refs(_entity_ref(item), output)
+
+
+def _format_item_data(data: dict[str, Any], output: CliOutput) -> str:
     """Compact one-line summary of an item's data (title/artist/path/etc.).
 
     Leads with the ``<type>:<mbid>`` reference when the item points at a
     MusicBrainz entity, so every listed entity shows what it is and resolves to.
     """
     parts = []
-    ref = _entity_ref(data)
+    ref = _colored_entity_ref(data, output)
     if ref:
         parts.append(ref)
     for key in (
@@ -88,7 +151,12 @@ def _format_item_data(data: dict[str, Any]) -> str:
         if isinstance(value, list):
             value = ', '.join(str(item) for item in value)
         if value not in (None, ''):
-            parts.append(f"{key}={value}")
+            if key == 'error':
+                parts.append(output.d_warning(f"{key}={value}"))
+            elif key in _NAME_KEYS:
+                parts.append(f"{key}={output.d_name(value)}")
+            else:
+                parts.append(f"{key}={value}")
     return '  '.join(parts)
 
 
@@ -98,11 +166,11 @@ def _tag_line(row: dict[str, Any], width: int, output: CliOutput) -> str:
     new = row['new']
     status = row['status']
     if status == 'changed':
-        value = f"{orig} {output.d_arrow()} {new}"
+        value = f"{output.d_replaced(orig)} {output.d_arrow()} {output.d_added(new)}"
     elif status == 'added':
-        value = f"+ {new}"
+        value = output.d_added(f"+ {new}")
     elif status == 'removed':
-        value = f"- {orig}"
+        value = output.d_removed(f"- {orig}")
     else:
         value = new
     return f"{output.d_name(row['tag'])}{' ' * (width - len(row['tag']))}  {value}"
@@ -134,7 +202,7 @@ def _render_help(items: list[EngineItemResult], output: CliOutput) -> None:
 def render_result(result: EngineResult, output: CliOutput) -> None:
     """Render ``result`` to ``output`` for a human reader."""
     if not result.ok:
-        output.error(result.error or "command failed")
+        output.error(_highlight_mb_refs(result.error or "command failed", output))
         if result.unresolved:
             output.warning("unresolved: " + ', '.join(result.unresolved))
         return
@@ -147,9 +215,9 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
         indent = '  ' * int(item.data.get('depth', 0))
         handle = output.d_id(item.handle) if item.handle else '—'
         # Where the entity sits now (the handle is what stays valid).
-        location = f"{output.dim(item.path)}  " if item.path else ''
-        summary = _format_item_data(item.data)
-        line = f"{indent}{handle}  {location}{output.dim(item.status)}"
+        location = f"{output.d_path(item.path)}  " if item.path else ''
+        summary = _format_item_data(item.data, output)
+        line = f"{indent}{handle}  {location}{_status(item.status, output)}"
         if summary:
             line += f"  {summary}"
         output.print(line)
@@ -162,27 +230,27 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
         candidates = item.data.get('candidates', [])
         shown = _candidates_to_show(candidates)
         for cand in shown:
-            mark = '*' if cand.get('applied') else ' '
+            mark = output.d_mark('*') if cand.get('applied') else ' '
             chandle = output.d_id(cand.get('handle', '?'))
-            title = cand.get('title', '')
+            title = output.d_name(cand.get('title', ''))
             score = cand.get('similarity')
-            score_s = f" ({score})" if score is not None else ''
+            score_s = f" ({_score(score, output)})" if score is not None else ''
             # Always show the MusicBrainz entity reference as <type>:<mbid>
             # (e.g. release:0bad6e23-...), so a candidate is unambiguously
             # identifiable and directly usable with the lookup/URL tools.
-            ref = _entity_ref(cand)
-            ref_s = f"{output.dim(ref)}  " if ref else ''
+            ref = _colored_entity_ref(cand, output)
+            ref_s = f"{ref}  " if ref else ''
             output.print(f"    {mark} {chandle}  {ref_s}{title}{score_s}")
         if len(shown) < len(candidates):
             output.print(output.dim(f"      … {len(candidates) - len(shown)} more: ls {item.handle}.m*"))
         # The versions of an album: all of them, the one it is now marked.
         versions = item.data.get('versions', [])
         for version in versions:
-            mark = '*' if version.get('current') else ' '
+            mark = output.d_mark('*') if version.get('current') else ' '
             vhandle = output.d_id(version.get('handle', '?'))
-            ref = _entity_ref(version)
-            ref_s = f"{output.dim(ref)}  " if ref else ''
-            output.print(f"    {mark} {vhandle}  {ref_s}{version.get('title', '')}")
+            ref = _colored_entity_ref(version, output)
+            ref_s = f"{ref}  " if ref else ''
+            output.print(f"    {mark} {vhandle}  {ref_s}{output.d_name(version.get('title', ''))}")
         if item.data.get('total', 0) > len(versions) > 0:
             output.print(
                 output.dim(f"      … {item.data['total']} releases in the group, the first {len(versions)} are listed")
@@ -196,6 +264,6 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
     if result.unresolved:
         output.warning("unresolved: " + ', '.join(result.unresolved))
     if result.message:
-        output.info(result.message)
+        output.info(_highlight_mb_refs(result.message, output))
     if not result.items and not result.mints and not result.unresolved and not result.message:
         output.print(output.dim("(nothing)"))
