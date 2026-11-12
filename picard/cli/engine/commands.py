@@ -112,6 +112,14 @@ class EngineSession(Protocol):
         """Write the options set in this session (or just ``names``) to the configuration."""
         ...
 
+    def mint_mark(self) -> int:
+        """A mark of the handles minted so far, for ``minted_since``."""
+        ...
+
+    def minted_since(self, mark: int) -> 'list[str]':
+        """The handles minted after ``mark``, in order."""
+        ...
+
     def path_of(self, handle: str) -> 'str | None':
         """Where the entity of ``handle`` currently sits, as a selector path (or None)."""
         ...

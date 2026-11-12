@@ -292,3 +292,21 @@ class MetadataRmTest(_EditTestCase):
                 result = self._run(line)
                 self.assertFalse(result.ok)
                 self.assertIn('usage: metadata rm <selector> <tag>...', result.error)
+
+
+class PathMintsTest(_EditTestCase):
+    def test_the_container_named_by_a_path_is_reported_as_minted(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        cluster = self._cluster_of(file)
+        file_handle = self.session.handle_for(file)
+        result = self.run_command(f'metadata show {file_handle}')
+        self.assertEqual('c1.f1', result.items[0].path)
+        self.assertEqual(['c1'], result.mints)
+        self.assertEqual('c1', self.session.handle_for(cluster))
+
+    def test_a_container_that_has_its_handle_is_not_minted_again(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        self._cluster_of(file)
+        self.run_command('ls')
+        result = self.run_command(f'metadata show {self.session.handle_for(file)}')
+        self.assertEqual([], result.mints)

@@ -61,7 +61,7 @@ class HandleRegistry:
     same thread that mutates the Workspace); it is not internally locked.
     """
 
-    __slots__ = ('_classify', '_counters', '_by_handle', '_by_entity')
+    __slots__ = ('_classify', '_counters', '_by_handle', '_by_entity', '_minted')
 
     def __init__(self, classifier: Classifier):
         self._classify = classifier
@@ -71,6 +71,8 @@ class HandleRegistry:
         self._by_handle: WeakValueDictionary[str, Any] = WeakValueDictionary()
         # entity -> handle (weak keys: same entity yields the same handle)
         self._by_entity: WeakKeyDictionary[Any, str] = WeakKeyDictionary()
+        # Every handle minted, in order (see mint_mark / minted_since).
+        self._minted: list[str] = []
 
     def handle_for(self, entity: Any) -> str:
         """Return the handle for ``entity``, minting one on first request.
@@ -91,7 +93,16 @@ class HandleRegistry:
         handle = f"{prefix}{next(counter)}"
         self._by_handle[handle] = entity
         self._by_entity[entity] = handle
+        self._minted.append(handle)
         return handle
+
+    def mint_mark(self) -> int:
+        """A mark of the handles minted so far, for :meth:`minted_since`."""
+        return len(self._minted)
+
+    def minted_since(self, mark: int) -> list[str]:
+        """The handles minted after ``mark`` (from :meth:`mint_mark`), in order."""
+        return self._minted[mark:]
 
     def resolve(self, handle: str) -> Any | None:
         """Return the entity for ``handle``, or ``None`` if unknown/expired.

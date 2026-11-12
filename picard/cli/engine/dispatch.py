@@ -195,7 +195,12 @@ def _add_paths(session: EngineSession, result: EngineResult) -> None:
 
     The command has already run, so a failure here must not turn its outcome
     into an error: an item is simply left without a path.
+
+    A path names the cluster or the album an entity sits in (``c1.f1``), which
+    gets its handle then if it has none yet: the handles minted for this are
+    added to ``result.mints``, like those the command minted.
     """
+    mark = session.mint_mark()
     for item in result.items:
         if not item.handle or item.path:
             continue
@@ -203,6 +208,7 @@ def _add_paths(session: EngineSession, result: EngineResult) -> None:
             item.path = session.path_of(item.handle) or ''
         except Exception as e:
             log.debug("Could not work out the path of %r: %s", item.handle, e)
+    result.mints += [handle for handle in session.minted_since(mark) if handle not in result.mints]
 
 
 def _bind_args(names: tuple[str, ...], values: list[str]) -> 'dict[str, object]':

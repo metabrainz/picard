@@ -44,6 +44,12 @@ class _Session:
     def handle_for(self, entity):
         return 'x1'
 
+    def mint_mark(self):
+        return 0
+
+    def minted_since(self, mark):
+        return []
+
     def path_of(self, handle):
         return None
 
