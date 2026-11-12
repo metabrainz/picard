@@ -167,6 +167,7 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
+    find_existing_path,
     periodictouch,
     pipe,
     system_supports_long_paths,
@@ -215,6 +216,7 @@ from picard.ui.util import (
     FileDialog,
     busy_cursor_start,
     busy_cursor_stop,
+    find_starting_directory,
     show_session_not_found_dialog,
 )
 
