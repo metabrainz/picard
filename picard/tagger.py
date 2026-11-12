@@ -960,7 +960,9 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
-        file_chooser = FileDialog(parent=self.window)
+        config = get_config()
+        current_directory = config.persist.get("current_directory", '')
+        file_chooser = FileDialog(parent=self.window, directory=current_directory)
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [
@@ -973,6 +975,8 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         )
         if file_chooser.exec():
             filepath = Path(file_chooser.selectedFiles()[0])
+            config = get_config()
+            config.persist['current_directory'] = str(filepath.parent)
             self.run_lookup_discid_from_logfile(filepath)
 
     def run_lookup_discid_from_logfile(self, filepath):
