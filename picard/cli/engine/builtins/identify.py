@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan`` and ``album load``."""
+"""The commands that identify files: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load`` and ``refresh``."""
 
 from typing import Any
 
@@ -31,6 +31,7 @@ from picard.cli.engine.builtins.helpers import (
     entity_item,
     handles_of,
     join_notes,
+    reject_candidates,
 )
 from picard.cli.engine.builtins.registry import command
 from picard.cli.engine.candidates import Candidate
@@ -367,6 +368,73 @@ def _cmd_album_load(session: EngineSession, args: dict[str, Any]) -> EngineResul
     else:
         status = 'loaded'
     return album_result(session, album, status, notes)
+
+
+@command(
+    'refresh',
+    usage='refresh [selector]',
+    help="Load albums again from MusicBrainz.",
+    args=('selector',),
+    arg_kinds=('selector',),
+)
+def _cmd_refresh(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Load albums again from MusicBrainz.
+
+    This is the Refresh action of the GUI: what MusicBrainz says about a release
+    is fetched again, for when it was edited after the album was loaded. The
+    files stay where they are. Without a selector all the albums are refreshed.
+    Each one is reported as refreshed, error, or pending if MusicBrainz did not
+    answer in time or the album was still loading. Only albums and standalone
+    recordings can be refreshed: a track of an album is refreshed with its album,
+    and files and clusters cannot be, they are reported as unsupported.
+
+    Examples:
+      refresh a1
+      refresh a1,a2
+      refresh
+    """
+    selector = args.get('selector') or 'a*'
+    entities, unresolved = session.resolve(selector)
+    rejected = reject_candidates(session, 'refresh', entities, unresolved, what="cannot be refreshed")
+    if rejected is not None:
+        return rejected
+
+    refreshable = [entity for entity in entities if entity.can_refresh]
+    # An album that is still loading ignores a refresh (it is not loaded again).
+    busy = [entity for entity in refreshable if getattr(entity, 'has_critical_tasks', lambda: False)()]
+    workspace().refresh(refreshable)
+    notes: list[str] = []
+    if refreshable:
+        drain(session, TIMEOUT_SHORT, notes, doing=f"refreshing {len(refreshable)} object(s)")
+
+    items = []
+    # The tracks of an album, by album: they are refreshed with it.
+    tracks_by_album: dict[str, list[str]] = {}
+    for entity in entities:
+        if entity not in refreshable:
+            status = 'unsupported'
+            album = entity.album if isinstance(entity, Track) else None
+            if album is not None and album.can_refresh:
+                tracks_by_album.setdefault(session.handle_for(album), []).append(session.handle_for(entity))
+        elif entity in busy:
+            status = 'pending'
+        elif entity.errors:
+            status = 'error'
+        elif not entity.loaded:
+            status = 'pending'
+        else:
+            status = 'refreshed'
+        items.append(entity_item(session, entity, status))
+    notes += [
+        f"{', '.join(tracks)}: a track is refreshed with its album, see 'refresh {album}'"
+        for album, tracks in tracks_by_album.items()
+    ]
+    return EngineResult(
+        items=items,
+        resolved=[item.handle for item in items],
+        unresolved=unresolved,
+        message=join_notes(notes),
+    )
 
 
 @command(
