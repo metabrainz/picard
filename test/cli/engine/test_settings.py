@@ -15,13 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+import gc
+
 from test.cli.engine.helpers import EngineCommandTestCase
 from test.picardtestcase import PicardTestCase
 
+from picard.album import Album
 from picard.cli.engine.settings import (
     ConsoleSettings,
     SettingError,
 )
+from picard.cluster import Cluster
 
 
 class ConsoleSettingsTest(PicardTestCase):
@@ -111,3 +115,44 @@ class ShellCommandsTest(EngineCommandTestCase):
         for line in ('shell set', 'shell set open_max'):
             with self.subTest(line=line):
                 self.assertIn('usage', self.run_command(line).error)
+
+
+class ShellRemintTest(EngineCommandTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cluster = Cluster('Album', 'Artist')
+        self.wks.clusters.append(self.cluster)
+        self.album = Album('rel-1')
+        self.wks.albums['rel-1'] = self.album
+        self.run_command('ls')
+
+    def _remove_the_album(self):
+        del self.wks.albums['rel-1']
+        self.album = None
+        gc.collect()
+
+    def test_a_kind_with_none_left_is_reminted(self):
+        self._remove_the_album()
+        result = self.run_command('shell remint a')
+        self.assertTrue(result.ok, result.error)
+        self.assertEqual([('a', 'reminted')], [(item.handle, item.status) for item in result.items])
+        self.wks.albums['rel-2'] = Album('rel-2')
+        self.assertEqual(['a1'], [item.handle for item in self.run_command('ls a*').items])
+
+    def test_a_kind_in_use_is_reported_and_left_as_it_is(self):
+        result = self.run_command('shell remint c')
+        self.assertEqual([('c', 'in_use')], [(item.handle, item.status) for item in result.items])
+        self.assertIn('c: 1 cluster(s) still there', result.message)
+        self.assertEqual('c1', self.session.handle_for(self.cluster))
+
+    def test_without_a_kind_all_are_tried(self):
+        self._remove_the_album()
+        result = self.run_command('shell remint')
+        statuses = {item.handle: item.status for item in result.items}
+        self.assertEqual(('in_use', 'reminted', 'reminted'), (statuses['c'], statuses['a'], statuses['f']))
+        self.assertEqual(set('fcatmvk'), set(statuses))
+
+    def test_unknown_kind_is_an_error(self):
+        result = self.run_command('shell remint a z')
+        self.assertFalse(result.ok)
+        self.assertIn('unknown kind z', result.error)

@@ -62,6 +62,7 @@ the metadata box shows), so the two cannot drift apart.
 | `metadata rm <selector> <tag>...` | remove tags, by name or pattern |
 | `move <sources> <destination>` | put files into a track (`a1.d2.t3`), a cluster, an album (matched to its tracks) or a bucket (`u`, `a1.u`), as dropping them in the GUI does (several files dropped on a track go to the following tracks of the album); the last word is the destination |
 | `shell get [name]` | show the settings of the console: `open_max` (the most pages `open` opens at once, 5) and `minted_max` (the most handles written after `minted:`, 12); a number, `-1` for no limit |
+| `shell remint [kind]...` | mint the handles of a kind (`f`, `c`, `a`, `t`, `m`, `v`, `k`) again from 1 when no object of that kind is left, else it is reported as `in_use` and nothing changes; without a kind, all are tried |
 | `shell set <name> <value>` | set one for this session only, nothing is written to the configuration (`shell set open_max 10`) |
 | `option ls [pattern]` | the options not at their default, or those matching a pattern, with where each value comes from |
 | `option get <name>` | one option: value, default, type, title and source |
@@ -259,7 +260,7 @@ conversion of punctuation to ASCII), so results can differ from your usual ones.
 Working-set entities get **session-local handles**: a type prefix + a
 monotonically increasing ordinal, minted when the entity enters the session.
 Handles are STABLE IDS, never positions: removing `a3` then `a4` does NOT
-renumber; ids are never reused within a session.
+renumber; ids are never reused within a session, unless `shell remint` is asked to mint a kind from 1 again, once none of that kind is left (the ones that are there are never renumbered).
 
 | prefix | entity            | source                       | lifecycle |
 |--------|-------------------|------------------------------|-----------|

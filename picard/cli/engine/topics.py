@@ -50,7 +50,8 @@ An object is named by its handle, a letter for its kind and a number:
 
 The commands print the handles of what they create, and 'ls' lists them. A
 handle never changes and is never reused in a session, so a1 keeps naming the
-same album as long as it is loaded.
+same album as long as it is loaded. Only 'shell remint' mints the handles of a kind
+from 1 again, when no object of that kind is left.
 
 A selector is made of:
 

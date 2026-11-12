@@ -182,6 +182,10 @@ class LocalEngineSession:
         """Return (minting if needed) the session handle for ``entity``."""
         return self._handles.handle_for(entity)
 
+    def remint(self, kind: str) -> int:
+        """Mint the handles of ``kind`` from 1 again if none is left; return how many are."""
+        return self._handles.remint(kind)
+
     def mint_mark(self) -> int:
         """A mark of the handles minted so far, for :meth:`minted_since`."""
         return self._handles.mint_mark()
