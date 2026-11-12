@@ -58,9 +58,22 @@ class ParseSelectorTest(PicardTestCase):
         with self.assertRaises(SelectorError):
             parse_selector('!a2')
 
-    def test_rejects_range(self):
-        with self.assertRaises(SelectorError):
-            parse_selector('a1-3')
+    def test_range(self):
+        (term,) = parse_selector('f1-12')
+        self.assertEqual(('f', 'range', (1, 12)), (term.prefix, term.kind, term.value))
+
+    def test_range_in_a_path(self):
+        (term,) = parse_selector('c1.f2-5')
+        self.assertEqual(Segment('f', 'range', (2, 5)), term.path[0])
+
+    def test_rejects_malformed_reversed_and_oversized_ranges(self):
+        for text in ('a1-', 'a-3', 'a1-b', 'a1-c3', 'a1--3', 'a0-3', 'a3-1', 'a1-99999', 'u1-3', '*-3'):
+            with self.subTest(text=text), self.assertRaises(SelectorError):
+                parse_selector(text)
+
+    def test_one_element_range_is_a_range(self):
+        (term,) = parse_selector('a2-2')
+        self.assertEqual((2, 2), term.value)
 
     def test_rejects_unknown_prefix(self):
         with self.assertRaises(SelectorError):
@@ -116,6 +129,25 @@ class ResolveSelectorTest(PicardTestCase):
         entities, unresolved = self._resolve('a9')
         self.assertEqual([], entities)
         self.assertEqual(['a9'], unresolved)
+
+    def test_range_gives_the_live_entities_in_order(self):
+        entities, unresolved = self._resolve('f1-2,a1-2')
+        self.assertEqual([self.f1, self.f2, self.a1, self.a2], entities)
+        self.assertEqual([], unresolved)
+
+    def test_range_skips_what_is_not_there(self):
+        entities, unresolved = self._resolve('a1-9')
+        self.assertEqual([self.a1, self.a2], entities)
+        self.assertEqual([], unresolved)
+
+    def test_range_that_matches_nothing_is_unresolved(self):
+        entities, unresolved = self._resolve('a5-9')
+        self.assertEqual([], entities)
+        self.assertEqual(['a5-9'], unresolved)
+
+    def test_range_overlapping_another_term_is_deduplicated(self):
+        entities, _ = self._resolve('a2,a1-2')
+        self.assertEqual([self.a2, self.a1], entities)
 
     def test_type_wildcard(self):
         entities, unresolved = self._resolve('a*')
@@ -185,7 +217,7 @@ class ParsePathTest(PicardTestCase):
         self.assertEqual(['a1.t1', 'c2.f*'], [t.raw for t in terms])
 
     def test_rejects_malformed_paths(self):
-        for text in ('a1.', '.t1', 'a1..t1', 'a1.t', 'a1.x1', 'a.t1', 'a1.t1x', '*.f*', 'u1', 'u*', 'a1.u2', 'a1.t1-3'):
+        for text in ('a1.', '.t1', 'a1..t1', 'a1.t', 'a1.x1', 'a.t1', 'a1.t1x', '*.f*', 'u1', 'u*', 'a1.u2'):
             with self.subTest(text=text):
                 with self.assertRaises(SelectorError):
                     parse_selector(text)

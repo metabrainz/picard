@@ -56,6 +56,7 @@ A selector is made of:
 
   a1          one object
   a*          all the objects of a kind (f* is the files that are in no cluster)
+  f1-12       the objects of a kind from one number to another, those that exist
   *           everything at the top level: unclustered files, clusters, albums
   a1,c2       several of them (most commands also accept a space after the comma)
   a1.d2.t3    a path into the working set, see 'help paths'
@@ -83,7 +84,9 @@ selecting children of the previous one.
   v<n>   version n of an album, a release of its release group, as 'album versions' lists them
   u      the files that are in no cluster; under an album, its unmatched files
 
-A number can be * for all of them: a1.d*.t1 is the first track of every disc.
+A number can be * for all of them: a1.d*.t1 is the first track of every disc, or
+a range: a1.t2-4 is tracks 2 to 4, and c1.f1-5 the first five files of a cluster.
+A number of a range that does not exist is skipped.
 
 Examples:
   a1.d2.t3    track 3 of disc 2 of album a1
@@ -91,6 +94,7 @@ Examples:
   a1.f*       every file of the album, matched or not
   a1.u        the files of the album that were not matched to a track
   c1.f2       the second file of cluster c1
+  c1.f1-5     the first five files of cluster c1
   c1.m2       the second candidate found for cluster c1
   a1.v3       the third version listed for album a1
   u.f*        the files that are in no cluster

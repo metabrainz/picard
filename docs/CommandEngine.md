@@ -277,11 +277,16 @@ Notes:
 
 A **selector** turns a reference into a set of entities. Implemented
 (`picard/cli/engine/selectors.py`): single handles (`a1`), type wildcards
-(`a*`), the universal `*` (all top-level objects: `f* ∪ c* ∪ a*`, as in the GUI
-panes, not tracks), paths (below), and comma unions of those. A union may be
+(`a*`), ranges (`f1-12`, `a1-3`, also in a path: `c1.f1-5`), the universal `*`
+(all top-level objects: `f* ∪ c* ∪ a*`, as in the GUI panes, not tracks), paths
+(below), and comma unions of those. A union may be
 written with spaces and arrive as several command-line tokens (`ls a1, c2` or
-`ls a1 c2`). Ranges, exclusion and sticky bare ordinals are rejected with a
-clear error until they are implemented (see the Roadmap).
+`ls a1 c2`). A range selects the objects that exist among its numbers, in order (handles
+are never reused, so a removed object leaves a hole), and is unresolved if there
+are none; a reversed range (`a3-1`), one that starts at 0, one that mixes kinds
+(`a1-c3`) and one of more than 10000 numbers are errors. Exclusion and sticky
+bare ordinals are rejected with a clear error until they are implemented (see
+the Roadmap).
 
 Resolution gives `(entities, unresolved)`: tokens that matched no live entity
 are reported, never silently dropped.
@@ -487,8 +492,7 @@ ordinal   = digit , { digit } ;
 prefix    = "f" | "c" | "a" | "t" | "m" | "v" | "d" | "k" ;
 ```
 
-On top of what is implemented: ranges (`a1-3`, reversed and cross-namespace
-ones rejected), exclusion (`a*,!3` is all albums but `a3`, a set difference over
+On top of what is implemented (ranges are, `a1-3` and `a1.t2-4`): exclusion (`a*,!3` is all albums but `a3`, a set difference over
 the whole expression), sticky prefixes for bare ordinals (`a1,2,c3,4` is
 `a1,a2,c3,c4`), and `prefix where <field>=<value>` metadata selectors. Further
 handle kinds: `d` (a disc ID / TOC); at the top level `d` stays reserved for
