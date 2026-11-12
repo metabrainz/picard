@@ -42,7 +42,7 @@ _MINTED_SHOWN = 12
 _NAME_KEYS = frozenset({'title', 'artist'})
 
 # Statuses of the engine by what they mean for the user; any other is dimmed.
-_STATUS_DONE = frozenset({'matched', 'identified', 'saved', 'loaded', 'switched', 'moved', 'trashed'})
+_STATUS_DONE = frozenset({'matched', 'identified', 'saved', 'loaded', 'switched', 'moved', 'trashed', 'refreshed'})
 _STATUS_PENDING = frozenset({'pending', 'changed', 'not_loaded'})
 _STATUS_FAILED = frozenset(
     {

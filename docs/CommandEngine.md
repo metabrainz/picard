@@ -39,6 +39,7 @@ the metadata box shows), so the two cannot drift apart.
 | `cluster lookup [sel]` | search MusicBrainz for clusters, auto-apply the best match, expose the alternatives as `m` handles (the console lists the best 10; `ls c1.m*` lists them all) |
 | `match <cluster> <m>` | apply another candidate of that cluster |
 | `lookup [sel]` | metadata lookup (autotag) of the selected objects |
+| `refresh [sel]` | load the selected albums (and standalone recordings) again from MusicBrainz, like the Refresh action of the GUI (all the albums without a selector) |
 | `scan [sel]` | identify files by AcoustID fingerprint |
 | `album load <mbid\|url>` | load a release as an empty album; the reference may be a bare MBID, `release:<mbid>` or a MusicBrainz release URL |
 | `album versions <album>` | list the other releases of the release group of an album, as the "Other versions" menu of the GUI does and in the same order (as many tracks as the album first, then the preferred countries and formats); each gets a `v` handle and the one the album is now is marked; requested from MusicBrainz the first time |
