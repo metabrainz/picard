@@ -15,7 +15,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-"""The shell on a real terminal: Ctrl-C and Ctrl-D at the prompt."""
+"""The shell on a real terminal: Ctrl-C and Ctrl-D at the prompt, the history of the lines."""
 
 import os
 import select
@@ -60,6 +60,69 @@ def _read_until(fd, text, timeout=30):
 # the test waits until CI cancels the job. Linux is enough to catch a regression.
 @unittest.skipUnless(IS_LINUX, "needs a pseudo-terminal and GNU readline")
 class ShellTerminalTest(PicardTestCase):
+    @staticmethod
+    def _environment(tmp):
+        """The environment of the shell: its history in ``tmp``, not in the folder of the user."""
+        return dict(os.environ, PICARD_SHELL_HISTORY_FILE=os.path.join(tmp, 'shell_history'))
+
+    def _start(self, tmp):
+        """Start the shell on a terminal; return it and the side of the terminal to type on."""
+        master, slave = pty.openpty()
+        shell = subprocess.Popen(
+            [sys.executable, '-m', 'picard.cli', '-c', os.path.join(tmp, 'picard.ini'), 'shell'],
+            stdin=slave,
+            stdout=slave,
+            stderr=slave,
+            close_fds=True,
+            env=self._environment(tmp),
+        )
+        os.close(slave)
+        self.addCleanup(os.close, master)
+        self.addCleanup(shell.wait)
+        self.addCleanup(shell.kill)
+        return shell, master
+
+    @staticmethod
+    def _type(master, key):
+        """Type ``key`` at the next prompt; return what the shell wrote until then."""
+        output = _read_until(master, b'picard> ')
+        os.write(master, key)
+        return output
+
+    def _end(self, shell, master):
+        """Leave the shell; return what it wrote last."""
+        output = self._type(master, b'quit\r')
+        output += _read_until(master, b'\x00', timeout=10)
+        shell.wait(timeout=30)
+        return output
+
+    def _run(self, tmp, keys):
+        """Start the shell on a terminal, type each of ``keys`` at a prompt, leave, and return what it wrote."""
+        shell, master = self._start(tmp)
+        output = b''.join(self._type(master, key) for key in keys)
+        return output + self._end(shell, master)
+
+    def test_a_line_of_a_session_is_recalled_with_the_up_key_in_the_next(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._run(tmp, [b'help selectors\r'])
+            # The history file is readable by the user only.
+            self.assertEqual(0o600, os.stat(os.path.join(tmp, 'shell_history')).st_mode & 0o777)
+            # Up twice: quit, then help selectors, which runs again.
+            output = self._run(tmp, [b'\x1b[A\x1b[A\r'])
+        self.assertIn(b'A selector names the objects a command acts on', output)
+
+    def test_two_shells_at_the_same_time_keep_the_lines_of_each_other(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            first = self._start(tmp)
+            second = self._start(tmp)
+            self._type(first[1], b'help selectors\r')
+            self._type(second[1], b'help paths\r')
+            self._end(*first)
+            self._end(*second)
+            with open(os.path.join(tmp, 'shell_history')) as f:
+                lines = f.read().splitlines()
+        self.assertEqual(['help selectors', 'quit', 'help paths', 'quit'], lines)
+
     def test_ctrl_c_then_ctrl_d_leaves_without_a_traceback(self):
         with tempfile.TemporaryDirectory() as tmp:
             config_file = os.path.join(tmp, 'picard.ini')
@@ -71,6 +134,7 @@ class ShellTerminalTest(PicardTestCase):
                     stdout=slave,
                     stderr=slave,
                     close_fds=True,
+                    env=self._environment(tmp),
                 )
                 os.close(slave)
                 try:
