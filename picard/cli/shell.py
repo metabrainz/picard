@@ -105,6 +105,11 @@ def _ask_yes_no(question: str) -> bool:
     return answer.strip().lower() in {'y', 'yes'}
 
 
+def _always_yes(question: str) -> bool:
+    """Confirm without asking (``--yes``)."""
+    return True
+
+
 def run_system_command(command: str) -> int:
     """Run ``command`` with the shell of the system, on the terminal, and return its exit status.
 
@@ -269,8 +274,11 @@ def _run_shell(args):
     def read_line():
         return input(_PROMPT)
 
+    # --yes skips the confirmation of destructive commands
+    confirm = _always_yes if getattr(args, 'yes', False) else _ask_yes_no
+
     try:
-        run_repl(session, registry, output, read_line)
+        run_repl(session, registry, output, read_line, confirm=confirm)
     finally:
         app.run_cleanup()
     return ExitCode.SUCCESS
