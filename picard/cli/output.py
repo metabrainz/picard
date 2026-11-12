@@ -71,7 +71,7 @@ class CliOutput:
         """Apply color codes to text if color is enabled."""
         if not self.color or not codes:
             return text
-        return ''.join(codes) + text + self.RESET
+        return ''.join(codes) + str(text) + self.RESET
 
     # --- Basic output ---
 
@@ -200,6 +200,44 @@ class CliOutput:
     def d_option(self, text):
         """Display a CLI option/flag reference (e.g., --reinstall, --ref)."""
         return self._colorize(text, self.BOLD)
+
+    # --- Semantic display methods for engine results ---
+
+    def d_status_ok(self, text):
+        """Display something done, matched or good (a status, a high score)."""
+        return self._colorize(text, self.GREEN)
+
+    def d_status_pending(self, text):
+        """Display something pending or middling (a status, a middling score)."""
+        return self._colorize(text, self.YELLOW)
+
+    def d_status_failed(self, text):
+        """Display something failed or bad (a status, a low score)."""
+        return self._colorize(text, self.RED)
+
+    def d_mb_entity(self, entity):
+        """Display the type of a MusicBrainz entity (release, recording, ...)."""
+        return self._colorize(entity, self.CYAN)
+
+    def d_added(self, text):
+        """Display added or new text (in a diff)."""
+        return self._colorize(text, self.GREEN)
+
+    def d_removed(self, text):
+        """Display removed text (in a diff)."""
+        return self._colorize(text, self.RED)
+
+    def d_replaced(self, text):
+        """Display the old value of a changed text (in a diff), as a plugin shows its old commit."""
+        return self._colorize(text, self.DIM)
+
+    def d_mark(self, mark):
+        """Display the mark of the applied or current entry in a list."""
+        return self._colorize(mark, self.GREEN + self.BOLD)
+
+    def d_input_prompt(self, prompt):
+        """Display the prompt of an interactive console."""
+        return self._colorize(prompt, self.BOLD)
 
     # --- User interaction ---
 
