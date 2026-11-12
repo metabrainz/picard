@@ -961,23 +961,25 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
 
     def lookup_discid_from_logfile(self):
         config = get_config()
-        current_directory = config.persist.get("current_directory", '')
-        file_chooser = FileDialog(parent=self.window, directory=current_directory)
+        current_directory = find_existing_path(
+            config.persist.get("current_log_directory", "")
+        ) or find_starting_directory()
+        file_chooser = FileDialog(
+            parent=self.window, directory=str(current_directory)
+        )
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [
                 _("All supported log files") + " (*.log *.txt *.toc)",
                 _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
-                _("dBpoweramp log files") + " (*.txt)",
+                _("dbPoweramp log files") + " (*.txt)",
                 _("SCSI TOC file") + " (*.toc)",
-                _("All files") + " (*)",
             ]
         )
         if file_chooser.exec():
             filepath = Path(file_chooser.selectedFiles()[0])
-            config = get_config()
-            config.persist['current_directory'] = str(filepath.parent)
-            self.run_lookup_discid_from_logfile(filepath)
+            config.persist["current_log_directory"] = str(filepath.parent)
+            self.run_lookup_cd(filepath)
 
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
