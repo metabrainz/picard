@@ -62,8 +62,11 @@ def _read_until(fd, text, timeout=30):
 class ShellTerminalTest(PicardTestCase):
     @staticmethod
     def _environment(tmp):
-        """The environment of the shell: its history in ``tmp``, not in the folder of the user."""
-        return dict(os.environ, PICARD_SHELL_HISTORY_FILE=os.path.join(tmp, 'shell_history'))
+        """The environment of the shell: its history in ``tmp``, not in the folder of the user, and no colors.
+
+        The output is then read as plain text, whatever the colors of the console are.
+        """
+        return dict(os.environ, PICARD_SHELL_HISTORY_FILE=os.path.join(tmp, 'shell_history'), NO_COLOR='1')
 
     def _start(self, tmp):
         """Start the shell on a terminal; return it and the side of the terminal to type on."""
@@ -122,6 +125,18 @@ class ShellTerminalTest(PicardTestCase):
             with open(os.path.join(tmp, 'shell_history')) as f:
                 lines = f.read().splitlines()
         self.assertEqual(['help selectors', 'quit', 'help paths', 'quit'], lines)
+
+    def test_shell_history_lists_and_clears_the_lines(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._run(tmp, [b'help selectors\r'])
+            output = self._run(tmp, [b'help paths\r', b'shell history\r', b'shell history clear\r'])
+            with open(os.path.join(tmp, 'shell_history')) as f:
+                lines = f.read().splitlines()
+        # The lines of both sessions, numbered, the one of the previous session first.
+        self.assertIn(b'1  help selectors\r\n2  quit\r\n3  help paths\r\n4  shell history\r\n', output)
+        self.assertIn(b'the history is cleared', output)
+        # Only what came after the clear is left.
+        self.assertEqual(['quit'], lines)
 
     def test_ctrl_c_then_ctrl_d_leaves_without_a_traceback(self):
         with tempfile.TemporaryDirectory() as tmp:

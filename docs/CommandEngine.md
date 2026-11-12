@@ -62,6 +62,7 @@ the metadata box shows), so the two cannot drift apart.
 | `metadata rm <selector> <tag>...` | remove tags, by name or pattern |
 | `move <sources> <destination>` | put files into a track (`a1.d2.t3`), a cluster, an album (matched to its tracks) or a bucket (`u`, `a1.u`), as dropping them in the GUI does (several files dropped on a track go to the following tracks of the album); the last word is the destination |
 | `shell get [name]` | show the settings of the console: `open_max` (the most pages `open` opens at once, 5) and `minted_max` (the most handles written after `minted:`, 12); a number, `-1` for no limit |
+| `shell history [count\|clear]` | list the lines typed in the console, numbered (the last `count`), or forget them all, in the console and in the history file |
 | `shell remint [kind]...` | mint the handles of a kind (`f`, `c`, `a`, `t`, `m`, `v`, `k`) again from 1 when no object of that kind is left, else it is reported as `in_use` and nothing changes; without a kind, all are tried |
 | `shell set <name> <value>` | set one for this session only, nothing is written to the configuration (`shell set open_max 10`) |
 | `option ls [pattern]` | the options not at their default, or those matching a pattern, with where each value comes from |
@@ -107,7 +108,8 @@ Several consoles can run at once: as bash does with `histappend`, each one adds
 the lines of its session to the file when it ends (under a lock, except on
 Windows), and the file is then cut to its size, so the lines of the others are
 not lost; a console that is running does not see the lines of the others until
-the next one starts. Two environment variables change it:
+the next one starts. `shell history` lists the lines, and `shell history clear`
+forgets them, for a line that should not have been kept. Two environment variables change it:
 
 | variable | default |
 |---|---|

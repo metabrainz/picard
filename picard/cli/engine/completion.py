@@ -299,6 +299,8 @@ def complete(line: str, text: str, registry, session) -> list[str]:
         arg_matches = [tag for tag in _tag_names() if tag.startswith(text)]
     elif kind == 'option':
         arg_matches = [name for name in session.option_names() if name.startswith(text)]
+    elif kind == 'history':
+        arg_matches = [word for word in ('clear',) if word.startswith(text)]
     elif kind == 'handle-kind':
         arg_matches = [prefix for prefix in HANDLE_KINDS if prefix.startswith(text)]
     elif kind == 'setting':

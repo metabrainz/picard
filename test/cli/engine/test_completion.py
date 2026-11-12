@@ -137,6 +137,11 @@ class CompleteTest(PicardTestCase):
         self.assertEqual(['a', 'c', 'f', 'k', 'm', 't', 'v'], self._complete('shell remint '))
         self.assertEqual(['c'], self._complete('shell remint f c'))
 
+    def test_shell_history_completes_clear(self):
+        self.assertEqual(['clear'], self._complete('shell history '))
+        self.assertEqual(['clear'], self._complete('shell history cl'))
+        self.assertEqual([], self._complete('shell history x'))
+
     def test_the_value_of_a_setting_is_not_completed(self):
         self.assertEqual([], self._complete('shell set open_max '))
 

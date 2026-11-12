@@ -50,6 +50,18 @@ from picard.cli.engine.result import EngineResult
 from picard.cli.engine.settings import ConsoleSettings
 
 
+class ConsoleHistory(Protocol):
+    """The lines typed in a console, for ``shell history``: given by a frontend that keeps them."""
+
+    def lines(self) -> list[str]:
+        """The lines, the oldest first."""
+        ...
+
+    def clear(self) -> None:
+        """Forget the lines, in the console and in the file they are kept in."""
+        ...
+
+
 class UsageError(Exception):
     """A command was not given what it needs.
 
@@ -75,6 +87,9 @@ class EngineSession(Protocol):
 
     # The settings of the console (``shell set``): limits that commands and frontends read.
     settings: ConsoleSettings
+
+    # The lines typed (``shell history``), or None if the frontend keeps none.
+    history: 'ConsoleHistory | None'
 
     def resolve(self, selector: 'str | Sequence[str]') -> 'tuple[list[Any], list[str]]':
         """Resolve a selector to ``(entities, unresolved_tokens)``.
@@ -196,7 +211,7 @@ class EngineCommand:
     # selector / wildcard), 'handle' (a single handle), 'tag' (tag name),
     # 'option' (option name), 'option-value' (value of the option named by the
     # previous word), 'setting' (setting of the console), 'handle-kind' (prefix
-    # of handles), or '' (no completion). Used by the shell's tab-completer.
+    # of handles), 'history' (what 'shell history' does), or '' (no completion). Used by the shell's tab-completer.
     # Missing entries default to no completion.
     arg_kinds: tuple[str, ...] = field(default_factory=tuple)
     # True for a command whose effect on disk is hard to undo (e.g. ``trash``).

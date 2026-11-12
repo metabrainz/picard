@@ -34,6 +34,7 @@ A line that starts with ``!`` is run by the shell of the system, as it is, excep
 """
 
 from argparse import ArgumentParser
+from contextlib import contextmanager
 import os
 import re
 import subprocess
@@ -73,7 +74,8 @@ _ANSI_ESCAPE = re.compile(r'\033\[[0-9;]*m')
 _CONSOLE_HELP = (
     "In this console, !<command> runs a command of the system shell, !cd <directory> changes",
     "the directory of the console, and quit or exit (or Ctrl-D) leaves. The up key recalls",
-    "the lines typed, also in the previous sessions, except those that start with a space.",
+    "the lines typed, also in the previous sessions, except those that start with a space",
+    "('shell history' lists them).",
 )
 
 # The most lines the history keeps, unless PICARD_SHELL_HISTORY_SIZE says otherwise.
@@ -118,6 +120,31 @@ class History:
         self._last = line
         self._added += 1
 
+    def lines(self) -> list[str]:
+        """The lines, the oldest first."""
+        return [
+            self._readline.get_history_item(index)
+            for index in range(1, self._readline.get_current_history_length() + 1)
+        ]
+
+    def clear(self) -> None:
+        """Forget the lines, here and in the file, which is emptied under the lock of :meth:`save`."""
+        clear_history = getattr(self._readline, 'clear_history', None)
+        if clear_history is not None:
+            clear_history()
+        else:  # not in every build of readline
+            for index in reversed(range(self._readline.get_current_history_length())):
+                self._readline.remove_history_item(index)
+        self._last = None
+        self._added = 0
+        try:
+            with _locked(self._path, create=False) as fd:
+                os.ftruncate(fd, 0)
+        except FileNotFoundError:
+            pass
+        except OSError as e:
+            log.warning("Could not clear the history of the shell in %s: %s", self._path, e)
+
     def save(self) -> None:
         """Add the lines of this session to the file, readable by the user only (it can hold paths and addresses).
 
@@ -129,24 +156,32 @@ class History:
             return
         try:
             os.makedirs(os.path.dirname(self._path), exist_ok=True)
-            # Opened here to make it, readable by the user only, and to lock it while
-            # readline adds the lines and cuts it: the lock keeps out the consoles
-            # that end at the same time (it is advisory, they all take it).
-            fd = os.open(self._path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o600)
-            try:
-                if fcntl is not None:
-                    fcntl.flock(fd, fcntl.LOCK_EX)
+            with _locked(self._path, create=True):
                 append = getattr(self._readline, 'append_history_file', None)
                 if append is not None:
                     append(self._added, self._path)
                 else:
                     self._readline.write_history_file(self._path)
-            finally:
-                os.close(fd)  # and with it the lock
             os.chmod(self._path, 0o600)
             self._added = 0
         except OSError as e:
             log.warning("Could not save the history of the shell to %s: %s", self._path, e)
+
+
+@contextmanager
+def _locked(path: str, create: bool):
+    """Open the history file, readable by the user only if it is made, and lock it; give its descriptor.
+
+    The lock keeps out the consoles that add their lines (or clear them) at the
+    same time: it is advisory, they all take it. Not on Windows, without fcntl.
+    """
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | (os.O_CREAT if create else 0), 0o600)
+    try:
+        if fcntl is not None:
+            fcntl.flock(fd, fcntl.LOCK_EX)
+        yield fd
+    finally:
+        os.close(fd)  # and with it the lock
 
 
 def _history_size() -> int:
@@ -386,6 +421,7 @@ def _run_shell(args):
     session = LocalEngineSession(app)
 
     history = _setup_readline(registry, session)
+    session.history = history
 
     output.print(output.dim("Picard engine shell — type 'help', 'quit' to exit."))
 

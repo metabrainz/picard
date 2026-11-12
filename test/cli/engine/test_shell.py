@@ -31,6 +31,8 @@ from picard.cli.engine.commands import (
     EngineCommand,
     EngineCommandRegistry,
 )
+from picard.cli.engine.dispatch import dispatch
+from picard.cli.engine.render import render_result
 from picard.cli.engine.result import (
     EngineResult,
 )
@@ -423,6 +425,18 @@ class _FakeReadline:
     def add_history(self, line):
         self.lines.append(line)
 
+    def get_current_history_length(self):
+        return len(self.lines)
+
+    def get_history_item(self, index):
+        return self.lines[index - 1]
+
+    def clear_history(self):
+        self.lines = []
+
+    def remove_history_item(self, index):
+        del self.lines[index]
+
     def write_history_file(self, path):
         self.written_to = path
         with open(path, 'w') as f:
@@ -498,6 +512,37 @@ class HistoryTest(PicardTestCase):
         history.save()
         self.assertEqual(['ls'], self._file_lines())
 
+    def test_the_lines_are_listed_oldest_first(self):
+        for line in ('ls', 'tree'):
+            self.history.remember(line)
+        self.assertEqual(['ls', 'tree'], self.history.lines())
+
+    def test_clear_forgets_the_lines_here_and_in_the_file(self):
+        self.history.remember('login https://example.org/?code=secret')
+        self.history.save()
+        self.history.remember('ls')
+        self.history.clear()
+        self.assertEqual([], self.history.lines())
+        self.assertEqual([], self._file_lines())
+        # What this session typed before is not added back when it ends.
+        self.history.save()
+        self.assertEqual([], self._file_lines())
+        self.history.remember('ls')
+        self.history.save()
+        self.assertEqual(['ls'], self._file_lines())
+
+    def test_clear_without_clear_history_in_readline(self):
+        self.readline.clear_history = None
+        for line in ('a', 'b', 'c'):
+            self.history.remember(line)
+        self.history.clear()
+        self.assertEqual([], self.history.lines())
+
+    def test_clear_with_no_file_yet(self):
+        self.history.remember('ls')
+        self.history.clear()
+        self.assertFalse(os.path.exists(self.path))
+
     def test_save_writes_a_file_for_the_user_only(self):
         self.history.remember('ls')
         self.history.save()
@@ -535,3 +580,53 @@ class HistorySizeTest(PicardTestCase):
         with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_SIZE': 'many'}):
             with self.assertLogs(log.main_logger, level='WARNING'):
                 self.assertEqual(1000, _history_size())
+
+
+class ShellHistoryCommandTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.reg = EngineCommandRegistry()
+        register_builtins(self.reg)
+        self.session = LocalEngineSession(MagicMock())
+        self.readline = _FakeReadline()
+        self.session.history = History(self.readline, os.path.join(self.mktmpdir(), 'shell_history'))
+        for line in ('file add a.flac', 'cluster', 'cluster lookup'):
+            self.session.history.remember(line)
+
+    def _run(self, line):
+        return dispatch(self.session, self.reg, line)
+
+    def test_the_lines_are_listed_numbered(self):
+        result = self._run('shell history')
+        self.assertTrue(result.ok, result.error)
+        self.assertEqual(
+            [('1', 'file add a.flac'), ('2', 'cluster'), ('3', 'cluster lookup')],
+            [(item.handle, item.data['line']) for item in result.items],
+        )
+
+    def test_only_the_last_ones(self):
+        self.assertEqual(['2', '3'], [item.handle for item in self._run('shell history 2').items])
+        self.assertEqual('the history is empty', self._run('shell history 0').message)
+
+    def test_clear(self):
+        result = self._run('shell history clear')
+        self.assertTrue(result.ok, result.error)
+        self.assertEqual('the history is cleared', result.message)
+        self.assertEqual([], self.readline.lines)
+        self.assertEqual('the history is empty', self._run('shell history').message)
+
+    def test_a_console_without_history(self):
+        self.session.history = None
+        result = self._run('shell history')
+        self.assertFalse(result.ok)
+        self.assertIn('keeps no history', result.error)
+
+    def test_usage(self):
+        self.assertIn('usage', self._run('shell history many').error)
+
+    def test_rendered_as_a_shell_lists_its_history(self):
+        for line in [f'line {n}' for n in range(4, 11)]:
+            self.session.history.remember(line)
+        out, buf = _output()
+        render_result(self._run('shell history 3'), out)
+        self.assertEqual([' 8  line 8', ' 9  line 9', '10  line 10'], buf.getvalue().splitlines())
