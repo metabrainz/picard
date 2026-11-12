@@ -27,6 +27,7 @@ group them by what they act on:
 - :mod:`~picard.cli.engine.builtins.account`: ``login``, ``logout``
 - :mod:`~picard.cli.engine.builtins.usercollections`: ``collection ls``, ``collection add``, ``collection rm``
 - :mod:`~picard.cli.engine.builtins.listing`: ``ls``, ``tree``
+- :mod:`~picard.cli.engine.builtins.browse`: ``url``, ``open``
 - :mod:`~picard.cli.engine.builtins.files`: ``file add``, ``save``, ``move``, ``remove``, ``trash``
 - :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load``
 - :mod:`~picard.cli.engine.builtins.versions`: ``album versions``, ``album switch``
@@ -41,6 +42,7 @@ with them; both frontends call it so they share one vocabulary.
 """
 
 import picard.cli.engine.builtins.account  # noqa: F401
+import picard.cli.engine.builtins.browse  # noqa: F401
 import picard.cli.engine.builtins.disc  # noqa: F401
 import picard.cli.engine.builtins.files  # noqa: F401
 from picard.cli.engine.builtins.help import make_help_command

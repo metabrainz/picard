@@ -43,7 +43,9 @@ _MINTED_SHOWN = 12
 _NAME_KEYS = frozenset({'title', 'artist'})
 
 # Statuses of the engine by what they mean for the user; any other is dimmed.
-_STATUS_DONE = frozenset({'matched', 'identified', 'saved', 'loaded', 'switched', 'moved', 'trashed', 'refreshed'})
+_STATUS_DONE = frozenset(
+    {'matched', 'identified', 'saved', 'loaded', 'switched', 'moved', 'trashed', 'refreshed', 'opened'}
+)
 _STATUS_PENDING = frozenset({'pending', 'changed', 'not_loaded'})
 _STATUS_FAILED = frozenset(
     {
@@ -56,6 +58,7 @@ _STATUS_FAILED = frozenset(
         'no_matches',
         'no_confident_match',
         'no_versions',
+        'open_failed',
     }
 )
 
@@ -189,6 +192,8 @@ def _format_item_data(data: dict[str, Any], output: CliOutput) -> str:
         if value not in (None, ''):
             if key == 'error':
                 parts.append(output.d_warning(f"{key}={value}"))
+            elif key == 'url':
+                parts.append(f"{key}={output.d_url(value)}")
             elif key in _NAME_KEYS:
                 parts.append(f"{key}={output.d_name(value)}")
             else:

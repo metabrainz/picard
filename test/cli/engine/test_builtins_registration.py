@@ -53,12 +53,14 @@ EXPECTED = {
     'option save',
     'option set',
     'option unset',
+    'open',
     'refresh',
     'remove',
     'save',
     'scan',
-    'trash',
     'tree',
+    'trash',
+    'url',
 }
 
 DESTRUCTIVE = {'logout', 'option save', 'trash'}
