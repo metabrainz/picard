@@ -23,6 +23,7 @@ will instead serialize ``result.to_dict()``; both read the same structured
 result.
 """
 
+import re
 from typing import Any
 
 from picard.cli.engine.result import (
@@ -57,6 +58,41 @@ _STATUS_FAILED = frozenset(
         'no_versions',
     }
 )
+
+
+_HANDLE = re.compile(r'([a-z]+)(\d+)')
+
+
+def _compact_handles(handles: list[str]) -> list[str]:
+    """The handles as terms of a selector, a run of consecutive ones written as a range.
+
+    ``f1, f2, f3, c1, c2, a1, a3`` gives ``f1-3``, ``c1-2``, ``a1``, ``a3``.
+    The order is kept: only the handles that follow each other are joined.
+    """
+    terms: list[str] = []
+    run: tuple[str, int, int] | None = None  # prefix, first number, last number
+
+    def flush() -> None:
+        if run is None:
+            return
+        prefix, first, last = run
+        terms.append(f"{prefix}{first}" if first == last else f"{prefix}{first}-{last}")
+
+    for handle in handles:
+        match = _HANDLE.fullmatch(handle)
+        if match is None:
+            flush()
+            run = None
+            terms.append(handle)
+            continue
+        prefix, number = match.group(1), int(match.group(2))
+        if run is not None and run[0] == prefix and run[2] + 1 == number:
+            run = (prefix, run[1], number)
+        else:
+            flush()
+            run = (prefix, number, number)
+    flush()
+    return terms
 
 
 def _candidates_to_show(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -257,9 +293,10 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
             )
 
     if result.mints:
-        minted = ', '.join(result.mints[:_MINTED_SHOWN])
-        if len(result.mints) > _MINTED_SHOWN:
-            minted += f" … (+{len(result.mints) - _MINTED_SHOWN} more)"
+        terms = _compact_handles(result.mints)
+        minted = ', '.join(terms[:_MINTED_SHOWN])
+        if len(terms) > _MINTED_SHOWN:
+            minted += f" … (+{len(terms) - _MINTED_SHOWN} more)"
         output.print(output.dim("minted: " + minted))
     if result.unresolved:
         output.warning("unresolved: " + ', '.join(result.unresolved))

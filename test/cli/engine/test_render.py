@@ -95,14 +95,11 @@ class RenderResultTest(PicardTestCase):
         self.assertIn('* m20', candidates[-1])
         self.assertIn('14 more', buf.getvalue())
 
-    def test_render_shortens_the_list_of_minted_handles(self):
+    def test_render_writes_the_minted_handles_as_ranges(self):
         out, buf = _output()
         render_result(self._lookup_result(30), out)
         minted = [line for line in buf.getvalue().splitlines() if line.startswith('minted:')]
-        self.assertEqual(1, len(minted))
-        self.assertIn('a1, m1, m2', minted[0])
-        self.assertIn('(+19 more)', minted[0])
-        self.assertNotIn('m30', minted[0])
+        self.assertEqual(['minted: a1, m1-30'], minted)
 
     def test_render_indents_items_by_depth(self):
         out, buf = _output()
@@ -279,3 +276,34 @@ class RenderColorTest(PicardTestCase):
         out, buf = _color_output()
         render_result(EngineResult.failure(f'not found: {mbid}'), out)
         self.assertIn(f'{CliOutput.DIM}{mbid}{CliOutput.RESET}', buf.getvalue())
+
+
+class CompactMintedTest(PicardTestCase):
+    def _minted(self, mints):
+        out, buf = _output()
+        render_result(EngineResult(mints=mints), out)
+        return buf.getvalue().strip()
+
+    def test_consecutive_handles_are_a_range(self):
+        mints = ['f1', 'f2', 'f3', 'f4', 'f5', 'c1', 'c2', 'a1', 'a3']
+        self.assertEqual('minted: f1-5, c1-2, a1, a3', self._minted(mints))
+
+    def test_only_handles_that_follow_each_other_are_joined(self):
+        self.assertEqual('minted: f1-2, f4, f6-7', self._minted(['f1', 'f2', 'f4', 'f6', 'f7']))
+        self.assertEqual('minted: f2, f1', self._minted(['f2', 'f1']))
+
+    def test_the_prefix_must_be_the_same(self):
+        self.assertEqual('minted: a1, c2, a3', self._minted(['a1', 'c2', 'a3']))
+
+    def test_a_lookup_listing_stays_short(self):
+        mints = ['a1', *(f'm{n}' for n in range(1, 51))]
+        self.assertEqual('minted: a1, m1-50', self._minted(mints))
+
+    def test_many_terms_are_cut_and_counted(self):
+        mints = [f'f{n}' for n in range(1, 60, 2)]  # 30 handles, none consecutive
+        text = self._minted(mints)
+        self.assertTrue(text.startswith('minted: f1, f3, f5'))
+        self.assertTrue(text.endswith('… (+18 more)'), text)
+
+    def test_a_handle_without_a_number_is_kept(self):
+        self.assertEqual('minted: x, f1-2', self._minted(['x', 'f1', 'f2']))
