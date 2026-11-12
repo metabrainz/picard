@@ -40,6 +40,7 @@ import subprocess
 
 from PyQt6.QtCore import pyqtRemoveInputHook
 
+from picard import log
 from picard.cli.base import ExitCode
 from picard.cli.busy import BusyIndicator
 from picard.cli.engine.completion import ShellCompleter
@@ -51,7 +52,16 @@ from picard.cli.engine.dispatch import (
 from picard.cli.engine.render import render_result
 from picard.cli.status import ShellStatus
 from picard.cli.subcommand import Subcommand
+from picard.const.appdirs import shell_history_file
+from picard.const.sys import IS_WIN
 from picard.notification import set_notifier_sink
+
+
+# Locks the history file while several consoles add their lines to it; not on Windows.
+if IS_WIN:
+    fcntl = None
+else:
+    import fcntl
 
 
 _PROMPT = 'picard> '
@@ -62,21 +72,103 @@ _ANSI_ESCAPE = re.compile(r'\033\[[0-9;]*m')
 # What a console has that the engine does not, said after the list of the commands.
 _CONSOLE_HELP = (
     "In this console, !<command> runs a command of the system shell, !cd <directory> changes",
-    "the directory of the console, and quit or exit (or Ctrl-D) leaves.",
+    "the directory of the console, and quit or exit (or Ctrl-D) leaves. The up key recalls",
+    "the lines typed, also in the previous sessions, except those that start with a space.",
 )
+
+# The most lines the history keeps, unless PICARD_SHELL_HISTORY_SIZE says otherwise.
+_HISTORY_SIZE = 1000
 
 # Characters that make a line more than a single command for the shell (cd a && ls).
 _SHELL_SYNTAX = frozenset('&|;<>`(')
 
 
-def _setup_readline(registry, session) -> None:
-    """Enable tab-completion (handles + file paths) if readline is available."""
+class History:
+    """The lines typed in the console, recalled with the up and down keys, and kept from one session to the next.
+
+    As in a shell, an empty line, one that starts with a space and the same line
+    twice in a row are not kept. Several consoles can run at once: as bash does
+    with its histappend option, each one appends the lines of its session to the
+    file when it ends, rather than writing the whole history it read, so that the
+    lines of the others are not lost. ``readline`` is the readline module, given
+    so that the history can be tested without a terminal.
+    """
+
+    def __init__(self, readline, path: str, length: int = _HISTORY_SIZE):
+        self._readline = readline
+        self._path = path
+        self._last: str | None = None
+        # The lines of this session, the ones to append to the file.
+        self._added = 0
+        # The lines are added here, not by input(), to choose which ones are kept.
+        readline.set_auto_history(False)
+        readline.set_history_length(length)
+        try:
+            readline.read_history_file(path)
+        except FileNotFoundError:
+            pass
+        except OSError as e:
+            log.warning("Could not read the history of the shell from %s: %s", path, e)
+
+    def remember(self, line: str) -> None:
+        """Keep ``line`` in the history, unless it is empty, starts with a space, or is the last one again."""
+        if not line.strip() or line[0].isspace() or line == self._last:
+            return
+        self._readline.add_history(line)
+        self._last = line
+        self._added += 1
+
+    def save(self) -> None:
+        """Add the lines of this session to the file, readable by the user only (it can hold paths and addresses).
+
+        The file is then cut to the length of the history, the oldest lines first.
+        Without a way to append (some builds of libedit), it is written whole, and
+        the last console to end wins, as in bash without histappend.
+        """
+        if not self._added:
+            return
+        try:
+            os.makedirs(os.path.dirname(self._path), exist_ok=True)
+            # Opened here to make it, readable by the user only, and to lock it while
+            # readline adds the lines and cuts it: the lock keeps out the consoles
+            # that end at the same time (it is advisory, they all take it).
+            fd = os.open(self._path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o600)
+            try:
+                if fcntl is not None:
+                    fcntl.flock(fd, fcntl.LOCK_EX)
+                append = getattr(self._readline, 'append_history_file', None)
+                if append is not None:
+                    append(self._added, self._path)
+                else:
+                    self._readline.write_history_file(self._path)
+            finally:
+                os.close(fd)  # and with it the lock
+            os.chmod(self._path, 0o600)
+            self._added = 0
+        except OSError as e:
+            log.warning("Could not save the history of the shell to %s: %s", self._path, e)
+
+
+def _history_size() -> int:
+    """The most lines the history keeps: PICARD_SHELL_HISTORY_SIZE, 0 for none, a negative number for no limit."""
+    text = os.environ.get('PICARD_SHELL_HISTORY_SIZE', '').strip()
+    if not text:
+        return _HISTORY_SIZE
+    try:
+        return int(text)
+    except ValueError:
+        log.warning("PICARD_SHELL_HISTORY_SIZE is not a number: %r, %d lines are kept", text, _HISTORY_SIZE)
+        return _HISTORY_SIZE
+
+
+def _setup_readline(registry, session) -> 'History | None':
+    """Enable tab-completion (handles + file paths) and the history if readline is available."""
     # Imported here, not at the top: readline is optional, and importing it
     # changes how input() behaves for every command of picard-cli, not only this one.
     try:
         import readline
     except ImportError:  # e.g. some Windows Pythons without pyreadline
-        return
+        return None
 
     completer = ShellCompleter(registry, session, readline.get_line_buffer)
     readline.set_completer(completer.complete)
@@ -88,6 +180,7 @@ def _setup_readline(registry, session) -> None:
         readline.parse_and_bind('bind ^I rl_complete')
     else:
         readline.parse_and_bind('tab: complete')
+    return History(readline, shell_history_file(), _history_size())
 
 
 class ShellSubcommand(Subcommand):
@@ -292,12 +385,15 @@ def _run_shell(args):
     register_builtins(registry)
     session = LocalEngineSession(app)
 
-    _setup_readline(registry, session)
+    history = _setup_readline(registry, session)
 
     output.print(output.dim("Picard engine shell — type 'help', 'quit' to exit."))
 
     def read_line():
-        return input(_prompt(output))
+        line = input(_prompt(output))
+        if history is not None:
+            history.remember(line)
+        return line
 
     # --yes skips the confirmation of destructive commands
     confirm = _always_yes if getattr(args, 'yes', False) else _ask_yes_no
@@ -308,6 +404,8 @@ def _run_shell(args):
     try:
         run_repl(session, registry, output, read_line, confirm=confirm, status=status)
     finally:
+        if history is not None:
+            history.save()
         set_notifier_sink(None)
         app.run_cleanup()
     return ExitCode.SUCCESS

@@ -59,6 +59,18 @@ def plugin_folder() -> str:
     return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(appdata_folder, 'plugins3')))
 
 
+def shell_history_file() -> str:
+    """The file the history of the lines typed in ``picard-cli shell`` is kept in.
+
+    In the folder of the data of the application, unless the environment
+    variable PICARD_SHELL_HISTORY_FILE names another file.
+    """
+    appdata_folder = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
+    return os.path.normpath(
+        os.path.expanduser(os.environ.get('PICARD_SHELL_HISTORY_FILE', os.path.join(appdata_folder, 'shell_history')))
+    )
+
+
 def sessions_folder() -> str:
     """Get the sessions folder path.
 

@@ -17,8 +17,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 import os.path
 import unittest
+from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
@@ -26,6 +28,7 @@ from picard.const.appdirs import (
     cache_folder,
     config_folder,
     plugin_folder,
+    shell_history_file,
 )
 from picard.const.sys import (
     IS_LINUX,
@@ -73,3 +76,27 @@ class AppPathsTest(PicardTestCase):
     @unittest.skipUnless(IS_LINUX, "Linux test")
     def test_plugin_folder_linux(self):
         self.assert_home_path_equals('~/.local/share/MusicBrainz/Picard/plugins3', plugin_folder())
+
+    @unittest.skipUnless(IS_WIN, "Windows test")
+    def test_shell_history_file_win(self):
+        with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_FILE': ''}):
+            del os.environ['PICARD_SHELL_HISTORY_FILE']
+            self.assert_home_path_equals('~/AppData/Roaming/MusicBrainz/Picard/shell_history', shell_history_file())
+
+    @unittest.skipUnless(IS_MACOS, "macOS test")
+    def test_shell_history_file_macos(self):
+        with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_FILE': ''}):
+            del os.environ['PICARD_SHELL_HISTORY_FILE']
+            self.assert_home_path_equals(
+                '~/Library/Application Support/MusicBrainz/Picard/shell_history', shell_history_file()
+            )
+
+    @unittest.skipUnless(IS_LINUX, "Linux test")
+    def test_shell_history_file_linux(self):
+        with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_FILE': ''}):
+            del os.environ['PICARD_SHELL_HISTORY_FILE']
+            self.assert_home_path_equals('~/.local/share/MusicBrainz/Picard/shell_history', shell_history_file())
+
+    def test_shell_history_file_from_the_environment(self):
+        with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_FILE': '~/somewhere/history'}):
+            self.assert_home_path_equals('~/somewhere/history', shell_history_file())

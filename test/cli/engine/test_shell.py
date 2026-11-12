@@ -24,6 +24,7 @@ from unittest.mock import (
 from test.cli.engine.test_render import _output
 from test.picardtestcase import PicardTestCase
 
+from picard import log
 from picard.album import Album
 from picard.cli.engine.builtins import register_builtins
 from picard.cli.engine.commands import (
@@ -36,11 +37,14 @@ from picard.cli.engine.result import (
 from picard.cli.engine.session import LocalEngineSession
 from picard.cli.output import CliOutput
 from picard.cli.shell import (
+    History,
+    _history_size,
     _prompt,
     run_repl,
     run_system_command,
 )
 from picard.cli.status import ShellStatus
+from picard.const.sys import IS_WIN
 from picard.workspace import workspace
 
 
@@ -393,3 +397,141 @@ class BusyMessageTest(PicardTestCase):
         self.session.activity = 'loading release x'
         self._run(self.status)
         self.assertEqual(['loading release x'], self.messages)
+
+
+class _FakeReadline:
+    """The part of the readline module the history uses."""
+
+    def __init__(self, lines=()):
+        self.lines = list(lines)
+        self.auto = True
+        self.length = None
+        self.read_from = None
+        self.written_to = None
+
+    def set_auto_history(self, enabled):
+        self.auto = enabled
+
+    def set_history_length(self, length):
+        self.length = length
+
+    def read_history_file(self, path):
+        self.read_from = path
+        with open(path) as f:
+            self.lines += f.read().splitlines()
+
+    def add_history(self, line):
+        self.lines.append(line)
+
+    def write_history_file(self, path):
+        self.written_to = path
+        with open(path, 'w') as f:
+            f.writelines(line + '\n' for line in self.lines)
+
+    def append_history_file(self, count, path):
+        """As readline does: append the last ``count`` lines, then cut the file to the length."""
+        self.written_to = path
+        with open(path, 'a') as f:
+            f.writelines(line + '\n' for line in self.lines[-count:])
+        if self.length is not None and self.length >= 0:
+            with open(path) as f:
+                kept = f.read().splitlines()[-self.length :] if self.length else []
+            with open(path, 'w') as f:
+                f.writelines(line + '\n' for line in kept)
+
+
+class HistoryTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.path = os.path.join(self.mktmpdir(), 'shell_history')
+        self.readline = _FakeReadline()
+        self.history = History(self.readline, self.path, length=50)
+
+    def test_the_file_is_read_and_the_lines_are_added_by_the_history(self):
+        self.assertEqual((self.path, False, 50), (self.readline.read_from, self.readline.auto, self.readline.length))
+
+    def test_the_lines_kept(self):
+        for line in ('ls', 'ls', '', '   ', ' login secret', 'tree', 'ls'):
+            self.history.remember(line)
+        self.assertEqual(['ls', 'tree', 'ls'], self.readline.lines)
+
+    def _file_lines(self):
+        with open(self.path) as f:
+            return f.read().splitlines()
+
+    def test_consoles_at_the_same_time_keep_the_lines_of_each_other(self):
+        # Both start from the same file; as with histappend, each adds its own lines when it ends.
+        with open(self.path, 'w') as f:
+            f.write('old\n')
+        first = History(_FakeReadline(), self.path, length=50)
+        second = History(_FakeReadline(), self.path, length=50)
+        first.remember('ls')
+        second.remember('tree')
+        second.save()
+        first.save()
+        self.assertEqual(['old', 'tree', 'ls'], self._file_lines())
+
+    def test_the_file_is_cut_to_the_length_oldest_first(self):
+        history = History(self.readline, self.path, length=2)
+        for line in ('a', 'b', 'c'):
+            history.remember(line)
+        history.save()
+        self.assertEqual(['b', 'c'], self._file_lines())
+
+    def test_a_session_with_no_line_kept_leaves_the_file_alone(self):
+        self.history.save()
+        self.assertIsNone(self.readline.written_to)
+        self.assertFalse(os.path.exists(self.path))
+
+    def test_saving_twice_does_not_add_the_lines_twice(self):
+        self.history.remember('ls')
+        self.history.save()
+        self.history.save()
+        self.assertEqual(['ls'], self._file_lines())
+
+    def test_without_append_the_whole_history_is_written(self):
+        readline = _FakeReadline()
+        # As some builds of libedit, which have no append.
+        readline.append_history_file = None
+        history = History(readline, self.path)
+        history.remember('ls')
+        history.save()
+        self.assertEqual(['ls'], self._file_lines())
+
+    def test_save_writes_a_file_for_the_user_only(self):
+        self.history.remember('ls')
+        self.history.save()
+        self.assertEqual(self.path, self.readline.written_to)
+        if not IS_WIN:
+            self.assertEqual(0o600, os.stat(self.path).st_mode & 0o777)
+
+    def test_a_file_that_cannot_be_written_is_logged_not_raised(self):
+        # A folder cannot be made under a file.
+        open(self.path, 'w').close()
+        history = History(self.readline, os.path.join(self.path, 'sub', 'shell_history'))
+        history.remember('ls')
+        with self.assertLogs(log.main_logger, level='WARNING'):
+            history.save()
+
+    def test_a_file_that_cannot_be_read_is_logged_not_raised(self):
+        self.readline.read_history_file = MagicMock(side_effect=PermissionError('denied'))
+        with self.assertLogs(log.main_logger, level='WARNING'):
+            History(self.readline, self.path)
+
+    def test_save_makes_the_folder(self):
+        history = History(self.readline, os.path.join(self.path + '.d', 'sub', 'shell_history'))
+        history.remember('ls')
+        history.save()
+        self.assertTrue(os.path.isfile(os.path.join(self.path + '.d', 'sub', 'shell_history')))
+
+
+class HistorySizeTest(PicardTestCase):
+    def test_the_size_comes_from_the_environment(self):
+        for value, size in (('', 1000), ('50', 50), (' 0 ', 0), ('-1', -1)):
+            with self.subTest(value=value), patch.dict(os.environ, {'PICARD_SHELL_HISTORY_SIZE': value}):
+                self.assertEqual(size, _history_size())
+
+    def test_a_size_that_is_not_a_number_is_the_default(self):
+        with patch.dict(os.environ, {'PICARD_SHELL_HISTORY_SIZE': 'many'}):
+            with self.assertLogs(log.main_logger, level='WARNING'):
+                self.assertEqual(1000, _history_size())
