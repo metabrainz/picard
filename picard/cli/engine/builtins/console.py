@@ -15,19 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that control the console itself: ``shell set`` and ``shell get``."""
+"""The commands that control the console itself: ``shell set``, ``shell get`` and ``shell remint``."""
 
 from typing import Any
 
 from picard.cli.engine.builtins.helpers import (
     arg_first,
     arg_joined,
+    arg_words,
 )
 from picard.cli.engine.builtins.registry import command
 from picard.cli.engine.commands import (
     EngineSession,
     UsageError,
 )
+from picard.cli.engine.handles import HANDLE_KINDS
 from picard.cli.engine.result import (
     EngineItemResult,
     EngineResult,
@@ -92,3 +94,43 @@ def _cmd_shell_set(session: EngineSession, args: dict[str, Any]) -> EngineResult
         return EngineResult(items=[_setting_item(session.settings.describe(name))])
     except SettingError as e:
         return EngineResult.failure(f"shell set: {e}")
+
+
+@command(
+    'shell remint',
+    usage='shell remint [kind]...',
+    help="Mint the handles of a kind from 1 again.",
+    args=('kind',),
+    arg_kinds=('handle-kind',),
+)
+def _cmd_shell_remint(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """Mint the handles of a kind from 1 again.
+
+    Handles are never reused, so after objects are removed and others added the
+    numbers keep growing. This mints them from 1 again, for a kind of object (f for
+    files, c clusters, a albums, t tracks, m lookup candidates, v release
+    versions, k collections) when none of that kind is left: the objects that are
+    there are never renumbered, and a kind with some is reported as in_use and left
+    as it is. Without a kind, all of them are tried.
+
+    A handle printed before (f3) may name another object afterwards, so use it
+    only when nothing refers to the old ones.
+
+    Examples:
+      shell remint f
+      shell remint f c a
+      shell remint
+    """
+    kinds = arg_words(args.get('kind')) or list(HANDLE_KINDS)
+    unknown = [kind for kind in kinds if kind not in HANDLE_KINDS]
+    if unknown:
+        kinds_text = ', '.join(f"{prefix} {name}" for prefix, name in HANDLE_KINDS.items())
+        return EngineResult.failure(f"shell remint: unknown kind {', '.join(unknown)} ({kinds_text})")
+    items = []
+    notes = []
+    for kind in dict.fromkeys(kinds):
+        live = session.remint(kind)
+        items.append(EngineItemResult(handle=kind, status='in_use' if live else 'reminted'))
+        if live:
+            notes.append(f"{kind}: {live} {HANDLE_KINDS[kind]}(s) still there, left as they are")
+    return EngineResult(items=items, message='; '.join(notes))

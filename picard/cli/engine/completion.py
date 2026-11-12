@@ -41,11 +41,11 @@ import glob
 import os
 
 from picard.cli.engine.dispatch import split_command_name
+from picard.cli.engine.handles import HANDLE_KINDS
 from picard.cli.engine.topics import TOPICS
 
 
 _WILDCARDS = ('*', 'f*', 'c*', 'a*', 't*', 'm*', 'v*', 'k*', 'u')
-_HANDLE_PREFIXES = ('f', 'c', 'a', 't', 'm', 'v', 'k')
 
 
 def _complete_path(text: str) -> list[str]:
@@ -125,7 +125,7 @@ def _complete_help(registry, words: list[str], text: str) -> list[str]:
 def _live_handles(session) -> list[str]:
     """All currently-live handles across the known prefixes, via the session."""
     handles = []
-    for prefix in _HANDLE_PREFIXES:
+    for prefix in HANDLE_KINDS:
         for entity in session.enumerate_prefix(prefix):
             try:
                 handles.append(session.handle_for(entity))
@@ -204,6 +204,8 @@ def complete(line: str, text: str, registry, session) -> list[str]:
         arg_matches = [tag for tag in _tag_names() if tag.startswith(text)]
     elif kind == 'option':
         arg_matches = [name for name in session.option_names() if name.startswith(text)]
+    elif kind == 'handle-kind':
+        arg_matches = [prefix for prefix in HANDLE_KINDS if prefix.startswith(text)]
     elif kind == 'setting':
         arg_matches = [name for name in session.settings.names() if name.startswith(text)]
     elif kind == 'option-value' and rest:

@@ -103,3 +103,40 @@ class MintMarkTest(PicardTestCase):
         reg.handle_for(third)
         self.assertEqual(['f2', 'c1'], reg.minted_since(mark))
         self.assertEqual([], reg.minted_since(reg.mint_mark()))
+
+
+class RemintTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.reg = HandleRegistry(_classifier)
+
+    def test_a_kind_with_no_entity_left_starts_again_from_one(self):
+        files = [_Entity('f') for _ in range(3)]
+        self.assertEqual(['f1', 'f2', 'f3'], [self.reg.handle_for(f) for f in files])
+        del files
+        gc.collect()
+        self.assertEqual(0, self.reg.remint('f'))
+        self.assertEqual('f1', self.reg.handle_for(_kept := _Entity('f')))
+        self.assertIs(_kept, self.reg.resolve('f1'))
+
+    def test_a_kind_with_live_entities_is_left_as_it_is(self):
+        kept = _Entity('f')
+        self.reg.handle_for(_Entity('f'))
+        self.reg.handle_for(kept)
+        self.assertEqual(1, self.reg.remint('f'))
+        self.assertEqual('f2', self.reg.handle_for(kept))
+        self.assertEqual('f3', self.reg.handle_for(_kept := _Entity('f')))
+        self.assertIs(_kept, self.reg.resolve('f3'))
+
+    def test_only_the_kind_asked_is_reminted(self):
+        cluster = _Entity('c')
+        self.reg.handle_for(cluster)
+        self.reg.handle_for(_Entity('f'))
+        gc.collect()
+        self.assertEqual(0, self.reg.remint('f'))
+        self.assertEqual('c2', self.reg.handle_for(_kept := _Entity('c')))
+        self.assertEqual('c1', self.reg.handle_for(cluster))
+
+    def test_a_kind_never_minted_is_reminted_to_nothing(self):
+        self.assertEqual(0, self.reg.remint('a'))
+        self.assertEqual('a1', self.reg.handle_for(_kept := _Entity('a')))

@@ -26,7 +26,9 @@ seen, and returns the SAME handle on subsequent requests for that entity. Key
 properties (see the design spec):
 
 - Handles are STABLE IDS, never positions: removing ``a3`` then ``a4`` does not
-  renumber anything; ordinals are never reused within a session.
+  renumber anything; ordinals are never reused within a session, unless the user
+  asks (:meth:`HandleRegistry.remint`, ``shell remint``) once no entity of that
+  kind is left.
 - Backed by weak references, so when an entity leaves the working set and is
   garbage-collected its handle stops resolving (returns ``None``) rather than
   pinning the dead entity alive.
@@ -39,12 +41,25 @@ resolve the same handles through one registry.
 """
 
 from collections.abc import Callable
+import gc
 import itertools
 from typing import Any
 from weakref import (
     WeakKeyDictionary,
     WeakValueDictionary,
 )
+
+
+# The kinds of entity that have handles, by prefix (the classifier of the session decides which is which).
+HANDLE_KINDS = {
+    'f': 'file',
+    'c': 'cluster',
+    'a': 'album',
+    't': 'track',
+    'm': 'lookup candidate',
+    'v': 'release version',
+    'k': 'collection',
+}
 
 
 # A classifier maps an entity to its handle prefix (a short lowercase tag), or
@@ -95,6 +110,21 @@ class HandleRegistry:
         self._by_entity[entity] = handle
         self._minted.append(handle)
         return handle
+
+    def remint(self, prefix: str) -> int:
+        """Mint the handles of ``prefix`` from 1 again, if no entity has a handle of that kind any more.
+
+        Returns the number of entities that still do, and then nothing changes: a
+        handle of a live entity is never given to another one. The entities that
+        are gone have no handle left (the registry holds them weakly), and the
+        ones that are in the working set are not renumbered.
+        """
+        # An entity that left the working set but is not collected yet would still count.
+        gc.collect()
+        live = sum(1 for handle in self._by_handle if handle.startswith(prefix) and handle[len(prefix) :].isdigit())
+        if not live:
+            self._counters.pop(prefix, None)
+        return live
 
     def mint_mark(self) -> int:
         """A mark of the handles minted so far, for :meth:`minted_since`."""

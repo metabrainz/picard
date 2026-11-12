@@ -116,6 +116,10 @@ class EngineSession(Protocol):
         """Write the options set in this session (or just ``names``) to the configuration."""
         ...
 
+    def remint(self, kind: str) -> int:
+        """Mint the handles of ``kind`` (``f``, ``c``, ...) from 1 again if none is left; return how many are."""
+        ...
+
     def mint_mark(self) -> int:
         """A mark of the handles minted so far, for ``minted_since``."""
         ...
@@ -191,8 +195,9 @@ class EngineCommand:
     # 'path' (filesystem path), 'device' (CD/DVD drive), 'selector' (handle
     # selector / wildcard), 'handle' (a single handle), 'tag' (tag name),
     # 'option' (option name), 'option-value' (value of the option named by the
-    # previous word), 'setting' (setting of the console), or '' (no completion).
-    # Used by the shell's tab-completer. Missing entries default to no completion.
+    # previous word), 'setting' (setting of the console), 'handle-kind' (prefix
+    # of handles), or '' (no completion). Used by the shell's tab-completer.
+    # Missing entries default to no completion.
     arg_kinds: tuple[str, ...] = field(default_factory=tuple)
     # True for a command whose effect on disk is hard to undo (e.g. ``trash``).
     # The engine itself never prompts; an interactive frontend should ask for
