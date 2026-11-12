@@ -42,22 +42,82 @@ from picard.cli.engine.selectors import SelectorError
 from picard.const.sys import IS_WIN
 
 
+def _split_windows(line: str) -> list[str]:
+    """Split a command line into words by the rules of Windows, where a backslash is a path separator.
+
+    A backslash is literal, so ``C:\\Music\\a.flac`` and ``\\\\server\\share`` stay as typed,
+    unless it comes right before a double quote: ``\\"`` is a literal quote
+    (and ``\\\\"`` a backslash followed by a quote that begins or ends a group), as
+    for the command line of a program. Double quotes group words and are removed.
+    A word that begins with a single quote is a group up to the next one, in
+    which nothing is special; elsewhere a single quote is an apostrophe.
+
+    Raises :class:`ValueError` on an unbalanced quote.
+    """
+    words: list[str] = []
+    word: list[str] = []
+    started = False  # an empty group ("") is a word
+    in_double = in_single = False
+    i = 0
+    while i < len(line):
+        char = line[i]
+        if in_single:
+            if char == "'":
+                in_single = False
+            else:
+                word.append(char)
+        elif char == '\\':
+            end = i
+            while end < len(line) and line[end] == '\\':
+                end += 1
+            count = end - i
+            started = True
+            if end < len(line) and line[end] == '"':
+                word.append('\\' * (count // 2))
+                if count % 2:
+                    word.append('"')
+                    end += 1
+                # An even count leaves the quote to begin or end a group.
+            else:
+                word.append('\\' * count)
+            i = end
+            continue
+        elif char == '"':
+            in_double = not in_double
+            started = True
+        elif char == "'" and not in_double and not started:
+            in_single = started = True
+        elif char.isspace() and not in_double:
+            if started:
+                words.append(''.join(word))
+                word, started = [], False
+        else:
+            word.append(char)
+            started = True
+        i += 1
+    if in_double or in_single:
+        raise ValueError("No closing quotation")
+    if started:
+        words.append(''.join(word))
+    return words
+
+
 def split_line(line: str, posix: 'bool | None' = None) -> list[str]:
     """Split a command line into words, honouring quotes.
 
     The backslash is an escape character in POSIX mode. On Windows it is the
-    path separator (``C:\\Music\\a.flac`` must stay as typed), so the line is
-    split in non-POSIX mode there, where quotes group words but are kept in the
-    words and have to be removed. ``posix`` defaults to the platform's choice.
+    path separator (``C:\\Music\\a.flac`` must stay as typed), so the rules of
+    Windows apply there (see :func:`_split_windows`). The same rules apply to
+    every argument, whether it is a path or the value of a tag. ``posix``
+    defaults to the platform's choice.
 
     Raises :class:`ValueError` on an unbalanced quote.
     """
     if posix is None:
         posix = not IS_WIN
-    words = shlex.split(line, posix=posix)
     if posix:
-        return words
-    return [word[1:-1] if len(word) >= 2 and word[0] == word[-1] and word[0] in {'"', "'"} else word for word in words]
+        return shlex.split(line, posix=True)
+    return _split_windows(line)
 
 
 def split_command_name(tokens: list[str], registry: EngineCommandRegistry) -> 'tuple[str, list[str]]':

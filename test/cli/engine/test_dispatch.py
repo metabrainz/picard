@@ -194,7 +194,31 @@ class SplitLineTest(PicardTestCase):
             split_line('file add "D:\\My Music\\b.flac" \'E:\\x y\'', posix=False),
         )
 
+    def test_windows_unc_path_and_apostrophe_are_literal(self):
+        self.assertEqual(
+            ['file', 'add', '\\\\server\\share\\a.flac', "C:\\Don't\\b.flac"],
+            split_line('file add \\\\server\\share\\a.flac C:\\Don\'t\\b.flac', posix=False),
+        )
+
+    def test_windows_backslash_before_a_double_quote_is_a_literal_quote(self):
+        self.assertEqual(['t', 'He said "it\'s"'], split_line('t "He said \\"it\'s\\""', posix=False))
+
+    def test_windows_backslashes_before_a_quote_are_halved(self):
+        # An even number: half of them, and the quote ends the group. An odd one: a literal quote too.
+        self.assertEqual(['t', 'C:\\a b\\'], split_line('t "C:\\a b\\\\"', posix=False))
+        self.assertEqual(['t', 'a\\"b'], split_line('t a\\\\\\"b', posix=False))
+
+    def test_windows_single_quotes_group_only_at_the_start_of_a_word(self):
+        self.assertEqual(['t', 'Say "hi"', 'a b'], split_line('t \'Say "hi"\' a" "b', posix=False))
+
+    def test_windows_empty_group_is_an_empty_word(self):
+        self.assertEqual(['t', ''], split_line('t ""', posix=False))
+
+    def test_windows_adjacent_groups_are_one_word(self):
+        self.assertEqual(['t', 'ab c'], split_line('t "a"b" c"', posix=False))
+
     def test_unbalanced_quote_is_an_error(self):
         for posix in (True, False):
-            with self.subTest(posix=posix), self.assertRaises(ValueError):
-                split_line('file add "oops', posix=posix)
+            for line in ('file add "oops', "file add 'oops"):
+                with self.subTest(posix=posix, line=line), self.assertRaises(ValueError):
+                    split_line(line, posix=posix)

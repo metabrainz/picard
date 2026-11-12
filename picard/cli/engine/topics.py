@@ -122,7 +122,9 @@ A tag can have several values. Each word given to 'metadata set' or 'metadata ad
 is one value ('metadata set f1 genre Rock Pop' gives two), 'metadata rm-value'
 takes some out, and 'metadata rm' removes the tag. 'metadata show' joins the
 values with '; ' to display them, but a value is never split on it: "Rock; Pop"
-is one value.
+is one value. The words given to a tag that holds a single value, such as
+title, are one value too ('metadata set f1 title A Song'); quote a value to keep
+its spaces as they are, see 'help quoting'.
 
   artist            the artist tag
   musicbrainz_*     all the tags that start with musicbrainz_
@@ -137,4 +139,41 @@ A track, an album or a cluster stands for its files, and the values that differ
 between them are grouped: 'title (different across 3 items)'.""",
 )
 
-TOPICS = (SELECTORS, PATHS, TAGS)
+QUOTING = Topic(
+    'quoting',
+    "How to write a word that contains spaces or quotes",
+    """\
+A command line is split into words at the spaces. To write a word that contains
+spaces, put it in quotes; the quotes are not part of the word:
+
+  metadata set f1 title "Don't Stop"
+  metadata set f1 comment 'He said "yes"'
+  file add "~/Music/My Albums"
+
+On Linux and macOS, as in a shell:
+
+  "..."      a group; inside it, \\" is a quote and \\\\ a backslash
+  '...'      a group in which nothing is special (it cannot contain a single quote)
+  \\x       outside quotes, the character x as it is: a\\ b is one word, \\" a quote
+
+  metadata set f1 title "Say \\"hi\\""    sets   Say "hi"
+
+On Windows, a backslash is the separator of a path and stays as typed
+(C:\\Music\\a.flac, \\\\server\\share), unless it comes right before a double quote:
+
+  "..."      a group; inside it, \\" is a quote
+  '...'      a group in which nothing is special, when the word begins with it
+             (an apostrophe elsewhere in a word is an apostrophe)
+
+  metadata set f1 title "Say \\"hi\\""    sets   Say "hi"
+  file add "C:\\My Music"                  but "C:\\My Music\\" does not end the
+                                          group: leave the last backslash out
+
+Each value is a word: 'metadata set f1 genre Rock Pop' sets two values, and
+"Rock Pop" sets one. The words given to a tag that holds a single value, such as
+title, are joined with a space: 'metadata set f1 title A Song' and
+'metadata set f1 title "A Song"' are the same (see 'help tags'). A quote that is
+not closed is reported.""",
+)
+
+TOPICS = (SELECTORS, PATHS, TAGS, QUOTING)

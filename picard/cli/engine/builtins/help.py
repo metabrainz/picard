@@ -60,7 +60,7 @@ def _cmd_help(registry: EngineCommandRegistry, session: EngineSession, args: dic
     help <command>       how to use a command, with examples ('help move')
     help <group>         the commands of a group ('help option')
     help <topic>         explain how to name things: 'help selectors',
-                         'help paths' and 'help tags'
+                         'help paths', 'help tags' and 'help quoting'
 
     Commands are written as a group and a verb ('option set'), and a few have a
     single word ('ls').
