@@ -1,5 +1,23 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.5 - 2026-11-12
+
+### Bugfixes
+- [PICARD-3511](https://tickets.metabrainz.org/browse/PICARD-3511) - Saving embedded artwork fails when setting the artwork for multiple selected files
+- [PICARD-3525](https://tickets.metabrainz.org/browse/PICARD-3525) - Restore Defaults uses wrong values for plugins
+- [PICARD-3538](https://tickets.metabrainz.org/browse/PICARD-3538) - Unable to change cover art provider order
+- [PICARD-3541](https://tickets.metabrainz.org/browse/PICARD-3541) - Views stay suspended and the pending files count never reaches zero when a file is removed while it is still loading
+- [PICARD-3542](https://tickets.metabrainz.org/browse/PICARD-3542) - "Automatically cluster all new files" can skip clustering depending on which file finishes loading last
+- [PICARD-3543](https://tickets.metabrainz.org/browse/PICARD-3543) - CD lookup reads a wrong drive name when the CD lookup devices setting has spaces or empty items
+- [PICARD-3550](https://tickets.metabrainz.org/browse/PICARD-3550) - After filtering the "Unmatched Files" entry shows up for all loaded releases
+- [PICARD-3554](https://tickets.metabrainz.org/browse/PICARD-3554) - Hovering over the closing % of a variable shows an empty tooltip
+- [PICARD-3556](https://tickets.metabrainz.org/browse/PICARD-3556) - CLI: command alias "plugin uninstall" not working
+- [PICARD-3559](https://tickets.metabrainz.org/browse/PICARD-3559) - Crash on logout error if option window was closed
+
+### Improvements
+- [PICARD-3553](https://tickets.metabrainz.org/browse/PICARD-3553) - Allow setting `PICARD_FORCE_FUSION=0` to opt-out of using Qt's Fusion style
+
+
 ## Version 3.0.4 - 2026-11-01
 
 ### Bugfixes
