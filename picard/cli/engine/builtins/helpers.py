@@ -41,14 +41,23 @@ TIMEOUT_DEFAULT = 120
 TIMEOUT_LONG = 300
 
 
-def drain(session: EngineSession, timeout: float, notes: list[str]) -> bool:
+def drain(session: EngineSession, timeout: float, notes: list[str], doing: 'str | None' = None) -> bool:
     """Wait for the session's background work; note a timeout for the result.
+
+    ``doing`` says what is waited for ("loading release ..."), for a frontend to
+    show while it waits; without it the activity of the session is left as it is.
 
     Returns True when everything finished. On a timeout the work may still be
     running, so the command's outcome can be incomplete: a message is added to
     ``notes`` (deduplicated) for the command to put in its result.
     """
-    drained = bool(session.run_until_idle(timeout=timeout))
+    previous = session.activity
+    if doing:
+        session.activity = doing
+    try:
+        drained = bool(session.run_until_idle(timeout=timeout))
+    finally:
+        session.activity = previous
     if not drained:
         note = f"timed out after {timeout:g}s waiting for background work; results may be incomplete"
         if note not in notes:

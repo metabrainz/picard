@@ -72,7 +72,7 @@ def _refresh(session: EngineSession, notes: list[str]) -> 'str | None':
         outcome['done'] = True
 
     load_user_collections(loaded)
-    drain(session, TIMEOUT_SHORT, notes)
+    drain(session, TIMEOUT_SHORT, notes, doing="loading your collections")
     if not outcome:
         return "timed out waiting for the collections"
     return outcome['error']
@@ -168,7 +168,7 @@ def _modify(session: EngineSession, name: str, args: dict[str, Any], adding: boo
         collection.add_releases(wanted, modified)
     else:
         collection.remove_releases(wanted, modified)
-    drained = drain(session, TIMEOUT_SHORT, notes)
+    drained = drain(session, TIMEOUT_SHORT, notes, doing="updating the collection")
     if errors:
         status, extra = 'failed', {'error': errors[0]}
     elif not drained:

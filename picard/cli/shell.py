@@ -41,6 +41,7 @@ import subprocess
 from PyQt6.QtCore import pyqtRemoveInputHook
 
 from picard.cli.base import ExitCode
+from picard.cli.busy import BusyIndicator
 from picard.cli.engine.completion import ShellCompleter
 from picard.cli.engine.dispatch import (
     dispatch,
@@ -48,7 +49,9 @@ from picard.cli.engine.dispatch import (
     split_line,
 )
 from picard.cli.engine.render import render_result
+from picard.cli.status import ShellStatus
 from picard.cli.subcommand import Subcommand
+from picard.notification import set_notifier_sink
 
 
 _PROMPT = 'picard> '
@@ -200,6 +203,7 @@ def run_repl(
     read_line,
     confirm=_ask_yes_no,
     run_system=run_system_command,
+    status=None,
 ) -> None:
     """Run the read-dispatch-render loop.
 
@@ -209,7 +213,17 @@ def run_repl(
     to go ahead. ``run_system`` runs the command of a line that starts with ``!``
     and returns its exit status. They are factored out so the loop can be driven
     by scripted input in tests (not only an interactive terminal).
+
+    ``status`` (a :class:`~picard.cli.status.ShellStatus`) holds the latest
+    status message of the core, shown next to the busy indicator while a command
+    runs; without one (no message ever comes in), the indicator says what the
+    command declared it waits for.
     """
+    status = status or ShellStatus()
+
+    def busy_message() -> str:
+        return status.latest or session.activity or 'working…'
+
     while True:
         try:
             line = read_line()
@@ -237,8 +251,10 @@ def run_repl(
             if not confirm(f"'{command.name}' is destructive. Run '{line}'?"):
                 output.warning("cancelled")
                 continue
+        status.reset()
         try:
-            result = dispatch(session, registry, line)
+            with BusyIndicator(output, message=busy_message):
+                result = dispatch(session, registry, line)
         except KeyboardInterrupt:
             # Ctrl-C during a running command (e.g. a lookup pumping the event
             # loop) aborts that command and returns to the prompt.
@@ -286,8 +302,12 @@ def _run_shell(args):
     # --yes skips the confirmation of destructive commands
     confirm = _always_yes if getattr(args, 'yes', False) else _ask_yes_no
 
+    # The status messages of the core ("Loading album … …"), shown while a command runs.
+    status = ShellStatus()
+    set_notifier_sink(status)
     try:
-        run_repl(session, registry, output, read_line, confirm=confirm)
+        run_repl(session, registry, output, read_line, confirm=confirm, status=status)
     finally:
+        set_notifier_sink(None)
         app.run_cleanup()
     return ExitCode.SUCCESS

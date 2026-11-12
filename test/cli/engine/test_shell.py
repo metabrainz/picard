@@ -40,6 +40,7 @@ from picard.cli.shell import (
     run_repl,
     run_system_command,
 )
+from picard.cli.status import ShellStatus
 from picard.workspace import workspace
 
 
@@ -338,3 +339,57 @@ class PromptTest(PicardTestCase):
 
     def test_prompt_is_plain_without_color(self):
         self.assertEqual('picard> ', _prompt(CliOutput(stdout=io.StringIO(), color=False)))
+
+
+class BusyMessageTest(PicardTestCase):
+    """What the busy indicator says while a command runs."""
+
+    def setUp(self):
+        super().setUp()
+        self.out, self.buf = _output()
+        self.reg = EngineCommandRegistry()
+        self.session = LocalEngineSession(MagicMock())
+        self.status = ShellStatus()
+        self.messages = []
+        # What the command reports while it runs.
+        self.reported = None
+
+    def _run(self, status):
+        def run(session, args):
+            if self.reported:
+                self.status.set_statusbar_message(self.reported, echo=None)
+            self.messages.append(indicator.call_args.kwargs['message']())
+            return EngineResult()
+
+        self.reg.register(EngineCommand(name='slow', run=run))
+        lines = iter(['slow'])
+
+        def read_line():
+            try:
+                return next(lines)
+            except StopIteration:
+                raise EOFError from None
+
+        with patch('picard.cli.shell.BusyIndicator') as indicator:
+            run_repl(self.session, self.reg, self.out, read_line, status=status)
+
+    def test_default_message(self):
+        self._run(None)
+        self.assertEqual(['working…'], self.messages)
+
+    def test_message_is_what_the_command_declared(self):
+        self.session.activity = 'loading release x'
+        self._run(None)
+        self.assertEqual(['loading release x'], self.messages)
+
+    def test_message_is_the_latest_status_of_the_core(self):
+        self.session.activity = 'loading release x'
+        self.reported = 'Loading album x …'
+        self._run(self.status)
+        self.assertEqual(['Loading album x …'], self.messages)
+
+    def test_status_of_the_previous_command_is_forgotten(self):
+        self.status.latest = 'from the previous command'
+        self.session.activity = 'loading release x'
+        self._run(self.status)
+        self.assertEqual(['loading release x'], self.messages)

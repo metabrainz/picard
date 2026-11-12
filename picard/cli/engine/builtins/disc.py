@@ -68,7 +68,7 @@ def _disc_lookup_and_report(
     errors: list[Exception] = []
     disc.read_and_lookup(read, on_error=errors.append)
     notes: list[str] = []
-    drained = drain(session, TIMEOUT_DEFAULT, notes)
+    drained = drain(session, TIMEOUT_DEFAULT, notes, doing="reading the disc and looking it up")
 
     if errors:
         return EngineResult.failure(f"{read_failure}: {errors[0]}")
@@ -185,7 +185,7 @@ def _cmd_disc_read_tags(session: EngineSession, args: dict[str, Any]) -> EngineR
     disc = picard.disc.Disc()
     disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=files)
     notes: list[str] = []
-    drained = drain(session, TIMEOUT_DEFAULT, notes)
+    drained = drain(session, TIMEOUT_DEFAULT, notes, doing="looking up the disc id")
     result = _disc_match_result(session, disc, drained, notes)
     result.resolved = handles_of(session, entities)
     result.unresolved = unresolved

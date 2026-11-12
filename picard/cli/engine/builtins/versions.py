@@ -61,7 +61,7 @@ def _load_versions(album: Album, session: EngineSession, notes: list[str]) -> 't
         return False, "the album has no release group"
     if not release_group.loaded:
         release_group.load_versions(lambda: None)
-        drain(session, TIMEOUT_SHORT, notes)
+        drain(session, TIMEOUT_SHORT, notes, doing="loading the release versions")
     if not release_group.loaded:
         return False, None
     return True, release_group.load_error
@@ -238,7 +238,7 @@ def _cmd_album_switch(session: EngineSession, args: dict[str, Any]) -> EngineRes
 
     previous = album.id
     album.switch_release_version(mbid)
-    drain(session, TIMEOUT_SHORT, notes)
+    drain(session, TIMEOUT_SHORT, notes, doing="switching the release version")
 
     # The files went to the album of that release: the same one, or another if it was loaded.
     target = workspace().albums.get(mbid)

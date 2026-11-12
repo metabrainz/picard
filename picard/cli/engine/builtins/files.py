@@ -191,7 +191,7 @@ def _cmd_file_add(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     notes: list[str] = []
     # Drain the loads, and with them the placement of each file and the album
     # loads and matching it schedules.
-    drain(session, TIMEOUT_DEFAULT, notes)
+    drain(session, TIMEOUT_DEFAULT, notes, doing=f"loading {len(filepaths)} file(s)")
 
     # Report in filename order, whatever the outcome, like the GUI adds them, and
     # once for each path, although a folder and a name can bring the same one.
@@ -249,7 +249,7 @@ def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         return rejected
     saved = workspace().save(entities)
     notes: list[str] = []
-    drain(session, TIMEOUT_DEFAULT, notes)
+    drain(session, TIMEOUT_DEFAULT, notes, doing="saving")
 
     items = []
     for file in saved:
@@ -367,7 +367,7 @@ def _cmd_move(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     movable = [file for file in files if file.parent_item is not destination]
     wks.move_files(movable, destination)
     notes: list[str] = []
-    drain(session, TIMEOUT_DEFAULT, notes)
+    drain(session, TIMEOUT_DEFAULT, notes, doing=f"moving {len(movable)} file(s)")
 
     items = []
     for file in files:

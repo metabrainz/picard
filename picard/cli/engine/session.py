@@ -94,6 +94,8 @@ class LocalEngineSession:
     def __init__(self, app):
         """``app`` is the HeadlessTagger owning the Workspace and thread pools."""
         self._app = app
+        # What the running command is waiting for, for a frontend to show.
+        self.activity: str | None = None
         self._handles = HandleRegistry(classify_entity)
         # Current lookup candidates, keyed (weakly) by the looked-up target
         # (cluster/file). The candidates themselves are held with strong refs so

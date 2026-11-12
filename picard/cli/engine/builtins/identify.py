@@ -102,7 +102,7 @@ def _load_release(session: EngineSession, release_id: str, notes: list[str]) -> 
     match that did not happen. Returns the album and the reason, or None.
     """
     album = workspace().load_album(release_id)
-    loaded = drain(session, TIMEOUT_SHORT, notes)
+    loaded = drain(session, TIMEOUT_SHORT, notes, doing=f"loading release {release_id}")
     if album.errors:
         return album, album.errors[-1]
     if not loaded and not album.loaded:
@@ -145,7 +145,7 @@ def _lookup_cluster(session: EngineSession, cluster: Cluster, notes: list[str]) 
         captured['error'] = error
 
     cluster.lookup_metadata(callback=capture)
-    drained = drain(session, TIMEOUT_SHORT, notes)
+    drained = drain(session, TIMEOUT_SHORT, notes, doing="looking up the cluster in MusicBrainz")
 
     if not drained and not captured:
         # No reply at all before we gave up: neither "no matches" nor a result.
@@ -358,7 +358,7 @@ def _cmd_album_load(session: EngineSession, args: dict[str, Any]) -> EngineResul
 
     album = workspace().load_album(mbid)
     notes: list[str] = []
-    drained = drain(session, TIMEOUT_SHORT, notes)
+    drained = drain(session, TIMEOUT_SHORT, notes, doing=f"loading release {mbid}")
 
     if album.errors:
         status = 'error'
@@ -404,7 +404,7 @@ def _cmd_scan(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     # Drain the fingerprint computation and the follow-up AcoustID lookups, plus
     # any album loads a confident match scheduled.
     notes: list[str] = []
-    drain(session, TIMEOUT_LONG, notes)
+    drain(session, TIMEOUT_LONG, notes, doing=f"fingerprinting {len(files)} file(s) and looking them up")
 
     items = []
     mints = []
@@ -451,7 +451,7 @@ def _cmd_lookup(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     workspace().autotag(taggable)
     # autotag dispatches async web lookups (and album loads on a match); drain.
     notes: list[str] = []
-    drain(session, TIMEOUT_LONG, notes)
+    drain(session, TIMEOUT_LONG, notes, doing=f"looking up {len(taggable)} object(s) in MusicBrainz")
 
     items = []
     mints = []
