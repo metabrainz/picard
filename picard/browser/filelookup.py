@@ -27,12 +27,12 @@
 
 
 from collections.abc import Callable
-import os.path
 
 from picard import (
     log,
     tagger_instance,
 )
+from picard.browser.mburls import MusicBrainzUrls
 from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.disc import Disc
@@ -44,7 +44,6 @@ from picard.util.mbentity import (
     RE_MB_ENTITY,
     parse_mb_entity,
 )
-from picard.util.qt import build_qurl
 
 from picard.ui.searchdialog.album import AlbumSearchDialog
 
@@ -55,18 +54,11 @@ class FileLookup:
     RE_MB_CDTOC = RE_MB_CDTOC
 
     def __init__(self, parent: object, server: str, port: int, local_port: int) -> None:
-        self.server = server
-        self.local_port = int(local_port)
-        self.port = port
+        self.urls = MusicBrainzUrls(server, port, local_port)
         self.tagger = tagger_instance()
 
     def _url(self, path: str, params: dict[str, str | int] | None = None) -> str:
-        if params is None:
-            params = {}
-        if self.local_port:
-            params['tport'] = self.local_port
-        url = build_qurl(self.server, self.port, path=path, queryargs=params)
-        return url.toEncoded().data().decode()
+        return self.urls.build(path, params)
 
     def _build_launch(self, path: str, params: dict[str, str | int] | None = None) -> bool:
         if params is None:
@@ -79,7 +71,7 @@ class FileLookup:
         return True
 
     def _lookup(self, type_: str, id_: str) -> bool:
-        return self._build_launch("/%s/%s" % (type_, id_))
+        return self.launch(self.urls.entity(type_, id_))
 
     def recording_lookup(self, recording_id: str) -> bool:
         return self._lookup('recording', recording_id)
@@ -103,8 +95,8 @@ class FileLookup:
         return self._lookup('cdtoc', discid)
 
     def discid_submission(self, url: str) -> bool:
-        if self.local_port:
-            url = "%s&tport=%d" % (url, self.local_port)
+        if self.urls.local_port:
+            url = "%s&tport=%d" % (url, self.urls.local_port)
         return self.launch(url)
 
     def acoust_lookup(self, acoust_id: str) -> bool:
@@ -154,18 +146,14 @@ class FileLookup:
         duration: str,
         filename: str,
     ) -> bool:
-        params: dict[str, str | int] = {
-            'artist': artist,
-            'release': release,
-            'track': track,
-            'tracknum': tracknum,
-            'duration': duration,
-            'filename': os.path.basename(filename),
-        }
-        return self._build_launch("/taglookup", params)
+        return self.launch(self.urls.tag_lookup(artist, release, track, tracknum, duration, filename))
+
+    def tag_lookup_item(self, item) -> bool:
+        """Look for the release or recording the tags of ``item`` (a file, a cluster, ...) describe."""
+        return self.launch(self.urls.tag_lookup_item(item))
 
     def collection_lookup(self, userid: str) -> bool:
-        return self._build_launch("/user/%s/collections" % userid)
+        return self.launch(self.urls.collections(userid))
 
     def search_entity(
         self,

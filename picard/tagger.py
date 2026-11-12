@@ -918,7 +918,6 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        metadata = item.metadata
         # Result appears asynchronously (browser opens / network lookup);
         # acknowledge the action immediately.
         notifier().flash_busy()
@@ -933,14 +932,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             elif is_album:
                 lookup.album_lookup(itemid)
         else:
-            lookup.tag_lookup(
-                metadata['albumartist'] if item.is_album_like else metadata['artist'],
-                metadata['album'],
-                metadata['title'],
-                metadata['tracknumber'],
-                '' if item.is_album_like else str(metadata.length),
-                item.filename if isinstance(item, File) else '',
-            )
+            lookup.tag_lookup_item(item)
 
     def _disc_read_failed(self, error):
         busy_cursor_stop()
