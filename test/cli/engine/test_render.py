@@ -279,9 +279,9 @@ class RenderColorTest(PicardTestCase):
 
 
 class CompactMintedTest(PicardTestCase):
-    def _minted(self, mints):
+    def _minted(self, mints, minted_max=12):
         out, buf = _output()
-        render_result(EngineResult(mints=mints), out)
+        render_result(EngineResult(mints=mints), out, minted_max=minted_max)
         return buf.getvalue().strip()
 
     def test_consecutive_handles_are_a_range(self):
@@ -307,3 +307,11 @@ class CompactMintedTest(PicardTestCase):
 
     def test_a_handle_without_a_number_is_kept(self):
         self.assertEqual('minted: x, f1-2', self._minted(['x', 'f1', 'f2']))
+
+    def test_the_number_of_terms_shown_is_a_setting(self):
+        mints = [f'f{n}' for n in range(1, 20, 2)]  # 10 handles, none consecutive
+        self.assertTrue(self._minted(mints, minted_max=3).endswith('f1, f3, f5 … (+7 more)'))
+        self.assertNotIn('more', self._minted(mints, minted_max=None))
+
+    def test_no_terms_shown_hides_the_line(self):
+        self.assertEqual('', self._minted(['f1', 'f2'], minted_max=0))

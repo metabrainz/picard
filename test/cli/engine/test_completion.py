@@ -120,6 +120,16 @@ class CompleteTest(PicardTestCase):
         registry.register(EngineCommand(name='noop', run=lambda session, args: None))
         self.assertEqual([], complete('noop x', 'x', registry, self.session))
 
+    def test_setting_names_are_completed_for_shell_set_and_get(self):
+        for command in ('shell set', 'shell get'):
+            with self.subTest(command=command):
+                self.assertEqual(['minted_max', 'open_max'], self._complete(f'{command} '))
+                self.assertEqual(['open_max'], self._complete(f'{command} op'))
+                self.assertEqual([], self._complete(f'{command} zzz'))
+
+    def test_the_value_of_a_setting_is_not_completed(self):
+        self.assertEqual([], self._complete('shell set open_max '))
+
     def test_selector_offers_the_unclustered_bucket(self):
         self.assertIn('u', self._complete('ls '))
 

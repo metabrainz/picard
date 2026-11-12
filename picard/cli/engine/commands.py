@@ -47,6 +47,7 @@ from typing import (
 )
 
 from picard.cli.engine.result import EngineResult
+from picard.cli.engine.settings import ConsoleSettings
 
 
 class UsageError(Exception):
@@ -71,6 +72,9 @@ class EngineSession(Protocol):
     """
 
     activity: 'str | None'
+
+    # The settings of the console (``shell set``): limits that commands and frontends read.
+    settings: ConsoleSettings
 
     def resolve(self, selector: 'str | Sequence[str]') -> 'tuple[list[Any], list[str]]':
         """Resolve a selector to ``(entities, unresolved_tokens)``.
@@ -187,8 +191,8 @@ class EngineCommand:
     # 'path' (filesystem path), 'device' (CD/DVD drive), 'selector' (handle
     # selector / wildcard), 'handle' (a single handle), 'tag' (tag name),
     # 'option' (option name), 'option-value' (value of the option named by the
-    # previous word), or '' (no completion). Used by the shell's tab-completer.
-    # Missing entries default to no completion.
+    # previous word), 'setting' (setting of the console), or '' (no completion).
+    # Used by the shell's tab-completer. Missing entries default to no completion.
     arg_kinds: tuple[str, ...] = field(default_factory=tuple)
     # True for a command whose effect on disk is hard to undo (e.g. ``trash``).
     # The engine itself never prompts; an interactive frontend should ask for

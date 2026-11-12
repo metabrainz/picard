@@ -40,7 +40,7 @@ the metadata box shows), so the two cannot drift apart.
 | `match <cluster> <m>` | apply another candidate of that cluster |
 | `lookup [sel]` | metadata lookup (autotag) of the selected objects |
 | `url <sel\|mbid>...` | print the address of the MusicBrainz page of objects (release, recording, collection, or the tag lookup of a file or cluster that is not matched), on the server of the configuration; a MusicBrainz reference is accepted as well as an object |
-| `open <sel\|mbid>...` | the same, and open the pages in a web browser (at most 5 at once, by default); if none can be started the addresses are shown |
+| `open <sel\|mbid>...` | the same, and open the pages in a web browser (at most `open_max` at once, see `shell get`); if none can be started the addresses are shown |
 | `refresh [sel]` | load the selected albums (and standalone recordings) again from MusicBrainz, like the Refresh action of the GUI (all the albums without a selector) |
 | `scan [sel]` | identify files by AcoustID fingerprint |
 | `album load <mbid\|url>` | load a release as an empty album; the reference may be a bare MBID, `release:<mbid>` or a MusicBrainz release URL |
@@ -61,6 +61,8 @@ the metadata box shows), so the two cannot drift apart.
 | `metadata rm-value <selector> <tag> <value>...` | remove values from a tag; a tag left with none is removed |
 | `metadata rm <selector> <tag>...` | remove tags, by name or pattern |
 | `move <sources> <destination>` | put files into a track (`a1.d2.t3`), a cluster, an album (matched to its tracks) or a bucket (`u`, `a1.u`), as dropping them in the GUI does (several files dropped on a track go to the following tracks of the album); the last word is the destination |
+| `shell get [name]` | show the settings of the console: `open_max` (the most pages `open` opens at once, 5) and `minted_max` (the most handles written after `minted:`, 12); a number, `-1` for no limit |
+| `shell set <name> <value>` | set one for this session only, nothing is written to the configuration (`shell set open_max 10`) |
 | `option ls [pattern]` | the options not at their default, or those matching a pattern, with where each value comes from |
 | `option get <name>` | one option: value, default, type, title and source |
 | `option set <name> <value>` | set an option for this session only |

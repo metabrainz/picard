@@ -204,6 +204,8 @@ def complete(line: str, text: str, registry, session) -> list[str]:
         arg_matches = [tag for tag in _tag_names() if tag.startswith(text)]
     elif kind == 'option':
         arg_matches = [name for name in session.option_names() if name.startswith(text)]
+    elif kind == 'setting':
+        arg_matches = [name for name in session.settings.names() if name.startswith(text)]
     elif kind == 'option-value' and rest:
         arg_matches = [value for value in _option_values(session, rest[0]) if value.startswith(text)]
     elif kind == 'help':

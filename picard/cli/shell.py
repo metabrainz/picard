@@ -261,7 +261,7 @@ def run_repl(
             output.nl()
             output.warning("interrupted")
             continue
-        render_result(result, output)
+        render_result(result, output, minted_max=session.settings.limit('minted_max'))
         if result.ok and line.split() == ['help']:
             # The commands that only make sense in a console are not the engine's.
             for text in _CONSOLE_HELP:

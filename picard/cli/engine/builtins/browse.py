@@ -45,10 +45,6 @@ from picard.file import File
 from picard.util.mbentity import parse_mb_entity
 
 
-# 'open' starts a browser for each page: more than a few at once is a mistake ('url' lists them).
-_MAX_OPEN = 5
-
-
 def _page_url(urls: MusicBrainzUrls, entity: Any, data: dict[str, Any]) -> 'str | None':
     """The address of the page of ``entity``, or None if it has none.
 
@@ -133,8 +129,8 @@ def _cmd_open(session: EngineSession, args: dict[str, Any]) -> EngineResult:
 
     It takes the same arguments as 'url', which only prints the addresses and is
     what to use on a machine without a browser (over ssh, say). If no browser can
-    be started, the addresses are shown. At most 5 pages are opened at once, by
-    default.
+    be started, the addresses are shown. The most pages opened at once is the
+    setting open_max (see 'shell get').
 
     Examples:
       open a1
@@ -145,9 +141,11 @@ def _cmd_open(session: EngineSession, args: dict[str, Any]) -> EngineResult:
         raise UsageError
     result = _pages(session, words)
     pages = [item for item in result.items if item.data.get('url')]
-    if len(pages) > _MAX_OPEN:
+    limit = session.settings.limit('open_max')
+    if limit is not None and len(pages) > limit:
         return EngineResult.failure(
-            f"open: {len(pages)} pages, at most {_MAX_OPEN} are opened at once (use 'url' to list their addresses)",
+            f"open: {len(pages)} pages, at most {limit} are opened at once "
+            f"(use 'url' to list their addresses, or 'shell set open_max')",
             unresolved=result.unresolved,
         )
     opened_any = False

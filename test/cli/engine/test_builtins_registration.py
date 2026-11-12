@@ -58,6 +58,8 @@ EXPECTED = {
     'remove',
     'save',
     'scan',
+    'shell get',
+    'shell set',
     'tree',
     'trash',
     'url',

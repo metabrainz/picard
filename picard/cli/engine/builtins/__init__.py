@@ -32,6 +32,7 @@ group them by what they act on:
 - :mod:`~picard.cli.engine.builtins.identify`: ``cluster``, ``cluster lookup``, ``match``, ``lookup``, ``scan``, ``album load``
 - :mod:`~picard.cli.engine.builtins.versions`: ``album versions``, ``album switch``
 - :mod:`~picard.cli.engine.builtins.metadata`: ``metadata show``, ``set``, ``add``, ``rm-value``, ``rm``
+- :mod:`~picard.cli.engine.builtins.console`: ``shell set``, ``shell get``
 - :mod:`~picard.cli.engine.builtins.option`: ``option ls``, ``get``, ``set``, ``unset``, ``save``
 - :mod:`~picard.cli.engine.builtins.disc`: ``disc read``, ``disc read-log``, ``disc read-tags``
 - :mod:`~picard.cli.engine.builtins.help`: ``help``, which describes the others
@@ -43,6 +44,7 @@ with them; both frontends call it so they share one vocabulary.
 
 import picard.cli.engine.builtins.account  # noqa: F401
 import picard.cli.engine.builtins.browse  # noqa: F401
+import picard.cli.engine.builtins.console  # noqa: F401
 import picard.cli.engine.builtins.disc  # noqa: F401
 import picard.cli.engine.builtins.files  # noqa: F401
 from picard.cli.engine.builtins.help import make_help_command

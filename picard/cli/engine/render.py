@@ -37,7 +37,6 @@ from picard.util.mbentity import RE_MB_ENTITY
 # A lookup can return dozens of candidates, most of them hopeless; show the best
 # ones and say how to see the others (the result itself keeps them all).
 _CANDIDATES_SHOWN = 10
-_MINTED_SHOWN = 12
 
 # What identifies an item in a one-line summary: its value is displayed as a name.
 _NAME_KEYS = frozenset({'title', 'artist'})
@@ -240,8 +239,11 @@ def _render_help(items: list[EngineItemResult], output: CliOutput) -> None:
         output.print(f"  {name}{' ' * (width - len(data['name']))}  {data['summary']}")
 
 
-def render_result(result: EngineResult, output: CliOutput) -> None:
-    """Render ``result`` to ``output`` for a human reader."""
+def render_result(result: EngineResult, output: CliOutput, minted_max: 'int | None' = None) -> None:
+    """Render ``result`` to ``output`` for a human reader.
+
+    ``minted_max`` is the most handles written after ``minted:`` (0 for none, None for no limit).
+    """
     if not result.ok:
         output.error(_highlight_mb_refs(result.error or "command failed", output))
         if result.unresolved:
@@ -297,11 +299,12 @@ def render_result(result: EngineResult, output: CliOutput) -> None:
                 output.dim(f"      … {item.data['total']} releases in the group, the first {len(versions)} are listed")
             )
 
-    if result.mints:
+    if result.mints and minted_max != 0:
         terms = _compact_handles(result.mints)
-        minted = ', '.join(terms[:_MINTED_SHOWN])
-        if len(terms) > _MINTED_SHOWN:
-            minted += f" … (+{len(terms) - _MINTED_SHOWN} more)"
+        shown = terms if minted_max is None else terms[:minted_max]
+        minted = ', '.join(shown)
+        if len(shown) < len(terms):
+            minted += f" … (+{len(terms) - len(shown)} more)"
         output.print(output.dim("minted: " + minted))
     if result.unresolved:
         output.warning("unresolved: " + ', '.join(result.unresolved))
