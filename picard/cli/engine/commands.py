@@ -64,7 +64,13 @@ class EngineSession(Protocol):
     Implemented in-process by ``LocalEngineSession`` (headless); a future
     ``RemoteEngineSession`` satisfies the same protocol by proxying to a running
     GUI. Commands depend only on this surface, never on a concrete tagger.
+
+    ``activity`` says what the command that is running waits for ("loading
+    release ...", or None when it has nothing more to say than that it works):
+    a frontend can show it while the command runs.
     """
+
+    activity: 'str | None'
 
     def resolve(self, selector: 'str | Sequence[str]') -> 'tuple[list[Any], list[str]]':
         """Resolve a selector to ``(entities, unresolved_tokens)``.

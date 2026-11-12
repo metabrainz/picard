@@ -239,6 +239,10 @@ class CliOutput:
         """Display the prompt of an interactive console."""
         return self._colorize(prompt, self.BOLD)
 
+    def d_busy(self, text):
+        """Display the busy indicator of a command that takes time."""
+        return self._colorize(text, self.DIM)
+
     # --- User interaction ---
 
     def d_prompt(self, question, default='N'):

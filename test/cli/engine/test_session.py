@@ -23,6 +23,7 @@ from picard.album import (
     Album,
     NatAlbum,
 )
+from picard.cli.engine.builtins.helpers import drain
 from picard.cli.engine.candidates import Candidate
 from picard.cli.engine.commands import EngineSession
 from picard.cli.engine.session import (
@@ -126,3 +127,29 @@ class LocalEngineSessionTest(PicardTestCase):
         self.session.set_candidates(first, [candidate])
         self.assertEqual([candidate], self.session.candidates_for(first))
         self.assertEqual([], self.session.candidates_for(second))
+
+
+class ActivityTest(PicardTestCase):
+    """What a command says it waits for, while it waits."""
+
+    def setUp(self):
+        super().setUp()
+        self.seen = []
+        self.app = MagicMock()
+        self.session = LocalEngineSession(self.app)
+        self.app.run_until_idle.side_effect = lambda timeout=None: self.seen.append(self.session.activity) or True
+
+    def test_activity_is_set_while_waiting_and_restored_after(self):
+        drain(self.session, 1, [], doing='loading release x')
+        self.assertEqual(['loading release x'], self.seen)
+        self.assertIsNone(self.session.activity)
+
+    def test_activity_is_left_as_it_is_without_doing(self):
+        drain(self.session, 1, [])
+        self.assertEqual([None], self.seen)
+
+    def test_activity_is_restored_when_waiting_fails(self):
+        self.app.run_until_idle.side_effect = KeyboardInterrupt
+        with self.assertRaises(KeyboardInterrupt):
+            drain(self.session, 1, [], doing='x')
+        self.assertIsNone(self.session.activity)

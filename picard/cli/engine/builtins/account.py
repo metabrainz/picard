@@ -121,7 +121,7 @@ def _finish(session: EngineSession, redirect: mblogin.LoginRedirect) -> EngineRe
             items=[_account_item('login_failed', error="this is not the address of the login begun with 'login'")]
         )
     notes: list[str] = []
-    drain(session, TIMEOUT_SHORT, notes)
+    drain(session, TIMEOUT_SHORT, notes, doing="finishing the login")
     return _report(join_notes(notes))
 
 
@@ -183,7 +183,7 @@ def _cmd_login(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     # If the browser came back, the receiver completes the login on the main
     # thread: let it run (the shell does not while it waits for a command).
     notes: list[str] = []
-    drain(session, TIMEOUT_SHORT, notes)
+    drain(session, TIMEOUT_SHORT, notes, doing="waiting for the login")
     if _pending.outcome:
         return _report(join_notes(notes))
     # The browser has not come back yet.
@@ -214,7 +214,7 @@ def _cmd_logout(session: EngineSession, args: dict[str, Any]) -> EngineResult:
 
     notes: list[str] = []
     mblogin.logout(finished)
-    drain(session, TIMEOUT_SHORT, notes)
+    drain(session, TIMEOUT_SHORT, notes, doing="logging out")
     message = join_notes(notes)
     if not outcome:
         return EngineResult(items=[_account_item('timeout')], message=message)
