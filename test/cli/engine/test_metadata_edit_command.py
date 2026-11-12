@@ -127,6 +127,29 @@ class MetadataSetTest(_EditTestCase):
                 self.assertFalse(result.ok)
                 self.assertIn(word, result.error)
 
+    def test_the_words_given_to_a_single_value_tag_are_one_value(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        self._run('metadata set f1 title this is a test')
+        self.assertEqual(['this is a test'], file.metadata.getall('title'))
+
+    def test_the_words_added_to_a_single_value_tag_are_one_value(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        self._run('metadata add f1 title another one')
+        self.assertEqual(['Song', 'another one'], file.metadata.getall('title'))
+
+    def test_a_quoted_value_for_a_single_value_tag_is_accepted(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        self._run('metadata set f1 title "this is a test"')
+        self.assertEqual(['this is a test'], file.metadata.getall('title'))
+
+    def test_several_values_are_accepted_for_multi_value_and_unknown_tags(self):
+        file = _file(self.wks, 'a.flac', {'title': 'Song'})
+        for tag in ('genre', 'performer:guitar', 'zebra'):
+            with self.subTest(tag=tag):
+                result = self._run(f'metadata set f1 {tag} A B')
+                self.assertTrue(result.ok, result.error)
+                self.assertEqual(['A', 'B'], file.metadata.getall(tag))
+
     def test_usage(self):
         for line in ('metadata set', 'metadata set f1', 'metadata set f1 title'):
             with self.subTest(line=line):

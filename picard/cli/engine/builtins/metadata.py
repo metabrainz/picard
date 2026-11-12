@@ -47,6 +47,7 @@ from picard.tagdiff import (
     merge_values,
     selection_of,
 )
+from picard.tags import ALL_TAGS
 from picard.track import Track
 
 
@@ -181,6 +182,12 @@ def _tag_name_error(tag: str) -> 'str | None':
     return None
 
 
+def _holds_single_value(tag: str) -> bool:
+    """Whether ``tag`` is declared as holding a single value (a tag Picard does not know may hold several)."""
+    tagvar = ALL_TAGS.tagvar_from_name(tag)
+    return tagvar is not None and not tagvar.is_multi_value
+
+
 def _resolve_to_edit(
     session: EngineSession, command: str, selector: str
 ) -> 'tuple[list[Any], list[str], EngineResult | None]':
@@ -195,6 +202,7 @@ def _change_values(
     command: str,
     change: Callable[[list[str], list[str]], list[str]],
     check_support: bool = True,
+    check_single_value: bool = True,
 ) -> EngineResult:
     """Change the values of a tag on the entities of a selection.
 
@@ -211,6 +219,9 @@ def _change_values(
     error = _tag_name_error(tag)
     if error:
         return EngineResult.failure(f"{command}: {error}")
+    if check_single_value and len(values) > 1 and _holds_single_value(tag):
+        # The words are one value that was not quoted: title a b c is "a b c".
+        values = [' '.join(values)]
     entities, unresolved, rejected = _resolve_to_edit(session, command, selector)
     if rejected is not None:
         return rejected
@@ -257,9 +268,10 @@ def _cmd_metadata_set(session: EngineSession, args: dict[str, Any]) -> EngineRes
     Each word after the tag is a value, so a value with spaces is quoted, and a
     tag with several values is given them one after the other. A value is never
     split on '; ', which is only how 'metadata show' joins values for display:
-    "Rock; Pop" is one value, Rock Pop are two. The tag is replaced if it has
-    values already. Like the metadata box of the GUI, it
-    changes what would be saved: look at it with 'metadata show', and write it
+    "Rock; Pop" is one value, Rock Pop are two. The words given to a tag that
+    holds a single value, such as title, are one value ('title A Song' sets
+    "A Song"). The tag is replaced if it has values already. Like the metadata
+    box of the GUI, it changes what would be saved: look at it with 'metadata show', and write it
     with 'save'. An album, a track or a cluster is changed together with its
     files. A file whose format cannot hold the tag is left alone and reported as
     unsupported.
@@ -320,6 +332,7 @@ def _cmd_metadata_rm_value(session: EngineSession, args: dict[str, Any]) -> Engi
         'metadata rm-value',
         lambda current, values: [value for value in current if value not in values],
         check_support=False,
+        check_single_value=False,
     )
 
 

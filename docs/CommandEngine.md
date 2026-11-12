@@ -65,7 +65,7 @@ the metadata box shows), so the two cannot drift apart.
 | `option save [names]` | write the options set in this session to the configuration (destructive) |
 | `remove <sel>` | drop objects from the working set (never touches disk) |
 | `trash <sel>` | move the files of the selection to the system trash (destructive) |
-| `help [topic]` | list the commands and topics, or explain a command (`help move`), a group of commands (`help option`) or a topic (`help selectors`, `help paths`, `help tags`) |
+| `help [topic]` | list the commands and topics, or explain a command (`help move`), a group of commands (`help option`) or a topic (`help selectors`, `help paths`, `help tags`, `help quoting`) |
 
 Names are currently a mix of flat (`save`, `remove`, `trash`, `scan`, `lookup`)
 and `noun verb` (`cluster lookup`, `disc read`, `option set`, `metadata show`).
@@ -82,7 +82,7 @@ shows how to write the command (its usage, where `<x>` is required, `[x]`
 optional and `x...` can be repeated) and explains it, with examples. `help
 <group>` lists the commands of a group, and `help cluster` shows the command
 and the ones that go with it (`cluster lookup`). The topics explain what is the
-same for every command: `selectors`, `paths` and `tags`. Tab completes the names.
+same for every command: `selectors`, `paths`, `tags` and `quoting`. Tab completes the names.
 
 The text of a command is its docstring, written for the user, so there is one
 copy of it. `help` is an engine command like the others and returns a result, so
@@ -143,7 +143,7 @@ pattern that matches nothing is said.
 `merge_values`): the values that would be saved change, and nothing is written
 to disk until `save`, so `metadata show` shows the result as changed, added or
 removed. A track, an album or a cluster is changed together with its files, as
-in the GUI. Each word after the tag is one value (quote a value with spaces;
+in the GUI. Each word after the tag is one value (quote a value with spaces, see `help quoting`;
 `metadata set c1 genre Rock Pop` gives two values), `add` does not repeat a
 value that is there, and `rm-value` takes values out of a tag (one that is left
 with none is removed, as `rm` does). A value is never split on a semicolon: `show`
