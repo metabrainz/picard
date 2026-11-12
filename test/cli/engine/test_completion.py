@@ -15,6 +15,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 import os
+import unittest
 from unittest.mock import (
     MagicMock,
     patch,
@@ -28,9 +29,14 @@ from picard.cli.engine.commands import (
     EngineCommand,
     EngineCommandRegistry,
 )
-from picard.cli.engine.completion import complete
+from picard.cli.engine.completion import (
+    _complete_path_word,
+    complete,
+)
+from picard.cli.engine.dispatch import split_line
 from picard.cli.engine.session import LocalEngineSession
 from picard.cluster import Cluster
+from picard.const.sys import IS_WIN
 from picard.track import Track
 from picard.workspace import workspace
 
@@ -195,13 +201,20 @@ class CompleteTest(PicardTestCase):
         album = os.path.join(tmp, 'Billy Joel - [1998] Storm Front')
         os.mkdir(album)
         open(os.path.join(album, 'song.flac'), 'w').close()
-        for prefix in (os.path.join(tmp, 'Billy Joel - [19'), os.path.join(tmp, 'Billy Joel - [1998] St')):
-            with self.subTest(prefix=prefix):
-                matches = complete('file add ' + prefix, prefix, self.reg, self.session)
-                self.assertEqual([album + os.sep], matches)
-        prefix = album + os.sep + 's'
-        matches = complete('file add ' + prefix, prefix, self.reg, self.session)
-        self.assertEqual([os.path.join(album, 'song.flac')], matches)
+
+        def complete_word(typed):
+            # Readline gives what follows the last space; the path is typed in an
+            # open double quote, which reads the same on every platform.
+            text = typed.rsplit(' ', 1)[-1]
+            return complete('file add ' + typed, text, self.reg, self.session), len(typed) - len(text)
+
+        quoted_album = '"' + album + os.sep
+        for typed in ('"' + os.path.join(tmp, 'Billy Joel - [19'), '"' + os.path.join(tmp, 'Billy Joel - [1998] St')):
+            with self.subTest(typed=typed):
+                matches, start = complete_word(typed)
+                self.assertEqual([quoted_album[start:]], matches)
+        matches, start = complete_word(quoted_album + 's')
+        self.assertEqual([('"' + os.path.join(album, 'song.flac') + '"')[start:]], matches)
 
     def test_tag_arg_completes_tag_names(self):
         self.set_config_values(setting={'va_name': 'Various Artists'})
@@ -255,3 +268,100 @@ class SystemCommandCompletionTest(PicardTestCase):
 
     def test_engine_commands_are_not_offered(self):
         self.assertNotIn('ls', self._complete('!ls '))
+
+
+@unittest.skipIf(IS_WIN, "the POSIX rules: the paths of Windows have backslashes, see WindowsPathCompletionTest")
+class PathWithSpacesCompletionTest(PicardTestCase):
+    """A path with spaces is completed as one word, written as it would be typed (POSIX rules)."""
+
+    def setUp(self):
+        super().setUp()
+        self.tmp = self.mktmpdir()
+        os.mkdir(os.path.join(self.tmp, 'Black Sabbath'))
+        os.mkdir(os.path.join(self.tmp, 'Blackwater Holylight'))
+        open(os.path.join(self.tmp, 'Black Sabbath', '01 Paranoid.flac'), 'w').close()
+        open(os.path.join(self.tmp, "it's.flac"), 'w').close()
+
+    def _complete(self, typed):
+        line = 'file add ' + typed
+        text = line.rsplit(' ', 1)[-1]
+        return _complete_path_word(line, text, posix=True), line[: len(line) - len(text)]
+
+    def _check(self, typed, expected_completions, expected_path):
+        matches, head = self._complete(typed)
+        self.assertEqual(expected_completions, matches)
+        if expected_path is not None:
+            # The line, completed, is read back as the path.
+            self.assertEqual(expected_path, split_line(head + matches[0], posix=True)[-1])
+
+    def test_the_names_with_spaces_are_offered_escaped(self):
+        matches, _head = self._complete(self.tmp + '/Black')
+        self.assertEqual([self.tmp + '/Black\\ Sabbath/', self.tmp + '/Blackwater\\ Holylight/'], matches)
+
+    def test_an_escaped_space_is_part_of_the_word(self):
+        self._check(self.tmp + '/Black\\ S', ['Sabbath/'], self.tmp + '/Black Sabbath/')
+
+    def test_in_an_open_double_quote(self):
+        self._check('"' + self.tmp + '/Black S', ['Sabbath/'], None)
+        self._check(
+            '"' + self.tmp + '/Black Sabbath/01 P', ['Paranoid.flac"'], self.tmp + '/Black Sabbath/01 Paranoid.flac'
+        )
+
+    def test_a_file_in_escaped_words(self):
+        self._check(
+            self.tmp + '/Black\\ Sabbath/01\\ P', ['Paranoid.flac'], self.tmp + '/Black Sabbath/01 Paranoid.flac'
+        )
+
+    def test_a_single_quote_in_a_name(self):
+        self._check(self.tmp + '/it', [self.tmp + "/it\\'s.flac"], self.tmp + "/it's.flac")
+        self._check("'" + self.tmp + '/it', ["'" + self.tmp + "/it'\\''s.flac'"], self.tmp + "/it's.flac")
+
+    def test_a_space_that_is_not_escaped_ends_the_word(self):
+        # As in a shell: 'Black S' is two words, and nothing starts with S here.
+        self._check(self.tmp + '/Black S', [], None)
+
+    def test_a_backslash_at_the_end_of_an_open_double_quote(self):
+        # As without a quote, it has nothing to escape yet and is left out.
+        self._check(
+            '"' + self.tmp + '/Black Sabbath/01 Paranoid\\',
+            ['Paranoid.flac"'],
+            self.tmp + '/Black Sabbath/01 Paranoid.flac',
+        )
+
+    def test_a_backslash_at_the_end_is_waiting_for_what_it_escapes(self):
+        matches, _head = self._complete(self.tmp + '/Black\\')
+        self.assertEqual([self.tmp + '/Black\\ Sabbath/', self.tmp + '/Blackwater\\ Holylight/'], matches)
+
+
+class WindowsPathCompletionTest(PicardTestCase):
+    """The same on Windows, where a backslash is a separator: a path with spaces is put in double quotes."""
+
+    def _complete(self, line, paths):
+        text = line.rsplit(' ', 1)[-1]
+        with patch('picard.cli.engine.completion._complete_path', return_value=paths) as complete_path:
+            matches = _complete_path_word(line, text, posix=False)
+        return matches, complete_path.call_args.args[0]
+
+    def test_a_path_without_spaces_is_as_it_is(self):
+        matches, value = self._complete('file add C:\\Mus', ['C:\\Music' + os.sep])
+        self.assertEqual((['C:\\Music' + os.sep], 'C:\\Mus'), (matches, value))
+
+    def test_a_directory_with_spaces_opens_a_double_quote(self):
+        matches, _value = self._complete('file add C:\\My', ['C:\\My Music' + os.sep])
+        self.assertEqual(['"C:\\My Music' + os.sep], matches)
+
+    def test_in_the_open_double_quote(self):
+        matches, value = self._complete('file add "C:\\My Mu', ['C:\\My Music' + os.sep])
+        self.assertEqual((['Music' + os.sep], 'C:\\My Mu'), (matches, value))
+
+    def test_the_content_of_a_directory_left_open_in_quotes(self):
+        # The backslash that ends the directory does not escape the closing quote.
+        matches, value = self._complete('file add "C:\\My Music\\', ['C:\\My Music\\a b.flac'])
+        self.assertEqual((['Music\\a b.flac"'], 'C:\\My Music\\'), (matches, value))
+
+    def test_a_file_closes_the_double_quote(self):
+        matches, value = self._complete('file add "C:\\My Music\\a', ['C:\\My Music\\a b.flac'])
+        self.assertEqual((['Music\\a b.flac"'], 'C:\\My Music\\a'), (matches, value))
+        self.assertEqual(
+            ['file', 'add', 'C:\\My Music\\a b.flac'], split_line('file add "C:\\My ' + matches[0], posix=False)
+        )

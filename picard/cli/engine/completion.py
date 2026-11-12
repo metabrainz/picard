@@ -39,10 +39,15 @@ completer protocol.
 
 import glob
 import os
+import re
 
-from picard.cli.engine.dispatch import split_command_name
+from picard.cli.engine.dispatch import (
+    split_command_name,
+    split_line,
+)
 from picard.cli.engine.handles import HANDLE_KINDS
 from picard.cli.engine.topics import TOPICS
+from picard.const.sys import IS_WIN
 
 
 _WILDCARDS = ('*', 'f*', 'c*', 'a*', 't*', 'm*', 'v*', 'k*', 'u')
@@ -65,6 +70,96 @@ def _complete_path(text: str) -> list[str]:
             shown += os.sep
         results.append(shown)
     return sorted(results)
+
+
+def _last_word(line: str, posix: bool) -> int:
+    """Where the word at the end of ``line`` starts.
+
+    It is read by :func:`~picard.cli.engine.dispatch.split_line` itself, so a
+    quoted or escaped space (``"a b``, ``a\\ b``) does not end it: the word starts
+    after the last space after which the line splits, and one more character
+    makes one more word.
+    """
+    for start in range(len(line), 0, -1):
+        if not line[start - 1].isspace():
+            continue
+        head = line[:start]
+        try:
+            if len(split_line(head + 'x', posix=posix)) == len(split_line(head, posix=posix)) + 1:
+                return start
+        except ValueError:  # the space is in a quote that is not closed
+            continue
+    return 0
+
+
+def _word_value(word: str, posix: bool) -> 'tuple[str, str | None]':
+    """What the word typed so far stands for, and the quote it is in if one is open.
+
+    The quote is the one whose closing makes the word split. The backslashes it
+    ends with are kept as they are: on Windows, doubled before the closing quote
+    (a directory left open, "C:\\My Music\\); on POSIX, one with nothing to escape
+    yet is left out.
+    """
+    trailing = len(word) - len(word.rstrip('\\'))
+    for quote in ('', '"', "'"):
+        closing = '\\' * trailing + quote if quote and not posix else quote
+        texts = [word + closing]
+        if posix and trailing:
+            texts.append(word[:-1] + quote)
+        for text in texts:
+            try:
+                words = split_line(text, posix=posix)
+            except ValueError:
+                continue
+            if len(words) <= 1:
+                return (words[0] if words else ''), quote or None
+    return word, None
+
+
+def _quoted(path: str, quote: 'str | None', posix: bool) -> str:
+    """``path`` written so that it is one word, in the style it was typed in.
+
+    In the quote that was opened, or with its spaces and quotes escaped (on
+    Windows, where a backslash is a separator, in double quotes). A quote is
+    closed after a file, so that the line can be run, and left open after a
+    directory, so that its content can be completed.
+    """
+    if quote is None:
+        if posix:
+            return re.sub(r'([\s\\\'"])', r'\\\1', path)
+        # A quote in a word is literal there, except a single quote that starts it.
+        if not any(char.isspace() for char in path) and not path.startswith("'"):
+            return path
+        quote = '"'
+    if not posix:
+        body = path
+    elif quote == '"':
+        body = path.replace('\\', '\\\\').replace('"', '\\"')
+    else:
+        # A single quote cannot be in single quotes: close them, escape it, open them again.
+        body = path.replace("'", "'\\''")
+    closing = '' if path.endswith(os.sep) else quote
+    return quote + body + closing
+
+
+def _complete_path_word(line: str, text: str, posix: 'bool | None' = None) -> list[str]:
+    """Completions of the path being typed at the end of ``line``, for readline to put in place of ``text``.
+
+    Readline breaks words at every space, so ``text`` is only what follows the
+    last one; the word is read from the line, with its quotes and escapes, and
+    what is returned is the rest of the path written as it would be typed.
+    """
+    if posix is None:
+        posix = not IS_WIN
+    word = line[_last_word(line, posix) :]
+    typed = word[: len(word) - len(text)]
+    value, quote = _word_value(word, posix)
+    matches = []
+    for path in _complete_path(value):
+        written = _quoted(path, quote, posix)
+        if written.startswith(typed):
+            matches.append(written[len(typed) :])
+    return matches
 
 
 def _cdrom_devices() -> list[str]:
@@ -166,7 +261,7 @@ def complete(line: str, text: str, registry, session) -> list[str]:
     # paths, except the command itself, which is the shell's to find.
     if line.lstrip().startswith('!'):
         command_words = head.lstrip()[1:].split()
-        return _complete_path(text) if command_words else []
+        return _complete_path_word(line, text) if command_words else []
 
     # Completing the command name itself (nothing resolved yet).
     if not tokens:
@@ -197,7 +292,7 @@ def complete(line: str, text: str, registry, session) -> list[str]:
     kind = command.arg_kind(arg_index)
     arg_matches: list[str] = []
     if kind == 'path':
-        arg_matches = _complete_path(text)
+        arg_matches = _complete_path_word(line, text)
     elif kind == 'device':
         arg_matches = [d for d in _cdrom_devices() if d.startswith(text)]
     elif kind == 'tag':
