@@ -15,10 +15,12 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 import io
+import logging
 import time
 
 from test.picardtestcase import PicardTestCase
 
+from picard import log
 from picard.cli.busy import BusyIndicator
 from picard.cli.output import CliOutput
 
@@ -84,3 +86,23 @@ class BusyIndicatorTest(PicardTestCase):
         text = stream.getvalue()
         self.assertIn('first', text)
         self.assertIn('second', text)
+
+    def test_the_spinner_is_erased_before_a_log_message_to_the_same_stream(self):
+        stream = _Terminal()
+        handler = logging.StreamHandler(stream)
+        log.main_logger.addHandler(handler)
+        self.addCleanup(log.main_logger.removeHandler, handler)
+        with BusyIndicator(_output(stream), lambda: 'busy', delay=0, interval=10):
+            time.sleep(0.1)
+            log.main_logger.error('boom')
+        text = stream.getvalue()
+        self.assertIn('\r\033[Kboom', text)
+        self.assertEqual([], handler.filters)
+
+    def test_other_handlers_are_left_alone(self):
+        handler = logging.StreamHandler(io.StringIO())
+        log.main_logger.addHandler(handler)
+        self.addCleanup(log.main_logger.removeHandler, handler)
+        stream = _Terminal()
+        with BusyIndicator(_output(stream), lambda: 'busy', delay=0, interval=0.01):
+            self.assertEqual([], handler.filters)

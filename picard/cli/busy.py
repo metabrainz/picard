@@ -17,8 +17,10 @@
 """A busy indicator for the commands of an interactive console that take time."""
 
 from collections.abc import Callable
+import logging
 import threading
 
+from picard import log
 from picard.cli.output import CliOutput
 
 
@@ -48,7 +50,9 @@ class BusyIndicator:
     seconds. It is never shown when the output has no color (``--no-color``,
     ``NO_COLOR``, or not a terminal) or when the error stream is not a
     terminal, so redirected or scripted use is not changed. The line is erased
-    when the block ends, including when it ends with an exception such as Ctrl-C.
+    when the block ends, including when it ends with an exception such as Ctrl-C,
+    and before a log message is written to the same stream, so that the message
+    does not follow the spinner on the same line.
     """
 
     def __init__(
@@ -65,9 +69,21 @@ class BusyIndicator:
         self._stream = output.stderr
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
+        # Held to write on the stream, whether a frame or the erasing of it.
+        self._lock = threading.Lock()
+        self._shown = False
+        self._handlers: list[logging.Handler] = []
 
     def __enter__(self):
         if self._output.color and getattr(self._stream, 'isatty', lambda: False)():
+            # The log messages written to our stream erase the spinner first.
+            self._handlers = [
+                handler
+                for handler in log.main_logger.handlers
+                if isinstance(handler, logging.StreamHandler) and handler.stream is self._stream
+            ]
+            for handler in self._handlers:
+                handler.addFilter(self._erase_for_log)
             self._thread = threading.Thread(target=self._spin, name='busy-indicator', daemon=True)
             self._thread.start()
         return self
@@ -77,7 +93,22 @@ class BusyIndicator:
             self._stop.set()
             self._thread.join()
             self._thread = None
+            for handler in self._handlers:
+                handler.removeFilter(self._erase_for_log)
+            self._handlers = []
         return False
+
+    def _erase_for_log(self, record) -> bool:
+        """Filter of the log handlers: erase the spinner, the message is written next."""
+        self._erase()
+        return True
+
+    def _erase(self):
+        with self._lock:
+            if self._shown:
+                self._stream.write(_CLEAR_LINE)
+                self._stream.flush()
+                self._shown = False
 
     def _spin(self):
         # Event.wait returns True as soon as the block has ended.
@@ -88,11 +119,12 @@ class BusyIndicator:
         try:
             while True:
                 frame = frames[index % len(frames)]
-                self._stream.write(f'{_CLEAR_LINE}{self._output.d_busy(f"{frame} {self._message()}")}')
-                self._stream.flush()
+                with self._lock:
+                    self._stream.write(f'{_CLEAR_LINE}{self._output.d_busy(f"{frame} {self._message()}")}')
+                    self._stream.flush()
+                    self._shown = True
                 index += 1
                 if self._stop.wait(self._interval):
                     break
         finally:
-            self._stream.write(_CLEAR_LINE)
-            self._stream.flush()
+            self._erase()
