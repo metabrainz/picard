@@ -254,6 +254,13 @@ def render_result(result: EngineResult, output: CliOutput, minted_max: 'int | No
         _render_help(result.items, output)
         return
 
+    if result.items and all(item.status == 'history' for item in result.items):
+        # As a shell lists its history: the number, then the line.
+        width = len(result.items[-1].handle)
+        for item in result.items:
+            output.print(f"{output.dim(item.handle.rjust(width))}  {item.data['line']}")
+        return
+
     for item in result.items:
         indent = '  ' * int(item.data.get('depth', 0))
         handle = output.d_id(item.handle) if item.handle else '—'

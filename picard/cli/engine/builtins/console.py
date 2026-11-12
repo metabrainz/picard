@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-"""The commands that control the console itself: ``shell set``, ``shell get`` and ``shell remint``."""
+"""The commands that control the console itself: ``shell set``, ``shell get``, ``shell remint`` and ``shell history``."""
 
 from typing import Any
 
@@ -134,3 +134,43 @@ def _cmd_shell_remint(session: EngineSession, args: dict[str, Any]) -> EngineRes
         if live:
             notes.append(f"{kind}: {live} {HANDLE_KINDS[kind]}(s) still there, left as they are")
     return EngineResult(items=items, message='; '.join(notes))
+
+
+@command(
+    'shell history',
+    usage='shell history [count|clear]',
+    help="List the lines typed, or forget them.",
+    args=('what',),
+    arg_kinds=('history',),
+)
+def _cmd_shell_history(session: EngineSession, args: dict[str, Any]) -> EngineResult:
+    """List the lines typed in the console, the ones the up key recalls, numbered, the last ones last.
+
+    With a number, only that many of the last ones. 'shell history clear' forgets
+    them all, in this console and in the file they are kept in, for a line that
+    should not have been kept (a line that starts with a space is not). A console
+    running at the same time still adds the lines of its session when it ends.
+
+    Examples:
+      shell history
+      shell history 20
+      shell history clear
+    """
+    what = arg_first(args.get('what'))
+    history = session.history
+    if history is None:
+        return EngineResult.failure("shell history: this console keeps no history")
+    if what == 'clear':
+        history.clear()
+        return EngineResult(message="the history is cleared")
+    lines = history.lines()
+    numbered = list(enumerate(lines, 1))
+    if what is not None:
+        if not what.isdigit():
+            raise UsageError
+        numbered = numbered[-int(what) :] if int(what) else []
+    if not numbered:
+        return EngineResult(message="the history is empty")
+    return EngineResult(
+        items=[EngineItemResult(handle=str(number), status='history', data={'line': line}) for number, line in numbered]
+    )

@@ -99,6 +99,8 @@ class LocalEngineSession:
         self.activity: str | None = None
         # The settings of the console, for this session only.
         self.settings = ConsoleSettings()
+        # The lines typed, set by a console that keeps them (see EngineSession).
+        self.history = None
         self._handles = HandleRegistry(classify_entity)
         # Current lookup candidates, keyed (weakly) by the looked-up target
         # (cluster/file). The candidates themselves are held with strong refs so

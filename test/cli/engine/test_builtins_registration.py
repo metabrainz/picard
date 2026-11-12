@@ -59,6 +59,7 @@ EXPECTED = {
     'save',
     'scan',
     'shell get',
+    'shell history',
     'shell remint',
     'shell set',
     'tree',
