@@ -101,6 +101,18 @@ class SingleDiscAlbumPathTest(_PathTestBase):
     def test_missing_track_is_unresolved(self):
         self.assertEqual(([], ['a1.t9']), self._titles('a1.t9'))
 
+    def test_range_of_tracks(self):
+        self.assertEqual((['One', 'Two'], []), self._titles('a1.t1-2'))
+
+    def test_range_of_tracks_skips_the_missing_ones(self):
+        self.assertEqual((['Two', 'Three'], []), self._titles('a1.t2-9'))
+
+    def test_range_of_tracks_that_are_all_missing_is_unresolved(self):
+        self.assertEqual(([], ['a1.t7-9']), self._titles('a1.t7-9'))
+
+    def test_range_of_albums_then_track(self):
+        self.assertEqual((['Two'], []), self._titles('a1-3.t2'))
+
     def test_missing_disc_is_unresolved(self):
         self.assertEqual(([], ['a1.d2']), self._titles('a1.d2'))
 
@@ -253,6 +265,10 @@ class ClusterAndBucketPathTest(_PathTestBase):
     def test_files_of_a_cluster(self):
         entities, _ = self._resolve('c1.f*')
         self.assertCountEqual([self.first, self.second], entities)
+
+    def test_range_of_files_of_a_cluster(self):
+        entities, _ = self._resolve('c1.f1-2')
+        self.assertEqual(list(self.cluster.files), entities)
 
     def test_file_of_a_cluster_by_position(self):
         entities, _ = self._resolve('c1.f1')

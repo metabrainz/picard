@@ -24,10 +24,11 @@ This module implements a documented SUBSET of that grammar:
 
 - a single handle: ``a1``, ``c2``, ``f3``
 - a type wildcard: ``a*`` (all albums), ``c*``, ``f*``, ``t*``
+- a range of ordinals: ``f1-12``, ``a1-3`` (the live entities among them)
 - the universal wildcard: ``*`` (all top-level objects)
 - a comma-separated union of the above: ``a1, c2, f3``
 - a PATH into the working set: segments separated by ``.``, each one selecting
-  children of the previous one (``a1.d2.t3``, ``c1.f*``, ``u.f*``, ``c1.m2``).
+  children of the previous one (``a1.d2.t3``, ``c1.f*``, ``c1.f2-5``, ``u.f*``, ``c1.m2``).
   A segment is a type prefix plus an ordinal or ``*``; ``u`` (a bucket of
   unplaced files) takes no number. Paths are positions, resolved when the
   command runs; the stable identity of an entity remains its plain handle.
@@ -35,8 +36,8 @@ This module implements a documented SUBSET of that grammar:
   :class:`Navigator`, so this module stays independent of the entity types.
 
 Not yet implemented (reserved; the parse/resolve shape leaves room for them so
-they slot in without reshaping): bare-ordinal sticky prefixes (``a1,2,3``),
-ranges (``a1-3``) and exclusion (``!a2``). Attempting that syntax raises
+they slot in without reshaping): bare-ordinal sticky prefixes (``a1,2,3``)
+and exclusion (``!a2``). Attempting that syntax raises
 :class:`SelectorError` rather than silently mis-parsing.
 
 Resolution returns ``(entities, unresolved)``:
@@ -54,6 +55,7 @@ from collections.abc import (
     Sequence,
 )
 from dataclasses import dataclass
+import re
 from typing import (
     Any,
     Protocol,
@@ -74,6 +76,13 @@ SINGLETON_PREFIXES = frozenset({'u'})
 TOP_LEVEL_PREFIXES = ('f', 'c', 'a')
 
 
+# The most ordinals a range can span, so that ``f1-999999999`` is refused rather than looked up.
+MAX_RANGE_SPAN = 10000
+
+# ``1-12``: the part of a range term that follows the prefix.
+_RANGE = re.compile(r'(\d+)-(\d+)')
+
+
 # An enumerator maps a handle prefix to the live entities of that kind, in a
 # stable order. Injected so this module does not depend on Workspace/core.
 Enumerator = Callable[[str], Iterable[Any]]
@@ -89,10 +98,11 @@ class SelectorError(ValueError):
 
 @dataclass(frozen=True)
 class Segment:
-    """One ``.``-separated step of a path: ``t3``, ``d*`` or ``u``.
+    """One ``.``-separated step of a path: ``t3``, ``t1-3``, ``d*`` or ``u``.
 
-    ``kind`` is ``'ordinal'`` (value: int), ``'wildcard'`` or ``'single'`` (a
-    prefix that takes no number, see :data:`SINGLETON_PREFIXES`).
+    ``kind`` is ``'ordinal'`` (value: int), ``'range'`` (value: the ``(first,
+    last)`` ordinals), ``'wildcard'`` or ``'single'`` (a prefix that takes no
+    number, see :data:`SINGLETON_PREFIXES`).
     """
 
     prefix: str
@@ -130,8 +140,8 @@ class Term:
     """One parsed selector term."""
 
     prefix: str  # a handle prefix, or '' for a bare universal '*'
-    kind: str  # 'ordinal' | 'wildcard' | 'single'
-    value: Any  # int (ordinal) | None (wildcard, single)
+    kind: str  # 'ordinal' | 'range' | 'wildcard' | 'single'
+    value: Any  # int (ordinal) | (first, last) (range) | None (wildcard, single)
     raw: str = ''  # original token text, for unresolved reporting
     path: tuple[Segment, ...] = ()  # segments after the first, for ``a1.t3``
 
@@ -165,8 +175,6 @@ def _parse_token(token: str) -> Term:
     # Reserved syntax — reject explicitly (clearer than a confusing parse error).
     if token.startswith('!'):
         raise SelectorError(f"exclusion ('!') is not supported yet: {token!r}")
-    if '-' in token:
-        raise SelectorError(f"ranges ('-') are not supported yet: {token!r}")
 
     head, *tail = token.split('.')
 
@@ -199,6 +207,15 @@ def _parse_segment(text: str, token: str) -> Segment:
         return Segment(prefix, 'wildcard')
     if rest.isdigit():
         return Segment(prefix, 'ordinal', int(rest))
+    if match := _RANGE.fullmatch(rest):
+        first, last = int(match.group(1)), int(match.group(2))
+        if first < 1:
+            raise SelectorError(f"ordinals start at 1 in {token!r}")
+        if first > last:
+            raise SelectorError(f"reversed range in {token!r}, did you mean {prefix}{last}-{first}?")
+        if last - first >= MAX_RANGE_SPAN:
+            raise SelectorError(f"range too large in {token!r} (at most {MAX_RANGE_SPAN} ordinals)")
+        return Segment(prefix, 'range', (first, last))
     if rest == '':
         raise SelectorError(f"selector term {token!r} has a prefix but no ordinal or '*'")
     # Bare-ordinal sticky prefixes are part of the full grammar, not the subset.
@@ -260,6 +277,12 @@ def resolve_selector(
                 unresolved.append(term.raw)
             else:
                 add(entity)
+        elif term.kind == 'range':
+            found = _live_in_range(term.prefix, term.value, resolve_handle)
+            if not found:
+                unresolved.append(term.raw)
+            for entity in found:
+                add(entity)
         elif term.kind == 'wildcard':
             prefixes = (term.prefix,) if term.prefix else TOP_LEVEL_PREFIXES
             for prefix in prefixes:
@@ -303,17 +326,20 @@ def _walk(
         if term.kind == 'ordinal':
             entity = resolve_handle(f"{term.prefix}{term.value}")
             nodes = [] if entity is None else [entity]
+        elif term.kind == 'range':
+            nodes = _live_in_range(term.prefix, term.value, resolve_handle)
         elif term.kind == 'wildcard':
             nodes = list(enumerate_prefix(term.prefix))
         else:
             nodes = _unique(navigator.step(None, Segment(term.prefix, 'single')))
-        if term.kind == 'ordinal' and not nodes:
+        if term.kind in {'ordinal', 'range'} and not nodes:
             return None
 
         for segment in term.path:
             stepped = []
             for node in nodes:
-                stepped.extend(navigator.step(node, segment))
+                for single in _ordinals_of(segment):
+                    stepped.extend(navigator.step(node, single))
             nodes = _unique(stepped)
             if segment.kind != 'wildcard' and not nodes:
                 return None
@@ -336,6 +362,21 @@ def _resolve_path(
     for node in nodes:
         entities.extend(navigator.finish(node))
     return entities
+
+
+def _live_in_range(prefix: str, bounds: 'tuple[int, int]', resolve_handle: HandleResolver) -> list[Any]:
+    """The live entities among ``prefix<first>`` to ``prefix<last>``; a handle that matches none is skipped."""
+    first, last = bounds
+    entities = (resolve_handle(f"{prefix}{number}") for number in range(first, last + 1))
+    return [entity for entity in entities if entity is not None]
+
+
+def _ordinals_of(segment: Segment) -> list[Segment]:
+    """The segments to step with for ``segment``: itself, or one per ordinal of a range."""
+    if segment.kind != 'range':
+        return [segment]
+    first, last = segment.value
+    return [Segment(segment.prefix, 'ordinal', number) for number in range(first, last + 1)]
 
 
 def _unique(nodes: Iterable[Any]) -> list[Any]:
