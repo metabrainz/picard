@@ -20,6 +20,7 @@
 import os
 from unittest.mock import (
     Mock,
+    patch,
 )
 
 from test.picardtestcase import (
@@ -138,3 +139,28 @@ class TrackTest(PicardTestCase):
         self.album._release_node_cache = node
         os.unlink(self.album._release_node_cache_datahash.filename)
         self.assertIsNone(self.album._release_node_cache)
+
+
+class AlbumLoadTokenTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.album = Album('123')
+
+    def test_load_replaces_load_token(self):
+        # Asynchronous work started by a previous load (e.g. cover art) relies
+        # on this to detect that the album has been reloaded.
+        with (
+            patch('picard.album.services'),
+            patch.object(Album, 'set_genre_inc_params', return_value=False),
+        ):
+            initial_token = self.album._load_token
+            self.album.load()
+            first_token = self.album._load_token
+            self.assertIsNot(first_token, initial_token)
+            # Critical release request still pending: reload is refused
+            self.album.load()
+            self.assertIs(self.album._load_token, first_token)
+            self.album.cancel_tasks()
+            self.album.load()
+            self.assertIsNot(self.album._load_token, first_token)

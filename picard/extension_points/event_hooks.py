@@ -52,6 +52,7 @@ from collections.abc import Callable
 
 from picard.album import (
     Album,
+    album_post_cover_art_processors,
     album_post_removal_processors,
 )
 from picard.file import (
@@ -74,6 +75,25 @@ def register_album_post_removal_processor(function: Callable[[Album], None], pri
         None
     """
     album_post_removal_processors.register(function.__module__, function, priority)
+
+
+def register_album_post_cover_art_processor(function: Callable[[Album], None], priority: int = 0) -> None:
+    """Registers an album post-cover-art processor.
+
+    Called once the cover art stage of an album is over: all cover art
+    images have been downloaded, processed and set on the album, its tracks
+    and files. It is also called if no cover art was found, if cover art
+    is disabled or if cover art loading stopped early. It is not called if
+    the album was removed or reloaded before that.
+    The album is guaranteed to be loaded when the function is called.
+
+    Args:
+        function: function to call after cover art handling, it will be passed the album object
+        priority: optional, 0 by default
+    Returns:
+        None
+    """
+    album_post_cover_art_processors.register(function.__module__, function, priority)
 
 
 def register_file_post_load_processor(function: Callable[[File], None], priority: int = 0) -> None:

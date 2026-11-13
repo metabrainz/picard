@@ -495,6 +495,7 @@ class AlbumManager:
         album._new_metadata = Metadata()
         album._new_tracks = []
         album._pending_tasks.clear()
+        album._load_token = object()
         album.add_task('session_restore', TaskType.CRITICAL, f'Session restore for {album_id}')
 
         with suppress(KeyError, TypeError, ValueError):
