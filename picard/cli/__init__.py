@@ -38,6 +38,7 @@ from picard import (
 from picard.cli.completions import CompletionsSubcommand
 from picard.cli.plugins import PluginsSubcommand
 from picard.cli.profiles import ProfilesSubcommand
+from picard.cli.shell import ShellSubcommand
 from picard.cli.tag import TagSubcommand
 from picard.util import versions
 
@@ -48,6 +49,7 @@ SUBCOMMANDS = (
     CompletionsSubcommand(),
     PluginsSubcommand(),
     ProfilesSubcommand(),
+    ShellSubcommand(),
     TagSubcommand(),
 )
 
