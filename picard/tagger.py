@@ -167,6 +167,7 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
+    find_existing_path,
     periodictouch,
     pipe,
     system_supports_long_paths,
@@ -215,6 +216,7 @@ from picard.ui.util import (
     FileDialog,
     busy_cursor_start,
     busy_cursor_stop,
+    find_starting_directory,
     show_session_not_found_dialog,
 )
 
@@ -952,20 +954,26 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
-        file_chooser = FileDialog(parent=self.window)
+        config = get_config()
+        current_directory = find_existing_path(
+            config.persist.get("current_log_directory", "")
+        ) or find_starting_directory()
+        file_chooser = FileDialog(
+            parent=self.window, directory=str(current_directory)
+        )
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [
                 _("All supported log files") + " (*.log *.txt *.toc)",
                 _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
-                _("dBpoweramp log files") + " (*.txt)",
+                _("dbPoweramp log files") + " (*.txt)",
                 _("SCSI TOC file") + " (*.toc)",
-                _("All files") + " (*)",
             ]
         )
         if file_chooser.exec():
             filepath = Path(file_chooser.selectedFiles()[0])
-            self.run_lookup_discid_from_logfile(filepath)
+            config.persist["current_log_directory"] = str(filepath.parent)
+            self.run_lookup_cd(filepath)
 
     def run_lookup_discid_from_logfile(self, filepath):
         disc = Disc()
