@@ -110,6 +110,26 @@ class CollectionTest(PicardTestCase):
         self.assertEqual({releases[2]}, collection.releases)
         self.notifier.status_message.assert_called_once()
 
+    def test_collection_modification_error_is_reported(self):
+        releases = {'963a7d48-5995-4751-aef8-6727cb879b9c'}
+        reply = MagicMock()
+        reply.errorString.return_value = 'Service Unavailable'
+        # A local mock: the module-level one is shared by the other tests.
+        failing_api = MagicMock()
+        failing_api.put_to_collection.side_effect = lambda collection_id, releases, handler: handler(None, reply, 503)
+        failing_api.delete_from_collection.side_effect = failing_api.put_to_collection.side_effect
+        self.tagger.mb_api = failing_api
+        for method in ('add_releases', 'remove_releases'):
+            with self.subTest(method=method):
+                collection = Collection('foo')
+                collection.releases = set(releases) if method == 'remove_releases' else set()
+                collection.size = len(collection.releases)
+                callback = MagicMock()
+                getattr(collection, method)(set(releases), callback)
+                callback.assert_called_once_with(error='Service Unavailable')
+                self.assertEqual(set(), collection.pending_releases)
+                self.assertEqual(len(collection.releases), collection.size)
+
     def test_get_user_collection(self):
         self.assertEqual({}, picard.collection.user_collections)
         collection1 = get_user_collection('foo')
