@@ -376,7 +376,13 @@ def run_repl(
             return
         command = find_command(registry, line)
         if command is not None and command.destructive:
-            if not confirm(f"'{command.name}' is destructive. Run '{line}'?"):
+            try:
+                confirmed = confirm(f"'{command.name}' is destructive. Run '{line}'?")
+            except KeyboardInterrupt:
+                # Ctrl-C at the question is an answer: no.
+                output.nl()
+                confirmed = False
+            if not confirmed:
                 output.warning("cancelled")
                 continue
         status.reset()

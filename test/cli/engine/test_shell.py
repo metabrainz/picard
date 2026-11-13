@@ -161,6 +161,18 @@ class RunReplTest(PicardTestCase):
         self.assertEqual([], ran)
         self.assertIn('cancelled', self.buf.getvalue())
 
+    def test_ctrl_c_at_confirmation_cancels_the_command_and_continues(self):
+        ran = self._register_destructive()
+
+        def confirm(question):
+            raise KeyboardInterrupt
+
+        run_repl(self.session, self.reg, self.out, self._lines('wipe x', 'ls', 'quit'), confirm=confirm)
+        self.assertEqual([], ran)
+        self.assertIn('cancelled', self.buf.getvalue())
+        # The loop went on to the next line.
+        self.assertIn('a1', self.buf.getvalue())
+
     def test_non_destructive_command_is_not_confirmed(self):
         def confirm(question):
             raise AssertionError("must not ask")
