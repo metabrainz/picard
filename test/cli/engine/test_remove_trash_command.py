@@ -84,13 +84,33 @@ class TrashCommandTest(_EngineTestBase):
         result = dispatch(self.session, self.reg, 'trash')
         self.assertFalse(result.ok)
 
+    def _trash_only(self, *trashed):
+        """A trash_files that takes ``trashed`` and leaves the other files in the working set."""
+
+        def trash_files(files):
+            for file in files:
+                if file in trashed:
+                    del self.wks.files[file.filename]
+
+        return trash_files
+
     def test_trash_delegates_to_workspace_trash_files(self):
         f = self._add_unclustered('a.flac')
         handle = self.session.handle_for(f)
-        with patch.object(self.wks, 'trash_files') as mock_trash:
+        with patch.object(self.wks, 'trash_files', side_effect=self._trash_only(f)) as mock_trash:
             result = dispatch(self.session, self.reg, 'trash ' + handle)
             self.assertTrue(result.ok)
             self.assertEqual('trashed', result.items[0].status)
             # Exactly the selected file is passed to trash_files.
             (called_files,), _ = mock_trash.call_args
             self.assertEqual([f], list(called_files))
+
+    def test_trash_reports_the_files_that_could_not_be_trashed(self):
+        trashed = self._add_unclustered('a.flac')
+        refused = self._add_unclustered('b.flac')
+        handles = [self.session.handle_for(f) for f in (trashed, refused)]
+        with patch.object(self.wks, 'trash_files', side_effect=self._trash_only(trashed)):
+            result = dispatch(self.session, self.reg, 'trash ' + ','.join(handles))
+        statuses = {item.handle: item.status for item in result.items}
+        self.assertEqual({handles[0]: 'trashed', handles[1]: 'error'}, statuses)
+        self.assertFalse(result.ok)

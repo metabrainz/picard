@@ -402,7 +402,8 @@ def _cmd_trash(session: EngineSession, args: dict[str, Any]) -> EngineResult:
 
     The files of an album, a cluster or a track are trashed with it, and they leave
     the working set. They can be restored from the trash with your file manager. A
-    selector is required, and the console asks for a confirmation.
+    selector is required, and the console asks for a confirmation. A file that could
+    not be moved to the trash is reported as error and stays in the working set.
 
     Example:
       trash f3
@@ -418,6 +419,26 @@ def _cmd_trash(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     if not files:
         return EngineResult(items=[], unresolved=unresolved)
 
-    items = [EngineItemResult(handle=session.handle_for(f), status='trashed', data={'path': f.filename}) for f in files]
-    workspace().trash_files(files)
-    return EngineResult(items=items, resolved=[it.handle for it in items], unresolved=unresolved)
+    wks = workspace()
+    paths = {file: file.filename for file in files}
+    wks.trash_files(files)
+    # A file that reached the trash has left the working set; one that could not
+    # be moved is still there, under its own name, and still on disk.
+    items = [
+        EngineItemResult(
+            handle=session.handle_for(file),
+            status='error' if wks.files.get(path) is file else 'trashed',
+            data={'path': path},
+        )
+        for file, path in paths.items()
+    ]
+    resolved = [item.handle for item in items]
+    failed = sum(item.status == 'error' for item in items)
+    if failed:
+        return EngineResult.failure(
+            f"trash: {failed} of {len(items)} file(s) could not be moved to the trash",
+            items=items,
+            resolved=resolved,
+            unresolved=unresolved,
+        )
+    return EngineResult(items=items, resolved=resolved, unresolved=unresolved)
