@@ -22,6 +22,12 @@ from enum import Enum
 import logging
 import os
 import shutil
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
+
+from PyQt6 import QtWidgets
 
 from test.picardtestcase import PicardTestCase
 
@@ -44,7 +50,10 @@ from picard.profile import (
     profile_groups_settings,
     profile_groups_update_highlights,
     profile_groups_values,
+    profile_setting_names_lost_on_removal,
 )
+
+from picard.ui.options.profiles import ProfilesOptionsPage
 
 
 class DummyEnum(Enum):
@@ -516,3 +525,80 @@ class TestUserProfiles(TestPicardProfilesCommon):
         # Target plugin keys removed
         self.assertNotIn('plugin.test-uuid/greeting', settings['p1'])
         self.assertNotIn('plugin.test-uuid/other', settings['p1'])
+
+
+class TestProfilesPageRemoveTaggerScripts(PicardTestCase):
+    """PICARD-3469: unchecking "Tagger scripts" must not silently drop scripts."""
+
+    def _page(self, scripts):
+        page = ProfilesOptionsPage.__new__(ProfilesOptionsPage)
+        page.current_profile_id = 'p1'
+        page.profile_settings = {'p1': {'list_of_scripts': scripts, 'enable_tagger_scripts': True}}
+        # The user unchecked "Tagger scripts" in the settings tree.
+        page.get_checked_items_from_tree = lambda: {'enable_tagger_scripts'}
+        page._set_tree_item_checked = MagicMock()
+        page._get_global_setting = MagicMock(return_value=[])
+        return page
+
+    def test_keeps_scripts_when_user_declines(self):
+        page = self._page([(0, 'My script', True, '$noop()')])
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.No) as q:
+            page.update_values_in_profile_options()
+        q.assert_called_once()
+        self.assertEqual(page.profile_settings['p1']['list_of_scripts'], [(0, 'My script', True, '$noop()')])
+        page._set_tree_item_checked.assert_called_once_with('list_of_scripts')
+
+    def test_removes_scripts_when_user_confirms(self):
+        page = self._page([(0, 'My script', True, '$noop()')])
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.Yes):
+            page.update_values_in_profile_options()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
+    def test_no_prompt_for_empty_script_list(self):
+        page = self._page([])
+        with patch.object(QtWidgets.QMessageBox, 'question') as q:
+            page.update_values_in_profile_options()
+        q.assert_not_called()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
+    def test_no_prompt_for_scripts_also_kept_globally(self):
+        script = (0, 'My script', True, '$noop()')
+        page = self._page([script])
+        page._get_global_setting.return_value = [(3, 'My script', False, '$noop()')]
+        with patch.object(QtWidgets.QMessageBox, 'question') as q:
+            page.update_values_in_profile_options()
+        q.assert_not_called()
+        self.assertNotIn('list_of_scripts', page.profile_settings['p1'])
+
+    def test_long_script_list_is_truncated_in_prompt(self):
+        scripts = [(i, 'Script %d' % i, True, '$noop(%d)' % i) for i in range(13)]
+        page = self._page(scripts)
+        with patch.object(QtWidgets.QMessageBox, 'question', return_value=QtWidgets.QMessageBox.StandardButton.No) as q:
+            page.update_values_in_profile_options()
+        text = q.call_args.args[2]
+        self.assertIn('Script 9', text)
+        self.assertNotIn('Script 10', text)
+        self.assertIn('3 more scripts', text)
+
+
+class TestProfileSettingNamesLostOnRemoval(PicardTestCase):
+    """PICARD-3469: only scripts stored nowhere else are reported as lost."""
+
+    SCRIPTS = ((0, 'One', True, '$noop(1)'), (1, 'Two', False, '$noop(2)'))
+
+    def test_other_keys_lose_nothing(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('enable_tagger_scripts', True), [])
+
+    def test_empty_or_missing_value(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', None), [])
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', []), [])
+
+    def test_scripts_without_global_copy_are_lost(self):
+        self.assertEqual(profile_setting_names_lost_on_removal('list_of_scripts', self.SCRIPTS), ['One', 'Two'])
+
+    def test_scripts_kept_globally_are_not_lost(self):
+        global_scripts = ((5, 'One', False, '$noop(1)'), (6, 'Two', True, '$noop(changed)'))
+        self.assertEqual(
+            profile_setting_names_lost_on_removal('list_of_scripts', self.SCRIPTS, global_scripts),
+            ['Two'],
+        )

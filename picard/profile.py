@@ -54,6 +54,28 @@ def setting_profile_key(name: str, section: str = 'setting') -> str:
 _PLUGIN_PROFILE_KEY_PREFIX = 'plugin.'
 
 
+def profile_setting_names_lost_on_removal(key: str, value, global_value=None) -> list[str]:
+    """Return what would be lost for good by removing a setting from a profile.
+
+    Most profile values are references or copies of data kept elsewhere. The
+    exception is ``list_of_scripts``: scripts stored only in the profile exist
+    nowhere else, so removing the setting deletes them.
+
+    Args:
+        key: Profile setting key.
+        value: The profile's value for ``key`` (may be None).
+        global_value: The value ``key`` has outside any profile, used to tell
+            which items are also kept elsewhere.
+
+    Returns:
+        Names of the items that would be lost, empty if nothing would be.
+    """
+    if key != 'list_of_scripts' or not value:
+        return []
+    kept = {(name, content) for _pos, name, _enabled, content in global_value or ()}
+    return [name for _pos, name, _enabled, content in value if (name, content) not in kept]
+
+
 def is_plugin_profile_key(key: str) -> bool:
     """Return True if the key is a plugin profile setting key."""
     return key.startswith(_PLUGIN_PROFILE_KEY_PREFIX)

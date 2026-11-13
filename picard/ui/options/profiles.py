@@ -51,10 +51,12 @@ from picard.i18n import (
     N_,
     gettext as _,
     gettext_constants,
+    ngettext,
 )
 from picard.profile import (
     is_plugin_profile_key,
     profile_groups_values,
+    profile_setting_names_lost_on_removal,
     setting_profile_key,
 )
 from picard.profiles.exporter import (
@@ -442,7 +444,70 @@ class ProfilesOptionsPage(OptionsPage):
 
         # Remove unchecked items from settings
         for item in settings.difference(checked_items):
+            if not self._confirm_remove_profile_setting(item):
+                # Keep the value and restore the check mark (PICARD-3469).
+                self._set_tree_item_checked(item)
+                continue
             del self.profile_settings[self.current_profile_id][item]
+
+    def _confirm_remove_profile_setting(self, key) -> bool:
+        """Ask before dropping a profile setting whose value would be lost."""
+        names = profile_setting_names_lost_on_removal(
+            key,
+            self.profile_settings[self.current_profile_id].get(key),
+            self._get_global_setting(key),
+        )
+        if not names:
+            return True
+        answer = QtWidgets.QMessageBox.question(
+            self,
+            _("Remove Tagger Scripts"),
+            _(
+                "Removing \"Tagger scripts\" from this profile will delete the following scripts:\n\n"
+                "%s\n\nDo you want to continue?"
+            )
+            % self._format_script_names(names),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return answer == QtWidgets.QMessageBox.StandardButton.Yes
+
+    MAX_LISTED_SCRIPTS = 10
+
+    def _format_script_names(self, names):
+        """Format script names as a bullet list, truncated to keep the dialog small."""
+        lines = ["• %s" % name for name in names[: self.MAX_LISTED_SCRIPTS]]
+        hidden = len(names) - self.MAX_LISTED_SCRIPTS
+        if hidden > 0:
+            lines.append(ngettext("… and %d more script", "… and %d more scripts", hidden) % hidden)
+        return "\n".join(lines)
+
+    def _get_global_setting(self, key):
+        """Return the value of ``key`` as stored outside of any profile."""
+        config = get_config()
+        with config.setting.no_profile():
+            return config.setting[key]
+
+    def _find_tree_item(self, key):
+        """Return the settings tree item whose setting key is ``key``, or None."""
+        tree = self.ui.settings_tree
+        stack = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
+        while stack:
+            item = stack.pop()
+            if item is None:
+                continue
+            if item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole) == key:
+                return item
+            stack.extend(item.child(j) for j in range(item.childCount()))
+        return None
+
+    def _set_tree_item_checked(self, key):
+        """Re-check the settings tree item for ``key`` without triggering a change."""
+        item = self._find_tree_item(key)
+        if item is None:
+            return
+        with QtCore.QSignalBlocker(self.ui.settings_tree):
+            item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Checked)
 
     def profile_item_changed(self, item):
         """Check title is not blank and remove leading and trailing spaces.
