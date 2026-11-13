@@ -99,11 +99,12 @@ that any frontend can show it; the quit and exit of the console are its own.
 
 Besides the commands, the console has a few things of its own: `quit` and
 `exit` (or Ctrl-D) leave, Ctrl-C cancels the line being typed or the command
-that runs, and a command declared destructive (`trash`, `option save`) is
+that runs, and a command declared destructive (`trash`, `logout`, `option save`) is
 confirmed first. The up and down keys recall the lines typed, also those of the
 previous sessions: as in a shell, the history is kept in a file, readable by
 the user only, and an empty line, a line typed twice in a row and a line that
-starts with a space (to keep `login <address>` out of it, say) are not kept.
+starts with a space are not kept, and neither is `login <address>`, which holds the
+authorization code of the login.
 Several consoles can run at once: as bash does with `histappend`, each one adds
 the lines of its session to the file when it ends (under a lock, except on
 Windows), and the file is then cut to its size, so the lines of the others are

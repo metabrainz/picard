@@ -85,6 +85,16 @@ _HISTORY_SIZE = 1000
 _SHELL_SYNTAX = frozenset('&|;<>`(')
 
 
+def _holds_secret(line: str) -> bool:
+    """Whether ``line`` holds what must not be written to the history file.
+
+    ``login <address>`` is given the address the browser was sent to, which has
+    the authorization code of the login in it.
+    """
+    words = line.split(None, 1)
+    return len(words) == 2 and words[0] == 'login'
+
+
 class History:
     """The lines typed in the console, recalled with the up and down keys, and kept from one session to the next.
 
@@ -113,8 +123,8 @@ class History:
             log.warning("Could not read the history of the shell from %s: %s", path, e)
 
     def remember(self, line: str) -> None:
-        """Keep ``line`` in the history, unless it is empty, starts with a space, or is the last one again."""
-        if not line.strip() or line[0].isspace() or line == self._last:
+        """Keep ``line`` in the history, unless it is empty, starts with a space, is the last one again, or holds a secret."""
+        if not line.strip() or line[0].isspace() or line == self._last or _holds_secret(line):
             return
         self._readline.add_history(line)
         self._last = line

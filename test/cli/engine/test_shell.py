@@ -481,6 +481,13 @@ class HistoryTest(PicardTestCase):
             self.history.remember(line)
         self.assertEqual(['ls', 'tree', 'ls'], self.readline.lines)
 
+    def test_a_login_with_the_address_of_the_browser_is_not_kept(self):
+        # The address holds the code the browser got from MusicBrainz.
+        for line in ("login 'http://127.0.0.1:8000/auth?code=abc&state=xyz'", 'login http://127.0.0.1/auth?code=abc'):
+            self.history.remember(line)
+        self.history.remember('login')
+        self.assertEqual(['login'], self.readline.lines)
+
     def _file_lines(self):
         with open(self.path) as f:
             return f.read().splitlines()
@@ -530,7 +537,7 @@ class HistoryTest(PicardTestCase):
         self.assertEqual(['ls', 'tree'], self.history.lines())
 
     def test_clear_forgets_the_lines_here_and_in_the_file(self):
-        self.history.remember('login https://example.org/?code=secret')
+        self.history.remember('file add /music/private')
         self.history.save()
         self.history.remember('ls')
         self.history.clear()
