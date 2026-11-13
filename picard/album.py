@@ -211,6 +211,10 @@ class Album(MetadataItem):
         self.release_group: ReleaseGroup | None = None
         self._files_count = 0
         self._pending_tasks = {}
+        # Identifies the current load: replaced each time a (re)load starts,
+        # lets asynchronous work started by a previous load (e.g. cover art)
+        # detect it became stale, by comparing identity.
+        self._load_token = object()
         self._tracks_loaded = False
         self._discids = set()
         self._disc_isrcs: dict[int, str] = disc_isrcs or {}
@@ -935,17 +939,12 @@ class Album(MetadataItem):
             N_("Loading album %(id)s …"),
             {'id': self.id},
         )
-        self.loaded = False
+        self.reset_loading_state()
         self.status = AlbumStatus.LOADING
         if self.release_group:
             self.release_group.loaded = False
             self.release_group.genres.clear()
-        self.metadata.clear()
-        self.genres.clear()
         self.update(update_selection=False)
-        self._new_metadata = Metadata()
-        self._new_tracks = []
-        self._pending_tasks.clear()
         self.add_task('release_metadata', TaskType.CRITICAL, f'Release metadata for {self.id}')
         self.clear_errors()
         config = get_config()
@@ -1005,6 +1004,20 @@ class Album(MetadataItem):
             'Release metadata',
             request_factory=create_request,
         )
+
+    def reset_loading_state(self):
+        """Reset the album state before (re)loading its release data.
+
+        Starts a new load: asynchronous work started by a previous load
+        (e.g. cover art) can detect it by comparing `_load_token`.
+        """
+        self.loaded = False
+        self.metadata.clear()
+        self.genres.clear()
+        self._new_metadata = Metadata()
+        self._new_tracks = []
+        self._pending_tasks.clear()
+        self._load_token = object()
 
     def run_when_loaded(self, func: Callable[[], Any], run_on_error: bool = False):
         if self.loaded:
@@ -1284,3 +1297,10 @@ album_post_removal_processors = PluginFunctions[[Album], None](label='album_post
 
 def run_album_post_removal_processors(album_object: Album):
     album_post_removal_processors.run(album_object)
+
+
+album_post_cover_art_processors = PluginFunctions[[Album], None](label='album_post_cover_art_processors')
+
+
+def run_album_post_cover_art_processors(album_object: Album):
+    album_post_cover_art_processors.run(album_object)

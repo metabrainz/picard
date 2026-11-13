@@ -575,6 +575,14 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 0)
 
+        with patch('picard.plugin3.api_impl.register_album_post_cover_art_processor') as mock:
+            api.register_album_post_cover_art_processor(dummy_hook, priority=2)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 2)
+
         with patch('picard.plugin3.api_impl.register_file_post_load_processor') as mock:
             api.register_file_post_load_processor(dummy_hook)
             args, kwargs = mock.call_args

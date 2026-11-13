@@ -1082,7 +1082,7 @@ Called when a file is added to a track.
 
 **Signature**: `function(api, track, file)`
 
----W
+---
 
 #### `register_file_post_removal_from_track_processor(function, priority=0)`
 
@@ -1097,6 +1097,50 @@ Called when a file is removed from a track.
 Called when an album is removed.
 
 **Signature**: `function(api, album)`
+
+---
+
+#### `register_album_post_cover_art_processor(function, priority=0)`
+
+Called when the cover art stage of an album is over.
+
+Cover art is loaded asynchronously, after the album itself has been loaded, so
+`register_album_metadata_processor` and
+`register_file_post_addition_to_track_processor` run before it, and the cover
+art of an album can change some seconds after the album appears. This hook runs
+once the cover art stage of the album is over: all cover art images have been
+downloaded, processed and set on the album, its tracks and files. The album is
+loaded at that point, and the function is called from the main thread.
+
+The hook is also called when:
+
+- no cover art was found,
+- cover art is disabled in the options,
+- cover art loading stopped early (for example after an error writing a
+  temporary image file), in which case only part of the images may be set.
+
+It is called once per album load. It is not called if the album was removed, or
+reloaded (refresh), before the cover art stage ended; the cover art of the new
+load calls it instead.
+
+Files added to a track after this hook ran are not covered, use
+`register_file_post_addition_to_track_processor` for them. A plugin that wants
+to act on the final cover art of every file usually needs to register both
+hooks.
+
+**Signature**: `function(api, album)`
+
+```python
+def on_cover_art_done(api, album):
+    for track in album.tracks:
+        if any(file.filename.startswith("/music/organized/") for file in track.files):
+            # Undo the new cover art, keep the images already in the files
+            track.keep_original_images()
+
+
+def enable(api):
+    api.register_album_post_cover_art_processor(on_cover_art_done)
+```
 
 ---
 
