@@ -146,6 +146,16 @@ class Plugins3OptionsPage(OptionsPage):
 
         layout.addLayout(toolbar_layout)
 
+        # Warning label
+        self.warning_label = QtWidgets.QLabel()
+        self.warning_label.setWordWrap(True)
+        self.warning_label.setText(
+            _(
+                "<strong>NOTE:</strong> Changes made on this page are processed immediately and are not reverted by clicking 'Cancel'."
+            )
+        )
+        layout.addWidget(self.warning_label)
+
         # Main content - splitter with plugin list and details
         self.splitter = QtWidgets.QSplitter()
         self.splitter.setObjectName("plugin_splitter")
