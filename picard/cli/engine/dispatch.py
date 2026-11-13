@@ -185,6 +185,8 @@ def dispatch(session: EngineSession, registry: EngineCommandRegistry, line: str)
         # The user's selector is at fault (malformed, ambiguous, ...), not the command.
         return EngineResult.failure(f"{name}: invalid selector: {e}")
     except Exception as e:  # a command bug must not crash the frontend
+        # The result says what happened; the traceback is for whoever debugs it.
+        log.debug("Command %r failed", name, exc_info=True)
         return EngineResult.failure(f"command {name!r} failed: {e}")
     _add_paths(session, result)
     return result

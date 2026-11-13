@@ -17,6 +17,7 @@
 
 from test.picardtestcase import PicardTestCase
 
+from picard import log
 from picard.cli.engine.commands import (
     EngineCommand,
     EngineCommandRegistry,
@@ -111,6 +112,16 @@ class DispatchTest(PicardTestCase):
         r = dispatch(self.session, self.reg, 'boom')
         self.assertFalse(r.ok)
         self.assertIn('kaboom', r.error)
+
+    def test_command_exception_is_logged_with_its_traceback(self):
+        def boom(session, args):
+            raise RuntimeError('kaboom')
+
+        self.reg.register(EngineCommand(name='boom', run=boom))
+        with self.assertLogs(log.main_logger, level='DEBUG') as logs:
+            dispatch(self.session, self.reg, 'boom')
+        (record,) = [r for r in logs.records if r.exc_info]
+        self.assertIs(RuntimeError, record.exc_info[0])
 
     def test_missing_arguments_are_reported_with_the_usage_of_the_command(self):
         def run(session, args):
