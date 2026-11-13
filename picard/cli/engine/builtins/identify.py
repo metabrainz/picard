@@ -148,9 +148,19 @@ def _lookup_cluster(session: EngineSession, cluster: Cluster, notes: list[str]) 
     cluster.lookup_metadata(callback=capture)
     drained = drain(session, TIMEOUT_SHORT, notes, doing="looking up the cluster in MusicBrainz")
 
-    if not drained and not captured:
-        # No reply at all before we gave up: neither "no matches" nor a result.
-        return EngineItemResult(handle=session.handle_for(cluster), status='timeout', data={'candidates': []})
+    if not captured:
+        handle = session.handle_for(cluster)
+        if not drained:
+            # No reply at all before we gave up: neither "no matches" nor a result.
+            return EngineItemResult(handle=handle, status='timeout', data={'candidates': []})
+        # Everything finished and nothing replied to us: no request was sent,
+        # because a lookup of this cluster, left running by an earlier command,
+        # was not over. That is not "no matches" either.
+        return EngineItemResult(
+            handle=handle,
+            status='lookup_failed',
+            data={'candidates': [], 'error': "a lookup of this cluster is already running, try again"},
+        )
 
     if captured.get('error'):
         # The search request itself failed (network/server error): say so

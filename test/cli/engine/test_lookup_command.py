@@ -135,6 +135,15 @@ class ClusterLookupCommandTest(EngineCommandTestCase):
         self.assertEqual([], item.data['candidates'])
         self.assertEqual([], self._loaded)
 
+    def test_lookup_of_a_cluster_already_being_looked_up_is_not_no_matches(self):
+        # A lookup left in flight (by a command that gave up waiting) makes the
+        # next one return without sending a request: nothing replies.
+        self.cluster._lookup_task = object()
+        result = dispatch(self.session, self.reg, 'cluster lookup')
+        self.tagger.mb_api.find_releases.assert_not_called()
+        self.assertEqual('lookup_failed', result.items[0].status)
+        self.assertIn('already', result.items[0].data['error'])
+
     def test_lookup_result_serializable(self):
         result = dispatch(self.session, self.reg, 'cluster lookup')
         json.dumps(result.to_dict())
