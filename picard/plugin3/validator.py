@@ -241,6 +241,92 @@ def generate_uuid() -> str:
             return result
 
 
+# Prefix marking an OpenPGP signing key entry, followed by a key fingerprint.
+OPENPGP_KEY_PREFIX = 'openpgp:'
+
+# OpenPGP v4/v5 fingerprints are 40 or 64 hex characters. Allow either case on
+# input; comparison is done case-insensitively elsewhere.
+_OPENPGP_FINGERPRINT_PATTERN = re.compile(r'^[0-9a-fA-F]{40}$|^[0-9a-fA-F]{64}$')
+
+# An SSH signing key looks like '<type> <base64-body>[ <comment>]'. We only
+# sanity-check the shape here: a key-type token followed by a plausible base64
+# body. We intentionally do NOT maintain a fixed list of accepted key types or
+# cryptographically decode the body — that would reject legitimate or future
+# key types and merely duplicate what the verifier (e.g. ssh-keygen) does. New
+# keys are reviewed when added to the registry (typically via pull request);
+# this validator only guards against junk and gives the reader a safe shape to
+# hand to a verifier.
+_SSH_KEY_TYPE_PATTERN = re.compile(r'^[A-Za-z0-9.-]+(@[A-Za-z0-9.-]+)?$')
+_SSH_KEY_BODY_PATTERN = re.compile(r'^[A-Za-z0-9+/]{32,}={0,2}$')
+
+
+def validate_signing_key(key: str) -> str | None:
+    """Validate the shape of a single signing key string.
+
+    A signing key is a type-tagged string identifying a key trusted to sign a
+    plugin's commits or tags. Two forms are accepted:
+
+    - SSH public key, in OpenSSH ``authorized_keys`` form:
+      ``<type> <base64-body>[ <comment>]`` (e.g. ``ssh-ed25519 AAAA... name``).
+    - OpenPGP key, as ``openpgp:<fingerprint>`` where the fingerprint is 40 or
+      64 hex characters.
+
+    This is a lightweight sanity check, not cryptographic validation: the
+    signature verifier is the authority on whether a key is actually valid.
+
+    Args:
+        key: Signing key string to validate.
+
+    Returns:
+        An error message string if the key is malformed, otherwise ``None``.
+    """
+    if not isinstance(key, str):
+        return "Signing key must be a string"
+    stripped = key.strip()
+    if not stripped:
+        return "Signing key must not be empty"
+
+    if stripped.lower().startswith(OPENPGP_KEY_PREFIX):
+        fingerprint = stripped[len(OPENPGP_KEY_PREFIX) :].strip()
+        if not _OPENPGP_FINGERPRINT_PATTERN.match(fingerprint):
+            return (
+                f"OpenPGP signing key must be '{OPENPGP_KEY_PREFIX}<fingerprint>' "
+                "with a 40 or 64 character hex fingerprint"
+            )
+        return None
+
+    parts = stripped.split()
+    if len(parts) < 2 or not _SSH_KEY_TYPE_PATTERN.match(parts[0]) or not _SSH_KEY_BODY_PATTERN.match(parts[1]):
+        return (
+            "Signing key must be an SSH public key ('<type> <base64-body>') "
+            f"or an OpenPGP key ('{OPENPGP_KEY_PREFIX}<fingerprint>')"
+        )
+    return None
+
+
+def validate_signing_keys(keys) -> list[str]:
+    """Validate a list of signing keys.
+
+    Args:
+        keys: Value of the ``signing_keys`` field (expected to be a list of
+            strings).
+
+    Returns:
+        list: Validation errors (empty if valid or if ``keys`` is falsy).
+    """
+    errors: list[str] = []
+    if not keys:
+        return errors
+    if not isinstance(keys, list):
+        errors.append("Field 'signing_keys' must be an array")
+        return errors
+    for key in keys:
+        error = validate_signing_key(key)
+        if error:
+            errors.append(error)
+    return errors
+
+
 def validate_manifest_dict(manifest_data):
     """Validate manifest dictionary (no Version dependency).
 
