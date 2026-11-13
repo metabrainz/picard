@@ -110,6 +110,89 @@ class CollectionTest(PicardTestCase):
         self.assertEqual({releases[2]}, collection.releases)
         self.notifier.status_message.assert_called_once()
 
+    def test_releases_sent_in_several_requests_are_counted_once(self):
+        releases = {f'00000000-0000-0000-0000-00000000000{i}' for i in range(5)}
+        collection = Collection('foo')
+        callback = MagicMock()
+        replies = []
+        # A local mock, the replies are kept to be given later, one at a time.
+        slow_api = MagicMock()
+        slow_api.put_to_collection.side_effect = lambda collection_id, batch, handler: replies.append((batch, handler))
+        self.tagger.mb_api = slow_api
+        with patch('picard.collection.COLLECTION_BATCH_SIZE', 2):
+            collection.add_releases(releases, callback)
+        self.assertEqual([2, 2, 1], [len(batch) for batch, _handler in replies])
+        self.assertEqual(releases, {release for batch, _handler in replies for release in batch})
+
+        # The first reply: only its own releases are done, the others are still being sent.
+        batch, handler = replies[0]
+        handler(None, None, None)
+        self.assertEqual(set(batch), collection.releases)
+        self.assertEqual(2, collection.size)
+        self.assertEqual(releases - set(batch), collection.pending_releases)
+        self.assertEqual(1, callback.call_count)
+
+        for _batch, handler in replies[1:]:
+            handler(None, None, None)
+        self.assertEqual(releases, collection.releases)
+        self.assertEqual(5, collection.size)
+        self.assertEqual(set(), collection.pending_releases)
+        self.assertEqual(3, callback.call_count)
+
+    def test_releases_removed_in_several_requests_are_counted_once(self):
+        releases = {f'00000000-0000-0000-0000-00000000000{i}' for i in range(5)}
+        collection = Collection('foo')
+        collection.releases = set(releases)
+        collection.size = 5
+        callback = MagicMock()
+        with patch('picard.collection.COLLECTION_BATCH_SIZE', 2):
+            collection.remove_releases(set(releases), callback)
+        self.assertEqual(3, mb_api.delete_from_collection.call_count)
+        self.assertEqual(0, collection.size)
+        self.assertEqual(set(), collection.releases)
+        self.assertEqual(3, callback.call_count)
+
+    def test_a_failed_request_of_several_leaves_the_others_to_count(self):
+        releases = {f'00000000-0000-0000-0000-00000000000{i}' for i in range(4)}
+        collection = Collection('foo')
+        callback = MagicMock()
+        reply = MagicMock()
+        reply.errorString.return_value = 'Service Unavailable'
+        replies = []
+        api = MagicMock()
+        api.put_to_collection.side_effect = lambda collection_id, batch, handler: replies.append((batch, handler))
+        self.tagger.mb_api = api
+        with patch('picard.collection.COLLECTION_BATCH_SIZE', 2):
+            collection.add_releases(releases, callback)
+        (first, first_handler), (_second, second_handler) = replies
+        first_handler(None, reply, 503)
+        second_handler(None, None, None)
+        self.assertEqual(set(_second), collection.releases)
+        self.assertEqual(2, collection.size)
+        self.assertEqual(set(), collection.pending_releases)
+        callback.assert_any_call(error='Service Unavailable')
+        self.assertEqual(2, callback.call_count)
+
+    def test_collection_modification_error_is_reported(self):
+        releases = {'963a7d48-5995-4751-aef8-6727cb879b9c'}
+        reply = MagicMock()
+        reply.errorString.return_value = 'Service Unavailable'
+        # A local mock: the module-level one is shared by the other tests.
+        failing_api = MagicMock()
+        failing_api.put_to_collection.side_effect = lambda collection_id, releases, handler: handler(None, reply, 503)
+        failing_api.delete_from_collection.side_effect = failing_api.put_to_collection.side_effect
+        self.tagger.mb_api = failing_api
+        for method in ('add_releases', 'remove_releases'):
+            with self.subTest(method=method):
+                collection = Collection('foo')
+                collection.releases = set(releases) if method == 'remove_releases' else set()
+                collection.size = len(collection.releases)
+                callback = MagicMock()
+                getattr(collection, method)(set(releases), callback)
+                callback.assert_called_once_with(error='Service Unavailable')
+                self.assertEqual(set(), collection.pending_releases)
+                self.assertEqual(len(collection.releases), collection.size)
+
     def test_get_user_collection(self):
         self.assertEqual({}, picard.collection.user_collections)
         collection1 = get_user_collection('foo')
