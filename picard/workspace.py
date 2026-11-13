@@ -669,7 +669,9 @@ class Workspace:
                     notifier().status_message(_('Failed moving "%(filename)s" to trash'), {'filename': file.filename})
 
             if files_removed:
-                self.remove_files(files)
+                # Only those that reached the trash: a file that could not be
+                # moved is still on disk and has to stay in the working set.
+                self.remove_files(files_removed)
             notifier().status_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
 
     def load_cluster(self, name: str, artist: str) -> Cluster:
