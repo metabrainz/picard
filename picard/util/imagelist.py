@@ -117,6 +117,28 @@ class ImageList(MutableSequence['CoverArtImage']):
                 else:
                     yield image
 
+    def all_rejected_for_tags(
+        self,
+        previous_images: 'ImageList',
+        settings: SettingConfigSection | None = None,
+    ) -> bool:
+        """Whether saving would leave the images embedded in tags untouched.
+
+        True when this list has images, `previous_images` (what a file has
+        embedded) has some too, images are saved to tags only (not to external
+        files) and none of this list's images passes the per-file filters of
+        `to_be_saved_to_tags`, for instance because they are all smaller than
+        the embedded ones.
+        """
+        if not self or not previous_images:
+            return False
+        if settings is None:
+            config = get_config()
+            settings = config.setting
+        if not settings['save_images_to_tags'] or settings['save_images_to_files']:
+            return False
+        return not any(self.to_be_saved_to_tags(settings, previous_images))
+
     def to_be_saved_to_files(
         self,
         settings: SettingConfigSection | None = None,

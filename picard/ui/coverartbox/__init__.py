@@ -87,10 +87,40 @@ from picard.ui.util import (
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
+def _new_images_rejected_for_tags(item):
+    """True if new images exist but none of them will replace the art embedded
+    in tags (per-file "never replace" filters), and none go to external files.
+
+    The filters run on each file against the images embedded in that file, so
+    an item made of several files (album, cluster, multiple selection) cannot
+    be judged on the union of their images: one file may keep its cover while
+    another one gets replaced. It is rejected only if it is for every file
+    that has a pending change.
+    """
+    files = list(item.iterfiles())
+    if not files:
+        # Nothing to save yet, the item's own images are all there is.
+        metadata = item.metadata
+        orig_metadata = getattr(item, 'orig_metadata', None)
+        if not (metadata and orig_metadata):
+            return False
+        return metadata.images.all_rejected_for_tags(orig_metadata.images)
+    pending = [file for file in files if file.metadata.images != file.orig_metadata.images]
+    return bool(pending) and all(
+        file.metadata.images.all_rejected_for_tags(file.orig_metadata.images) for file in pending
+    )
+
+
 class CoverArtBox(QtWidgets.QGroupBox):
-    # Settings that affect whether cover art removal is predicted.
-    _REMOVAL_SETTINGS = frozenset(
+    # Settings that affect what the box shows: whether cover art removal is
+    # predicted, which images are kept in tags (per-file "never replace"
+    # filters, embedding a single front image) and which go to files.
+    _COVER_DISPLAY_SETTINGS = frozenset(
         (
+            'dont_replace_cover_of_types',
+            'dont_replace_included_types',
+            'dont_replace_with_smaller_cover',
+            'embed_only_one_front_image',
             'remove_images_from_tags',
             'save_images_to_files',
             'save_images_to_tags',
@@ -157,7 +187,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         config.setting.setting_changed.connect(self._on_setting_changed)
 
     def _on_setting_changed(self, name, old_value, new_value):
-        if name in self._REMOVAL_SETTINGS:
+        if name in self._COVER_DISPLAY_SETTINGS:
             self.update_metadata()
 
     def show_cover_art_info(self):
@@ -297,7 +327,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if hasattr(self.item, 'orig_metadata'):
             orig_metadata = self.item.orig_metadata
 
-        if metadata and metadata.images:
+        if metadata and metadata.images and _new_images_rejected_for_tags(self.item):
+            # Every new image would be discarded by the per-file "never replace"
+            # filters (e.g. dont_replace_with_smaller_cover), so the tags keep the
+            # original art. Show that instead of a misleading "New Cover Art".
+            self.cover_art.set_metadata(orig_metadata)
+            self._exported_images = None
+        elif metadata and metadata.images:
             self.cover_art.set_metadata(metadata)
             self._exported_images = None
         elif orig_metadata and orig_metadata.images:
