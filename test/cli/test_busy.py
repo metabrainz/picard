@@ -16,6 +16,7 @@
 
 import io
 import logging
+import threading
 import time
 
 from test.picardtestcase import PicardTestCase
@@ -98,6 +99,26 @@ class BusyIndicatorTest(PicardTestCase):
         text = stream.getvalue()
         self.assertIn('\r\033[Kboom', text)
         self.assertEqual([], handler.filters)
+
+    def test_a_message_that_logs_does_not_block_the_spinner(self):
+        stream = _Terminal()
+        handler = logging.StreamHandler(stream)
+        log.main_logger.addHandler(handler)
+        self.addCleanup(log.main_logger.removeHandler, handler)
+
+        def message():
+            log.main_logger.error('while choosing the message')
+            return 'busy'
+
+        def run():
+            with BusyIndicator(_output(stream), message, delay=0, interval=0.01):
+                time.sleep(0.1)
+
+        # A deadlock would never end, so the block runs in a thread that is given up on.
+        thread = threading.Thread(target=run, daemon=True)
+        thread.start()
+        thread.join(5)
+        self.assertFalse(thread.is_alive(), "the spinner is stuck")
 
     def test_other_handlers_are_left_alone(self):
         handler = logging.StreamHandler(io.StringIO())

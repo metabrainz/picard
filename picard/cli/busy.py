@@ -119,8 +119,10 @@ class BusyIndicator:
         try:
             while True:
                 frame = frames[index % len(frames)]
+                # Outside the lock: the message may log, and the log filter takes the lock to erase the line.
+                text = self._output.d_busy(f"{frame} {self._message()}")
                 with self._lock:
-                    self._stream.write(f'{_CLEAR_LINE}{self._output.d_busy(f"{frame} {self._message()}")}')
+                    self._stream.write(f'{_CLEAR_LINE}{text}')
                     self._stream.flush()
                     self._shown = True
                 index += 1
