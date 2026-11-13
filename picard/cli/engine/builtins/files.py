@@ -227,6 +227,9 @@ def _cmd_file_add(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     help="Write tag changes to disk.",
     args=('selector',),
     arg_kinds=('selector',),
+    destructive=True,
+    # The GUI asks too, unless "Confirm when saving" is off.
+    confirm_unless='file_save_warning',
 )
 def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     """Write the tag changes of the selected objects to disk.
@@ -236,6 +239,10 @@ def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     as the options say ('option ls rename'), so look at the result with 'metadata
     show' first. Each file is reported as saved, error, or pending if it was still
     being saved when the command stopped waiting.
+
+    The console asks for a confirmation, as the GUI does, unless the option
+    file_save_warning ("Confirm when saving") is off: 'option set file_save_warning
+    false' turns it off for this session.
 
     Examples:
       save
