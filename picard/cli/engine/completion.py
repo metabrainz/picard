@@ -41,6 +41,7 @@ import glob
 import os
 import re
 
+from picard import log
 from picard.cli.engine.dispatch import (
     split_command_name,
     split_line,
@@ -173,7 +174,8 @@ def _cdrom_devices() -> list[str]:
         from picard.util.cdrom import get_cdrom_drives
 
         return get_cdrom_drives()
-    except Exception:
+    except Exception as e:  # completion must never fail the prompt
+        log.debug("Could not list the CD drives for completion: %s", e)
         return []
 
 
@@ -186,7 +188,8 @@ def _tag_names() -> list[str]:
         from picard.tags import tag_names
 
         return sorted(tag_names())
-    except Exception:
+    except Exception as e:  # completion must never fail the prompt
+        log.debug("Could not list the tag names for completion: %s", e)
         return []
 
 

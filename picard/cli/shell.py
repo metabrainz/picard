@@ -413,6 +413,8 @@ def run_repl(
 
 
 def _run_shell(args):
+    # Imported here, as the other subcommands do: the core is not loaded to build the
+    # parser or run a subcommand that does not need it (picard-cli --help, tag read).
     from picard.cli._bootstrap import (
         init_logging,
         is_color_disabled,
