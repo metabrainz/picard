@@ -247,6 +247,29 @@ class CollectionAddRmTest(CollectionCommandTestCase):
                 self.assertEqual('failed', item.status)
                 self.assertEqual('Service Unavailable', item.data['error'])
 
+    def test_a_request_still_running_is_not_reported_as_done(self):
+        # The releases are in flight from a command that gave up waiting: the
+        # collection sends nothing and nothing answers.
+        collection_module.user_collections[_COLLECTION_2].pending_releases = {_RELEASE_2}
+        result = self.run_command(f'collection add k2 {self.second}')
+        self.api.put_to_collection.assert_not_called()
+        self.assertEqual('timeout', result.items[0].status)
+        self.assertIn('still', result.message)
+
+    def test_a_request_of_several_that_failed_is_reported_as_failed_with_a_hint(self):
+        # Several requests are made for many releases: one is refused, the others are not.
+        def put(collection_id, releases, handler):
+            handler(None, None, None)
+            handler(None, self._reply(), 503)
+
+        self.fail_with = 'Service Unavailable'
+        self.api.put_to_collection.side_effect = put
+        result = self.run_command(f'collection add k2 {self.second}')
+        item = result.items[0]
+        self.assertEqual('failed', item.status)
+        self.assertIn('Service Unavailable', item.data['error'])
+        self.assertIn('collection ls', result.message)
+
     def test_timeout(self):
         self.api.put_to_collection.side_effect = lambda *a: None
         self.session._app.run_until_idle.return_value = False

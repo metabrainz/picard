@@ -158,8 +158,11 @@ def _modify(session: EngineSession, name: str, args: dict[str, Any], adding: boo
         return EngineResult(items=[item], resolved=resolved, unresolved=unresolved)
 
     errors: list[str] = []
+    answered = 0
 
     def modified(error: 'str | None' = None) -> None:
+        nonlocal answered
+        answered += 1
         if error is not None:
             errors.append(error)
 
@@ -171,8 +174,16 @@ def _modify(session: EngineSession, name: str, args: dict[str, Any], adding: boo
     drained = drain(session, TIMEOUT_SHORT, notes, doing="updating the collection")
     if errors:
         status, extra = 'failed', {'error': errors[0]}
+        if answered > len(errors):
+            # The releases are sent in several requests, and some of them went through.
+            notes.append("some of the releases were changed anyway; 'collection ls' shows where it stands")
     elif not drained:
         status, extra = 'timeout', {}
+    elif not answered:
+        # The collection sends nothing for releases it is already sending (a
+        # request of an earlier command that is not over), and nothing answers.
+        status, extra = 'timeout', {}
+        notes.append("these releases are still being sent by an earlier command; try again later")
     else:
         status, extra = ('added' if adding else 'removed'), {}
         # The size the collection has now, rather than the one deduced from what
