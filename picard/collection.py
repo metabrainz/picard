@@ -104,14 +104,16 @@ class Collection:
         if not error:
             success_handler(releases, callback)
         else:
-            self._error(reply)
+            self._error(reply, callback)
 
-    def _error(self, reply: QNetworkReply) -> None:
+    def _error(self, reply: QNetworkReply, callback: Callable) -> None:
+        error_text = reply.errorString()
         notifier().status_message(
             N_("Error while modifying collections: %(error)s"),
-            {'error': reply.errorString()},
+            {'error': error_text},
             echo=log.error,
         )
+        callback(error=error_text)
 
     def _success_add(self, releases: set[str], callback: Callable) -> None:
         count = len(releases)
