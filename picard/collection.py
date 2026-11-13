@@ -40,6 +40,7 @@ from picard.i18n import (
 from picard.notification import notifier
 from picard.services import services
 from picard.webservice import ReplyHandler
+from picard.webservice.api_helpers.musicbrainz import COLLECTION_BATCH_SIZE
 
 
 user_collections: dict[str, 'Collection'] = {}
@@ -88,10 +89,17 @@ class Collection:
         callback: CollectionModified,
     ) -> None:
         releases -= self.pending_releases
-        if releases:
-            self.pending_releases |= releases
-            when_done = partial(self._finished, success_handler, releases, callback)
-            api_method(self.id, list(releases), when_done)
+        if not releases:
+            return
+        self.pending_releases |= releases
+        # One request for each batch, with a handler of its own that knows which
+        # releases it is about: the web service would otherwise answer once for
+        # each batch with the releases of all of them, counting them again every time.
+        batch = list(releases)
+        for start in range(0, len(batch), COLLECTION_BATCH_SIZE):
+            part = batch[start : start + COLLECTION_BATCH_SIZE]
+            when_done = partial(self._finished, success_handler, set(part), callback)
+            api_method(self.id, part, when_done)
 
     def add_releases(self, releases: set[str], callback: CollectionModified) -> None:
         api_method = services().mb_api.put_to_collection

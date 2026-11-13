@@ -57,6 +57,10 @@ def wrap_xml_metadata(data: str) -> str:
     )
 
 
+# The most releases put in or deleted from a collection by one request.
+COLLECTION_BATCH_SIZE = 400
+
+
 class MBAPIHelper(APIHelper):
     @property
     def base_url(self) -> QUrl:
@@ -322,7 +326,9 @@ class MBAPIHelper(APIHelper):
         return self.get_collection(None, handler)
 
     @staticmethod
-    def _collection_request(collection_id: str, releases: Sequence[str], batchsize: int = 400) -> Iterator[str]:
+    def _collection_request(
+        collection_id: str, releases: Sequence[str], batchsize: int = COLLECTION_BATCH_SIZE
+    ) -> Iterator[str]:
         for i in range(0, len(releases), batchsize):
             ids = ';'.join(releases[i : i + batchsize])
             yield f"/collection/{collection_id}/releases/{ids}"
