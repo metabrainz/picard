@@ -514,6 +514,36 @@ class WorkspaceMoveFilesTest(PicardTestCase):
         self.mock_view_updates.return_value.suspend_selection.assert_called_once_with()
 
 
+class WorkspaceTrashFilesTest(PicardTestCase):
+    """trash_files(): only the files that reached the trash leave the working set."""
+
+    def setUp(self):
+        super().setUp()
+        for name in ('view_updates', 'notifier', 'QtCore'):
+            patcher = patch(f'picard.workspace.{name}')
+            setattr(self, f'mock_{name}', patcher.start())
+            self.addCleanup(patcher.stop)
+        self.wks = Workspace()
+        self.moved = File('moved.flac')
+        self.refused = File('refused.flac')
+        for file in (self.moved, self.refused):
+            self.wks.files[file.filename] = file
+
+    def test_a_file_that_could_not_be_trashed_stays_in_the_working_set(self):
+        def move_to_trash(filename):
+            # The trash takes the first file, and refuses the second one.
+            return filename == 'moved.flac', f'/trash/{filename}'
+
+        self.mock_QtCore.QFile.moveToTrash.side_effect = move_to_trash
+        with patch.object(Workspace, 'remove_files') as mock_remove, patch('picard.workspace.os.path.exists') as exists:
+            exists.side_effect = lambda path: path == 'refused.flac'
+            self.wks.trash_files([self.moved, self.refused])
+        mock_remove.assert_called_once_with([self.moved])
+        self.assertEqual('/trash/moved.flac', self.moved.filename)
+        self.assertEqual('refused.flac', self.refused.filename)
+        self.assertIs(self.refused, self.wks.files['refused.flac'])
+
+
 class WorkspaceSaveTest(PicardTestCase):
     def test_saves_every_file_and_returns_them(self):
         file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
