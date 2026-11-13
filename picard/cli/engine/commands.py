@@ -219,6 +219,9 @@ class EngineCommand:
     # confirmation before running such a command, and an automated one can apply
     # its own policy.
     destructive: bool = False
+    # The name of a boolean option that turns that confirmation off when it is
+    # off (``save`` follows ``file_save_warning``, as the GUI does), or ''.
+    confirm_unless: str = ''
 
     def arg_kind(self, index: int) -> str:
         """Completion kind for the word at ``index`` (''/unknown).
@@ -263,6 +266,7 @@ class EngineCommandRegistry:
         args: tuple[str, ...] = (),
         arg_kinds: tuple[str, ...] = (),
         destructive: bool = False,
+        confirm_unless: str = '',
     ) -> Callable[[CommandFunc], CommandFunc]:
         """Return a decorator declaring the decorated function as the command ``name``.
 
@@ -291,6 +295,7 @@ class EngineCommandRegistry:
                     args=args,
                     arg_kinds=arg_kinds,
                     destructive=destructive,
+                    confirm_unless=confirm_unless,
                 )
             )
             return run

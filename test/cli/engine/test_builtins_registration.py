@@ -67,7 +67,7 @@ EXPECTED = {
     'url',
 }
 
-DESTRUCTIVE = {'logout', 'option save', 'trash'}
+DESTRUCTIVE = {'logout', 'option save', 'save', 'trash'}
 
 
 class BuiltinCommandsTest(PicardTestCase):

@@ -41,6 +41,7 @@ from picard.cli.output import CliOutput
 from picard.cli.shell import (
     History,
     _history_size,
+    _needs_confirmation,
     _prompt,
     run_repl,
     run_system_command,
@@ -59,6 +60,8 @@ class RunReplTest(PicardTestCase):
         self.session = LocalEngineSession(MagicMock())
         wks = workspace()
         wks.albums = {'rel-1': Album('rel-1')}
+        # Where an option comes from is looked up in the profiles.
+        self.set_config_values(profiles={'user_profiles': [], 'user_profile_settings': {}})
 
     def _lines(self, *lines):
         it = iter(lines)
@@ -160,6 +163,38 @@ class RunReplTest(PicardTestCase):
         run_repl(self.session, self.reg, self.out, self._lines('wipe x', 'quit'), confirm=lambda question: False)
         self.assertEqual([], ran)
         self.assertIn('cancelled', self.buf.getvalue())
+
+    def test_save_is_confirmed_as_the_gui_does(self):
+        self.assertTrue(self.reg.get('save').destructive)
+        questions = []
+
+        def confirm(question):
+            questions.append(question)
+            return False
+
+        run_repl(self.session, self.reg, self.out, self._lines('save a1', 'quit'), confirm=confirm)
+        self.assertEqual(1, len(questions))
+        self.assertIn('cancelled', self.buf.getvalue())
+
+    def test_save_is_not_confirmed_when_the_option_of_the_gui_is_off(self):
+        self.set_config_values(setting={'file_save_warning': False})
+
+        def confirm(question):
+            raise AssertionError("must not ask")
+
+        run_repl(self.session, self.reg, self.out, self._lines('save a1', 'quit'), confirm=confirm)
+        self.assertNotIn('cancelled', self.buf.getvalue())
+
+    def test_the_option_is_read_from_the_session(self):
+        # 'option set file_save_warning false' is for this console only: the
+        # value to follow is the one the session describes, not the configuration's.
+        command = self.reg.get('save')
+        session = MagicMock()
+        for value, expected in ((True, True), (False, False)):
+            with self.subTest(value=value):
+                session.describe_option.return_value = {'value': value}
+                self.assertEqual(expected, _needs_confirmation(command, session))
+        session.describe_option.assert_called_with('file_save_warning')
 
     def test_ctrl_c_at_confirmation_cancels_the_command_and_continues(self):
         ran = self._register_destructive()

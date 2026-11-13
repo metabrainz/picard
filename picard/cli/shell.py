@@ -250,6 +250,15 @@ def _ask_yes_no(question: str) -> bool:
     return answer.strip().lower() in {'y', 'yes'}
 
 
+def _needs_confirmation(command, session) -> bool:
+    """Whether the console asks before running ``command``: it is destructive, and its option does not say otherwise."""
+    if not command.destructive:
+        return False
+    if command.confirm_unless:
+        return bool(session.describe_option(command.confirm_unless)['value'])
+    return True
+
+
 def _prompt(output) -> str:
     """The prompt, colored by the output; readline needs the escapes marked as zero-width to keep the line aligned."""
     return _ANSI_ESCAPE.sub(lambda match: f'\001{match.group()}\002', output.d_input_prompt(_PROMPT))
@@ -385,7 +394,7 @@ def run_repl(
         if head in {'quit', 'exit'}:
             return
         command = find_command(registry, line)
-        if command is not None and command.destructive:
+        if command is not None and _needs_confirmation(command, session):
             try:
                 confirmed = confirm(f"'{command.name}' is destructive. Run '{line}'?")
             except KeyboardInterrupt:
