@@ -164,3 +164,16 @@ class AlbumLoadTokenTest(PicardTestCase):
             self.album.cancel_tasks()
             self.album.load()
             self.assertIsNot(self.album._load_token, first_token)
+
+    def test_reset_loading_state(self):
+        album = self.album
+        album.loaded = True
+        album.metadata['album'] = 'Foo'
+        album._pending_tasks['task'] = Mock()
+        old_token = album._load_token
+        album.reset_loading_state()
+        self.assertFalse(album.loaded)
+        self.assertEqual(album.metadata['album'], '')
+        self.assertEqual(album._pending_tasks, {})
+        self.assertEqual(album._new_tracks, [])
+        self.assertIsNot(album._load_token, old_token)
