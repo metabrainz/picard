@@ -67,6 +67,7 @@ from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
+    register_cover_art_provider_filter,
 )
 from picard.extension_points.cover_art_processors import (
     ImageProcessor as _ImageProcessor,
@@ -79,6 +80,7 @@ from picard.extension_points.disc_log_readers import (
     register_disc_log_reader,
 )
 from picard.extension_points.event_hooks import (
+    register_album_post_cover_art_processor,
     register_album_post_removal_processor,
     register_file_post_addition_to_track_processor,
     register_file_post_load_processor,
@@ -1015,6 +1017,51 @@ class PluginApi:
         update_wrapper(wrapped, function)
         return register_album_post_removal_processor(wrapped, priority)
 
+    def register_album_post_cover_art_processor(
+        self, function: Callable[['PluginApi', Album], None], priority: int = 0
+    ) -> None:
+        """Register a function called after the cover art stage of an album.
+
+        Cover art is loaded asynchronously, after the album itself is loaded.
+        This function is called once all cover art images have been downloaded,
+        processed and set on the album, its tracks and files, from the main
+        thread and when the album is loaded. It is also called when no cover
+        art was found, when cover art is disabled, or when cover art loading
+        stopped early (only part of the images may be set). It is called once
+        per album load, and not called if the album was removed or reloaded
+        before the cover art stage ended.
+
+        Files added to a track after this point are not covered, use
+        :meth:`register_file_post_addition_to_track_processor` for those.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``album``: The :class:`Album` whose cover art stage ended.
+
+                Expected signature::
+
+                    def function(api, album):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_cover_art_done(api, album):
+                for track in album.tracks:
+                    track.keep_original_images()
+
+            def enable(api):
+                api.register_album_post_cover_art_processor(on_cover_art_done)
+        """
+        wrapped = partial(function, self)
+        update_wrapper(wrapped, function)
+        return register_album_post_cover_art_processor(wrapped, priority)
+
     def register_file_post_load_processor(
         self, function: Callable[['PluginApi', File], None], priority: int = 0
     ) -> None:
@@ -1253,7 +1300,7 @@ class PluginApi:
 
         The filter is called with the cover art's metadata before the image is
         downloaded. Return ``True`` to keep the image or ``False`` to discard
-        it.
+        it. Currently only the Cover Art Archive provider calls it.
 
         Args:
             filter: The filter function to register. The ``api`` argument is
@@ -1261,8 +1308,9 @@ class PluginApi:
                 parameters:
 
                 - ``api``: The :class:`PluginApi` instance.
-                - ``image_metadata``: A dict with the cover art metadata
-                  (e.g. its ``type``).
+                - ``image_metadata``: A dict with the cover art metadata:
+                  the thumbnail ``width``, and a ``height`` set to ``-1``
+                  (unknown).
 
                 Expected signature::
 
@@ -1271,7 +1319,7 @@ class PluginApi:
 
         Example:
             def my_metadata_filter(api, image_metadata) -> bool:
-                return image_metadata.get('type') == 'front'
+                return image_metadata.get('width', 500) >= 500
 
             def enable(api):
                 api.register_cover_art_metadata_filter(my_metadata_filter)
@@ -1279,6 +1327,57 @@ class PluginApi:
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
+
+    def register_cover_art_provider_filter(
+        self, filter: Callable[['PluginApi', Album, type[CoverArtProvider]], bool]
+    ) -> None:
+        """Register a filter to decide which cover art providers are used for an album.
+
+        The filter is called for an album each time a cover art provider is
+        about to be used for it, only for providers that would otherwise be
+        used: enabled in the options, and not already made unnecessary (for
+        example by a front image already found).
+        Return ``True`` to use the provider or ``False`` to skip it for this
+        album: it isn't queried and nothing is downloaded from it. Return
+        ``False`` for every provider to get no cover art for the album at all.
+
+        If several filters are registered, a single ``False`` skips the provider.
+        An exception in a filter is logged and ignored.
+
+        Skipping providers changes nothing in the album's existing cover art:
+        files keep the cover art they already have. The filter only sees the
+        files that are in the album when it is called, files added later are
+        not taken into account.
+
+        Args:
+            filter: The filter function to register. The ``api`` argument is
+                injected automatically, so the function receives the following
+                parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``album``: The :class:`Album` cover art is retrieved for.
+                - ``provider``: The :class:`CoverArtProvider` class about to be
+                  used, use ``provider.name`` to identify it.
+
+                Expected signature::
+
+                    def filter(api, album, provider) -> bool:
+                        ...
+
+        Example:
+            def organized_albums_use_local_files_only(api, album, provider) -> bool:
+                files = list(album.iterfiles())
+                if files and all(f.filename.startswith("/music/organized/") for f in files):
+                    # Albums that are already organized: only use "Local Files"
+                    return provider.name == "Local Files"
+                return True  # other albums: all providers
+
+            def enable(api):
+                api.register_cover_art_provider_filter(organized_albums_use_local_files_only)
+        """
+        wrapped = partial(filter, self)
+        update_wrapper(wrapped, filter)
+        return register_cover_art_provider_filter(wrapped)
 
     def register_cover_art_processor(self, processor_class: type[ImageProcessor]) -> None:
         """Register a processor to modify cover art images.

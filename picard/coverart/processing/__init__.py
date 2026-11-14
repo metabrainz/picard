@@ -22,7 +22,10 @@ from collections.abc import Callable
 from functools import partial
 from queue import Queue
 import time
-from typing import Any
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
 
 from picard import log
 from picard.album import Album
@@ -41,6 +44,7 @@ from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_filters import (
     ext_point_cover_art_filters,
     ext_point_cover_art_metadata_filters,
+    ext_point_cover_art_provider_filters,
 )
 from picard.extension_points.cover_art_processors import (
     CoverArtProcessingError,
@@ -55,6 +59,10 @@ from picard.util.imageinfo import (
 )
 
 
+if TYPE_CHECKING:
+    from picard.coverart.providers.provider import CoverArtProvider
+
+
 def run_image_filters(data: bytes, image_info: ImageInfo, album: Album, coverartimage: CoverArtImage) -> bool:
     for f in ext_point_cover_art_filters:
         if not f(data, image_info, album, coverartimage):
@@ -66,6 +74,34 @@ def run_image_metadata_filters(metadata: dict[str, Any]) -> bool:
     for f in ext_point_cover_art_metadata_filters:
         if not f(metadata):
             return False
+    return True
+
+
+def run_provider_filters(album: Album, provider_class: type['CoverArtProvider']) -> bool:
+    """Return False if a filter asks to skip `provider_class` for `album`.
+
+    A filter raising an exception is logged and ignored: a broken plugin must
+    not prevent cover art from being retrieved.
+    """
+    for f in ext_point_cover_art_provider_filters:
+        try:
+            if not f(album, provider_class):
+                log.debug_if(
+                    DebugOpt.COVERART,
+                    "Cover art provider %s for %s rejected by %s.%s",
+                    provider_class.name,
+                    album,
+                    getattr(f, '__module__', '?'),
+                    getattr(f, '__name__', f),
+                )
+                return False
+        except Exception:
+            log.error(
+                "Error in cover art provider filter (%s.%s):",
+                getattr(f, '__module__', '?'),
+                getattr(f, '__name__', f),
+                exc_info=True,
+            )
     return True
 
 

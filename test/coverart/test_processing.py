@@ -49,6 +49,7 @@ from picard.coverart.processing import (
     CoverArtImageProcessing,
     run_image_filters,
     run_image_metadata_filters,
+    run_provider_filters,
 )
 from picard.coverart.processing.filters import (
     bigger_previous_image_filter,
@@ -590,3 +591,55 @@ class ProcessingImageTest(PicardTestCase):
 
         # Image data should be identical to original (no re-encoding)
         self.assertEqual(coverartimage.data, original_data)
+
+
+class ProviderFiltersTest(PicardTestCase):
+    """Tests for run_provider_filters()."""
+
+    def _run(self, *filters):
+        album = Mock()
+        provider = Mock()
+        with patch('picard.coverart.processing.ext_point_cover_art_provider_filters', list(filters)):
+            return run_provider_filters(album, provider), album, provider
+
+    def test_no_filter_uses_provider(self):
+        result, _album, _provider = self._run()
+        self.assertTrue(result)
+
+    def test_all_filters_accepting(self):
+        accept1 = Mock(return_value=True)
+        accept2 = Mock(return_value=True)
+        result, album, provider = self._run(accept1, accept2)
+        self.assertTrue(result)
+        accept1.assert_called_once_with(album, provider)
+        accept2.assert_called_once_with(album, provider)
+
+    def test_one_rejecting_filter_skips_provider(self):
+        accept = Mock(return_value=True)
+        reject = Mock(return_value=False)
+        result, album, provider = self._run(accept, reject)
+        self.assertFalse(result)
+        reject.assert_called_once_with(album, provider)
+
+    def test_filters_after_a_rejection_are_not_called(self):
+        reject = Mock(return_value=False)
+        other = Mock(return_value=True)
+        result, _album, _provider = self._run(reject, other)
+        self.assertFalse(result)
+        other.assert_not_called()
+
+    def test_failing_filter_is_ignored(self):
+        failing = Mock(side_effect=RuntimeError('broken plugin'))
+        accept = Mock(return_value=True)
+        with patch('picard.coverart.processing.log') as mock_log:
+            result, _album, _provider = self._run(failing, accept)
+        self.assertTrue(result)
+        accept.assert_called_once()
+        mock_log.error.assert_called_once()
+
+    def test_failing_filter_does_not_hide_a_rejection(self):
+        failing = Mock(side_effect=RuntimeError('broken plugin'))
+        reject = Mock(return_value=False)
+        with patch('picard.coverart.processing.log'):
+            result, _album, _provider = self._run(failing, reject)
+        self.assertFalse(result)
