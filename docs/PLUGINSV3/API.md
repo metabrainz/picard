@@ -1504,38 +1504,52 @@ def enable(api):
 
 #### `register_cover_art_filter(filter)`
 
-Register a filter to process cover art images.
+Register a filter to decide which cover art images to keep.
+
+The filter is called for each downloaded cover art image, before it is processed
+and set on the album. Return `True` to keep the image, `False` to discard it.
 
 ```python
-def my_cover_filter(api, metadata, image):
-    """Filter cover art images."""
-    # Return True to keep, False to discard
-    return image.width >= 500
+def my_cover_filter(api, data, image_info, album, image):
+    """Keep only images that are at least 500px wide."""
+    return image_info.width >= 500
 
 
 def enable(api):
     api.register_cover_art_filter(my_cover_filter)
 ```
 
-**Signature**: `function(api, metadata, image) -> bool`
+**Signature**: `function(api, data, image_info, album, image) -> bool`
+
+**Parameters**:
+- `api`: The `PluginApi` instance (injected automatically)
+- `data`: The raw image data as `bytes`
+- `image_info`: An `ImageInfo` describing the image (`width`, `height`, `mime`, ...)
+- `album`: The `Album` the image belongs to
+- `image`: The `CoverArtImage` object
 
 ---
 
 #### `register_cover_art_metadata_filter(filter)`
 
-Register a filter to process cover art metadata.
+Register a filter to decide which cover art to keep by its metadata, before the
+image is downloaded. Return `True` to keep the image, `False` to discard it.
+
+Currently only the Cover Art Archive provider calls this filter. The metadata is
+a dict with the thumbnail `width`, and a `height` set to `-1` (unknown). Use
+`register_cover_art_filter` to filter on the actual image once downloaded.
 
 ```python
-def my_metadata_filter(api, metadata, image_metadata):
-    """Filter cover art by metadata."""
-    return image_metadata.get('type') == 'front'
+def my_metadata_filter(api, image_metadata):
+    """Skip images whose thumbnail is narrower than 500px."""
+    return image_metadata.get('width', 500) >= 500
 
 
 def enable(api):
     api.register_cover_art_metadata_filter(my_metadata_filter)
 ```
 
-**Signature**: `function(api, metadata, image_metadata) -> bool`
+**Signature**: `function(api, image_metadata) -> bool`
 
 ---
 

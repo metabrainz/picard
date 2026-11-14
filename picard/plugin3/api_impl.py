@@ -1300,7 +1300,7 @@ class PluginApi:
 
         The filter is called with the cover art's metadata before the image is
         downloaded. Return ``True`` to keep the image or ``False`` to discard
-        it.
+        it. Currently only the Cover Art Archive provider calls it.
 
         Args:
             filter: The filter function to register. The ``api`` argument is
@@ -1308,8 +1308,9 @@ class PluginApi:
                 parameters:
 
                 - ``api``: The :class:`PluginApi` instance.
-                - ``image_metadata``: A dict with the cover art metadata
-                  (e.g. its ``type``).
+                - ``image_metadata``: A dict with the cover art metadata:
+                  the thumbnail ``width``, and a ``height`` set to ``-1``
+                  (unknown).
 
                 Expected signature::
 
@@ -1318,7 +1319,7 @@ class PluginApi:
 
         Example:
             def my_metadata_filter(api, image_metadata) -> bool:
-                return image_metadata.get('type') == 'front'
+                return image_metadata.get('width', 500) >= 500
 
             def enable(api):
                 api.register_cover_art_metadata_filter(my_metadata_filter)
