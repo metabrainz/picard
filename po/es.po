@@ -24,13 +24,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
 # Robert Schneider <robertschv@gmail.com>, 2019-2020
 # jameskerrane <hi@jameskerrane.com>, 2026.
+# Hitsuji777 <quimera-morena6z@icloud.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-11-11 04:13+0000\n"
-"Last-Translator: jameskerrane <hi@jameskerrane.com>\n"
+"PO-Revision-Date: 2026-11-14 18:13+0000\n"
+"Last-Translator: Hitsuji777 <quimera-morena6z@icloud.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "2/app/es/>\n"
 "Language: es\n"
@@ -39,7 +40,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.11.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -153,13 +154,15 @@ msgstr "Eliminar"
 
 #: picard/config_upgrade.py:424
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Script de nomenclatura de archivos primario"
 
 #: picard/file.py:220
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"No se ha podido analizar el archivo: está dañado o usa un formato no "
+"compatible."
 
 #: picard/file.py:853
 #, python-format
@@ -191,7 +194,7 @@ msgstr "Error"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "Aviso"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -210,12 +213,12 @@ msgstr "Error inesperado"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Error inesperado de autentificación"
 
 #: picard/oauth.py:386
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Error inesperado de solicitud (código HTTP %s)"
 
 #: picard/pluginmanager.py:271
 #, python-format
@@ -223,10 +226,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Incapaz de cargar el complemento '%s'"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Fallo al cargar el complemento \"%(plugin)s\" en \"%(dirname)s\""
+msgstr "Fallo al cargar el complemento \"%(plugin)s\""
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -289,20 +291,19 @@ msgstr "Ignorar los códigos MusicBrainz al cargar archivos"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "Comprobar actualizaciones de plugins en inicio"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Comprobar actualizaciones de programa en inicio"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "Días entre consultas de actualizaciones"
 
 #: picard/profile.py:56
-#, fuzzy
 msgid "Updates to check"
-msgstr "Actualizaciones para comprobar:"
+msgstr "Actualizaciones para comprobar"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
@@ -315,15 +316,15 @@ msgstr "Traducir nombres de artista"
 
 #: picard/profile.py:65
 msgid "Translation locales"
-msgstr ""
+msgstr "Localización de traducciones"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Excepción de traducción de nombres de artistas"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Excepciones para scripts de traducción"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
@@ -342,10 +343,8 @@ msgid "Use release relationships"
 msgstr "Usar las relaciones de publicaciones"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Usar las relaciones de publicaciones"
+msgstr "Usar relaciones de pistas y publicaciones"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -354,11 +353,11 @@ msgstr ""
 
 #: picard/profile.py:74
 msgid "Various Artists name"
-msgstr ""
+msgstr "Nombre de Varios Artistas"
 
 #: picard/profile.py:75
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Nombre de grabaciones individuales"
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
@@ -382,30 +381,27 @@ msgstr "Solo usa mis géneros"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
-msgstr ""
+msgstr "Usar géneros del artista del álbum"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
 msgstr "Usar etiquetas de folksonomía como género"
 
 #: picard/profile.py:89
-#, fuzzy
 msgid "Minimal genre usage"
-msgstr "Uso mínimo del género:"
+msgstr "Uso mínimo de géneros"
 
 #: picard/profile.py:90
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "Máximo número de géneros:"
+msgstr "Máximo número de géneros"
 
 #: picard/profile.py:91
-#, fuzzy
 msgid "Join multiple genres with"
-msgstr "Únete a múltiples géneros con:"
+msgstr "Unir múltiples géneros con"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "Géneros a incluir o excluir"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
@@ -413,7 +409,7 @@ msgstr "Activar puntuaciones de pistas"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
-msgstr ""
+msgstr "Correo a usar al guardar calificaciones"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
@@ -425,7 +421,7 @@ msgstr "Etiquetas"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
-msgstr ""
+msgstr "No escribir etiquetas"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
@@ -457,7 +453,7 @@ msgstr "Preservar lista de etiquetas"
 
 #: picard/profile.py:117
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "Versión de ID3v2 a usar"
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"

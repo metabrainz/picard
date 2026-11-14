@@ -4,14 +4,14 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2024.
 # Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
+# Hitsuji777 <quimera-morena6z@icloud.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2026-09-09 13:13+0000\n"
-"Last-Translator: Automatic translation add-on <noreply-addon-"
-"autotranslate@weblate.org>\n"
+"PO-Revision-Date: 2026-11-14 18:13+0000\n"
+"Last-Translator: Hitsuji777 <quimera-morena6z@icloud.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "2/constants/es/>\n"
 "Language: es\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -47,7 +47,6 @@ msgid "(copy)"
 msgstr "(copia)"
 
 #: picard/const/__init__.py:205
-#, fuzzy
 msgid "{title} ({count})"
 msgstr "{title} ({count})"
 
@@ -220,7 +219,7 @@ msgstr "Afar"
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
-msgstr ""
+msgstr "Afar (Yibuti)"
 
 #: picard/const/locales.py:29
 msgid "Afar (Eritrea)"
@@ -228,7 +227,7 @@ msgstr "Afar (Eritrea)"
 
 #: picard/const/locales.py:30
 msgid "Afar (Eritrea) (Saho)"
-msgstr ""
+msgstr "Afar (Eritrea) (Saho)"
 
 #: picard/const/locales.py:31
 msgid "Afar (Ethiopia)"
@@ -240,7 +239,7 @@ msgstr "Abjasio"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "Abjasio (Georgia)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
@@ -256,11 +255,11 @@ msgstr "Afrikáans (Sudáfrica)"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr ""
+msgstr "Aghem"
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr ""
+msgstr "Aghem (Camerún)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
@@ -276,7 +275,7 @@ msgstr "Amárico"
 
 #: picard/const/locales.py:42
 msgid "Amharic (Ethiopia)"
-msgstr ""
+msgstr "Amhárico (Etiopía)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
@@ -284,15 +283,15 @@ msgstr "Aragonés"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
-msgstr ""
+msgstr "Aragonés (España)"
 
 #: picard/const/locales.py:45
 msgid "Obolo"
-msgstr ""
+msgstr "Obolo"
 
 #: picard/const/locales.py:46
 msgid "Obolo (Nigeria)"
-msgstr ""
+msgstr "Obolo (Nigeria)"
 
 #: picard/const/locales.py:47
 msgid "Syria"
@@ -300,19 +299,19 @@ msgstr "Siria"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
-msgstr ""
+msgstr "Árabe (mundo)"
 
 #: picard/const/locales.py:50
 msgid "Arabic (United Arab Emirates)"
-msgstr ""
+msgstr "Árabe (Emiratos Árabes Unidos)"
 
 #: picard/const/locales.py:51
 msgid "Arabic (Bahrain)"
-msgstr ""
+msgstr "Árabe (Baréin)"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Djibouti)"
-msgstr ""
+msgstr "Árabe (Yibuti)"
 
 #: picard/const/locales.py:53
 msgid "Arabic (Algeria)"
@@ -320,23 +319,23 @@ msgstr "Árabe (Argelia)"
 
 #: picard/const/locales.py:54
 msgid "Arabic (Egypt)"
-msgstr ""
+msgstr "Árabe (Egipto)"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Western Sahara)"
-msgstr ""
+msgstr "Árabe (Sáhara Occidental)"
 
 #: picard/const/locales.py:56
 msgid "Arabic (Eritrea)"
-msgstr ""
+msgstr "Árabe (Eritrea)"
 
 #: picard/const/locales.py:57
 msgid "Arabic (Israel)"
-msgstr ""
+msgstr "Árabe (Israel)"
 
 #: picard/const/locales.py:58
 msgid "Arabic (Iraq)"
-msgstr ""
+msgstr "Árabe (Irak)"
 
 #: picard/const/locales.py:59
 msgid "Arabic (Jordan)"
@@ -344,63 +343,63 @@ msgstr "Árabe (Jordania)"
 
 #: picard/const/locales.py:60
 msgid "Arabic (Comoros)"
-msgstr ""
+msgstr "Árabe (Comoras)"
 
 #: picard/const/locales.py:61
 msgid "Arabic (Kuwait)"
-msgstr ""
+msgstr "Árabe (Kuwait)"
 
 #: picard/const/locales.py:62
 msgid "Arabic (Lebanon)"
-msgstr ""
+msgstr "Árabe (Lébano)"
 
 #: picard/const/locales.py:63
 msgid "Arabic (Libya)"
-msgstr ""
+msgstr "Árabe (Libia)"
 
 #: picard/const/locales.py:64
 msgid "Arabic (Morocco)"
-msgstr ""
+msgstr "Árabe (Marruecos)"
 
 #: picard/const/locales.py:65
 msgid "Arabic (Mauritania)"
-msgstr ""
+msgstr "Árabe (Mauritania)"
 
 #: picard/const/locales.py:66
 msgid "Arabic (Oman)"
-msgstr ""
+msgstr "Árabe (Oman)"
 
 #: picard/const/locales.py:67
 msgid "Arabic (Palestinian Territories)"
-msgstr ""
+msgstr "Árabe (territorios palestinos)"
 
 #: picard/const/locales.py:68
 msgid "Arabic (Qatar)"
-msgstr ""
+msgstr "Árabe (Catar)"
 
 #: picard/const/locales.py:69
 msgid "Arabic (Saudi Arabia)"
-msgstr ""
+msgstr "Árabe (Arabia Saudita)"
 
 #: picard/const/locales.py:70
 msgid "Arabic (Sudan)"
-msgstr ""
+msgstr "Árabe (Sudan)"
 
 #: picard/const/locales.py:71
 msgid "Arabic (Somalia)"
-msgstr ""
+msgstr "Árabe (Somalia)"
 
 #: picard/const/locales.py:72
 msgid "Arabic (South Sudan)"
-msgstr ""
+msgstr "Árabe (Sudán del Sur)"
 
 #: picard/const/locales.py:73
 msgid "Arabic (Syria)"
-msgstr ""
+msgstr "Árabe (Siria)"
 
 #: picard/const/locales.py:74
 msgid "Arabic (Chad)"
-msgstr ""
+msgstr "Árabe (Chad)"
 
 #: picard/const/locales.py:75
 msgid "Arabic (Tunisia)"
