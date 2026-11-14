@@ -560,6 +560,20 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 10)
 
+    def test_register_cover_art_provider_filter(self):
+        """Test cover art provider filter registration."""
+        api = self._create_api()
+
+        def dummy_filter(api, album, provider):
+            return True
+
+        with patch('picard.plugin3.api_impl.register_cover_art_provider_filter') as mock:
+            api.register_cover_art_provider_filter(dummy_filter)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_filter)
+            self.assertEqual(args[0].args, (api,))
+
     def test_register_event_hooks(self):
         """Test event hook registration methods."""
         api = self._create_api()

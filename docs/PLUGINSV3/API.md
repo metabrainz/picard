@@ -1539,6 +1539,69 @@ def enable(api):
 
 ---
 
+#### `register_cover_art_provider_filter(filter)`
+
+Register a filter to decide which cover art providers are used for an album.
+
+The filter is called for an album each time a cover art provider is about to be
+used for it, only for providers that would otherwise be used: enabled in the
+options, and not already made unnecessary (for example by a front image
+already found). Return `True` to use the
+provider, `False` to skip it for this album: it isn't queried and nothing is
+downloaded from it. If several filters are registered, a single `False` skips the
+provider. An exception in a filter is logged and ignored, the provider is then
+used.
+
+Use `provider.name` to identify the provider (for example "Cover Art Archive" or
+"Local Files"). To get no cover art at all for an album, return `False` for every
+provider. In that case nothing changes: the files keep the cover art they already
+have and the new cover art is never displayed.
+The `register_album_post_cover_art_processor` hooks are still called.
+
+The filter only sees the files that are in the album when it is called (see
+`album.iterfiles()`), files added to the album afterwards are not taken into
+account. The decision is for the whole album, not per file.
+
+```python
+ORGANIZED_FOLDER = "/music/organized/"
+
+
+def organized_albums_use_local_files_only(api, album, provider):
+    """For albums whose files are all already organized, use only the "Local Files" provider."""
+    files = list(album.iterfiles())
+    if files and all(file.filename.startswith(ORGANIZED_FOLDER) for file in files):
+        return provider.name == "Local Files"
+    return True  # other albums: all providers
+
+
+def enable(api):
+    api.register_cover_art_provider_filter(organized_albums_use_local_files_only)
+```
+
+**Signature**: `function(api, album, provider) -> bool`
+
+**Why not another hook?** The other ways to influence cover art act too late or
+on something else:
+
+- `register_cover_art_filter` is called for each image, after it has been
+  downloaded (it needs the image data). Rejecting every image avoids changing
+  the cover art, but all images are still downloaded, and it can't stop
+  providers from querying the network.
+- `register_cover_art_metadata_filter` is called before an image is downloaded,
+  but it only receives the image's width and height, without the album, and is
+  only used by the Cover Art Archive provider.
+- `register_cover_art_provider` can add images but can't disable other
+  providers, and the providers enabled in the options are the same for all
+  albums.
+- `register_album_metadata_processor` runs before cover art is retrieved, but
+  can't cancel it, as its return value is ignored.
+- `register_album_post_cover_art_processor` and
+  `register_file_post_addition_to_track_processor` run after the new cover art
+  has been set, a plugin can only undo it, and the new cover art is visible
+  until it does.
+
+---
+
 #### `register_cover_art_processor(processor_class)`
 
 Register a processor to modify cover art images.

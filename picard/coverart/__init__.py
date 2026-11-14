@@ -45,6 +45,7 @@ from picard.coverart.image import (
 from picard.coverart.processing import (
     CoverArtImageProcessing,
     run_image_filters,
+    run_provider_filters,
 )
 from picard.coverart.providers import (
     CoverArtProvider,
@@ -223,7 +224,8 @@ class CoverArt:
         result = CoverArtProvider.QueueState._STARTED
         try:
             instance = provider.provider_class(self)
-            if provider.enabled and instance.enabled():
+            # Plugin filters are checked last, only for providers that would be used
+            if provider.enabled and instance.enabled() and run_provider_filters(self.album, provider.provider_class):
                 log.debug("Trying cover art provider %s …", provider.name)
                 result = instance.queue_images()
             else:

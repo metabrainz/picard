@@ -31,14 +31,17 @@ from picard.plugin import ExtensionPoint
 
 
 if TYPE_CHECKING:
+    from picard.coverart.providers.provider import CoverArtProvider
     from picard.plugin3.api import ImageInfo
 
 
 CoverArtFilter: TypeAlias = Callable[[bytes, 'ImageInfo', Album, CoverArtImage], bool]
 CoverArtMetadataFilter: TypeAlias = Callable[[dict[str, Any]], bool]
+CoverArtProviderFilter: TypeAlias = Callable[[Album, type['CoverArtProvider']], bool]
 
 ext_point_cover_art_filters = ExtensionPoint[CoverArtFilter](label='cover_art_filters')
 ext_point_cover_art_metadata_filters = ExtensionPoint[CoverArtMetadataFilter](label='cover_art_metadata_filters')
+ext_point_cover_art_provider_filters = ExtensionPoint[CoverArtProviderFilter](label='cover_art_provider_filters')
 
 
 def register_cover_art_filter(cover_art_filter: CoverArtFilter) -> None:
@@ -47,3 +50,19 @@ def register_cover_art_filter(cover_art_filter: CoverArtFilter) -> None:
 
 def register_cover_art_metadata_filter(cover_art_metadata_filter: CoverArtMetadataFilter) -> None:
     ext_point_cover_art_metadata_filters.register(cover_art_metadata_filter.__module__, cover_art_metadata_filter)
+
+
+def register_cover_art_provider_filter(cover_art_provider_filter: CoverArtProviderFilter) -> None:
+    """Registers a cover art provider filter.
+
+    Called for an album, before each enabled cover art provider is used for it.
+    If the function returns False, the provider is skipped for this album: it
+    isn't queried and nothing is downloaded from it.
+
+    Args:
+        cover_art_provider_filter: function taking the album object and the
+            provider class, returning True to use the provider, False to skip it
+    Returns:
+        None
+    """
+    ext_point_cover_art_provider_filters.register(cover_art_provider_filter.__module__, cover_art_provider_filter)
