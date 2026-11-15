@@ -19,6 +19,7 @@
 
 
 from copy import deepcopy
+import os
 import re
 import sys
 import uuid
@@ -77,7 +78,11 @@ from picard.ui.forms.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
 from picard.ui.profile_tagger_scripts_dialog import ProfileTaggerScriptsDialog
-from picard.ui.util import qlistwidget_items
+from picard.ui.util import (
+    FileDialog,
+    get_file_dialog_directory,
+    qlistwidget_items,
+)
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
@@ -652,11 +657,12 @@ class ProfilesOptionsPage(OptionsPage):
 
         # File save dialog
         default_filename = "picard-profile-%s.toml" % _slugify(title)
-        filepath, _filter = QtWidgets.QFileDialog.getSaveFileName(
-            self,
-            _("Export Profile"),
-            default_filename,
-            _("TOML files") + " (*.toml)",
+        filepath, _filter = FileDialog.getSaveFileName(
+            parent=self,
+            caption=_("Export Profile"),
+            directory=os.path.join(get_file_dialog_directory('profile_file'), default_filename),
+            filter=_("TOML files") + " (*.toml)",
+            history_key='profile_file',
         )
         if not filepath:
             return
@@ -728,11 +734,11 @@ class ProfilesOptionsPage(OptionsPage):
     def import_profile(self):
         """Import a profile from a TOML file."""
         # File open dialog
-        filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            _("Import Profile"),
-            "",
-            _("TOML files") + " (*.toml)",
+        filepath, _filter = FileDialog.getOpenFileName(
+            parent=self,
+            caption=_("Import Profile"),
+            filter=_("TOML files") + " (*.toml)",
+            history_key='profile_file',
         )
         if not filepath:
             return
@@ -883,11 +889,11 @@ class ProfilesOptionsPage(OptionsPage):
     def import_and_replace_profile(self, item):
         """Import a profile from a TOML file and replace the given profile."""
         # File open dialog
-        filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            _("Import and Replace Profile"),
-            "",
-            _("TOML files") + " (*.toml)",
+        filepath, _filter = FileDialog.getOpenFileName(
+            parent=self,
+            caption=_("Import and Replace Profile"),
+            filter=_("TOML files") + " (*.toml)",
+            history_key='profile_file',
         )
         if not filepath:
             return
