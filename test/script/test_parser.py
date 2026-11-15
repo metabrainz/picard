@@ -507,6 +507,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$replacemulti(a; b,,,)", "a; b")
         self.assertScriptResultEquals("$setmulti(foo,a; b)$replacemulti(%foo%,,,)", "a; b")
 
+        context["test"] = ["One", "Two", "Three"]
+        self.assertScriptResultEquals("$replacemulti(%test%,Two,,,1)", "One; ; Three", context)
+
+        self.assertScriptResultEquals("$replacemulti(a; b; c,b,,; ,1)", "a; ; c", context)
+        self.assertScriptResultEquals("$replacemulti(a,b,,;,1)", "a", context)
+
     def test_cmd_strip(self):
         self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
 
@@ -1865,6 +1871,11 @@ class ScriptParserTest(PicardTestCase):
         self.assertIsInstance(expr, ScriptExpression)
         mv = MultiValue(self.parser, expr, MULTI_VALUED_JOINER)
         self.assertEqual(mv._multi, [])
+
+        expr = self.parser.parse('a; ; b')
+        self.assertIsInstance(expr, ScriptExpression)
+        self.assertEqual(str(MultiValue(self.parser, expr, MULTI_VALUED_JOINER)), 'a; b')
+        self.assertEqual(str(MultiValue(self.parser, expr, MULTI_VALUED_JOINER, True)), 'a; ; b')
 
     def test_cmd_sortmulti(self):
         context = Metadata()

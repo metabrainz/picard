@@ -50,6 +50,7 @@ from picard.i18n import (
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import (
     MultiValue,
+    ScriptExpression,
     ScriptRuntimeError,
     normalize_tagname,
 )
@@ -177,10 +178,10 @@ def func_replace(parser, text, old, new):
 
 @script_function(
     eval_args=False,
-    signature=N_("$replacemulti(name,search,replace[,separator=; ])"),
+    signature=N_("$replacemulti(name,search,replace[,separator=; ][,keep_empty])"),
     documentation=N_(
         """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
-Empty elements are automatically removed.
+Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
 
 Example:
 
@@ -188,13 +189,17 @@ Example:
 """
     ),
 )
-def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER):
+def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER, keep_empty=False):
+    if isinstance(keep_empty, ScriptExpression):
+        keep_empty = keep_empty.eval(parser)
+    if not separator and keep_empty:
+        separator = MULTI_VALUED_JOINER
     if not multi or not search or replace is None or not separator:
         return multi.eval(parser)
 
     search = search.eval(parser)
     replace = replace.eval(parser)
-    multi_value = MultiValue(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator, keep_empty)
     for n, value in enumerate(multi_value):
         if value == search:
             multi_value[n] = replace
