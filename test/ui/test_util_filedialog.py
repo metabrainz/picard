@@ -19,11 +19,13 @@
 
 import os
 
-from PyQt6 import QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 import pytest
 
-import picard.ui.util as ui_util
 from picard.ui.util import (
     FileDialog,
     get_file_dialog_directory,
@@ -32,24 +34,11 @@ from picard.ui.util import (
 
 
 @pytest.fixture()
-def config(monkeypatch):
-    import picard.config as cfg_mod
-
-    cfg = cfg_mod.get_config()
-    # picard.ui.util imported get_config before the test config was installed
-    monkeypatch.setattr(ui_util, 'get_config', lambda: cfg)
-    cfg.setting['starting_directory'] = False
-    cfg.persist['current_directory'] = ''
-    cfg.persist['file_dialog_directories'] = {}
-    return cfg
-
-
-@pytest.fixture()
-def start_dir(config, tmp_path):
-    """Directory stored in the old current_directory option."""
+def start_dir(monkeypatch, config, tmp_path):
+    """The home directory, used by `find_starting_directory()` by default."""
     path = tmp_path / 'start'
     path.mkdir()
-    config.persist['current_directory'] = str(path)
+    monkeypatch.setattr(QtCore.QDir, 'homePath', staticmethod(lambda: str(path)))
     return path
 
 
@@ -71,9 +60,13 @@ def test_missing_directory_falls_back_to_closest_existing(start_dir, tmp_path):
     assert get_file_dialog_directory('logs') == str(tmp_path)
 
 
-def test_remembering_does_not_modify_current_directory(config, start_dir, tmp_path):
+def test_fixed_starting_directory_does_not_override_history(config, start_dir, tmp_path):
+    fixed = tmp_path / 'fixed'
+    fixed.mkdir()
+    config.setting['starting_directory'] = True
+    config.setting['starting_directory_path'] = str(fixed)
     set_file_dialog_directory('logs', str(tmp_path))
-    assert config.persist['current_directory'] == str(start_dir)
+    assert get_file_dialog_directory('logs') == str(tmp_path)
 
 
 @pytest.mark.parametrize(
@@ -134,7 +127,6 @@ def test_dialog_remembers_selection_when_accepted(config, start_dir, tmp_path):
     dialog.selectFile(str(logfile))
     dialog.done(QtWidgets.QDialog.DialogCode.Accepted)
     assert config.persist['file_dialog_directories'] == {'logs': str(target)}
-    assert config.persist['current_directory'] == str(start_dir)
 
 
 def test_directory_dialog_remembers_parent_of_selected_directory(config, start_dir, tmp_path):

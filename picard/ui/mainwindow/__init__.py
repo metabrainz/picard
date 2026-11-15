@@ -202,6 +202,17 @@ from picard.ui.util import (
 from picard.ui.widgets.checkboxmenuitem import create_checkable_menu_item
 
 
+def _add_dialog_directories() -> tuple[str, str]:
+    """Return the `directory` and `default_directory` of the Add Files and Add Folder dialogs.
+
+    A fixed starting directory, if enabled, wins over the remembered directory.
+    Otherwise the remembered directory is used, or the home directory.
+    """
+    starting_directory = find_starting_directory()
+    fixed = get_config().setting['starting_directory']
+    return (starting_directory if fixed else ''), starting_directory
+
+
 SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
 
 
@@ -1348,7 +1359,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def add_files(self):
         """Add files to the tagger."""
-        current_directory = find_starting_directory()
         formats = []
         extensions = []
         for exts, name in self.tagger.format_registry.supported_formats():
@@ -1368,40 +1378,43 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         extensions.sort()
         formats.insert(0, _("All supported formats") + " (%s)" % " ".join(extensions))
         formats.insert(1, _("All files") + " (*)")
+        directory, default_directory = _add_dialog_directories()
         files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            directory=current_directory,
+            directory=directory,
             filter=";;".join(formats),
+            history_key='add_files',
+            default_directory=default_directory,
         )
         if files:
-            config = get_config()
-            config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
             self.tutorial.show('add_files')
 
     def add_directory(self):
         """Add directory to the tagger."""
-        current_directory = find_starting_directory()
-
         dir_list = []
         config = get_config()
+        start_directory, default_directory = _add_dialog_directories()
         if not config.setting['allow_multi_dirs_selection']:
             directory = FileDialog.getExistingDirectory(
                 parent=self,
-                directory=current_directory,
+                directory=start_directory,
+                history_key='add_directory',
+                default_directory=default_directory,
             )
             if directory:
                 dir_list.append(directory)
         else:
             dir_list = FileDialog.getMultipleDirectories(
                 parent=self,
-                directory=current_directory,
+                directory=start_directory,
+                history_key='add_directory',
+                default_directory=default_directory,
             )
 
         dir_count = len(dir_list)
         if dir_count:
             parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
-            config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
                     N_('Adding multiple directories from "%(directory)s" …'),

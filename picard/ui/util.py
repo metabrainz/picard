@@ -103,11 +103,12 @@ def open_local_path(path: str) -> None:
 
 
 def find_starting_directory() -> str:
+    """Return the configured starting directory, or the home directory if there is none."""
     config = get_config()
     if config.setting['starting_directory']:
         path = config.setting['starting_directory_path']
     else:
-        path = config.persist['current_directory'] or QtCore.QDir.homePath()
+        path = QtCore.QDir.homePath()
     return find_existing_path(path)
 
 
