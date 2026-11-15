@@ -240,3 +240,12 @@ def test_static_method_uses_custom_history(monkeypatch, config, start_dir, tmp_p
     FileDialog.getOpenFileName(history_key='export', history=history)
     assert section['file_dialog_directories'] == {'export': str(tmp_path / 'a')}
     assert config.persist['file_dialog_directories'] == {}
+
+
+@pytest.mark.parametrize('stored', ['garbage', 42, ['a'], {'k': 42}, {'k': None}])
+def test_corrupted_history_is_ignored(start_dir, stored):
+    section = {'file_dialog_directories': stored}
+    history = DirectoryHistory(lambda: section)
+    assert get_file_dialog_directory('k', history) == str(start_dir)
+    history.set('k', str(start_dir))
+    assert section['file_dialog_directories'] == {'k': str(start_dir)}

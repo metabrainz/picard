@@ -172,15 +172,19 @@ class DirectoryHistory:
         self._get_section = get_section
         self._option_name = option_name
 
+    def _directories(self) -> dict[str, str]:
+        # Be tolerant of a missing or corrupted value: this runs when opening a dialog
+        directories = self._get_section()[self._option_name]
+        return dict(directories) if isinstance(directories, dict) else {}
+
     def get(self, key: str) -> str:
-        directories = self._get_section()[self._option_name] or {}
-        return directories.get(key, '')
+        path = self._directories().get(key, '')
+        return path if isinstance(path, str) else ''
 
     def set(self, key: str, path: str) -> None:
-        section = self._get_section()
-        directories = dict(section[self._option_name] or {})
+        directories = self._directories()
         directories[key] = path
-        section[self._option_name] = directories
+        self._get_section()[self._option_name] = directories
 
 
 CORE_DIRECTORY_HISTORY = DirectoryHistory(lambda: get_config().persist)
