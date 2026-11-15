@@ -19,12 +19,19 @@
 
 
 import datetime
+import os
 from unittest.mock import patch
 
 import yaml
 
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
+
 from test.picardtestcase import PicardTestCase
 
+from picard import config
 from picard.script.serializer import (
     FileNamingScriptInfo,
     ScriptSerializer,
@@ -196,3 +203,37 @@ class ScriptSerializerTest(PicardTestCase):
             "  Script text\n"
             "id: '12345'\n",
         )
+
+
+class ScriptSerializerDialogDirectoryTest(PicardTestCase):
+    """Script file dialogs start in the Documents folder until a directory is remembered."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values(persist={'file_dialog_directories': {}})
+        self.documents = os.path.normpath(
+            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
+        )
+
+    def _dialog_directory(self, method, call):
+        with (
+            patch('picard.ui.util.get_config', return_value=config.config),
+            patch.object(QtWidgets.QFileDialog, method, return_value=('', '')) as dialog,
+        ):
+            call()
+        return dialog.call_args.kwargs['directory']
+
+    def test_import_starts_in_documents(self):
+        directory = self._dialog_directory('getOpenFileName', lambda: ScriptSerializer.import_script())
+        self.assertEqual(directory, self.documents)
+
+    def test_export_starts_in_documents(self):
+        script = FileNamingScriptInfo(title='My script')
+        directory = self._dialog_directory('getSaveFileName', script.export_script)
+        self.assertEqual(directory, os.path.join(self.documents, script.filename + '.ptsp'))
+
+    def test_import_starts_in_remembered_directory(self):
+        remembered = self.mktmpdir()
+        self.set_config_values(persist={'file_dialog_directories': {'script_file': remembered}})
+        directory = self._dialog_directory('getOpenFileName', lambda: ScriptSerializer.import_script())
+        self.assertEqual(directory, remembered)
