@@ -28,6 +28,7 @@ import pytest
 
 import picard.ui.util as ui_util
 from picard.ui.util import (
+    DirectoryHistory,
     FileDialog,
     FileDialogHistoryKey,
     get_file_dialog_directory,
@@ -196,3 +197,46 @@ def test_enum_key_is_stored_as_plain_string(config, start_dir, tmp_path):
     assert key == 'add_files'
     assert get_file_dialog_directory('add_files') == str(tmp_path)
     assert get_file_dialog_directory(FileDialogHistoryKey.ADD_FILES) == str(tmp_path)
+
+
+@pytest.fixture()
+def custom_history():
+    section = {'file_dialog_directories': {}}
+    return DirectoryHistory(lambda: section), section
+
+
+def test_custom_history_is_separate_from_core(config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    set_file_dialog_directory('export', str(tmp_path), history)
+    assert section['file_dialog_directories'] == {'export': str(tmp_path)}
+    assert config.persist['file_dialog_directories'] == {}
+    assert get_file_dialog_directory('export', history) == str(tmp_path)
+    assert get_file_dialog_directory('export') == str(start_dir)
+
+
+def test_custom_history_with_unset_option(start_dir):
+    history = DirectoryHistory(lambda: {'file_dialog_directories': None})
+    assert get_file_dialog_directory('export', history) == str(start_dir)
+    history.set('export', str(start_dir))
+
+
+def test_dialog_uses_custom_history(config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    target = tmp_path / 'out'
+    target.mkdir()
+    chosen = target / 'file.txt'
+    chosen.write_text('')
+    dialog = FileDialog(history_key='export', history=history)
+    dialog.selectFile(str(chosen))
+    dialog.done(QtWidgets.QDialog.DialogCode.Accepted)
+    assert section['file_dialog_directories'] == {'export': str(target)}
+    assert config.persist['file_dialog_directories'] == {}
+    assert os.path.samefile(FileDialog(history_key='export', history=history).directory().absolutePath(), target)
+
+
+def test_static_method_uses_custom_history(monkeypatch, config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    monkeypatch.setattr(QtWidgets.QFileDialog, 'getOpenFileName', lambda *a, **k: (str(tmp_path / 'a' / 'b.txt'), ''))
+    FileDialog.getOpenFileName(history_key='export', history=history)
+    assert section['file_dialog_directories'] == {'export': str(tmp_path / 'a')}
+    assert config.persist['file_dialog_directories'] == {}

@@ -25,7 +25,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Iterable
+from collections.abc import (
+    Callable,
+    Iterable,
+)
 from enum import (
     Enum,
     unique,
@@ -44,7 +47,10 @@ from picard import (
     log,
     tagger_instance,
 )
-from picard.config import get_config
+from picard.config import (
+    ConfigSection,
+    get_config,
+)
 from picard.const import BUSY_CURSOR_FLASH_DELAY_MS
 from picard.const.sys import (
     IS_LINUX,
@@ -151,7 +157,36 @@ def find_starting_directory() -> str:
     return _find_existing_directory(path)
 
 
-def get_file_dialog_directory(history_key: FileDialogHistoryKey | str) -> str:
+class DirectoryHistory:
+    """Directories remembered per key, stored as a dict option of a config section.
+
+    Picard core uses `CORE_DIRECTORY_HISTORY`. Another storage, e.g. a plugin's
+    own persist section, can be used by creating another instance and passing it
+    as `history` to `FileDialog`, which keeps its keys out of the core namespace.
+
+    `get_section` is called on each access, so the section is never kept around.
+    The option must exist in that section and hold a dict.
+    """
+
+    def __init__(self, get_section: Callable[[], ConfigSection], option_name: str = 'file_dialog_directories'):
+        self._get_section = get_section
+        self._option_name = option_name
+
+    def get(self, key: str) -> str:
+        directories = self._get_section()[self._option_name] or {}
+        return directories.get(key, '')
+
+    def set(self, key: str, path: str) -> None:
+        section = self._get_section()
+        directories = dict(section[self._option_name] or {})
+        directories[key] = path
+        section[self._option_name] = directories
+
+
+CORE_DIRECTORY_HISTORY = DirectoryHistory(lambda: get_config().persist)
+
+
+def get_file_dialog_directory(history_key: FileDialogHistoryKey | str, history: DirectoryHistory | None = None) -> str:
     """Return the directory the file dialog identified by `history_key` should start in.
 
     If the user enabled a fixed starting directory, it always wins. Otherwise
@@ -161,19 +196,22 @@ def get_file_dialog_directory(history_key: FileDialogHistoryKey | str) -> str:
     config = get_config()
     if config.setting['starting_directory']:
         return find_starting_directory()
-    path = config.persist['file_dialog_directories'].get(_history_key_str(history_key), '')
+    path = (history or CORE_DIRECTORY_HISTORY).get(_history_key_str(history_key))
     return _find_existing_directory(path) or find_starting_directory()
 
 
-def set_file_dialog_directory(history_key: FileDialogHistoryKey | str, path: str) -> None:
+def set_file_dialog_directory(
+    history_key: FileDialogHistoryKey | str, path: str, history: DirectoryHistory | None = None
+) -> None:
     """Store `path` as the directory to start from the next time the file dialog identified by `history_key` is used."""
-    config = get_config()
-    directories = dict(config.persist['file_dialog_directories'])
-    directories[_history_key_str(history_key)] = path
-    config.persist['file_dialog_directories'] = directories
+    (history or CORE_DIRECTORY_HISTORY).set(_history_key_str(history_key), path)
 
 
-def _remember_selection(history_key: FileDialogHistoryKey | str | None, selection: Iterable[str]) -> None:
+def _remember_selection(
+    history_key: FileDialogHistoryKey | str | None,
+    selection: Iterable[str],
+    history: DirectoryHistory | None = None,
+) -> None:
     """Remember the location of the first selected path for the dialog identified by `history_key`.
 
     This is the directory containing the selection: for a directory selection it is
@@ -183,15 +221,17 @@ def _remember_selection(history_key: FileDialogHistoryKey | str | None, selectio
         return
     for path in selection:
         if path:
-            set_file_dialog_directory(history_key, os.path.dirname(os.path.normpath(path)))
+            set_file_dialog_directory(history_key, os.path.dirname(os.path.normpath(path)), history)
         break
 
 
-def _filedialog_directory(directory: str | None, history_key: FileDialogHistoryKey | str | None) -> str:
+def _filedialog_directory(
+    directory: str | None, history_key: FileDialogHistoryKey | str | None, history: DirectoryHistory | None = None
+) -> str:
     """Return the directory a dialog should start in: explicit one first, then the remembered one."""
     if directory or not history_key:
         return directory or ""
-    return get_file_dialog_directory(history_key)
+    return get_file_dialog_directory(history_key, history)
 
 
 def apply_removal_overlay(pixmap: QtGui.QPixmap) -> QtGui.QPixmap:
@@ -239,6 +279,10 @@ class FileDialog(QtWidgets.QFileDialog):
     the same key (unless an explicit `directory` is given), and remembers the
     location of the selection when accepted. Keys are shared across sessions
     and must be stable identifiers, one per kind of selection.
+
+    Picard core uses the members of `FileDialogHistoryKey`, stored in
+    `CORE_DIRECTORY_HISTORY`. Pass another `DirectoryHistory` as `history` to
+    keep the keys in a separate storage.
     """
 
     def __init__(
@@ -248,17 +292,19 @@ class FileDialog(QtWidgets.QFileDialog):
         directory: str = "",
         filter: str = "",
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ):
         if not caption:
             caption = _("Select a file or a directory")
         caption = _picardize_caption(caption)
         self._history_key = history_key
-        directory = _filedialog_directory(directory, history_key)
+        self._history = history
+        directory = _filedialog_directory(directory, history_key, history)
         super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
 
     def done(self, result: int) -> None:
         if result == QtWidgets.QDialog.DialogCode.Accepted:
-            _remember_selection(self._history_key, self.selectedFiles())
+            _remember_selection(self._history_key, self.selectedFiles(), self._history)
         super().done(result)
 
     @staticmethod
@@ -270,18 +316,19 @@ class FileDialog(QtWidgets.QFileDialog):
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
         path, selected_filter = QtWidgets.QFileDialog.getSaveFileName(
             parent=parent,
             caption=caption,
-            directory=_filedialog_directory(directory, history_key),
+            directory=_filedialog_directory(directory, history_key, history),
             filter=filter,
             initialFilter=initialFilter,
             options=options,
         )
-        _remember_selection(history_key, [path])
+        _remember_selection(history_key, [path], history)
         return path, selected_filter
 
     @staticmethod
@@ -293,18 +340,19 @@ class FileDialog(QtWidgets.QFileDialog):
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
         path, selected_filter = QtWidgets.QFileDialog.getOpenFileName(
             parent=parent,
             caption=caption,
-            directory=_filedialog_directory(directory, history_key),
+            directory=_filedialog_directory(directory, history_key, history),
             filter=filter,
             initialFilter=initialFilter,
             options=options,
         )
-        _remember_selection(history_key, [path])
+        _remember_selection(history_key, [path], history)
         return path, selected_filter
 
     @staticmethod
@@ -316,18 +364,19 @@ class FileDialog(QtWidgets.QFileDialog):
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
         paths, selected_filter = QtWidgets.QFileDialog.getOpenFileNames(
             parent=parent,
             caption=caption,
-            directory=_filedialog_directory(directory, history_key),
+            directory=_filedialog_directory(directory, history_key, history),
             filter=filter,
             initialFilter=initialFilter,
             options=options,
         )
-        _remember_selection(history_key, paths)
+        _remember_selection(history_key, paths, history)
         return paths, selected_filter
 
     @staticmethod
@@ -337,16 +386,17 @@ class FileDialog(QtWidgets.QFileDialog):
         directory: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ) -> str:
         caption = _filedialog_caption(caption, _("Select a directory"))
         options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
         path = QtWidgets.QFileDialog.getExistingDirectory(
             parent=parent,
             caption=caption,
-            directory=_filedialog_directory(directory, history_key),
+            directory=_filedialog_directory(directory, history_key, history),
             options=options,
         )
-        _remember_selection(history_key, [path])
+        _remember_selection(history_key, [path], history)
         return path
 
     @staticmethod
@@ -356,6 +406,7 @@ class FileDialog(QtWidgets.QFileDialog):
         directory: str = "",
         filter: str = "",
         history_key: FileDialogHistoryKey | str | None = None,
+        history: DirectoryHistory | None = None,
     ) -> tuple[str, ...]:
         """Custom file selection dialog which allows the selection
         of multiple directories.
@@ -369,6 +420,7 @@ class FileDialog(QtWidgets.QFileDialog):
             directory=directory,
             filter=filter,
             history_key=history_key,
+            history=history,
         )
         file_dialog.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
         file_dialog.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
