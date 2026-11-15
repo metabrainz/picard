@@ -102,21 +102,25 @@ def open_local_path(path: str) -> None:
 
 
 def find_starting_directory() -> str:
+    """Return the configured starting directory, or the home directory if there is none."""
     config = get_config()
     if config.setting['starting_directory']:
         path = config.setting['starting_directory_path']
     else:
-        path = config.persist['current_directory'] or QtCore.QDir.homePath()
+        path = QtCore.QDir.homePath()
     return find_existing_path(path)
 
 
 def get_file_dialog_directory(history_key: str) -> str:
-    """Return the directory last used by the file dialog identified by `history_key`.
+    """Return the directory the file dialog identified by `history_key` should start in.
 
-    Falls back to `find_starting_directory()` if nothing was stored for this key
-    or if the stored directory doesn't exist anymore.
+    If the user enabled a fixed starting directory, it always wins. Otherwise
+    this is the directory last used with this key, or the closest existing
+    parent of it. Without history, `find_starting_directory()` is used.
     """
     config = get_config()
+    if config.setting['starting_directory']:
+        return find_starting_directory()
     path = config.persist['file_dialog_directories'].get(history_key, '')
     return find_existing_path(path) or find_starting_directory()
 

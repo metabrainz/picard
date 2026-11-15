@@ -192,7 +192,6 @@ from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
     busy_cursor_stop,
-    find_starting_directory,
     flash_busy_cursor,
     is_keyboard_context_menu_event,
     menu_builder,
@@ -1348,7 +1347,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def add_files(self):
         """Add files to the tagger."""
-        current_directory = find_starting_directory()
         formats = []
         extensions = []
         for exts, name in self.tagger.format_registry.supported_formats():
@@ -1370,38 +1368,33 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats.insert(1, _("All files") + " (*)")
         files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            directory=current_directory,
             filter=";;".join(formats),
+            history_key='add_files',
         )
         if files:
-            config = get_config()
-            config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
             self.tutorial.show('add_files')
 
     def add_directory(self):
         """Add directory to the tagger."""
-        current_directory = find_starting_directory()
-
         dir_list = []
         config = get_config()
         if not config.setting['allow_multi_dirs_selection']:
             directory = FileDialog.getExistingDirectory(
                 parent=self,
-                directory=current_directory,
+                history_key='add_directory',
             )
             if directory:
                 dir_list.append(directory)
         else:
             dir_list = FileDialog.getMultipleDirectories(
                 parent=self,
-                directory=current_directory,
+                history_key='add_directory',
             )
 
         dir_count = len(dir_list)
         if dir_count:
             parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
-            config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
                     N_('Adding multiple directories from "%(directory)s" …'),

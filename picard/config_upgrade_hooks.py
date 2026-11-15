@@ -904,3 +904,23 @@ obsolete_options(
     '3.0.0rc4',
     ('setting', 'rating_steps'),
 )
+
+
+@upgrade_config('3.1.0dev1')
+def migrate_current_directory_to_dialog_history(config):
+    """Option "current_directory" was replaced by per-dialog "file_dialog_directories" entries."""
+    path = config.persist.raw_value('current_directory')
+    if not path or not isinstance(path, str):
+        return
+    directories = dict(config.persist['file_dialog_directories'])
+    for history_key in ('add_files', 'add_directory'):
+        directories.setdefault(history_key, path)
+    config.persist['file_dialog_directories'] = directories
+
+
+# Retired in 3.1.0dev1: current_directory is migrated by the hook above (its
+# value is read there before the key is purged).
+obsolete_options(
+    '3.1.0dev1',
+    ('persist', 'current_directory'),
+)
