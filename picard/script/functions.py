@@ -195,10 +195,10 @@ Result: One; ; Three
     ),
 )
 def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER, keep_empty=False):
-    if isinstance(keep_empty, ScriptExpression):
-        keep_empty = keep_empty.eval(parser)
     if not separator and keep_empty:
         separator = MULTI_VALUED_JOINER
+    if isinstance(keep_empty, ScriptExpression):
+        keep_empty = keep_empty.eval(parser)
     if not multi or not search or replace is None or not separator:
         return multi.eval(parser)
 

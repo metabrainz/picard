@@ -515,6 +515,13 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,1)", "a; ; c", context)
         # keep_empty is evaluated: an expression evaluating to an empty string disables it
         self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,; ,%unknown%)", "a; c", context)
+        # When keep_empty evaluates to True and separator is empty, default separator is used
+        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,1)", "a; ; c", context)
+        # When keep_empty evaluates to False and separator is empty, default separator is used
+        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,%unknown%)", "a; c", context)
+
+        # When separator and keep_empty are both empty, separator is processed as empty string
+        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,)", "a; ; c", context)
 
     def test_cmd_strip(self):
         self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
