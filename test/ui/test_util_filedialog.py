@@ -28,6 +28,7 @@ import pytest
 
 import picard.ui.util as ui_util
 from picard.ui.util import (
+    DirectoryHistory,
     FileDialog,
     find_starting_directory,
     get_file_dialog_directory,
@@ -206,4 +207,49 @@ def test_static_methods_remember_selection(monkeypatch, config, start_dir, tmp_p
 def test_static_method_cancelled_keeps_history(monkeypatch, config, start_dir):
     monkeypatch.setattr(QtWidgets.QFileDialog, 'getOpenFileName', lambda *a, **k: ('', ''))
     FileDialog.getOpenFileName(history_key='k')
+    assert config.persist['file_dialog_directories'] == {}
+
+
+@pytest.fixture()
+def custom_history():
+    section = {'file_dialog_directories': {}}
+    return DirectoryHistory(lambda: section), section
+
+
+def test_custom_history_is_separate_from_core(config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    set_file_dialog_directory('export', str(tmp_path), history)
+    assert section['file_dialog_directories'] == {'export': str(tmp_path)}
+    assert config.persist['file_dialog_directories'] == {}
+    assert get_file_dialog_directory('export', history) == str(tmp_path)
+    assert get_file_dialog_directory('export') == ''
+
+
+def test_custom_history_with_unset_option(start_dir):
+    section = {'file_dialog_directories': None}
+    history = DirectoryHistory(lambda: section)
+    assert get_file_dialog_directory('export', history) == ''
+    history.set('export', str(start_dir))
+    assert section['file_dialog_directories'] == {'export': str(start_dir)}
+
+
+def test_dialog_uses_custom_history(config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    target = tmp_path / 'out'
+    target.mkdir()
+    chosen = target / 'file.txt'
+    chosen.write_text('')
+    dialog = FileDialog(history_key='export', history=history)
+    dialog.selectFile(str(chosen))
+    dialog.done(QtWidgets.QDialog.DialogCode.Accepted)
+    assert section['file_dialog_directories'] == {'export': str(target)}
+    assert config.persist['file_dialog_directories'] == {}
+    assert os.path.samefile(FileDialog(history_key='export', history=history).directory().absolutePath(), target)
+
+
+def test_static_method_uses_custom_history(monkeypatch, config, start_dir, tmp_path, custom_history):
+    history, section = custom_history
+    monkeypatch.setattr(QtWidgets.QFileDialog, 'getOpenFileName', lambda *a, **k: (str(tmp_path / 'a' / 'b.txt'), ''))
+    FileDialog.getOpenFileName(history_key='export', history=history)
+    assert section['file_dialog_directories'] == {'export': str(tmp_path / 'a')}
     assert config.persist['file_dialog_directories'] == {}
