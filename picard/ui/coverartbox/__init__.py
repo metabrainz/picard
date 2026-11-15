@@ -514,7 +514,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         return coverartimage
 
     def choose_local_file(self):
-        file_chooser = FileDialog(parent=self)
+        file_chooser = FileDialog(parent=self, history_key='cover_art_file')
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFiles)
         extensions = ['*' + ext for ext in imageinfo.get_supported_extensions()]
         extensions.sort()
