@@ -80,6 +80,7 @@ from picard.ui.options import OptionsPage
 from picard.ui.profile_tagger_scripts_dialog import ProfileTaggerScriptsDialog
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     get_file_dialog_directory,
     qlistwidget_items,
 )
@@ -660,9 +661,9 @@ class ProfilesOptionsPage(OptionsPage):
         filepath, _filter = FileDialog.getSaveFileName(
             parent=self,
             caption=_("Export Profile"),
-            directory=os.path.join(get_file_dialog_directory('profile_file'), default_filename),
+            directory=os.path.join(get_file_dialog_directory(FileDialogHistoryKey.PROFILE_FILE), default_filename),
             filter=_("TOML files") + " (*.toml)",
-            history_key='profile_file',
+            history_key=FileDialogHistoryKey.PROFILE_FILE,
         )
         if not filepath:
             return
@@ -738,7 +739,7 @@ class ProfilesOptionsPage(OptionsPage):
             parent=self,
             caption=_("Import Profile"),
             filter=_("TOML files") + " (*.toml)",
-            history_key='profile_file',
+            history_key=FileDialogHistoryKey.PROFILE_FILE,
         )
         if not filepath:
             return
@@ -893,7 +894,7 @@ class ProfilesOptionsPage(OptionsPage):
             parent=self,
             caption=_("Import and Replace Profile"),
             filter=_("TOML files") + " (*.toml)",
-            history_key='profile_file',
+            history_key=FileDialogHistoryKey.PROFILE_FILE,
         )
         if not filepath:
             return

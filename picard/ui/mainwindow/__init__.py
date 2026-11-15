@@ -191,6 +191,7 @@ from picard.ui.theme import theme
 from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     busy_cursor_stop,
     flash_busy_cursor,
     is_keyboard_context_menu_event,
@@ -1369,7 +1370,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         files, _filter = FileDialog.getOpenFileNames(
             parent=self,
             filter=";;".join(formats),
-            history_key='add_files',
+            history_key=FileDialogHistoryKey.ADD_FILES,
         )
         if files:
             self.tagger.add_files(files)
@@ -1382,14 +1383,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not config.setting['allow_multi_dirs_selection']:
             directory = FileDialog.getExistingDirectory(
                 parent=self,
-                history_key='add_directory',
+                history_key=FileDialogHistoryKey.ADD_DIRECTORY,
             )
             if directory:
                 dir_list.append(directory)
         else:
             dir_list = FileDialog.getMultipleDirectories(
                 parent=self,
-                history_key='add_directory',
+                history_key=FileDialogHistoryKey.ADD_DIRECTORY,
             )
 
         dir_count = len(dir_list)

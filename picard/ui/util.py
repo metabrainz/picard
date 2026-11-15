@@ -26,6 +26,10 @@
 
 
 from collections.abc import Iterable
+from enum import (
+    Enum,
+    unique,
+)
 from html import escape as html_escape
 import os
 
@@ -101,6 +105,32 @@ def open_local_path(path: str) -> None:
         QtGui.QDesktopServices.openUrl(url)
 
 
+# TODO: when Python 3.11 will the lowest version supported move this to StrEnum
+@unique
+class FileDialogHistoryKey(str, Enum):
+    """History keys used by Picard's own file dialogs.
+
+    These names are reserved for Picard core: they identify entries in the
+    shared "file_dialog_directories" persist option. Add a member here when
+    adding a dialog that remembers its directory. Plugins must not pass these
+    (or any other) keys to `FileDialog` directly.
+    """
+
+    ADD_DIRECTORY = 'add_directory'
+    ADD_FILES = 'add_files'
+    CD_LOG_FILE = 'cd_log_file'
+    COVER_ART_FILE = 'cover_art_file'
+    LOG_FILE = 'log_file'
+    PLUGIN_DIRECTORY = 'plugin_directory'
+    PROFILE_FILE = 'profile_file'
+    SCRIPT_FILE = 'script_file'
+
+
+def _history_key_str(history_key: FileDialogHistoryKey | str) -> str:
+    """Return the plain string stored in the config for `history_key`."""
+    return history_key.value if isinstance(history_key, Enum) else history_key
+
+
 def _find_existing_directory(path: str) -> str:
     """Return the closest existing parent of `path`, or an empty string if there is none.
 
@@ -121,7 +151,7 @@ def find_starting_directory() -> str:
     return _find_existing_directory(path)
 
 
-def get_file_dialog_directory(history_key: str) -> str:
+def get_file_dialog_directory(history_key: FileDialogHistoryKey | str) -> str:
     """Return the directory the file dialog identified by `history_key` should start in.
 
     If the user enabled a fixed starting directory, it always wins. Otherwise
@@ -131,19 +161,19 @@ def get_file_dialog_directory(history_key: str) -> str:
     config = get_config()
     if config.setting['starting_directory']:
         return find_starting_directory()
-    path = config.persist['file_dialog_directories'].get(history_key, '')
+    path = config.persist['file_dialog_directories'].get(_history_key_str(history_key), '')
     return _find_existing_directory(path) or find_starting_directory()
 
 
-def set_file_dialog_directory(history_key: str, path: str) -> None:
+def set_file_dialog_directory(history_key: FileDialogHistoryKey | str, path: str) -> None:
     """Store `path` as the directory to start from the next time the file dialog identified by `history_key` is used."""
     config = get_config()
     directories = dict(config.persist['file_dialog_directories'])
-    directories[history_key] = path
+    directories[_history_key_str(history_key)] = path
     config.persist['file_dialog_directories'] = directories
 
 
-def _remember_selection(history_key: str | None, selection: Iterable[str]) -> None:
+def _remember_selection(history_key: FileDialogHistoryKey | str | None, selection: Iterable[str]) -> None:
     """Remember the location of the first selected path for the dialog identified by `history_key`.
 
     This is the directory containing the selection: for a directory selection it is
@@ -157,7 +187,7 @@ def _remember_selection(history_key: str | None, selection: Iterable[str]) -> No
         break
 
 
-def _filedialog_directory(directory: str | None, history_key: str | None) -> str:
+def _filedialog_directory(directory: str | None, history_key: FileDialogHistoryKey | str | None) -> str:
     """Return the directory a dialog should start in: explicit one first, then the remembered one."""
     if directory or not history_key:
         return directory or ""
@@ -217,7 +247,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption: str = "",
         directory: str = "",
         filter: str = "",
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ):
         if not caption:
             caption = _("Select a file or a directory")
@@ -239,7 +269,7 @@ class FileDialog(QtWidgets.QFileDialog):
         filter: str | None = "",
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
@@ -262,7 +292,7 @@ class FileDialog(QtWidgets.QFileDialog):
         filter: str | None = "",
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
@@ -285,7 +315,7 @@ class FileDialog(QtWidgets.QFileDialog):
         filter: str | None = "",
         initialFilter: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
@@ -306,7 +336,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption: str | None = "",
         directory: str | None = "",
         options: QtWidgets.QFileDialog.Option | None = None,
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ) -> str:
         caption = _filedialog_caption(caption, _("Select a directory"))
         options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
@@ -325,7 +355,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption: str | None = "",
         directory: str = "",
         filter: str = "",
-        history_key: str | None = None,
+        history_key: FileDialogHistoryKey | str | None = None,
     ) -> tuple[str, ...]:
         """Custom file selection dialog which allows the selection
         of multiple directories.

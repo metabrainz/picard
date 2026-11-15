@@ -47,6 +47,7 @@ from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.theme import theme
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     context_menu_global_pos,
     context_menu_item,
     font_scaled_size,
@@ -515,7 +516,7 @@ class InstallPluginDialog(PicardDialog):
             parent=self,
             caption=_("Select Plugin Directory"),
             options=QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
-            history_key='plugin_directory',
+            history_key=FileDialogHistoryKey.PLUGIN_DIRECTORY,
         )
         if directory:
             self.path_edit.setText(directory)

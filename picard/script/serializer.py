@@ -50,6 +50,7 @@ from picard.util import (
 
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     get_file_dialog_directory,
 )
 
@@ -220,7 +221,9 @@ class ScriptSerializer:
 
         default_script_extension = "ptsp"
         script_filename = ".".join((self.filename, default_script_extension))
-        default_path = os.path.normpath(os.path.join(get_file_dialog_directory('script_file'), script_filename))
+        default_path = os.path.normpath(
+            os.path.join(get_file_dialog_directory(FileDialogHistoryKey.SCRIPT_FILE), script_filename)
+        )
 
         dialog_title = _("Export Script File")
         dialog_file_types = self._get_dialog_filetypes()
@@ -229,7 +232,7 @@ class ScriptSerializer:
             caption=dialog_title,
             directory=default_path,
             filter=dialog_file_types,
-            history_key='script_file',
+            history_key=FileDialogHistoryKey.SCRIPT_FILE,
         )
         if not filename:
             return False
@@ -271,7 +274,7 @@ class ScriptSerializer:
             parent=parent,
             caption=dialog_title,
             filter=dialog_file_types,
-            history_key='script_file',
+            history_key=FileDialogHistoryKey.SCRIPT_FILE,
         )
         if not filename:
             return None

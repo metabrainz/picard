@@ -913,6 +913,7 @@ def migrate_current_directory_to_dialog_history(config):
     if not path or not isinstance(path, str):
         return
     directories = dict(config.persist['file_dialog_directories'])
+    # Literal keys: they must not change if the FileDialogHistoryKey constants are renamed
     for history_key in ('add_files', 'add_directory'):
         directories.setdefault(history_key, path)
     config.persist['file_dialog_directories'] = directories

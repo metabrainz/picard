@@ -29,6 +29,7 @@ import pytest
 import picard.ui.util as ui_util
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     get_file_dialog_directory,
     set_file_dialog_directory,
 )
@@ -186,3 +187,12 @@ def test_static_method_cancelled_keeps_history(monkeypatch, config, start_dir):
     monkeypatch.setattr(QtWidgets.QFileDialog, 'getOpenFileName', lambda *a, **k: ('', ''))
     FileDialog.getOpenFileName(history_key='k')
     assert config.persist['file_dialog_directories'] == {}
+
+
+def test_enum_key_is_stored_as_plain_string(config, start_dir, tmp_path):
+    set_file_dialog_directory(FileDialogHistoryKey.ADD_FILES, str(tmp_path))
+    (key,) = config.persist['file_dialog_directories']
+    assert type(key) is str
+    assert key == 'add_files'
+    assert get_file_dialog_directory('add_files') == str(tmp_path)
+    assert get_file_dialog_directory(FileDialogHistoryKey.ADD_FILES) == str(tmp_path)
