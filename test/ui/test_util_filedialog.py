@@ -225,14 +225,6 @@ def test_custom_history_is_separate_from_core(config, start_dir, tmp_path, custo
     assert get_file_dialog_directory('export') == ''
 
 
-def test_custom_history_with_unset_option(start_dir):
-    section = {'file_dialog_directories': None}
-    history = DirectoryHistory(lambda: section)
-    assert get_file_dialog_directory('export', history) == ''
-    history.set('export', str(start_dir))
-    assert section['file_dialog_directories'] == {'export': str(start_dir)}
-
-
 def test_dialog_uses_custom_history(config, start_dir, tmp_path, custom_history):
     history, section = custom_history
     target = tmp_path / 'out'
@@ -253,3 +245,12 @@ def test_static_method_uses_custom_history(monkeypatch, config, start_dir, tmp_p
     FileDialog.getOpenFileName(history_key='export', history=history)
     assert section['file_dialog_directories'] == {'export': str(tmp_path / 'a')}
     assert config.persist['file_dialog_directories'] == {}
+
+
+@pytest.mark.parametrize('stored', [None, 'garbage', 42, ['a'], {'k': 42}, {'k': None}])
+def test_unset_or_corrupted_history_is_ignored(start_dir, stored):
+    section = {'file_dialog_directories': stored}
+    history = DirectoryHistory(lambda: section)
+    assert get_file_dialog_directory('k', history) == ''
+    history.set('k', str(start_dir))
+    assert section['file_dialog_directories'] == {'k': str(start_dir)}

@@ -136,22 +136,27 @@ class DirectoryHistory:
     as `history` to `FileDialog`, which keeps its keys out of the core namespace.
 
     `get_section` is called on each access, so the section is never kept around.
-    The option must exist in that section and hold a dict.
+    The option must be registered in that section; a value that is not a dict
+    is treated as an empty history.
     """
 
     def __init__(self, get_section: Callable[[], ConfigSection], option_name: str = 'file_dialog_directories'):
         self._get_section = get_section
         self._option_name = option_name
 
+    def _directories(self) -> dict[str, str]:
+        # Be tolerant of an unset or corrupted value: this runs when opening a dialog
+        directories = self._get_section()[self._option_name]
+        return dict(directories) if isinstance(directories, dict) else {}
+
     def get(self, key: str) -> str:
-        directories = self._get_section()[self._option_name] or {}
-        return directories.get(key, '')
+        path = self._directories().get(key, '')
+        return path if isinstance(path, str) else ''
 
     def set(self, key: str, path: str) -> None:
-        section = self._get_section()
-        directories = dict(section[self._option_name] or {})
+        directories = self._directories()
         directories[key] = path
-        section[self._option_name] = directories
+        self._get_section()[self._option_name] = directories
 
 
 CORE_DIRECTORY_HISTORY = DirectoryHistory(lambda: get_config().persist)
