@@ -182,10 +182,15 @@ def func_replace(parser, text, old, new):
     documentation=N_(
         """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
 Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
+If `keep_empty` is set and `separator` is empty, the default separator (`; `) is used.
 
-Example:
+Examples:
 
     $replacemulti(%genre%,Idm,IDM)
+
+    $replacemulti(One; Two; Three,Two,,,1)
+
+Result: One; ; Three
 """
     ),
 )

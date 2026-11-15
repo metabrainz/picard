@@ -384,8 +384,6 @@ class MultiValue(MutableSequence):
             self.separator = separator.eval(self.parser)
         else:
             self.separator = separator
-        if isinstance(keep_empty, ScriptExpression):
-            keep_empty = keep_empty.eval(self.parser)
         self.keep_empty = bool(keep_empty)
         if self.separator == MULTI_VALUED_JOINER and len(multi) == 1 and isinstance(multi[0], ScriptVariable):
             # Convert ScriptExpression containing only a single variable into variable
