@@ -511,7 +511,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$replacemulti(%test%,Two,,,1)", "One; ; Three", context)
 
         self.assertScriptResultEquals("$replacemulti(a; b; c,b,,; ,1)", "a; ; c", context)
-        self.assertScriptResultEquals("$replacemulti(a,b,,;,1)", "a", context)
+        # Existing empty elements are kept too
+        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,1)", "a; ; c", context)
 
     def test_cmd_strip(self):
         self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
