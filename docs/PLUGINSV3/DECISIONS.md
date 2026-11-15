@@ -667,6 +667,44 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 - Help developers optimize
 - Could be part of developer tools
 
+### Plugin File Dialogs
+
+Picard's `FileDialog` can remember the last directory used, per dialog. Picard core
+identifies dialogs with the `FileDialogHistoryKey` enum and stores the directories in
+the `file_dialog_directories` persist option. Plugins do not have access to this
+through `PluginApi` yet, and they must not pass their own keys to `FileDialog`: a key
+could collide with a core key and overwrite its history.
+
+**Possible future API (not implemented, optional):**
+
+- Add thin methods to `PluginApi`, for example `get_open_file_name()`,
+  `get_open_file_names()`, `get_save_file_name()` and `get_existing_directory()`.
+- Each takes an optional `name` (e.g. `"export"`) so a plugin can keep separate
+  histories for its own dialogs. Plugins never pass a `history_key`.
+- Remember directories in `api.plugin_persist` (`plugin_persist.<uuid>`), which is
+  already documented for "last-used directory paths". The history is then private to
+  the plugin, cannot collide with core or other plugins, and is removed with the plugin.
+- Implementation: pass a `DirectoryHistory` backed by `plugin_persist` as the `history`
+  argument of `FileDialog` (see `picard/ui/util.py`). `FileDialog` itself stays unaware
+  of plugins.
+- Expose only the static helpers at first. The `FileDialog` class (multi-directory
+  selection, custom filters) can follow if plugin authors need it.
+
+**Rejected alternatives:**
+
+- Detecting a plugin caller inside `FileDialog` by inspecting the call stack: fragile,
+  hidden behavior, easy to bypass, and the entries would still end up in the core option.
+- Prefixing keys with the plugin ID inside the core option: avoids collisions but the
+  entries outlive the plugin.
+
+**Open points:**
+
+- Whether adding methods requires a new plugin API version, or can be added to the
+  current one.
+- Documenting the new methods in [API.md](API.md), with an example.
+
+**Status:** OPEN - Not planned
+
 ---
 
 ## Decision Priority
