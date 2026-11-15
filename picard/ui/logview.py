@@ -506,6 +506,7 @@ class LogView(LogViewCommon):
             caption=_("Save Log View to File"),
             filter=_("Text files (*.txt);;All files (*)"),
             options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,
+            history_key='log_file',
         )
         if ok and path:
             if os.path.isfile(path):
