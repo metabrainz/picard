@@ -101,6 +101,16 @@ def open_local_path(path: str) -> None:
         QtGui.QDesktopServices.openUrl(url)
 
 
+def _find_existing_directory(path: str) -> str:
+    """Return the closest existing parent of `path`, or an empty string if there is none.
+
+    `find_existing_path()` can return a path that doesn't exist when even the
+    topmost component is missing (e.g. a disconnected drive on Windows).
+    """
+    path = find_existing_path(path)
+    return path if path and os.path.isdir(path) else ''
+
+
 def find_starting_directory() -> str:
     """Return the configured starting directory, or the home directory if there is none."""
     config = get_config()
@@ -108,7 +118,7 @@ def find_starting_directory() -> str:
         path = config.setting['starting_directory_path']
     else:
         path = QtCore.QDir.homePath()
-    return find_existing_path(path)
+    return _find_existing_directory(path)
 
 
 def get_file_dialog_directory(history_key: str) -> str:
@@ -122,7 +132,7 @@ def get_file_dialog_directory(history_key: str) -> str:
     if config.setting['starting_directory']:
         return find_starting_directory()
     path = config.persist['file_dialog_directories'].get(history_key, '')
-    return find_existing_path(path) or find_starting_directory()
+    return _find_existing_directory(path) or find_starting_directory()
 
 
 def set_file_dialog_directory(history_key: str, path: str) -> None:

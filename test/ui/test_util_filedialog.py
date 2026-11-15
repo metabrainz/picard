@@ -72,6 +72,20 @@ def test_missing_directory_falls_back_to_closest_existing(start_dir, tmp_path):
     assert get_file_dialog_directory('logs') == str(tmp_path)
 
 
+def test_nonexistent_top_component_falls_back_to_starting_directory(monkeypatch, start_dir):
+    # Mimic find_existing_path() stopping at a missing drive root (Windows)
+    monkeypatch.setattr(ui_util, 'find_existing_path', lambda path: path if path.startswith('Z:') else str(start_dir))
+    set_file_dialog_directory('logs', 'Z:\\gone')
+    assert get_file_dialog_directory('logs') == str(start_dir)
+
+
+def test_nonexistent_starting_directory_gives_empty_string(monkeypatch, config, start_dir):
+    monkeypatch.setattr(ui_util, 'find_existing_path', lambda path: path)
+    config.setting['starting_directory'] = True
+    config.setting['starting_directory_path'] = str(start_dir / 'missing')
+    assert get_file_dialog_directory('logs') == ''
+
+
 def test_fixed_starting_directory_overrides_history(config, start_dir, tmp_path):
     fixed = tmp_path / 'fixed'
     fixed.mkdir()
