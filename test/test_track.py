@@ -32,6 +32,7 @@ from picard.album import (
 )
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.file import File
+from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.tagger import Tagger
 from picard.track import (
@@ -147,11 +148,12 @@ class TrackTest(PicardTestCase):
         self.assertEqual(track.column('coverdimensions'), '100x100')
 
 
-class TrackUpdateFileMetadataTest(PicardTestCase):
+class TrackRunScriptsWhitespaceTest(PicardTestCase):
     """Regression tests for PICARD-3570.
 
-    Multi-value elements produced by tagging scripts must have surrounding
-    whitespace stripped, regardless of whether a file is attached to the track.
+    Whitespace in multi-value elements produced by tagging scripts (e.g. join
+    phrases like " feat. ") must be preserved, regardless of whether a file is
+    attached to the track.
     """
 
     def setUp(self):
@@ -172,11 +174,16 @@ class TrackUpdateFileMetadataTest(PicardTestCase):
         track.update_file_metadata(track_file)
         return track_file.metadata.getall('test')
 
-    def test_script_output_is_stripped_when_clearing_existing_tags(self):
-        self.assertEqual(self._file_values_after_update(True), ['a', 'b'])
+    def test_run_scripts_preserves_whitespace(self):
+        metadata = Metadata()
+        Track.run_scripts(metadata)
+        self.assertEqual(metadata.getall('test'), ['a ', 'b'])
 
-    def test_script_output_is_stripped_when_keeping_existing_tags(self):
-        self.assertEqual(self._file_values_after_update(False), ['a', 'b'])
+    def test_update_file_metadata_preserves_whitespace_when_clearing_existing_tags(self):
+        self.assertEqual(self._file_values_after_update(True), ['a ', 'b'])
+
+    def test_update_file_metadata_preserves_whitespace_when_keeping_existing_tags(self):
+        self.assertEqual(self._file_values_after_update(False), ['a ', 'b'])
 
 
 class TrackGenresToMetadataTest(PicardTestCase):

@@ -245,7 +245,6 @@ class Track(FileListItem):
                 parser.eval(script.content, metadata)
             except ScriptError:
                 log.exception("Failed to run tagger script %s on track", script.name)
-            metadata.strip_whitespace()
 
     def is_linked(self):
         return self.num_linked_files > 0

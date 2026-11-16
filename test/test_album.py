@@ -34,6 +34,7 @@ from picard.album import (
     AlbumStatus,
 )
 from picard.file import File
+from picard.metadata import Metadata
 from picard.track import Track
 
 
@@ -47,6 +48,22 @@ class TrackTest(PicardTestCase):
         self.album.metadata['test'] = 'foo'
         self.assertEqual(self.album.column('test'), 'foo')
         self.assertEqual(self.album.column('unknown'), '')
+
+    def test_finalize_loading_album_preserves_script_whitespace(self):
+        # PICARD-3570: whitespace in tagging script output (e.g. join phrases
+        # like " feat. ") must not be stripped when an album is loaded.
+        self.set_config_values(
+            setting={
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [(0, 'test', True, '$setmulti(test,a ; b)')],
+            }
+        )
+        track = Track('456')
+        self.album._new_tracks = [track]
+        self.album._new_metadata = Metadata()
+        self.album._finalize_loading_album()
+        self.assertEqual(track.metadata.getall('test'), ['a ', 'b'])
+        self.assertEqual(self.album.metadata.getall('test'), ['a ', 'b'])
 
     def test_column_title(self):
         self.assertEqual(self.album.column('title'), '')
