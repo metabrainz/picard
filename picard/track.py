@@ -240,15 +240,14 @@ class Track(FileListItem):
             view_sync().refresh_metadata_box()
 
     @staticmethod
-    def run_scripts(metadata, strip_whitespace=False):
+    def run_scripts(metadata):
         for script in iter_active_tagging_scripts():
             parser = ScriptParser()
             try:
                 parser.eval(script.content, metadata)
             except ScriptError:
                 log.exception("Failed to run tagger script %s on track", script.name)
-            if strip_whitespace:
-                metadata.strip_whitespace()
+            metadata.strip_whitespace()
 
     def is_linked(self):
         return self.num_linked_files > 0
@@ -506,7 +505,7 @@ class NonAlbumTrack(Track):
         self._customize_metadata()
         run_track_metadata_processors(self, m, recording)
         self.orig_metadata.copy(m)
-        self.run_scripts(m, strip_whitespace=True)
+        self.run_scripts(m)
         self.loaded = True
         self.status = None
         if self.callback:
