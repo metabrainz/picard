@@ -368,6 +368,18 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
         self.assertEqual(["", "multi", ""], context.getall("test"))
 
+    def test_cmd_setmulti_will_keep_leading_spaces(self):
+        context = Metadata()
+        context["source"] = [" a", "multi", ""]
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
+        self.assertEqual([" a", "multi", ""], context.getall("test"))
+
+    def test_cmd_setmulti_will_keep_trailing_spaces(self):
+        context = Metadata()
+        context["source"] = ["a ", "multi", ""]
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
+        self.assertEqual(["a ", "multi", ""], context.getall("test"))
+
     def test_cmd_setmulti_custom_splitter_string(self):
         context = Metadata()
         self.assertEqual("", self.parser.eval("$setmulti(test,multi##valued##test##,##)", context))  # no return value
@@ -994,6 +1006,13 @@ class ScriptParserTest(PicardTestCase):
         self.parser.eval("$copymerge(target,source,keep)", context)
         self.assertEqual(self.parser.context.getall("target"), ["targetval", "targetval"])
 
+    def test_cmd_copymerge_empty_elements(self):
+        context = Metadata()
+        context["target"] = ["target 1", "target 2"]
+        context["source"] = ["source 1", ""]
+        self.parser.eval("$copymerge(target,source,keep)", context)
+        self.assertEqual(self.parser.context.getall("target"), ["target 1", "target 2", "source 1", ""])
+
     def test_cmd_eq_any(self):
         self.assertScriptResultEquals("$eq_any(abc,def,ghi,jkl)", "")
         self.assertScriptResultEquals("$eq_any(abc,def,ghi,jkl,abc)", "1")
@@ -1177,6 +1196,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
         # Test no separator
         self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,)", "1", context)
+        # Test empty element
+        self.assertScriptResultEquals("$inmulti(a; ; c,)", "1", context)
 
     def test_cmd_lenmulti(self):
         context = Metadata()
@@ -1693,6 +1714,12 @@ class ScriptParserTest(PicardTestCase):
             alternate_output,
             context,
         )
+        # Tests with empty elements
+        self.assertScriptResultEquals("$join(a; ; c,=>)", "a=>=>c", context)
+        # Tests with leading spaces
+        self.assertScriptResultEquals("$join(a;  b; c,=>)", "a=> b=>c", context)
+        # Tests with trailing spaces
+        self.assertScriptResultEquals("$join(a; b ; c,=>)", "a=>b =>c", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'join', 'between 2 and 3', ("$join()", "$join(abc; def)", "$join(abc:def, ==> ,:,extra)")
@@ -1742,6 +1769,10 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,a,b)", output_0_3, context)
         # Tests with separator override
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,3,:)", alternate_output, context)
+        # Tests with empty elements
+        self.assertScriptResultEquals("$slice(a; b; ; d; e,2,3)", "", context)
+        self.assertScriptResultEquals("$slice(a; b; ; d; e,1,3)", "b; ", context)
+        self.assertScriptResultEquals("$slice(a; b; ; d; e,2,4)", "; d", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'slice', 'between 2 and 4', ("$slice()", "$slice(abc; def)", "$slice(abc; def),0,1,:,extra")
@@ -1907,6 +1938,10 @@ class ScriptParserTest(PicardTestCase):
         # Tests with missing inputs
         self.assertScriptResultEquals("$sortmulti(,)", "", context)
         self.assertScriptResultEquals("$sortmulti(,:)", "", context)
+        # Tests with empty elements
+        self.assertScriptResultEquals("$sortmulti(b; ; c; a)", "; a; b; c", context)
+        # Tests with leading spaces
+        self.assertScriptResultEquals("$sortmulti( b; c; a)", " b; a; c", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'sortmulti', 'between 1 and 2', ("$sortmulti()", "$sortmulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
@@ -1929,6 +1964,12 @@ class ScriptParserTest(PicardTestCase):
         # Tests with missing inputs
         self.assertScriptResultEquals("$reversemulti(,)", "", context)
         self.assertScriptResultEquals("$reversemulti(,:)", "", context)
+        # Tests with empty element
+        self.assertScriptResultEquals("$reversemulti(a; ; b; c)", "c; b; ; a", context)
+        # Tests with leading spaces
+        self.assertScriptResultEquals("$reversemulti(a;  b; c)", "c;  b; a", context)
+        # Tests with trailinging spaces
+        self.assertScriptResultEquals("$reversemulti(a; b ; c)", "c; b ; a", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'reversemulti', 'between 1 and 2', ("$reversemulti()", "$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
@@ -1951,6 +1992,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$unique(,)", "", context)
         self.assertScriptResultEquals("$unique(,,)", "", context)
         self.assertScriptResultEquals("$unique(,:)", "", context)
+        # Tests with empty elements
+        self.assertScriptResultEquals("$unique(a; A; B; b; ; cd; Cd; cD; CD; a; A; b)", "; A; CD; b", context)
+        # Tests with leading spaces
+        self.assertScriptResultEquals("$unique(a; A; B; b; cd; Cd; cD;  A; CD; a; A; b)", " A; A; CD; b", context)
+        # Tests with trailing spaces
+        self.assertScriptResultEquals("$unique(a; A; B; b; cd; Cd; cD; A ; CD; a; A; b)", "A; A ; CD; b", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'unique', 'between 1 and 3', ("$unique()", "$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
