@@ -386,8 +386,9 @@ class MultiValue(MutableSequence):
             self.separator = separator
         self.keep_empty = bool(keep_empty)
         if self.separator == MULTI_VALUED_JOINER and len(multi) == 1 and isinstance(multi[0], ScriptVariable):
-            # Convert ScriptExpression containing only a single variable into variable
-            self._multi = self.parser.context.getall(normalize_tagname(multi[0].name))
+            # Convert ScriptExpression containing only a single variable into variable.
+            # Copy the values, getall() may return the stored list and callers modify it.
+            self._multi = list(self.parser.context.getall(normalize_tagname(multi[0].name)))
         else:
             # Fall-back to converting to a string and splitting if haystack is an expression
             # or user has overridden the separator character.

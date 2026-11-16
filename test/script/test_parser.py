@@ -489,6 +489,8 @@ class ScriptParserTest(PicardTestCase):
         context = Metadata()
         context["genre"] = ["Electronic", "Idm", "Techno"]
         self.assertScriptResultEquals("$replacemulti(%genre%,Idm,IDM)", "Electronic; IDM; Techno", context)
+        # The source variable is not modified
+        self.assertScriptResultEquals("%genre%", "Electronic; Idm; Techno", context)
 
         context["genre"] = ["Electronic", "Jungle", "Bardcore"]
         self.assertScriptResultEquals(
@@ -1610,7 +1612,8 @@ class ScriptParserTest(PicardTestCase):
             test_output,
             context,
         )
-        context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
+        # The source variable is not modified
+        self.assertScriptResultEquals("%baz%", "First:A; Second:B; Remove; Third:C", context)
         self.assertScriptResultEquals(
             "$setmulti(baz,$map(%baz%,$if($eq(%_loop_count%,3),,$upper(%_loop_count%=%_loop_value%))))%baz%",
             test_output,
