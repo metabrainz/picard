@@ -1349,3 +1349,46 @@ class FileRemovedWhileLoadingTest(PicardTestCase):
         callback = Mock()
         self.file._loading_finished(callback, result=None)
         callback.assert_not_called()
+
+
+class FileRenameSameFileTest(PicardTestCase):
+    """Regression tests for PICARD-3573: different paths to the same file."""
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.file = File('somepath/somefile.mp3')
+
+    @patch('picard.file.move_ensure_casing')
+    @patch('picard.util.filenaming.samefile', return_value=True)
+    def test_alias_path_is_not_moved(self, mock_samefile, mock_move):
+        self.file.make_filename = Mock(return_value='/mnt/mapped/Music/song.mp3')
+        result = self.file._rename('/mnt/share/Music/song.mp3', Metadata(), {})
+        self.assertEqual('/mnt/share/Music/song.mp3', result)
+        mock_move.assert_not_called()
+
+    @patch('picard.file.os.makedirs')
+    @patch('picard.file.get_available_filename', side_effect=lambda new, old: new)
+    @patch('picard.file.move_ensure_casing')
+    @patch('picard.util.filenaming.samefile', return_value=True)
+    def test_case_only_rename_is_still_moved(self, mock_samefile, mock_move, mock_avail, mock_makedirs):
+        self.file.make_filename = Mock(return_value='/music/Song.mp3')
+        settings = {'move_overwrite_existing_files': False}
+        result = self.file._rename('/music/song.mp3', Metadata(), settings)
+        self.assertEqual('/music/Song.mp3', result)
+        mock_move.assert_called_once_with('/music/song.mp3', '/music/Song.mp3')
+
+    @patch('picard.file.samefile', return_value=True)
+    def test_additional_files_not_moved_for_alias_directory(self, mock_samefile):
+        self.file._get_additional_files_moves = Mock()
+        self.file._apply_additional_files_moves = Mock()
+        config = Mock()
+        config.setting = {
+            'move_files': True,
+            'move_additional_files': True,
+            'move_additional_files_pattern': '*.jpg',
+            'move_overwrite_existing_files': True,
+        }
+        self.file._move_additional_files('/mnt/share/Music/old.mp3', '/mnt/mapped/Music/new.mp3', config)
+        self.file._get_additional_files_moves.assert_not_called()
+        self.file._apply_additional_files_moves.assert_not_called()
