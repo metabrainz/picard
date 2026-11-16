@@ -22,7 +22,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from collections.abc import Callable
+from collections.abc import (
+    Callable,
+    Sequence,
+)
 from functools import partial
 from typing import (
     Any,
@@ -39,7 +42,6 @@ from picard.i18n import (
 )
 from picard.notification import notifier
 from picard.services import services
-from picard.webservice import ReplyHandler
 
 
 user_collections: dict[str, 'Collection'] = {}
@@ -72,7 +74,7 @@ class Collection:
 
     def _modify(
         self,
-        api_method: Callable[[str, list[str], ReplyHandler], None],
+        api_method: Callable[[str, list[str], Callable[..., None]], None],
         success_handler: Callable[[set[str], Callable], None],
         releases: set[str],
         callback: Callable,
@@ -80,7 +82,7 @@ class Collection:
         releases -= self.pending_releases
         if releases:
             self.pending_releases |= releases
-            when_done = partial(self._finished, success_handler, releases, callback)
+            when_done = partial(self._finished, success_handler, callback)
             api_method(self.id, list(releases), when_done)
 
     def add_releases(self, releases: set[str], callback: Callable) -> None:
@@ -94,15 +96,17 @@ class Collection:
     def _finished(
         self,
         success_handler: Callable[[set[str], Callable], None],
-        releases: set[str],
         callback: Callable,
+        releases: Sequence[str],
         document: Any,
         reply: QNetworkReply,
         error: QNetworkReply.NetworkError | Exception | None,
     ) -> None:
-        self.pending_releases -= releases
+        # Called once for each batch of releases sent, with the releases of that batch
+        unique_releases = set(releases)
+        self.pending_releases -= unique_releases
         if not error:
-            success_handler(releases, callback)
+            success_handler(unique_releases, callback)
         else:
             self._error(reply, callback)
 
