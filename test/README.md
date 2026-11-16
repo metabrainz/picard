@@ -87,6 +87,21 @@ causes crashes when `pytest-randomly` reorders tests. Always reuse the shared `q
 fixture. If a unittest-based test needs a Qt event loop, call
 `QCoreApplication.instance()` and only create a new one if it returns `None`.
 
+## Isolation from the files of the user
+
+`test/isolation.py` points the environment to a temporary directory for the whole
+test session. `test/__init__.py` imports it first, before anything from Picard (and
+before `test/conftest.py`): `PICARD_CONFIG_DIR`,
+`PICARD_CACHE_DIR` and `PICARD_PLUGIN_DIR` on every platform, plus `HOME` and the
+`XDG_*` variables on Linux. The tests never read or write the real
+configuration, plugins or music folder of whoever runs them.
+
+The in-process tests also get a fake config, but a test that starts a
+subprocess only has the environment to rely on, so it is isolated by this
+and inherits it. Do not pass `env=` to a subprocess without starting from `os.environ`.
+A test that checks the default locations (`test_const_appdirs.py`) has to remove the
+`PICARD_*_DIR` variables itself.
+
 ## Directory layout and file naming
 
 Tests are grouped into subdirectories that mirror the code they cover, for example:

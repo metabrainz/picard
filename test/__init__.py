@@ -22,6 +22,9 @@
 import glob
 import os.path
 
+# Must come before the imports of Picard: it isolates the environment from the files of the user.
+import test.isolation  # noqa: F401
+
 # Ensure options are loaded for all tests
 import picard.options  # noqa: F401
 

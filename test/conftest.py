@@ -38,12 +38,40 @@ What this conftest currently does:
 
 from contextlib import suppress
 import os
+from pathlib import Path
+import sys
 from types import SimpleNamespace
+
+from test.isolation import USER_ENVIRONMENT_ROOT
 
 import pytest
 
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _user_environment_is_isolated():
+    """Fail early if something resolves the files of the user outside of the temporary directory.
+
+    Catches a path computed before ``_isolate_user_environment`` ran (an import
+    done too early), which would let the tests touch the real files.
+    """
+    from picard.const.appdirs import (
+        cache_folder,
+        config_folder,
+        plugin_folder,
+    )
+
+    checked = {
+        'config_folder()': config_folder(),
+        'cache_folder()': cache_folder(),
+        'plugin_folder()': plugin_folder(),
+    }
+    if sys.platform.startswith('linux'):
+        checked['Path.home()'] = str(Path.home())
+    outside = {name: path for name, path in checked.items() if not Path(path).is_relative_to(USER_ENVIRONMENT_ROOT)}
+    assert not outside, f"the tests would use the files of the user, not {USER_ENVIRONMENT_ROOT}: {outside}"
 
 
 @pytest.fixture(scope="session", autouse=True)
