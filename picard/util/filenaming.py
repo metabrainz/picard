@@ -428,6 +428,23 @@ def samefile_different_casing(path1: str, path2: str) -> bool:
     return file1 != file2 and file1.lower() == file2.lower()
 
 
+def is_same_file_location(path1: str, path2: str) -> bool:
+    """Returns True if path1 and path2 are the same file, only reachable through different paths.
+
+    This covers e.g. a Windows network share which is accessible both as UNC path
+    and through a mapped drive letter. Paths differing only in the casing of the
+    file name are not considered the same location, so case-only renames still work.
+    Returns False if one of the paths cannot be accessed.
+    """
+    if os.path.basename(path1) != os.path.basename(path2):
+        return False
+    try:
+        return samefile(path1, path2)
+    except OSError:
+        # One of the files does not exist or is not accessible
+        return False
+
+
 def _make_unique_temp_name(target_path: str) -> str:
     i = 0
     target_dir = os.path.dirname(target_path)

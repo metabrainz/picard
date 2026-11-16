@@ -62,6 +62,7 @@ from picard.script.parser import ScriptError
 from picard.tags import display_tag_name
 from picard.track import Track
 from picard.util import format_time
+from picard.util.filenaming import is_same_file_location
 
 
 class TagStatus:
@@ -497,6 +498,9 @@ def add_files_to_tag_diff(
                     # filename for the informational ~filepath preview so
                     # the real tags are still shown.
                     log.warning("Cannot compute file naming preview for %r: %s", file.filename, why)
+                    new_filename = file.filename
+                if is_same_file_location(file.filename, new_filename):
+                    # Same file reached via a different path (e.g. mapped drive vs. UNC path)
                     new_filename = file.filename
             else:
                 new_filename = file.filename
