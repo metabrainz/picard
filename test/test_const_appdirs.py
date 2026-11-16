@@ -35,6 +35,17 @@ from picard.const.sys import (
 
 
 class AppPathsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        # The test suite overrides these to keep the tests away from the real files
+        # of the user, but here it is the default locations that are checked.
+        overrides = {
+            name: value for name, value in os.environ.items() if name.startswith('PICARD_') and name.endswith('_DIR')
+        }
+        for name in overrides:
+            del os.environ[name]
+        self.addCleanup(os.environ.update, overrides)
+
     def assert_home_path_equals(self, expected, actual):
         self.assertEqual(os.path.normpath(os.path.expanduser(expected)), actual)
 
