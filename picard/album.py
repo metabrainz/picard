@@ -835,14 +835,12 @@ class Album(MetadataItem):
                         parser.eval(script.content, track.metadata)
                     except ScriptError:
                         log.exception("Failed to run tagger script %s on track", script.name)
-                    track.metadata.strip_whitespace()
                     track.scripted_metadata.update(track.metadata)
                 # Run tagger script for the album itself
                 try:
                     parser.eval(script.content, self._new_metadata)
                 except ScriptError:
                     log.exception("Failed to run tagger script %s on album", script.name)
-                self._new_metadata.strip_whitespace()
 
             unmatched_files = [file for track in self.tracks for file in track.files]
             self.metadata = self._new_metadata
