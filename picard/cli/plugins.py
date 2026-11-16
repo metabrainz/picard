@@ -109,6 +109,12 @@ class PluginsSubcommand(Subcommand):
         p_install.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
         p_install.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
         p_install.add_argument(
+            '--allow-unverified',
+            action='store_true',
+            help="install even if a required signature cannot be verified "
+            "(e.g. the verifier tool is missing); does not bypass a wrong or missing signature",
+        )
+        p_install.add_argument(
             '--no-git',
             action='store_true',
             help="load plugin in local mode (no git updates/refs)",

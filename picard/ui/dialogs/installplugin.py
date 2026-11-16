@@ -37,6 +37,7 @@ from picard.plugin3.installable import (
     RegistryInstallablePlugin,
     UrlInstallablePlugin,
 )
+from picard.plugin3.manager import PluginSignatureError
 from picard.plugin3.registry import RegistryPlugin
 
 from picard.ui import PicardDialog
@@ -425,8 +426,19 @@ class InstallPluginDialog(PicardDialog):
             self.plugin_table.insertRow(row)
 
             # Trust level column
-            trust_item = QtWidgets.QTableWidgetItem(trust_badges.get(registry_plugin.trust_level, '?'))
-            trust_item.setToolTip(trust_tooltips.get(registry_plugin.trust_level, registry_plugin.trust_level))
+            trust_text = trust_badges.get(registry_plugin.trust_level, '?')
+            trust_tooltip = trust_tooltips.get(registry_plugin.trust_level, registry_plugin.trust_level)
+            if registry_plugin.signing_keys:
+                # Mark signed plugins; a lock with a pen denotes a required
+                # signature, a plain key denotes an optional (warn-only) one.
+                if registry_plugin.require_signature:
+                    trust_text += ' 🔏'
+                    trust_tooltip += _("\nSignature required (verified against registry keys)")
+                else:
+                    trust_text += ' 🔑'
+                    trust_tooltip += _("\nSigned (verified against registry keys)")
+            trust_item = QtWidgets.QTableWidgetItem(trust_text)
+            trust_item.setToolTip(trust_tooltip)
             trust_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             trust_item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin)
             self.plugin_table.setItem(row, 0, trust_item)
@@ -649,7 +661,6 @@ class InstallPluginDialog(PicardDialog):
 
     def _disable_ui_for_installation(self):
         """Disable UI elements during installation."""
-        print("_disable_ui_for_installation")
         for widget in self.findChildren(QtWidgets.QWidget):
             if widget not in {self.progress_bar, self.status_label}:
                 widget.setEnabled(False)
@@ -714,7 +725,7 @@ class InstallPluginDialog(PicardDialog):
         ref = confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None
         self._proceed_with_install(url, ref, plugin, current_tab, no_git=no_git)
 
-    def _proceed_with_install(self, url, ref, plugin, current_tab, no_git=False):
+    def _proceed_with_install(self, url, ref, plugin, current_tab, no_git=False, allow_unverified=False):
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:
             # Get original plugin data for versioning scheme
@@ -730,13 +741,26 @@ class InstallPluginDialog(PicardDialog):
         self.progress_bar.setValue(0)
 
         # Remember the plugin being installed so a failure dialog can offer a
-        # plugin-specific "report this issue" link when the info is available.
+        # plugin-specific "report this issue" link when the info is available,
+        # and so an "install anyway" retry can reuse the same parameters.
         self._installing_plugin = plugin
+        self._install_params = {
+            'url': url,
+            'ref': ref,
+            'plugin': plugin,
+            'current_tab': current_tab,
+            'no_git': no_git,
+        }
 
         # Start async installation
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(
-            url=url, ref=ref, no_git=no_git, progress_callback=self._on_progress, callback=self._on_complete
+            url=url,
+            ref=ref,
+            no_git=no_git,
+            allow_unverified=allow_unverified,
+            progress_callback=self._on_progress,
+            callback=self._on_complete,
         )
 
     def _on_progress(self, update):
@@ -753,15 +777,54 @@ class InstallPluginDialog(PicardDialog):
             self.plugin_installed.emit(result.result)
             # No need to re-enable UI, we're closing the dialog
             QtCore.QTimer.singleShot(1000, self.accept)  # Close after 1 second
-        else:
-            self.status_label.setText(_("Installation failed"))
-            error_msg = str(result.error) if result.error else _("Unknown error")
-            show_plugin_error(
+            return
+
+        # A required signature could not be verified. Offer an override only
+        # when the signature is merely unverifiable (verifier unavailable),
+        # never when it is wrong or missing.
+        if isinstance(result.error, PluginSignatureError):
+            self._handle_signature_error(result.error)
+            return
+
+        self.status_label.setText(_("Installation failed"))
+        error_msg = str(result.error) if result.error else _("Unknown error")
+        show_plugin_error(
+            self,
+            _("Installation Failed"),
+            _("Failed to install the plugin."),
+            error=error_msg,
+            plugin=getattr(self, '_installing_plugin', None),
+        )
+        # Re-enable UI
+        self._enable_ui_after_installation()
+
+    def _handle_signature_error(self, error):
+        """Show a signature verification failure, with a scoped override."""
+        self.status_label.setText(_("Signature verification failed"))
+        if error.reason == 'unverifiable' and getattr(self, '_install_params', None):
+            result = QtWidgets.QMessageBox.warning(
                 self,
-                _("Installation Failed"),
-                _("Failed to install the plugin."),
-                error=error_msg,
-                plugin=getattr(self, '_installing_plugin', None),
+                _("Signature Could Not Be Verified"),
+                _(
+                    "%s\n\nInstall the required verifier tool to verify the signature, "
+                    "or install without verification at your own risk."
+                )
+                % str(error),
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.No,
             )
-            # Re-enable UI
+            if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                self._proceed_with_install(**self._install_params, allow_unverified=True)
+                return
             self._enable_ui_after_installation()
+            return
+
+        # Wrong or missing signature: hard failure, no override offered.
+        show_plugin_error(
+            self,
+            _("Signature Verification Failed"),
+            _("This plugin requires a valid signature and cannot be installed."),
+            error=str(error),
+            plugin=getattr(self, '_installing_plugin', None),
+        )
+        self._enable_ui_after_installation()
