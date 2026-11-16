@@ -118,6 +118,7 @@ from picard.util import (
 )
 from picard.util.filenaming import (
     get_available_filename,
+    is_same_file_location,
     make_save_path,
     make_short_filename,
     move_ensure_casing,
@@ -805,7 +806,7 @@ class File(MetadataItem):
 
     def _rename(self, old_filename, metadata, settings):
         new_filename = self.make_filename(old_filename, metadata, settings)
-        if old_filename == new_filename:
+        if old_filename == new_filename or is_same_file_location(old_filename, new_filename):
             return old_filename
 
         new_dirname = os.path.dirname(new_filename)
@@ -859,7 +860,7 @@ class File(MetadataItem):
         if config.setting['move_files'] and config.setting['move_additional_files']:
             new_path = os.path.dirname(new_filename)
             old_path = os.path.dirname(old_filename)
-            if new_path != old_path:
+            if new_path != old_path and not self._is_same_directory(old_path, new_path):
                 patterns_string = config.setting['move_additional_files_pattern']
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
                 try:
@@ -867,6 +868,18 @@ class File(MetadataItem):
                     self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
+
+    @staticmethod
+    def _is_same_directory(path1, path2):
+        """Returns True if both paths refer to the same existing directory.
+
+        Different paths can point to the same directory, e.g. a network share
+        accessed via UNC path and via a mapped drive letter on Windows.
+        """
+        try:
+            return samefile(path1, path2)
+        except OSError:
+            return False
 
     @staticmethod
     def _compile_move_additional_files_pattern(patterns_string):
