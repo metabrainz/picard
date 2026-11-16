@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-11-12 08:03+0100\n"
-"PO-Revision-Date: 2026-11-14 17:13+0000\n"
+"PO-Revision-Date: 2026-11-16 12:13+0000\n"
 "Last-Translator: Hitsuji777 <quimera-morena6z@icloud.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "3/app/es/>\n"
@@ -191,7 +191,7 @@ msgstr "Respuestas de servicios web"
 
 #: picard/debug_opts.py:174
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Registrar el contenido de las respuestas de servicios web"
 
 #: picard/debug_opts.py:175
 msgid "Git Backend"
@@ -386,7 +386,7 @@ msgstr "Aviso"
 #: picard/ui/infodialog/__init__.py:45 picard/ui/infodialog/dialog.py:160
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
-msgstr "Info"
+msgstr "Información"
 
 #: picard/log.py:96
 msgid "Debug"
@@ -607,7 +607,7 @@ msgstr "Anchura de redimensión de imágenes en etiquetas"
 
 #: picard/options.py:338 picard/ui/forms/ui_options_renaming.py:140
 msgid "Delete empty directories"
-msgstr "Eliminar carpetas vacías"
+msgstr "Eliminar directorios vacíos"
 
 #: picard/options.py:343
 msgid "Don't sanitize dates for these formats"
@@ -756,7 +756,7 @@ msgstr "Expresión regular de carátula local"
 
 #: picard/options.py:450
 msgid "Log verbosity level"
-msgstr ""
+msgstr "Registrar el nivel de detalle"
 
 #: picard/options.py:451
 msgid "Minimum margin"
@@ -1041,11 +1041,11 @@ msgstr "Usa créditos de voz estandarizados"
 
 #: picard/options.py:625
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "Empezar navegando en una carpeta concreta"
 
 #: picard/options.py:630 picard/ui/forms/ui_options_interface.py:130
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "Carpeta en la que empezar a navegar"
 
 #: picard/options.py:634 picard/ui/forms/ui_options_ratings.py:62
 msgid "Submit ratings to MusicBrainz"
@@ -1060,20 +1060,16 @@ msgid "Show text labels under icons"
 msgstr "Mostrar textos debajo de los iconos"
 
 #: picard/options.py:643
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Usar las relaciones de publicaciones"
+msgstr "Usar relaciones de pistas y publicaciones"
 
 #: picard/options.py:648
 msgid "Similarity for matching files to tracks"
 msgstr "Similitud mínima para relacionar archivos con pistas"
 
 #: picard/options.py:652
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate album titles"
-msgstr "Traducir nombres de artista"
+msgstr "Traducir nombres de álbumes"
 
 #: picard/options.py:653
 msgid "Translate artist names"
@@ -1081,21 +1077,19 @@ msgstr "Traducir nombres de artista"
 
 #: picard/options.py:658
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Excepciones en traducción de nombres de artistas"
 
 #: picard/options.py:662 picard/ui/forms/ui_options_metadata.py:217
 msgid "Use artist sort name for translation"
 msgstr ""
 
 #: picard/options.py:664
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate track titles"
-msgstr "Traducir nombres de artista"
+msgstr "Traducir nombres de pistas"
 
 #: picard/options.py:665
 msgid "Translation locales"
-msgstr ""
+msgstr "Localizaciones de traducción"
 
 #: picard/options.py:666
 msgid "User interface language"
@@ -1157,19 +1151,15 @@ msgstr "Escribir etiquetas ID3v1"
 
 #: picard/options.py:693
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "Versión de ID3v2 para escribir"
 
 #: picard/options.py:694
-#, fuzzy
-#| msgid "Remove existing RIFF INFO tags from WAVE files"
 msgid "Write RIFF INFO tags to WAVE"
-msgstr "Eliminar las etiquetas RIFF INFO existentes de los archivos WAVE"
+msgstr "Escribir etiquetas RIFF INFO a archivos WAVE"
 
 #: picard/plugin.py:128
-#, fuzzy
-#| msgid "New version available"
 msgid "No plugin description available."
-msgstr "Nueva versión disponible"
+msgstr "No hay una descripción de plugin disponible."
 
 #: picard/plugin.py:130
 msgid "Unknown Plugin"
@@ -1193,7 +1183,7 @@ msgstr "Desconocido"
 
 #: picard/plugin.py:144
 msgid "No function description available."
-msgstr ""
+msgstr "No hay una descripción de función disponible."
 
 #: picard/profile.py:89 picard/ui/options/plugins.py:60
 msgid "Plugins"
@@ -1303,13 +1293,11 @@ msgstr ""
 
 #: picard/tagger.py:813
 msgid "Blacklisted Plugins Detected"
-msgstr ""
+msgstr "Plugins en la lista negra detectados"
 
 #: picard/tagger.py:820
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Initialization Failed"
-msgstr "[cargando información del álbum]"
+msgstr "Inicialización de plugin fallida"
 
 #: picard/tagger.py:821
 #, python-brace-format
@@ -1318,6 +1306,9 @@ msgid ""
 "\n"
 "{plugin_list}"
 msgstr ""
+"Los siguientes plugins no han conseguido cargarse y se han desactivado:\n"
+"\n"
+"{plugin_list}"
 
 #: picard/tagger.py:947
 msgid "CD Lookup Error"
@@ -1336,19 +1327,19 @@ msgstr ""
 
 #: picard/tagger.py:967
 msgid "All supported log files"
-msgstr ""
+msgstr "Todos los archivos de registro admitidos"
 
 #: picard/tagger.py:968
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr ""
+msgstr "Archivos de registro de EAC/XLD/Whipper/fre:ac"
 
 #: picard/tagger.py:969
 msgid "dBpoweramp log files"
-msgstr ""
+msgstr "Archivos de registro de dBpoweramp"
 
 #: picard/tagger.py:970
 msgid "SCSI TOC file"
-msgstr ""
+msgstr "Archivo SCSI TOC"
 
 #: picard/script/serializer.py:384 picard/tagger.py:971
 #: picard/ui/coverartbox/__init__.py:524 picard/ui/mainwindow/__init__.py:1370
@@ -1357,14 +1348,12 @@ msgid "All files"
 msgstr "Todos los archivos"
 
 #: picard/tagger.py:990
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Lookup Error"
-msgstr "Error al buscar CD"
+msgstr "Error de búsqueda"
 
 #: picard/tagger.py:996
 msgid "Looking up disc from tags…"
-msgstr ""
+msgstr "Buscando disco desde etiquetas…"
 
 #: picard/track.py:143
 #, python-format
@@ -1386,33 +1375,29 @@ msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Eliminando el álbum %(id)s: %(artist)s - %(album)s"
 
 #: picard/workspace.py:669
-#, fuzzy, python-format
-#| msgid "Error importing \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
-msgstr "Error al importar \"%(filename)s\": %(error)s"
+msgstr "Error al mover \"%(filename)s\" a la papelera"
 
 #: picard/workspace.py:673
 #, python-format
 msgid "Moved %(count)i files to trash"
-msgstr ""
+msgstr "Se han movido %(count)i archivos a la papelera"
 
 #: picard/acoustid/__init__.py:121
-#, fuzzy, python-format
-#| msgid "AcoustID lookup network error for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup network error for \"%(filename)s\"!"
-msgstr "Error de red en la búsqueda AcoustID para '%(filename)s'"
+msgstr "Error en la red de búsqueda de AcoustID para \"%(filename)s\""
 
 #: picard/acoustid/__init__.py:143
-#, fuzzy, python-format
-#| msgid "AcoustID lookup failed for '%(filename)s'!"
+#, python-format
 msgid "AcoustID lookup failed for \"%(filename)s\"!"
-msgstr "La búsqueda AcoustID para '%(filename)s' ha fallado"
+msgstr "La búsqueda AcoustID para \"%(filename)s\" ha fallado"
 
 #: picard/acoustid/__init__.py:184
-#, fuzzy, python-format
-#| msgid "AcoustID lookup returned no result for file '%(filename)s'"
+#, python-format
 msgid "AcoustID lookup returned no result for file \"%(filename)s\""
-msgstr "La búsqueda AcoustID no ofrece resultados para '%(filename)s'"
+msgstr "La búsqueda AcoustID no ofrece resultados para \"%(filename)s\""
 
 #: picard/acoustid/__init__.py:192
 #, fuzzy, python-format
@@ -1458,21 +1443,19 @@ msgstr "Añadir grupo como publicación…"
 
 #: picard/browser/addrelease.py:157
 msgid "Add file as release"
-msgstr "Agregar archivo como publicación"
+msgstr "Añadir archivo como publicación"
 
 #: picard/browser/addrelease.py:159
-#, fuzzy
 msgid "Add file as release…"
-msgstr "Agregar archivo como publicación"
+msgstr "Añadir archivo como publicación…"
 
 #: picard/browser/addrelease.py:167
 msgid "Add file as recording"
-msgstr "Agregar archivo como grabación"
+msgstr "Añadir archivo como grabación"
 
 #: picard/browser/addrelease.py:169
-#, fuzzy
 msgid "Add file as recording…"
-msgstr "Agregar archivo como grabación"
+msgstr "Añadir archivo como grabación…"
 
 #: picard/browser/auth_responses.py:142
 #, fuzzy, python-format
@@ -2727,8 +2710,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:1222
+#, fuzzy
 msgid "$map(name,code[,separator=; ])"
-msgstr ""
+msgstr "$map(name,code[,separator=; ])"
 
 #: picard/script/functions.py:1224
 msgid ""
@@ -3133,10 +3117,8 @@ msgid "Waiting on network ({requests} requests)…"
 msgstr ""
 
 #: picard/session/session_loader.py:114
-#, fuzzy
-#| msgid "Loading…"
 msgid "Finalizing…"
-msgstr "Cargando…"
+msgstr "Finalizando…"
 
 #: picard/session/session_loader.py:117
 msgid "Reading session…"
@@ -3185,10 +3167,8 @@ msgid "Plugin"
 msgstr "Complementos"
 
 #: picard/tags/tagvar.py:93
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available."
-msgstr "Nueva versión disponible"
+msgstr "Sin descripción disponible."
 
 #: picard/tags/tagvar.py:96
 msgid "multi-value variable"
@@ -3275,44 +3255,36 @@ msgid "Documentation"
 msgstr "Documentación"
 
 #: picard/ui/aboutdialog.py:191
-#, fuzzy
-#| msgid "Comment"
 msgid "Community forum"
-msgstr "Comentario"
+msgstr "Foro comunitario"
 
 #: picard/ui/aboutdialog.py:192
 msgid "License"
 msgstr "Licencia"
 
 #: picard/ui/album_filter.py:77 picard/ui/itemviews/columns.py:154
-#, fuzzy
-#| msgid "Album modified"
 msgid "Modified"
-msgstr "Álbum modificado"
+msgstr "Modificado"
 
 #: picard/ui/album_filter.py:77
 msgid "Filters on modified albums"
 msgstr ""
 
 #: picard/ui/album_filter.py:78
-#, fuzzy
-#| msgid "Album modified"
 msgid "Unmodified"
-msgstr "Álbum modificado"
+msgstr "Sin modificar"
 
 #: picard/ui/album_filter.py:78
 msgid "Filters on unmodified albums"
 msgstr ""
 
 #: picard/ui/album_filter.py:79 picard/ui/itemviews/columns.py:163
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Complete"
-msgstr "Confirmar Restablecer"
+msgstr "Completo"
 
 #: picard/ui/album_filter.py:79
 msgid "Filters on complete albums"
-msgstr ""
+msgstr "Filtros en álbumes completos"
 
 #: picard/ui/album_filter.py:80
 msgid "Incomplete"
@@ -3434,13 +3406,11 @@ msgstr "Nº de catálogo"
 #: picard/ui/cdlookup.py:151
 #, python-format
 msgid "View ISRCs (%(count)d)"
-msgstr ""
+msgstr "Ver códigos ISRC (%(count)d)"
 
 #: picard/ui/cdlookup.py:223
-#, fuzzy
-#| msgid "Disc Id"
 msgid "Disc ISRCs"
-msgstr "ID de disco"
+msgstr "Códigos ISRC del disco"
 
 #: picard/ui/cdlookup.py:244
 #, fuzzy
@@ -3464,7 +3434,6 @@ msgid "Errored entity"
 msgstr "Entidad incorrecta"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
-#, fuzzy
 msgid "Entities"
 msgstr "Entidades"
 
@@ -3477,10 +3446,8 @@ msgid "Saved entity"
 msgstr "Entidad guardada"
 
 #: picard/ui/colors.py:50
-#, fuzzy
-#| msgid "Replace front cover art"
 msgid "First cover art"
-msgstr "Reemplazar la carátula frontal"
+msgstr "Primera carátula"
 
 #: picard/ui/colors.py:50 picard/ui/colors.py:55
 msgid "Others"
@@ -3651,10 +3618,9 @@ msgid "Type to filter…"
 msgstr ""
 
 #: picard/ui/filter.py:216
-#, fuzzy, python-brace-format
-#| msgid "Rename files"
+#, python-brace-format
 msgid "{num} filters"
-msgstr "Renombrar archivos"
+msgstr "{num} filtros"
 
 #: picard/ui/filter.py:243
 #, fuzzy
@@ -3695,16 +3661,12 @@ msgid "Pending requests"
 msgstr "Peticiones pendientes"
 
 #: picard/ui/isrcsubmitdialog.py:42 picard/ui/options/interface_toolbar.py:124
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit ISRCs"
-msgstr "Enviar códigos AcoustID"
+msgstr "Enviar códigos ISRC"
 
 #: picard/ui/isrcsubmitdialog.py:46
-#, fuzzy
-#| msgid "The following releases on MusicBrainz match the CD:"
 msgid "The following ISRCs will be submitted to MusicBrainz:"
-msgstr "Las siguientes publicaciones en MusicBrainz concuerdan con el CD:"
+msgstr "Los siguientes códigos ISRC serán enviados a MusicBrainz:"
 
 #: picard/ui/isrcsubmitdialog.py:50 picard/ui/itemviews/columns.py:179
 msgid "Title"
@@ -3729,10 +3691,8 @@ msgid "&Submit"
 msgstr "&Envíe la ID del disco"
 
 #: picard/ui/logview.py:192
-#, fuzzy
-#| msgid "Show &more details…"
 msgid "&View detail…"
-msgstr "Ver &más detalles…"
+msgstr "Ver &detalles…"
 
 #: picard/ui/logview.py:197 picard/ui/metadatabox/__init__.py:691
 msgid "&Copy"
@@ -3934,8 +3894,8 @@ msgstr[1] ""
 #, python-brace-format
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Está a punto de guardar un archivo y esto:"
+msgstr[1] "Está a punto de guardar {file_count:,d} archivos y esto:"
 
 #: picard/ui/savewarningdialog.py:59
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
@@ -4018,6 +3978,8 @@ msgid ""
 "Saved files will be organized into subfolders (e.g. Artist/Album/) inside "
 "the folder you choose below."
 msgstr ""
+"Los archivos guardados se organizarán en subcarpetas (por ejemplo, Artista/"
+"Album/) dentro de la carpeta que seleccione."
 
 #: picard/ui/setupwizard.py:318
 msgid ""
@@ -4072,10 +4034,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/setupwizard.py:383
-#, fuzzy
-#| msgid "Preferred release types"
 msgid "Prefer release group cover art"
-msgstr "Tipos de publicación preferidos"
+msgstr "Preferir la carátula del grupo de publicaciones"
 
 #: picard/ui/setupwizard.py:385
 msgid ""
@@ -4172,6 +4132,9 @@ msgid ""
 "Welcome to MusicBrainz Picard! Start by adding your music files: use 'Add "
 "Files' or 'Add Directory' from the toolbar or the File menu."
 msgstr ""
+"¡Bienvenido a MusicBrainz Picard! Puedes empezar añadiendo tus archivos "
+"musicales: usa \"añadir archivos\" o \"añadir carpeta\" desde la barra de "
+"herramientas o el menú Archivos."
 
 #: picard/ui/tutorial.py:57
 msgid ""
@@ -4236,11 +4199,11 @@ msgstr ""
 
 #: picard/ui/tutorial.py:150
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "Tutorial de Picard"
 
 #: picard/ui/tutorial.py:173
 msgid "Learn more…"
-msgstr ""
+msgstr "Saber más…"
 
 #: picard/ui/tutorial.py:181
 msgid "Don't show tips again"
@@ -4340,7 +4303,7 @@ msgstr "Imágenes originales"
 
 #: picard/ui/coverartbox/__init__.py:220 picard/ui/infodialog/dialog.py:331
 msgid "This cover art will be removed from tags when saved"
-msgstr ""
+msgstr "Esta carátula será eliminada de las etiquetas al guardarse"
 
 #: picard/ui/coverartbox/__init__.py:523
 msgid "All supported image formats"
@@ -4360,10 +4323,8 @@ msgid "Choose local file…"
 msgstr "Elegir archivo local"
 
 #: picard/ui/coverartbox/__init__.py:571
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from URL…"
-msgstr "A&gregar carpeta…"
+msgstr "Añadir desde URL…"
 
 #: picard/ui/coverartbox/__init__.py:580
 msgid "Replace front cover art"
@@ -4458,17 +4419,13 @@ msgid "Install Plugin"
 msgstr "Instalar complemento…"
 
 #: picard/ui/dialogs/installplugin.py:132 picard/ui/options/plugins.py:121
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Search plugins…"
-msgstr "Instalar complemento…"
+msgstr "Búsqueda de pugins…"
 
 #: picard/ui/dialogs/installplugin.py:137
 #: picard/ui/dialogs/installplugin.py:366
-#, fuzzy
-#| msgid "All files"
 msgid "All Categories"
-msgstr "Todos los archivos"
+msgstr "Todas las categorías"
 
 #: picard/ui/dialogs/installplugin.py:146
 msgid "Trust"
@@ -4489,7 +4446,7 @@ msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:166
 msgid "Registry"
-msgstr ""
+msgstr "Registro"
 
 #: picard/ui/dialogs/installplugin.py:172
 msgid "Install from URL"
@@ -4536,10 +4493,8 @@ msgid "Select directory"
 msgstr "Seleccionar directorio"
 
 #: picard/ui/dialogs/installplugin.py:208
-#, fuzzy
-#| msgid "Destination directory:"
 msgid "Directory:"
-msgstr "Carpeta de destino:"
+msgstr "Carpeta:"
 
 #: picard/ui/dialogs/installplugin.py:214
 msgid "Load in-place (ignore git)"
@@ -4565,10 +4520,8 @@ msgstr "Instalar complemento…"
 
 #: picard/ui/dialogs/installplugin.py:312
 #: picard/ui/dialogs/installplugin.py:609
-#, fuzzy
-#| msgid "&Set as starting directory"
 msgid "The selected path is not a directory."
-msgstr "&Elegir como carpeta inicial"
+msgstr "El camino seleccionado no es una carpeta."
 
 #: picard/ui/dialogs/installplugin.py:318
 msgid "The directory does not contain a MANIFEST.toml file."
@@ -4645,11 +4598,11 @@ msgstr "Directorio inválido"
 
 #: picard/ui/dialogs/installplugin.py:617
 msgid "Invalid Plugin Directory"
-msgstr ""
+msgstr "Directorio de plugin inválido"
 
 #: picard/ui/dialogs/installplugin.py:618
 msgid "The selected directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "El directorio seleccionado no contiene un archivo MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:629
 msgid "Plugin Not Managed by Git"
@@ -4788,10 +4741,8 @@ msgid ""
 msgstr "¿Seguro que quieres eliminar las opciones de ajustes seleccionadas?"
 
 #: picard/ui/dialogs/plugininfo.py:48
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Information"
-msgstr "[cargando información del álbum]"
+msgstr "Información de plugin"
 
 #: picard/ui/dialogs/plugininfo.py:99
 #, fuzzy
@@ -4809,10 +4760,8 @@ msgid "Registry ID:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:102
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "State:"
-msgstr "Tasa de bits:"
+msgstr "Estado:"
 
 #: picard/ui/dialogs/plugininfo.py:103
 #: picard/ui/forms/ui_scripteditor_details.py:103
@@ -4876,10 +4825,8 @@ msgid "Path:"
 msgstr "Camino:"
 
 #: picard/ui/dialogs/plugininfo.py:115
-#, fuzzy
-#| msgid "Version:"
 msgid "Versioning:"
-msgstr "Versión:"
+msgstr "Versionado:"
 
 #: picard/ui/dialogs/plugininfo.py:122
 #: picard/ui/forms/ui_scripteditor_details.py:107
@@ -4887,10 +4834,8 @@ msgid "Description:"
 msgstr "Descripción:"
 
 #: picard/ui/dialogs/plugininfo.py:245
-#, fuzzy
-#| msgid "Official website"
 msgid "Official"
-msgstr "Sitio web oficial"
+msgstr "Oficial"
 
 #: picard/ui/dialogs/plugininfo.py:246
 msgid "Trusted"
@@ -5018,7 +4963,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_exception_script_selector.py:112
 msgid "Selected Scripts"
-msgstr ""
+msgstr "Scripts seleccionados"
 
 #: picard/ui/forms/ui_exception_script_selector.py:113
 msgid "Selected language script match threshold:"
@@ -5152,7 +5097,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:119
 msgid "Include MusicBrainz data in saved sessions"
-msgstr ""
+msgstr "Incluir datos de MusicBrainz en las sesiones guardadas"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:120
 msgid "Do not make MusicBrainz requests on restore"
@@ -5268,11 +5213,11 @@ msgstr "Mueve el elemento seleccionado hacia abajo"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 msgid "Discard images if below the given size"
-msgstr ""
+msgstr "Descartar imágenes si son más pequeñas que las dimensiones dadas"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
 msgid "Minimum width:"
-msgstr ""
+msgstr "Anchura mínima:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:299
 #: picard/ui/forms/ui_options_cover_processing.py:301
@@ -5338,10 +5283,8 @@ msgid "New format:"
 msgstr "Formato:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:318
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Convert images saved to files"
-msgstr "Guardar carátulas de los álbumes en archivos separados"
+msgstr "Convertir las imágenes guardadas a archivos"
 
 #: picard/ui/forms/ui_options_cover_processing.py:320
 msgid "JPEG / WebP image quality:"
@@ -5408,6 +5351,9 @@ msgid ""
 "of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
 msgstr ""
+"Ha configurado un servidor de MusicBrainz no oficial. Por defecto, envíos de "
+"publicaciones, grabaciones e identificadores de discos se dirigirán a la "
+"base de datos principal en musicbrainz.org."
 
 #: picard/ui/forms/ui_options_general.py:133
 msgid "Submit data to the configured server"
@@ -5626,10 +5572,8 @@ msgid "Configuration file:"
 msgstr "Archivos de configuración"
 
 #: picard/ui/forms/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Open folder"
 msgid "Open folder…"
-msgstr "Abrir carpeta"
+msgstr "Abrir carpeta…"
 
 #: picard/ui/forms/ui_options_maintenance.py:148
 msgid "Automatic configuration backups directory:"
@@ -5872,9 +5816,8 @@ msgid "Option Profile(s)"
 msgstr ""
 
 #: picard/ui/forms/ui_options_profiles.py:82
-#, fuzzy
 msgid "Move profile up"
-msgstr "Mover archivo arriba"
+msgstr "Mover perfil arriba"
 
 #: picard/ui/forms/ui_options_profiles.py:83
 #, fuzzy
@@ -6021,7 +5964,7 @@ msgstr "Bus&car actualizaciones…"
 
 #: picard/ui/forms/ui_options_startup.py:128
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Buscar actualizaciones durante el inicio"
 
 #: picard/ui/forms/ui_options_startup.py:129
 msgid "Days between checks:"
@@ -6318,7 +6261,7 @@ msgstr "&Previsualización"
 
 #: picard/ui/forms/ui_widget_taglisteditor.py:75
 msgid "Add new tag"
-msgstr "Agregar nueva etiqueta"
+msgstr "Añadir nueva etiqueta"
 
 #: picard/ui/forms/ui_widget_taglisteditor.py:76
 #: picard/ui/forms/ui_widget_taglisteditor.py:77
@@ -6345,7 +6288,7 @@ msgstr "Personaje"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:200
 msgid "Replacement"
-msgstr ""
+msgstr "Reemplazo"
 
 #: picard/ui/infodialog/__init__.py:56
 msgid "Album Info"
@@ -6374,16 +6317,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/infodialog/dialog.py:328
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"Haga doble clic para abrirlo en el visor externo\n"
-"Archivo temporal: %(tempfile)s\n"
-"Origen: %(sourcefile)s"
+msgstr "Haga doble clic para abrirlo en el visor externo"
 
 #: picard/ui/infodialog/dialog.py:338
 msgid "Missing temporary file"
@@ -6514,10 +6449,8 @@ msgstr "Coincidencia excelente"
 
 #: picard/ui/itemviews/__init__.py:362
 #: picard/ui/itemviews/custom_columns/shared.py:154
-#, fuzzy
-#| msgid "file view"
 msgid "File view"
-msgstr "vista de archivos"
+msgstr "Vista de archivos"
 
 #: picard/ui/itemviews/__init__.py:363
 msgid "Contains unmatched files and clusters"
@@ -6525,10 +6458,8 @@ msgstr "Contiene ficheros sin agrupar"
 
 #: picard/ui/itemviews/__init__.py:394
 #: picard/ui/itemviews/custom_columns/shared.py:155
-#, fuzzy
-#| msgid "album view"
 msgid "Album view"
-msgstr "vista de álbumes"
+msgstr "Vista de álbumes"
 
 #: picard/ui/itemviews/__init__.py:395
 msgid "Contains albums and matched files"
@@ -6561,22 +6492,16 @@ msgid "Album is modified"
 msgstr "Álbum modificado"
 
 #: picard/ui/itemviews/__init__.py:672
-#, fuzzy
-#| msgid "Album unchanged"
 msgid "Album is unchanged"
-msgstr "Álbum no modificado"
+msgstr "El álbum no ha cambiado"
 
 #: picard/ui/itemviews/__init__.py:675
-#, fuzzy
-#| msgid "Album modified and complete"
 msgid "Album is complete"
-msgstr "Álbum modificado y completo"
+msgstr "El álbum está completo"
 
 #: picard/ui/itemviews/__init__.py:675
-#, fuzzy
-#| msgid "Album modified and complete"
 msgid "Album is incomplete"
-msgstr "Álbum modificado y completo"
+msgstr "El álbum está incompleto"
 
 #: picard/ui/itemviews/__init__.py:717
 msgid "There are no files matched to this track"
@@ -6721,7 +6646,6 @@ msgid "Media"
 msgstr "Medio"
 
 #: picard/ui/itemviews/columns.py:228
-#, fuzzy
 msgid "ISWC"
 msgstr "ISWC"
 
@@ -6736,10 +6660,8 @@ msgid "File Type"
 msgstr "Tipo de publicación"
 
 #: picard/ui/itemviews/columns.py:242
-#, fuzzy
-#| msgid "Destination directory:"
 msgid "Directory"
-msgstr "Carpeta de destino:"
+msgstr "Carpeta"
 
 #: picard/ui/itemviews/columns.py:244
 #, fuzzy
@@ -6814,10 +6736,8 @@ msgid "No"
 msgstr "Ahora"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:107
-#, fuzzy
-#| msgid "Change audio volume"
 msgid "Manage Custom Columns"
-msgstr "Cambiar volumen de audio"
+msgstr "Administrar columnas personalizadas"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:121
 #: picard/ui/options/profiles.py:143
@@ -6845,7 +6765,7 @@ msgstr "Añadir archivos"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:259
 msgid "You have unsaved changes. Do you want to save them?"
-msgstr ""
+msgstr "Tiene cambios sin guardar. ¿Desea guardarlos?"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:498
 msgid ""
@@ -6984,10 +6904,8 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:114
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:136
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Confirm Delete"
-msgstr "Confirmar Restablecer"
+msgstr "Confirmar eliminación"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:115
 #, fuzzy, python-brace-format
@@ -7249,7 +7167,7 @@ msgstr "Buscar &CD…"
 
 #: picard/ui/mainwindow/__init__.py:887
 msgid "Recent Sessions"
-msgstr ""
+msgstr "Sesiones recientes"
 
 #: picard/ui/mainwindow/__init__.py:924
 msgid "Recent sessions cleared"
@@ -7257,23 +7175,23 @@ msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:943
 msgid "Empty"
-msgstr ""
+msgstr "Vacío"
 
 #: picard/ui/mainwindow/__init__.py:959 picard/ui/mainwindow/actions.py:620
 msgid "Clear Recent Sessions"
-msgstr ""
+msgstr "Limpiar sesiones recientes"
 
 #: picard/ui/mainwindow/__init__.py:1063 picard/ui/scripteditor/__init__.py:244
 msgid "&File"
-msgstr "&Archivos"
+msgstr "&Archivo"
 
 #: picard/ui/mainwindow/__init__.py:1087
 msgid "&Edit"
-msgstr "&Editar"
+msgstr "&Edición"
 
 #: picard/ui/mainwindow/__init__.py:1096 picard/ui/scripteditor/__init__.py:310
 msgid "&View"
-msgstr "&Vista"
+msgstr "&Visualización"
 
 #: picard/ui/mainwindow/__init__.py:1107
 #, fuzzy
@@ -7324,30 +7242,25 @@ msgid "All supported formats"
 msgstr "Todos los formatos soportados"
 
 #: picard/ui/mainwindow/__init__.py:1407
-#, fuzzy, python-format
-#| msgid "Adding multiple directories from '%(directory)s' …"
+#, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
-msgstr "Añadiendo múltiples carpetas desde '%(directory)s' …"
+msgstr "Añadiendo múltiples carpetas desde \"%(directory)s\"…"
 
 #: picard/ui/mainwindow/__init__.py:1412
-#, fuzzy, python-format
-#| msgid "Adding directory: '%(directory)s' …"
+#, python-format
 msgid "Adding directory: \"%(directory)s\" …"
-msgstr "Añadiendo carpeta '%(directory)s'…"
+msgstr "Añadiendo carpeta \"%(directory)s\"…"
 
 #: picard/ui/mainwindow/__init__.py:1498
-#, fuzzy, python-brace-format
-#| msgid "Convert File Names to Tags"
+#, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
-msgstr[0] "Convertir nombres de archivos a etiquetas"
-msgstr[1] "Convertir nombres de archivos a etiquetas"
+msgstr[0] "¿Mover \"{filename}\" a la papelera?"
+msgstr[1] "¿Mover {count} archivos a la papelera?"
 
 #: picard/ui/mainwindow/__init__.py:1504 picard/ui/mainwindow/actions.py:198
-#, fuzzy
-#| msgid "Move files"
 msgid "Move files to trash"
-msgstr "Mover archivos"
+msgstr "Mover archivos a la papelera"
 
 #: picard/ui/mainwindow/__init__.py:1590 picard/ui/mainwindow/__init__.py:1622
 #, python-format
@@ -7355,16 +7268,14 @@ msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:1628 picard/ui/mainwindow/__init__.py:1653
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid "Loading session from \"%(path)s\" …"
-msgstr "Cargando álbum %(id)s …"
+msgstr "Cargando sesión desde \"%(path)s\"…"
 
 #: picard/ui/mainwindow/__init__.py:1644 picard/ui/mainwindow/__init__.py:1671
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid "Session loaded from \"%(path)s\""
-msgstr "Cargando álbum %(id)s …"
+msgstr "Sesión cargada desde \"%(path)s\""
 
 #: picard/ui/mainwindow/__init__.py:1747
 msgid "Configuration Required"
@@ -7471,10 +7382,8 @@ msgid "No profiles configured"
 msgstr "Mover archivo abajo"
 
 #: picard/ui/mainwindow/__init__.py:2417
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configure profiles…"
-msgstr "Archivos de configuración"
+msgstr "Configurar perfiles…"
 
 #: picard/ui/mainwindow/__init__.py:2486
 #, fuzzy
@@ -7540,7 +7449,7 @@ msgstr "Añadir archivos al etiquetador"
 
 #: picard/ui/mainwindow/actions.py:164
 msgid "Add Fold&er…"
-msgstr "A&gregar carpeta…"
+msgstr "Añadir &carpeta…"
 
 #: picard/ui/mainwindow/actions.py:165
 msgid "Add a folder to the tagger"
@@ -7583,16 +7492,12 @@ msgid "Submit acoustic fingerprints"
 msgstr "Enviar huellas acústicas"
 
 #: picard/ui/mainwindow/actions.py:216
-#, fuzzy
-#| msgid "Submit AcoustIDs"
 msgid "Submit &ISRCs"
-msgstr "Enviar códigos AcoustID"
+msgstr "Enviar códigos &ISRC"
 
 #: picard/ui/mainwindow/actions.py:217
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit ISRCs to MusicBrainz"
-msgstr "Enviar valoración a MusicBrainz"
+msgstr "Enviar códigos ISRC a MusicBrainz"
 
 #: picard/ui/mainwindow/actions.py:225
 msgid "E&xit"
@@ -7636,7 +7541,7 @@ msgstr "Buscar los términos elegidos en MusicBrainz"
 
 #: picard/ui/mainwindow/actions.py:265
 msgid "Submit cluster as release…"
-msgstr ""
+msgstr "Enviar agrupación como publicación…"
 
 #: picard/ui/mainwindow/actions.py:266
 msgid "Submit cluster as a new release to MusicBrainz"
@@ -7648,11 +7553,11 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:278
 msgid "Submit file as a new recording to MusicBrainz"
-msgstr ""
+msgstr "Enviar archivo como una nueva grabación a MusicBrainz"
 
 #: picard/ui/mainwindow/actions.py:289
 msgid "Submit file as release…"
-msgstr ""
+msgstr "Enviar archivo como publicación…"
 
 #: picard/ui/mainwindow/actions.py:290
 msgid "Submit file as a new release to MusicBrainz"
@@ -7697,7 +7602,7 @@ msgstr "Ver pistas similares y opcionalmente elegir un lanzamiento diferente"
 
 #: picard/ui/mainwindow/actions.py:331
 msgid "Show &other album versions…"
-msgstr ""
+msgstr "Mostrar &otras versiones del álbum…"
 
 #: picard/ui/mainwindow/actions.py:332
 msgid "Ctrl+Shift+O"
@@ -7729,7 +7634,7 @@ msgstr "&Acciones"
 
 #: picard/ui/mainwindow/actions.py:387
 msgid "Filter Items"
-msgstr ""
+msgstr "Filtrar elementos"
 
 #: picard/ui/mainwindow/actions.py:388
 msgid "Toggle filtering of items based on specific tag values."
@@ -7908,10 +7813,8 @@ msgid "Ctrl+Shift+P"
 msgstr "Ctrl+Shift+P"
 
 #: picard/ui/mainwindow/actions.py:551
-#, fuzzy
-#| msgid "Open in &Player"
 msgid "Open in System &Media Player"
-msgstr "Abrir en &Reproductor"
+msgstr "Abrir en el &reproductor multimedia del sistema"
 
 #: picard/ui/mainwindow/actions.py:552
 msgid "Play the file in your default media player"
@@ -7958,10 +7861,8 @@ msgid "&New Session"
 msgstr "&Nueva sesión"
 
 #: picard/ui/mainwindow/actions.py:613
-#, fuzzy
-#| msgid "&Copy the current script"
 msgid "Close the current session"
-msgstr "&Copiar el script actual"
+msgstr "Cerrar la sesión actual"
 
 #: picard/ui/mainwindow/actions.py:621
 msgid "Clear all recent session entries"
@@ -8022,10 +7923,8 @@ msgid "Edit…"
 msgstr "Editar…"
 
 #: picard/ui/metadatabox/__init__.py:582
-#, fuzzy
-#| msgid "Add to 'Preserve Tags' List"
 msgid "Add to \"Preserve Tags\" List"
-msgstr "Agregar a la lista 'Etiquetas Preservadas'"
+msgstr "Añadir a la lista de etiquetas preservadas"
 
 #: picard/ui/metadatabox/__init__.py:587
 #, fuzzy
@@ -8427,17 +8326,15 @@ msgstr "Guardar"
 
 #: picard/ui/options/interface_toolbar.py:116
 msgid "Move to trash"
-msgstr ""
+msgstr "Mover a la papelera"
 
 #: picard/ui/options/interface_toolbar.py:120
 msgid "Submit AcoustIDs"
 msgstr "Enviar códigos AcoustID"
 
 #: picard/ui/options/interface_toolbar.py:128
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "Buscar CD…"
+msgstr "Buscar una etiqueta TOC…"
 
 #: picard/ui/options/interface_toolbar.py:132
 #, fuzzy
@@ -8704,10 +8601,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/player.py:36
-#, fuzzy
-#| msgid "Player"
 msgid "Audio Player"
-msgstr "Reproductor"
+msgstr "Reproductor de audio"
 
 #: picard/ui/options/plugins.py:108
 #, python-brace-format
@@ -8807,7 +8702,7 @@ msgstr ""
 #: picard/ui/options/plugins.py:467
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
-msgstr ""
+msgstr "El plugin \"{name}\" ha sido instalado con éxito"
 
 #: picard/ui/options/plugins.py:504
 msgid "All plugin updates completed"
@@ -9333,7 +9228,7 @@ msgstr ""
 
 #: picard/ui/scripteditor/__init__.py:247
 msgid "&Import a script file"
-msgstr ""
+msgstr "&Importar un archivo de script"
 
 #: picard/ui/scripteditor/__init__.py:248
 msgid "Import a file as a new script"
