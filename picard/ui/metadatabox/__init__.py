@@ -71,6 +71,7 @@ from picard.util import (
     restore_method,
     thread,
 )
+from picard.util.filenaming import is_same_file_location
 from picard.util.qt import throttle
 
 from .edittagdialog import (
@@ -1023,6 +1024,9 @@ class MetadataBox(QtWidgets.QTableWidget):
                         # filename for the informational ~filepath preview so
                         # the real tags are still shown.
                         log.warning("Cannot compute file naming preview for %r: %s", file.filename, why)
+                        new_filename = file.filename
+                    if is_same_file_location(file.filename, new_filename):
+                        # Same file reached via a different path (e.g. mapped drive vs. UNC path)
                         new_filename = file.filename
                 else:
                     new_filename = file.filename
