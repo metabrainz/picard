@@ -20,10 +20,12 @@
 
 
 from collections.abc import (
+    Callable,
     Iterable,
     Iterator,
     Sequence,
 )
+from functools import partial
 import re
 from xml.sax.saxutils import quoteattr  # nosec: B406
 
@@ -322,19 +324,24 @@ class MBAPIHelper(APIHelper):
         return self.get_collection(None, handler)
 
     @staticmethod
-    def _collection_request(collection_id: str, releases: Sequence[str], batchsize: int = 400) -> Iterator[str]:
+    def _collection_request(
+        collection_id: str, releases: Sequence[str], batchsize: int = 400
+    ) -> Iterator[tuple[Sequence[str], str]]:
+        """Yield the release IDs and the request path of each batch."""
         for i in range(0, len(releases), batchsize):
-            ids = ';'.join(releases[i : i + batchsize])
-            yield f"/collection/{collection_id}/releases/{ids}"
+            release_ids = releases[i : i + batchsize]
+            yield release_ids, f"/collection/{collection_id}/releases/{';'.join(release_ids)}"
 
     @staticmethod
     def _get_client_queryarg():
         return {'client': CLIENT_STRING}
 
-    def put_to_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler) -> None:
-        for path in self._collection_request(collection_id, releases):
-            self.put(path, "", handler, unencoded_queryargs=self._get_client_queryarg())
+    def put_to_collection(self, collection_id: str, releases: Sequence[str], handler: Callable[..., None]) -> None:
+        # The handler is called for each batch, with the release IDs of that batch first
+        for release_ids, path in self._collection_request(collection_id, releases):
+            self.put(path, "", partial(handler, release_ids), unencoded_queryargs=self._get_client_queryarg())
 
-    def delete_from_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler) -> None:
-        for path in self._collection_request(collection_id, releases):
-            self.delete(path, handler, unencoded_queryargs=self._get_client_queryarg())
+    def delete_from_collection(self, collection_id: str, releases: Sequence[str], handler: Callable[..., None]) -> None:
+        # The handler is called for each batch, with the release IDs of that batch first
+        for release_ids, path in self._collection_request(collection_id, releases):
+            self.delete(path, partial(handler, release_ids), unencoded_queryargs=self._get_client_queryarg())

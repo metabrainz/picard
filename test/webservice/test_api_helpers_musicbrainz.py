@@ -99,12 +99,27 @@ class MBAPITest(PicardTestCase):
         self.assertNotInPath(self.ws.get_url, "releases")
 
     def test_put_collection(self):
-        self.api.put_to_collection("1", ["1", "2", "3"], None)
+        self.api.put_to_collection("1", ["1", "2", "3"], MagicMock())
         self._test_ws_function_args(self.ws.put_url)
         self.assertInPath(self.ws.put_url, "collection/1/releases/1;2;3")
 
+    def test_collection_handler_gets_releases_of_batch(self):
+        releases = [str(i) for i in range(500)]
+        for method, ws_function in (
+            ('put_to_collection', self.ws.put_url),
+            ('delete_from_collection', self.ws.delete_url),
+        ):
+            with self.subTest(method=method):
+                handler = MagicMock()
+                getattr(self.api, method)("1", releases, handler)
+                self.assertEqual(ws_function.call_count, 2)
+                for call, expected in zip(ws_function.call_args_list, (releases[:400], releases[400:]), strict=True):
+                    call.kwargs['handler']('doc', 'reply', None)
+                    handler.assert_called_with(expected, 'doc', 'reply', None)
+                ws_function.reset_mock()
+
     def test_delete_collection(self):
-        self.api.delete_from_collection("1", ["1", "2", "3", "4"] * 200, None)
+        self.api.delete_from_collection("1", ["1", "2", "3", "4"] * 200, MagicMock())
         collection_string = ";".join(["1", "2", "3", "4"] * 100)
         self._test_ws_function_args(self.ws.delete_url)
         self.assertInPath(self.ws.delete_url, "collection/1/releases/" + collection_string)
@@ -196,12 +211,9 @@ class MBAPITest(PicardTestCase):
     def test_collection_request(self):
         releases = tuple("r" + str(i) for i in range(13))
         generator = self.api._collection_request("test", releases, batchsize=5)
-        batch = next(generator)
-        self.assertEqual(batch, '/collection/test/releases/r0;r1;r2;r3;r4')
-        batch = next(generator)
-        self.assertEqual(batch, '/collection/test/releases/r5;r6;r7;r8;r9')
-        batch = next(generator)
-        self.assertEqual(batch, '/collection/test/releases/r10;r11;r12')
+        self.assertEqual(next(generator), (releases[:5], '/collection/test/releases/r0;r1;r2;r3;r4'))
+        self.assertEqual(next(generator), (releases[5:10], '/collection/test/releases/r5;r6;r7;r8;r9'))
+        self.assertEqual(next(generator), (releases[10:], '/collection/test/releases/r10;r11;r12'))
         with self.assertRaises(StopIteration):
             next(generator)
 

@@ -140,7 +140,7 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             self.collection.remove_releases(releases & self.collection.releases, self._update_text)
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
-    def _update_text(self):
+    def _update_text(self, error=None):
         try:
             self.setText(self._label())
         except RuntimeError:
