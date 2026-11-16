@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-11-14 18:13+0000\n"
+"PO-Revision-Date: 2026-11-16 12:13+0000\n"
 "Last-Translator: Hitsuji777 <quimera-morena6z@icloud.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "2/app/es/>\n"
@@ -199,17 +199,15 @@ msgstr "Aviso"
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
 msgid "Info"
-msgstr "Info"
+msgstr "Información"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Depuración"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected error"
 msgid "Unexpected token revocation error"
-msgstr "Error inesperado"
+msgstr "Error inesperado de revocación de token"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
