@@ -1648,8 +1648,24 @@ class ScriptParserTest(PicardTestCase):
         )
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
-            'map', 'between 2 and 3', ("$map()", "$map(abc; def)", "$map(abc:def,$noop(),:,extra)")
+            'map', 'between 2 and 4', ("$map()", "$map(abc; def)", "$map(abc:def,$noop(),:,1,extra)")
         )
+        # Tests with empty elements excluded (default)
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%))", "A; C")
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; )", "A; C")
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,)", "A; C")
+        # Tests with empty elements included
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,1)", "A; ; C")
+        # keep_empty is evaluated: an expression evaluating to a non-empty string enables it
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,a))", "A; ; C")
+        # keep_empty is evaluated: an expression evaluating to an empty string disables it
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,b))", "A; C")
+        # When keep_empty evaluates to True and separator is empty, default separator is used
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,$eq(a,a))", "A; ; C")
+        # # When keep_empty evaluates to False and separator is empty, default separator is used
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,$eq(a,b))", "A; C")
+        # When separator and keep_empty are both empty, separator is processed as empty string
+        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,)", "A; ; C")
 
     def test_cmd_joinmulti(self):
         context = Metadata()

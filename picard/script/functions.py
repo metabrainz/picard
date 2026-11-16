@@ -1229,7 +1229,7 @@ def func_while(parser, condition, loop_code):
 
 @script_function(
     eval_args=False,
-    signature=N_("$map(name,code[,separator=; ])"),
+    signature=N_("$map(name,code[,separator=; ][,keep_empty])"),
     documentation=N_(
         """Iterates over each element found in the multi-value tag `name` and updates the
     value of the element to the value returned by `code`, returning the updated
@@ -1237,18 +1237,27 @@ def func_while(parser, condition, loop_code):
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
     the element or count value to be accessed within the `code` script.
 
-Empty elements are automatically removed.
+Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
+If `keep_empty` is set and `separator` is empty, the default separator (`; `) is used.
 
 Example:
 
     $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))
 
 Result: 1=FIRST:A; 2=SECOND:B
+
+    $map(First:A; ; Second:B,$upper(%_loop_count%=%_loop_value%),,1)
+
+Result: 1=FIRST:A; 2=; 3=SECOND:B
 """
     ),
 )
-def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
-    multi_value = MultiValue(parser, multi, separator)
+def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER, keep_empty=False):
+    if not separator and keep_empty:
+        separator = MULTI_VALUED_JOINER
+    if isinstance(keep_empty, ScriptExpression):
+        keep_empty = keep_empty.eval(parser)
+    multi_value = MultiValue(parser, multi, separator, keep_empty)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
