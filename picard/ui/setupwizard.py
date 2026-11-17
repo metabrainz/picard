@@ -584,6 +584,40 @@ class MetadataPage(SetupWizardPage):
         config.setting['convert_punctuation'] = self.convert_punctuation_checkbox.is_checked()
 
 
+class PluginsNotesPage(SetupWizardPage):
+    """Page for displaying plugin usage notes."""
+
+    def __init__(self, parent: QtWidgets.QWizard | None = None):
+        super().__init__(parent)
+
+        self.setTitle(_("Plugins"))
+        self.setSubTitle(_("Notes about using plugins."))
+
+        layout = self._body_layout()
+        text_layout = QtWidgets.QVBoxLayout()
+
+        text = QtWidgets.QLabel(
+            _(
+                "<p>Picard's functionality can be extended through the use of plugins. "
+                "Plugins can be installed/uninstalled and enabled/disabled from the "
+                "Options menu. Installed plugins are loaded during the startup of "
+                "Picard, and are made available to the program.</p>"
+                "<p>The Plugins page under the Options menu differs from all other option "
+                "settings pages in that any changes made or actions taken on this page "
+                "are processed immediately and are not reverted if the user clicks "
+                "\"Cancel\".</p>"
+                "<p><strong>Be aware that installing plugins from unknown sources may pose "
+                "security risks. Only install plugins from sources you trust!</strong></p>"
+            )
+        )
+        text.setWordWrap(True)
+
+        text_layout.addWidget(text)
+        text_layout.addStretch()
+
+        layout.addLayout(text_layout, 1)
+
+
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
 
@@ -593,6 +627,7 @@ class SetupWizard(QtWidgets.QWizard):
         CoverArtPage,
         MetadataPage,
         UpdatesPage,
+        PluginsNotesPage,
     )
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
