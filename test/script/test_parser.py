@@ -482,6 +482,13 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$pad(abc de,0,-)", "abc de")
         self.assertScriptResultEquals("$pad(abc de,-3,-)", "abc de")
 
+    def test_cmd_pad_length_is_capped(self):
+        # Huge lengths (e.g. coming from bad tag data) must not exhaust memory
+        self.assertScriptResultEquals("$pad(a,1000,-)", "-" * 999 + "a")
+        self.assertScriptResultEquals("$pad(a,1001,-)", "-" * 999 + "a")
+        self.assertScriptResultEquals("$pad(a,999999999999,-)", "-" * 999 + "a")
+        self.assertScriptResultEquals("$pad(,999999999999,-)", "-" * 1000)
+
     def test_cmd_replace(self):
         self.assertScriptResultEquals("$replace(abc ab abd a,ab,test)", "testc test testd a")
 
