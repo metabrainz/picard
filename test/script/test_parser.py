@@ -368,17 +368,19 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
         self.assertEqual(["", "multi", ""], context.getall("test"))
 
-    def test_cmd_setmulti_will_keep_leading_spaces(self):
+    @subtest_cases(
+        "source",
+        {
+            'leading spaces': ([" a", "multi", "b"],),
+            'trailing spaces': (["a ", "multi", "b"],),
+            'leading and trailing spaces': ([" a ", " multi ", "b"],),
+        },
+    )
+    def test_cmd_setmulti_will_keep_surrounding_spaces(self, source):
         context = Metadata()
-        context["source"] = [" a", "multi", ""]
+        context["source"] = source
         self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
-        self.assertEqual([" a", "multi", ""], context.getall("test"))
-
-    def test_cmd_setmulti_will_keep_trailing_spaces(self):
-        context = Metadata()
-        context["source"] = ["a ", "multi", ""]
-        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context))  # no return value
-        self.assertEqual(["a ", "multi", ""], context.getall("test"))
+        self.assertEqual(source, context.getall("test"))
 
     def test_cmd_setmulti_custom_splitter_string(self):
         context = Metadata()
@@ -1006,12 +1008,41 @@ class ScriptParserTest(PicardTestCase):
         self.parser.eval("$copymerge(target,source,keep)", context)
         self.assertEqual(self.parser.context.getall("target"), ["targetval", "targetval"])
 
-    def test_cmd_copymerge_empty_elements(self):
+    @subtest_cases(
+        "script,target,source,expected",
+        {
+            'keep duplicates': (
+                "$copymerge(target,source,keep)",
+                ["target 1", "target 2"],
+                ["source 1", ""],
+                ["target 1", "target 2", "source 1", ""],
+            ),
+            'dedupe adds empty element': (
+                "$copymerge(target,source)",
+                ["target 1", "target 2"],
+                ["source 1", ""],
+                ["target 1", "target 2", "source 1", ""],
+            ),
+            'dedupe existing empty element': (
+                "$copymerge(target,source)",
+                ["target 1", ""],
+                ["source 1", ""],
+                ["target 1", "", "source 1"],
+            ),
+            'dedupe keeps spaces significant': (
+                "$copymerge(target,source)",
+                ["a", "b "],
+                [" a", "b"],
+                ["a", "b ", " a", "b"],
+            ),
+        },
+    )
+    def test_cmd_copymerge_empty_and_spaced_elements(self, script, target, source, expected):
         context = Metadata()
-        context["target"] = ["target 1", "target 2"]
-        context["source"] = ["source 1", ""]
-        self.parser.eval("$copymerge(target,source,keep)", context)
-        self.assertEqual(self.parser.context.getall("target"), ["target 1", "target 2", "source 1", ""])
+        context["target"] = target
+        context["source"] = source
+        self.parser.eval(script, context)
+        self.assertEqual(self.parser.context.getall("target"), expected)
 
     def test_cmd_eq_any(self):
         self.assertScriptResultEquals("$eq_any(abc,def,ghi,jkl)", "")
@@ -1196,8 +1227,20 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
         # Test no separator
         self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,)", "1", context)
-        # Test empty element
-        self.assertScriptResultEquals("$inmulti(a; ; c,)", "1", context)
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'empty element found': ("$inmulti(a; ; c,)", "1"),
+            'empty element not found': ("$inmulti(a; b; c,)", ""),
+            'leading space is significant': ("$inmulti(a;  b; c, b)", "1"),
+            'leading space missing in search': ("$inmulti(a;  b; c,b)", ""),
+            'trailing space is significant': ("$inmulti(a; b ; c,b )", "1"),
+            'trailing space missing in search': ("$inmulti(a; b ; c,b)", ""),
+        },
+    )
+    def test_cmd_inmulti_empty_and_spaced_elements(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
 
     def test_cmd_lenmulti(self):
         context = Metadata()
@@ -1714,16 +1757,21 @@ class ScriptParserTest(PicardTestCase):
             alternate_output,
             context,
         )
-        # Tests with empty elements
-        self.assertScriptResultEquals("$join(a; ; c,=>)", "a=>=>c", context)
-        # Tests with leading spaces
-        self.assertScriptResultEquals("$join(a;  b; c,=>)", "a=> b=>c", context)
-        # Tests with trailing spaces
-        self.assertScriptResultEquals("$join(a; b ; c,=>)", "a=>b =>c", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'join', 'between 2 and 3', ("$join()", "$join(abc; def)", "$join(abc:def, ==> ,:,extra)")
         )
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'empty element': ("$join(a; ; c,=>)", "a=>=>c"),
+            'leading spaces': ("$join(a;  b; c,=>)", "a=> b=>c"),
+            'trailing spaces': ("$join(a; b ; c,=>)", "a=>b =>c"),
+        },
+    )
+    def test_cmd_join_empty_and_spaced_elements(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
 
     def test_cmd_slice(self):
         context = Metadata()
@@ -1769,10 +1817,6 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,a,b)", output_0_3, context)
         # Tests with separator override
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,3,:)", alternate_output, context)
-        # Tests with empty elements
-        self.assertScriptResultEquals("$slice(a; b; ; d; e,2,3)", "", context)
-        self.assertScriptResultEquals("$slice(a; b; ; d; e,1,3)", "b; ", context)
-        self.assertScriptResultEquals("$slice(a; b; ; d; e,2,4)", "; d", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'slice', 'between 2 and 4', ("$slice()", "$slice(abc; def)", "$slice(abc; def),0,1,:,extra")
@@ -1921,6 +1965,19 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual(str(MultiValue(self.parser, expr, MULTI_VALUED_JOINER)), 'a; b')
         self.assertEqual(str(MultiValue(self.parser, expr, MULTI_VALUED_JOINER, True)), 'a; ; b')
 
+    @subtest_cases(
+        "script,expected",
+        {
+            'only an empty element': ("$slice(a; b; ; d; e,2,3)", ""),
+            'empty element at the end': ("$slice(a; b; ; d; e,1,3)", "b; "),
+            'empty element at the start': ("$slice(a; b; ; d; e,2,4)", "; d"),
+            'leading spaces': ("$slice(a;  b; c,1,2)", " b"),
+            'trailing spaces': ("$slice(a; b ; c,1,2)", "b "),
+        },
+    )
+    def test_cmd_slice_empty_and_spaced_elements(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
+
     def test_cmd_sortmulti(self):
         context = Metadata()
         context["foo"] = ['B', 'D', 'E', 'A', 'C']
@@ -1938,14 +1995,21 @@ class ScriptParserTest(PicardTestCase):
         # Tests with missing inputs
         self.assertScriptResultEquals("$sortmulti(,)", "", context)
         self.assertScriptResultEquals("$sortmulti(,:)", "", context)
-        # Tests with empty elements
-        self.assertScriptResultEquals("$sortmulti(b; ; c; a)", "; a; b; c", context)
-        # Tests with leading spaces
-        self.assertScriptResultEquals("$sortmulti( b; c; a)", " b; a; c", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'sortmulti', 'between 1 and 2', ("$sortmulti()", "$sortmulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
         )
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'empty element': ("$sortmulti(b; ; c; a)", "; a; b; c"),
+            'leading spaces': ("$sortmulti( b; c; a)", " b; a; c"),
+            'trailing spaces': ("$sortmulti(b ; c; a)", "a; b ; c"),
+        },
+    )
+    def test_cmd_sortmulti_empty_and_spaced_elements(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
 
     def test_cmd_reversemulti(self):
         context = Metadata()
@@ -1964,16 +2028,21 @@ class ScriptParserTest(PicardTestCase):
         # Tests with missing inputs
         self.assertScriptResultEquals("$reversemulti(,)", "", context)
         self.assertScriptResultEquals("$reversemulti(,:)", "", context)
-        # Tests with empty element
-        self.assertScriptResultEquals("$reversemulti(a; ; b; c)", "c; b; ; a", context)
-        # Tests with leading spaces
-        self.assertScriptResultEquals("$reversemulti(a;  b; c)", "c;  b; a", context)
-        # Tests with trailinging spaces
-        self.assertScriptResultEquals("$reversemulti(a; b ; c)", "c; b ; a", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'reversemulti', 'between 1 and 2', ("$reversemulti()", "$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
         )
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'empty element': ("$reversemulti(a; ; b; c)", "c; b; ; a"),
+            'leading spaces': ("$reversemulti(a;  b; c)", "c;  b; a"),
+            'trailing spaces': ("$reversemulti(a; b ; c)", "c; b ; a"),
+        },
+    )
+    def test_cmd_reversemulti_empty_and_spaced_elements(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
 
     def test_cmd_unique(self):
         context = Metadata()
@@ -1992,16 +2061,32 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$unique(,)", "", context)
         self.assertScriptResultEquals("$unique(,,)", "", context)
         self.assertScriptResultEquals("$unique(,:)", "", context)
-        # Tests with empty elements
-        self.assertScriptResultEquals("$unique(a; A; B; b; ; cd; Cd; cD; CD; a; A; b)", "; A; CD; b", context)
-        # Tests with leading spaces
-        self.assertScriptResultEquals("$unique(a; A; B; b; cd; Cd; cD;  A; CD; a; A; b)", " A; A; CD; b", context)
-        # Tests with trailing spaces
-        self.assertScriptResultEquals("$unique(a; A; B; b; cd; Cd; cD; A ; CD; a; A; b)", "A; A ; CD; b", context)
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'unique', 'between 1 and 3', ("$unique()", "$unique(B:AB; D:C; E:D; A:A; C:X,1,:,extra)")
         )
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'empty element': (
+                "$unique(a; A; B; b; ; cd; Cd; cD; CD; a; A; b)",
+                "; A; CD; b",
+            ),
+            'leading spaces': (
+                "$unique(a; A; B; b; cd; Cd; cD;  A; CD; a; A; b)",
+                " A; A; CD; b",
+            ),
+            'trailing spaces': (
+                "$unique(a; A; B; b; cd; Cd; cD; A ; CD; a; A; b)",
+                "A; A ; CD; b",
+            ),
+        },
+    )
+    def test_cmd_unique_empty_and_spaced_elements(self, script, expected):
+        # Spaces are significant: " A" and "A " are distinct from "A".
+        # Otherwise values are compared case-insensitively, and the last variant seen is kept.
+        self.assertScriptResultEquals(script, expected)
 
     def test_cmd_countryname(self):
         context = Metadata()
