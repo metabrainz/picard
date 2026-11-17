@@ -450,6 +450,7 @@ def _run_shell(args):
     history = _setup_readline(registry, session)
     session.history = history
 
+    output.warning("The shell is experimental: commands and behavior may change without notice.")
     output.print(output.dim("Picard engine shell — type 'help', 'quit' to exit."))
 
     def read_line():
