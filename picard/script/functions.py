@@ -1229,7 +1229,7 @@ def func_while(parser, condition, loop_code):
 
 @script_function(
     eval_args=False,
-    signature=N_("$map(name,code[,separator=; ][,keep_empty])"),
+    signature=N_("$map(name,code[,separator=; [,keep_empty]])"),
     documentation=N_(
         """Iterates over each element found in the multi-value tag `name` and updates the
     value of the element to the value returned by `code`, returning the updated
