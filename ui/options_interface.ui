@@ -18,14 +18,14 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCheckBox" name="toolbar_show_labels">
+       <widget class="WrappingCheckBox" name="toolbar_show_labels">
         <property name="text">
          <string>Show text labels under icons</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="show_menu_icons">
+       <widget class="WrappingCheckBox" name="show_menu_icons">
         <property name="text">
          <string>Show icons in menus</string>
         </property>
@@ -101,42 +101,42 @@
      </property>
      <layout class="QVBoxLayout">
       <item>
-       <widget class="QCheckBox" name="allow_multi_dirs_selection">
+       <widget class="WrappingCheckBox" name="allow_multi_dirs_selection">
         <property name="text">
          <string>Allow selection of multiple directories</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="new_user_dialog">
+       <widget class="WrappingCheckBox" name="new_user_dialog">
         <property name="text">
          <string>Show the new user dialog when starting Picard</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="quit_confirmation">
+       <widget class="WrappingCheckBox" name="quit_confirmation">
         <property name="text">
          <string>Show a quit confirmation dialog for unsaved changes</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="file_save_warning">
+       <widget class="WrappingCheckBox" name="file_save_warning">
         <property name="text">
          <string>Show a confirmation dialog when saving files</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="filebrowser_horizontal_autoscroll">
+       <widget class="WrappingCheckBox" name="filebrowser_horizontal_autoscroll">
         <property name="text">
          <string>Adjust horizontal position in file browser automatically</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="starting_directory">
+       <widget class="WrappingCheckBox" name="starting_directory">
         <property name="text">
          <string>Begin browsing in the following directory:</string>
         </property>
@@ -224,4 +224,11 @@
  </tabstops>
  <resources/>
  <connections/>
+ <customwidgets>
+  <customwidget>
+   <class>WrappingCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>picard.ui.widgets.wrappingcheckbox</header>
+  </customwidget>
+ </customwidgets>
 </ui>

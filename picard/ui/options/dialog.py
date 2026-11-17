@@ -245,37 +245,6 @@ class _PageScrollArea(QtWidgets.QScrollArea):
         else:
             h = viewport_size.height()
         widget.resize(w, h)
-        self._update_checkboxes(widget, viewport_size.width())
-
-    def _update_checkboxes(self, widget, viewport_width):
-        for cb in widget.findChildren(QtWidgets.QCheckBox):
-            full_text = getattr(cb, '_full_text', None)
-            if full_text is None:
-                full_text = cb.text()
-                cb._full_text = full_text
-            if not full_text:
-                continue
-
-            opt = QtWidgets.QStyleOptionButton()
-            cb.initStyleOption(opt)
-            style = cb.style()
-            ind_w = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_IndicatorWidth, opt, cb)
-            spacing = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_CheckBoxLabelSpacing, opt, cb)
-
-            parent = cb.parentWidget()
-            parent_w = parent.contentsRect().width() if parent else viewport_width
-            max_width = min(parent_w, viewport_width) - ind_w - spacing - 20
-            if max_width <= 30:
-                continue
-
-            metrics = cb.fontMetrics()
-            if metrics.horizontalAdvance(full_text) > max_width:
-                elided = metrics.elidedText(full_text, QtCore.Qt.TextElideMode.ElideRight, max_width)
-                cb.setText(elided)
-                cb.setToolTip(full_text)
-            else:
-                cb.setText(full_text)
-                cb.setToolTip("")
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):

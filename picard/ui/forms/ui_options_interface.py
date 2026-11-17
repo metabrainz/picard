@@ -1,6 +1,6 @@
-# Form implementation generated from reading ui file 'ui/options_interface.ui'
+# Form implementation generated from reading ui file 'ui\options_interface.ui'
 #
-# Created by: PyQt6 UI code generator 6.11.0
+# Created by: PyQt6 UI code generator 6.12.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -24,10 +24,10 @@ class Ui_InterfaceOptionsPage(object):
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.toolbar_show_labels = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.toolbar_show_labels = WrappingCheckBox(parent=self.groupBox)
         self.toolbar_show_labels.setObjectName("toolbar_show_labels")
         self.verticalLayout_3.addWidget(self.toolbar_show_labels)
-        self.show_menu_icons = QtWidgets.QCheckBox(parent=self.groupBox)
+        self.show_menu_icons = WrappingCheckBox(parent=self.groupBox)
         self.show_menu_icons.setObjectName("show_menu_icons")
         self.verticalLayout_3.addWidget(self.show_menu_icons)
         self.user_interface_language_label = QtWidgets.QLabel(parent=self.groupBox)
@@ -57,22 +57,22 @@ class Ui_InterfaceOptionsPage(object):
         self.miscellaneous_box.setObjectName("miscellaneous_box")
         self.vboxlayout1 = QtWidgets.QVBoxLayout(self.miscellaneous_box)
         self.vboxlayout1.setObjectName("vboxlayout1")
-        self.allow_multi_dirs_selection = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.allow_multi_dirs_selection = WrappingCheckBox(parent=self.miscellaneous_box)
         self.allow_multi_dirs_selection.setObjectName("allow_multi_dirs_selection")
         self.vboxlayout1.addWidget(self.allow_multi_dirs_selection)
-        self.new_user_dialog = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.new_user_dialog = WrappingCheckBox(parent=self.miscellaneous_box)
         self.new_user_dialog.setObjectName("new_user_dialog")
         self.vboxlayout1.addWidget(self.new_user_dialog)
-        self.quit_confirmation = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.quit_confirmation = WrappingCheckBox(parent=self.miscellaneous_box)
         self.quit_confirmation.setObjectName("quit_confirmation")
         self.vboxlayout1.addWidget(self.quit_confirmation)
-        self.file_save_warning = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.file_save_warning = WrappingCheckBox(parent=self.miscellaneous_box)
         self.file_save_warning.setObjectName("file_save_warning")
         self.vboxlayout1.addWidget(self.file_save_warning)
-        self.filebrowser_horizontal_autoscroll = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.filebrowser_horizontal_autoscroll = WrappingCheckBox(parent=self.miscellaneous_box)
         self.filebrowser_horizontal_autoscroll.setObjectName("filebrowser_horizontal_autoscroll")
         self.vboxlayout1.addWidget(self.filebrowser_horizontal_autoscroll)
-        self.starting_directory = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.starting_directory = WrappingCheckBox(parent=self.miscellaneous_box)
         self.starting_directory.setObjectName("starting_directory")
         self.vboxlayout1.addWidget(self.starting_directory)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
@@ -129,3 +129,4 @@ class Ui_InterfaceOptionsPage(object):
         self.starting_directory.setText(_("Begin browsing in the following directory:"))
         self.starting_directory_path.setToolTip(_("Directory to begin browsing"))
         self.starting_directory_browse.setToolTip(_("Select directory"))
+from picard.ui.widgets.wrappingcheckbox import WrappingCheckBox
