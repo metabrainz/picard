@@ -225,9 +225,11 @@ def func_in(parser, text, needle):
 
 @script_function(
     eval_args=False,
-    signature=N_("$inmulti(%x%,y)"),
+    signature=N_("$inmulti(%x%,y[,separator=; ])"),
     documentation=N_(
         """Returns true if multi-value variable `x` contains exactly `y` as one of its values.
+A literal value representing a multi-value can be substituted for `x`, using the
+`separator` (or "; " if not passed) to coerce the value into a proper multi-valued tag.
 
 _Since Picard 1.0_"""
     ),
@@ -940,7 +942,6 @@ def func_truncate(parser, text, length):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$swapprefix(text,prefix1,prefix2,…)"),
     documentation=N_(
         """Moves the specified prefixes from the beginning to the end of `text`. Multiple
@@ -964,7 +965,6 @@ def func_swapprefix(parser, text, *prefixes):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$delprefix(text,prefix1,prefix2,…)"),
     documentation=N_(
         """Deletes the specified prefixes from the beginning of `text`. Multiple
@@ -1004,7 +1004,6 @@ def _delete_prefix(parser, text, *prefixes):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$eq_any(x,a1,a2,…)"),
     documentation=N_(
         """Returns true if `x` equals `a1` or `a2` or …
@@ -1018,7 +1017,6 @@ def func_eq_any(parser, x, *args):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$ne_all(x,a1,a2,…)"),
     documentation=N_(
         """Returns true if `x` does not equal `a1` and `a2` and …
@@ -1032,7 +1030,6 @@ def func_ne_all(parser, x, *args):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$eq_all(x,a1,a2,…)"),
     documentation=N_(
         """Returns true if `x` equals `a1` and `a2` and …
@@ -1052,7 +1049,6 @@ def func_eq_all(parser, x, *args):
 
 
 @script_function(
-    check_argcount=False,
     signature=N_("$ne_any(x,a1,a2,…)"),
     documentation=N_(
         """Returns true if `x` does not equal `a1` or `a2` or …
@@ -1274,7 +1270,7 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$slice(name,start,end[,separator=; ])"),
+    signature=N_("$slice(name,start[,end[,separator=; ]])"),
     documentation=N_(
         """Returns a multi-value variable containing the elements between the `start` and
     `end` indexes from the multi-value tag `name`. A literal value representing
@@ -1388,7 +1384,7 @@ Result: A; CD; b
 
 Example 2:
 
-    $setmulti(foo,a; A; B; b; a; b; A; B, cd)
+    $setmulti(foo,a; A; B; b; a; b; A; B; cd)
     $unique(%foo%,True)
 
 Result: A; B; a; b; cd
