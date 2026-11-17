@@ -890,7 +890,8 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_len(self):
         self.assertScriptResultEquals("$len(abcdefg)", "7")
         self.assertScriptResultEquals("$len(0)", "1")
-        self.assertScriptResultEquals("$len()", "0")
+        self.assertScriptResultEquals("$len(%unknown%)", "0")
+        self._assert_arg_count_errors('len', 'exactly 1', ("$len()", "$len(abc,def)"))
 
     def test_cmd_firstalphachar(self):
         self.assertScriptResultEquals("$firstalphachar(abc)", "A")
@@ -899,16 +900,20 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$firstalphachar(...abc)", "#")
         self.assertScriptResultEquals("$firstalphachar(1abc,_)", "_")
         self.assertScriptResultEquals("$firstalphachar(...abc,_)", "_")
-        self.assertScriptResultEquals("$firstalphachar()", "#")
+        self.assertScriptResultEquals("$firstalphachar(%unknown%)", "#")
         self.assertScriptResultEquals("$firstalphachar(,_)", "_")
         self.assertScriptResultEquals("$firstalphachar( abc)", "#")
+        self._assert_arg_count_errors(
+            'firstalphachar', 'between 1 and 2', ("$firstalphachar()", "$firstalphachar(abc,_,extra)")
+        )
 
     def test_cmd_initials(self):
         self.assertScriptResultEquals("$initials(Abc def Ghi)", "AdG")
         self.assertScriptResultEquals("$initials(Abc #def Ghi)", "AG")
         self.assertScriptResultEquals("$initials(Abc 1def Ghi)", "AG")
         self.assertScriptResultEquals("$initials(Abc)", "A")
-        self.assertScriptResultEquals("$initials()", "")
+        self.assertScriptResultEquals("$initials(%unknown%)", "")
+        self._assert_arg_count_errors('initials', 'exactly 1', ("$initials()", "$initials(abc,def)"))
 
     def test_cmd_firstwords(self):
         self.assertScriptResultEquals("$firstwords(Abc Def Ghi,11)", "Abc Def Ghi")
@@ -1767,7 +1772,7 @@ class ScriptParserTest(PicardTestCase):
             context["foo"] = "%Y%m%d%H%M%S.%f"
             # Tests with context
             self.assertScriptResultEquals("$datetime(%foo%)", "20200102123456.000789", context)
-            self.assertScriptResultEquals("$datetime($initials())", "2020-01-02 12:34:56", context)
+            self.assertScriptResultEquals("$datetime($initials(%unknown%))", "2020-01-02 12:34:56", context)
             # Tests with static input
             self.assertScriptResultEquals(r"$datetime(\%Y\%m\%d\%H\%M\%S.\%f)", "20200102123456.000789", context)
             # Tests with timezones
