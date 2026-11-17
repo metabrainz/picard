@@ -61,6 +61,11 @@ from picard.util import (
 )
 
 
+# Maximum length of the string returned by $pad(), prevents memory exhaustion
+# with huge values (e.g. coming from corrupted tags)
+PAD_MAX_LENGTH = 1000
+
+
 def _compute_int(operation, *args):
     return str(reduce(operation, map(int, args)))
 
@@ -145,12 +150,13 @@ def func_upper(parser, text):
     signature=N_("$pad(text,length,char)"),
     documentation=N_(
         "Pads the `text` to the `length` provided by adding as many copies of `char` as"
-        " needed to the **beginning** of the string."
+        " needed to the **beginning** of the string. `length` is limited to 1000 characters."
     ),
 )
 def func_pad(parser, text, length, char):
     try:
-        return char * (int(length) - len(text)) + text
+        length = min(int(length), PAD_MAX_LENGTH)
+        return char * (length - len(text)) + text
     except ValueError:
         return ''
 
