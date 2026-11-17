@@ -176,13 +176,29 @@ def func_replace(parser, text, old, new):
     return text.replace(old, new)
 
 
+def _resolve_multi_options(parser, separator, keep_empty):
+    """Evaluate the `separator` and `keep_empty` arguments of multi-value functions.
+
+    Both arguments are passed unevaluated (`eval_args=False`), so they must be
+    evaluated before being tested. If `separator` is empty, the default
+    separator is used, regardless of `keep_empty`.
+    """
+    if isinstance(separator, ScriptExpression):
+        separator = separator.eval(parser)
+    if isinstance(keep_empty, ScriptExpression):
+        keep_empty = keep_empty.eval(parser)
+    if not separator:
+        separator = MULTI_VALUED_JOINER
+    return separator, keep_empty
+
+
 @script_function(
     eval_args=False,
     signature=N_("$replacemulti(name,search,replace[,separator=; ][,keep_empty])"),
     documentation=N_(
         """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
 Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
-If `keep_empty` is set and `separator` is empty, the default separator (`; `) is used.
+If `separator` is empty, the default separator (`; `) is used.
 
 Examples:
 
@@ -195,10 +211,7 @@ Result: One; ; Three
     ),
 )
 def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOINER, keep_empty=False):
-    if not separator and keep_empty:
-        separator = MULTI_VALUED_JOINER
-    if isinstance(keep_empty, ScriptExpression):
-        keep_empty = keep_empty.eval(parser)
+    separator, keep_empty = _resolve_multi_options(parser, separator, keep_empty)
     if not multi or not search or replace is None or not separator:
         return multi.eval(parser)
 
@@ -1238,7 +1251,7 @@ def func_while(parser, condition, loop_code):
     the element or count value to be accessed within the `code` script.
 
 Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
-If `keep_empty` is set and `separator` is empty, the default separator (`; `) is used.
+If `separator` is empty, the default separator (`; `) is used.
 
 Example:
 
@@ -1253,10 +1266,7 @@ Result: 1=FIRST:A; 2=; 3=SECOND:B
     ),
 )
 def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER, keep_empty=False):
-    if not separator and keep_empty:
-        separator = MULTI_VALUED_JOINER
-    if isinstance(keep_empty, ScriptExpression):
-        keep_empty = keep_empty.eval(parser)
+    separator, keep_empty = _resolve_multi_options(parser, separator, keep_empty)
     multi_value = MultiValue(parser, multi, separator, keep_empty)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))

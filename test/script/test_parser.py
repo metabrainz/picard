@@ -512,18 +512,53 @@ class ScriptParserTest(PicardTestCase):
         context["test"] = ["One", "Two", "Three"]
         self.assertScriptResultEquals("$replacemulti(%test%,Two,,,1)", "One; ; Three", context)
 
-        self.assertScriptResultEquals("$replacemulti(a; b; c,b,,; ,1)", "a; ; c", context)
-        # Existing empty elements are kept too
-        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,1)", "a; ; c", context)
-        # keep_empty is evaluated: an expression evaluating to an empty string disables it
-        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,; ,%unknown%)", "a; c", context)
-        # When keep_empty evaluates to True and separator is empty, default separator is used
-        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,1)", "a; ; c", context)
-        # When keep_empty evaluates to False and separator is empty, default separator is used
-        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,%unknown%)", "a; c", context)
+    @subtest_cases(
+        "script,expected",
+        {
+            'default removes empty elements': ("$replacemulti(a; ; c,x,y)", "a; c"),
+            'default removes replaced element': ("$replacemulti(a; b; c,b,)", "a; c"),
+            'keep_empty keeps replaced element': ("$replacemulti(a; b; c,b,,; ,1)", "a; ; c"),
+            'keep_empty keeps existing empty elements': ("$replacemulti(a; ; c,x,y,; ,1)", "a; ; c"),
+            'keep_empty with custom separator': ("$replacemulti(a:b::c,b,z,:,1)", "a:z::c"),
+            'custom separator without keep_empty': ("$replacemulti(a:b::c,b,z,:)", "a:z:c"),
+            'empty keep_empty argument disables it': ("$replacemulti(a; ; c,x,y,; ,)", "a; c"),
+            'keep_empty expression, non-empty result': ("$replacemulti(a; ; c,x,y,; ,$eq(a,a))", "a; ; c"),
+            'keep_empty expression, empty result': ("$replacemulti(a; ; c,x,y,; ,$eq(a,b))", "a; c"),
+            'keep_empty expression, empty variable': ("$replacemulti(a; ; c,x,y,; ,%unknown%)", "a; c"),
+            'empty separator, keep_empty set: default separator': ("$replacemulti(a; b; c,b,z,,1)", "a; z; c"),
+            'empty separator, keep_empty expression true: default separator': (
+                "$replacemulti(a; b; c,b,z,,$eq(a,a))",
+                "a; z; c",
+            ),
+            'empty separator, keep_empty expression false: default separator': (
+                "$replacemulti(a; b; c,b,z,,$eq(a,b))",
+                "a; z; c",
+            ),
+            'empty separator, keep_empty empty variable: default separator': (
+                "$replacemulti(a; ; c,a,z,,%unknown%)",
+                "z; c",
+            ),
+            'empty separator, empty keep_empty: default separator': ("$replacemulti(a; ; c,a,z,,)", "z; c"),
+            'separator expression empty, keep_empty set: default separator': (
+                "$replacemulti(a; b; c,b,z,%unknown%,1)",
+                "a; z; c",
+            ),
+            'separator expression empty, keep_empty unset: default separator': (
+                "$replacemulti(a; b; c,b,z,%unknown%)",
+                "a; z; c",
+            ),
+        },
+    )
+    def test_cmd_replacemulti_keep_empty(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
 
-        # When separator and keep_empty are both empty, separator is processed as empty string
-        self.assertScriptResultEquals("$replacemulti(a; ; c,x,y,,)", "a; ; c", context)
+    def test_cmd_replacemulti_keep_empty_variable(self):
+        context = Metadata()
+        context["test"] = ["a", "", "b"]
+        self.assertScriptResultEquals("$replacemulti(%test%,b,z)", "a; z", context)
+        self.assertScriptResultEquals("$replacemulti(%test%,b,z,,1)", "a; ; z", context)
+        # The source variable is not modified
+        self.assertEqual(context.getall("test"), ["a", "", "b"])
 
     def test_cmd_strip(self):
         self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
@@ -1650,22 +1685,64 @@ class ScriptParserTest(PicardTestCase):
         self._assert_arg_count_errors(
             'map', 'between 2 and 4', ("$map()", "$map(abc; def)", "$map(abc:def,$noop(),:,1,extra)")
         )
-        # Tests with empty elements excluded (default)
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%))", "A; C")
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; )", "A; C")
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,)", "A; C")
-        # Tests with empty elements included
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,1)", "A; ; C")
-        # keep_empty is evaluated: an expression evaluating to a non-empty string enables it
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,a))", "A; ; C")
-        # keep_empty is evaluated: an expression evaluating to an empty string disables it
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,b))", "A; C")
-        # When keep_empty evaluates to True and separator is empty, default separator is used
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,$eq(a,a))", "A; ; C")
-        # # When keep_empty evaluates to False and separator is empty, default separator is used
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,$eq(a,b))", "A; C")
-        # When separator and keep_empty are both empty, separator is processed as empty string
-        self.assertScriptResultEquals("$map(a; ; c,$upper(%_loop_value%),,)", "A; ; C")
+
+    @subtest_cases(
+        "script,expected",
+        {
+            'default removes empty elements': ("$map(a; ; c,$upper(%_loop_value%))", "A; C"),
+            'default with explicit separator': ("$map(a; ; c,$upper(%_loop_value%),; )", "A; C"),
+            'empty keep_empty argument disables it': ("$map(a; ; c,$upper(%_loop_value%),; ,)", "A; C"),
+            'keep_empty keeps empty elements': ("$map(a; ; c,$upper(%_loop_value%),; ,1)", "A; ; C"),
+            'keep_empty runs the code on empty elements': (
+                "$map(a; ; c,[%_loop_count%%_loop_value%],; ,1)",
+                "[1a]; [2]; [3c]",
+            ),
+            'keep_empty with custom separator': ("$map(a::c,$upper(%_loop_value%),:,1)", "A::C"),
+            'custom separator without keep_empty': ("$map(a::c,$upper(%_loop_value%),:)", "A:C"),
+            'keep_empty expression, non-empty result': (
+                "$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,a))",
+                "A; ; C",
+            ),
+            'keep_empty expression, empty result': ("$map(a; ; c,$upper(%_loop_value%),; ,$eq(a,b))", "A; C"),
+            'keep_empty expression, empty variable': ("$map(a; ; c,$upper(%_loop_value%),; ,%unknown%)", "A; C"),
+            'empty separator, keep_empty set: default separator': (
+                "$map(a; ; c,$upper(%_loop_value%),,1)",
+                "A; ; C",
+            ),
+            'empty separator, keep_empty expression true: default separator': (
+                "$map(a; ; c,[%_loop_value%],,$eq(a,a))",
+                "[a]; []; [c]",
+            ),
+            'empty separator, keep_empty expression false: default separator': (
+                "$map(a; ; c,$upper(%_loop_value%),,$eq(a,b))",
+                "A; C",
+            ),
+            'empty separator, keep_empty empty variable: default separator': (
+                "$map(a; ; c,$upper(%_loop_value%),,%unknown%)",
+                "A; C",
+            ),
+            'empty separator, empty keep_empty: default separator': ("$map(a; ; c,$upper(%_loop_value%),,)", "A; C"),
+            'separator expression empty, keep_empty set: default separator': (
+                "$map(a; ; c,[%_loop_value%],%unknown%,1)",
+                "[a]; []; [c]",
+            ),
+            'separator expression empty, keep_empty unset: default separator': (
+                "$map(a; ; c,$upper(%_loop_value%),%unknown%)",
+                "A; C",
+            ),
+        },
+    )
+    def test_cmd_map_keep_empty(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
+
+    def test_cmd_map_keep_empty_variable(self):
+        context = Metadata()
+        context["test"] = ["a", "", "c"]
+        self.assertScriptResultEquals("$map(%test%,$upper(%_loop_value%))", "A; C", context)
+        self.assertScriptResultEquals("$map(%test%,$upper(%_loop_value%),,1)", "A; ; C", context)
+        self.assertScriptResultEquals("$map(%test%,$upper(%_loop_value%),; ,1)", "A; ; C", context)
+        # The source variable is not modified
+        self.assertEqual(context.getall("test"), ["a", "", "c"])
 
     def test_cmd_joinmulti(self):
         context = Metadata()
