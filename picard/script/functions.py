@@ -178,7 +178,7 @@ def func_replace(parser, text, old, new):
 
 @script_function(
     eval_args=False,
-    signature=N_("$replacemulti(name,search,replace[,separator=; ][,keep_empty])"),
+    signature=N_("$replacemulti(name,search,replace[,separator=; [,keep_empty]])"),
     documentation=N_(
         """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
 Empty elements are automatically removed, unless `keep_empty` is set to a non-empty value.
