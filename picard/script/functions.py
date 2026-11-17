@@ -754,7 +754,7 @@ def func_gte(parser, x, y, _type=None):
     signature=N_("$len(text)"),
     documentation=N_("Returns the number of characters in `text`."),
 )
-def func_len(parser, text=""):
+def func_len(parser, text):
     return str(len(text))
 
 
@@ -849,7 +849,7 @@ specified, the default value "#" will be used.
 _Since Picard 0.12_"""
     ),
 )
-def func_firstalphachar(parser, text="", nonalpha="#"):
+def func_firstalphachar(parser, text, nonalpha="#"):
     if not text:
         return nonalpha
     firstchar = text[0]
@@ -867,7 +867,7 @@ def func_firstalphachar(parser, text="", nonalpha="#"):
 _Since Picard 0.12_"""
     ),
 )
-def func_initials(parser, text=""):
+def func_initials(parser, text):
     return ''.join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 
