@@ -1010,6 +1010,13 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$ne_any(abc,abc,abc,abc)", "")
         self.assertScriptResultEquals("$ne_any(abc,abc,def,ghi)", "1")
 
+    @subtest_cases(
+        "func",
+        ['delprefix', 'swapprefix', 'eq_any', 'eq_all', 'ne_any', 'ne_all'],
+    )
+    def test_variadic_cmd_requires_first_argument(self, func):
+        self._assert_arg_count_errors(func, 'at least 1', (f"${func}()",))
+
     def test_cmd_title(self):
         self.assertScriptResultEquals("$title(abc Def g)", "Abc Def G")
         self.assertScriptResultEquals("$title(Abc Def G)", "Abc Def G")
@@ -1932,6 +1939,16 @@ class ScriptParserTest(PicardTestCase):
         # Tests with invalid number of arguments
         self._assert_arg_count_errors(
             'reversemulti', 'between 1 and 2', ("$reversemulti()", "$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+        )
+
+    def test_cmd_unique_documented_examples(self):
+        self.assertScriptResultEquals(
+            "$setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)$unique(%foo%)",
+            "A; CD; b",
+        )
+        self.assertScriptResultEquals(
+            "$setmulti(foo,a; A; B; b; a; b; A; B; cd)$unique(%foo%,True)",
+            "A; B; a; b; cd",
         )
 
     def test_cmd_unique(self):
