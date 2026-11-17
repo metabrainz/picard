@@ -1,6 +1,6 @@
-# Form implementation generated from reading ui file 'ui\options_interface.ui'
+# Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created by: PyQt6 UI code generator 6.12.0
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.

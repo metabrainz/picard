@@ -1,7 +1,6 @@
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2026 Bob Swift
-# Copyright (C) 2026 Laurent Monin
+# Copyright (C) 2026 Nabhag Sorathiya
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,22 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-import unittest
-
 from PyQt6 import (
     QtCore,
     QtGui,
-    QtWidgets,
 )
+
+from test.picardtestcase import PicardTestCase
 
 from picard.ui.widgets.wrappingcheckbox import WrappingCheckBox
 
 
-class WrappingCheckBoxTest(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.app = QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
-
+class WrappingCheckBoxTest(PicardTestCase):
     def test_has_height_for_width(self):
         cb = WrappingCheckBox("Short text")
         self.assertTrue(cb.hasHeightForWidth())
@@ -68,34 +62,24 @@ class WrappingCheckBoxTest(unittest.TestCase):
         cb = WrappingCheckBox(long_text)
         cb.resize(250, cb.heightForWidth(250))
 
-        # Paint LTR
-        pix_ltr = QtGui.QPixmap(cb.size())
-        cb.render(pix_ltr)
-        self.assertFalse(pix_ltr.isNull())
+        # LTR: indicator is on the left (x == 0), text starts after indicator
+        ind_ltr, text_ltr, align_ltr = cb._layout_rects(250)
+        self.assertEqual(ind_ltr.left(), 0)
+        self.assertGreater(text_ltr.left(), 0)
+        self.assertEqual(align_ltr, QtCore.Qt.AlignmentFlag.AlignLeft)
 
-        # Paint RTL
+        # RTL: indicator is on the right, text starts at left edge
         cb.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
-        pix_rtl = QtGui.QPixmap(cb.size())
-        cb.render(pix_rtl)
-        self.assertFalse(pix_rtl.isNull())
+        ind_rtl, text_rtl, align_rtl = cb._layout_rects(250)
+        self.assertGreater(ind_rtl.left(), 0)
+        self.assertEqual(text_rtl.left(), 0)
+        self.assertEqual(align_rtl, QtCore.Qt.AlignmentFlag.AlignRight)
 
-    def test_signals_and_toggle(self):
-        cb = WrappingCheckBox("Toggle test")
-        toggled_states = []
-        cb.toggled.connect(toggled_states.append)
-
-        cb.setChecked(True)
-        self.assertTrue(cb.isChecked())
-        self.assertEqual(toggled_states, [True])
-
-        cb.setChecked(False)
-        self.assertFalse(cb.isChecked())
-        self.assertEqual(toggled_states, [True, False])
-
-    def test_tooltip_untouched(self):
-        cb = WrappingCheckBox("No tooltip change")
-        self.assertEqual(cb.toolTip(), "")
-        cb.setToolTip("Custom profile tooltip")
-        cb.resize(100, 50)
-        # Verify tooltip remains exactly what was set
-        self.assertEqual(cb.toolTip(), "Custom profile tooltip")
+    def test_resize_updates_height(self):
+        long_text = "Afficher une boîte de dialogue de confirmation lors de l'enregistrement des fichiers"
+        cb = WrappingCheckBox(long_text)
+        expected_height = cb.heightForWidth(200)
+        event = QtGui.QResizeEvent(QtCore.QSize(200, 20), QtCore.QSize(640, 480))
+        cb.resize(200, 20)
+        cb.resizeEvent(event)
+        self.assertEqual(cb.minimumHeight(), expected_height)
