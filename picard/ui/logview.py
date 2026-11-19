@@ -59,6 +59,7 @@ from picard.ui.logviewmodel import (
 from picard.ui.theme import theme
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     context_menu_global_pos,
 )
 
@@ -506,6 +507,7 @@ class LogView(LogViewCommon):
             caption=_("Save Log View to File"),
             filter=_("Text files (*.txt);;All files (*)"),
             options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,
+            history_key=FileDialogHistoryKey.LOG_FILE,
         )
         if ok and path:
             if os.path.isfile(path):

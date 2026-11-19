@@ -213,6 +213,7 @@ from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     busy_cursor_start,
     busy_cursor_stop,
     show_session_not_found_dialog,
@@ -952,7 +953,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
-        file_chooser = FileDialog(parent=self.window)
+        file_chooser = FileDialog(parent=self.window, history_key=FileDialogHistoryKey.CD_LOG_FILE)
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [

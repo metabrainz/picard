@@ -79,6 +79,7 @@ from .imageurldialog import ImageURLDialog
 
 from picard.ui.util import (
     FileDialog,
+    FileDialogHistoryKey,
     context_menu_global_pos,
     strikethrough_removal_text,
 )
@@ -514,7 +515,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         return coverartimage
 
     def choose_local_file(self):
-        file_chooser = FileDialog(parent=self)
+        file_chooser = FileDialog(parent=self, history_key=FileDialogHistoryKey.COVER_ART_FILE)
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFiles)
         extensions = ['*' + ext for ext in imageinfo.get_supported_extensions()]
         extensions.sort()

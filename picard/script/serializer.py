@@ -32,7 +32,6 @@ import uuid
 import yaml
 
 from PyQt6 import (
-    QtCore,
     QtWidgets,
 )
 
@@ -49,7 +48,11 @@ from picard.util import (
     resolve_fs_path,
 )
 
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    FileDialogHistoryKey,
+    get_file_dialog_directory,
+)
 
 
 @unique
@@ -216,12 +219,11 @@ class ScriptSerializer:
         # return _export_script_dialog(script_item=self, parent=parent)
         FILE_ERROR_EXPORT = N_('Error exporting file "%(filename)s": %(error)s.')
 
-        default_script_directory = os.path.normpath(
-            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
-        )
         default_script_extension = "ptsp"
         script_filename = ".".join((self.filename, default_script_extension))
-        default_path = os.path.normpath(os.path.join(default_script_directory, script_filename))
+        default_path = os.path.normpath(
+            os.path.join(get_file_dialog_directory(FileDialogHistoryKey.SCRIPT_FILE), script_filename)
+        )
 
         dialog_title = _("Export Script File")
         dialog_file_types = self._get_dialog_filetypes()
@@ -230,6 +232,7 @@ class ScriptSerializer:
             caption=dialog_title,
             directory=default_path,
             filter=dialog_file_types,
+            history_key=FileDialogHistoryKey.SCRIPT_FILE,
         )
         if not filename:
             return False
@@ -267,14 +270,11 @@ class ScriptSerializer:
 
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
-        default_script_directory = os.path.normpath(
-            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
-        )
         filename, file_type = FileDialog.getOpenFileName(
             parent=parent,
             caption=dialog_title,
-            directory=default_script_directory,
             filter=dialog_file_types,
+            history_key=FileDialogHistoryKey.SCRIPT_FILE,
         )
         if not filename:
             return None

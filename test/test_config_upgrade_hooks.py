@@ -501,6 +501,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual('/home/test', self.config.persist['current_directory'])
         self.assertNotIn('persist/some_unknown_key', self.config.allKeys())
 
+    def test_migrate_current_directory_to_dialog_history(self):
+        Option('persist', 'file_dialog_directories', {})
+        self.config.persist['current_directory'] = '/home/test'
+        self.config.persist['file_dialog_directories'] = {'add_files': '/already/set', 'other': '/x'}
+        hooks.migrate_current_directory_to_dialog_history(self.config)
+        self.assertEqual(
+            {'add_files': '/already/set', 'add_directory': '/home/test', 'other': '/x'},
+            self.config.persist['file_dialog_directories'],
+        )
+
+    def test_migrate_current_directory_to_dialog_history_empty(self):
+        Option('persist', 'file_dialog_directories', {})
+        hooks.migrate_current_directory_to_dialog_history(self.config)
+        self.assertEqual({}, self.config.persist['file_dialog_directories'])
+
     def test_reset_options_dialog_splitters(self):
         Option('persist', 'splitters_OptionsDialog', b'')
         self.config.persist['splitters_OptionsDialog'] = b'state'
