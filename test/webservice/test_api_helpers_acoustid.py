@@ -53,6 +53,17 @@ class AcoustdIdAPITest(PicardTestCase):
         expected = 'client=key&clientversion=ver&format=json'
         self.assertEqual(result, expected)
 
+    def test_query_acoustid_sends_user_api_key(self):
+        self.api.query_acoustid(MagicMock(), fingerprint='fp', duration='10')
+        body = self.ws.post_url.call_args.kwargs['data'] if self.ws.post_url.called else None
+        self.assertIn('user=apikey', body)
+
+    def test_query_acoustid_without_api_key(self):
+        self.set_config_values({'acoustid_apikey': ''})
+        self.api.query_acoustid(MagicMock(), fingerprint='fp', duration='10')
+        body = self.ws.post_url.call_args.kwargs['data'] if self.ws.post_url.called else None
+        self.assertNotIn('user=', body)
+
     def test_submissions_to_args(self):
         submissions = [
             Submission('f1', 1, recordingid='or1', metadata=Metadata(musicip_puid='p1')),

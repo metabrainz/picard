@@ -123,3 +123,30 @@ class FpcalcRunTest(PicardTestCase):
         self.assertEqual(kwargs['timeout'], FPCALC_TIMEOUT)
         self.assertEqual(kwargs['ok_returncodes'], (FpcalcExit.DECODING_ERROR,))
         self.assertEqual(kwargs['key'], file)
+
+
+class AnalyzeApiKeyTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client = AcoustIDClient(object())
+        self.client._fingerprint = Mock()
+        self.file = Mock()
+        self.file.filename = 'file.mp3'
+        self.file.acoustid_fingerprint = None
+        self.file.metadata.getall.return_value = []
+        self.next_func = Mock()
+
+    def test_analyze_without_api_key_logs_error(self):
+        self.set_config_values({'acoustid_apikey': '', 'ignore_existing_acoustid_fingerprints': False})
+        with patch('picard.acoustid.notifier') as mock_notifier:
+            self.client.analyze(self.file, self.next_func)
+        mock_notifier.return_value.status_message.assert_called_once()
+        self.client._fingerprint.assert_not_called()
+        self.file.clear_pending.assert_called_once()
+        self.next_func.assert_not_called()
+
+    def test_analyze_with_api_key_proceeds(self):
+        self.set_config_values({'acoustid_apikey': 'key', 'ignore_existing_acoustid_fingerprints': False})
+        self.client.analyze(self.file, self.next_func)
+        self.client._fingerprint.assert_called_once()
+        self.file.clear_pending.assert_not_called()
