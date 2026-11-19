@@ -511,9 +511,12 @@ class InstallPluginDialog(PicardDialog):
 
     def _browse_directory(self):
         """Open directory browser for local plugin selection."""
+        typed_path = self.path_edit.text().strip()
         directory = FileDialog.getExistingDirectory(
             parent=self,
             caption=_("Select Plugin Directory"),
+            # Anything other than an existing directory would bypass the history
+            directory=typed_path if os.path.isdir(typed_path) else None,
             options=QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
             history_key='plugin_directory',
         )
