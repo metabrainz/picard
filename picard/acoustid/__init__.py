@@ -265,10 +265,22 @@ class AcoustIDClient(QtCore.QObject):
         )
 
     def analyze(self, file, next_func):
+        config = get_config()
+        if not config.setting['acoustid_apikey']:
+            # AcoustID requires a user API key for lookups. Report through the
+            # notifier so that every frontend (GUI or headless) gets the message;
+            # the key itself is a setting ('acoustid_apikey'), nothing is prompted here.
+            notifier().status_message(
+                N_('AcoustID lookup needs a user API key for file "%(filename)s": set "acoustid_apikey"'),
+                {'filename': file.filename},
+                echo=log.error,
+            )
+            file.clear_pending()
+            return
+
         fpcalc_next = partial(self._lookup_fingerprint, AcoustIDTask(file, next_func))
         task = AcoustIDTask(file, fpcalc_next)
 
-        config = get_config()
         fingerprint = task.file.acoustid_fingerprint
         if not fingerprint and not config.setting['ignore_existing_acoustid_fingerprints']:
             # use cached fingerprint from file metadata

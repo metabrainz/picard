@@ -59,6 +59,11 @@ class AcoustIdAPIHelper(APIHelper):
         return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
 
     def query_acoustid(self, handler: ReplyHandler, **args) -> PendingRequest:
+        # AcoustID requires a user API key for lookups
+        config = get_config()
+        apikey = config.setting['acoustid_apikey']
+        if apikey:
+            args['user'] = apikey
         body = self._encode_acoustid_args(args)
         return self.post(
             "/lookup",
