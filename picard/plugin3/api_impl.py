@@ -79,6 +79,7 @@ from picard.extension_points.disc_log_readers import (
     register_disc_log_reader,
 )
 from picard.extension_points.event_hooks import (
+    register_album_post_cover_art_processor,
     register_album_post_removal_processor,
     register_file_post_addition_to_track_processor,
     register_file_post_load_processor,
@@ -1014,6 +1015,51 @@ class PluginApi:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_album_post_removal_processor(wrapped, priority)
+
+    def register_album_post_cover_art_processor(
+        self, function: Callable[['PluginApi', Album], None], priority: int = 0
+    ) -> None:
+        """Register a function called after the cover art stage of an album.
+
+        Cover art is loaded asynchronously, after the album itself is loaded.
+        This function is called once all cover art images have been downloaded,
+        processed and set on the album, its tracks and files, from the main
+        thread and when the album is loaded. It is also called when no cover
+        art was found, when cover art is disabled, or when cover art loading
+        stopped early (only part of the images may be set). It is called once
+        per album load, and not called if the album was removed or reloaded
+        before the cover art stage ended.
+
+        Files added to a track after this point are not covered, use
+        :meth:`register_file_post_addition_to_track_processor` for those.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``album``: The :class:`Album` whose cover art stage ended.
+
+                Expected signature::
+
+                    def function(api, album):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_cover_art_done(api, album):
+                for track in album.tracks:
+                    track.keep_original_images()
+
+            def enable(api):
+                api.register_album_post_cover_art_processor(on_cover_art_done)
+        """
+        wrapped = partial(function, self)
+        update_wrapper(wrapped, function)
+        return register_album_post_cover_art_processor(wrapped, priority)
 
     def register_file_post_load_processor(
         self, function: Callable[['PluginApi', File], None], priority: int = 0
