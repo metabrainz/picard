@@ -378,13 +378,12 @@ class ScriptParser:
 
 
 class MultiValue(MutableSequence):
-    def __init__(self, parser, multi, separator, keep_empty=False):
+    def __init__(self, parser, multi, separator):
         self.parser = parser
         if isinstance(separator, ScriptExpression):
             self.separator = separator.eval(self.parser)
         else:
             self.separator = separator
-        self.keep_empty = bool(keep_empty)
         if self.separator == MULTI_VALUED_JOINER and len(multi) == 1 and isinstance(multi[0], ScriptVariable):
             # Convert ScriptExpression containing only a single variable into variable.
             # Copy the values, getall() may return the stored list and callers modify it.
@@ -419,6 +418,4 @@ class MultiValue(MutableSequence):
         return "%s(%r, %r, %r)" % (self.__class__.__name__, self.parser, self._multi, self.separator)
 
     def __str__(self):
-        if self.keep_empty:
-            return self.separator.join(self._multi)
         return self.separator.join(x for x in self if x)
