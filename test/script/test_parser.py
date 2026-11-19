@@ -505,13 +505,16 @@ class ScriptParserTest(PicardTestCase):
         )
 
         context["test"] = ["One", "Two", "Three"]
-        self.assertScriptResultEquals("$replacemulti(%test%,Two,)", "One; Three", context)
+        self.assertScriptResultEquals("$replacemulti(%test%,Two,)", "One; ; Three", context)
 
         context["test"] = ["One", "Two", "Three"]
         self.assertScriptResultEquals("$replacemulti(%test%,Four,Five)", "One; Two; Three", context)
 
         context["test"] = ["Four", "Five", "Six"]
-        self.assertScriptResultEquals("$replacemulti(%test%,Five,)", "Four; Six", context)
+        self.assertScriptResultEquals("$replacemulti(%test%,Five,)", "Four; ; Six", context)
+
+        context['test'] = ['a', '', 'c', 'd']
+        self.assertScriptResultEquals("$replacemulti(%test%,c,C)", "a; ; C; d", context)
 
         self.assertScriptResultEquals("$replacemulti(a; b,,,)", "a; b")
         self.assertScriptResultEquals("$setmulti(foo,a; b)$replacemulti(%foo%,,,)", "a; b")
@@ -1604,7 +1607,7 @@ class ScriptParserTest(PicardTestCase):
         )
         # Tests for removing empty elements
         context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
-        test_output = "1=FIRST:A; 2=SECOND:B; 4=THIRD:C"
+        test_output = "1=FIRST:A; 2=SECOND:B; ; 4=THIRD:C"
         self.assertScriptResultEquals(
             "$lenmulti(%baz%)",
             "4",
@@ -1624,7 +1627,7 @@ class ScriptParserTest(PicardTestCase):
         )
         self.assertScriptResultEquals(
             "$lenmulti(%baz%)",
-            "3",
+            "4",
             context,
         )
         self.assertScriptResultEquals(
@@ -1638,8 +1641,24 @@ class ScriptParserTest(PicardTestCase):
             "",
             context,
         )
+        context['missing'] = ['a', '', 'c', 'd']
+        self.assertScriptResultEquals(
+            "$map(%missing%,$upper(%_loop_count%=%_loop_value%))",
+            "1=A; 2=; 3=C; 4=D",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$cleanmulti(missing)$map(%missing%,$upper(%_loop_count%=%_loop_value%))",
+            "1=A; 2=C; 3=D",
+            context,
+        )
         self.assertScriptResultEquals(
             "$map(First:A; Second:B; Third:C,)",
+            "; ; ",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$cleanmulti($map(First:A; Second:B; Third:C,))",
             "",
             context,
         )
