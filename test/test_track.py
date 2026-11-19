@@ -32,6 +32,7 @@ from picard.album import (
 )
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.file import File
+from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     NonAlbumTrack,
@@ -145,6 +146,44 @@ class TrackTest(PicardTestCase):
         track.metadata.images.append(image)
         self.assertEqual(track.column('covercount'), '1')
         self.assertEqual(track.column('coverdimensions'), '100x100')
+
+
+class TrackRunScriptsWhitespaceTest(PicardTestCase):
+    """Regression tests for PICARD-3570.
+
+    Whitespace in multi-value elements produced by tagging scripts (e.g. join
+    phrases like " feat. ") must be preserved, regardless of whether a file is
+    attached to the track.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item', 'picard.track')
+        self.set_config_values(
+            setting={
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [(0, 'test', True, '$setmulti(test,a ; b)')],
+            }
+        )
+
+    def _file_values_after_update(self, clear_existing_tags):
+        self.set_config_values(setting={'clear_existing_tags': clear_existing_tags})
+        track = Track('123')
+        track_file = File('somefile.opus')
+        track.files.append(track_file)
+        track.update_file_metadata(track_file)
+        return track_file.metadata.getall('test')
+
+    def test_run_scripts_preserves_whitespace(self):
+        metadata = Metadata()
+        Track.run_scripts(metadata)
+        self.assertEqual(metadata.getall('test'), ['a ', 'b'])
+
+    def test_update_file_metadata_preserves_whitespace_when_clearing_existing_tags(self):
+        self.assertEqual(self._file_values_after_update(True), ['a ', 'b'])
+
+    def test_update_file_metadata_preserves_whitespace_when_keeping_existing_tags(self):
+        self.assertEqual(self._file_values_after_update(False), ['a ', 'b'])
 
 
 class TrackGenresToMetadataTest(PicardTestCase):
