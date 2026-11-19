@@ -16,7 +16,10 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -24,6 +27,145 @@ from test.picardtestcase import (
 )
 
 from picard.coverart import CoverArt
+
+
+class CoverArtPostCoverArtHookTest(PicardTestCase):
+    """Tests for the album post cover art hook emitted by CoverArt."""
+
+    def setUp(self):
+        super().setUp()
+        self.album = Mock()
+        self.album.id = 'album-id'
+        self.album._load_token = object()
+        self.album.tagger.albums = {'album-id': self.album}
+        # Run callbacks immediately, as for an already loaded album
+        self.album.run_when_loaded.side_effect = lambda func, *args, **kwargs: func()
+        self.coverart = CoverArt(self.album, Mock(), {})
+        patcher = patch('picard.coverart.run_album_post_cover_art_processors')
+        self.run_hook = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_finished_runs_hook(self):
+        self.coverart._finished()
+        self.run_hook.assert_called_once_with(self.album)
+
+    def test_finished_waits_for_album_loaded(self):
+        self.album.run_when_loaded.side_effect = None
+        self.coverart._finished()
+        self.run_hook.assert_not_called()
+        self.album.run_when_loaded.assert_called_once()
+        # Simulate the album finishing loading
+        callback = self.album.run_when_loaded.call_args[0][0]
+        callback()
+        self.run_hook.assert_called_once_with(self.album)
+
+    def test_finished_skipped_if_album_removed(self):
+        self.album.tagger.albums.clear()
+        self.coverart._finished()
+        self.run_hook.assert_not_called()
+
+    def test_finished_skipped_if_album_removed_while_loading(self):
+        self.album.run_when_loaded.side_effect = None
+        self.coverart._finished()
+        self.album.tagger.albums.clear()
+        self.album.run_when_loaded.call_args[0][0]()
+        self.run_hook.assert_not_called()
+
+    def test_finished_skipped_if_album_reloaded_while_loading(self):
+        self.album.run_when_loaded.side_effect = None
+        self.coverart._finished()
+        self.album._load_token = object()
+        self.album.run_when_loaded.call_args[0][0]()
+        self.run_hook.assert_not_called()
+
+    def test_hook_runs_when_queue_ends(self):
+        self.coverart.image_processing = Mock()
+        self.coverart._queue_generator = iter(())
+        self.coverart.next_in_queue()
+        self.coverart.image_processing.wait_for_processing.assert_called_once()
+        self.run_hook.assert_called_once_with(self.album)
+
+    def test_hook_not_run_while_queue_is_active(self):
+        def waiting_generator():
+            yield
+
+        self.coverart._queue_generator = waiting_generator()
+        self.coverart.next_in_queue()
+        self.run_hook.assert_not_called()
+
+    def test_hook_not_run_if_album_removed_during_queue(self):
+        self.coverart.image_processing = Mock()
+        self.coverart._queue_generator = iter(())
+        self.album.tagger.albums.clear()
+        self.coverart.next_in_queue()
+        self.run_hook.assert_not_called()
+
+    def test_hook_not_run_if_album_reloaded_during_queue(self):
+        self.coverart.image_processing = Mock()
+        self.coverart._queue_generator = iter(())
+        # A reload started after this CoverArt was created
+        self.album._load_token = object()
+        self.coverart.next_in_queue()
+        self.run_hook.assert_not_called()
+
+    def test_hook_runs_for_cover_art_of_current_load(self):
+        self.album._load_token = object()
+        new_coverart = CoverArt(self.album, Mock(), {})
+        new_coverart.image_processing = Mock()
+        new_coverart._queue_generator = iter(())
+        new_coverart.next_in_queue()
+        self.run_hook.assert_called_once_with(self.album)
+
+    def _requeue_with(self, provider_enabled=True, filter_result=True, instance_enabled=True):
+        provider_class = Mock()
+        provider_class.return_value.enabled.return_value = instance_enabled
+        provider = Mock(enabled=provider_enabled, provider_class=provider_class)
+        self.coverart.providers = iter([provider])
+        with patch('picard.coverart.run_provider_filters', return_value=filter_result) as run_filters:
+            self.coverart._requeue()
+        return provider, provider_class, run_filters
+
+    def test_requeue_uses_provider_accepted_by_filters(self):
+        provider, provider_class, run_filters = self._requeue_with()
+        run_filters.assert_called_once_with(self.album, provider_class)
+        provider_class.return_value.queue_images.assert_called_once()
+
+    def test_requeue_skips_provider_rejected_by_filters(self):
+        _provider, provider_class, run_filters = self._requeue_with(filter_result=False)
+        run_filters.assert_called_once_with(self.album, provider_class)
+        provider_class.return_value.queue_images.assert_not_called()
+
+    def test_requeue_does_not_run_filters_for_disabled_provider(self):
+        _provider, provider_class, run_filters = self._requeue_with(provider_enabled=False)
+        run_filters.assert_not_called()
+        provider_class.return_value.queue_images.assert_not_called()
+
+    def test_requeue_does_not_use_provider_disabled_for_the_album(self):
+        _provider, provider_class, run_filters = self._requeue_with(instance_enabled=False)
+        provider_class.return_value.queue_images.assert_not_called()
+        run_filters.assert_not_called()
+
+    def test_hook_runs_when_all_providers_are_skipped(self):
+        self.coverart.image_processing = Mock()
+        self.coverart._queue_generator = self.coverart._start_queue()
+        providers = [Mock(enabled=True, provider_class=Mock()) for _ in range(3)]
+        self.coverart.providers = iter(providers)
+        with (
+            patch('picard.coverart.run_provider_filters', return_value=False),
+            patch('picard.coverart.get_config') as get_config,
+        ):
+            get_config.return_value.setting = {'save_images_to_tags': True, 'save_images_to_files': False}
+            self.coverart.next_in_queue()
+        for provider in providers:
+            provider.provider_class.return_value.queue_images.assert_not_called()
+        self.run_hook.assert_called_once_with(self.album)
+
+    def test_hook_runs_when_cover_art_disabled(self):
+        config = Mock()
+        config.setting = {'save_images_to_tags': False, 'save_images_to_files': False}
+        with patch('picard.coverart.get_config', return_value=config):
+            self.coverart.retrieve()
+        self.run_hook.assert_called_once_with(self.album)
 
 
 class CoverArtAllImagesSatisfiedTest(PicardTestCase):
