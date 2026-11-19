@@ -515,6 +515,7 @@ class InstallPluginDialog(PicardDialog):
         directory = FileDialog.getExistingDirectory(
             parent=self,
             caption=_("Select Plugin Directory"),
+            directory=self.path_edit.text().strip(),
             options=QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
             history_key=FileDialogHistoryKey.PLUGIN_DIRECTORY,
         )
