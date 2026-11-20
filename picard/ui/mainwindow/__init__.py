@@ -2508,8 +2508,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             load_user_collections()
 
     def show_startup_dialogs(self):
-        config = get_config()
-        self.show_new_user_dialog(config)
+        self.show_new_user_dialog()
         self.show_setup_wizard()
         self.tutorial.show('overview')
 
@@ -2518,10 +2517,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             wizard = SetupWizard(self)
             wizard.exec()
 
-    def show_new_user_dialog(self, config):
-        if config.setting['show_new_user_dialog']:
-            msg = NewUserDialog(self)
-            config.setting['show_new_user_dialog'] = msg.show()
+    def show_new_user_dialog(self):
+        if not NewUserDialog.is_hidden():
+            NewUserDialog(self).exec()
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

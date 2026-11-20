@@ -21,16 +21,23 @@
 from PyQt6 import (
     QtCore,
     QtGui,
-    QtWidgets,
 )
 
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.util import get_url
 
+from picard.ui.dialogs.donotshowagainmessagebox import DoNotShowAgainMessageBox
 
-class NewUserDialog:
+
+class NewUserDialog(DoNotShowAgainMessageBox):
+    KEY = 'new_user'
+    TITLE = N_("New User Warning")
+
     def __init__(self, parent):
-        dialog_text = _(
+        text = _(
             "<p>"
             "<strong>Changes made by Picard are not reversible.</strong>"
             "</p><p>"
@@ -43,31 +50,10 @@ class NewUserDialog:
             "Picard is open source software written by volunteers. It is provided as-is and with no warranty."
             "</p>"
         ).format(documentation_url=get_url('documentation_server'))
-
-        self.show_again = True
-        show_again_text = _("Show this message again the next time you start Picard.")
-
-        self.msg = QtWidgets.QMessageBox(parent)
+        super().__init__(parent, text=text)
         pixmap = QtGui.QPixmap(":/images/wizard-welcome.png")
-        self.msg.setIconPixmap(
+        self.setIconPixmap(
             pixmap.scaled(
                 128, 128, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
             )
         )
-        self.msg.setText(dialog_text)
-        self.msg.setWindowTitle(_("New User Warning"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-
-        self.cb = QtWidgets.QCheckBox(show_again_text)
-        self.cb.setChecked(self.show_again)
-        self.cb.toggled.connect(self._set_state)
-
-        self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
-
-    def _set_state(self):
-        self.show_again = not self.show_again
-
-    def show(self):
-        self.msg.exec()
-        return self.show_again

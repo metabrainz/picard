@@ -613,7 +613,6 @@ BoolOption('setting', 'show_cover_art_details_filesize', True, title=N_("Show co
 BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show cover art MIME type"), in_profile=True)
 BoolOption('setting', 'show_cover_art_details_type', False, title=N_("Show cover art type"), in_profile=True)
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"), in_profile=True)
-BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"), in_profile=True)
 Option(
     'setting',
     'standardize_artist_names',

@@ -45,7 +45,9 @@ from picard.i18n import (
 )
 from picard.util.readthedocs import ReadTheDocs
 
+from picard.ui.dialogs.donotshowagainmessagebox import set_message_hidden
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
+from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
@@ -76,7 +78,6 @@ class InterfaceOptionsPage(OptionsPage):
         'ui_language': {},
         'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
-        'show_new_user_dialog': {'widgets': ['new_user_dialog']},
         'quit_confirmation': {'widgets': ['quit_confirmation']},
         'file_save_warning': {'widgets': ['file_save_warning']},
         'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
@@ -165,7 +166,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
             self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
             self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-            self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
+            self.ui.new_user_dialog.setChecked(not NewUserDialog.is_hidden())
             self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
             self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
             current_ui_language = config.setting['ui_language']
@@ -183,7 +184,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
-        config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
+        set_message_hidden(NewUserDialog.KEY, not self.ui.new_user_dialog.isChecked())
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()
