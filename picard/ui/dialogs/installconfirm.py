@@ -22,12 +22,23 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.config import get_config
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui import PicardDialog
+from picard.ui.dialogs.donotshowagainmessagebox import (
+    create_do_not_show_again_checkbox,
+    is_message_hidden,
+    register_message_box,
+)
 from picard.ui.util import font_scaled_size
 from picard.ui.widgets.refselector import RefSelectorWidget
+
+
+WARNING_KEY = 'plugin_install_warning'
+register_message_box(WARNING_KEY, N_("Plugin Installation Warning"))
 
 
 class InstallConfirmDialog(PicardDialog):
@@ -58,8 +69,7 @@ class InstallConfirmDialog(PicardDialog):
         layout = QtWidgets.QVBoxLayout(self)
 
         # General security warning (with "don't show again")
-        config = get_config()
-        if config.persist['show_plugin_install_warning']:
+        if not is_message_hidden(WARNING_KEY):
             warning_content = QtWidgets.QHBoxLayout()
 
             icon_label = QtWidgets.QLabel()
@@ -80,14 +90,11 @@ class InstallConfirmDialog(PicardDialog):
             general_warning.setFont(font)
             text_layout.addWidget(general_warning)
 
-            self._dont_show_checkbox = QtWidgets.QCheckBox(_("Don't show this warning again"))
-            text_layout.addWidget(self._dont_show_checkbox)
+            text_layout.addWidget(create_do_not_show_again_checkbox(WARNING_KEY))
             warning_content.addLayout(text_layout)
 
             layout.addLayout(warning_content)
             layout.addWidget(self._create_separator())
-        else:
-            self._dont_show_checkbox = None
 
         # Plugin name and URL
         info_label = QtWidgets.QLabel(_("Install plugin: {name}").format(name=f"<b>{self.plugin_name}</b>"))
@@ -193,8 +200,5 @@ class InstallConfirmDialog(PicardDialog):
 
     def _confirm_install(self):
         """Handle install button click."""
-        if self._dont_show_checkbox and self._dont_show_checkbox.isChecked():
-            config = get_config()
-            config.persist['show_plugin_install_warning'] = False
         self.selected_ref = self.ref_selector.get_selected_ref()
         self.accept()
