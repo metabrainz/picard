@@ -431,3 +431,36 @@ $set(regular_var, "value")'''
         assert '%variable%' not in result
         assert '%artist%' not in result
         assert 'regular_var' in result
+
+
+class TestNoopParsing:
+    """Test that content inside $noop() is not parsed or evaluated."""
+
+    @pytest.mark.parametrize(
+        "script",
+        [
+            "$noop($unknown_function)",
+            "$noop(some text, more text)",
+            r"$noop(\), \\)",
+            "$noop(%nonexistent_var%)",
+        ],
+    )
+    def test_noop_skips_parsing_and_evaluation(self, script: str) -> None:
+        from picard.script.parser import ScriptParser
+
+        parser = ScriptParser()
+        assert parser.eval(script) == ""
+
+    def test_noop_unescaped_paren_raises_syntax_error(self) -> None:
+        from picard.script.parser import ScriptParser, ScriptSyntaxError
+
+        parser = ScriptParser()
+        with pytest.raises(ScriptSyntaxError):
+            parser.eval("$noop(()")
+
+    def test_noop_unclosed_raises_eof(self) -> None:
+        from picard.script.parser import ScriptEndOfFile, ScriptParser
+
+        parser = ScriptParser()
+        with pytest.raises(ScriptEndOfFile):
+            parser.eval("$noop($foo")

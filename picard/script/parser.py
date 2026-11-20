@@ -277,6 +277,17 @@ class ScriptParser:
             ch = self.read()
             if ch == '(':
                 name = self._text[start : self._pos - 1]
+                if name == 'noop':
+                    while True:
+                        ch = self.read()
+                        if ch is None:
+                            self.__raise_eof()
+                        elif ch == '\\':
+                            self.parse_escape_sequence()
+                        elif ch == '(':
+                            self.__raise_char(ch)
+                        elif ch == ')':
+                            return ScriptText('')
                 if name not in self.functions:
                     raise ScriptUnknownFunction(StackItem(line, column, name))
                 return ScriptFunction(name, self.parse_arguments(), self, column, line)
