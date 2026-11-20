@@ -114,6 +114,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+from picard.ui.pluginnotesdialog import PluginNotesDialog
 from picard.ui.theme import theme as _theme
 from picard.ui.util import add_accept_button
 
@@ -810,6 +811,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             config = get_config()
             log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
+
+            if page.NAME == 'plugins' and config.persist['show_plugin_notes_dialog']:
+                msg = PluginNotesDialog(self)
+                config.persist['show_plugin_notes_dialog'] = msg.show()
 
     def disable_page(self, pagename):
         item = self.pagename_to_item[pagename]
