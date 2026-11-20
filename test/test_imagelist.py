@@ -29,6 +29,7 @@ from test.picardtestcase import (
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.coverart.image import CoverArtImage
+from picard.coverart.providers.caa_release_group import CaaCoverArtImageRg
 from picard.file import File
 from picard.track import Track
 from picard.util.imagelist import ImageList
@@ -480,6 +481,37 @@ class ImageListTest(PicardTestCase):
 
         # without previous_images, nothing extra is added
         self.assertEqual(list(self.imagelist.to_be_saved_to_files(settings)), [bigger_front])
+
+    def test_to_be_saved_to_files_with_unloaded_images(self):
+        self.set_config_values(
+            {
+                "remove_images_from_tags": True,
+                "save_images_to_files": True,
+                "save_only_one_front_image": False,
+            }
+        )
+        loaded = create_front_image('loaded', 1000, 1000)
+        unloaded = CaaCoverArtImageRg(url='https://example.org/front', types=['front'])
+        other_unloaded = CaaCoverArtImageRg(url='https://example.org/other-front', types=['front'])
+
+        for image in (unloaded, other_unloaded):
+            self.assertIsNone(image.datahash)
+            self.assertEqual((image.width, image.height), (0, 0))
+            self.assertEqual(image.dimensions_as_string(), '')
+            self.assertEqual(image.imageinfo_as_string(), '')
+
+        for previous, replacement, expected in (
+            (unloaded, loaded, loaded),
+            (loaded, unloaded, loaded),
+            (unloaded, other_unloaded, other_unloaded),
+        ):
+            with self.subTest(previous=previous, replacement=replacement):
+                previous_images = ImageList([previous])
+                images = ImageList([replacement])
+                exported = list(images.to_be_saved_to_files(previous_images=previous_images))
+                self.assertEqual(len(exported), 1)
+                self.assertIs(exported[0], expected)
+                self.assertTrue(images.should_remove_images_from_tags(previous_images=previous_images))
 
     def test_get_types_dict_keeps_biggest_image_per_type(self):
         """The biggest image of each type must win.
