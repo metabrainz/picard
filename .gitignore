@@ -44,6 +44,7 @@ picard.egg-info
 *.egg-info/
 po/attributes/attributes.pot
 po/countries/countries.pot
+po/languages/languages.pot
 scripts/picard
 /tagger.py
 win-version-info.txt

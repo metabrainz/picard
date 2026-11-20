@@ -597,7 +597,7 @@ def _get_option_name(obj):
 
 
 class picard_update_constants(Command):
-    description = "Regenerate attributes.py and countries.py"
+    description = "Regenerate attributes.py, countries.py and language_names.py"
     user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('skip-pull', None, "skip the translation pull step"),
         ('weblate-key=', None, "Weblate API key"),
@@ -634,6 +634,19 @@ class picard_update_constants(Command):
             self._generate_constants_file('countries.py', 'RELEASE_COUNTRIES', countries)
         else:
             sys.exit('Failed to extract any country code/name !')
+
+        languages = dict()
+        languages_potfile = os.path.join('po', 'languages', 'languages.pot')
+        iso_code_3 = re.compile(r'\biso_code_3:([a-z]{3})\b')
+        for message in _parse_pot_file(languages_potfile):
+            for comment in message.auto_comments:
+                for code in iso_code_3.findall(comment):
+                    languages[code] = message.id
+
+        if languages:
+            self._generate_constants_file('language_names.py', 'LANGUAGE_NAMES', languages)
+        else:
+            sys.exit('Failed to extract any language code/name !')
 
         attributes = dict()
         attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')

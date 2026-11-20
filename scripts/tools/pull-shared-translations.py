@@ -36,6 +36,7 @@ PROJECT_NAME = 'musicbrainz'
 PROJECT_COMPONENTS = (
     'attributes',
     'countries',
+    'languages',
 )
 MIN_TRANSLATED_PERCENT = 10
 
@@ -96,7 +97,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog='pull-shared-translations',
         description=(
-            'Fetches the translations for attributes and countries from the MusicBrainz Server project on Weblate.'
+            'Fetches the translations for attributes, countries and languages from the MusicBrainz Server project on Weblate.'
         ),
         epilog=(
             'Instead of passing the --key parameter the key can also be set in '

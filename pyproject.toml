@@ -129,6 +129,7 @@ exclude = [
     "picard/resources.py",
     "picard/const/attributes.py",
     "picard/const/countries.py",
+    "picard/const/language_names.py",
     "picard/ui/ui_.*\\.py",
     "scripts/picard.in"
 ]
