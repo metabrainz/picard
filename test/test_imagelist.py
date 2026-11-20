@@ -537,3 +537,65 @@ class ImageListTest(PicardTestCase):
         del imagelist[0]
         self.assertEqual(imagelist[0], 'b')
         self.assertEqual(len(imagelist), 1)
+
+
+TAGS_ONLY_SETTINGS = {
+    'save_images_to_tags': True,
+    'save_images_to_files': False,
+    'embed_only_one_front_image': False,
+}
+
+
+class AllRejectedForTagsTest(PicardTestCase):
+    """PICARD-3531: tell if the new images would all be refused for tags."""
+
+    def setUp(self):
+        super().setUp()
+        self.set_config_values(
+            {
+                'dont_replace_with_smaller_cover': True,
+                'dont_replace_cover_of_types': False,
+                'dont_replace_included_types': [],
+            }
+        )
+
+    @staticmethod
+    def _front(name, size):
+        image = create_image(name, types=['front'], support_types=True, url='file://' + name.decode())
+        image.width = image.height = size
+        return image
+
+    def _rejected(self, new, previous, **overrides):
+        settings = {**TAGS_ONLY_SETTINGS, **overrides}
+        return ImageList(new).all_rejected_for_tags(ImageList(previous), settings)
+
+    def test_smaller_image_is_rejected(self):
+        self.assertTrue(self._rejected([self._front(b'new', 500)], [self._front(b'old', 700)]))
+
+    def test_bigger_image_is_not_rejected(self):
+        self.assertFalse(self._rejected([self._front(b'new', 800)], [self._front(b'old', 700)]))
+
+    def test_filter_disabled(self):
+        self.set_config_values({'dont_replace_with_smaller_cover': False})
+        self.assertFalse(self._rejected([self._front(b'new', 500)], [self._front(b'old', 700)]))
+
+    def test_nothing_embedded_yet(self):
+        self.assertFalse(self._rejected([self._front(b'new', 500)], []))
+
+    def test_no_new_images(self):
+        self.assertFalse(self._rejected([], [self._front(b'old', 700)]))
+
+    def test_images_also_saved_to_files(self):
+        self.assertFalse(
+            self._rejected([self._front(b'new', 500)], [self._front(b'old', 700)], save_images_to_files=True)
+        )
+
+    def test_images_not_saved_to_tags(self):
+        self.assertFalse(
+            self._rejected([self._front(b'new', 500)], [self._front(b'old', 700)], save_images_to_tags=False)
+        )
+
+    def test_one_accepted_image_is_enough(self):
+        back_new = create_image(b'back', types=['back'], support_types=True, url='file://back')
+        back_new.width = back_new.height = 500
+        self.assertFalse(self._rejected([self._front(b'new', 500), back_new], [self._front(b'old', 700)]))
