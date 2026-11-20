@@ -431,3 +431,16 @@ $set(regular_var, "value")'''
         assert '%variable%' not in result
         assert '%artist%' not in result
         assert 'regular_var' in result
+
+
+@pytest.mark.parametrize(
+    "script",
+    [
+        "$noop($set(foo,1))",
+        "$noop(\n$set(foo,1)\n)",
+        "$set(bar,1)$noop($set(foo,$if(%a%,x)))",
+    ],
+)
+def test_variables_set_inside_noop_are_extracted(completer: ScriptCompleter, script: str) -> None:
+    """Variables set in a commented-out block still show up in completion."""
+    assert "foo" in completer._extract_set_variables(script)

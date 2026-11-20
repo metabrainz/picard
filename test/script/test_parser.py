@@ -1345,9 +1345,34 @@ class ScriptParserTest(PicardTestCase):
         self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop(')
         self.assertRaises(ScriptEndOfFile, self.parser.eval, '%var')
 
+    @subtest_cases(
+        "script,expected",
+        [
+            ("$noop($unknown_function)", ""),
+            ("$noop(some text, more text)", ""),
+            (r"$noop(\), \\)", ""),
+            ("$noop(%nonexistent_var%)", ""),
+            ("$noop($set(a,b))", ""),
+            ("$noop($if(%a%,x))", ""),
+            ("$noop($if($eq(a,b),$set(c,d)))", ""),
+            ("$noop(a $unknown(1) b)", ""),
+            ("$noop(a)$noop(b)", ""),
+            (r"$noop(\x \d+ \u12)", ""),
+            ("a$noop($set(x,1))b", "ab"),
+        ],
+    )
+    def test_noop_skips_parsing_and_evaluation(self, script, expected):
+        self.assertScriptResultEquals(script, expected)
+
+    def test_noop_unbalanced_paren_raises_eof(self):
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop(()')
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop($foo')
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop(\\)')
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop(\\')
+
     def test_raise_syntax_error(self):
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '%var()%')
-        self.assertRaises(ScriptSyntaxError, self.parser.eval, '$noop(()')
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, '$lower(()')
         self.assertRaises(ScriptSyntaxError, self.parser.eval, r'\x')
 
     def test_cmd_find(self):
