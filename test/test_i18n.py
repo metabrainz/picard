@@ -35,6 +35,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
     gettext_countries,
+    gettext_languages,
     ngettext,
     pgettext_attributes,
     setup_i18n,
@@ -48,7 +49,8 @@ from picard.i18n.gettext import (
 )
 
 
-localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
+# setup.py build_locales writes catalogs to picard/locale/<lang>/LC_MESSAGES/.
+localedir = os.path.join(os.path.dirname(__file__), '..', 'picard', 'locale')
 
 
 class TestI18n(PicardTestCase):
@@ -73,6 +75,7 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Cassette', pgettext_attributes('medium_format', 'Cassette'))
         self.assertEqual('French', gettext_constants('French'))
         self.assertEqual('France', gettext_countries('France'))
+        self.assertEqual('English', gettext_languages('English'))
 
     @unittest.skipUnless(
         os.path.exists(os.path.join(localedir, 'de')),
@@ -92,6 +95,7 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Kassette', pgettext_attributes('medium_format', 'Cassette'))
         # self.assertEqual('Französisch', gettext_constants('French'))
         self.assertEqual('Frankreich', gettext_countries('France'))
+        self.assertEqual('Englisch', gettext_languages('English'))
 
     def test_gettext_handles_empty_string(self):
         setup_i18n(localedir, 'fr')

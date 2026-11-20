@@ -715,6 +715,7 @@ def _picard_get_locale_files():
         'picard-attributes': os.path.join('po', 'attributes'),
         'picard-constants': os.path.join('po', 'constants'),
         'picard-countries': os.path.join('po', 'countries'),
+        'picard-languages': os.path.join('po', 'languages'),
     }
     for domain, path in domain_path.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):
