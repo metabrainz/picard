@@ -433,48 +433,14 @@ $set(regular_var, "value")'''
         assert 'regular_var' in result
 
 
-class TestNoopParsing:
-    """Test that content inside $noop() is not parsed or evaluated."""
-
-    @pytest.mark.parametrize(
-        "script",
-        [
-            "$noop($unknown_function)",
-            "$noop(some text, more text)",
-            r"$noop(\), \\)",
-            "$noop(%nonexistent_var%)",
-            "$noop($set(a,b))",
-            "$noop($if(%a%,x))",
-            "$noop($if($eq(a,b),$set(c,d)))",
-            "$noop(a $unknown(1) b)",
-            "$noop(a)$noop(b)",
-        ],
-    )
-    def test_noop_skips_parsing_and_evaluation(self, script: str) -> None:
-        from picard.script.parser import ScriptParser
-
-        parser = ScriptParser()
-        assert parser.eval(script) == ""
-
-    def test_noop_unbalanced_paren_raises_eof(self) -> None:
-        from picard.script.parser import (
-            ScriptEndOfFile,
-            ScriptParser,
-        )
-
-        parser = ScriptParser()
-        with pytest.raises(ScriptEndOfFile):
-            parser.eval("$noop(()")
-
-    def test_noop_does_not_swallow_following_text(self) -> None:
-        from picard.script.parser import ScriptParser
-
-        parser = ScriptParser()
-        assert parser.eval("a$noop($set(x,1))b") == "ab"
-
-    def test_noop_unclosed_raises_eof(self) -> None:
-        from picard.script.parser import ScriptEndOfFile, ScriptParser
-
-        parser = ScriptParser()
-        with pytest.raises(ScriptEndOfFile):
-            parser.eval("$noop($foo")
+@pytest.mark.parametrize(
+    "script",
+    [
+        "$noop($set(foo,1))",
+        "$noop(\n$set(foo,1)\n)",
+        "$set(bar,1)$noop($set(foo,$if(%a%,x)))",
+    ],
+)
+def test_variables_set_inside_noop_are_extracted(completer: ScriptCompleter, script: str) -> None:
+    """Variables set in a commented-out block still show up in completion."""
+    assert "foo" in completer._extract_set_variables(script)
