@@ -159,9 +159,7 @@ class ImageList(MutableSequence['CoverArtImage']):
                 if index is None:
                     index_by_type[types] = len(exported)
                     exported.append(prev_image)
-                elif getattr(prev_image, 'width', 0) > getattr(exported[index], 'width', 0) or getattr(
-                    prev_image, 'height', 0
-                ) > getattr(exported[index], 'height', 0):
+                elif prev_image.width > exported[index].width or prev_image.height > exported[index].height:
                     # Keep the higher quality tagged image instead of the smaller replacement.
                     exported[index] = prev_image
 
