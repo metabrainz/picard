@@ -1326,7 +1326,7 @@ class ScriptParserTest(PicardTestCase):
 
     def test_raise_syntax_error(self):
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '%var()%')
-        self.assertRaises(ScriptSyntaxError, self.parser.eval, '$noop(()')
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, '$lower(()')
         self.assertRaises(ScriptSyntaxError, self.parser.eval, r'\x')
 
     def test_cmd_find(self):
