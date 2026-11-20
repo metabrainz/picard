@@ -368,7 +368,6 @@ BoolOption('setting', 'enable_tag_saving', True, title=N_("Save tags to files"),
 BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
 Option('setting', 'file_renaming_scripts', {})
-BoolOption('setting', 'file_save_warning', True, title=N_("Confirm when saving"), in_profile=True)
 BoolOption(
     'setting',
     'filebrowser_horizontal_autoscroll',

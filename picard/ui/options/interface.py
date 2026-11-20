@@ -52,6 +52,7 @@ from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
+from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
@@ -79,7 +80,6 @@ class InterfaceOptionsPage(OptionsPage):
         'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
         'quit_confirmation': {'widgets': ['quit_confirmation']},
-        'file_save_warning': {'widgets': ['file_save_warning']},
         'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
         'starting_directory': {'widgets': ['starting_directory']},
         'starting_directory_path': {'widgets': ['starting_directory_path']},
@@ -168,7 +168,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
             self.ui.new_user_dialog.setChecked(not NewUserDialog.is_hidden())
             self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
-            self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
+            self.ui.file_save_warning.setChecked(not SaveWarningDialog.is_hidden())
             current_ui_language = config.setting['ui_language']
             self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
             self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
@@ -186,7 +186,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
         set_message_hidden(NewUserDialog.KEY, not self.ui.new_user_dialog.isChecked())
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
-        config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
+        set_message_hidden(SaveWarningDialog.KEY, not self.ui.file_save_warning.isChecked())
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
