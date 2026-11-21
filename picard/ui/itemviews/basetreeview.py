@@ -103,6 +103,7 @@ from picard.ui.itemviews.custom_columns import (
 )
 from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
 from picard.ui.itemviews.events import header_events
+from picard.ui.itemviews.fixed_row_height import FixedRowHeightDelegate
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import (
@@ -214,6 +215,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
+        self.setItemDelegate(FixedRowHeightDelegate(self))
 
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 

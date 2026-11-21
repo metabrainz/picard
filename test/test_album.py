@@ -22,6 +22,8 @@ from unittest.mock import (
     Mock,
 )
 
+from PyQt6 import QtGui
+
 from test.picardtestcase import (
     PicardTestCase,
     load_test_json,
@@ -72,6 +74,27 @@ class TrackTest(PicardTestCase):
         self.assertEqual(self.album.column('title'), 'Foo‎ (1/2; 1*; 1 image)')
         file1.state = File.State.NORMAL
         self.assertEqual(self.album.column('title'), 'Foo‎ (1/2; 1 image)')
+
+    def test_column_title_rtl_suffix_displays_intact(self):
+        def visual_order(text):
+            layout = QtGui.QTextLayout(text, QtGui.QFont())
+            layout.beginLayout()
+            line = layout.createLine()
+            line.setLineWidth(10000)
+            layout.endLayout()
+            positions = []
+            for i, char in enumerate(text):
+                x = min(line.cursorToX(i)[0], line.cursorToX(i + 1)[0])
+                positions.append((x, char))
+            return ''.join(char for _x, char in sorted(positions))
+
+        suffix = '(0/2; 0 images)'
+        self.album.metadata['album'] = '\u0627\u0644\u0639\u0631\u0628\u064a\u0629'
+        self.album.tracks.extend([Track('t1'), Track('t2')])
+        title = self.album.column('title')
+        self.assertIn(suffix, visual_order(title))
+        # Control: without the mark the suffix is scrambled for RTL titles
+        self.assertNotIn(suffix, visual_order(title.replace('\u200e', '')))
 
     def test_column_length(self):
         self.assertEqual(self.album.column('~length'), '')
