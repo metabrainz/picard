@@ -156,6 +156,7 @@ from picard.notification import (
     set_notifier_sink,
 )
 from picard.remotecommands import RemoteCommands
+from picard.script import iter_unknown_script_functions
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import (
     load_session_from_path,
@@ -296,6 +297,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         # shutdown.
         self.exit_cleanup = []
         self.stopping = False
+        self._unknown_script_errors = set()
 
     def _setup_app_icon(self):
         icon = QtGui.QIcon()
@@ -746,6 +748,51 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         if sys.stderr:
             sys.stderr.flush()
 
+    def warn_about_unknown_script_functions(self, config=None):
+        errors = list(iter_unknown_script_functions(config))
+        current_errors = set(errors)
+        new_errors = current_errors - self._unknown_script_errors
+        self._unknown_script_errors = current_errors
+        if not new_errors:
+            return
+
+        message = QtWidgets.QMessageBox(self.window)
+        message.setWindowTitle(_("Unknown Script Functions"))
+        message.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+        message.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        message.setText(
+            _("Some active scripts use functions that are not available. A required plugin may be missing or disabled.")
+        )
+        message.setInformativeText(
+            '\n'.join(
+                _("%(script)s: %(function)s") % {'script': name, 'function': function}
+                for _page, name, function in errors
+            )
+        )
+        message.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Close)
+        message.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Close)
+        message.setEscapeButton(QtWidgets.QMessageBox.StandardButton.Close)
+
+        page_titles = {
+            'scripting': _("Scripting"),
+            'filerenaming': _("File Naming"),
+            'cover': _("Cover Art"),
+        }
+        buttons = {'plugins': message.addButton(_("Plugins"), QtWidgets.QMessageBox.ButtonRole.ActionRole)}
+        for page in dict.fromkeys(page for page, _name, _function in errors):
+            buttons[page] = message.addButton(page_titles[page], QtWidgets.QMessageBox.ButtonRole.ActionRole)
+
+        message.exec()
+        for page, button in buttons.items():
+            if message.clickedButton() == button:
+                self.window.show_options(page)
+                break
+
+    def load_session_from_path(self, path):
+        load_session_from_path(self, path)
+        # Sessions restore rename/move settings and can activate a naming script.
+        self.warn_about_unknown_script_functions()
+
     def _run_init(self):
         config = get_config()
         # Load last session if configured
@@ -753,7 +800,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             last_path = config.persist['last_session_path']
             if last_path:
                 try:
-                    load_session_from_path(self, last_path)
+                    self.load_session_from_path(last_path)
                 except FileNotFoundError:
                     show_session_not_found_dialog(self.window, last_path)
                 except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
@@ -823,6 +870,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
                 ),
             )
 
+        self.warn_about_unknown_script_functions(config)
         QtCore.QTimer.singleShot(0, self._run_init)
         self._qt_translators_updated.emit()
         res = self.exec()

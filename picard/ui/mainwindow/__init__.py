@@ -108,10 +108,7 @@ from picard.options import (
 from picard.plugin3.manager.update_checker import PluginUpdateChecker
 from picard.script import get_file_naming_script_presets
 from picard.session.constants import SessionConstants
-from picard.session.session_manager import (
-    load_session_from_path,
-    save_session_to_path,
-)
+from picard.session.session_manager import save_session_to_path
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -1113,12 +1110,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu = create_qmenu(
             _("&Profiles"), self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
+        self._profile_script_check_pending = False
+        self.profile_quick_selector_menu.aboutToHide.connect(self._schedule_profile_script_check)
         self._make_profile_selector_menu()
 
         self.quick_settings_menu = create_qmenu(_("&Quick settings"), icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
-        self.options_menu = self.menuBar().addMenu(_("&Options"))
+        options_menu = self.menuBar().addMenu(_("&Options"))
+        assert options_menu is not None
+        self.options_menu = options_menu
+        self.options_menu.aboutToHide.connect(self._schedule_profile_script_check)
         self.options_menu.menuAction().setMenuRole(QtGui.QAction.MenuRole.NoRole)
         menu_builder(
             self.options_menu,
@@ -1434,6 +1436,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _options_closed(self):
         self._make_profile_selector_menu()
         self._make_quick_settings_menu()
+        # Wait until the options dialog has finished closing, including cleanup of profile overrides.
+        QtCore.QTimer.singleShot(0, self.tagger.warn_about_unknown_script_functions)
 
     def _disable_while_dialog_shown(self, dialog):
         """Disable MainWindow while dialog is shown, re-enable when it closes.
@@ -1627,7 +1631,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             # Initial progress feedback before heavy load
             self.set_statusbar_message(N_('Loading session from "%(path)s" …'), {'path': path})
             try:
-                load_session_from_path(self.tagger, path)
+                self.tagger.load_session_from_path(path)
             except FileNotFoundError:
                 show_session_not_found_dialog(self, path)
                 return
@@ -1652,7 +1656,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.set_statusbar_message(N_('Loading session from "%(path)s" …'), {'path': path})
         try:
-            load_session_from_path(self.tagger, path)
+            self.tagger.load_session_from_path(path)
         except FileNotFoundError:
             show_session_not_found_dialog(self, path)
             self._remove_from_recent_sessions(path)
@@ -2438,7 +2442,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
                     # Update menus/settings that may depend on profile overrides.
                     self._reset_option_menu_state()
+                    self._profile_script_check_pending = True
+                    self._schedule_profile_script_check()
                 return
+
+    def _schedule_profile_script_check(self):
+        if self._profile_script_check_pending:
+            # aboutToHide is emitted before the menu is actually hidden.
+            QtCore.QTimer.singleShot(0, self._check_pending_profile_scripts)
+
+    def _check_pending_profile_scripts(self):
+        if not self._profile_script_check_pending:
+            return
+        # The profile checkboxes keep the menu open so several profiles can be toggled.
+        # Wait until the whole Options menu is closed before showing a modal warning.
+        if self.profile_quick_selector_menu.isVisible() or self.options_menu.isVisible():
+            return
+        self._profile_script_check_pending = False
+        self.tagger.warn_about_unknown_script_functions()
 
     def _make_plugin_tools_menu(self):
         """Update the Plugin Tools menu"""

@@ -101,6 +101,31 @@ def iter_active_tagging_scripts(config=None):
             yield script
 
 
+def iter_unknown_script_functions(config=None):
+    """Yield the options page, script name and first unknown function of each active script."""
+    if config is None:
+        config = get_config()
+    settings = config.setting
+    scripts = [
+        ('scripting', script.name or _("Tagging script"), script.content)
+        for script in iter_active_tagging_scripts(config)
+    ]
+    if settings['rename_files'] or settings['move_files']:
+        scripts.append(('filerenaming', _("File naming script"), get_file_naming_script(settings)))
+    if settings['save_images_to_files']:
+        scripts.append(('cover', _("Cover art naming script"), settings['cover_image_filename']))
+
+    parser = ScriptParser()
+    for page, name, content in scripts:
+        try:
+            parser.parse(content)
+        except ScriptUnknownFunction as error:
+            yield page, name, error.function_name
+        except ScriptParseError:
+            # Other errors are handled by the script editors. Keep checking the other scripts.
+            continue
+
+
 class ScriptFunctionDocError(Exception):
     pass
 

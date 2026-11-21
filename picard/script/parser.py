@@ -82,6 +82,7 @@ class ScriptUnicodeError(ScriptSyntaxError):
 
 class ScriptUnknownFunction(ScriptParseError):
     def __init__(self, stackitem):
+        self.function_name = stackitem.name
         super().__init__(
             stackitem,
             "Unknown function '{name}'".format(name=stackitem.name),

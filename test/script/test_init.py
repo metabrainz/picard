@@ -43,6 +43,7 @@ from picard.script import (
     ScriptFunctionDocError,
     get_file_naming_script,
     get_file_naming_script_presets,
+    iter_unknown_script_functions,
     script_function_documentation,
     script_function_documentation_all,
 )
@@ -208,3 +209,81 @@ class GetFileNamingScriptTest(PicardTestCase):
     def test_unknown_selection_prefers_the_first_script_of_the_user(self):
         settings = self._settings({'a': {'script': 'first'}}, selected='gone')
         self.assertEqual('first', get_file_naming_script(settings))
+
+
+class UnknownScriptFunctionsTest(PicardTestCase):
+    def test_active_scripts(self):
+        self.set_config_values(
+            setting={
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [
+                    (0, 'Broken syntax', True, '%'),
+                    (1, 'Missing plugin', True, '$missingtagger()'),
+                    (2, 'Disabled', False, '$disabledfunc()'),
+                    (3, 'Valid', True, '$lower(%artist%)'),
+                ],
+                'rename_files': True,
+                'move_files': False,
+                'file_renaming_scripts': {
+                    'unused': {'script': '$unusedfunc()'},
+                    'active': {'script': '$missingnaming()'},
+                },
+                'active_file_naming_script_id': 'active',
+                'save_images_to_files': True,
+                'cover_image_filename': '$missingcover()',
+            }
+        )
+        self.assertEqual(
+            [
+                ('scripting', 'Missing plugin', '$missingtagger'),
+                ('filerenaming', 'File naming script', '$missingnaming'),
+                ('cover', 'Cover art naming script', '$missingcover'),
+            ],
+            list(iter_unknown_script_functions()),
+        )
+
+    def test_inactive_scripts(self):
+        self.set_config_values(
+            setting={
+                'enable_tagger_scripts': False,
+                'list_of_scripts': [(0, 'Disabled', True, '$missingtagger()')],
+                'rename_files': False,
+                'move_files': False,
+                'file_renaming_scripts': {'active': {'script': '$missingnaming()'}},
+                'active_file_naming_script_id': 'active',
+                'save_images_to_files': False,
+                'cover_image_filename': '$missingcover()',
+            }
+        )
+        self.assertEqual([], list(iter_unknown_script_functions()))
+
+    def test_move_only(self):
+        self.set_config_values(
+            setting={
+                'rename_files': False,
+                'move_files': True,
+                'file_renaming_scripts': {'active': {'script': '$missingnaming()'}},
+                'active_file_naming_script_id': 'active',
+            }
+        )
+        self.assertEqual(
+            [('filerenaming', 'File naming script', '$missingnaming')],
+            list(iter_unknown_script_functions()),
+        )
+
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
+    def test_plugin_function_is_not_executed(self):
+        @script_function()
+        def func_testplugin(parser):
+            self.fail('Script must be parsed without evaluating functions')
+
+        self.set_config_values(
+            setting={
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [(0, 'Plugin', True, '$testplugin()')],
+                'rename_files': False,
+                'move_files': False,
+                'save_images_to_files': False,
+            }
+        )
+        self.assertEqual([], list(iter_unknown_script_functions()))
