@@ -186,7 +186,7 @@ class TestProfileImport(TestPicardConfigCommon):
         self.assertTrue(settings['standardize_artists'])
         self.assertNotIn('write_id3v23', settings)
         self.assertIn('write_id3v23', result.skipped_options)
-        self.assertEqual(len(result.warnings), 1)
+        self.assertTrue(any('write_id3v23' in w for w in result.warnings))
 
     def test_import_non_profile_option_skipped(self):
         # Option exists but in_profile=False — cannot be overridden by profile

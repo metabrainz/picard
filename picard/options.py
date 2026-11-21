@@ -137,6 +137,7 @@ BoolOption('persist', 'file_view_header_locked', False)
 ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
 ListOption('persist', 'filters_FileTreeView', DEFAULT_FILTER_COLUMNS)
 Option('persist', 'filters_status_AlbumTreeView', {})
+ListOption('persist', 'hidden_message_boxes', [])
 IntOption('persist', 'last_selected_profile_pos', 0)
 IntOption('persist', 'last_selected_script_pos', 0)
 TextOption('persist', 'last_session_path', '')
@@ -162,7 +163,6 @@ TextOption('persist', 'session_autosave_path', '')
 BoolOption('persist', 'setup_wizard_completed', False)
 BoolOption('persist', 'show_changes_first', False)
 BoolOption('persist', 'show_hidden_files', False)
-BoolOption('persist', 'show_plugin_install_warning', True)
 TextOption('persist', 'tags_from_filenames_format', '')
 Option('persist', 'tracksearchdialog_header_state', QtCore.QByteArray())
 BoolOption('persist', 'tutorial_disabled', False)
@@ -367,7 +367,6 @@ BoolOption('setting', 'enable_tag_saving', True, title=N_("Save tags to files"),
 BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts"), in_profile=True)
 BoolOption('setting', 'enable_user_collections', True, title=N_("Enable managing user collections"), in_profile=True)
 Option('setting', 'file_renaming_scripts', {})
-BoolOption('setting', 'file_save_warning', True, title=N_("Confirm when saving"), in_profile=True)
 BoolOption(
     'setting',
     'filebrowser_horizontal_autoscroll',
@@ -612,7 +611,6 @@ BoolOption('setting', 'show_cover_art_details_filesize', True, title=N_("Show co
 BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show cover art MIME type"), in_profile=True)
 BoolOption('setting', 'show_cover_art_details_type', False, title=N_("Show cover art type"), in_profile=True)
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"), in_profile=True)
-BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"), in_profile=True)
 Option(
     'setting',
     'standardize_artist_names',
