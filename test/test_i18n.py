@@ -82,8 +82,18 @@ class TestI18n(PicardTestCase):
         'Test requires locales to be built with "python setup.py build_locales"',
     )
     def test_existing_locales(self):
-        locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
-        self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
+        mo_files = (
+            'picard.mo',
+            'picard-attributes.mo',
+            'picard-constants.mo',
+            'picard-countries.mo',
+            'picard-languages.mo',
+        )
+        missing = [f for f in mo_files if not os.path.exists(os.path.join(localedir, 'de', 'LC_MESSAGES', f))]
+        self.assertFalse(
+            missing,
+            'Locales are outdated, missing %s. Run "python setup.py build_locales".' % ', '.join(missing),
+        )
 
         setup_i18n(localedir, 'de')
 

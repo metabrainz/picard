@@ -1412,7 +1412,7 @@ def func_countryname(parser, country_code, translate=""):
 @script_function(
     signature=N_("$languagename(language_code[,translate])"),
     documentation=N_(
-        """Returns the name of the language for the specified language code. If the language code is invalid an empty string will be returned.
+        """Returns the name of the language for the specified three-character ISO 639-3 language code. If the language code is invalid an empty string will be returned.
 If `translate` is not blank, the output will be translated into the current locale language.
 """
     ),
