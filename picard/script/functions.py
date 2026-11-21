@@ -42,10 +42,12 @@ import operator
 import re
 
 from picard.const.countries import RELEASE_COUNTRIES
+from picard.const.language_names import LANGUAGE_NAMES
 from picard.extension_points.script_functions import script_function
 from picard.i18n import (
     N_,
     gettext_countries,
+    gettext_languages,
 )
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.script.parser import (
@@ -1406,6 +1408,21 @@ def func_countryname(parser, country_code, translate=""):
     name = RELEASE_COUNTRIES.get(country_code.strip().upper(), "")
     if translate:
         return gettext_countries(name)
+    return name
+
+
+@script_function(
+    signature=N_("$languagename(language_code[,translate])"),
+    documentation=N_(
+        """Returns the name of the language for the specified three-character ISO 639-3 language code. If the language code is invalid an empty string will be returned.
+If `translate` is not blank, the output will be translated into the current locale language.
+"""
+    ),
+)
+def func_languagename(parser, language_code, translate=""):
+    name = LANGUAGE_NAMES.get(language_code.strip().lower(), "")
+    if name and translate:
+        return gettext_languages(name)
     return name
 
 

@@ -2002,6 +2002,52 @@ class ScriptParserTest(PicardTestCase):
         # Tests with invalid number of arguments
         self._assert_arg_count_errors('countryname', 'between 1 and 2', ("$countryname()", "$countryname(CA,,Extra)"))
 
+    def test_cmd_languagename(self):
+        context = Metadata()
+        context["foo"] = "eng"
+        context["bar"] = ""
+        context["baz"] = "INVALID"
+
+        # Mock function to simulate English locale.
+        def mock_gettext_languages_en(arg):
+            return arg
+
+        # Mock function to simulate German locale.
+        def mock_gettext_languages_de(arg):
+            return 'Englisch' if arg == 'English' else arg
+
+        # Test with German locale
+        with mock.patch('picard.script.functions.gettext_languages', mock_gettext_languages_de):
+            self.assertScriptResultEquals("$languagename(eng)", "English", context)
+            self.assertScriptResultEquals("$languagename(eng,)", "English", context)
+            self.assertScriptResultEquals("$languagename(eng, )", "Englisch", context)
+            self.assertScriptResultEquals("$languagename(eng,yes)", "Englisch", context)
+            self.assertScriptResultEquals("$languagename(INVALID,yes)", "", context)
+            # Test for unknown translation of correct code
+            self.assertScriptResultEquals("$languagename(fra,yes)", "French", context)
+
+        # Reset locale to English for remaining tests
+        with mock.patch('picard.script.functions.gettext_languages', mock_gettext_languages_en):
+            self.assertScriptResultEquals("$languagename(eng,)", "English", context)
+            self.assertScriptResultEquals("$languagename(eng,yes)", "English", context)
+            self.assertScriptResultEquals("$languagename(eng)", "English", context)
+            self.assertScriptResultEquals("$languagename(ENG)", "English", context)
+            self.assertScriptResultEquals("$languagename(%foo%)", "English", context)
+            self.assertScriptResultEquals("$languagename(%bar%)", "", context)
+            self.assertScriptResultEquals("$languagename(%baz%)", "", context)
+            self.assertScriptResultEquals("$languagename(INVALID)", "", context)
+            # Language families have no ISO 639-3 code ("iso_code_3:null")
+            self.assertScriptResultEquals("$languagename(nul)", "", context)
+            self.assertScriptResultEquals("$languagename(zxx)", "[No linguistic content]", context)
+            context["language"] = ["eng", "jpn"]
+            self.assertScriptResultEquals("$languagename(%language%)", "", context)
+            self.assertScriptResultEquals("$map(%language%,$languagename(%_loop_value%))", "English; Japanese", context)
+
+        # Tests with invalid number of arguments
+        self._assert_arg_count_errors(
+            'languagename', 'between 1 and 2', ("$languagename()", "$languagename(eng,,Extra)")
+        )
+
     def test_cmd_year(self):
         context = Metadata()
         context["foo"] = "07.21.2021"

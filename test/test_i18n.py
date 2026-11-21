@@ -35,6 +35,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
     gettext_countries,
+    gettext_languages,
     ngettext,
     pgettext_attributes,
     setup_i18n,
@@ -48,7 +49,8 @@ from picard.i18n.gettext import (
 )
 
 
-localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
+# setup.py build_locales writes catalogs to picard/locale/<lang>/LC_MESSAGES/.
+localedir = os.path.join(os.path.dirname(__file__), '..', 'picard', 'locale')
 
 
 class TestI18n(PicardTestCase):
@@ -73,14 +75,25 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Cassette', pgettext_attributes('medium_format', 'Cassette'))
         self.assertEqual('French', gettext_constants('French'))
         self.assertEqual('France', gettext_countries('France'))
+        self.assertEqual('English', gettext_languages('English'))
 
     @unittest.skipUnless(
         os.path.exists(os.path.join(localedir, 'de')),
         'Test requires locales to be built with "python setup.py build_locales"',
     )
     def test_existing_locales(self):
-        locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
-        self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
+        mo_files = (
+            'picard.mo',
+            'picard-attributes.mo',
+            'picard-constants.mo',
+            'picard-countries.mo',
+            'picard-languages.mo',
+        )
+        missing = [f for f in mo_files if not os.path.exists(os.path.join(localedir, 'de', 'LC_MESSAGES', f))]
+        self.assertFalse(
+            missing,
+            'Locales are outdated, missing %s. Run "python setup.py build_locales".' % ', '.join(missing),
+        )
 
         setup_i18n(localedir, 'de')
 
@@ -92,6 +105,7 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Kassette', pgettext_attributes('medium_format', 'Cassette'))
         # self.assertEqual('Französisch', gettext_constants('French'))
         self.assertEqual('Frankreich', gettext_countries('France'))
+        self.assertEqual('Englisch', gettext_languages('English'))
 
     def test_gettext_handles_empty_string(self):
         setup_i18n(localedir, 'fr')
