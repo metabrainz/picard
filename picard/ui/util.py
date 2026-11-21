@@ -26,6 +26,7 @@
 
 
 from collections.abc import Iterable
+from contextlib import contextmanager
 from html import escape as html_escape
 
 from PyQt6 import (
@@ -547,3 +548,31 @@ def context_menu_global_pos(widget: QtWidgets.QWidget, event: QtGui.QContextMenu
     if is_keyboard_context_menu_event(event):
         return keyboard_menu_anchor_global_pos(widget)
     return event.globalPos()
+
+
+@contextmanager
+def keep_cursor_after_removal(view: QtWidgets.QListView):
+    """Make the removal of the selected rows of a list leave the cursor in place.
+
+    With extended selection Qt moves the current row to the previous one and
+    clears the selection when rows are removed. The usual expectation in lists
+    is that the row following the removed ones becomes current, or the previous
+    row if the removed rows were the last ones.
+
+    Wrap the removal of the selected rows in this context manager::
+
+        with keep_cursor_after_removal(view):
+            remove_the_selected_rows()
+    """
+    rows = {index.row() for index in view.selectedIndexes()}
+    model = view.model()
+    candidates = []
+    if rows and model is not None:
+        # Out of range rows give invalid indexes, skipped below
+        candidates = [QtCore.QPersistentModelIndex(model.index(row, 0)) for row in (max(rows) + 1, min(rows) - 1)]
+    try:
+        yield
+    finally:
+        neighbor = next((c for c in candidates if c.isValid()), None)
+        if neighbor is not None:
+            view.setCurrentIndex(QtCore.QModelIndex(neighbor))
