@@ -2134,6 +2134,51 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(bar)%bar%", "one; two", context)
         self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "one; two", context)
 
+    def test_cmd_cleanmulti_with_preserve(self):
+        context = Metadata()
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = ["one", "", "two"]
+        context["baz"] = ["one", "two", ""]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; one; two", context)
+        self.assertScriptResultEquals("%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("%baz%", "one; two; ", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo,1)", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(bar,1)", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(baz,1)", "one; two", context)
+
+    def test_cmd_cleanmulti_with_preserve_eval_false(self):
+        context = Metadata()
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = ["one", "", "two"]
+        context["baz"] = ["one", "two", ""]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; one; two", context)
+        self.assertScriptResultEquals("%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("%baz%", "one; two; ", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo,$eq(a,b))%foo%", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(bar,$eq(a,b))%bar%", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(baz,$eq(a,b))%baz%", "one; two", context)
+
+    def test_cmd_cleanmulti_with_preserve_eval_true(self):
+        context = Metadata()
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = ["one", "", "two"]
+        context["baz"] = ["one", "two", ""]
+
+        # Confirm initial values
+        self.assertScriptResultEquals("%foo%", "; one; two", context)
+        self.assertScriptResultEquals("%bar%", "one; ; two", context)
+        self.assertScriptResultEquals("%baz%", "one; two; ", context)
+        # Test cleaned values
+        self.assertScriptResultEquals("$cleanmulti(foo,$eq(a,a))", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(bar,$eq(a,a))", "one; two", context)
+        self.assertScriptResultEquals("$cleanmulti(baz,$eq(a,a))", "one; two", context)
+
     def test_cmd_cleanmulti_with_hidden_var(self):
         context = Metadata()
         context["~foo"] = ["one", "", "two"]
@@ -2178,7 +2223,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$cleanmulti(baz)%baz%", "", context)
 
     def test_cmd_cleanmulti_invalid_number_of_arguments(self):
-        self._assert_arg_count_errors('cleanmulti', 'exactly 1', ("$cleanmulti()", "$cleanmulti(foo,)"))
+        self._assert_arg_count_errors('cleanmulti', 'between 1 and 2', ("$cleanmulti()", "$cleanmulti(foo,,)"))
 
     def test_cmd_min(self):
         # Test "text" processing

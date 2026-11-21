@@ -1528,24 +1528,32 @@ def func_is_multi(parser, multi):
 
 
 @script_function(
-    eval_args=True,
-    signature=N_("$cleanmulti(name)"),
+    signature=N_("$cleanmulti(name[,preserve])"),
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
+        If `preserve` is specified and is not blank, then the original variable
+        will not be updated.
 
-Example:
+Examples:
 
     $setmulti(test,one; ; two; three)
     $cleanmulti(test)
 
-Result: Sets the value of 'test' to ["one", "two", "three"].
+Result: Returns "" and sets the value of 'test' to ["one", "two", "three"].
+
+    $setmulti(test,one; ; two; three)
+    $cleanmulti(test,1)
+
+Result: Returns "one; two; three" and keeps the value of 'test' as ["one", "", "two", "three"].
 
 _Since Picard 2.8_"""
     ),
 )
-def func_cleanmulti(parser, multi):
+def func_cleanmulti(parser, multi, preserve=""):
     name = normalize_tagname(multi)
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
+    if preserve:
+        return MULTI_VALUED_JOINER.join(values)
     parser.context[name] = values
     return ''
 
