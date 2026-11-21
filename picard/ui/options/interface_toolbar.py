@@ -55,6 +55,7 @@ from picard.ui.options import (
 )
 from picard.ui.util import (
     FileDialog,
+    keep_cursor_after_removal,
     qlistwidget_items,
 )
 
@@ -260,7 +261,8 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         self._insert_item('-', index=insert_index)
 
     def remove_action(self):
-        item = self.ui.toolbar_layout_list.takeItem(self.ui.toolbar_layout_list.currentRow())
+        with keep_cursor_after_removal(self.ui.toolbar_layout_list):
+            item = self.ui.toolbar_layout_list.takeItem(self.ui.toolbar_layout_list.currentRow())
         del item
         self.update_buttons()
 

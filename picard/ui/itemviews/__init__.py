@@ -164,6 +164,63 @@ def _refresh_item_colors_recursive(item):
         _refresh_item_colors_recursive(item.child(i))
 
 
+def _cursor_candidates(view, limit=5):
+    """Return the objects whose rows may get the cursor once the selection is removed.
+
+    In order of preference: up to ``limit`` rows below the selection, the current
+    row, then up to ``limit`` rows above the selection. Selected rows and their
+    descendants are skipped. A few rows are kept in each direction because some
+    may be removed too (e.g. a cluster whose files were all removed).
+
+    The current row comes before the rows above: if it survives the removal
+    (e.g. a track whose files were removed) and nothing follows it, the cursor
+    stays on it, instead of bouncing between the last rows on repeated removals.
+
+    Objects are returned rather than rows because rows get reused: removing a
+    file from a track reassigns the remaining files to the existing child rows,
+    and a track with a single file displays it in the track row.
+    """
+    selected = {QtCore.QPersistentModelIndex(index) for index in view.selectedIndexes() if index.column() == 0}
+    if not selected:
+        return []
+
+    def is_removed(index):
+        while index.isValid():
+            if QtCore.QPersistentModelIndex(index) in selected:
+                return True
+            index = index.parent()
+        return False
+
+    def collect(index, move):
+        found = []
+        index = move(index)
+        while index.isValid() and len(found) < limit:
+            if not is_removed(index):
+                found.append(index)
+            index = move(index)
+        return found
+
+    def row_path(index):
+        # The model is in display order, so the path of row numbers from the
+        # root orders indexes as they are displayed.
+        path = []
+        while index.isValid():
+            path.append(index.row())
+            index = index.parent()
+        return path[::-1]
+
+    indexes = sorted((QtCore.QModelIndex(i) for i in selected), key=row_path)
+    # indexBelow() / indexAbove() follow the displayed rows, skipping collapsed and hidden ones
+    below = collect(indexes[-1], view.indexBelow)
+    above = collect(indexes[0], view.indexAbove)
+    candidates = []
+    for index in below + [view.currentIndex()] + above:
+        item = view.itemFromIndex(index)
+        if isinstance(item, TreeItem) and item.obj is not None:
+            candidates.append(item.obj)
+    return candidates
+
+
 class MainPanel(QtWidgets.QSplitter):
     def __init__(self, window, parent=None):
         super().__init__(parent=parent)
@@ -308,31 +365,41 @@ class MainPanel(QtWidgets.QSplitter):
     def update_current_view(self):
         self._update_selection(self._selected_view)
 
-    def remove(self, objects):
+    def _remove_keeping_cursor(self, remove_func, objects):
+        """Call ``remove_func(objects)``, then move the cursor past the removed rows.
+
+        The cursor goes to the row following the selection, or to the previous
+        one if there is none, like in usual lists. See _cursor_candidates().
+        """
+        view = self._selected_view
+        candidates = _cursor_candidates(view)
+
         self._ignore_selection_changes = True
-        self.tagger.remove(objects)
+        remove_func(objects)
         self._ignore_selection_changes = False
 
-        view = self._selected_view
+        for obj in candidates:
+            item = obj.ui_item
+            try:
+                if item is not None and item.treeWidget() is view:
+                    view.setCurrentIndex(view.indexFromItem(item))
+                    return
+            except RuntimeError:
+                # The item was deleted along with the C++ object
+                pass
+
         index = view.currentIndex()
         if index.isValid():
             # select the current index
             view.setCurrentIndex(index)
         else:
             self.update_current_view()
+
+    def remove(self, objects):
+        self._remove_keeping_cursor(self.tagger.remove, objects)
 
     def trash_files(self, files):
-        self._ignore_selection_changes = True
-        self.tagger.trash_files(files)
-        self._ignore_selection_changes = False
-
-        view = self._selected_view
-        index = view.currentIndex()
-        if index.isValid():
-            # select the current index
-            view.setCurrentIndex(index)
-        else:
-            self.update_current_view()
+        self._remove_keeping_cursor(self.tagger.trash_files, files)
 
     def set_sorting(self, sort=True):
         if sort != self._sort_enabled:

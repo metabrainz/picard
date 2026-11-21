@@ -50,6 +50,7 @@ from picard.i18n import (
 from picard.ui import PicardDialog
 from picard.ui.util import (
     font_scaled_size,
+    keep_cursor_after_removal,
     qlistwidget_items,
 )
 
@@ -136,8 +137,9 @@ class ListBox(QtWidgets.QListWidget):
 
     def move_selected_items(self, target_list, callback=None):
         """Move the selected item to another listbox."""
-        for item in self.selectedItems():
-            self.move_item(item, target_list)
+        with keep_cursor_after_removal(self):
+            for item in self.selectedItems():
+                self.move_item(item, target_list)
         if callback:
             callback()
 

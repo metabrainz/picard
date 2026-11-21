@@ -23,6 +23,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.ui.util import keep_cursor_after_removal
+
 
 class EditableListView(QtWidgets.QListView):
     def __init__(self, parent=None):
@@ -91,10 +93,9 @@ class EditableListView(QtWidgets.QListView):
         if not rows:
             return
         model = self.model()
-        for row in sorted(rows, reverse=True):
-            model.removeRow(row)
-        first_selected_row = rows[0]
-        self.select_row(first_selected_row)
+        with keep_cursor_after_removal(self):
+            for row in sorted(rows, reverse=True):
+                model.removeRow(row)
 
     def move_selected_rows_up(self):
         rows = self.get_selected_rows()
