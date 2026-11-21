@@ -134,43 +134,43 @@ def test_profile_toggle_rechecks_effective_scripts_after_menu_closes(qapp, tmp_p
     config.profiles['user_profile_settings'] = {'p1': {'list_of_scripts': [(0, 'Profile', True, '$missingprofile()')]}}
     window = Mock(spec=MainWindow)
     window.tagger = Mock(spec=Tagger)
-    window.profile_quick_selector_menu = QtWidgets.QMenu()
-    window.profile_quick_selector_menu.addAction('Profile')
-    window.options_menu = Mock()
+    # Headless Qt platforms do not reliably show native popup menus.
+    # Model their visibility explicitly while retaining the real timer event loop.
+    window.profile_quick_selector_menu = Mock(spec=QtWidgets.QMenu)
+    window.options_menu = Mock(spec=QtWidgets.QMenu)
+    window.profile_quick_selector_menu.isVisible.return_value = True
     window.options_menu.isVisible.return_value = False
     window._profile_script_check_pending = False
     window._schedule_profile_script_check = lambda: MainWindow._schedule_profile_script_check(window)
     window._check_pending_profile_scripts = lambda: MainWindow._check_pending_profile_scripts(window)
-    window.profile_quick_selector_menu.aboutToHide.connect(window._schedule_profile_script_check)
     observed = []
     window.tagger.warn_about_unknown_script_functions.side_effect = lambda: observed.append(
         list(iter_unknown_script_functions(config))
     )
-    with patch('picard.ui.mainwindow.get_config', return_value=config):
-        window.profile_quick_selector_menu.popup(QtCore.QPoint(0, 0))
+
+    def hide_menu(menu):
+        # aboutToHide schedules the check before the menu becomes invisible.
+        window._schedule_profile_script_check()
+        menu.isVisible.return_value = False
         qapp.processEvents()
-        assert window.profile_quick_selector_menu.isVisible()
+
+    with patch('picard.ui.mainwindow.get_config', return_value=config):
         MainWindow._set_profile_enabled(window, 'p1', True)
         MainWindow._set_profile_enabled(window, 'p1', False)
         MainWindow._set_profile_enabled(window, 'p1', True)
         qapp.processEvents()
         assert not observed
 
-        window.profile_quick_selector_menu.hide()
-        qapp.processEvents()
+        hide_menu(window.profile_quick_selector_menu)
         assert observed == [[('scripting', 'Profile', '$missingprofile')]]
 
-        window.profile_quick_selector_menu.popup(QtCore.QPoint(0, 0))
-        qapp.processEvents()
+        window.profile_quick_selector_menu.isVisible.return_value = True
         window.options_menu.isVisible.return_value = True
         MainWindow._set_profile_enabled(window, 'p1', False)
         MainWindow._set_profile_enabled(window, 'p1', False)
-        window.profile_quick_selector_menu.hide()
-        qapp.processEvents()
+        hide_menu(window.profile_quick_selector_menu)
         assert len(observed) == 1
-        window.options_menu.isVisible.return_value = False
-        window._schedule_profile_script_check()
-        qapp.processEvents()
+        hide_menu(window.options_menu)
         assert observed == [[('scripting', 'Profile', '$missingprofile')], [('scripting', 'Base', '$missingbase')]]
 
         # A native menu action may be triggered after its menu has already hidden.
