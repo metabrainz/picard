@@ -1528,11 +1528,10 @@ def func_is_multi(parser, multi):
 
 
 @script_function(
-    signature=N_("$cleanmulti(name[,preserve])"),
+    signature=N_("$cleanmulti(name)"),
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
-        If `preserve` is specified and is not blank, then the original variable
-        will not be updated.
+        The original variable is updated.
 
 Examples:
 
@@ -1541,21 +1540,36 @@ Examples:
 
 Result: Returns "" and sets the value of 'test' to ["one", "two", "three"].
 
-    $setmulti(test,one; ; two; three)
-    $cleanmulti(test,1)
-
-Result: Returns "one; two; three" and keeps the value of 'test' as ["one", "", "two", "three"].
-
 _Since Picard 2.8_"""
     ),
 )
-def func_cleanmulti(parser, multi, preserve=""):
+def func_cleanmulti(parser, multi):
     name = normalize_tagname(multi)
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
-    if preserve:
-        return MULTI_VALUED_JOINER.join(values)
     parser.context[name] = values
     return ''
+
+
+@script_function(
+    signature=N_("$cleanmulti2(name)"),
+    documentation=N_(
+        """Removes all empty string elements from the multi-value variable, and returns
+        the resulting multi-value string. The original variable is not updated.
+
+Examples:
+
+    $setmulti(test,one; ; two; three)
+    $cleanmulti2(test)
+
+Result: Returns "one; two; three" and keeps the value of 'test' as ["one", "", "two", "three"].
+
+_Since Picard 3.1_"""
+    ),
+)
+def func_cleanmulti2(parser, multi):
+    name = normalize_tagname(multi)
+    values = [str(value) for value in parser.context.getall(name) if value or value == 0]
+    return MULTI_VALUED_JOINER.join(values)
 
 
 def _type_args(_type, *args):
