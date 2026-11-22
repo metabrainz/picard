@@ -286,7 +286,10 @@ class CoverArt:
         if error:
             self.album.error_append("Coverart processing_error: %s" % error)
         self.album.complete_task(f'coverart_processing_{id(image)}')
-        self._set_metadata(image)
+        if image.datahash is None:
+            log.warning("Not storing cover art image without data: %r", image)
+        else:
+            self._set_metadata(image)
 
         # next_in_queue must not be called directly but passed to main loop.
         # Otherwise the already executing generator function will be called twice.

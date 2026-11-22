@@ -43,6 +43,7 @@ from picard.extension_points.cover_art_filters import (
     ext_point_cover_art_metadata_filters,
 )
 from picard.extension_points.cover_art_processors import (
+    CoverArtDecodingError,
     CoverArtProcessingError,
     ImageProcessor,
     ProcessingImage,
@@ -129,6 +130,11 @@ class CoverArtImageProcessing:
         try:
             start_time = time.time()
             image = ProcessingImage(initial_data, image_info)
+            # PDFs report no dimensions and are never decoded by Qt.
+            if image.get_qimage().isNull() and image.info.width > 0 and image.info.height > 0:
+                raise CoverArtDecodingError(
+                    f"Unable to decode {image.info.width} x {image.info.height} cover art image {coverartimage}"
+                )
             save_images_to_tags = config.setting['save_images_to_tags']
             save_images_to_files = config.setting['save_images_to_files']
 
@@ -180,6 +186,8 @@ class CoverArtImageProcessing:
             sub_task_counter.wait_for_tasks()
         except IdentificationError as e:
             raise CoverArtProcessingError(e) from e
+        except CoverArtDecodingError:
+            raise
         except CoverArtProcessingError:
             coverartimage.set_data(initial_data)
             if config.setting['save_images_to_files']:
