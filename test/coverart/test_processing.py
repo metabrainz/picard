@@ -268,6 +268,19 @@ class ImageProcessorsTest(PicardTestCase):
         self._check_image_processors((600, 600), (500, 500), (750, 750))
         self._check_image_processors((400, 400), (500, 500), (750, 750))
 
+    def test_processing_worker_does_not_wait_on_the_thread_pool(self):
+        """A worker waiting on its own pool deadlocks once all threads do so."""
+        self.set_config_values(self.settings)
+        coverartimage = CoverArtImage()
+        image, info = create_fake_image(1000, 1000, 'jpg')
+        image_processing = CoverArtImageProcessing(Album(None))
+        with patch('picard.coverart.processing.thread.run_task') as run_task:
+            image_processing._run_image_processors(coverartimage, image, info)
+        run_task.assert_not_called()
+        self.assertEqual((coverartimage.width, coverartimage.height), (500, 500))
+        external_cover = coverartimage.external_file_coverart
+        self.assertEqual((external_cover.width, external_cover.height), (750, 750))
+
     def test_image_processors_save_to_tags(self):
         settings = copy(self.settings)
         settings['save_images_to_files'] = False
