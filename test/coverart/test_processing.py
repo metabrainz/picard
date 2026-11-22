@@ -31,6 +31,7 @@ from PyQt6.QtGui import QImage
 
 from test.picardtestcase import (
     PicardTestCase,
+    create_fake_png,
     subtest_cases,
 )
 
@@ -62,6 +63,7 @@ from picard.coverart.processing.processors import (
     ResizeImage,
 )
 from picard.extension_points.cover_art_processors import (
+    CoverArtDecodingError,
     CoverArtProcessingError,
     ImageProcessor,
     ProcessingImage,
@@ -439,6 +441,49 @@ class ImageProcessorsTest(PicardTestCase):
     def test_identification_error(self):
         image, info = create_fake_image(0, 0, "jpg")
         self._check_processing_error(image, info)
+
+    @subtest_cases(
+        "overrides",
+        {
+            'separate tags and file resize': {},
+            'same resize for tags and file': {
+                'cover_file_resize_target_width': 500,
+                'cover_file_resize_target_height': 500,
+            },
+            'conversion only': {
+                'cover_tags_resize': False,
+                'cover_file_resize': False,
+                'cover_tags_convert_images': True,
+                'cover_file_convert_images': True,
+                'cover_tags_convert_to_format': ImageFormat.PNG,
+                'cover_file_convert_to_format': ImageFormat.PNG,
+            },
+        },
+    )
+    def test_undecodable_image_is_skipped(self, overrides):
+        """An image Qt cannot decode, e.g. too large, gets no data (PICARD-3583)."""
+        self.set_config_values({**self.settings, **overrides})
+        data = create_fake_png()
+        coverartimage = CoverArtImage()
+        album = Album(None)
+        image_processing = CoverArtImageProcessing(album)
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, data, imageinfo.identify(data), Mock())
+            image_processing.wait_for_processing()
+        self.assertIsNone(coverartimage.datahash)
+        self.assertIsNone(coverartimage.external_file_coverart)
+        self.assertEqual(len(album.errors), 1)
+        self.assertIsInstance(album.errors[0], CoverArtDecodingError)
+
+    def test_pdf_is_not_skipped(self):
+        self.set_config_values(self.settings)
+        data = b'%PDF-1.4' + b'\0' * 1000
+        coverartimage = CoverArtImage()
+        image_processing = CoverArtImageProcessing(Album(None))
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, data, imageinfo.identify(data), Mock())
+            image_processing.wait_for_processing()
+        self.assertEqual(coverartimage.data, data)
 
     def test_encoding_error(self):
         image, info = create_fake_image(500, 500, "jpg")
