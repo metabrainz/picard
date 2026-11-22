@@ -20,13 +20,18 @@
 
 
 from copy import copy
+import threading
+import time
 from types import MappingProxyType
 from unittest.mock import (
     Mock,
     patch,
 )
 
-from PyQt6.QtCore import QBuffer
+from PyQt6.QtCore import (
+    QBuffer,
+    QThreadPool,
+)
 from PyQt6.QtGui import QImage
 
 from test.picardtestcase import (
@@ -603,3 +608,53 @@ class ProcessingImageTest(PicardTestCase):
 
         # Image data should be identical to original (no re-encoding)
         self.assertEqual(coverartimage.data, original_data)
+
+
+class ImageProcessingThreadPoolTest(PicardTestCase):
+    """Image processing must not exhaust the thread pool it runs on (PICARD-3586)."""
+
+    POOL_SIZE = 2
+
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.util.thread')
+        self.set_config_values(
+            {
+                'enabled_plugins': [],
+                'cover_tags_resize': False,
+                'cover_tags_convert_images': False,
+                'cover_file_resize': False,
+                'cover_file_convert_images': False,
+                'save_images_to_tags': True,
+                'save_images_to_files': True,
+            }
+        )
+        self.pool = QThreadPool()
+        self.pool.setMaxThreadCount(self.POOL_SIZE)
+        self.tagger.thread_pool = self.pool
+
+        def release_pool():
+            # If the code under test deadlocked, let the queued sub-tasks run
+            # so the blocked threads are released and the test run can exit.
+            self.pool.setMaxThreadCount(32)
+            self.pool.waitForDone(10000)
+
+        self.addCleanup(release_pool)
+
+    def test_concurrent_processing_does_not_deadlock(self):
+        # More concurrent processing tasks than pool threads, as happens
+        # when many albums finish loading at once.
+        count = self.POOL_SIZE * 3
+        done = threading.Semaphore(0)
+
+        def callback(coverartimage, error):
+            done.release()
+
+        image_processing = CoverArtImageProcessing(Album(None))
+        image, info = create_fake_image(100, 100, 'jpg')
+        with patch('picard.util.thread.to_main', mock_to_main):
+            for _i in range(count):
+                image_processing.run_image_processors(CoverArtImage(), image, info, callback)
+            deadline = time.monotonic() + 5
+            finished = sum(done.acquire(timeout=max(0, deadline - time.monotonic())) for _i in range(count))
+        self.assertEqual(finished, count, "image processing deadlocked: the thread pool is exhausted")
