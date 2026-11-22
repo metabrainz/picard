@@ -2180,6 +2180,72 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_cleanmulti_invalid_number_of_arguments(self):
         self._assert_arg_count_errors('cleanmulti', 'exactly 1', ("$cleanmulti()", "$cleanmulti(foo,)"))
 
+    @subtest_cases(
+        "expression,expected",
+        [
+            ("$removemulti(%foo%)", "one; two"),
+            ("$removemulti(%bar%)", "one; two"),
+            ("$removemulti(%baz%)", "one; two"),
+            ("$removemulti(%empty%)", ""),
+            ("$removemulti(%unknown%)", ""),
+            ("$removemulti(a|b||c,,|)", "a|b|c"),
+            ("$lenmulti($removemulti(%bar%))", "2"),
+            ("$set(r,$removemulti(%foo%))%foo%", "; one; two"),
+            ("$removemulti(%genre%,^Pop\\$)", "Rock; Pop Punk; Jazz"),
+            ("$removemulti(%genre%,Pop)", "Rock; Jazz"),
+            ("$removemulti(%genre%,pop)", "Pop; Rock; Pop Punk; Jazz"),
+            ("$removemulti(%genre%,\\(?i\\)pop)", "Rock; Jazz"),
+            ("$removemulti(%genre%,^\\(Pop|Jazz\\)\\$)", "Rock; Pop Punk"),
+            ("$removemulti(%genre%,nomatch)", "Pop; Rock; Pop Punk; Jazz"),
+            ("$removemulti(%genre%,.)", ""),
+            ("$removemulti(%foo%,^\\$)", "one; two"),
+            ("$removemulti(%foo%,one)", "; two"),
+            ("$removemulti(%genre%,)", "Pop; Rock; Pop Punk; Jazz"),
+            ("$removemulti(%foo%,)", "one; two"),
+            ("$removemulti(%genre%,\\()", "Pop; Rock; Pop Punk; Jazz"),
+            ("$removemulti(%unknown%,x)", ""),
+            ("$removemulti(a|x1|b,^x,|)", "a|b"),
+            ("$set(r,$removemulti(%genre%,Pop))%genre%", "Pop; Rock; Pop Punk; Jazz"),
+        ],
+    )
+    def test_cmd_removemulti(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected, self._filter_context())
+
+    @subtest_cases(
+        "expression,expected",
+        [
+            ("$keepmulti(%genre%,^Pop\\$)", "Pop"),
+            ("$keepmulti(%genre%,Pop)", "Pop; Pop Punk"),
+            ("$keepmulti(%genre%,pop)", ""),
+            ("$keepmulti(%genre%,\\(?i\\)pop)", "Pop; Pop Punk"),
+            ("$keepmulti(%genre%,^\\(Rock|Jazz\\)\\$)", "Rock; Jazz"),
+            ("$keepmulti(%genre%,nomatch)", ""),
+            ("$keepmulti(%foo%,^\\$)", ""),
+            ("$keepmulti(%foo%,.)", "one; two"),
+            ("$keepmulti(%genre%,)", "Pop; Rock; Pop Punk; Jazz"),
+            ("$keepmulti(%genre%,\\()", "Pop; Rock; Pop Punk; Jazz"),
+            ("$keepmulti(%unknown%,x)", ""),
+            ("$keepmulti(a|x1|b|x2,^x,|)", "x1|x2"),
+            ("$set(r,$keepmulti(%genre%,Pop))%genre%", "Pop; Rock; Pop Punk; Jazz"),
+        ],
+    )
+    def test_cmd_keepmulti(self, expression, expected):
+        self.assertScriptResultEquals(expression, expected, self._filter_context())
+
+    def test_cmd_filter_multi_invalid_number_of_arguments(self):
+        self._assert_arg_count_errors('removemulti', 'between 1 and 3', ("$removemulti()", "$removemulti(a,b,c,d)"))
+        self._assert_arg_count_errors('keepmulti', 'between 2 and 3', ("$keepmulti(a)", "$keepmulti(a,b,c,d)"))
+
+    @staticmethod
+    def _filter_context():
+        context = Metadata()
+        context["foo"] = ["", "one", "two"]
+        context["bar"] = ["one", "", "two"]
+        context["baz"] = ["one", "two", ""]
+        context["empty"] = ["", ""]
+        context["genre"] = ["Pop", "Rock", "Pop Punk", "Jazz"]
+        return context
+
     def test_cmd_min(self):
         # Test "text" processing
         self.assertScriptResultEquals("$min(text,abc)", "abc")

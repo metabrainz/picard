@@ -1528,17 +1528,18 @@ def func_is_multi(parser, multi):
 
 
 @script_function(
-    eval_args=True,
     signature=N_("$cleanmulti(name)"),
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
+The original variable is updated.
+Use `$removemulti` to get a copy without empty elements and leave the original variable unchanged.
 
-Example:
+Examples:
 
     $setmulti(test,one; ; two; three)
     $cleanmulti(test)
 
-Result: Sets the value of 'test' to ["one", "two", "three"].
+Result: Returns "" and sets the value of 'test' to ["one", "two", "three"].
 
 _Since Picard 2.8_"""
     ),
@@ -1548,6 +1549,88 @@ def func_cleanmulti(parser, multi):
     values = [str(value) for value in parser.context.getall(name) if value or value == 0]
     parser.context[name] = values
     return ''
+
+
+def _filter_multi(parser, multi, pattern, separator, keep):
+    """Return a copy of a multi-value with elements filtered by a regular expression.
+
+    Args:
+        parser: Script parser
+        multi: Unevaluated multi-value argument
+        pattern: Regular expression, or None to drop empty elements
+        separator: Separator of the elements
+        keep: If True keep only the elements matching `pattern`, otherwise remove them
+
+    Returns:
+        str: The remaining elements joined with the separator
+    """
+    multi_value = MultiValue(parser, multi, separator)
+    if pattern is None:
+        values = [value for value in multi_value if value]
+    elif not pattern:
+        # An empty pattern matches everything, don't filter at all
+        values = list(multi_value)
+    else:
+        try:
+            regex = re.compile(pattern)
+        except re.error:
+            values = list(multi_value)
+        else:
+            values = [value for value in multi_value if bool(regex.search(value)) == keep]
+    return multi_value.separator.join(values)
+
+
+@script_function(
+    eval_args=False,
+    signature=N_("$removemulti(name[,pattern[,separator=; ]])"),
+    documentation=N_(
+        """Returns a copy of the multi-value tag `name` without the elements matching the
+[regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
+If `pattern` is omitted or empty, the empty elements are removed.
+The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
+Use `\\(?i\\)` at the start of the pattern for a case-insensitive match.
+An invalid pattern removes nothing. The original variable is not updated.
+
+Examples:
+
+    $setmulti(genre,Pop; ; Rock; Pop Punk; Jazz)
+    $removemulti(%genre%)
+    $removemulti(%genre%,^Pop\\$)
+    $removemulti(%genre%,\\(?i\\)pop)
+
+Results: "Pop; Rock; Pop Punk; Jazz", "; Rock; Pop Punk; Jazz" and "; Rock; Jazz"
+
+_Since Picard 3.1_"""
+    ),
+)
+def func_removemulti(parser, multi, pattern=None, separator=MULTI_VALUED_JOINER):
+    pattern = pattern.eval(parser) if pattern is not None else ''
+    return _filter_multi(parser, multi, pattern or None, separator, keep=False)
+
+
+@script_function(
+    eval_args=False,
+    signature=N_("$keepmulti(name,pattern[,separator=; ])"),
+    documentation=N_(
+        """Returns a copy of the multi-value tag `name` with only the elements matching the
+[regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
+The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
+Use `\\(?i\\)` at the start of the pattern for a case-insensitive match.
+An empty or invalid pattern keeps everything. The original variable is not updated.
+
+Examples:
+
+    $setmulti(genre,Pop; Rock; Pop Punk; Jazz)
+    $keepmulti(%genre%,^\\(Rock|Jazz\\)\\$)
+    $keepmulti(%genre%,Pop)
+
+Results: "Rock; Jazz" and "Pop; Pop Punk"
+
+_Since Picard 3.1_"""
+    ),
+)
+def func_keepmulti(parser, multi, pattern, separator=MULTI_VALUED_JOINER):
+    return _filter_multi(parser, multi, pattern.eval(parser), separator, keep=True)
 
 
 def _type_args(_type, *args):
