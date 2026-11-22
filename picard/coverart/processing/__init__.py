@@ -175,15 +175,11 @@ class CoverArtImageProcessing:
             else:
                 coverartimage.set_data(initial_data)
 
-            # Start separate threads to run tag and file only processors in parallel
-            sub_task_counter = thread.TaskCounter()
+            # Not run on the thread pool: waiting on it from a pool worker deadlocks once the pool is full.
             if save_images_to_files:
-                run_queue_files = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
-                thread.run_task(run_queue_files, task_counter=sub_task_counter)
+                run_queue_common(image.copy(), ImageProcessor.Target.FILE)
             if save_images_to_tags:
-                run_queue_tags = partial(run_queue_common, image.copy(), ImageProcessor.Target.TAGS)
-                thread.run_task(run_queue_tags, task_counter=sub_task_counter)
-            sub_task_counter.wait_for_tasks()
+                run_queue_common(image.copy(), ImageProcessor.Target.TAGS)
         except IdentificationError as e:
             raise CoverArtProcessingError(e) from e
         except CoverArtDecodingError:
