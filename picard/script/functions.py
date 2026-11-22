@@ -1415,7 +1415,8 @@ def func_countryname(parser, country_code, translate=""):
         """Returns the name of the language for the specified three-character ISO 639-3 language code. If the language code is invalid an empty string will be returned.
 The returned name is in English. For example, `$languagename(fra)` returns `French`.
 If `translate` is not blank, that English name is translated into the current locale language.
-"""
+
+_Since Picard 3.1_"""
     ),
 )
 def func_languagename(parser, language_code, translate=""):
