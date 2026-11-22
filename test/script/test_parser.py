@@ -1987,6 +1987,9 @@ class ScriptParserTest(PicardTestCase):
             ("$languagename(eng, )", "Englisch"),
             ("$languagename(eng,yes)", "Englisch"),
             ("$languagename(INVALID,yes)", ""),
+            ("$languagename(ENG,yes)", "Englisch"),
+            ("$languagename( eng ,yes)", "Englisch"),
+            ("$languagename(,yes)", ""),
             # Unknown translation of a correct code
             ("$languagename(fra,yes)", "French"),
         ],
@@ -2005,6 +2008,11 @@ class ScriptParserTest(PicardTestCase):
             ("$languagename(eng,yes)", "English"),
             ("$languagename(eng)", "English"),
             ("$languagename(ENG)", "English"),
+            ("$languagename( eng )", "English"),
+            ("$languagename(,)", ""),
+            # Names containing commas and brackets are returned unchanged
+            ("$languagename(ang)", "English, Old (ca.450-1100)"),
+            ("$languagename(mul)", "[Multiple languages]"),
             ("$languagename(%foo%)", "English"),
             ("$languagename(%bar%)", ""),
             ("$languagename(%baz%)", ""),
