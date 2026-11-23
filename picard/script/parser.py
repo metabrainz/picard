@@ -277,6 +277,9 @@ class ScriptParser:
             ch = self.read()
             if ch == '(':
                 name = self._text[start : self._pos - 1]
+                if name == 'noop':
+                    self.skip_noop_arguments()
+                    return ScriptText('')
                 if name not in self.functions:
                     raise ScriptUnknownFunction(StackItem(line, column, name))
                 return ScriptFunction(name, self.parse_arguments(), self, column, line)
@@ -284,6 +287,25 @@ class ScriptParser:
                 self.__raise_eof()
             elif not isidentif(ch):
                 self.__raise_char(ch)
+
+    def skip_noop_arguments(self):
+        """Skip the content of `$noop(...)` without parsing it.
+
+        The opening parenthesis has already been consumed. Nested parentheses
+        are balanced, a backslash escapes the next character (which is not
+        validated), and reading stops after the matching closing parenthesis.
+        """
+        depth = 1
+        while depth:
+            ch = self.read()
+            if ch is None:
+                self.__raise_eof()
+            elif ch == '\\':
+                self.read()  # skip the escaped character, whatever it is
+            elif ch == '(':
+                depth += 1
+            elif ch == ')':
+                depth -= 1
 
     def parse_variable(self):
         begin = self._pos
