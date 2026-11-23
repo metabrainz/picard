@@ -52,6 +52,7 @@ class DocsSubcommand(Subcommand):
                 'docs list',
                 'docs show script-functions',
                 'docs show script-functions sortmulti unique',
+                'docs show script-variables album artist',
                 'docs show script-functions -f markdown -o functions.md',
             ),
         )

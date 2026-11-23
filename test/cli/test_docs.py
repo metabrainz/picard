@@ -47,6 +47,7 @@ from picard.cli.doc_topics import (
     DocNotFoundError,
     DocTopic,
     ScriptFunctionsTopic,
+    ScriptVariablesTopic,
     get_topic,
 )
 from picard.cli.docs import (
@@ -55,6 +56,7 @@ from picard.cli.docs import (
 )
 from picard.cli.output import CliOutput
 from picard.extension_points.script_functions import FunctionRegistryItem
+from picard.tags.tagvar import TagVar
 
 
 class FakeTopic(DocTopic):
@@ -146,6 +148,32 @@ class ScriptFunctionsTopicTest(PicardTestCase):
     def test_select_unknown_function(self):
         with self.assertRaises(DocNotFoundError):
             self.topic.select(['$nosuchfunction'])
+
+
+class ScriptVariablesTopicTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        hidden = TagVar(name='hidden_var', longdesc='A hidden one.', is_hidden=True, is_multi_value=True)
+        visible = TagVar(name='visible_var', longdesc='A **visible** one.')
+        patcher = patch('picard.cli.doc_topics.documented_script_variables', return_value=[hidden, visible])
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.topic = ScriptVariablesTopic()
+
+    def test_entries(self):
+        hidden, visible = self.topic.entries()
+        self.assertEqual(
+            DocEntry('_hidden_var', '%_hidden_var%', 'A hidden one.\n\n**Notes:** multi-value variable.', True), hidden
+        )
+        self.assertEqual(DocEntry('visible_var', '%visible_var%', 'A **visible** one.', True), visible)
+
+    def test_select_accepts_percent_signs(self):
+        entries = self.topic.select(['%visible_var%', '_hidden_var'])
+        self.assertEqual(['_hidden_var', 'visible_var'], [entry.name for entry in entries])
+
+    def test_select_unknown_variable(self):
+        with self.assertRaises(DocNotFoundError):
+            self.topic.select(['%hidden_var%'])
 
 
 class DocFormattersTest(PicardTestCase):
@@ -329,6 +357,11 @@ class DocsCliTest(PicardTestCase):
         self.assertTrue(result.stdout.startswith('# Script functions\n\n## `$sortmulti(multi[,separator=; ])`\n'))
         self.assertIn('## `$unique(multi[,case_sensitive[,separator=; ]])`', result.stdout)
         self.assertNotIn('$cleanmulti', result.stdout)
+
+    def test_show_script_variable(self):
+        result = _run_cli('docs', 'show', 'script-variables', '%album%', '-f', 'markdown', config_file=self.config_file)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual('# Script variables\n\n## `%album%`\n\nThe title of the release.\n', result.stdout)
 
     def test_show_unknown_function(self):
         result = _run_cli('docs', 'show', 'script-functions', 'nosuchfunction', config_file=self.config_file)

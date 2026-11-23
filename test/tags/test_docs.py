@@ -21,14 +21,18 @@
 
 
 import threading
+from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.tags import ALL_TAGS
 from picard.options import Option
 from picard.tags import tagvar
 from picard.tags.docs import (
     display_tag_full_description,
+    display_tag_full_description_markdown,
     display_tag_tooltip,
+    documented_script_variables,
 )
 from picard.tags.tagvar import (
     DocumentLink,
@@ -171,6 +175,53 @@ class UtilTagsDocsTest(PicardTestCase):
         item._longdesc = None
         expected = '<p>my_var</p>'
         self.assertEqual(display_tag_full_description(item), expected)
+
+
+class TagDocsMarkdownTest(PicardTestCase):
+    def test_display_tag_full_description_markdown(self):
+        item = TagVar(name='my_var', longdesc='The **tag** description.', additionaldesc='More & more.')
+        self.assertEqual(display_tag_full_description_markdown(item), 'The **tag** description.\n\nMore & more.')
+
+        item = TagVar(name='my_var', longdesc='Description.')
+        item.is_multi_value = True
+        item.is_hidden = True
+        item.plugin_name = 'My Plugin'
+        item.doc_links = (
+            DocumentLink('Link & 1', 'https://example.com'),
+            DocumentLink('Link 2', 'https://example.com/foo'),
+        )
+        item.see_also = ('artist', 'albumartist')
+        Option('setting', 'my_script_var_opt', '', title='Option description')
+        item.related_options = ('my_script_var_opt',)
+        # Same sections as the HTML description, links as Markdown and no HTML left
+        self.assertEqual(
+            display_tag_full_description_markdown(item),
+            'Description.\n\n'
+            '**Notes:** multi-value variable.\n\n'
+            '**Option Settings:** Option description.\n\n'
+            '**Links:** [Link & 1](https://example.com); [Link 2](https://example.com/foo).\n\n'
+            '**See Also:** `%artist%`; `%albumartist%`.\n\n'
+            '**Plugin:** My Plugin.',
+        )
+
+    def test_display_tag_full_description_markdown_without_description(self):
+        item = TagVar(name='my_var')
+        item._longdesc = None
+        self.assertEqual(display_tag_full_description_markdown(item), 'my_var')
+
+    def test_documented_script_variables(self):
+        plugin_variable = TagVar(name='album', longdesc='Plugin description.')
+        with patch('picard.extension_points.script_variables.ext_point_script_variables', [plugin_variable]):
+            variables = documented_script_variables()
+        # All system variables and the plugin ones
+        self.assertEqual(len(variables), len(ALL_TAGS) + 1)
+        # Sorted by name, whether hidden or not
+        names = [var.script_name().lstrip('_') for var in variables]
+        self.assertEqual(names, sorted(names))
+        # The plugin variable comes after the system variable of the same name
+        album = [var for var in variables if var.name == 'album']
+        self.assertEqual(album[-1], plugin_variable)
+        self.assertIsNot(album[0], plugin_variable)
 
 
 class TagTooltipCachingTest(PicardTestCase):

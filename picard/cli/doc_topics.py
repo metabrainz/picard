@@ -34,6 +34,10 @@ from dataclasses import dataclass
 
 from picard.extension_points.script_functions import ext_point_script_functions
 from picard.script import script_function_names
+from picard.tags.docs import (
+    display_tag_full_description_markdown,
+    documented_script_variables,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -112,8 +116,7 @@ class ScriptFunctionsTopic(DocTopic):
         return name.removeprefix('$')
 
     def entries(self) -> list[DocEntry]:
-        # Same source as the script documentation of the GUI: the first line of the
-        # Markdown documentation of a function is its signature, the rest is its description.
+        # Same source as the script documentation of the GUI
         functions = dict(ext_point_script_functions)
         return [
             DocEntry(
@@ -126,9 +129,35 @@ class ScriptFunctionsTopic(DocTopic):
         ]
 
 
+class ScriptVariablesTopic(DocTopic):
+    """Documentation of the script variables."""
+
+    def __init__(self):
+        super().__init__(
+            name='script-variables',
+            title='Script variables',
+            help='variables available to scripts, as shown in the script editor',
+        )
+
+    def normalize_name(self, name: str) -> str:
+        # Variables are written between percent signs in scripts
+        return name.strip('%')
+
+    def entries(self) -> list[DocEntry]:
+        return [
+            DocEntry(
+                name=var.script_name(),
+                title=f'%{var.script_name()}%',
+                body=display_tag_full_description_markdown(var),
+                code_title=True,
+            )
+            for var in documented_script_variables()
+        ]
+
+
 # Topic registry.
 # Adding an entry here makes it available to `picard-cli docs`.
-DOC_TOPICS = (ScriptFunctionsTopic(),)
+DOC_TOPICS = (ScriptFunctionsTopic(), ScriptVariablesTopic())
 
 
 def get_topic(name: str) -> DocTopic:

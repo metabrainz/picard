@@ -90,6 +90,9 @@ SECTIONS = {
     Section.plugin_info: SectionInfo(N_('Plugin'), 'plugin_info'),
 }
 
+# Sections added to the description of a variable, by order of display
+FULL_DESCRIPTION_SECTIONS = (Section.notes, Section.options, Section.links, Section.see_also, Section.plugin_info)
+
 TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
@@ -350,8 +353,12 @@ class TagVars(MutableSequence[TagVar]):
             return
         yield item.plugin_name
 
+    def base_description_text(self, item: TagVar):
+        """Translated description of the variable, in Markdown"""
+        return gettext_constants(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION)
+
     def _base_description(self, item: TagVar):
-        return _markdown(gettext_constants(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION))
+        return _markdown(self.base_description_text(item))
 
     def _add_sections(self, item, include_sections):
         # Note: format has to be translatable, for languages not using left-to-right for example
@@ -383,8 +390,7 @@ class TagVars(MutableSequence[TagVar]):
             content += _markdown(gettext_constants(item.additionaldesc))
 
         # Append additional sections as required
-        include_sections = (Section.notes, Section.options, Section.links, Section.see_also, Section.plugin_info)
-        content += self._add_sections(item, include_sections)
+        content += self._add_sections(item, FULL_DESCRIPTION_SECTIONS)
 
         return content
 
