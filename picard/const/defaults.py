@@ -195,3 +195,13 @@ INTERNAL_TAG_PREFIX = "~"
 # additional non-internal computed fields that should not be user-overridable.
 EXCLUDED_OVERRIDE_TAGS = frozenset({"length", "~length"})
 DEFAULT_FILTER_COLUMNS = ['album', 'title', 'albumartist', 'artist']
+
+# Default weights used for matching
+DEFAULT_WEIGHTS = \
+"""title,22
+artist,6
+album,12
+tracknumber,6
+totaltracks,5
+discnumber,5
+totaldiscs,4"""

@@ -83,6 +83,12 @@ class Ui_MatchingOptionsPage(object):
         self.ignore_track_duration_difference_under.setObjectName("ignore_track_duration_difference_under")
         self.gridlayout.addWidget(self.ignore_track_duration_difference_under, 3, 1, 1, 1)
         self.vboxlayout.addWidget(self.matching_group)
+        self.label_user_defined_weights = QtWidgets.QLabel(parent=MatchingOptionsPage)
+        self.label_user_defined_weights.setObjectName("label_user_defined_weights")
+        self.vboxlayout.addWidget(self.label_user_defined_weights)
+        self.user_defined_weights = QtWidgets.QPlainTextEdit(parent=MatchingOptionsPage)
+        self.user_defined_weights.setObjectName("user_defined_weights")
+        self.vboxlayout.addWidget(self.user_defined_weights)
         self.groupBox_completeness = QtWidgets.QGroupBox(parent=MatchingOptionsPage)
         self.groupBox_completeness.setObjectName("groupBox_completeness")
         self.completeness_layout = QtWidgets.QVBoxLayout(self.groupBox_completeness)
@@ -119,6 +125,7 @@ class Ui_MatchingOptionsPage(object):
         self.label_min_margin.setBuddy(self.match_min_margin)
         self.label_track_matching.setBuddy(self.track_matching_threshold)
         self.label_track_duration_diff.setBuddy(self.ignore_track_duration_difference_under)
+        self.label_user_defined_weights.setBuddy(self.user_defined_weights)
 
         self.retranslateUi(MatchingOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MatchingOptionsPage)
@@ -145,4 +152,6 @@ class Ui_MatchingOptionsPage(object):
         self.completeness_ignore_data.setText(_("Data tracks"))
         self.completeness_ignore_silence.setText(_("Silent tracks"))
         self.groupBox_ignore_tags.setTitle(_("Tags to ignore for comparison:"))
+        self.label_user_defined_weights.setText(
+            _("Weights used for matching in TAG,WEIGHT format, one per line, case-sensitive:"))
 from picard.ui.widgets.taglisteditor import TagListEditor

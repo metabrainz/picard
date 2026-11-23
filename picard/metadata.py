@@ -51,6 +51,7 @@ from picard.util import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.qt import ReadWriteLockContext
+from picard.weight_loader import weight_loader
 
 
 if TYPE_CHECKING:
@@ -68,16 +69,6 @@ NUMERIC_COMPARE_TAGS = frozenset({'tracknumber', 'totaltracks', 'discnumber', 't
 
 class Metadata(MutableMapping[str, str | list[str] | None]):
     """List of metadata items with dict-like access."""
-
-    __weights = (
-        ('title', 22),
-        ('artist', 6),
-        ('album', 12),
-        ('tracknumber', 6),
-        ('totaltracks', 5),
-        ('discnumber', 5),
-        ('totaldiscs', 4),
-    )
 
     multi_valued_joiner = MULTI_VALUED_JOINER
 
@@ -252,7 +243,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         # (``~``-prefixed) tags are skipped entirely (see the docstring:
         # ``~length`` is the main jitter source, and these tags are never
         # user-edited anyway). The metadata box applies the same rule.
-        weighted_names = {name for name, _weight in self.__weights}
+        weighted_names = {name for name, _weight in weight_loader.weights}
         names = set(self_store) | set(other_store) | self_deleted | other_deleted
         for name in names:
             if name in weighted_names or name in ignored or name.startswith('~'):
@@ -318,7 +309,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         deleted_b = deleted_b or set()
         parts = []
 
-        for name, weight in self.__weights:
+        for name, weight in weight_loader.weights:
             if name in ignored:
                 continue
             sa = store_a.get(name)
