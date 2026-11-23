@@ -1532,9 +1532,10 @@ def func_is_multi(parser, multi):
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
 The original variable is updated.
+Unlike most functions, `name` is specified **without** enclosing it with percent signs (%).
 Use `$removemulti` to get a copy without empty elements and leave the original variable unchanged.
 
-Examples:
+Example:
 
     $setmulti(test,one; ; two; three)
     $cleanmulti(test)
