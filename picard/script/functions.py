@@ -357,8 +357,8 @@ def func_unset(parser, name):
     documentation=N_(
         """Unsets the variable `name` and marks the tag for deletion.
 This is similar to `$unset(name)` but also marks the tag for deletion. E.g.
-    running `$delete(genre)` will actually remove the genre tag from a file when
-    saving.
+running `$delete(genre)` will actually remove the genre tag from a file when
+saving.
 
 _Since Picard 2.1_"""
     ),
@@ -375,9 +375,9 @@ def func_delete(parser, name):
         """Sets the variable `name` to `value`.
 
 Note: To create a variable which can be used for the file naming string, but
-    which will not be written as a tag in the file, prefix the variable name
-    with an underscore. `%something%` will create a "something" tag;
-    `%_something%` will not."""
+which will not be written as a tag in the file, prefix the variable name
+with an underscore. `%something%` will create a "something" tag;
+`%_something%` will not."""
     ),
 )
 def func_set(parser, name, value):
@@ -393,9 +393,9 @@ def func_set(parser, name, value):
     notes=(NOTE_NAME,),
     documentation=N_(
         """Sets the variable `name` to `value`, using the separator (or "; " if not passed)
-    to coerce the value back into a proper multi-valued tag. This can be used to
-    operate on multi-valued tags as a string, and then set them back as proper
-    multi-valued tags.
+to coerce the value back into a proper multi-value. This can be used to
+operate on multi-values as a string, and then set them back as proper
+multi-values.
 
 Example:
 
@@ -474,7 +474,7 @@ def func_get_original(parser, name):
     documentation=N_(
         """Copies metadata from variable `old` to `new`.
 The difference between `$set(new,%old%)` is that `$copy(new,old)` copies
-    multi-value variables without flattening them.
+multi-value variables without flattening them.
 
 _Since Picard 0.9_"""
     ),
@@ -491,8 +491,8 @@ def func_copy(parser, new, old):
     notes=(NOTE_NEW_OLD,),
     documentation=N_(
         """Merges metadata from variable `old` into `new`, removing duplicates and
-    appending to the end, so retaining the original ordering. Like `$copy`, this
-    will also copy multi-valued variables without flattening them.
+appending to the end, so retaining the original ordering. Like `$copy`, this
+will also copy multi-valued variables without flattening them.
 
 If `keep_duplicates` is set, then the duplicates will not be removed from the result.
 
@@ -512,7 +512,7 @@ def func_copymerge(parser, new, old, keep_duplicates=False):
     signature=N_("$trim(text[,char])"),
     documentation=N_(
         """Trims all leading and trailing whitespaces from `text`.
-    The optional second parameter `char` specifies the character to trim."""
+The optional second parameter `char` specifies the character to trim."""
     ),
 )
 def func_trim(parser, text, char=None):
@@ -617,8 +617,8 @@ def func_mul(parser, x, y, *args):
 @script_function(
     documentation=N_(
         """Returns true if either `x` or `y` not empty.
-    Can be used with an arbitrary number of arguments.
-    The result is true if **any** of the arguments is not empty."""
+Can be used with an arbitrary number of arguments.
+The result is true if **any** of the arguments is not empty."""
     ),
 )
 def func_or(parser, x, y, *args):
@@ -631,8 +631,8 @@ def func_or(parser, x, y, *args):
 @script_function(
     documentation=N_(
         """Returns true if both `x` and `y` are not empty.
-    Can be used with an arbitrary number of arguments.
-    The result is true if **all** of the arguments are not empty."""
+Can be used with an arbitrary number of arguments.
+The result is true if **all** of the arguments are not empty."""
     )
 )
 def func_and(parser, x, y, *args):
@@ -823,7 +823,7 @@ def func_performer(parser, pattern="", join=", "):
     eval_args=False,
     documentation=N_(
         """Returns the number of matched tracks within a release.
-    **Only works in File Naming scripts.**
+**Only works in File Naming scripts.**
 
 _Since Picard 0.12_"""
     ),
@@ -1126,7 +1126,7 @@ def func_is_video(parser):
     signature=N_("$find(haystack,needle)"),
     documentation=N_(
         """Finds the location of one string within another.
-    Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
+Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
 
 _Since Picard 2.3_
 
@@ -1152,10 +1152,10 @@ def func_reverse(parser, text):
     signature=N_("$substr(text,start[,end])"),
     documentation=N_(
         """Returns the substring beginning with the character at the `start` index, up to
-    (but not including) the character at the `end` index. Indexes are
-    zero-based. Negative numbers will be counted back from the end of the
-    string. If the `start` or `end` indexes are left blank, they will default to
-    the start and end of the string respectively."""
+(but not including) the character at the `end` index. Indexes are
+zero-based. Negative numbers will be counted back from the end of the
+string. If the `start` or `end` indexes are left blank, they will default to
+the start and end of the string respectively."""
     ),
 )
 def func_substr(parser, text, start_index, end_index=None):
@@ -1193,9 +1193,9 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     notes=(NOTE_MULTI,),
     documentation=N_(
         """Iterates over each element found in the multi-value `multi`, executing
-    `code`. For each loop, the element value is first stored in the tag
-    `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script."""
+`code`. For each loop, the element value is first stored in the tag
+`_loop_value` and the count is stored in the tag `_loop_count`. This allows
+the element or count value to be accessed within the `code` script."""
     ),
 )
 def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
@@ -1214,10 +1214,10 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     signature=N_("$while(condition,code)"),
     documentation=N_(
         """Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
-    evaluates to `True`. For each loop, the count is stored in the tag
-    `_loop_count`. This allows the count value to be accessed within the `code`
-    script. The function limits the maximum number of iterations to 1000 as a
-    safeguard against accidentally creating an infinite loop."""
+evaluates to `True`. For each loop, the count is stored in the tag
+`_loop_count`. This allows the count value to be accessed within the `code`
+script. The function limits the maximum number of iterations to 1000 as a
+safeguard against accidentally creating an infinite loop."""
     ),
 )
 def func_while(parser, condition, loop_code):
@@ -1238,10 +1238,10 @@ def func_while(parser, condition, loop_code):
     notes=(NOTE_MULTI,),
     documentation=N_(
         """Iterates over each element found in the multi-value `multi` and updates the
-    value of the element to the value returned by `code`, returning the updated
-    multi-value tag. For each loop, the element value is first stored in the tag
-    `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script.
+value of the element to the value returned by `code`, returning the updated
+multi-value tag. For each loop, the element value is first stored in the tag
+`_loop_value` and the count is stored in the tag `_loop_count`. This allows
+the element or count value to be accessed within the `code` script.
 
 Empty elements are automatically removed.
 
@@ -1285,13 +1285,13 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
     notes=(NOTE_MULTI,),
     documentation=N_(
         """Returns a multi-value variable containing the elements between the `start` and
-    `end` indexes from the multi-value `multi`. Indexes are
-    zero based. Negative numbers will be counted back from the end of the list.
-    If the `start` or `end` indexes are left blank, they will default to the
-    start and end of the list respectively.
+`end` indexes from the multi-value `multi`. Indexes are
+zero based. Negative numbers will be counted back from the end of the list.
+If the `start` or `end` indexes are left blank, they will default to the
+start and end of the list respectively.
 
 The following example will create a multi-value variable with all artists
-    in `%artists%` except the first, which can be used to create a "feat." list.
+in `%artists%` except the first, which can be used to create a "feat." list.
 
 Examples:
 
@@ -1317,14 +1317,15 @@ def func_slice(parser, multi, start_index, end_index=None, separator=MULTI_VALUE
     signature=N_("$datetime([format=%Y-%m-%d %H:%M:%S])"),
     documentation=N_(
         """Returns the current date and time in the specified `format`, which is based on
-    the standard Python `strftime` [format codes](https://strftime.org/). If no
-    `format` is specified the date/time will be returned in the form
-    `2020-02-05 14:26:32`.
+the standard Python `strftime` [format codes](https://strftime.org/). If no
+`format` is specified the date/time will be returned in the form
+`2020-02-05 14:26:32`.
+
 Note: Platform-specific formatting codes should be avoided to help ensure the
-    portability of scripts across the different platforms.  These codes include:
-    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
-    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
-    `%3Y`); and hanging '%' at the end of the format string."""
+portability of scripts across the different platforms.  These codes include:
+remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+`%3Y`); and hanging '%' at the end of the format string."""
     ),
 )
 def func_datetime(parser, format=None):
@@ -1364,8 +1365,8 @@ def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     notes=(NOTE_MULTI,),
     documentation=N_(
         """Returns a copy of the multi-value `multi` with the elements in reverse order.
-    This can be used in conjunction with the `$sortmulti` function to sort in
-    descending order.
+This can be used in conjunction with the `$sortmulti` function to sort in
+descending order.
 
 Example:
 
@@ -1386,16 +1387,14 @@ def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
     notes=(NOTE_MULTI,),
     documentation=N_(
         """Returns a copy of the multi-value `multi` with no duplicate elements.
-    By default, a case-insensitive comparison of the elements is performed.
+By default, a case-insensitive comparison of the elements is performed.
 
-Example 1:
+Examples:
 
     $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)
     $unique(%foo%)
 
 Result: A; CD; b
-
-Example 2:
 
     $setmulti(foo,a; A; B; b; a; b; A; B; cd)
     $unique(%foo%,True)
@@ -1494,17 +1493,18 @@ def func_day(parser, date_to_parse, date_order='ymd'):
     signature=N_("$dateformat(date[,format=%Y-%m-%d[,date_order=ymd]])"),
     documentation=N_(
         """Returns the input date in the specified `format`, which is based on the standard
-    Python `strftime` [format codes](https://strftime.org/). If no `format` is
-    specified the date will be returned in the form `2020-02-05`.  If the date or
-    format are invalid an empty string will be returned.
+Python `strftime` [format codes](https://strftime.org/). If no `format` is
+specified the date will be returned in the form `2020-02-05`.  If the date or
+format are invalid an empty string will be returned.
 
-    The default order for the input date is "ymd".  This can be changed by specifying
-    either "dmy" or "mdy".
+The default order for the input date is "ymd".  This can be changed by specifying
+either "dmy" or "mdy".
+
 Note: Platform-specific formatting codes should be avoided to help ensure the
-    portability of scripts across the different platforms.  These codes include:
-    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
-    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
-    `%3Y`); and hanging '%' at the end of the format string.
+portability of scripts across the different platforms.  These codes include:
+remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+`%3Y`); and hanging '%' at the end of the format string.
 
 _Since Picard 2.7_"""
     ),
