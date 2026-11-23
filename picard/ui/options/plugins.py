@@ -48,6 +48,7 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog
 from picard.ui.dialogs.plugin_error import show_plugin_error
+from picard.ui.dialogs.pluginnotes import PluginNotesDialog
 from picard.ui.options import OptionsPage
 from picard.ui.widgets.plugindetailswidget import PluginDetailsWidget
 from picard.ui.widgets.pluginlistwidget import PluginListWidget
@@ -69,10 +70,24 @@ class Plugins3OptionsPage(OptionsPage):
         # Cache plugin manager for performance
         self.plugin_manager = self.tagger.get_plugin_manager()
         self._last_plugin_count = 0
+        self._notes_shown = False
 
         self.setup_ui()
         if self.plugin_manager:
             self.plugin_manager.plugin_update_checks_complete.connect(self._on_update_check_complete)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if not self._notes_shown and not PluginNotesDialog.is_hidden():
+            # Slight delay to avoid the dialog being displayed outside the options window
+            QtCore.QTimer.singleShot(200, self._show_notes)
+
+    def _show_notes(self):
+        # The page may not be displayed anymore, or the notes may have been shown meanwhile
+        if self._notes_shown or not self.isVisible():
+            return
+        self._notes_shown = True
+        PluginNotesDialog(self.window()).show()
 
     def _save_updates(self, updates, update_only=False):
         """Save updates to config, cleaning up stale entries for uninstalled plugins."""
