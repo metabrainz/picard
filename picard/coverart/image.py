@@ -113,6 +113,8 @@ class CoverArtImage:
             self.url = None
         self.comment = comment
         self.datahash = None
+        self.width = 0
+        self.height = 0
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
         self.thumbnail = None
         self.external_file_coverart = None

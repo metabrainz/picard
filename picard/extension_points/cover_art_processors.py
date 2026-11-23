@@ -52,6 +52,10 @@ class CoverArtEncodingError(CoverArtProcessingError):
     pass
 
 
+class CoverArtDecodingError(CoverArtProcessingError):
+    pass
+
+
 class ProcessingImage:
     def __init__(self, image: QImage | bytes, info: ImageInfo | None = None):
         self._set_result(image)

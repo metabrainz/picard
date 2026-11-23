@@ -16,14 +16,41 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import (
     PicardTestCase,
+    create_fake_png,
     subtest_cases,
 )
 
 from picard.coverart import CoverArt
+from picard.coverart.image import CoverArtImage
+
+
+class CoverArtFinishProcessingTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.coverart = CoverArt(Mock(), Mock(), {})
+
+    @patch('picard.coverart.thread.to_main')
+    def test_image_without_data_is_not_stored(self, to_main):
+        """An image whose processing left no data must not reach metadata (PICARD-3583)."""
+        image = CoverArtImage(url='https://example.org/front.png', types=['front'])
+        with patch.object(self.coverart, '_set_metadata') as set_metadata:
+            self.coverart._finish_process_image_data(image, Exception('failed'))
+        set_metadata.assert_not_called()
+        to_main.assert_called_once_with(self.coverart.next_in_queue)
+
+    @patch('picard.coverart.thread.to_main')
+    def test_image_with_data_is_stored(self, to_main):
+        image = CoverArtImage(url='https://example.org/front.png', types=['front'], data=create_fake_png())
+        with patch.object(self.coverart, '_set_metadata') as set_metadata:
+            self.coverart._finish_process_image_data(image, None)
+        set_metadata.assert_called_once_with(image)
 
 
 class CoverArtAllImagesSatisfiedTest(PicardTestCase):
