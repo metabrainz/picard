@@ -64,6 +64,18 @@ from picard.util import (
 # with huge values (e.g. coming from corrupted tags)
 PAD_MAX_LENGTH = 1000
 
+# Notes shared by the functions taking the same kind of argument, see script_function()
+NOTE_NAME = N_("`name` is the variable name, written without percent signs (%).")
+NOTE_NEW_OLD = N_("`new` and `old` are variable names, written without percent signs (%).")
+NOTE_MULTI = N_(
+    "`multi` is a multi-value, usually a variable written as `%name%`. "
+    'A literal value is also accepted and is split on `separator` (or "; " if not passed).'
+)
+NOTE_MULTI_NO_SEPARATOR = N_(
+    "`multi` is a multi-value, usually a variable written as `%name%`. "
+    'A literal value is also accepted and is split on "; ".'
+)
+
 
 def _compute_int(operation, *args):
     return str(reduce(operation, map(int, args)))
@@ -183,9 +195,10 @@ def func_replace(parser, text, old, new):
 
 @script_function(
     eval_args=False,
-    signature=N_("$replacemulti(name,search,replace[,separator=; ])"),
+    signature=N_("$replacemulti(multi,search,replace[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
+        """Replaces occurrences of `search` with `replace` in the multi-value `multi`.
 Empty elements are automatically removed.
 
 Example:
@@ -221,11 +234,10 @@ def func_in(parser, text, needle):
 
 @script_function(
     eval_args=False,
-    signature=N_("$inmulti(%x%,y[,separator=; ])"),
+    signature=N_("$inmulti(multi,value[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns true if multi-value variable `x` contains exactly `y` as one of its values.
-A literal value representing a multi-value can be substituted for `x`, using the
-`separator` (or "; " if not passed) to coerce the value into a proper multi-valued tag.
+        """Returns true if the multi-value `multi` contains exactly `value` as one of its elements.
 
 _Since Picard 1.0_"""
     ),
@@ -319,6 +331,7 @@ def func_num(parser, text, length):
 
 @script_function(
     signature=N_("$unset(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Unsets the variable `name`.
 Allows for wildcards to unset certain tags (works with "performer:\\*", "comment:\\*", and "lyrics:\\*").
@@ -340,6 +353,7 @@ def func_unset(parser, name):
 
 @script_function(
     signature=N_("$delete(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Unsets the variable `name` and marks the tag for deletion.
 This is similar to `$unset(name)` but also marks the tag for deletion. E.g.
@@ -356,6 +370,7 @@ def func_delete(parser, name):
 
 @script_function(
     signature=N_("$set(name,value)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Sets the variable `name` to `value`.
 
@@ -375,6 +390,7 @@ def func_set(parser, name, value):
 
 @script_function(
     signature=N_("$setmulti(name,value[,separator=; ])"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Sets the variable `name` to `value`, using the separator (or "; " if not passed)
     to coerce the value back into a proper multi-valued tag. This can be used to
@@ -394,6 +410,7 @@ def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     signature=N_("$get(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_("Returns the variable `name` (equivalent to `%name%`)."),
 )
 def func_get(parser, name):
@@ -403,6 +420,7 @@ def func_get(parser, name):
 
 @script_function(
     signature=N_("$get_new(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Returns the value of the variable `name` from the new metadata only
 (from MusicBrainz or set by a script), ignoring values that only exist in the
@@ -430,6 +448,7 @@ def func_get_new(parser, name):
 
 @script_function(
     signature=N_("$get_original(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Returns the value of the variable `name` from the file's original metadata
 only, ignoring values from MusicBrainz or scripts.
@@ -451,6 +470,7 @@ def func_get_original(parser, name):
 
 @script_function(
     signature=N_("$copy(new,old)"),
+    notes=(NOTE_NEW_OLD,),
     documentation=N_(
         """Copies metadata from variable `old` to `new`.
 The difference between `$set(new,%old%)` is that `$copy(new,old)` copies
@@ -468,6 +488,7 @@ def func_copy(parser, new, old):
 
 @script_function(
     signature=N_("$copymerge(new,old[,keep_duplicates])"),
+    notes=(NOTE_NEW_OLD,),
     documentation=N_(
         """Merges metadata from variable `old` into `new`, removing duplicates and
     appending to the end, so retaining the original ordering. Like `$copy`, this
@@ -758,12 +779,10 @@ def func_len(parser, text):
 
 @script_function(
     eval_args=False,
-    signature=N_("$lenmulti(name[,separator=; ])"),
+    signature=N_("$lenmulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns the number of elements in the multi-value tag `name`. A literal value
-    representing a multi-value can be substituted for `name`, using the
-    `separator` (or "; " if not passed) to coerce the value into a proper
-    multi-valued tag.
+        """Returns the number of elements in the multi-value `multi`.
 
 Example:
 
@@ -1153,13 +1172,9 @@ def func_substr(parser, text, start_index, end_index=None):
 
 @script_function(
     eval_args=False,
-    signature=N_("$getmulti(name,index[,separator=; ])"),
-    documentation=N_(
-        """Gets the element at `index` from the multi-value tag `name`. A literal value
-    representing a multi-value can be substituted for `name`, using the
-    separator (or "; " if not passed) to coerce the value into a proper
-    multi-valued tag."""
-    ),
+    signature=N_("$getmulti(multi,index[,separator=; ])"),
+    notes=(NOTE_MULTI,),
+    documentation=N_("Gets the element at `index` from the multi-value `multi`."),
 )
 def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     if not item_index:
@@ -1174,15 +1189,13 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$foreach(name,code[,separator=; ])"),
+    signature=N_("$foreach(multi,code[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Iterates over each element found in the multi-value tag `name`, executing
+        """Iterates over each element found in the multi-value `multi`, executing
     `code`. For each loop, the element value is first stored in the tag
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script. A
-    literal value representing a multi-value can be substituted for `name`,
-    using the separator (or "; " if not passed) to coerce the value into a
-    proper multi-valued tag."""
+    the element or count value to be accessed within the `code` script."""
     ),
 )
 def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
@@ -1221,9 +1234,10 @@ def func_while(parser, condition, loop_code):
 
 @script_function(
     eval_args=False,
-    signature=N_("$map(name,code[,separator=; ])"),
+    signature=N_("$map(multi,code[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Iterates over each element found in the multi-value tag `name` and updates the
+        """Iterates over each element found in the multi-value `multi` and updates the
     value of the element to the value returned by `code`, returning the updated
     multi-value tag. For each loop, the element value is first stored in the tag
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
@@ -1253,9 +1267,10 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$join(name,text[,separator=; ])"),
+    signature=N_("$join(multi,text[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
+        "Joins all elements in `multi`, placing `text` between each element, and returns the result as a string."
     ),
 )
 def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
@@ -1266,12 +1281,11 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$slice(name,start[,end[,separator=; ]])"),
+    signature=N_("$slice(multi,start[,end[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
         """Returns a multi-value variable containing the elements between the `start` and
-    `end` indexes from the multi-value tag `name`. A literal value representing
-    a multi-value can be substituted for `name`, using the separator (or "; " if
-    not passed) to coerce the value into a proper multi-valued tag. Indexes are
+    `end` indexes from the multi-value `multi`. Indexes are
     zero based. Negative numbers will be counted back from the end of the list.
     If the `start` or `end` indexes are left blank, they will default to the
     start and end of the list respectively.
@@ -1326,9 +1340,10 @@ def func_datetime(parser, format=None):
 
 @script_function(
     eval_args=False,
-    signature=N_("$sortmulti(name[,separator=; ])"),
+    signature=N_("$sortmulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.
+        """Returns a copy of the multi-value `multi` with the elements sorted in ascending order.
 
 Example:
 
@@ -1345,9 +1360,10 @@ def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$reversemulti(name[,separator=; ])"),
+    signature=N_("$reversemulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with the elements in reverse order.
+        """Returns a copy of the multi-value `multi` with the elements in reverse order.
     This can be used in conjunction with the `$sortmulti` function to sort in
     descending order.
 
@@ -1366,9 +1382,10 @@ def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$unique(name[,case_sensitive[,separator=; ]])"),
+    signature=N_("$unique(multi[,case_sensitive[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with no duplicate elements.
+        """Returns a copy of the multi-value `multi` with no duplicate elements.
     By default, a case-insensitive comparison of the elements is performed.
 
 Example 1:
@@ -1509,7 +1526,8 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
 
 @script_function(
     eval_args=False,
-    signature=N_("$is_multi(name)"),
+    signature=N_("$is_multi(multi)"),
+    notes=(NOTE_MULTI_NO_SEPARATOR,),
     documentation=N_(
         """Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
 
@@ -1529,10 +1547,10 @@ def func_is_multi(parser, multi):
 
 @script_function(
     signature=N_("$cleanmulti(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
 The original variable is updated.
-Unlike most functions, `name` is specified **without** enclosing it with percent signs (%).
 Use `$removemulti` to get a copy without empty elements and leave the original variable unchanged.
 
 Example:
@@ -1583,9 +1601,10 @@ def _filter_multi(parser, multi, pattern, separator, keep):
 
 @script_function(
     eval_args=False,
-    signature=N_("$removemulti(name[,pattern[,separator=; ]])"),
+    signature=N_("$removemulti(multi[,pattern[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` without the elements matching the
+        """Returns a copy of the multi-value `multi` without the elements matching the
 [regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
 If `pattern` is omitted or empty, the empty elements are removed.
 The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
@@ -1611,9 +1630,10 @@ def func_removemulti(parser, multi, pattern=None, separator=MULTI_VALUED_JOINER)
 
 @script_function(
     eval_args=False,
-    signature=N_("$keepmulti(name,pattern[,separator=; ])"),
+    signature=N_("$keepmulti(multi,pattern[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with only the elements matching the
+        """Returns a copy of the multi-value `multi` with only the elements matching the
 [regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
 The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
 Use `\\(?i\\)` at the start of the pattern for a case-insensitive match.
