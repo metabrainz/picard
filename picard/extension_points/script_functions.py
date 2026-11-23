@@ -93,12 +93,19 @@ class FunctionRegistryItem:
             data = postprocessor(data, function=self)
         return data
 
+    def markdown_title(self) -> str:
+        """Translated signature, as Markdown code, or an empty string."""
+        return f'`{_(self.signature)}`' if self.signature else ''
+
+    def markdown_body(self) -> str:
+        """Translated documentation, in Markdown, or an empty string."""
+        return _(self.documentation) if self.documentation else ''
+
     def markdowndoc(self, postprocessor: Callable | None = None) -> str:
         ret = ''
         if self.signature:
-            ret = f'`{_(self.signature)}`\n\n'
-        if self.documentation:
-            ret += _(self.documentation)
+            ret = f'{self.markdown_title()}\n\n'
+        ret += self.markdown_body()
         return self._postprocess(ret.strip(), postprocessor)
 
     def htmldoc(self, postprocessor: Callable | None = None) -> str:
