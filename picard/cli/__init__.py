@@ -23,6 +23,7 @@ Usage:
     picard-cli --version
 
 Commands:
+    docs        Show or export Picard documentation
     plugins     Manage Picard plugins
     profiles    Manage Picard profiles
 """
@@ -36,6 +37,7 @@ from picard import (
     PICARD_ORG_NAME,
 )
 from picard.cli.completions import CompletionsSubcommand
+from picard.cli.docs import DocsSubcommand
 from picard.cli.plugins import PluginsSubcommand
 from picard.cli.profiles import ProfilesSubcommand
 from picard.cli.tag import TagSubcommand
@@ -46,6 +48,7 @@ from picard.util import versions
 # Adding an entry here automatically updates both picard-cli and picard --help.
 SUBCOMMANDS = (
     CompletionsSubcommand(),
+    DocsSubcommand(),
     PluginsSubcommand(),
     ProfilesSubcommand(),
     TagSubcommand(),
