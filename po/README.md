@@ -38,8 +38,8 @@ from source — see [Compiling translations for local use](#compiling-translatio
 
 You do **not** need the Weblate Client (`wlc`) to get ordinary translation
 updates — the two-way GitHub sync means `git pull` is enough. (`wlc` is used
-only for the shared *attributes* and *countries* strings, which are pulled from
-a separate Weblate project; see *Attributes and countries strings* below.)
+only for the shared *attributes*, *countries* and *languages* strings, which are pulled from
+a separate Weblate project; see *Attributes, countries and languages strings* below.)
 
 
 Compiling translations for local use
@@ -48,7 +48,7 @@ Compiling translations for local use
 The `.po` files in this repository are the editable translation sources. At
 runtime Picard loads the *compiled* binary catalogs (`.mo` files) from
 `picard/locale/<locale>/LC_MESSAGES/`, one per translation domain (`picard`,
-`picard-constants`, `picard-attributes`, `picard-countries`). The `.mo` files
+`picard-constants`, `picard-attributes`, `picard-countries`, `picard-languages`). The `.mo` files
 are build artifacts and are not tracked in git, so they must be generated
 before translated strings show up in the application.
 
@@ -188,28 +188,28 @@ The translations for the Windows installer are inside the JSON files in `install
 Translation in Weblate is done at <https://translations.metabrainz.org/projects/picard/installer/>
 
 
-Attributes and countries strings
---------------------------------
+Attributes, countries and languages strings
+-------------------------------------------
 
-Their translations are handled at <https://translations.metabrainz.org/projects/musicbrainz/attributes/> and <https://translations.metabrainz.org/projects/musicbrainz/countries/>
+Their translations are handled at <https://translations.metabrainz.org/projects/musicbrainz/attributes/>, <https://translations.metabrainz.org/projects/musicbrainz/countries/> and <https://translations.metabrainz.org/projects/musicbrainz/languages/>
 
-`attributes.pot` and `countries.pot` are updated by [musicbrainz-server project](https://github.com/metabrainz/musicbrainz-server), outside the Picard project.
+`attributes.pot`, `countries.pot` and `languages.pot` are updated by [musicbrainz-server project](https://github.com/metabrainz/musicbrainz-server), outside the Picard project.
 
 Unlike the other components, these are **not** translated within Picard: the
-`po/attributes/*` and `po/countries/*` files are fetched from the MusicBrainz
+`po/attributes/*`, `po/countries/*` and `po/languages/*` files are fetched from the MusicBrainz
 Server project on Weblate rather than edited here.
 
-Picard maintainers can regenerate `picard/const/attributes.py` and
-`picard/const/countries.py`, which use `po/attributes/attributes.pot` and
-`po/countries/countries.pot` as their base:
+Picard maintainers can regenerate `picard/const/attributes.py`,
+`picard/const/countries.py` and `picard/const/language_names.py`, which use `po/attributes/attributes.pot`,
+`po/countries/countries.pot` and `po/languages/languages.pot` as their base:
 
 ```bash
 python setup.py update_constants --weblate-key={YOUR_WEBLATE_API_KEY}
 ```
 
-By default this command first pulls the latest `attributes` and `countries`
+By default this command first pulls the latest `attributes`, `countries` and `languages`
 translations from Weblate (via `scripts/tools/pull-shared-translations.py`,
-which uses the Weblate Client) and then regenerates the two `.py` files. The
+which uses the Weblate Client) and then regenerates the `.py` files. The
 Weblate API key is required **only for this pull step**; it can be found in your
 Weblate user settings under [API access](https://translations.metabrainz.org/accounts/profile/#api).
 

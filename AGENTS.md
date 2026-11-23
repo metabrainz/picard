@@ -332,7 +332,7 @@ class ManifestTranslations:
 
 #### Gotcha: `picard/const/` uses a separate gettext domain
 
-Picard has **four** gettext domains (see `picard/i18n/gettext.py`), not one.
+Picard has **five** gettext domains (see `picard/i18n/gettext.py`), not one.
 Strings are extracted per source location, and each domain must be looked up
 with its **own** translation function at runtime:
 
@@ -341,6 +341,7 @@ with its **own** translation function at runtime:
 | Anywhere **except** `picard/const/` | `po/picard.pot` (`main`) | `gettext()` / `_()` |
 | `picard/const/` (e.g. `tags.py`, `scripts.py`, `cover_processing.py`, `languages.py`, `locales.py`, `defaults.py`) | `po/constants/` (`constants`) | `gettext_constants()` |
 | `picard/const/countries.py` (`RELEASE_COUNTRIES`) | `po/countries/` (`countries`) | `gettext_countries()` |
+| `picard/const/language_names.py` (`LANGUAGE_NAMES`) | `po/languages/` (`languages`) | `gettext_languages()` |
 | `picard/const/attributes.py` (`MB_ATTRIBUTES`) | `po/attributes/` (`attributes`) | `pgettext_attributes()` / `gettext_attributes()` |
 
 `setup.py` deliberately excludes `const` from the main pot and extracts it
@@ -365,10 +366,10 @@ name = gettext_constants(DEFAULT_SCRIPT_NAME)
 ```
 
 Rule of thumb: **if the string's `N_()` lives in `picard/const/`, translate it
-with `gettext_constants()`** (or the countries/attributes helper). This bug is
+with `gettext_constants()`** (or the countries/languages/attributes helper). This bug is
 easy to reintroduce — it has recurred across PRs #3453 and #3457 (PICARD-3448).
 When touching translated `const/` strings, verify the msgid resolves against
-`po/constants/*.po` (or `po/countries/`, `po/attributes/`).
+`po/constants/*.po` (or `po/countries/`, `po/languages/`, `po/attributes/`).
 
 ### Qt UI Files
 ```bash

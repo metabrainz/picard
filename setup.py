@@ -596,8 +596,23 @@ def _get_option_name(obj):
     raise Exception("No such command class")
 
 
+def _extract_language_names(potfile):
+    """Returns a dict mapping ISO 639-3 codes to English language names.
+
+    Codes are read from the ``iso_code_3:xxx`` auto comments of the .pot file.
+    Entries with ``iso_code_3:null`` (language families) are skipped.
+    """
+    iso_code_3 = re.compile(r'\biso_code_3:([a-z]{3})\b')
+    languages = {}
+    for message in _parse_pot_file(potfile):
+        for comment in message.auto_comments:
+            for code in iso_code_3.findall(comment):
+                languages[code] = message.id
+    return languages
+
+
 class picard_update_constants(Command):
-    description = "Regenerate attributes.py and countries.py"
+    description = "Regenerate attributes.py, countries.py and language_names.py"
     user_options: ClassVar[list[tuple[str, str | None, str]]] = [
         ('skip-pull', None, "skip the translation pull step"),
         ('weblate-key=', None, "Weblate API key"),
@@ -634,6 +649,13 @@ class picard_update_constants(Command):
             self._generate_constants_file('countries.py', 'RELEASE_COUNTRIES', countries)
         else:
             sys.exit('Failed to extract any country code/name !')
+
+        languages = _extract_language_names(os.path.join('po', 'languages', 'languages.pot'))
+
+        if languages:
+            self._generate_constants_file('language_names.py', 'LANGUAGE_NAMES', languages)
+        else:
+            sys.exit('Failed to extract any language code/name !')
 
         attributes = dict()
         attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')
@@ -702,6 +724,7 @@ def _picard_get_locale_files():
         'picard-attributes': os.path.join('po', 'attributes'),
         'picard-constants': os.path.join('po', 'constants'),
         'picard-countries': os.path.join('po', 'countries'),
+        'picard-languages': os.path.join('po', 'languages'),
     }
     for domain, path in domain_path.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):

@@ -39,6 +39,7 @@ _translation = {
     'attributes': _null_translations,
     'constants': _null_translations,
     'countries': _null_translations,
+    'languages': _null_translations,
 }
 
 
@@ -273,6 +274,7 @@ def setup_gettext(localedir: str | None, ui_language: str | None, logger: Callab
         'attributes': _load_translation('picard-attributes', localedir, language=current_locale),
         'constants': _load_translation('picard-constants', localedir, language=current_locale),
         'countries': _load_translation('picard-countries', localedir, language=current_locale),
+        'languages': _load_translation('picard-languages', localedir, language=current_locale),
     }
     _logger(_translation)
 
@@ -310,6 +312,10 @@ def gettext_attributes(message: str) -> str:
 
 def gettext_countries(message: str) -> str:
     return _translation['countries'].gettext(message)
+
+
+def gettext_languages(message: str) -> str:
+    return _translation['languages'].gettext(message)
 
 
 def gettext_constants(message: str) -> str:

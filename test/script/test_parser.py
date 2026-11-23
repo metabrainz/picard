@@ -2046,6 +2046,69 @@ class ScriptParserTest(PicardTestCase):
         # Tests with invalid number of arguments
         self._assert_arg_count_errors('countryname', 'between 1 and 2', ("$countryname()", "$countryname(CA,,Extra)"))
 
+    @staticmethod
+    def _languagename_context():
+        context = Metadata()
+        context["foo"] = "eng"
+        context["bar"] = ""
+        context["baz"] = "INVALID"
+        context["language"] = ["eng", "jpn"]
+        return context
+
+    @subtest_cases(
+        "expression,expected",
+        [
+            ("$languagename(eng)", "English"),
+            ("$languagename(eng,)", "English"),
+            ("$languagename(eng, )", "Englisch"),
+            ("$languagename(eng,yes)", "Englisch"),
+            ("$languagename(INVALID,yes)", ""),
+            ("$languagename(ENG,yes)", "Englisch"),
+            ("$languagename( eng ,yes)", "Englisch"),
+            ("$languagename(,yes)", ""),
+            # Unknown translation of a correct code
+            ("$languagename(fra,yes)", "French"),
+        ],
+    )
+    def test_cmd_languagename_translated(self, expression, expected):
+        def mock_gettext_languages_de(arg):
+            return 'Englisch' if arg == 'English' else arg
+
+        with mock.patch('picard.script.functions.gettext_languages', mock_gettext_languages_de):
+            self.assertScriptResultEquals(expression, expected, self._languagename_context())
+
+    @subtest_cases(
+        "expression,expected",
+        [
+            ("$languagename(eng,)", "English"),
+            ("$languagename(eng,yes)", "English"),
+            ("$languagename(eng)", "English"),
+            ("$languagename(ENG)", "English"),
+            ("$languagename( eng )", "English"),
+            ("$languagename(,)", ""),
+            # Names containing commas and brackets are returned unchanged
+            ("$languagename(ang)", "English, Old (ca.450-1100)"),
+            ("$languagename(mul)", "[Multiple languages]"),
+            ("$languagename(%foo%)", "English"),
+            ("$languagename(%bar%)", ""),
+            ("$languagename(%baz%)", ""),
+            ("$languagename(INVALID)", ""),
+            # Language families have no ISO 639-3 code ("iso_code_3:null")
+            ("$languagename(nul)", ""),
+            ("$languagename(zxx)", "[No linguistic content]"),
+            ("$languagename(%language%)", ""),
+            ("$map(%language%,$languagename(%_loop_value%))", "English; Japanese"),
+        ],
+    )
+    def test_cmd_languagename_english(self, expression, expected):
+        with mock.patch('picard.script.functions.gettext_languages', lambda arg: arg):
+            self.assertScriptResultEquals(expression, expected, self._languagename_context())
+
+    def test_cmd_languagename_arg_count(self):
+        self._assert_arg_count_errors(
+            'languagename', 'between 1 and 2', ("$languagename()", "$languagename(eng,,Extra)")
+        )
+
     def test_cmd_year(self):
         context = Metadata()
         context["foo"] = "07.21.2021"
