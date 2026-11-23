@@ -37,7 +37,11 @@ from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NAMING_PRESET_ID,
 )
-from picard.extension_points.script_functions import script_function
+from picard.extension_points import script_functions
+from picard.extension_points.script_functions import (
+    FunctionRegistryItem,
+    script_function,
+)
 from picard.plugin import ExtensionPoint
 from picard.script import (
     ScriptFunctionDocError,
@@ -75,6 +79,56 @@ class ScriptFunctionDocumentationTest(PicardTestCase):
 
         doc = script_function_documentation('nodocfunc', 'markdown')
         self.assertEqual(doc, '`$nodocfunc()`')
+
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
+    def test_script_function_documentation_title_and_body(self):
+        """the Markdown title and body are the two parts of the Markdown documentation"""
+
+        @script_function(documentation='some doc')
+        def func_somefunc(parser):
+            return "x"
+
+        @script_function()
+        def func_nodocfunc(parser):
+            return ""
+
+        functions = dict(script_functions.ext_point_script_functions)
+        somefunc = functions['somefunc']
+        self.assertEqual(somefunc.markdown_title(), '`$somefunc()`')
+        self.assertEqual(somefunc.markdown_body(), 'some doc')
+        self.assertEqual(somefunc.markdowndoc(), f'{somefunc.markdown_title()}\n\n{somefunc.markdown_body()}')
+        nodoc = functions['nodocfunc']
+        self.assertEqual(nodoc.markdown_title(), '`$nodocfunc()`')
+        self.assertEqual(nodoc.markdown_body(), '')
+        nosignature = FunctionRegistryItem(lambda parser: '', True, None, documentation='only doc')
+        self.assertEqual(nosignature.markdown_title(), '')
+        self.assertEqual(nosignature.markdowndoc(), 'only doc')
+
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
+    def test_script_function_documentation_notes(self):
+        """notes are paragraphs following the first paragraph of the documentation"""
+
+        @script_function(documentation='first\nparagraph\n\nsecond paragraph', notes=('note 1', 'note 2'))
+        def func_somefunc(parser):
+            return "x"
+
+        @script_function(documentation='only one paragraph', notes=('note',))
+        def func_onepara(parser):
+            return "x"
+
+        @script_function(notes=('note',))
+        def func_nodoc(parser):
+            return "x"
+
+        self.assertEqual(
+            script_function_documentation('somefunc', 'markdown'),
+            '`$somefunc()`\n\nfirst\nparagraph\n\nnote 1\n\nnote 2\n\nsecond paragraph',
+        )
+        self.assertEqual(
+            script_function_documentation('onepara', 'markdown'),
+            '`$onepara()`\n\nonly one paragraph\n\nnote',
+        )
+        self.assertEqual(script_function_documentation('nodoc', 'markdown'), '`$nodoc()`\n\nnote')
 
     @unittest.skipUnless(markdown, "markdown module missing")
     @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))

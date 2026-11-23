@@ -64,6 +64,18 @@ from picard.util import (
 # with huge values (e.g. coming from corrupted tags)
 PAD_MAX_LENGTH = 1000
 
+# Notes shared by the functions taking the same kind of argument, see script_function()
+NOTE_NAME = N_("`name` is the variable name, written without percent signs (%).")
+NOTE_NEW_OLD = N_("`new` and `old` are variable names, written without percent signs (%).")
+NOTE_MULTI = N_(
+    "`multi` is a multi-value, usually a variable written as `%name%`. "
+    'A literal value is also accepted and is split on `separator` (or "; " if not passed).'
+)
+NOTE_MULTI_NO_SEPARATOR = N_(
+    "`multi` is a multi-value, usually a variable written as `%name%`. "
+    'A literal value is also accepted and is split on "; ".'
+)
+
 
 def _compute_int(operation, *args):
     return str(reduce(operation, map(int, args)))
@@ -183,9 +195,10 @@ def func_replace(parser, text, old, new):
 
 @script_function(
     eval_args=False,
-    signature=N_("$replacemulti(name,search,replace[,separator=; ])"),
+    signature=N_("$replacemulti(multi,search,replace[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
+        """Replaces occurrences of `search` with `replace` in the multi-value `multi`.
 Empty elements are automatically removed.
 
 Example:
@@ -221,11 +234,10 @@ def func_in(parser, text, needle):
 
 @script_function(
     eval_args=False,
-    signature=N_("$inmulti(%x%,y[,separator=; ])"),
+    signature=N_("$inmulti(multi,value[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns true if multi-value variable `x` contains exactly `y` as one of its values.
-A literal value representing a multi-value can be substituted for `x`, using the
-`separator` (or "; " if not passed) to coerce the value into a proper multi-valued tag.
+        """Returns true if the multi-value `multi` contains exactly `value` as one of its elements.
 
 _Since Picard 1.0_"""
     ),
@@ -319,6 +331,7 @@ def func_num(parser, text, length):
 
 @script_function(
     signature=N_("$unset(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Unsets the variable `name`.
 Allows for wildcards to unset certain tags (works with "performer:\\*", "comment:\\*", and "lyrics:\\*").
@@ -340,11 +353,12 @@ def func_unset(parser, name):
 
 @script_function(
     signature=N_("$delete(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Unsets the variable `name` and marks the tag for deletion.
 This is similar to `$unset(name)` but also marks the tag for deletion. E.g.
-    running `$delete(genre)` will actually remove the genre tag from a file when
-    saving.
+running `$delete(genre)` will actually remove the genre tag from a file when
+saving.
 
 _Since Picard 2.1_"""
     ),
@@ -356,13 +370,14 @@ def func_delete(parser, name):
 
 @script_function(
     signature=N_("$set(name,value)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Sets the variable `name` to `value`.
 
 Note: To create a variable which can be used for the file naming string, but
-    which will not be written as a tag in the file, prefix the variable name
-    with an underscore. `%something%` will create a "something" tag;
-    `%_something%` will not."""
+which will not be written as a tag in the file, prefix the variable name
+with an underscore. `%something%` will create a "something" tag;
+`%_something%` will not."""
     ),
 )
 def func_set(parser, name, value):
@@ -375,11 +390,12 @@ def func_set(parser, name, value):
 
 @script_function(
     signature=N_("$setmulti(name,value[,separator=; ])"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Sets the variable `name` to `value`, using the separator (or "; " if not passed)
-    to coerce the value back into a proper multi-valued tag. This can be used to
-    operate on multi-valued tags as a string, and then set them back as proper
-    multi-valued tags.
+to coerce the value back into a proper multi-value. This can be used to
+operate on multi-values as a string, and then set them back as proper
+multi-values.
 
 Example:
 
@@ -394,6 +410,7 @@ def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     signature=N_("$get(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_("Returns the variable `name` (equivalent to `%name%`)."),
 )
 def func_get(parser, name):
@@ -403,6 +420,7 @@ def func_get(parser, name):
 
 @script_function(
     signature=N_("$get_new(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Returns the value of the variable `name` from the new metadata only
 (from MusicBrainz or set by a script), ignoring values that only exist in the
@@ -430,6 +448,7 @@ def func_get_new(parser, name):
 
 @script_function(
     signature=N_("$get_original(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Returns the value of the variable `name` from the file's original metadata
 only, ignoring values from MusicBrainz or scripts.
@@ -451,10 +470,11 @@ def func_get_original(parser, name):
 
 @script_function(
     signature=N_("$copy(new,old)"),
+    notes=(NOTE_NEW_OLD,),
     documentation=N_(
         """Copies metadata from variable `old` to `new`.
 The difference between `$set(new,%old%)` is that `$copy(new,old)` copies
-    multi-value variables without flattening them.
+multi-value variables without flattening them.
 
 _Since Picard 0.9_"""
     ),
@@ -468,10 +488,11 @@ def func_copy(parser, new, old):
 
 @script_function(
     signature=N_("$copymerge(new,old[,keep_duplicates])"),
+    notes=(NOTE_NEW_OLD,),
     documentation=N_(
         """Merges metadata from variable `old` into `new`, removing duplicates and
-    appending to the end, so retaining the original ordering. Like `$copy`, this
-    will also copy multi-valued variables without flattening them.
+appending to the end, so retaining the original ordering. Like `$copy`, this
+will also copy multi-valued variables without flattening them.
 
 If `keep_duplicates` is set, then the duplicates will not be removed from the result.
 
@@ -491,7 +512,7 @@ def func_copymerge(parser, new, old, keep_duplicates=False):
     signature=N_("$trim(text[,char])"),
     documentation=N_(
         """Trims all leading and trailing whitespaces from `text`.
-    The optional second parameter `char` specifies the character to trim."""
+The optional second parameter `char` specifies the character to trim."""
     ),
 )
 def func_trim(parser, text, char=None):
@@ -596,8 +617,8 @@ def func_mul(parser, x, y, *args):
 @script_function(
     documentation=N_(
         """Returns true if either `x` or `y` not empty.
-    Can be used with an arbitrary number of arguments.
-    The result is true if **any** of the arguments is not empty."""
+Can be used with an arbitrary number of arguments.
+The result is true if **any** of the arguments is not empty."""
     ),
 )
 def func_or(parser, x, y, *args):
@@ -610,8 +631,8 @@ def func_or(parser, x, y, *args):
 @script_function(
     documentation=N_(
         """Returns true if both `x` and `y` are not empty.
-    Can be used with an arbitrary number of arguments.
-    The result is true if **all** of the arguments are not empty."""
+Can be used with an arbitrary number of arguments.
+The result is true if **all** of the arguments are not empty."""
     )
 )
 def func_and(parser, x, y, *args):
@@ -758,12 +779,10 @@ def func_len(parser, text):
 
 @script_function(
     eval_args=False,
-    signature=N_("$lenmulti(name[,separator=; ])"),
+    signature=N_("$lenmulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns the number of elements in the multi-value tag `name`. A literal value
-    representing a multi-value can be substituted for `name`, using the
-    `separator` (or "; " if not passed) to coerce the value into a proper
-    multi-valued tag.
+        """Returns the number of elements in the multi-value `multi`.
 
 Example:
 
@@ -804,7 +823,7 @@ def func_performer(parser, pattern="", join=", "):
     eval_args=False,
     documentation=N_(
         """Returns the number of matched tracks within a release.
-    **Only works in File Naming scripts.**
+**Only works in File Naming scripts.**
 
 _Since Picard 0.12_"""
     ),
@@ -1107,7 +1126,7 @@ def func_is_video(parser):
     signature=N_("$find(haystack,needle)"),
     documentation=N_(
         """Finds the location of one string within another.
-    Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
+Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
 
 _Since Picard 2.3_
 
@@ -1133,10 +1152,10 @@ def func_reverse(parser, text):
     signature=N_("$substr(text,start[,end])"),
     documentation=N_(
         """Returns the substring beginning with the character at the `start` index, up to
-    (but not including) the character at the `end` index. Indexes are
-    zero-based. Negative numbers will be counted back from the end of the
-    string. If the `start` or `end` indexes are left blank, they will default to
-    the start and end of the string respectively."""
+(but not including) the character at the `end` index. Indexes are
+zero-based. Negative numbers will be counted back from the end of the
+string. If the `start` or `end` indexes are left blank, they will default to
+the start and end of the string respectively."""
     ),
 )
 def func_substr(parser, text, start_index, end_index=None):
@@ -1153,13 +1172,9 @@ def func_substr(parser, text, start_index, end_index=None):
 
 @script_function(
     eval_args=False,
-    signature=N_("$getmulti(name,index[,separator=; ])"),
-    documentation=N_(
-        """Gets the element at `index` from the multi-value tag `name`. A literal value
-    representing a multi-value can be substituted for `name`, using the
-    separator (or "; " if not passed) to coerce the value into a proper
-    multi-valued tag."""
-    ),
+    signature=N_("$getmulti(multi,index[,separator=; ])"),
+    notes=(NOTE_MULTI,),
+    documentation=N_("Gets the element at `index` from the multi-value `multi`."),
 )
 def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     if not item_index:
@@ -1174,15 +1189,13 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$foreach(name,code[,separator=; ])"),
+    signature=N_("$foreach(multi,code[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Iterates over each element found in the multi-value tag `name`, executing
-    `code`. For each loop, the element value is first stored in the tag
-    `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script. A
-    literal value representing a multi-value can be substituted for `name`,
-    using the separator (or "; " if not passed) to coerce the value into a
-    proper multi-valued tag."""
+        """Iterates over each element found in the multi-value `multi`, executing
+`code`. For each loop, the element value is first stored in the tag
+`_loop_value` and the count is stored in the tag `_loop_count`. This allows
+the element or count value to be accessed within the `code` script."""
     ),
 )
 def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
@@ -1201,10 +1214,10 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     signature=N_("$while(condition,code)"),
     documentation=N_(
         """Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
-    evaluates to `True`. For each loop, the count is stored in the tag
-    `_loop_count`. This allows the count value to be accessed within the `code`
-    script. The function limits the maximum number of iterations to 1000 as a
-    safeguard against accidentally creating an infinite loop."""
+evaluates to `True`. For each loop, the count is stored in the tag
+`_loop_count`. This allows the count value to be accessed within the `code`
+script. The function limits the maximum number of iterations to 1000 as a
+safeguard against accidentally creating an infinite loop."""
     ),
 )
 def func_while(parser, condition, loop_code):
@@ -1221,13 +1234,14 @@ def func_while(parser, condition, loop_code):
 
 @script_function(
     eval_args=False,
-    signature=N_("$map(name,code[,separator=; ])"),
+    signature=N_("$map(multi,code[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Iterates over each element found in the multi-value tag `name` and updates the
-    value of the element to the value returned by `code`, returning the updated
-    multi-value tag. For each loop, the element value is first stored in the tag
-    `_loop_value` and the count is stored in the tag `_loop_count`. This allows
-    the element or count value to be accessed within the `code` script.
+        """Iterates over each element found in the multi-value `multi` and updates the
+value of the element to the value returned by `code`, returning the updated
+multi-value tag. For each loop, the element value is first stored in the tag
+`_loop_value` and the count is stored in the tag `_loop_count`. This allows
+the element or count value to be accessed within the `code` script.
 
 Empty elements are automatically removed.
 
@@ -1253,9 +1267,10 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$join(name,text[,separator=; ])"),
+    signature=N_("$join(multi,text[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
+        "Joins all elements in `multi`, placing `text` between each element, and returns the result as a string."
     ),
 )
 def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
@@ -1266,18 +1281,17 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$slice(name,start[,end[,separator=; ]])"),
+    signature=N_("$slice(multi,start[,end[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
         """Returns a multi-value variable containing the elements between the `start` and
-    `end` indexes from the multi-value tag `name`. A literal value representing
-    a multi-value can be substituted for `name`, using the separator (or "; " if
-    not passed) to coerce the value into a proper multi-valued tag. Indexes are
-    zero based. Negative numbers will be counted back from the end of the list.
-    If the `start` or `end` indexes are left blank, they will default to the
-    start and end of the list respectively.
+`end` indexes from the multi-value `multi`. Indexes are
+zero based. Negative numbers will be counted back from the end of the list.
+If the `start` or `end` indexes are left blank, they will default to the
+start and end of the list respectively.
 
 The following example will create a multi-value variable with all artists
-    in `%artists%` except the first, which can be used to create a "feat." list.
+in `%artists%` except the first, which can be used to create a "feat." list.
 
 Examples:
 
@@ -1303,14 +1317,15 @@ def func_slice(parser, multi, start_index, end_index=None, separator=MULTI_VALUE
     signature=N_("$datetime([format=%Y-%m-%d %H:%M:%S])"),
     documentation=N_(
         """Returns the current date and time in the specified `format`, which is based on
-    the standard Python `strftime` [format codes](https://strftime.org/). If no
-    `format` is specified the date/time will be returned in the form
-    `2020-02-05 14:26:32`.
+the standard Python `strftime` [format codes](https://strftime.org/). If no
+`format` is specified the date/time will be returned in the form
+`2020-02-05 14:26:32`.
+
 Note: Platform-specific formatting codes should be avoided to help ensure the
-    portability of scripts across the different platforms.  These codes include:
-    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
-    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
-    `%3Y`); and hanging '%' at the end of the format string."""
+portability of scripts across the different platforms.  These codes include:
+remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+`%3Y`); and hanging '%' at the end of the format string."""
     ),
 )
 def func_datetime(parser, format=None):
@@ -1326,9 +1341,10 @@ def func_datetime(parser, format=None):
 
 @script_function(
     eval_args=False,
-    signature=N_("$sortmulti(name[,separator=; ])"),
+    signature=N_("$sortmulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.
+        """Returns a copy of the multi-value `multi` with the elements sorted in ascending order.
 
 Example:
 
@@ -1345,11 +1361,12 @@ def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$reversemulti(name[,separator=; ])"),
+    signature=N_("$reversemulti(multi[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with the elements in reverse order.
-    This can be used in conjunction with the `$sortmulti` function to sort in
-    descending order.
+        """Returns a copy of the multi-value `multi` with the elements in reverse order.
+This can be used in conjunction with the `$sortmulti` function to sort in
+descending order.
 
 Example:
 
@@ -1366,19 +1383,18 @@ def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
-    signature=N_("$unique(name[,case_sensitive[,separator=; ]])"),
+    signature=N_("$unique(multi[,case_sensitive[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with no duplicate elements.
-    By default, a case-insensitive comparison of the elements is performed.
+        """Returns a copy of the multi-value `multi` with no duplicate elements.
+By default, a case-insensitive comparison of the elements is performed.
 
-Example 1:
+Examples:
 
     $setmulti(foo,a; A; B; b; cd; Cd; cD; CD; a; A; b)
     $unique(%foo%)
 
 Result: A; CD; b
-
-Example 2:
 
     $setmulti(foo,a; A; B; b; a; b; A; B; cd)
     $unique(%foo%,True)
@@ -1477,17 +1493,18 @@ def func_day(parser, date_to_parse, date_order='ymd'):
     signature=N_("$dateformat(date[,format=%Y-%m-%d[,date_order=ymd]])"),
     documentation=N_(
         """Returns the input date in the specified `format`, which is based on the standard
-    Python `strftime` [format codes](https://strftime.org/). If no `format` is
-    specified the date will be returned in the form `2020-02-05`.  If the date or
-    format are invalid an empty string will be returned.
+Python `strftime` [format codes](https://strftime.org/). If no `format` is
+specified the date will be returned in the form `2020-02-05`.  If the date or
+format are invalid an empty string will be returned.
 
-    The default order for the input date is "ymd".  This can be changed by specifying
-    either "dmy" or "mdy".
+The default order for the input date is "ymd".  This can be changed by specifying
+either "dmy" or "mdy".
+
 Note: Platform-specific formatting codes should be avoided to help ensure the
-    portability of scripts across the different platforms.  These codes include:
-    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
-    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
-    `%3Y`); and hanging '%' at the end of the format string.
+portability of scripts across the different platforms.  These codes include:
+remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+`%3Y`); and hanging '%' at the end of the format string.
 
 _Since Picard 2.7_"""
     ),
@@ -1509,7 +1526,8 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
 
 @script_function(
     eval_args=False,
-    signature=N_("$is_multi(name)"),
+    signature=N_("$is_multi(multi)"),
+    notes=(NOTE_MULTI_NO_SEPARATOR,),
     documentation=N_(
         """Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
 
@@ -1529,10 +1547,10 @@ def func_is_multi(parser, multi):
 
 @script_function(
     signature=N_("$cleanmulti(name)"),
+    notes=(NOTE_NAME,),
     documentation=N_(
         """Removes all empty string elements from the multi-value variable.
 The original variable is updated.
-Unlike most functions, `name` is specified **without** enclosing it with percent signs (%).
 Use `$removemulti` to get a copy without empty elements and leave the original variable unchanged.
 
 Example:
@@ -1583,9 +1601,10 @@ def _filter_multi(parser, multi, pattern, separator, keep):
 
 @script_function(
     eval_args=False,
-    signature=N_("$removemulti(name[,pattern[,separator=; ]])"),
+    signature=N_("$removemulti(multi[,pattern[,separator=; ]])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` without the elements matching the
+        """Returns a copy of the multi-value `multi` without the elements matching the
 [regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
 If `pattern` is omitted or empty, the empty elements are removed.
 The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
@@ -1611,9 +1630,10 @@ def func_removemulti(parser, multi, pattern=None, separator=MULTI_VALUED_JOINER)
 
 @script_function(
     eval_args=False,
-    signature=N_("$keepmulti(name,pattern[,separator=; ])"),
+    signature=N_("$keepmulti(multi,pattern[,separator=; ])"),
+    notes=(NOTE_MULTI,),
     documentation=N_(
-        """Returns a copy of the multi-value tag `name` with only the elements matching the
+        """Returns a copy of the multi-value `multi` with only the elements matching the
 [regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) `pattern`.
 The pattern can match anywhere in an element, use `^` and `\\$` to match the whole element.
 Use `\\(?i\\)` at the start of the pattern for a case-insensitive match.

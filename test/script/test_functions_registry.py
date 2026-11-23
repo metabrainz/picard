@@ -24,7 +24,12 @@ import re
 from test.picardtestcase import PicardTestCase
 
 from picard.extension_points.script_functions import ext_point_script_functions
-import picard.script.functions  # noqa: F401  # registers the core functions
+from picard.script.functions import (
+    NOTE_MULTI,
+    NOTE_MULTI_NO_SEPARATOR,
+    NOTE_NAME,
+    NOTE_NEW_OLD,
+)
 
 
 CORE_MODULE = 'picard.script.functions'
@@ -84,3 +89,54 @@ class FunctionSignatureTest(PicardTestCase):
                 if name not in LENIENT_MINIMUM:
                     self.assertEqual(required, item.argcount.lower)
                 self.assertEqual(required + optional, item.argcount.upper)
+
+
+class FunctionArgumentNamingTest(PicardTestCase):
+    """Argument names in signatures follow one convention, explained by a note.
+
+    - `name`: a bare variable name, written without percent signs
+    - `new`, `old`: bare variable names
+    - `multi`: a multi-value, a variable (`%name%`) or a literal value
+    """
+
+    @staticmethod
+    def _functions():
+        return sorted((name, item) for name, item in ext_point_script_functions if item.module == CORE_MODULE)
+
+    @staticmethod
+    def _arguments(signature):
+        args = SIGNATURE_RE.match(signature).group('args')
+        return [arg.split('=')[0].strip(' ]') for arg in re.split(r'[\[,]', args) if arg.strip(' ]')]
+
+    def test_signatures_do_not_contain_variables(self):
+        # strftime formats such as %Y are fine, variables such as %x% are not
+        for name, item in self._functions():
+            with self.subTest(function=name):
+                self.assertNotRegex(item.signature, r'%\w+%')
+
+    def test_multi_argument_has_note(self):
+        for name, item in self._functions():
+            if 'multi' in self._arguments(item.signature):
+                with self.subTest(function=name):
+                    self.assertEqual(len(item.notes), 1)
+                    self.assertIn(item.notes[0], {NOTE_MULTI, NOTE_MULTI_NO_SEPARATOR})
+                    # The separator is only mentioned when there is one
+                    self.assertEqual('separator' in self._arguments(item.signature), item.notes[0] == NOTE_MULTI)
+
+    def test_name_argument_has_note(self):
+        for name, item in self._functions():
+            if 'name' in self._arguments(item.signature):
+                with self.subTest(function=name):
+                    self.assertEqual(item.notes, (NOTE_NAME,))
+
+    def test_new_old_arguments_have_note(self):
+        for name, item in self._functions():
+            if {'new', 'old'}.issubset(self._arguments(item.signature)):
+                with self.subTest(function=name):
+                    self.assertEqual(item.notes, (NOTE_NEW_OLD,))
+
+    def test_other_functions_have_no_note(self):
+        for name, item in self._functions():
+            if not {'name', 'multi', 'new', 'old'}.intersection(self._arguments(item.signature)):
+                with self.subTest(function=name):
+                    self.assertEqual(item.notes, ())

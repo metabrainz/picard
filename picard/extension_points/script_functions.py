@@ -69,6 +69,7 @@ class FunctionRegistryItem:
         name: str | None = None,
         module: str | None = None,
         signature: str | None = None,
+        notes: tuple[str, ...] = (),
     ) -> None:
         self.function = function
         self.eval_args = eval_args
@@ -77,6 +78,7 @@ class FunctionRegistryItem:
         self.name = name
         self.module = module
         self.signature = signature
+        self.notes = notes
         self.plugin_id = None
         if module and module.startswith(PLUGIN_MODULE_PREFIX):
             self.plugin_id = module[PLUGIN_MODULE_PREFIX_LEN:]
@@ -93,12 +95,28 @@ class FunctionRegistryItem:
             data = postprocessor(data, function=self)
         return data
 
+    def markdown_title(self) -> str:
+        """Translated signature, as Markdown code, or an empty string."""
+        return f'`{_(self.signature)}`' if self.signature else ''
+
+    def markdown_body(self) -> str:
+        """Translated documentation and notes, in Markdown, or an empty string.
+
+        The notes are shared explanations, e.g. about the kind of an argument. They
+        come as a paragraph following the first paragraph of the documentation.
+        """
+        documentation = _(self.documentation) if self.documentation else ''
+        if not self.notes:
+            return documentation
+        first, separator, rest = documentation.partition('\n\n')
+        notes = '\n\n'.join(_(note) for note in self.notes)
+        return '\n\n'.join(part for part in (first, notes, rest) if part)
+
     def markdowndoc(self, postprocessor: Callable | None = None) -> str:
         ret = ''
         if self.signature:
-            ret = f'`{_(self.signature)}`\n\n'
-        if self.documentation:
-            ret += _(self.documentation)
+            ret = f'{self.markdown_title()}\n\n'
+        ret += self.markdown_body()
         return self._postprocess(ret.strip(), postprocessor)
 
     def htmldoc(self, postprocessor: Callable | None = None) -> str:
@@ -119,6 +137,7 @@ def register_script_function(
     check_argcount: bool = True,
     documentation: str | None = None,
     signature: str | None = None,
+    notes: tuple[str, ...] = (),
 ) -> None:
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
@@ -126,7 +145,9 @@ def register_script_function(
     passed to ``function``.
     If ``check_argcount`` is ``False`` the number of arguments passed to the
     function will not be verified.
-    If ``documentation`` is ``None``, ``function.__doc__`` will be used."""
+    If ``documentation`` is ``None``, ``function.__doc__`` will be used.
+    ``notes`` are translatable paragraphs added to the documentation, they allow
+    sharing the same explanation between functions."""
 
     argspec = getfullargspec(function)
 
@@ -166,6 +187,7 @@ def register_script_function(
                 name=name,
                 module=function.__module__,
                 signature=signature,
+                notes=notes,
             ),
         ),
     )
@@ -178,6 +200,7 @@ def script_function(
     prefix: str = 'func_',
     documentation: str | None = None,
     signature: str | None = None,
+    notes: tuple[str, ...] = (),
 ) -> Callable:
     """Decorator helper to register script functions
 
@@ -205,6 +228,7 @@ def script_function(
             check_argcount=check_argcount,
             documentation=documentation,
             signature=signature,
+            notes=notes,
         )
         return func
 
