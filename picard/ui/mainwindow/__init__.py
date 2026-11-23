@@ -1477,14 +1477,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def save(self):
         """Tell the tagger to save the selected objects."""
         self.tutorial.show('save')
-        config = get_config()
-        if config.setting['file_save_warning']:
-            count = len(list(iter_files_from_objects(self.selected_objects)))
-            msg = SaveWarningDialog(self, count)
-            proceed_with_save, disable_warning = msg.show()
-            config.setting['file_save_warning'] = not disable_warning
-        else:
+        if SaveWarningDialog.is_hidden():
             proceed_with_save = True
+        else:
+            count = len(list(iter_files_from_objects(self.selected_objects)))
+            proceed_with_save = SaveWarningDialog(self, count).exec() == QtWidgets.QMessageBox.StandardButton.Ok
         if proceed_with_save:
             self.tagger.save(self.selected_objects)
 
@@ -2508,8 +2505,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             load_user_collections()
 
     def show_startup_dialogs(self):
-        config = get_config()
-        self.show_new_user_dialog(config)
+        self.show_new_user_dialog()
         self.show_setup_wizard()
         self.tutorial.show('overview')
 
@@ -2518,10 +2514,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             wizard = SetupWizard(self)
             wizard.exec()
 
-    def show_new_user_dialog(self, config):
-        if config.setting['show_new_user_dialog']:
-            msg = NewUserDialog(self)
-            config.setting['show_new_user_dialog'] = msg.show()
+    def show_new_user_dialog(self):
+        if not NewUserDialog.is_hidden():
+            NewUserDialog(self).exec()
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

@@ -18,19 +18,22 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard.config import get_config
 from picard.i18n import (
+    N_,
     gettext as _,
     ngettext,
 )
 
+from picard.ui.dialogs.donotshowagainmessagebox import DoNotShowAgainMessageBox
 
-class SaveWarningDialog:
+
+class SaveWarningDialog(DoNotShowAgainMessageBox):
+    KEY = 'save_warning'
+    TITLE = N_("File Save Warning")
+
     def __init__(self, parent, file_count):
         actions = []
         config = get_config()
@@ -66,27 +69,10 @@ class SaveWarningDialog:
         else:
             warning_text = _("There are no actions selected. No changes will be saved.")
 
-        disable_text = _("Don't show this warning again.")
-
-        self.disable = False
-        self.msg = QtWidgets.QMessageBox(parent)
-        self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-        self.msg.setText(warning_text)
-        self.msg.setWindowTitle(_("File Save Warning"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-
-        self.cb = QtWidgets.QCheckBox(disable_text)
-        self.cb.setChecked(False)
-        self.cb.toggled.connect(self._set_state)
-
-        self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(
-            QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel
+        super().__init__(
+            parent,
+            text=warning_text,
+            icon=QtWidgets.QMessageBox.Icon.Warning,
+            buttons=QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
+            default_button=QtWidgets.QMessageBox.StandardButton.Cancel,
         )
-        self.msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
-
-    def _set_state(self):
-        self.disable = not self.disable
-
-    def show(self):
-        return self.msg.exec() == QtWidgets.QMessageBox.StandardButton.Ok, self.disable

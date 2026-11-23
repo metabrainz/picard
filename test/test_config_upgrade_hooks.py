@@ -917,6 +917,46 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         ]
         self.assertEqual(expected_settings, settings['list_of_scripts'])
 
+    def test_migrate_hidden_message_boxes(self):
+        BoolOption('setting', 'show_new_user_dialog', True)
+        BoolOption('setting', 'file_save_warning', True)
+        BoolOption('persist', 'show_plugin_install_warning', True)
+        ListOption('persist', 'hidden_message_boxes', [])
+
+        self.config.setting['show_new_user_dialog'] = False
+        self.config.setting['file_save_warning'] = True
+        self.config.persist['show_plugin_install_warning'] = False
+
+        hooks.migrate_hidden_message_boxes(self.config)
+
+        self.assertEqual(['new_user', 'plugin_install_warning'], self.config.persist['hidden_message_boxes'])
+        self.assertNotIn('show_new_user_dialog', self.config.setting)
+        self.assertNotIn('file_save_warning', self.config.setting)
+        self.assertNotIn('show_plugin_install_warning', self.config.persist)
+
+    def test_migrate_hidden_message_boxes_defaults(self):
+        ListOption('persist', 'hidden_message_boxes', [])
+
+        hooks.migrate_hidden_message_boxes(self.config)
+
+        self.assertEqual([], self.config.persist['hidden_message_boxes'])
+
+    def test_remove_message_box_settings(self):
+        BoolOption('setting', 'show_new_user_dialog', True)
+        BoolOption('setting', 'file_save_warning', True)
+        self.config.setting['show_new_user_dialog'] = False
+        self.config.setting['file_save_warning'] = False
+
+        hooks.remove_message_box_settings(self.config.setting)
+
+        self.assertNotIn('show_new_user_dialog', self.config.setting)
+        self.assertNotIn('file_save_warning', self.config.setting)
+
+    def test_remove_message_box_settings_dict(self):
+        settings = {'show_new_user_dialog': False, 'file_save_warning': False, 'other': 1}
+        hooks.remove_message_box_settings(settings)
+        self.assertEqual({'other': 1}, settings)
+
 
 class TestRunConfigUpgradesInteractive(TestPicardConfigCommon):
     """run_config_upgrades threads the interactive flag to hooks that accept it."""

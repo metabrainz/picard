@@ -76,9 +76,7 @@ class InterfaceOptionsPage(OptionsPage):
         'ui_language': {},
         'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
-        'show_new_user_dialog': {'widgets': ['new_user_dialog']},
         'quit_confirmation': {'widgets': ['quit_confirmation']},
-        'file_save_warning': {'widgets': ['file_save_warning']},
         'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
         'starting_directory': {'widgets': ['starting_directory']},
         'starting_directory_path': {'widgets': ['starting_directory_path']},
@@ -139,15 +137,6 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
-        # Add reset button for tutorial and setup wizard at the end of the Miscellaneous group
-        self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial and setup wizard…"))
-        self.reset_tutorial_button.setSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Maximum,
-            QtWidgets.QSizePolicy.Policy.Fixed,
-        )
-        self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
-        self.ui.vboxlayout1.addWidget(self.reset_tutorial_button)
-
     def _on_theme_changed(self, index):
         """Apply the theme immediately when the user selects it."""
         selected_theme = self.ui.ui_theme.itemData(index)
@@ -165,9 +154,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
             self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
             self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-            self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
             self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
-            self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
             current_ui_language = config.setting['ui_language']
             self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
             self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
@@ -183,9 +170,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
-        config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
-        config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
@@ -230,20 +215,6 @@ class InterfaceOptionsPage(OptionsPage):
         )
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
             self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
-
-    def _reset_tutorial(self):
-        dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Icon.Question,
-            _("Reset Tutorial"),
-            _("This will reset the tutorial and setup wizard so they are shown again. Continue?"),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            self,
-        )
-        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
-            config = get_config()
-            config.persist['tutorial_steps_shown'] = []
-            config.persist['tutorial_disabled'] = False
-            config.persist['setup_wizard_completed'] = False
 
 
 register_options_page(InterfaceOptionsPage)

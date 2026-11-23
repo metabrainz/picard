@@ -904,3 +904,26 @@ obsolete_options(
     '3.0.0rc4',
     ('setting', 'rating_steps'),
 )
+
+
+@upgrade_config('3.1.0dev1')
+def migrate_hidden_message_boxes(config):
+    """Store the "do not show again" choices of message boxes in the "hidden_message_boxes" persisted option."""
+    hidden = set(get_option_value(config.persist, 'hidden_message_boxes', ListOption, []))
+    for settings, name, key in (
+        (config.setting, 'show_new_user_dialog', 'new_user'),
+        (config.setting, 'file_save_warning', 'save_warning'),
+        (config.persist, 'show_plugin_install_warning', 'plugin_install_warning'),
+    ):
+        if not get_option_value(settings, name, BoolOption, True):
+            hidden.add(key)
+        remove_option(settings, name)
+    if hidden:
+        write_option(config.persist, 'hidden_message_boxes', sorted(hidden))
+
+
+@upgrade_settings('3.1.0dev1')
+def remove_message_box_settings(settings):
+    """Remove the message box options from profiles, they are not profile-specific anymore."""
+    remove_option(settings, 'show_new_user_dialog')
+    remove_option(settings, 'file_save_warning')
