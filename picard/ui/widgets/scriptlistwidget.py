@@ -39,6 +39,7 @@ from picard.ui import HashableListWidgetItem
 from picard.ui.util import (
     context_menu_global_pos,
     context_menu_item,
+    keep_cursor_after_removal,
 )
 
 
@@ -102,7 +103,8 @@ class ScriptListWidget(QtWidgets.QListWidget):
             QtWidgets.QMessageBox.StandardButton.No,
         )
         if item and reply == QtWidgets.QMessageBox.StandardButton.Yes:
-            item = self.takeItem(row)
+            with keep_cursor_after_removal(self):
+                item = self.takeItem(row)
             del item
 
     def item_changed(self, item):

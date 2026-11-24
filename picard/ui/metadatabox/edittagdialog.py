@@ -43,6 +43,7 @@ from picard.util.qt import temporary_disconnect
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_edittagdialog import Ui_EditTagDialog
+from picard.ui.util import keep_cursor_after_removal
 
 
 AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s in sorted(RELEASE_PRIMARY_GROUPS) + sorted(RELEASE_SECONDARY_GROUPS)]
@@ -296,7 +297,8 @@ class EditTagDialog(PicardDialog):
         row = value_list.currentRow()
         if row == 0 and self.is_grouped:
             self._group(False)
-        value_list.takeItem(row)
+        with keep_cursor_after_removal(value_list):
+            value_list.takeItem(row)
 
     def on_rows_inserted(self, parent, first, last):
         for row in range(first, last + 1):

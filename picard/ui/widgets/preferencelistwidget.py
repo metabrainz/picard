@@ -28,6 +28,8 @@ from picard.i18n import (
     sort_key,
 )
 
+from picard.ui.util import keep_cursor_after_removal
+
 
 _PLACEHOLDER_TEXT = N_("Add…")
 
@@ -201,8 +203,9 @@ class PreferenceListWidget(QtWidgets.QWidget):
         self.changed.emit()
 
     def _remove_selected(self) -> None:
-        for item in self._list_widget.selectedItems():
-            self._list_widget.takeItem(self._list_widget.row(item))
+        with keep_cursor_after_removal(self._list_widget):
+            for item in self._list_widget.selectedItems():
+                self._list_widget.takeItem(self._list_widget.row(item))
         self._refresh_combo()
         self._update_buttons()
         self.changed.emit()

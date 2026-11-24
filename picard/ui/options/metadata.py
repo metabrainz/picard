@@ -61,6 +61,7 @@ from picard.ui.options import (
     PageOptionConfigs,
 )
 from picard.ui.util import (
+    keep_cursor_after_removal,
     qlistwidget_items,
     set_widget_fixed_width_for_text,
 )
@@ -329,7 +330,8 @@ class MultiLocaleSelector(PicardDialog):
 
     def remove_locale(self):
         row = self.ui.selected_locales.currentRow()
-        self.ui.selected_locales.takeItem(row)
+        with keep_cursor_after_removal(self.ui.selected_locales):
+            self.ui.selected_locales.takeItem(row)
 
     def set_button_state(self):
         enabled = self.ui.selected_locales.count() > 1
@@ -411,7 +413,8 @@ class ScriptExceptionSelector(PicardDialog):
 
     def remove_script(self):
         row = self.ui.selected_scripts.currentRow()
-        self.ui.selected_scripts.takeItem(row)
+        with keep_cursor_after_removal(self.ui.selected_scripts):
+            self.ui.selected_scripts.takeItem(row)
 
     def selected_script_changed(self):
         self.set_weighting_selector()
