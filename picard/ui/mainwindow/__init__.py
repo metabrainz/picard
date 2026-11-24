@@ -106,7 +106,10 @@ from picard.options import (
     get_option_title,
 )
 from picard.plugin3.manager.update_checker import PluginUpdateChecker
-from picard.script import get_file_naming_script_presets
+from picard.script import (
+    get_file_naming_script_presets,
+    iter_unknown_script_functions,
+)
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import save_session_to_path
 from picard.track import Track
@@ -1102,6 +1105,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
 
         self.file_naming_scripts_menu = create_qmenu(_("File naming &scripts"), icontheme.lookup('document-open'))
+        self.file_naming_scripts_menu.aboutToHide.connect(self._schedule_profile_script_check)
         self._script_actions = []
         self._make_script_selector_menu()
         self.file_naming_scripts_menu.addSeparator()
@@ -1111,10 +1115,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             _("&Profiles"), self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
         )
         self._profile_script_check_pending = False
+        self._pending_profile_change = None
         self.profile_quick_selector_menu.aboutToHide.connect(self._schedule_profile_script_check)
         self._make_profile_selector_menu()
 
         self.quick_settings_menu = create_qmenu(_("&Quick settings"), icontheme.lookup('applications-system'))
+        self.quick_settings_menu.aboutToHide.connect(self._schedule_profile_script_check)
         self._make_quick_settings_menu()
 
         options_menu = self.menuBar().addMenu(_("&Options"))
@@ -1433,11 +1439,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         return options_dialog
 
-    def _options_closed(self):
+    def _options_closed(self, result):
         self._make_profile_selector_menu()
         self._make_quick_settings_menu()
         # Wait until the options dialog has finished closing, including cleanup of profile overrides.
-        QtCore.QTimer.singleShot(0, self.tagger.warn_about_unknown_script_functions)
+        settings_applied = result == QtWidgets.QDialog.DialogCode.Accepted
+        QtCore.QTimer.singleShot(
+            0, partial(self.tagger.warn_about_unknown_script_functions, settings_applied=settings_applied)
+        )
 
     def _disable_while_dialog_shown(self, dialog):
         """Disable MainWindow while dialog is shown, re-enable when it closes.
@@ -2361,6 +2370,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         log.debug("Setting naming script to: %s", id)
         config.setting['active_file_naming_script_id'] = id
+        # Recheck the selected script once the Options menus have closed.
+        self._profile_script_check_pending = True
+        self._schedule_profile_script_check()
 
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window."""
@@ -2424,27 +2436,89 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu.addAction(edit_action)
 
     def _set_profile_enabled(self, profile_id: str, enabled: bool) -> None:
-        """Set the enabled state of a profile and refresh dependent UI.
-
-        Parameters
-        ----------
-        profile_id : str
-            ID code of the profile to modify.
-        enabled : bool
-            New enabled state for the profile.
-        """
+        """Change a profile after checking whether it activates unavailable functions."""
+        if self._pending_profile_change is not None:
+            return
         config = get_config()
         option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-        for profile in option_profiles:
-            if profile['id'] == profile_id:
-                if profile['enabled'] != enabled:
-                    profile['enabled'] = enabled
-                    config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
-                    # Update menus/settings that may depend on profile overrides.
-                    self._reset_option_menu_state()
-                    self._profile_script_check_pending = True
-                    self._schedule_profile_script_check()
-                return
+        profile = next((p for p in option_profiles if p['id'] == profile_id), None)
+        if profile is None or profile['enabled'] == enabled:
+            return
+
+        proposed_profiles = [dict(p, enabled=enabled) if p['id'] == profile_id else dict(p) for p in option_profiles]
+        previous_errors = set(iter_unknown_script_functions(config))
+        old_override = config.setting.profiles_override
+        try:
+            # Preview the effective settings without committing the profile change.
+            config.setting.set_profiles_override(proposed_profiles)
+            introduced_errors = set(iter_unknown_script_functions(config)) - previous_errors
+        finally:
+            config.setting.set_profiles_override(old_override)
+
+        if introduced_errors:
+            self._pending_profile_change = (profile_id, enabled, profile['title'], introduced_errors)
+            # A modal dialog from a live QMenu callback would interrupt menu interaction.
+            # Close both menus and show the confirmation in the next Qt event-loop turn.
+            self.profile_quick_selector_menu.close()
+            self.options_menu.close()
+            QtCore.QTimer.singleShot(0, self._confirm_pending_profile_change)
+        else:
+            config.profiles[SettingConfigSection.PROFILES_KEY] = proposed_profiles
+            self._reset_option_menu_state()
+            self._profile_script_check_pending = True
+            self._schedule_profile_script_check()
+
+    def _confirm_pending_profile_change(self):
+        """Ask whether to apply a profile change that introduces broken scripts."""
+        pending = self._pending_profile_change
+        if pending is None:
+            return
+        profile_id, enabled, title, errors = pending
+        message = QtWidgets.QMessageBox(self)
+        message.setWindowTitle(_("Unknown Script Functions"))
+        message.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+        message.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        if enabled:
+            description = _(
+                "Enabling profile '%(profile)s' would activate scripts with unavailable functions. "
+                "Do you want to enable this profile anyway?"
+            )
+        else:
+            description = _(
+                "Disabling profile '%(profile)s' would activate scripts with unavailable functions. "
+                "Do you want to disable this profile anyway?"
+            )
+        message.setText(description % {'profile': title})
+        message.setInformativeText(
+            '\n'.join(
+                _("%(script)s: %(function)s") % {'script': name, 'function': function}
+                for _page, name, function in sorted(errors)
+            )
+        )
+        message.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Cancel)
+        proceed_button = message.addButton(
+            _("Enable Anyway") if enabled else _("Disable Anyway"),
+            QtWidgets.QMessageBox.ButtonRole.AcceptRole,
+        )
+        message.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
+        message.setEscapeButton(QtWidgets.QMessageBox.StandardButton.Cancel)
+        message.exec()
+        if message.clickedButton() == proceed_button:
+            config = get_config()
+            # A queued confirmation can outlive another source of config changes.
+            profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+            profile = next((p for p in profiles if p['id'] == profile_id), None)
+            if profile is not None and profile['enabled'] != enabled:
+                profile['enabled'] = enabled
+                config.profiles[SettingConfigSection.PROFILES_KEY] = profiles
+                self._reset_option_menu_state()
+                self.tagger.acknowledge_unknown_script_functions(errors)
+                self._profile_script_check_pending = True
+        else:
+            # QWidgetAction checked state may already have changed; restore it.
+            self._make_profile_selector_menu()
+        self._pending_profile_change = None
+        self._schedule_profile_script_check()
 
     def _schedule_profile_script_check(self):
         if self._profile_script_check_pending:
@@ -2452,11 +2526,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtCore.QTimer.singleShot(0, self._check_pending_profile_scripts)
 
     def _check_pending_profile_scripts(self):
-        if not self._profile_script_check_pending:
+        if not self._profile_script_check_pending or self._pending_profile_change is not None:
             return
-        # The profile checkboxes keep the menu open so several profiles can be toggled.
-        # Wait until the whole Options menu is closed before showing a modal warning.
-        if self.profile_quick_selector_menu.isVisible() or self.options_menu.isVisible():
+        # Never show a modal warning while the user is still using those menus.
+        if (
+            self.profile_quick_selector_menu.isVisible()
+            or self.file_naming_scripts_menu.isVisible()
+            or self.quick_settings_menu.isVisible()
+            or self.options_menu.isVisible()
+        ):
             return
         self._profile_script_check_pending = False
         self.tagger.warn_about_unknown_script_functions()
@@ -2525,6 +2603,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         new_value = not config.setting[setting_id]
         config.setting[setting_id] = new_value
 
+        if setting_id in {'rename_files', 'move_files', 'save_images_to_files', 'enable_tagger_scripts'}:
+            self._profile_script_check_pending = True
+            self._schedule_profile_script_check()
+
         if setting_id == 'enable_user_collections' and new_value:
             load_user_collections()
 
@@ -2537,7 +2619,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_setup_wizard(self, force=False) -> None:
         if SetupWizard.should_show() or force:
             wizard = SetupWizard(self)
-            wizard.exec()
+            if wizard.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+                self.tagger.warn_about_unknown_script_functions()
 
     def show_new_user_dialog(self, config):
         if config.setting['show_new_user_dialog']:

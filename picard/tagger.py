@@ -748,7 +748,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         if sys.stderr:
             sys.stderr.flush()
 
-    def warn_about_unknown_script_functions(self, config=None):
+    def warn_about_unknown_script_functions(self, config=None, *, settings_applied=False):
         errors = list(iter_unknown_script_functions(config))
         current_errors = set(errors)
         new_errors = current_errors - self._unknown_script_errors
@@ -760,9 +760,17 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         message.setWindowTitle(_("Unknown Script Functions"))
         message.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         message.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        message.setText(
-            _("Some active scripts use functions that are not available. A required plugin may be missing or disabled.")
-        )
+        if settings_applied:
+            description = _(
+                "The current settings have been applied, but some active scripts use unavailable functions. "
+                "These scripts may not work until they are corrected or a required plugin is enabled."
+            )
+        else:
+            description = _(
+                "Some active scripts use unavailable functions. "
+                "These scripts may not work until they are corrected or a required plugin is enabled."
+            )
+        message.setText(description)
         message.setInformativeText(
             '\n'.join(
                 _("%(script)s: %(function)s") % {'script': name, 'function': function}
@@ -787,6 +795,10 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
             if message.clickedButton() == button:
                 self.window.show_options(page)
                 break
+
+    def acknowledge_unknown_script_functions(self, errors):
+        """Do not repeat warnings for script errors explicitly accepted by the user."""
+        self._unknown_script_errors.update(errors)
 
     def load_session_from_path(self, path):
         load_session_from_path(self, path)

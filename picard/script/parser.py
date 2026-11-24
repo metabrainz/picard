@@ -212,6 +212,7 @@ class ScriptParser:
     _cache: ClassVar[dict[int, ScriptExpression]] = {}
 
     def __init__(self):
+        self._unknown_functions = None
         self._function_stack = LifoQueue()
 
     def __raise_eof(self):
@@ -279,7 +280,14 @@ class ScriptParser:
             if ch == '(':
                 name = self._text[start : self._pos - 1]
                 if name not in self.functions:
-                    raise ScriptUnknownFunction(StackItem(line, column, name))
+                    error = ScriptUnknownFunction(StackItem(line, column, name))
+                    if self._unknown_functions is None:
+                        raise error
+                    if not name:
+                        self.__raise_char(ch)
+                    self._unknown_functions.append(error)
+                    self.parse_arguments()
+                    return ScriptText('')
                 return ScriptFunction(name, self.parse_arguments(), self, column, line)
             elif ch is None:
                 self.__raise_eof()
@@ -356,8 +364,9 @@ class ScriptParser:
     def load_functions(self):
         self.functions = dict(script_functions.ext_point_script_functions)
 
-    def parse(self, script, functions=False):
-        """Parse the script."""
+    def parse(self, script, functions=False, *, unknown_functions=None):
+        """Parse the script. For syntax checks, collect missing functions and continue parsing their arguments."""
+        self._unknown_functions = unknown_functions
         self._text = script
         self._pos = 0
         self._px = self._x = 1
