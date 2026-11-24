@@ -23,7 +23,7 @@ several formats.
 
 Usage:
     picard-cli docs list [TOPIC]
-    picard-cli docs show TOPIC [NAME ...] [-f console|markdown|html] [-o FILE]
+    picard-cli docs show TOPIC [NAME ...] [-f console|markdown|html|json] [-o FILE]
 """
 
 from argparse import ArgumentParser

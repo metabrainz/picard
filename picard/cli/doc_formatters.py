@@ -30,6 +30,7 @@ from collections.abc import (
     Sequence,
 )
 from html import escape
+import json
 import re
 import shutil
 import textwrap
@@ -90,6 +91,19 @@ def render_markdown(topic: DocTopic, entries: Sequence[DocEntry], output: CliOut
         title = f'`{entry.title}`' if entry.code_title else entry.title
         parts.append(f'## {title}\n\n{entry.body}'.rstrip())
     return '\n\n'.join(parts) + '\n'
+
+
+def render_json(topic: DocTopic, entries: Sequence[DocEntry], output: CliOutput) -> str:
+    """Render entries as JSON, for use by other tools."""
+    data = {
+        'topic': topic.name,
+        'title': topic.title,
+        'entries': [
+            {'name': entry.name, 'title': entry.title, 'body': entry.body, 'code_title': entry.code_title}
+            for entry in entries
+        ],
+    }
+    return json.dumps(data, indent=2, ensure_ascii=False) + '\n'
 
 
 def render_html(topic: DocTopic, entries: Sequence[DocEntry], output: CliOutput) -> str:
@@ -188,4 +202,5 @@ FORMATTERS: dict[str, Formatter] = {
     'console': render_console,
     'markdown': render_markdown,
     'html': render_html,
+    'json': render_json,
 }

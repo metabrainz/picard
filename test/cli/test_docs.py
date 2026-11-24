@@ -24,6 +24,7 @@ process, so it cannot run alongside the suite's QApplication.
 """
 
 from io import StringIO
+import json
 import os
 from types import SimpleNamespace
 import unittest
@@ -39,6 +40,7 @@ from picard.cli.doc_formatters import (
     markdown,
     render_console,
     render_html,
+    render_json,
     render_markdown,
 )
 from picard.cli.doc_topics import (
@@ -183,7 +185,7 @@ class DocFormattersTest(PicardTestCase):
         self.entries = self.topic.entries()
 
     def test_formats_are_registered(self):
-        self.assertEqual({'console', 'markdown', 'html'}, set(FORMATTERS))
+        self.assertEqual({'console', 'markdown', 'html', 'json'}, set(FORMATTERS))
 
     def test_markdown(self):
         output, _stdout, _stderr = _make_output()
@@ -191,6 +193,18 @@ class DocFormattersTest(PicardTestCase):
         self.assertTrue(text.startswith('# Fake topic\n\n## `$alpha(x)`\n\nDoes **alpha**'))
         self.assertIn('\n\n## Beta\n\nPlain text.\n', text)
         self.assertTrue(text.endswith('\n'))
+
+    def test_json(self):
+        output, _stdout, _stderr = _make_output()
+        data = json.loads(render_json(self.topic, self.entries, output))
+        self.assertEqual('fake', data['topic'])
+        self.assertEqual('Fake topic', data['title'])
+        self.assertEqual(['alpha', 'beta'], [entry['name'] for entry in data['entries']])
+        alpha = data['entries'][0]
+        self.assertEqual('$alpha(x)', alpha['title'])
+        self.assertTrue(alpha['code_title'])
+        self.assertTrue(alpha['body'].startswith('Does **alpha**'))
+        self.assertFalse(data['entries'][1]['code_title'])
 
     def test_console_without_color_keeps_markers(self):
         output, _stdout, _stderr = _make_output(color=False)
