@@ -26,7 +26,6 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
-import os
 from typing import ClassVar
 
 from PyQt6 import QtCore
@@ -111,11 +110,6 @@ class ScriptingOptionsPage(OptionsPage):
         'enable_tagger_scripts': {'widgets': ['enable_tagger_scripts']},
         'list_of_scripts': {'widgets': ['script_list']},
     }
-    default_script_directory = os.path.normpath(
-        QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
-    )
-    default_script_extension = "ptsp"
-
     # Debounce interval for script validation in the options page.
     # Validation should wait for a brief pause in typing, but still feel timely.
     _SCRIPT_VALIDATION_DEBOUNCE_MS = 350
