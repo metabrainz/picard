@@ -38,6 +38,8 @@ from picard.ui.widgets.refselector import RefSelectorWidget
 
 
 WARNING_KEY = 'plugin_install_warning'
+# Shared with other plugin warnings, so that they use the same translation
+PLUGIN_TRUST_WARNING = N_("Plugins run with full access to your system. Only install plugins from sources you trust.")
 register_message_box(WARNING_KEY, N_("Plugin Installation Warning"))
 
 
@@ -80,9 +82,7 @@ class InstallConfirmDialog(PicardDialog):
             warning_content.addWidget(icon_label)
 
             text_layout = QtWidgets.QVBoxLayout()
-            general_warning = QtWidgets.QLabel(
-                _("Plugins run with full access to your system. Only install plugins from sources you trust.")
-            )
+            general_warning = QtWidgets.QLabel(_(PLUGIN_TRUST_WARNING))
             general_warning.setWordWrap(True)
             font = general_warning.font()
             font.setPointSizeF(font.pointSizeF() * 1.1)

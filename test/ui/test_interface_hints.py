@@ -50,6 +50,7 @@ def test_lists_registered_messages_tutorial_and_wizard(page):
         'plugin_install_warning',
         'tutorial',
         'setup_wizard',
+        'plugin_page_notes',
     }
 
 
