@@ -160,16 +160,16 @@ def func_upper(parser, text):
 
 
 @script_function(
-    signature=N_("$pad(text,length,char)"),
+    signature=N_("$pad(text,length,character)"),
     documentation=N_(
-        "Pads the `text` to the `length` provided by adding as many copies of `char` as"
+        "Pads the `text` to the `length` provided by adding as many copies of `character` as"
         " needed to the **beginning** of the string. `length` is limited to 1000 characters."
     ),
 )
-def func_pad(parser, text, length, char):
+def func_pad(parser, text, length, character):
     try:
         length = min(int(length), PAD_MAX_LENGTH)
-        return char * (length - len(text)) + text
+        return character * (length - len(text)) + text
     except ValueError:
         return ''
 
@@ -511,15 +511,16 @@ def func_copymerge(parser, new, old, keep_duplicates=False):
 
 
 @script_function(
-    signature=N_("$trim(text[,char])"),
+    signature=N_("$trim(text[,characters])"),
     documentation=N_(
         """Trims all leading and trailing whitespaces from `text`.
-The optional second parameter `char` specifies the character to trim."""
+The optional second parameter `characters` specifies the characters to trim instead of whitespaces:
+each of them is removed from both ends of `text`, whatever their order in `characters`."""
     ),
 )
-def func_trim(parser, text, char=None):
-    if char:
-        return text.strip(char)
+def func_trim(parser, text, characters=None):
+    if characters:
+        return text.strip(characters)
     else:
         return text.strip()
 
