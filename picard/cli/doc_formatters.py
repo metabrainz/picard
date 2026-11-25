@@ -84,12 +84,20 @@ MAX_WIDTH = 100
 _EMPHASIS_LINE_RE = re.compile(r'^_(?P<text>[^_].*[^_]|[^_])_$')
 
 
+def _entry_markdown(entry: DocEntry) -> str:
+    """Return the body of an entry, followed by its origin if it is not Picard itself."""
+    if not entry.origin:
+        return entry.body
+    # Written as the "Since" lines of the documentation, so rendered the same way
+    return f'{entry.body}\n\n_{entry.origin}_'.lstrip('\n')
+
+
 def render_markdown(topic: DocTopic, entries: Sequence[DocEntry], output: CliOutput) -> str:
     """Render entries as a Markdown document."""
     parts = [f'# {topic.title}']
     for entry in entries:
         title = f'`{entry.title}`' if entry.code_title else entry.title
-        parts.append(f'## {title}\n\n{entry.body}'.rstrip())
+        parts.append(f'## {title}\n\n{_entry_markdown(entry)}'.rstrip())
     return '\n\n'.join(parts) + '\n'
 
 
@@ -99,7 +107,14 @@ def render_json(topic: DocTopic, entries: Sequence[DocEntry], output: CliOutput)
         'topic': topic.name,
         'title': topic.title,
         'entries': [
-            {'name': entry.name, 'title': entry.title, 'body': entry.body, 'code_title': entry.code_title}
+            {
+                'name': entry.name,
+                'title': entry.title,
+                'body': entry.body,
+                'code_title': entry.code_title,
+                'origin': entry.origin,
+                'plugin_id': entry.plugin_id,
+            }
             for entry in entries
         ],
     }
@@ -190,7 +205,7 @@ def render_console(topic: DocTopic, entries: Sequence[DocEntry], output: CliOutp
     parts = []
     for entry in entries:
         title = output.d_command(entry.title) if entry.code_title else output.d_name(entry.title)
-        parts.append(f'{title}\n\n{_render_body(entry.body, output, width)}'.rstrip())
+        parts.append(f'{title}\n\n{_render_body(_entry_markdown(entry), output, width)}'.rstrip())
     return '\n\n'.join(parts) + '\n'
 
 

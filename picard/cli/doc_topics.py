@@ -33,6 +33,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from picard.extension_points.script_functions import ext_point_script_functions
+from picard.i18n import gettext as _
 from picard.script import script_function_names
 from picard.tags.docs import (
     display_tag_full_description_markdown,
@@ -49,12 +50,41 @@ class DocEntry:
         title: Plain-text title, e.g. a function signature.
         body: Documentation text, in Markdown.
         code_title: True if the title is code and should be rendered as such.
+        origin: Where the entry comes from, as shown to the user (for example
+            "Plugin: my_plugin"), or an empty string for Picard itself.
+        plugin_id: Identifier of the plugin providing the entry, if any.
     """
 
     name: str
     title: str
     body: str
     code_title: bool = False
+    origin: str = ''
+    plugin_id: str | None = None
+
+
+# Module of the script functions provided by Picard itself
+CORE_FUNCTIONS_MODULE = 'picard.script.functions'
+
+
+def plugin_origin(plugin_id: str) -> str:
+    """Return the origin label of an entry provided by a plugin."""
+    # Same string as the script editor, so that it is already translated.
+    # Only the plugin id is known here, the plugin manager is not available.
+    return _("Plugin: {plugin_name}").format(plugin_name=plugin_id)
+
+
+def function_origin(function) -> str:
+    """Return the origin label of a script function, empty for Picard's own functions.
+
+    Mirrors the script editor: functions of another module than the core one
+    are labeled with the plugin if there is one, with the module otherwise.
+    """
+    if function.module is None or function.module == CORE_FUNCTIONS_MODULE:
+        return ''
+    if function.plugin_id:
+        return plugin_origin(function.plugin_id)
+    return function.module
 
 
 class DocNotFoundError(Exception):
@@ -124,6 +154,8 @@ class ScriptFunctionsTopic(DocTopic):
                 title=functions[name].markdown_title().strip('`') or f'${name}()',
                 body=functions[name].markdown_body().strip(),
                 code_title=True,
+                origin=function_origin(functions[name]),
+                plugin_id=functions[name].plugin_id,
             )
             for name in script_function_names(functions)
         ]
@@ -150,6 +182,8 @@ class ScriptVariablesTopic(DocTopic):
                 title=f'%{var.script_name()}%',
                 body=display_tag_full_description_markdown(var),
                 code_title=True,
+                origin=plugin_origin(var.plugin_id) if var.plugin_id else '',
+                plugin_id=var.plugin_id,
             )
             for var in documented_script_variables()
         ]

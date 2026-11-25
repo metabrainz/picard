@@ -84,14 +84,14 @@ def _make_output(color=False):
     return CliOutput(stdout=stdout, stderr=stderr, color=color), stdout, stderr
 
 
-def _function_item(name, signature, documentation):
+def _function_item(name, signature, documentation, module='picard.script.functions'):
     return FunctionRegistryItem(
         lambda parser: '',
         True,
         None,
         documentation=documentation,
         name=name,
-        module='test',
+        module=module,
         signature=signature,
     )
 
@@ -128,6 +128,8 @@ class ScriptFunctionsTopicTest(PicardTestCase):
             ('zed', _function_item('zed', '$zed(x)', 'Last one.')),
             ('alpha', _function_item('alpha', '$alpha()', '  First one.  \n')),
             ('nodoc', _function_item('nodoc', '$nodoc()', None)),
+            ('fromplugin', _function_item('fromplugin', '$fromplugin()', 'Plugin.', 'picard.plugins.my_plugin')),
+            ('frommodule', _function_item('frommodule', '$frommodule()', 'Module.', 'some.module')),
         ]
         patcher = patch('picard.cli.doc_topics.ext_point_script_functions', items)
         patcher.start()
@@ -136,12 +138,23 @@ class ScriptFunctionsTopicTest(PicardTestCase):
 
     def test_entries_are_sorted_with_title_and_body(self):
         entries = self.topic.entries()
-        self.assertEqual(['alpha', 'nodoc', 'zed'], [entry.name for entry in entries])
+        self.assertEqual(['alpha', 'frommodule', 'fromplugin', 'nodoc', 'zed'], [entry.name for entry in entries])
         alpha = entries[0]
         self.assertEqual('$alpha()', alpha.title)
         self.assertEqual('First one.', alpha.body)
         self.assertTrue(alpha.code_title)
-        self.assertEqual('', entries[1].body)
+        self.assertEqual('nodoc', entries[3].name)
+        self.assertEqual('', entries[3].body)
+
+    def test_origin(self):
+        entries = {entry.name: entry for entry in self.topic.entries()}
+        # Picard's own functions have no origin
+        self.assertEqual(('', None), (entries['alpha'].origin, entries['alpha'].plugin_id))
+        self.assertEqual(
+            ('Plugin: my_plugin', 'my_plugin'), (entries['fromplugin'].origin, entries['fromplugin'].plugin_id)
+        )
+        # Same as the script editor: the module is shown if there is no plugin
+        self.assertEqual(('some.module', None), (entries['frommodule'].origin, entries['frommodule'].plugin_id))
 
     def test_select_accepts_leading_dollar(self):
         entries = self.topic.select(['$zed', 'alpha'])
@@ -157,17 +170,25 @@ class ScriptVariablesTopicTest(PicardTestCase):
         super().setUp()
         hidden = TagVar(name='hidden_var', longdesc='A hidden one.', is_hidden=True, is_multi_value=True)
         visible = TagVar(name='visible_var', longdesc='A **visible** one.')
-        patcher = patch('picard.cli.doc_topics.documented_script_variables', return_value=[hidden, visible])
+        self.plugin_var = TagVar(name='plugin_var', longdesc='From a plugin.', plugin_id='my_plugin')
+        patcher = patch(
+            'picard.cli.doc_topics.documented_script_variables', return_value=[hidden, visible, self.plugin_var]
+        )
         patcher.start()
         self.addCleanup(patcher.stop)
         self.topic = ScriptVariablesTopic()
 
     def test_entries(self):
-        hidden, visible = self.topic.entries()
+        hidden, visible, _plugin = self.topic.entries()
         self.assertEqual(
             DocEntry('_hidden_var', '%_hidden_var%', 'A hidden one.\n\n**Notes:** multi-value variable.', True), hidden
         )
         self.assertEqual(DocEntry('visible_var', '%visible_var%', 'A **visible** one.', True), visible)
+
+    def test_origin(self):
+        _hidden, visible, plugin = self.topic.entries()
+        self.assertEqual(('', None), (visible.origin, visible.plugin_id))
+        self.assertEqual(('Plugin: my_plugin', 'my_plugin'), (plugin.origin, plugin.plugin_id))
 
     def test_select_accepts_percent_signs(self):
         entries = self.topic.select(['%visible_var%', '_hidden_var'])
@@ -205,6 +226,42 @@ class DocFormattersTest(PicardTestCase):
         self.assertTrue(alpha['code_title'])
         self.assertTrue(alpha['body'].startswith('Does **alpha**'))
         self.assertFalse(data['entries'][1]['code_title'])
+
+    def test_origin(self):
+        output, _stdout, _stderr = _make_output()
+        entries = [
+            DocEntry('gamma', '$gamma()', 'From a plugin.', True, 'Plugin: my_plugin', 'my_plugin'),
+            DocEntry('delta', '$delta()', '', True, 'Plugin: my_plugin', 'my_plugin'),
+        ]
+        markdown_text = render_markdown(self.topic, entries, output)
+        self.assertIn('## `$gamma()`\n\nFrom a plugin.\n\n_Plugin: my_plugin_\n', markdown_text)
+        # no empty paragraph before the origin if there is no documentation
+        self.assertIn('## `$delta()`\n\n_Plugin: my_plugin_\n', markdown_text)
+        console_text = render_console(self.topic, entries, output, width=80)
+        self.assertIn('$gamma()\n\nFrom a plugin.\n\n_Plugin: my_plugin_', console_text)
+        data = json.loads(render_json(self.topic, entries, output))
+        # the body is left untouched in JSON, the origin is a separate field
+        self.assertEqual('From a plugin.', data['entries'][0]['body'])
+        self.assertEqual(
+            ('Plugin: my_plugin', 'my_plugin'), (data['entries'][0]['origin'], data['entries'][0]['plugin_id'])
+        )
+
+    def test_origin_is_dimmed_in_console(self):
+        output, _stdout, _stderr = _make_output(color=True)
+        entries = [DocEntry('gamma', '$gamma()', 'From a plugin.', True, 'Plugin: my_plugin', 'my_plugin')]
+        text = render_console(self.topic, entries, output, width=80)
+        self.assertIn(output.dim('Plugin: my_plugin'), text)
+
+    @unittest.skipUnless(markdown, "markdown module missing")
+    def test_origin_in_html(self):
+        output, _stdout, _stderr = _make_output()
+        entries = [DocEntry('gamma', '$gamma()', 'From a plugin.', True, 'Plugin: my_plugin', 'my_plugin')]
+        self.assertIn('<em>Plugin: my_plugin</em>', render_html(self.topic, entries, output))
+
+    def test_json_without_origin(self):
+        output, _stdout, _stderr = _make_output()
+        data = json.loads(render_json(self.topic, self.entries, output))
+        self.assertEqual(('', None), (data['entries'][0]['origin'], data['entries'][0]['plugin_id']))
 
     def test_console_without_color_keeps_markers(self):
         output, _stdout, _stderr = _make_output(color=False)
