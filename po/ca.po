@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-11-12 08:03+0100\n"
-"PO-Revision-Date: 2026-11-10 18:13+0000\n"
+"PO-Revision-Date: 2026-11-25 08:13+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.11.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:227
@@ -807,7 +807,7 @@ msgstr "Ordre d'execució dels connectors"
 
 #: picard/options.py:486 picard/ui/forms/ui_options_metadata.py:203
 msgid "Prefer sort names in Latin script"
-msgstr ""
+msgstr "Prefereix els noms d'ordenació en alfabet llatí"
 
 #: picard/options.py:487
 msgid "Preferred release countries"
@@ -1244,7 +1244,7 @@ msgstr "Inhabilitat per un paràmetre de la línia d'ordres"
 
 #: picard/tagger.py:711
 msgid "No free port to receive the authorization from the browser"
-msgstr ""
+msgstr "No hi ha cap port lliure per a rebre l'autorització del navegador"
 
 #: picard/tagger.py:764 picard/ui/mainwindow/__init__.py:1638
 #: picard/ui/mainwindow/__init__.py:1664
