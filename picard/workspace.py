@@ -59,6 +59,7 @@ from dataclasses import (
     field,
 )
 from functools import partial
+from operator import methodcaller
 import os
 from typing import (
     TYPE_CHECKING,
@@ -812,24 +813,41 @@ class Workspace:
 
         ``objects`` may be any mix of files, tracks, albums and clusters (any
         object exposing ``iterfiles``); each contained file is saved. The files
-        whose save was started are returned, so a caller can follow them; the
-        writes themselves finish later, on the save thread pool. The per-file
-        threading and the batch coalescing of shared cover-art parents live in
+        to save are returned, so a caller can follow them. Their saves are
+        started in time-budgeted batches (see thread.process_in_batches) that
+        yield to the event loop, so a large selection neither freezes the UI
+        nor starves the save thread until every file is queued; the writes
+        finish later, on the save thread pool. The per-file threading and the
+        batch coalescing of shared cover-art parents live in
         :class:`~picard.file.File` and the begin_save/end_save bookkeeping, so
         this is a thin, UI-agnostic driver usable from the GUI and headless.
         """
-        # TODO: make a long save interruptible. This loop runs on the main thread
-        # without yielding to the event loop and a queued write cannot be
-        # cancelled. Dispatch in time-budgeted batches (see thread.process_in_batches)
-        # under a cancellable operation, check the cancel flag between batches and
-        # before a queued write starts, and keep begin_save/end_save and the
-        # pending state balanced for the files that are not saved. The returned list
-        # already holds only the files whose save was started, not those selected.
-        saved: list[File] = []
-        for file in iter_files_from_objects(objects, save=True):
-            file.save()
-            saved.append(file)
-        return saved
+        # TODO: make a long save interruptible: check a cancel flag between
+        # batches and before a queued write starts, keeping begin_save/end_save
+        # and the pending state balanced for the files that are not saved.
+        files = list(iter_files_from_objects(objects, save=True))
+        if not files:
+            return []
+        # Keep the save batch open while files are still being dispatched, or
+        # the end-of-batch refresh would run whenever the save thread catches up.
+        self.begin_save()
+        thread.process_in_batches(
+            list(files),
+            methodcaller('save'),
+            "Saving",
+            on_complete=partial(self._save_dispatched, files[-1]),
+        )
+        return files
+
+    def _save_dispatched(self, last_file: File) -> None:
+        """Close the dispatch hold on the save batch opened by :meth:`save`.
+
+        If every save already finished, no ``File._saving_finished`` is left to
+        run the end-of-batch refresh, so do it here.
+        """
+        if self.end_save():
+            self.flush_saving_image_parents()
+            last_file.update_item()
 
     @property
     def use_acoustid(self) -> bool:
