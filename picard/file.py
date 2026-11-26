@@ -493,11 +493,17 @@ class File(MetadataItem):
         # selection/metadata-box refresh to once per batch (see PICARD
         # batch-save memory profiling).
         workspace().begin_save()
-        thread.run_task(
-            partial(self._save_and_rename, self.filename, metadata),
-            self._saving_finished,
-            thread_pool=self.tagger.save_thread_pool,
-        )
+        try:
+            thread.run_task(
+                partial(self._save_and_rename, self.filename, metadata),
+                self._saving_finished,
+                thread_pool=self.tagger.save_thread_pool,
+            )
+        except Exception:
+            # No task was queued, so _saving_finished will never balance the
+            # begin_save() above.
+            workspace().end_save()
+            raise
 
     def _preserve_times(self, filename, func):
         """Save filename times before calling func, and set them again"""

@@ -172,6 +172,21 @@ class ThreadTest(PicardTestCase):
                 thread._next_batch([1, 2], fail, "test", 0.05, None)
             self.assertEqual(0, thread.pending_batches())
 
+    def test_process_in_batches_drops_an_item_that_raised(self):
+        processed = []
+
+        def work(item):
+            if item == 2:
+                raise RuntimeError('boom')
+            processed.append(item)
+
+        items = [1, 2, 3]
+        with self.assertRaises(RuntimeError):
+            thread.process_in_batches(items, work, "test")
+        # The failing item is gone, the rest is left for the caller.
+        self.assertEqual(processed, [1])
+        self.assertEqual(items, [3])
+
     def test_process_in_batches_processes_all_items(self):
         processed = []
         on_complete = Mock()

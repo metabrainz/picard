@@ -961,6 +961,15 @@ class FileBatchSaveCoalesceTest(PicardTestCase):
         f.update_item.assert_called_once_with(update_selection=True)
         self.assertEqual(0, workspace()._saving_files_count)
 
+    def test_save_that_cannot_queue_its_task_leaves_the_count_balanced(self):
+        f = self._make_file('a.mp3')
+        self.tagger.save_thread_pool = MagicMock()
+        with patch('picard.file.thread.run_task', side_effect=RuntimeError('no pool')):
+            with self.assertRaises(RuntimeError):
+                f.save()
+        # begin_save() was undone: no task will ever call _saving_finished.
+        self.assertEqual(0, workspace()._saving_files_count)
+
     def _make_image_changing_file(self, path):
         """A file whose embedded image changes on save (so _saving_finished
         detects images_changed)."""

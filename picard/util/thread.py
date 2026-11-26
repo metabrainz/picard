@@ -225,9 +225,17 @@ def process_in_batches(
         raise ValueError(f"time_budget must be positive, got {time_budget!r}")
     deadline = time.perf_counter() + time_budget
     count = 0
-    while items and time.perf_counter() < deadline:
-        process_func(items.pop(0))
-        count += 1
+    try:
+        while count < len(items) and time.perf_counter() < deadline:
+            # Counted before the call, so an item whose process_func raises is
+            # still removed, as when it was popped first.
+            count += 1
+            process_func(items[count - 1])
+    finally:
+        # Remove the processed items in one go. Popping each one from the front
+        # of the list moves all the remaining items every time, which is
+        # quadratic for a large list.
+        del items[:count]
     log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
     if items:
         global _pending_batches
