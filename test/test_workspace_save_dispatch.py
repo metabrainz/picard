@@ -197,6 +197,19 @@ class WorkspaceSaveDispatchTest(PicardTestCase):
         self.assertEqual(1, self._selection_refresh_count(files))
         self.mock_flush.assert_called_once_with()
 
+    def test_error_starting_one_save_does_not_block_the_batch_end(self):
+        files = self._make_files(10)
+        broken = files[4]
+        broken.save = MagicMock(side_effect=RuntimeError('plugin error'))
+        self.wks.save(files)
+        self._wait_for_dispatch()
+        self.assertEqual(9, len(self.queued))
+        self._finish_all()
+        # Not left open: a later save can still end its batch.
+        self.assertEqual(0, self.wks._saving_files_count)
+        self.assertEqual(1, self._selection_refresh_count(files))
+        self.assertEqual(File.State.NORMAL, broken.state)
+
     def test_pending_batches_covers_the_whole_dispatch(self):
         # Headless run_until_idle relies on this to not stop half way.
         files = self._make_files(10)

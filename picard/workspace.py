@@ -59,7 +59,6 @@ from dataclasses import (
     field,
 )
 from functools import partial
-from operator import methodcaller
 import os
 from typing import (
     TYPE_CHECKING,
@@ -831,13 +830,32 @@ class Workspace:
         # Keep the save batch open while files are still being dispatched, or
         # the end-of-batch refresh would run whenever the save thread catches up.
         self.begin_save()
+        # process_in_batches drains the list it is given, so pass a copy.
         thread.process_in_batches(
             list(files),
-            methodcaller('save'),
+            self._start_save,
             "Saving",
             on_complete=partial(self._save_dispatched, files[-1]),
         )
         return files
+
+    def _start_save(self, file: File) -> None:
+        """Start the save of one file selected by :meth:`save`.
+
+        An error while starting a save is logged and affects only this file, so
+        the remaining files are still dispatched and the dispatch hold taken by
+        :meth:`save` is always released.
+        """
+        try:
+            file.save()
+        except Exception:
+            log.error("Could not start saving %r", file.filename, exc_info=True)
+            try:
+                file.clear_pending()
+            except Exception:
+                # Must not escape: this runs from the event loop, and an error
+                # here would end the dispatch and keep the save batch open.
+                log.error("Could not reset the state of %r", file.filename, exc_info=True)
 
     def _save_dispatched(self, last_file: File) -> None:
         """Close the dispatch hold on the save batch opened by :meth:`save`.

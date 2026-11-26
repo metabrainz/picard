@@ -42,6 +42,15 @@ from picard.workspace import (
 )
 
 
+def run_batches(items, process_func, label, **kwargs):
+    """Stand-in for thread.process_in_batches that runs everything at once."""
+    for item in list(items):
+        process_func(item)
+    on_complete = kwargs.get('on_complete')
+    if on_complete:
+        on_complete()
+
+
 class WorkspaceAutotagTest(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -612,6 +621,19 @@ class WorkspaceSaveTest(PicardTestCase):
         mock_flush.assert_not_called()
         file.update_item.assert_not_called()
 
+    def test_an_error_while_resetting_a_failed_file_does_not_escape(self):
+        wks = Workspace()
+        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        file1.save.side_effect = RuntimeError('plugin error')
+        file1.clear_pending.side_effect = RuntimeError('ui error')
+        with (
+            patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))),
+            patch('picard.workspace.thread.process_in_batches', side_effect=run_batches),
+        ):
+            wks.save([object()])
+        file2.save.assert_called_once_with()
+        self.assertEqual(wks._saving_files_count, 0)
+
     def test_nothing_to_save(self):
         with patch('picard.workspace.iter_files_from_objects', return_value=iter(())):
             self.assertEqual(Workspace().save([]), [])
@@ -713,14 +735,9 @@ class WorkspaceLoadFilesTest(PicardTestCase):
         self.addCleanup(patcher.stop)
         self.wks = Workspace()
 
-    @staticmethod
-    def _run_batches(items, process_func, label, **kwargs):
-        for item in list(items):
-            process_func(item)
-
     def test_loads_each_file_and_counts_them_as_pending(self):
         files = [MagicMock(name=f'file{i}') for i in range(3)]
-        with patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches):
+        with patch('picard.workspace.thread.process_in_batches', side_effect=run_batches):
             self.wks.load_files(files)
         self.assertEqual(self.wks.pending_files_count, 3)
         self.mock_view_updates.return_value.suspend_while_loading_enter.assert_called_once_with()
@@ -730,7 +747,7 @@ class WorkspaceLoadFilesTest(PicardTestCase):
     def test_loaded_files_are_handled_with_the_target(self):
         file, target = MagicMock(), object()
         with (
-            patch('picard.workspace.thread.process_in_batches', side_effect=self._run_batches),
+            patch('picard.workspace.thread.process_in_batches', side_effect=run_batches),
             patch.object(Workspace, 'file_load_finished') as mock_loaded,
         ):
             self.wks.load_files([file], target=target)
