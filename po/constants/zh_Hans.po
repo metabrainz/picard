@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-19 18:04+0200\n"
+"POT-Creation-Date: 2026-11-26 15:16+0100\n"
 "PO-Revision-Date: 2026-10-08 09:02+0000\n"
 "Last-Translator: scientists360 "
 "<scientists360@users.noreply.translations.metabrainz.org>\n"
@@ -27,15 +27,15 @@ msgstr ""
 "X-Generator: Weblate 2026.10\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: picard/const/__init__.py:182
+#: picard/const/__init__.py:192
 msgid "Stable releases only"
 msgstr "仅限稳定版"
 
-#: picard/const/__init__.py:189
+#: picard/const/__init__.py:199
 msgid "Stable and Beta releases"
 msgstr "稳定版与测试版"
 
-#: picard/const/__init__.py:196
+#: picard/const/__init__.py:206
 msgid "Stable, Beta and Dev releases"
 msgstr "稳定版、测试版以及开发版"
 
@@ -52,8 +52,9 @@ msgid ""
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
 "<p></p>调整源图片的大小，使其符合目标尺寸。<p></p><p>如果源图片和目标尺寸的宽"
-"高比不同，则最终图片的其中一维可能小于目标尺寸。</p><p>例如，将一张 2000×"
-"1000 的图片调整为 1000×1000 的目标尺寸后，最终图片尺寸将为 1000×500。</p>"
+"高比不同，则最终图片的其中一维可能小于目标尺寸。</p><p>例如，将一张 "
+"2000×1000 的图片调整为 1000×1000 的目标尺寸后，最终图片尺寸将为 1000×500。</"
+"p>"
 
 #: picard/const/cover_processing.py:66
 msgid "Scale to width"
@@ -65,8 +66,8 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
-"<p>在保持宽高比的同时，将源图片的宽度调整为目标宽度。</p><p>例如，将一张 2000"
-"×1000 的图片调整为目标宽度 1000，最终图片尺寸将为 1000×500。</p>"
+"<p>在保持宽高比的同时，将源图片的宽度调整为目标宽度。</p><p>例如，将一张 "
+"2000×1000 的图片调整为目标宽度 1000，最终图片尺寸将为 1000×500。</p>"
 
 #: picard/const/cover_processing.py:78
 msgid "Scale to height"
@@ -78,8 +79,8 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
-"<p>在保持宽高比的同时，将源图片的高度调整为目标高度。</p><p>例如，将一张 1000"
-"×2000 的图片调整为目标高度 1000，最终图片尺寸将为 500×1000。</p>"
+"<p>在保持宽高比的同时，将源图片的高度调整为目标高度。</p><p>例如，将一张 "
+"1000×2000 的图片调整为目标高度 1000，最终图片尺寸将为 500×1000。</p>"
 
 #: picard/const/cover_processing.py:90
 msgid "Crop to fit"
@@ -4294,8 +4295,8 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
-"该曲目的声学指纹。该指纹基于文件中的音频信息，并通过 Chromaprint 软件计算得出"
-"。"
+"该曲目的声学指纹。该指纹基于文件中的音频信息，并通过 Chromaprint 软件计算得"
+"出。"
 
 #: picard/const/tags.py:58
 msgid "AcoustID"
@@ -4336,16 +4337,16 @@ msgid ""
 "\"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
-"该发行作品中主要列出的艺术家。这些艺术家名称可能是“标准化”的，也可能是“按原名"
-"”显示的，具体取决于“使用标准化艺术家名称”元数据选项是否已启用。"
+"该发行作品中主要列出的艺术家。这些艺术家名称可能是“标准化”的，也可能是“按原"
+"名”显示的，具体取决于“使用标准化艺术家名称”元数据选项是否已启用。"
 
 #: picard/const/tags.py:96
 msgid ""
 "This hidden variable is retained for backward compatibility with existing "
 "scripts. It is never written to files; use the \"albumartists\" tag instead."
 msgstr ""
-"保留此隐藏变量是为了与现有脚本保持向后兼容性。该变量绝不会写入文件；请改用“"
-"albumartists”标签。"
+"保留此隐藏变量是为了与现有脚本保持向后兼容性。该变量绝不会写入文件；请改"
+"用“albumartists”标签。"
 
 #: picard/const/tags.py:106
 msgid "Album Artists Countries"
@@ -4359,8 +4360,8 @@ msgid ""
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
 "所有被列为专辑艺术家的国家代码，按艺术家名称的顺序排列。如果来自同一国家的艺"
-"术家不止一位，则会显示重复的国家代码。如果网络服务未提供国家代码，则使用代码“"
-"XX”表示未知国家。"
+"术家不止一位，则会显示重复的国家代码。如果网络服务未提供国家代码，则使用代"
+"码“XX”表示未知国家。"
 
 #: picard/const/tags.py:114 picard/const/tags.py:203
 msgid ""
@@ -4461,8 +4462,8 @@ msgid ""
 "credited\" depending on whether the \"Use standardized artist names\" "
 "metadata option is enabled."
 msgstr ""
-"曲目艺术家名称。这些名称可能是“标准化”的，也可能是“按署名显示”的，具体取决于“"
-"使用标准化艺术家名称”元数据选项是否已启用。"
+"曲目艺术家名称。这些名称可能是“标准化”的，也可能是“按署名显示”的，具体取决于"
+"“使用标准化艺术家名称”元数据选项是否已启用。"
 
 #: picard/const/tags.py:195
 msgid "Artists Countries"
@@ -4596,7 +4597,8 @@ msgstr "注释"
 msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
-msgstr "为区分不同版本而添加的消歧注释（例如：包含 2 首 bonus tracks 的豪华版）。"
+msgstr ""
+"为区分不同版本而添加的消歧注释（例如：包含 2 首 bonus tracks 的豪华版）。"
 
 #: picard/const/tags.py:319
 msgid "Compilation (iTunes)"
@@ -4657,7 +4659,7 @@ msgstr "如果该轨道是“数据音轨”，则设为 1；否则留空。"
 msgid "Date"
 msgstr "日期"
 
-#: picard/const/tags.py:364 picard/const/tags.py:991
+#: picard/const/tags.py:364 picard/const/tags.py:1015
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
 msgstr "该专辑的发行日期，格式为 `YYYY-MM-DD`。"
@@ -5245,8 +5247,8 @@ msgid ""
 "Use `$inmulti()` to check for a specific type (e.g.: "
 "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 msgstr ""
-"使用 `$inmulti()` 来检查特定类型（例如：`$if($inmulti"
-"(%_performance_attributes%,medley), (Medley),)`）。"
+"使用 `$inmulti()` 来检查特定类型（例如："
+"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`）。"
 
 #: picard/const/tags.py:842
 msgid "Performer"
@@ -5279,157 +5281,206 @@ msgid "Indicates whether or not the recording is a podcast."
 msgstr "表示该录音是否为播客。"
 
 #: picard/const/tags.py:861
-msgid "Podcast URL"
-msgstr "播客 URL"
+#, fuzzy
+#| msgid "Broadcast Date"
+msgid "Podcast Category"
+msgstr "播出日期"
 
 #: picard/const/tags.py:862
-msgid "The associated URL if the recording is a podcast."
+#, fuzzy
+#| msgid "The associated URL if the recording is a podcast."
+msgid "The category of the podcast, if the recording is a podcast."
 msgstr "如果该录音是播客，则为相应的网址。"
 
 #: picard/const/tags.py:867
+msgid "Podcast Description"
+msgstr ""
+
+#: picard/const/tags.py:868
+#, fuzzy
+#| msgid "The associated URL if the recording is a podcast."
+msgid "The description of the podcast episode, if the recording is a podcast."
+msgstr "如果该录音是播客，则为相应的网址。"
+
+#: picard/const/tags.py:873
+#, fuzzy
+#| msgid "Podcast"
+msgid "Podcast ID"
+msgstr "播客"
+
+#: picard/const/tags.py:874
+#, fuzzy
+#| msgid "The associated URL if the recording is a podcast."
+msgid ""
+"The unique identifier (GUID) of the podcast episode, if the recording is a "
+"podcast."
+msgstr "如果该录音是播客，则为相应的网址。"
+
+#: picard/const/tags.py:879
+#, fuzzy
+#| msgid "Podcast"
+msgid "Podcast Keywords"
+msgstr "播客"
+
+#: picard/const/tags.py:880
+#, fuzzy
+#| msgid "The associated URL if the recording is a podcast."
+msgid ""
+"The keywords associated with the podcast, if the recording is a podcast."
+msgstr "如果该录音是播客，则为相应的网址。"
+
+#: picard/const/tags.py:885
+msgid "Podcast URL"
+msgstr "播客 URL"
+
+#: picard/const/tags.py:886
+msgid "The associated URL if the recording is a podcast."
+msgstr "如果该录音是播客，则为相应的网址。"
+
+#: picard/const/tags.py:891
 msgid "Pregap Track"
 msgstr "Pregap 音轨"
 
-#: picard/const/tags.py:868
+#: picard/const/tags.py:892
 msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
 msgstr "如果该曲目是“预留间隙音轨”，则设为 1；否则留空。"
 
-#: picard/const/tags.py:874
+#: picard/const/tags.py:898
 msgid "Primary Release Type"
 msgstr "主要发行类型"
 
-#: picard/const/tags.py:875
+#: picard/const/tags.py:899
 msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr "发行组的主要类型（即：*专辑*、*单曲*、*EP*、*广播*或*其他*）。"
 
-#: picard/const/tags.py:879 picard/const/tags.py:1104 picard/const/tags.py:1193
+#: picard/const/tags.py:903 picard/const/tags.py:1128 picard/const/tags.py:1217
 msgid "Release group types"
 msgstr "发行组类型"
 
-#: picard/const/tags.py:883
+#: picard/const/tags.py:907
 msgid "Producer"
 msgstr "制作人"
 
-#: picard/const/tags.py:884
+#: picard/const/tags.py:908
 msgid "The names of the producers for the associated release or recording."
 msgstr "相关发行或录音作品的制作人姓名。"
 
-#: picard/const/tags.py:890
+#: picard/const/tags.py:914
 msgid "R128 Album Gain"
 msgstr "R128 专辑增益"
 
-#: picard/const/tags.py:891
+#: picard/const/tags.py:915
 msgid ""
 "Album gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr "专辑增益值由欧洲广播联盟“R 128”分析确定。"
 
-#: picard/const/tags.py:897
+#: picard/const/tags.py:921
 msgid "R128 Track Gain"
 msgstr "R128 曲目增益"
 
-#: picard/const/tags.py:898
+#: picard/const/tags.py:922
 msgid ""
 "Track gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr "根据欧洲广播联盟“R 128”分析确定的曲目增益。"
 
-#: picard/const/tags.py:904
+#: picard/const/tags.py:928
 msgid "Rating"
 msgstr "拉丁语"
 
-#: picard/const/tags.py:905
+#: picard/const/tags.py:929
 msgid "The rating of the track from 0-5 by MusicBrainz users."
 msgstr "MusicBrainz 用户对这首歌曲的评分（0-5 分）。"
 
-#: picard/const/tags.py:910
+#: picard/const/tags.py:934
 msgid "Recording First Released"
 msgstr "录音首次发行"
 
-#: picard/const/tags.py:911
+#: picard/const/tags.py:935
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
 msgstr "以 `YYYY-MM-DD` 格式记录的某首曲目的最早录制日期。"
 
-#: picard/const/tags.py:917
+#: picard/const/tags.py:941
 msgid "Recording Series"
 msgstr "录音系列"
 
-#: picard/const/tags.py:918
+#: picard/const/tags.py:942
 msgid "The series titles associated with the recording."
 msgstr "与该录音相关的系列名称。"
 
-#: picard/const/tags.py:924
+#: picard/const/tags.py:948
 msgid "Recording Series Comment"
 msgstr "录音系列评论"
 
-#: picard/const/tags.py:925
+#: picard/const/tags.py:949
 msgid "The series disambiguation comments associated with the recording."
 msgstr "与该录音相关的系列消歧注释。"
 
-#: picard/const/tags.py:931
+#: picard/const/tags.py:955
 msgid "Recording Series MBID"
 msgstr "录音系列 MBID"
 
-#: picard/const/tags.py:932
+#: picard/const/tags.py:956
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
 msgstr "与该录音相关的 MusicBrainz 标识符（MBID）系列。"
 
-#: picard/const/tags.py:938
+#: picard/const/tags.py:962
 msgid "Recording Series Number"
 msgstr "记录序列号"
 
-#: picard/const/tags.py:939
+#: picard/const/tags.py:963
 msgid "The series numbers associated with the recording."
 msgstr "与该录音相关的序列号。"
 
-#: picard/const/tags.py:945
+#: picard/const/tags.py:969
 msgid "Recording Comment"
 msgstr "录音备注"
 
-#: picard/const/tags.py:946
+#: picard/const/tags.py:970
 msgid "The disambiguation comment for the recording associated with a track."
 msgstr "与曲目相关的录音的消歧注释。"
 
-#: picard/const/tags.py:952
+#: picard/const/tags.py:976
 msgid "Recording Title"
 msgstr "录音标题"
 
-#: picard/const/tags.py:953
+#: picard/const/tags.py:977
 msgid ""
 "Recording title - normally the same as the track title, but can be different."
 msgstr "录音标题——通常与曲目标题相同，但也有可能不同。"
 
-#: picard/const/tags.py:959
+#: picard/const/tags.py:983
 msgid "Release Annotation"
 msgstr "发行说明"
 
-#: picard/const/tags.py:960
+#: picard/const/tags.py:984
 msgid "The annotation comment for the release."
 msgstr "该版本的注释说明。"
 
-#: picard/const/tags.py:966
+#: picard/const/tags.py:990
 msgid "Release Comment"
 msgstr "发行说明"
 
-#: picard/const/tags.py:967
+#: picard/const/tags.py:991
 msgid "The disambiguation comment for the release."
 msgstr "该版本的消歧注释。"
 
-#: picard/const/tags.py:973
+#: picard/const/tags.py:997
 msgid "Release Countries"
 msgstr "发行国家"
 
-#: picard/const/tags.py:974
+#: picard/const/tags.py:998
 msgid "The complete list of release countries for the release."
 msgstr "该发行版的发行国家完整列表。"
 
-#: picard/const/tags.py:981
+#: picard/const/tags.py:1005
 msgid "Release Country"
 msgstr "发行国或地区"
 
-#: picard/const/tags.py:983
+#: picard/const/tags.py:1007
 msgid ""
 "The two-character code for the country in which the release was issued. If "
 "more than one release country was specified, this tag will contain the first "
@@ -5438,11 +5489,11 @@ msgstr ""
 "发行所在国家的两位字符代码。如果指定了多个发行国家，则该标签将包含列表中的第"
 "一个国家。"
 
-#: picard/const/tags.py:990
+#: picard/const/tags.py:1014
 msgid "Release Date"
 msgstr "发行日期"
 
-#: picard/const/tags.py:993
+#: picard/const/tags.py:1017
 #, python-format
 msgid ""
 "This tag exists for specific use in scripts and plugins, but is not filled "
@@ -5452,21 +5503,21 @@ msgstr ""
 "此标签专用于脚本和插件，但默认情况下不会被填充。在大多数情况下，建议改用 "
 "`%date%` 标签，以确保与现有软件的兼容性。"
 
-#: picard/const/tags.py:1001
+#: picard/const/tags.py:1025
 msgid "Release Group"
 msgstr "发行组"
 
-#: picard/const/tags.py:1003
+#: picard/const/tags.py:1027
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr "发行组的名称。这通常与专辑名称相同，但也可能不同。"
 
-#: picard/const/tags.py:1010
+#: picard/const/tags.py:1034
 msgid "RG First Released"
 msgstr "RG 首次发行"
 
-#: picard/const/tags.py:1012
+#: picard/const/tags.py:1036
 msgid ""
 "The date of the earliest release in the release group in the format `YYYY-MM-"
 "DD`. This is intended to provide, for example, the release date of the vinyl "
@@ -5475,228 +5526,228 @@ msgstr ""
 "该发行组中最早一个发行的日期，格式为 `YYYY-MM-DD`。此信息旨在提供（例如）您手"
 "中 CD 版本的黑胶唱片版本的发行日期。"
 
-#: picard/const/tags.py:1021
+#: picard/const/tags.py:1045
 msgid "RG Series"
 msgstr "RG 系列"
 
-#: picard/const/tags.py:1022
+#: picard/const/tags.py:1046
 msgid "The series titles associated with the release group."
 msgstr "与该发行组相关的系列名称。"
 
-#: picard/const/tags.py:1028
+#: picard/const/tags.py:1052
 msgid "RG Series Comment"
 msgstr "RG 系列评论"
 
-#: picard/const/tags.py:1029
+#: picard/const/tags.py:1053
 msgid "The series disambiguation comments associated with the release group."
 msgstr "与该发行组相关的系列消歧注释。"
 
-#: picard/const/tags.py:1035
+#: picard/const/tags.py:1059
 msgid "RG Series MBID"
 msgstr "RG 系列 MBID"
 
-#: picard/const/tags.py:1036
+#: picard/const/tags.py:1060
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the release group."
 msgstr "与该发行组相关的 MusicBrainz 标识符（MBID）系列。"
 
-#: picard/const/tags.py:1042
+#: picard/const/tags.py:1066
 msgid "RG Series Number"
 msgstr "RG 系列编号"
 
-#: picard/const/tags.py:1043
+#: picard/const/tags.py:1067
 msgid "The series numbers associated with the release group."
 msgstr "与该发行组相关的序列号。"
 
-#: picard/const/tags.py:1049
+#: picard/const/tags.py:1073
 msgid "RG Comment"
 msgstr "RG 评论"
 
-#: picard/const/tags.py:1050
+#: picard/const/tags.py:1074
 msgid "The disambiguation comment for the release group."
 msgstr "该发行组的消歧注释。"
 
-#: picard/const/tags.py:1056
+#: picard/const/tags.py:1080
 msgid "Release Language"
 msgstr "发行语言"
 
-#: picard/const/tags.py:1057
+#: picard/const/tags.py:1081
 msgid "The language of the release as per ISO 639-3."
 msgstr "根据 ISO 639-3 标准，该版本的语言为。"
 
-#: picard/const/tags.py:1063
+#: picard/const/tags.py:1087
 msgid "Release Series"
 msgstr "发行系列"
 
-#: picard/const/tags.py:1064
+#: picard/const/tags.py:1088
 msgid "The series titles associated with the release."
 msgstr "与该发行相关的系列名称。"
 
-#: picard/const/tags.py:1070
+#: picard/const/tags.py:1094
 msgid "Release Series Comment"
 msgstr "发行系列评论"
 
-#: picard/const/tags.py:1071
+#: picard/const/tags.py:1095
 msgid "The series disambiguation comments associated with the release."
 msgstr "与该版本相关的系列消歧注释。"
 
-#: picard/const/tags.py:1077
+#: picard/const/tags.py:1101
 msgid "Release Series MBID"
 msgstr "发行系列 MBID"
 
-#: picard/const/tags.py:1078
+#: picard/const/tags.py:1102
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
 msgstr "与该发行版相关的 MusicBrainz 标识符（MBID）系列。"
 
-#: picard/const/tags.py:1084
+#: picard/const/tags.py:1108
 msgid "Release Series Number"
 msgstr "发行系列编号"
 
-#: picard/const/tags.py:1085
+#: picard/const/tags.py:1109
 msgid "The series numbers associated with the release."
 msgstr "与该版本相关的序列号。"
 
-#: picard/const/tags.py:1091
+#: picard/const/tags.py:1115
 msgid "Release Status"
 msgstr "专辑状态"
 
-#: picard/const/tags.py:1093
+#: picard/const/tags.py:1117
 msgid ""
 "An indicator of the \"official\" status of the release. Possible values "
 "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
 "release*\"."
 msgstr ""
-"该字段用于标识该发行版的“官方”状态。可能的值包括“*official*”、“*promotional*”"
-"、“*bootleg*”和“*pseudo-release*”。"
+"该字段用于标识该发行版的“官方”状态。可能的值包"
+"括“*official*”、“*promotional*”、“*bootleg*”和“*pseudo-release*”。"
 
-#: picard/const/tags.py:1100
+#: picard/const/tags.py:1124
 msgid "Release Type"
 msgstr "专辑类型"
 
-#: picard/const/tags.py:1101
+#: picard/const/tags.py:1125
 msgid "The types of release assigned to the release group."
 msgstr "分配给该发行组的发行类型。"
 
-#: picard/const/tags.py:1109
+#: picard/const/tags.py:1133
 msgid "Remixer"
 msgstr "混音"
 
-#: picard/const/tags.py:1110
+#: picard/const/tags.py:1134
 msgid "The names of the remixer engineers associated with the track."
 msgstr "与该曲目相关的混音工程师姓名。"
 
-#: picard/const/tags.py:1116
+#: picard/const/tags.py:1140
 msgid "ReplayGain Album Gain"
 msgstr "回放增益专辑增益"
 
-#: picard/const/tags.py:1117
+#: picard/const/tags.py:1141
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
 msgstr "通过对专辑进行 ReplayGain 分析后得出的专辑增益设置。"
 
-#: picard/const/tags.py:1123
+#: picard/const/tags.py:1147
 msgid "ReplayGain Album Peak"
 msgstr "回放增益专辑峰值"
 
-#: picard/const/tags.py:1124
+#: picard/const/tags.py:1148
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
 msgstr "通过对专辑进行 ReplayGain 分析后得出的专辑峰值设置。"
 
-#: picard/const/tags.py:1130
+#: picard/const/tags.py:1154
 msgid "ReplayGain Album Range"
 msgstr "回放增益专辑范围"
 
-#: picard/const/tags.py:1131
+#: picard/const/tags.py:1155
 msgid "Album range setting resulting from ReplayGain analysis of the album."
 msgstr "基于对该专辑进行 ReplayGain 分析后得出的专辑范围设置。"
 
-#: picard/const/tags.py:1137
+#: picard/const/tags.py:1161
 msgid "ReplayGain Reference Loudness"
 msgstr "回放增益参考响度"
 
-#: picard/const/tags.py:1138
+#: picard/const/tags.py:1162
 msgid ""
 "Album reference loudness setting resulting from ReplayGain analysis of the "
 "album."
 msgstr "基于对该专辑进行 ReplayGain 分析后得出的专辑参考响度设置。"
 
-#: picard/const/tags.py:1144
+#: picard/const/tags.py:1168
 msgid "ReplayGain Track Gain"
 msgstr "回放增益曲目增益"
 
-#: picard/const/tags.py:1145
+#: picard/const/tags.py:1169
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
 msgstr "根据对该曲目的 ReplayGain 分析结果设置的曲目增益。"
 
-#: picard/const/tags.py:1151
+#: picard/const/tags.py:1175
 msgid "ReplayGain Track Peak"
 msgstr "回放增益曲目峰值"
 
-#: picard/const/tags.py:1152
+#: picard/const/tags.py:1176
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
 msgstr "该曲目经 ReplayGain 分析后得出的峰值设置。"
 
-#: picard/const/tags.py:1158
+#: picard/const/tags.py:1182
 msgid "ReplayGain Track Range"
 msgstr "回放增益曲目范围"
 
-#: picard/const/tags.py:1159
+#: picard/const/tags.py:1183
 msgid "Track range setting resulting from ReplayGain analysis of the track."
 msgstr "根据对该曲目的 ReplayGain 分析结果设置的曲目范围。"
 
-#: picard/const/tags.py:1165
+#: picard/const/tags.py:1189
 msgid "Sample Rate"
 msgstr "采样率"
 
-#: picard/const/tags.py:1166
+#: picard/const/tags.py:1190
 msgid "The sample rate of the audio file."
 msgstr "音频文件的采样率。"
 
-#: picard/const/tags.py:1175
+#: picard/const/tags.py:1199
 msgid "Script"
 msgstr "我的脚本"
 
-#: picard/const/tags.py:1177
+#: picard/const/tags.py:1201
 msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr "用于生成该发行版曲目列表的脚本。可能的取值来自 ISO 15924 标准。"
 
-#: picard/const/tags.py:1184
+#: picard/const/tags.py:1208
 msgid "Secondary Release Type"
 msgstr "次级发行类型"
 
-#: picard/const/tags.py:1186
+#: picard/const/tags.py:1210
 msgid ""
 "Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, "
 "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
 "*spokenword*) for the release group."
 msgstr ""
-"该发行组可包含零个或多个次要类型（即：*有声书*、*合辑*、*DJ 混音*、*访"
-"谈*、*现场*、*混音带/街头*、*混音*、*原声带* 或 *口语诗*）。"
+"该发行组可包含零个或多个次要类型（即：*有声书*、*合辑*、*DJ 混音*、*访谈*、*"
+"现场*、*混音带/街头*、*混音*、*原声带* 或 *口语诗*）。"
 
-#: picard/const/tags.py:1197
+#: picard/const/tags.py:1221
 msgid "Silence"
 msgstr "静音"
 
-#: picard/const/tags.py:1198
+#: picard/const/tags.py:1222
 msgid "1 if the track title is \"[silence]\""
 msgstr "如果曲目名称为“[静默]”，则为 1"
 
-#: picard/const/tags.py:1204
+#: picard/const/tags.py:1228
 msgid "Show Name"
 msgstr "节目名"
 
-#: picard/const/tags.py:1205
+#: picard/const/tags.py:1229
 msgid ""
 "The name of the show if the recording is associated with a television "
 "program."
 msgstr "如果该录音与某电视节目相关，则为该节目的名称。"
 
-#: picard/const/tags.py:1210
+#: picard/const/tags.py:1234
 msgid "Show Work & Movement"
 msgstr "显示作品 & 乐章"
 
-#: picard/const/tags.py:1212
+#: picard/const/tags.py:1236
 msgid ""
 "Show work and movement. If this tag is set to \"1\" players supporting this "
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
@@ -5705,7 +5756,7 @@ msgstr ""
 "显示作品及乐章。如果此标签设置为“1”，支持该标签的播放器（如 iTunes 和 "
 "MusicBee）将显示作品、乐章编号和乐章名称，而非曲目名称。"
 
-#: picard/const/tags.py:1216
+#: picard/const/tags.py:1240
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
@@ -5713,107 +5764,107 @@ msgstr ""
 "例如，无论标题标签的值是什么，该曲目都将显示为“C 小调第五交响曲，作品 67：第"
 "二乐章，行板，带活力（Andante con moto）”。"
 
-#: picard/const/tags.py:1223
+#: picard/const/tags.py:1247
 msgid "Show Name Sort Order"
 msgstr "节目名顺序"
 
-#: picard/const/tags.py:1224
+#: picard/const/tags.py:1248
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
 msgstr "如果录制内容与某电视节目相关，则为该节目的排序名称。"
 
-#: picard/const/tags.py:1229
+#: picard/const/tags.py:1253
 msgid "Subtitle"
 msgstr "副标题"
 
-#: picard/const/tags.py:1230
+#: picard/const/tags.py:1254
 msgid "This is used for information directly related to the contents title."
 msgstr "此处用于与内容标题直接相关的信息。"
 
-#: picard/const/tags.py:1235
+#: picard/const/tags.py:1259
 msgid "Synced Lyrics"
 msgstr "同步歌词"
 
-#: picard/const/tags.py:1236
+#: picard/const/tags.py:1260
 msgid "Synchronized lyrics for the track."
 msgstr "该曲目的同步歌词。"
 
-#: picard/const/tags.py:1241
+#: picard/const/tags.py:1265
 msgid "Title"
 msgstr "标题"
 
-#: picard/const/tags.py:1242
+#: picard/const/tags.py:1266
 msgid "The title of the track."
 msgstr "这首曲子的标题。"
 
-#: picard/const/tags.py:1247
+#: picard/const/tags.py:1271
 msgid "Title Sort Order"
 msgstr "标题排序顺序"
 
-#: picard/const/tags.py:1248
+#: picard/const/tags.py:1272
 msgid "The sort name of the track title."
 msgstr "曲目的排序名。"
 
-#: picard/const/tags.py:1253
+#: picard/const/tags.py:1277
 msgid "Total Album Tracks"
 msgstr "专辑总曲目数"
 
-#: picard/const/tags.py:1254
+#: picard/const/tags.py:1278
 msgid "The total number of tracks across all discs of this release."
 msgstr "本发行版所有光盘中的曲目总数。"
 
-#: picard/const/tags.py:1260
+#: picard/const/tags.py:1284
 msgid "Total Discs"
 msgstr "总碟数"
 
-#: picard/const/tags.py:1261
+#: picard/const/tags.py:1285
 msgid "The total number of discs in this release."
 msgstr "本发行版的光盘总数。"
 
-#: picard/const/tags.py:1265
+#: picard/const/tags.py:1289
 msgid "Total Tracks"
 msgstr "总曲目数"
 
-#: picard/const/tags.py:1266
+#: picard/const/tags.py:1290
 msgid "The total number of tracks on this disc."
 msgstr "本张光盘中的曲目总数。"
 
-#: picard/const/tags.py:1270
+#: picard/const/tags.py:1294
 msgid "Track Number"
 msgstr "曲目号"
 
-#: picard/const/tags.py:1271
+#: picard/const/tags.py:1295
 msgid "The number of the track on the disc."
 msgstr "光盘上的曲目编号。"
 
-#: picard/const/tags.py:1275
+#: picard/const/tags.py:1299
 msgid "Video"
 msgstr "视频"
 
-#: picard/const/tags.py:1276
+#: picard/const/tags.py:1300
 msgid "Set to \"1\" if the track is a video."
 msgstr "如果该曲目是视频，请将其设置为“1”。"
 
-#: picard/const/tags.py:1283
+#: picard/const/tags.py:1307
 msgid "Artist Website"
 msgstr "艺术家网站"
 
-#: picard/const/tags.py:1284
+#: picard/const/tags.py:1308
 msgid "The official website for the artist."
 msgstr "该艺术家的官方网站。"
 
-#: picard/const/tags.py:1289
+#: picard/const/tags.py:1313
 msgid "Work"
 msgstr "作品"
 
-#: picard/const/tags.py:1290
+#: picard/const/tags.py:1314
 msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr "与该曲目相关的作品名称（例如：“C 小调第五交响曲，作品 67 号”）。"
 
-#: picard/const/tags.py:1292
+#: picard/const/tags.py:1316
 msgid ""
 "Note: If you are using iTunes together with MP3 files you should activate "
 "the \"Save iTunes compatible grouping and work\" option in order for the "
@@ -5822,74 +5873,74 @@ msgstr ""
 "注意：如果您同时使用 iTunes 和 MP3 文件，应启用“保存 iTunes 兼容的分组和作品”"
 "选项，以便作品能正确显示。"
 
-#: picard/const/tags.py:1300
+#: picard/const/tags.py:1324
 msgid "Work Series"
 msgstr "作品系列"
 
-#: picard/const/tags.py:1301
+#: picard/const/tags.py:1325
 msgid "The series titles associated with the work."
 msgstr "与该作品相关的系列名称。"
 
-#: picard/const/tags.py:1307
+#: picard/const/tags.py:1331
 msgid "Work Series Comment"
 msgstr "作品系列备注"
 
-#: picard/const/tags.py:1308
+#: picard/const/tags.py:1332
 msgid "The series disambiguation comments associated with the work."
 msgstr "与该作品相关的系列消歧注释。"
 
-#: picard/const/tags.py:1314
+#: picard/const/tags.py:1338
 msgid "Work Series MBID"
 msgstr "作品系列 MBID"
 
-#: picard/const/tags.py:1315
+#: picard/const/tags.py:1339
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
 msgstr "与该作品相关的 MusicBrainz 标识符（MBID）系列。"
 
-#: picard/const/tags.py:1321
+#: picard/const/tags.py:1345
 msgid "Work Series Number"
 msgstr "作品系列编号"
 
-#: picard/const/tags.py:1322
+#: picard/const/tags.py:1346
 msgid "The series numbers associated with the work."
 msgstr "与该作品相关的序列号。"
 
-#: picard/const/tags.py:1328
+#: picard/const/tags.py:1352
 msgid "Work Comment"
 msgstr "作品备注"
 
-#: picard/const/tags.py:1329
+#: picard/const/tags.py:1353
 msgid "The disambiguation comment associated with the work."
 msgstr "与该作品相关的消歧注释。"
 
-#: picard/const/tags.py:1334
+#: picard/const/tags.py:1358
 msgid "Writer"
 msgstr "作者"
 
-#: picard/const/tags.py:1336
+#: picard/const/tags.py:1360
 msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr "与相关作品相关的作者的姓名。大多数文件格式不会自动写入此信息。"
 
-#: picard/const/tags.py:1339
+#: picard/const/tags.py:1363
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr "你可以使用类似 `$copymerge(composer,writer)` 的脚本将此与作曲家合并。"
 
-#: picard/const/tags.py:1345
+#: picard/const/tags.py:1369
 msgid "Writer Sort"
 msgstr "作者排序名"
 
-#: picard/const/tags.py:1346
+#: picard/const/tags.py:1370
 msgid "The sort names of the writers for the work."
 msgstr "该作品作者的排序名称。"
 
-#: picard/const/tags.py:1352
+#: picard/const/tags.py:1376
 msgid "Broadcast Date"
 msgstr "播出日期"
 
-#: picard/const/tags.py:1353
+#: picard/const/tags.py:1377
 msgid "The date the recording was broadcast."
 msgstr "该录音的播出日期。"

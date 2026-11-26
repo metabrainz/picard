@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-19 18:04+0200\n"
+"POT-Creation-Date: 2026-11-26 15:16+0100\n"
 "PO-Revision-Date: 2026-09-19 16:32+0000\n"
 "Last-Translator: Automatic translation add-on <noreply-addon-"
 "autotranslate@weblate.org>\n"
@@ -22,15 +22,15 @@ msgstr ""
 "X-Generator: Weblate 2026.9.1\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: picard/const/__init__.py:182
+#: picard/const/__init__.py:192
 msgid "Stable releases only"
 msgstr "Csak stabil kiadások"
 
-#: picard/const/__init__.py:189
+#: picard/const/__init__.py:199
 msgid "Stable and Beta releases"
 msgstr "Stabil és Béta kiadások"
 
-#: picard/const/__init__.py:196
+#: picard/const/__init__.py:206
 msgid "Stable, Beta and Dev releases"
 msgstr "Stabil, Béta és Fejlesztői kiadások"
 
@@ -4615,7 +4615,7 @@ msgstr ""
 msgid "Date"
 msgstr "Dátum"
 
-#: picard/const/tags.py:364 picard/const/tags.py:991
+#: picard/const/tags.py:364 picard/const/tags.py:1015
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
 msgstr ""
@@ -5207,170 +5207,205 @@ msgid "Indicates whether or not the recording is a podcast."
 msgstr ""
 
 #: picard/const/tags.py:861
-msgid "Podcast URL"
+msgid "Podcast Category"
 msgstr ""
 
 #: picard/const/tags.py:862
-msgid "The associated URL if the recording is a podcast."
+msgid "The category of the podcast, if the recording is a podcast."
 msgstr ""
 
 #: picard/const/tags.py:867
-msgid "Pregap Track"
+msgid "Podcast Description"
 msgstr ""
 
 #: picard/const/tags.py:868
-msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
+msgid "The description of the podcast episode, if the recording is a podcast."
+msgstr ""
+
+#: picard/const/tags.py:873
+msgid "Podcast ID"
 msgstr ""
 
 #: picard/const/tags.py:874
+msgid ""
+"The unique identifier (GUID) of the podcast episode, if the recording is a "
+"podcast."
+msgstr ""
+
+#: picard/const/tags.py:879
+msgid "Podcast Keywords"
+msgstr ""
+
+#: picard/const/tags.py:880
+msgid ""
+"The keywords associated with the podcast, if the recording is a podcast."
+msgstr ""
+
+#: picard/const/tags.py:885
+msgid "Podcast URL"
+msgstr ""
+
+#: picard/const/tags.py:886
+msgid "The associated URL if the recording is a podcast."
+msgstr ""
+
+#: picard/const/tags.py:891
+msgid "Pregap Track"
+msgstr ""
+
+#: picard/const/tags.py:892
+msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
+msgstr ""
+
+#: picard/const/tags.py:898
 msgid "Primary Release Type"
 msgstr ""
 
-#: picard/const/tags.py:875
+#: picard/const/tags.py:899
 msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr ""
 
-#: picard/const/tags.py:879 picard/const/tags.py:1104 picard/const/tags.py:1193
+#: picard/const/tags.py:903 picard/const/tags.py:1128 picard/const/tags.py:1217
 msgid "Release group types"
 msgstr ""
 
-#: picard/const/tags.py:883
+#: picard/const/tags.py:907
 msgid "Producer"
 msgstr "Producer"
 
-#: picard/const/tags.py:884
+#: picard/const/tags.py:908
 msgid "The names of the producers for the associated release or recording."
 msgstr ""
 
-#: picard/const/tags.py:890
+#: picard/const/tags.py:914
 msgid "R128 Album Gain"
 msgstr ""
 
-#: picard/const/tags.py:891
+#: picard/const/tags.py:915
 msgid ""
 "Album gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
 
-#: picard/const/tags.py:897
+#: picard/const/tags.py:921
 msgid "R128 Track Gain"
 msgstr ""
 
-#: picard/const/tags.py:898
+#: picard/const/tags.py:922
 msgid ""
 "Track gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
 
-#: picard/const/tags.py:904
+#: picard/const/tags.py:928
 #, fuzzy
 #| msgid "Latin"
 msgid "Rating"
 msgstr "Latin"
 
-#: picard/const/tags.py:905
+#: picard/const/tags.py:929
 msgid "The rating of the track from 0-5 by MusicBrainz users."
 msgstr ""
 
-#: picard/const/tags.py:910
+#: picard/const/tags.py:934
 msgid "Recording First Released"
 msgstr ""
 
-#: picard/const/tags.py:911
+#: picard/const/tags.py:935
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
 msgstr ""
 
-#: picard/const/tags.py:917
+#: picard/const/tags.py:941
 msgid "Recording Series"
 msgstr ""
 
-#: picard/const/tags.py:918
+#: picard/const/tags.py:942
 msgid "The series titles associated with the recording."
 msgstr ""
 
-#: picard/const/tags.py:924
+#: picard/const/tags.py:948
 msgid "Recording Series Comment"
 msgstr ""
 
-#: picard/const/tags.py:925
+#: picard/const/tags.py:949
 msgid "The series disambiguation comments associated with the recording."
 msgstr ""
 
-#: picard/const/tags.py:931
+#: picard/const/tags.py:955
 msgid "Recording Series MBID"
 msgstr ""
 
-#: picard/const/tags.py:932
+#: picard/const/tags.py:956
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
 msgstr ""
 
-#: picard/const/tags.py:938
+#: picard/const/tags.py:962
 msgid "Recording Series Number"
 msgstr ""
 
-#: picard/const/tags.py:939
+#: picard/const/tags.py:963
 msgid "The series numbers associated with the recording."
 msgstr ""
 
-#: picard/const/tags.py:945
+#: picard/const/tags.py:969
 msgid "Recording Comment"
 msgstr ""
 
-#: picard/const/tags.py:946
+#: picard/const/tags.py:970
 msgid "The disambiguation comment for the recording associated with a track."
 msgstr ""
 
-#: picard/const/tags.py:952
+#: picard/const/tags.py:976
 msgid "Recording Title"
 msgstr ""
 
-#: picard/const/tags.py:953
+#: picard/const/tags.py:977
 msgid ""
 "Recording title - normally the same as the track title, but can be different."
 msgstr ""
 
-#: picard/const/tags.py:959
+#: picard/const/tags.py:983
 msgid "Release Annotation"
 msgstr ""
 
-#: picard/const/tags.py:960
+#: picard/const/tags.py:984
 msgid "The annotation comment for the release."
 msgstr ""
 
-#: picard/const/tags.py:966
+#: picard/const/tags.py:990
 msgid "Release Comment"
 msgstr ""
 
-#: picard/const/tags.py:967
+#: picard/const/tags.py:991
 msgid "The disambiguation comment for the release."
 msgstr ""
 
-#: picard/const/tags.py:973
+#: picard/const/tags.py:997
 msgid "Release Countries"
 msgstr ""
 
-#: picard/const/tags.py:974
+#: picard/const/tags.py:998
 msgid "The complete list of release countries for the release."
 msgstr ""
 
-#: picard/const/tags.py:981
+#: picard/const/tags.py:1005
 msgid "Release Country"
 msgstr "Kiadási ország"
 
-#: picard/const/tags.py:983
+#: picard/const/tags.py:1007
 msgid ""
 "The two-character code for the country in which the release was issued. If "
 "more than one release country was specified, this tag will contain the first "
 "one in the list."
 msgstr ""
 
-#: picard/const/tags.py:990
+#: picard/const/tags.py:1014
 msgid "Release Date"
 msgstr ""
 
-#: picard/const/tags.py:993
+#: picard/const/tags.py:1017
 #, python-format
 msgid ""
 "This tag exists for specific use in scripts and plugins, but is not filled "
@@ -5378,432 +5413,432 @@ msgid ""
 "for compatibility with existing software."
 msgstr ""
 
-#: picard/const/tags.py:1001
+#: picard/const/tags.py:1025
 msgid "Release Group"
 msgstr ""
 
-#: picard/const/tags.py:1003
+#: picard/const/tags.py:1027
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr ""
 
-#: picard/const/tags.py:1010
+#: picard/const/tags.py:1034
 msgid "RG First Released"
 msgstr ""
 
-#: picard/const/tags.py:1012
+#: picard/const/tags.py:1036
 msgid ""
 "The date of the earliest release in the release group in the format `YYYY-MM-"
 "DD`. This is intended to provide, for example, the release date of the vinyl "
 "version of what you have on CD."
 msgstr ""
 
-#: picard/const/tags.py:1021
+#: picard/const/tags.py:1045
 msgid "RG Series"
 msgstr ""
 
-#: picard/const/tags.py:1022
+#: picard/const/tags.py:1046
 msgid "The series titles associated with the release group."
 msgstr ""
 
-#: picard/const/tags.py:1028
+#: picard/const/tags.py:1052
 msgid "RG Series Comment"
 msgstr ""
 
-#: picard/const/tags.py:1029
+#: picard/const/tags.py:1053
 msgid "The series disambiguation comments associated with the release group."
 msgstr ""
 
-#: picard/const/tags.py:1035
+#: picard/const/tags.py:1059
 msgid "RG Series MBID"
 msgstr ""
 
-#: picard/const/tags.py:1036
+#: picard/const/tags.py:1060
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the release group."
 msgstr ""
 
-#: picard/const/tags.py:1042
+#: picard/const/tags.py:1066
 msgid "RG Series Number"
 msgstr ""
 
-#: picard/const/tags.py:1043
+#: picard/const/tags.py:1067
 msgid "The series numbers associated with the release group."
 msgstr ""
 
-#: picard/const/tags.py:1049
+#: picard/const/tags.py:1073
 msgid "RG Comment"
 msgstr ""
 
-#: picard/const/tags.py:1050
+#: picard/const/tags.py:1074
 msgid "The disambiguation comment for the release group."
 msgstr ""
 
-#: picard/const/tags.py:1056
+#: picard/const/tags.py:1080
 msgid "Release Language"
 msgstr ""
 
-#: picard/const/tags.py:1057
+#: picard/const/tags.py:1081
 msgid "The language of the release as per ISO 639-3."
 msgstr ""
 
-#: picard/const/tags.py:1063
+#: picard/const/tags.py:1087
 msgid "Release Series"
 msgstr ""
 
-#: picard/const/tags.py:1064
+#: picard/const/tags.py:1088
 msgid "The series titles associated with the release."
 msgstr ""
 
-#: picard/const/tags.py:1070
+#: picard/const/tags.py:1094
 msgid "Release Series Comment"
 msgstr ""
 
-#: picard/const/tags.py:1071
+#: picard/const/tags.py:1095
 msgid "The series disambiguation comments associated with the release."
 msgstr ""
 
-#: picard/const/tags.py:1077
+#: picard/const/tags.py:1101
 msgid "Release Series MBID"
 msgstr ""
 
-#: picard/const/tags.py:1078
+#: picard/const/tags.py:1102
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
 msgstr ""
 
-#: picard/const/tags.py:1084
+#: picard/const/tags.py:1108
 msgid "Release Series Number"
 msgstr ""
 
-#: picard/const/tags.py:1085
+#: picard/const/tags.py:1109
 msgid "The series numbers associated with the release."
 msgstr ""
 
-#: picard/const/tags.py:1091
+#: picard/const/tags.py:1115
 msgid "Release Status"
 msgstr "Kiadás állapota"
 
-#: picard/const/tags.py:1093
+#: picard/const/tags.py:1117
 msgid ""
 "An indicator of the \"official\" status of the release. Possible values "
 "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
 "release*\"."
 msgstr ""
 
-#: picard/const/tags.py:1100
+#: picard/const/tags.py:1124
 msgid "Release Type"
 msgstr "Kiadás típusa"
 
-#: picard/const/tags.py:1101
+#: picard/const/tags.py:1125
 msgid "The types of release assigned to the release group."
 msgstr ""
 
-#: picard/const/tags.py:1109
+#: picard/const/tags.py:1133
 msgid "Remixer"
 msgstr "Remixer"
 
-#: picard/const/tags.py:1110
+#: picard/const/tags.py:1134
 msgid "The names of the remixer engineers associated with the track."
 msgstr ""
 
-#: picard/const/tags.py:1116
+#: picard/const/tags.py:1140
 msgid "ReplayGain Album Gain"
 msgstr ""
 
-#: picard/const/tags.py:1117
+#: picard/const/tags.py:1141
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
 msgstr ""
 
-#: picard/const/tags.py:1123
+#: picard/const/tags.py:1147
 msgid "ReplayGain Album Peak"
 msgstr ""
 
-#: picard/const/tags.py:1124
+#: picard/const/tags.py:1148
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
 msgstr ""
 
-#: picard/const/tags.py:1130
+#: picard/const/tags.py:1154
 msgid "ReplayGain Album Range"
 msgstr ""
 
-#: picard/const/tags.py:1131
+#: picard/const/tags.py:1155
 msgid "Album range setting resulting from ReplayGain analysis of the album."
 msgstr ""
 
-#: picard/const/tags.py:1137
+#: picard/const/tags.py:1161
 msgid "ReplayGain Reference Loudness"
 msgstr ""
 
-#: picard/const/tags.py:1138
+#: picard/const/tags.py:1162
 msgid ""
 "Album reference loudness setting resulting from ReplayGain analysis of the "
 "album."
 msgstr ""
 
-#: picard/const/tags.py:1144
+#: picard/const/tags.py:1168
 msgid "ReplayGain Track Gain"
 msgstr ""
 
-#: picard/const/tags.py:1145
+#: picard/const/tags.py:1169
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
 msgstr ""
 
-#: picard/const/tags.py:1151
+#: picard/const/tags.py:1175
 msgid "ReplayGain Track Peak"
 msgstr ""
 
-#: picard/const/tags.py:1152
+#: picard/const/tags.py:1176
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
 msgstr ""
 
-#: picard/const/tags.py:1158
+#: picard/const/tags.py:1182
 msgid "ReplayGain Track Range"
 msgstr ""
 
-#: picard/const/tags.py:1159
+#: picard/const/tags.py:1183
 msgid "Track range setting resulting from ReplayGain analysis of the track."
 msgstr ""
 
-#: picard/const/tags.py:1165
+#: picard/const/tags.py:1189
 msgid "Sample Rate"
 msgstr ""
 
-#: picard/const/tags.py:1166
+#: picard/const/tags.py:1190
 msgid "The sample rate of the audio file."
 msgstr ""
 
-#: picard/const/tags.py:1175
+#: picard/const/tags.py:1199
 msgid "Script"
 msgstr "Szkript"
 
-#: picard/const/tags.py:1177
+#: picard/const/tags.py:1201
 msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr ""
 
-#: picard/const/tags.py:1184
+#: picard/const/tags.py:1208
 msgid "Secondary Release Type"
 msgstr ""
 
-#: picard/const/tags.py:1186
+#: picard/const/tags.py:1210
 msgid ""
 "Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, "
 "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
 "*spokenword*) for the release group."
 msgstr ""
 
-#: picard/const/tags.py:1197
+#: picard/const/tags.py:1221
 msgid "Silence"
 msgstr ""
 
-#: picard/const/tags.py:1198
+#: picard/const/tags.py:1222
 msgid "1 if the track title is \"[silence]\""
 msgstr ""
 
-#: picard/const/tags.py:1204
+#: picard/const/tags.py:1228
 msgid "Show Name"
 msgstr ""
 
-#: picard/const/tags.py:1205
+#: picard/const/tags.py:1229
 msgid ""
 "The name of the show if the recording is associated with a television "
 "program."
 msgstr ""
 
-#: picard/const/tags.py:1210
+#: picard/const/tags.py:1234
 msgid "Show Work & Movement"
 msgstr ""
 
-#: picard/const/tags.py:1212
+#: picard/const/tags.py:1236
 msgid ""
 "Show work and movement. If this tag is set to \"1\" players supporting this "
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
 "movement name instead of the track title."
 msgstr ""
 
-#: picard/const/tags.py:1216
+#: picard/const/tags.py:1240
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
 msgstr ""
 
-#: picard/const/tags.py:1223
+#: picard/const/tags.py:1247
 msgid "Show Name Sort Order"
 msgstr ""
 
-#: picard/const/tags.py:1224
+#: picard/const/tags.py:1248
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
 msgstr ""
 
-#: picard/const/tags.py:1229
+#: picard/const/tags.py:1253
 msgid "Subtitle"
 msgstr "Felirat"
 
-#: picard/const/tags.py:1230
+#: picard/const/tags.py:1254
 msgid "This is used for information directly related to the contents title."
 msgstr ""
 
-#: picard/const/tags.py:1235
+#: picard/const/tags.py:1259
 msgid "Synced Lyrics"
 msgstr ""
 
-#: picard/const/tags.py:1236
+#: picard/const/tags.py:1260
 msgid "Synchronized lyrics for the track."
 msgstr ""
 
-#: picard/const/tags.py:1241
+#: picard/const/tags.py:1265
 msgid "Title"
 msgstr "Cím"
 
-#: picard/const/tags.py:1242
+#: picard/const/tags.py:1266
 msgid "The title of the track."
 msgstr ""
 
-#: picard/const/tags.py:1247
+#: picard/const/tags.py:1271
 msgid "Title Sort Order"
 msgstr "Rendezés cím szerint"
 
-#: picard/const/tags.py:1248
+#: picard/const/tags.py:1272
 msgid "The sort name of the track title."
 msgstr ""
 
-#: picard/const/tags.py:1253
+#: picard/const/tags.py:1277
 msgid "Total Album Tracks"
 msgstr ""
 
-#: picard/const/tags.py:1254
+#: picard/const/tags.py:1278
 msgid "The total number of tracks across all discs of this release."
 msgstr ""
 
-#: picard/const/tags.py:1260
+#: picard/const/tags.py:1284
 msgid "Total Discs"
 msgstr "Lemezes száma összesen"
 
-#: picard/const/tags.py:1261
+#: picard/const/tags.py:1285
 msgid "The total number of discs in this release."
 msgstr ""
 
-#: picard/const/tags.py:1265
+#: picard/const/tags.py:1289
 msgid "Total Tracks"
 msgstr "összes szám"
 
-#: picard/const/tags.py:1266
+#: picard/const/tags.py:1290
 msgid "The total number of tracks on this disc."
 msgstr ""
 
-#: picard/const/tags.py:1270
+#: picard/const/tags.py:1294
 msgid "Track Number"
 msgstr "Zeneszám sorszáma"
 
-#: picard/const/tags.py:1271
+#: picard/const/tags.py:1295
 msgid "The number of the track on the disc."
 msgstr ""
 
-#: picard/const/tags.py:1275
+#: picard/const/tags.py:1299
 msgid "Video"
 msgstr ""
 
-#: picard/const/tags.py:1276
+#: picard/const/tags.py:1300
 msgid "Set to \"1\" if the track is a video."
 msgstr ""
 
-#: picard/const/tags.py:1283
+#: picard/const/tags.py:1307
 msgid "Artist Website"
 msgstr ""
 
-#: picard/const/tags.py:1284
+#: picard/const/tags.py:1308
 msgid "The official website for the artist."
 msgstr ""
 
-#: picard/const/tags.py:1289
+#: picard/const/tags.py:1313
 msgid "Work"
 msgstr ""
 
-#: picard/const/tags.py:1290
+#: picard/const/tags.py:1314
 msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr ""
 
-#: picard/const/tags.py:1292
+#: picard/const/tags.py:1316
 msgid ""
 "Note: If you are using iTunes together with MP3 files you should activate "
 "the \"Save iTunes compatible grouping and work\" option in order for the "
 "work to be displayed correctly."
 msgstr ""
 
-#: picard/const/tags.py:1300
+#: picard/const/tags.py:1324
 msgid "Work Series"
 msgstr ""
 
-#: picard/const/tags.py:1301
+#: picard/const/tags.py:1325
 msgid "The series titles associated with the work."
 msgstr ""
 
-#: picard/const/tags.py:1307
+#: picard/const/tags.py:1331
 msgid "Work Series Comment"
 msgstr ""
 
-#: picard/const/tags.py:1308
+#: picard/const/tags.py:1332
 msgid "The series disambiguation comments associated with the work."
 msgstr ""
 
-#: picard/const/tags.py:1314
+#: picard/const/tags.py:1338
 msgid "Work Series MBID"
 msgstr ""
 
-#: picard/const/tags.py:1315
+#: picard/const/tags.py:1339
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
 msgstr ""
 
-#: picard/const/tags.py:1321
+#: picard/const/tags.py:1345
 msgid "Work Series Number"
 msgstr ""
 
-#: picard/const/tags.py:1322
+#: picard/const/tags.py:1346
 msgid "The series numbers associated with the work."
 msgstr ""
 
-#: picard/const/tags.py:1328
+#: picard/const/tags.py:1352
 msgid "Work Comment"
 msgstr ""
 
-#: picard/const/tags.py:1329
+#: picard/const/tags.py:1353
 msgid "The disambiguation comment associated with the work."
 msgstr ""
 
-#: picard/const/tags.py:1334
+#: picard/const/tags.py:1358
 msgid "Writer"
 msgstr ""
 
-#: picard/const/tags.py:1336
+#: picard/const/tags.py:1360
 msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr ""
 
-#: picard/const/tags.py:1339
+#: picard/const/tags.py:1363
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
 
-#: picard/const/tags.py:1345
+#: picard/const/tags.py:1369
 msgid "Writer Sort"
 msgstr ""
 
-#: picard/const/tags.py:1346
+#: picard/const/tags.py:1370
 msgid "The sort names of the writers for the work."
 msgstr ""
 
-#: picard/const/tags.py:1352
+#: picard/const/tags.py:1376
 msgid "Broadcast Date"
 msgstr ""
 
-#: picard/const/tags.py:1353
+#: picard/const/tags.py:1377
 msgid "The date the recording was broadcast."
 msgstr ""
