@@ -228,6 +228,10 @@ class FileIdentity:
             raise FileIdentityError(f"Failed to hash file {self._filepath}") from e
 
 
+# The folders each album's files were saved from (see File._move_additional_files_from_album_folder)
+_ALBUM_OLD_FOLDERS: 'weakref.WeakKeyDictionary' = weakref.WeakKeyDictionary()
+
+
 class File(MetadataItem):
     NAME: str | None = None
     # Logical tag format key and description for the family of this handler.
@@ -873,6 +877,78 @@ class File(MetadataItem):
                     self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
+                self._move_additional_files_from_album_folder(old_path, patterns, config)
+
+    def _move_additional_files_from_album_folder(self, old_path, patterns, config):
+        """Move additional files from the folder above the disc folders of a multi-disc album.
+
+        A multi-disc release is often stored as one sub-folder per disc, with the cover
+        scans, rip log or booklet in the album folder above them::
+
+            Album/
+                covers/
+                Album.log
+                CD1/01.flac
+                CD2/01.flac
+
+        Those additional files are not next to any audio file, so they are never moved.
+        Once the last audio file has left the album folder, the additional files matching
+        the patterns are moved from it to the album's new folder: the folder all its files
+        are saved to, or the folder holding their disc sub-folders.
+        """
+        if not patterns:
+            return
+        album = getattr(self.parent_item, 'album', None)
+        if album is None or self._total_discs() < 2:
+            return
+        # The folders this album's files were saved from: only when they are two or more
+        # sibling folders (one per disc) is the folder holding them the album's own folder.
+        # With all discs in one folder, the folder above is not the album's (an artist folder).
+        old_folders = _ALBUM_OLD_FOLDERS.setdefault(album, set())
+        old_folders.add(os.path.normpath(old_path))
+        album_folder = os.path.dirname(os.path.normpath(old_path))
+        if len(old_folders) < 2 or {os.path.dirname(f) for f in old_folders} != {album_folder}:
+            return
+        try:
+            if self._contains_audio_files(album_folder):
+                return  # Other discs or other albums still to be moved
+            new_album_folder = self._new_album_folder(album)
+            if not new_album_folder or os.path.normpath(new_album_folder) == os.path.normpath(album_folder):
+                return
+            if self._is_same_directory(album_folder, new_album_folder):
+                return
+            moves = self._get_additional_files_moves(album_folder, new_album_folder, patterns)
+            self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
+        except OSError as why:
+            log.error("Failed to move additional files from %r: %s", album_folder, why)
+
+    def _total_discs(self):
+        try:
+            return int(self.metadata['totaldiscs'] or 1)
+        except (TypeError, ValueError):
+            return 1
+
+    @staticmethod
+    def _contains_audio_files(path):
+        extensions = set(services().format_registry.supported_extensions())
+        for _root, _dirs, names in os.walk(path):
+            if any(os.path.splitext(name)[1].lower() in extensions for name in names):
+                return True
+        return False
+
+    @staticmethod
+    def _new_album_folder(album):
+        """The album's new folder: the one folder its files are saved to, or the folder
+        holding the disc folders they are saved to. None if they are spread otherwise."""
+        folders = set()
+        for file in album.iterfiles():
+            folders.add(os.path.normpath(os.path.dirname(file.make_filename(file.filename, file.metadata))))
+        if len(folders) == 1:
+            return folders.pop()
+        parents = {os.path.dirname(folder) for folder in folders}
+        if len(parents) == 1:
+            return parents.pop()
+        return None
 
     @staticmethod
     def _is_same_directory(path1, path2):
