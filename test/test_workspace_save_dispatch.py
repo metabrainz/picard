@@ -197,6 +197,29 @@ class WorkspaceSaveDispatchTest(PicardTestCase):
         self.assertEqual(1, self._selection_refresh_count(files))
         self.mock_flush.assert_called_once_with()
 
+    def test_file_removed_during_dispatch_is_not_saved(self):
+        files = self._make_files(10)
+        self.wks.save(files)
+        # Removed while waiting for the event loop, as the user could do.
+        removed = files[5]
+        removed.state = File.State.REMOVED
+        self._wait_for_dispatch()
+        self.assertEqual(9, len(self.queued))
+        self.assertNotIn(removed, [cb.__self__ for cb in self.queued])
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+        self.assertEqual(1, self._selection_refresh_count(files))
+
+    def test_last_file_removed_during_dispatch_does_not_break_the_batch_end(self):
+        files = self._make_files(4)
+        self.wks.save(files)
+        files[-1].state = File.State.REMOVED
+        self._wait_for_dispatch()
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+        self.mock_flush.assert_called_once_with()
+        self.assertEqual(0, len(files[-1].selection_refreshes()))
+
     def test_error_starting_one_save_does_not_block_the_batch_end(self):
         files = self._make_files(10)
         broken = files[4]

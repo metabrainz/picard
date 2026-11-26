@@ -842,10 +842,14 @@ class Workspace:
     def _start_save(self, file: File) -> None:
         """Start the save of one file selected by :meth:`save`.
 
-        An error while starting a save is logged and affects only this file, so
-        the remaining files are still dispatched and the dispatch hold taken by
-        :meth:`save` is always released.
+        The event loop runs between batches, so the situation may have changed
+        since the file was selected: a file removed in the meantime is not
+        written. An error while starting a save is logged and affects only
+        this file, so the remaining files are still dispatched and the dispatch
+        hold taken by :meth:`save` is always released.
         """
+        if file.state == file.State.REMOVED:
+            return
         try:
             file.save()
         except Exception:
@@ -865,7 +869,8 @@ class Workspace:
         """
         if self.end_save():
             self.flush_saving_image_parents()
-            last_file.update_item()
+            if last_file.state != last_file.State.REMOVED:
+                last_file.update_item()
 
     @property
     def use_acoustid(self) -> bool:
