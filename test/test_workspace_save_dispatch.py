@@ -81,6 +81,7 @@ class WorkspaceSaveDispatchTest(PicardTestCase):
         self.wks = workspace()
         self.wks._saving_files_count = 0
         self.wks._saving_dirty_image_parents.clear()
+        self.wks._files_awaiting_save.clear()
 
         # Writes queued by File.save(), finished by the test: callbacks.
         self.queued = []
@@ -242,6 +243,33 @@ class WorkspaceSaveDispatchTest(PicardTestCase):
         self._wait_for_dispatch()
         # A write started during exit could be cut short and corrupt the file.
         self.assertEqual(started, len(self.queued))
+        self.assertFalse(self.wks._files_awaiting_save)
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+
+    def test_second_save_during_dispatch_does_not_queue_waiting_files_twice(self):
+        files = self._make_files(10)
+        self.wks.save(files)
+        waiting = files[self.FILES_PER_BATCH :]
+        again = self.wks.save(files)
+        self.assertEqual(files[: self.FILES_PER_BATCH], again)
+        self._wait_for_dispatch()
+        queued = [cb.__self__ for cb in self.queued]
+        for file in waiting:
+            self.assertEqual(1, queued.count(file), file.filename)
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+
+    def test_files_can_be_saved_again_after_a_save_finished(self):
+        files = self._make_files(5)
+        self.wks.save(files)
+        self._wait_for_dispatch()
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+        self.assertFalse(self.wks._files_awaiting_save)
+        self.wks.save(files)
+        self._wait_for_dispatch()
+        self.assertEqual(5, len(self.queued))
         self._finish_all()
         self.assertEqual(0, self.wks._saving_files_count)
 

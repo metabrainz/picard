@@ -175,6 +175,10 @@ class Workspace:
         # aggregation was deferred during a batch save; each is refreshed once
         # when the batch completes (see File._saving_finished).
         self._saving_dirty_image_parents: set[Any] = set()
+        # Files selected for saving whose save has not been started yet (see
+        # save()). Prevents a second save over an overlapping selection from
+        # dispatching the same file twice.
+        self._files_awaiting_save: set[File] = set()
         # When True, we are restoring a session; skip auto-matching by MBIDs.
         self._restoring_session: bool = False
 
@@ -824,9 +828,11 @@ class Workspace:
         # TODO: make a long save interruptible: check a cancel flag between
         # batches and before a queued write starts, keeping begin_save/end_save
         # and the pending state balanced for the files that are not saved.
-        files = list(iter_files_from_objects(objects, save=True))
+        # Files already waiting for their turn from an earlier call are skipped.
+        files = [file for file in iter_files_from_objects(objects, save=True) if file not in self._files_awaiting_save]
         if not files:
             return []
+        self._files_awaiting_save.update(files)
         # Keep the save batch open while files are still being dispatched, or
         # the end-of-batch refresh would run whenever the save thread catches up.
         self.begin_save()
@@ -850,6 +856,7 @@ class Workspace:
         this file, so the remaining files are still dispatched and the dispatch
         hold taken by :meth:`save` is always released.
         """
+        self._files_awaiting_save.discard(file)
         if file.state == file.State.REMOVED or file.tagger.stopping:
             return
         try:
