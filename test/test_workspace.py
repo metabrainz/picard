@@ -554,8 +554,14 @@ class WorkspaceTrashFilesTest(PicardTestCase):
 
 
 class WorkspaceSaveTest(PicardTestCase):
+    @staticmethod
+    def _file(name):
+        file = MagicMock(name=name)
+        file.tagger.stopping = False
+        return file
+
     def test_saves_every_file_and_returns_them(self):
-        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        file1, file2 = self._file('file1'), self._file('file2')
         objects = [object()]
         with patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))) as mock_iter:
             saved = Workspace().save(objects)
@@ -567,7 +573,7 @@ class WorkspaceSaveTest(PicardTestCase):
     def test_saves_are_started_in_batches_yielding_to_the_event_loop(self):
         # Regression: starting 100K saves in one loop froze the UI and starved
         # the save thread until every file was queued.
-        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        file1, file2 = self._file('file1'), self._file('file2')
         with (
             patch('picard.workspace.iter_files_from_objects', return_value=iter((file1, file2))),
             patch('picard.workspace.thread.process_in_batches') as mock_batches,
@@ -584,7 +590,7 @@ class WorkspaceSaveTest(PicardTestCase):
     def test_save_batch_stays_open_until_every_save_is_started(self):
         wks = Workspace()
         counts = []
-        files = [MagicMock(name='file1'), MagicMock(name='file2')]
+        files = [self._file('file1'), self._file('file2')]
         for file in files:
             file.save.side_effect = lambda: counts.append(wks._saving_files_count)
         with (
@@ -607,7 +613,7 @@ class WorkspaceSaveTest(PicardTestCase):
 
     def test_end_of_batch_refresh_is_left_to_the_last_save_still_running(self):
         wks = Workspace()
-        file = MagicMock(name='file')
+        file = self._file('file')
         with (
             patch('picard.workspace.iter_files_from_objects', return_value=iter((file,))),
             patch('picard.workspace.thread.process_in_batches') as mock_batches,
@@ -623,7 +629,7 @@ class WorkspaceSaveTest(PicardTestCase):
 
     def test_an_error_while_resetting_a_failed_file_does_not_escape(self):
         wks = Workspace()
-        file1, file2 = MagicMock(name='file1'), MagicMock(name='file2')
+        file1, file2 = self._file('file1'), self._file('file2')
         file1.save.side_effect = RuntimeError('plugin error')
         file1.clear_pending.side_effect = RuntimeError('ui error')
         with (

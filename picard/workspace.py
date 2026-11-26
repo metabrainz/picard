@@ -844,11 +844,13 @@ class Workspace:
 
         The event loop runs between batches, so the situation may have changed
         since the file was selected: a file removed in the meantime is not
-        written. An error while starting a save is logged and affects only
+        written, and nothing is started once the application is stopping, as
+        a write interrupted by the end of the process could leave a corrupted
+        file behind. An error while starting a save is logged and affects only
         this file, so the remaining files are still dispatched and the dispatch
         hold taken by :meth:`save` is always released.
         """
-        if file.state == file.State.REMOVED:
+        if file.state == file.State.REMOVED or file.tagger.stopping:
             return
         try:
             file.save()

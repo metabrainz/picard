@@ -233,6 +233,18 @@ class WorkspaceSaveDispatchTest(PicardTestCase):
         self.assertEqual(1, self._selection_refresh_count(files))
         self.assertEqual(File.State.NORMAL, broken.state)
 
+    def test_no_write_is_started_once_the_application_is_stopping(self):
+        files = self._make_files(10)
+        self.wks.save(files)
+        started = len(self.queued)
+        self.tagger.stopping = True
+        self.addCleanup(setattr, self.tagger, 'stopping', False)
+        self._wait_for_dispatch()
+        # A write started during exit could be cut short and corrupt the file.
+        self.assertEqual(started, len(self.queued))
+        self._finish_all()
+        self.assertEqual(0, self.wks._saving_files_count)
+
     def test_pending_batches_covers_the_whole_dispatch(self):
         # Headless run_until_idle relies on this to not stop half way.
         files = self._make_files(10)
