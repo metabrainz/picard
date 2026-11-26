@@ -1400,20 +1400,21 @@ class MoveAdditionalFilesFromAlbumFolderTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.setup_test_format_registry()
-        self.root = self.mktmpdir()
+        self.root = self.mktmpdir()  # removed by addCleanup at the end of each test
         self.old_album = os.path.join(self.root, 'in', 'Album')
         self.new_album = os.path.join(self.root, 'out', 'Artist', 'Album')
-        self.config = Mock()
-        self.config.setting = {
+        self.settings = {
             'move_files': True,
             'move_additional_files': True,
             'move_additional_files_pattern': '*.jpg *.log covers',
             'move_overwrite_existing_files': False,
         }
+        self.set_config_values(setting=self.settings)
+        self.config = Mock(setting=self.settings)
         self.album = Mock()
         self.files = []
         self.tracks = []
-        self.album.iterfiles = lambda: iter(self.files)
+        self.album.iterfiles = lambda save=False: iter(self.files)
 
     def touch(self, *parts):
         path = os.path.join(*parts)
@@ -1432,11 +1433,20 @@ class MoveAdditionalFilesFromAlbumFolderTest(PicardTestCase):
         self.files.append(file)
         return file
 
-    def save(self, file, new_path):
-        """Move the audio file as File._rename would, then the additional files."""
-        os.makedirs(os.path.dirname(new_path), exist_ok=True)
-        os.rename(file.filename, new_path)
-        file._move_additional_files(file.filename, new_path, self.config)
+    def save_all(self, saves):
+        """As Workspace.save does: every file's save is started on the main thread (album
+        folders worked out from the album as it is), then the save tasks run one by one."""
+        self.run_tasks(self.start(saves))
+
+    def start(self, saves):
+        return [(file, new, file._album_folders()) for file, new in saves]
+
+    def run_tasks(self, started):
+        for file, new, album_folders in started:
+            os.makedirs(os.path.dirname(new), exist_ok=True)
+            os.rename(file.filename, new)  # as File._rename does
+            file._move_additional_files(file.filename, new, self.config, album_folders=album_folders)
+            file.filename = new  # as File._saving_finished does
 
     def disc_layout(self, new_disc_folders=True):
         self.touch(self.old_album, 'covers', 'front.jpg')
@@ -1450,49 +1460,64 @@ class MoveAdditionalFilesFromAlbumFolderTest(PicardTestCase):
         return saves
 
     def test_moved_after_the_last_disc_into_the_folder_holding_the_disc_folders(self):
-        saves = self.disc_layout()
-        file, new = saves[0]
-        self.save(file, new)
+        started = self.start(self.disc_layout())
+        self.run_tasks(started[:1])
         self.assertTrue(os.path.exists(os.path.join(self.old_album, 'Album.log')))  # CD2 still there
-        file, new = saves[1]
-        self.save(file, new)
+        self.run_tasks(started[1:])
         self.assertTrue(os.path.isfile(os.path.join(self.new_album, 'covers', 'front.jpg')))
         self.assertTrue(os.path.isfile(os.path.join(self.new_album, 'Album.log')))
         self.assertTrue(os.path.isfile(os.path.join(self.old_album, 'notes.txt')))  # not in the patterns
 
     def test_moved_into_the_one_folder_all_discs_are_saved_to(self):
-        for file, new in self.disc_layout(new_disc_folders=False):
-            self.save(file, new)
+        self.save_all(self.disc_layout(new_disc_folders=False))
         self.assertTrue(os.path.isfile(os.path.join(self.new_album, 'Album.log')))
         self.assertTrue(os.path.isfile(os.path.join(self.new_album, 'covers', 'front.jpg')))
+
+    def test_moved_again_when_the_album_is_saved_again(self):
+        saves = self.disc_layout()
+        self.save_all(saves)
+        self.assertTrue(os.path.isfile(os.path.join(self.new_album, 'Album.log')))
+        # saved a second time, elsewhere: nothing is remembered from the first save
+        again = os.path.join(self.root, 'again', 'Album')
+        for file, _new in saves:
+            disc = os.path.basename(os.path.dirname(file.filename))
+            file.make_filename = Mock(return_value=os.path.join(again, disc, os.path.basename(file.filename)))
+        self.save_all([(file, file.make_filename.return_value) for file, _new in saves])
+        self.assertTrue(os.path.isfile(os.path.join(again, 'Album.log')))
+        self.assertTrue(os.path.isfile(os.path.join(again, 'covers', 'front.jpg')))
 
     def test_not_for_a_single_disc_album(self):
         saves = self.disc_layout()
         for file, _new in saves:
             file.metadata['totaldiscs'] = '1'
-        for file, new in saves:
-            self.save(file, new)
+        self.save_all(saves)
         self.assertTrue(os.path.isfile(os.path.join(self.old_album, 'Album.log')))
 
     def test_not_from_a_folder_still_holding_audio(self):
         self.touch(self.old_album, 'Other Album', '01.mp3')
-        for file, new in self.disc_layout():
-            self.save(file, new)
+        self.save_all(self.disc_layout())
         self.assertTrue(os.path.isfile(os.path.join(self.old_album, 'Album.log')))
 
     def test_not_when_all_discs_were_in_one_folder(self):
         # the folder above is the artist's, not the album's
         artist = os.path.join(self.root, 'in', 'Artist')
         self.touch(artist, 'artist.jpg')
+        saves = []
         for n in (1, 2):
             old = self.touch(artist, 'Album', f'{n}-01.mp3')
             new = os.path.join(self.new_album, f'{n}-01.mp3')
-            self.save(self.make_file(old, new), new)
+            saves.append((self.make_file(old, new), new))
+        self.save_all(saves)
         self.assertTrue(os.path.isfile(os.path.join(artist, 'artist.jpg')))
         self.assertFalse(os.path.exists(os.path.join(self.new_album, 'artist.jpg')))
 
     def test_not_when_moving_is_off(self):
-        self.config.setting['move_additional_files'] = False
-        for file, new in self.disc_layout():
-            self.save(file, new)
+        self.settings['move_additional_files'] = False
+        self.set_config_values(setting=self.settings)
+        self.save_all(self.disc_layout())
         self.assertTrue(os.path.isfile(os.path.join(self.old_album, 'Album.log')))
+
+    def test_not_for_a_file_outside_the_album_tracks(self):
+        saves = self.disc_layout()
+        self.album.iterfiles = lambda save=False: iter(self.files[1:])  # the first is unmatched
+        self.assertIsNone(saves[0][0]._album_folders())

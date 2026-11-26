@@ -352,11 +352,11 @@ class WavPackFile(APEv2File):
         log.debug('Moving Wavepack correction file %r => %r', wvc_filename, wvc_new_filename)
         move_ensure_casing(wvc_filename, wvc_new_filename)
 
-    def _move_additional_files(self, old_filename, new_filename, config):
+    def _move_additional_files(self, old_filename, new_filename, config, album_folders=None):
         """Includes an additional check for WavPack correction files"""
         if config.setting['rename_files'] or config.setting['move_files']:
             self._move_or_rename_wvc(old_filename, new_filename)
-        return super()._move_additional_files(old_filename, new_filename, config)
+        return super()._move_additional_files(old_filename, new_filename, config, album_folders=album_folders)
 
 
 class OptimFROGFile(APEv2File):

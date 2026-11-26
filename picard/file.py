@@ -228,10 +228,6 @@ class FileIdentity:
             raise FileIdentityError(f"Failed to hash file {self._filepath}") from e
 
 
-# The folders each album's files were saved from (see File._move_additional_files_from_album_folder)
-_ALBUM_OLD_FOLDERS: 'weakref.WeakKeyDictionary' = weakref.WeakKeyDictionary()
-
-
 class File(MetadataItem):
     NAME: str | None = None
     # Logical tag format key and description for the family of this handler.
@@ -493,12 +489,15 @@ class File(MetadataItem):
             self._release_file_from_player(self.filename)
         metadata = Metadata()
         metadata.copy(self.metadata)
+        # Worked out here, on the main thread, from the album as it is now: the save task
+        # runs on a worker thread and must not walk the album.
+        album_folders = self._album_folders()
         # Track in-flight saves so _saving_finished can coalesce the expensive
         # selection/metadata-box refresh to once per batch (see PICARD
         # batch-save memory profiling).
         workspace().begin_save()
         thread.run_task(
-            partial(self._save_and_rename, self.filename, metadata),
+            partial(self._save_and_rename, self.filename, metadata, album_folders),
             self._saving_finished,
             thread_pool=self.tagger.save_thread_pool,
         )
@@ -561,8 +560,12 @@ class File(MetadataItem):
         if player:
             player.release_file(filename)
 
-    def _save_and_rename(self, old_filename, metadata):
-        """Save the metadata."""
+    def _save_and_rename(self, old_filename, metadata, album_folders=None):
+        """Save the metadata.
+
+        ``album_folders`` is the (old, new) album folder of a multi-disc album saved
+        from one sub-folder per disc (see :meth:`_album_folders`), or None.
+        """
         config = get_config()
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
@@ -597,7 +600,7 @@ class File(MetadataItem):
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
         # Move extra files (images, playlists, etc.)
-        self._move_additional_files(old_filename, new_filename, config)
+        self._move_additional_files(old_filename, new_filename, config, album_folders=album_folders)
         # Delete empty directories
         if config.setting['delete_empty_dirs']:
             dirname = os.path.dirname(old_filename)
@@ -864,8 +867,11 @@ class File(MetadataItem):
         for image in metadata.images.to_be_saved_to_files(previous_images=self.orig_metadata.images):
             image.save(dirname, metadata, counters)
 
-    def _move_additional_files(self, old_filename, new_filename, config):
-        """Move extra files, like images, playlists…"""
+    def _move_additional_files(self, old_filename, new_filename, config, album_folders=None):
+        """Move extra files, like images, playlists…
+
+        ``album_folders``: see :meth:`_move_additional_files_from_album_folder`.
+        """
         if config.setting['move_files'] and config.setting['move_additional_files']:
             new_path = os.path.dirname(new_filename)
             old_path = os.path.dirname(old_filename)
@@ -877,9 +883,9 @@ class File(MetadataItem):
                     self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
-                self._move_additional_files_from_album_folder(old_path, patterns, config)
+                self._move_additional_files_from_album_folder(album_folders, patterns, config)
 
-    def _move_additional_files_from_album_folder(self, old_path, patterns, config):
+    def _move_additional_files_from_album_folder(self, album_folders, patterns, config):
         """Move additional files from the folder above the disc folders of a multi-disc album.
 
         A multi-disc release is often stored as one sub-folder per disc, with the cover
@@ -893,34 +899,67 @@ class File(MetadataItem):
 
         Those additional files are not next to any audio file, so they are never moved.
         Once the last audio file has left the album folder, the additional files matching
-        the patterns are moved from it to the album's new folder: the folder all its files
-        are saved to, or the folder holding their disc sub-folders.
+        the patterns are moved from it to the album's new folder.
+
+        ``album_folders`` is the (old, new) album folder worked out by :meth:`_album_folders`
+        when the save started, or None. Every file of the album gets them; the move happens
+        for the one whose save leaves no audio file in the old album folder.
         """
-        if not patterns:
+        if not patterns or not album_folders:
             return
-        album = getattr(self.parent_item, 'album', None)
-        if album is None or self._total_discs() < 2:
-            return
-        # The folders this album's files were saved from: only when they are two or more
-        # sibling folders (one per disc) is the folder holding them the album's own folder.
-        # With all discs in one folder, the folder above is not the album's (an artist folder).
-        old_folders = _ALBUM_OLD_FOLDERS.setdefault(album, set())
-        old_folders.add(os.path.normpath(old_path))
-        album_folder = os.path.dirname(os.path.normpath(old_path))
-        if len(old_folders) < 2 or {os.path.dirname(f) for f in old_folders} != {album_folder}:
-            return
+        old_album_folder, new_album_folder = album_folders
         try:
-            if self._contains_audio_files(album_folder):
+            if self._is_same_directory(old_album_folder, new_album_folder):
+                return
+            if self._contains_audio_files(old_album_folder):
                 return  # Other discs or other albums still to be moved
-            new_album_folder = self._new_album_folder(album)
-            if not new_album_folder or os.path.normpath(new_album_folder) == os.path.normpath(album_folder):
-                return
-            if self._is_same_directory(album_folder, new_album_folder):
-                return
-            moves = self._get_additional_files_moves(album_folder, new_album_folder, patterns)
+            moves = self._get_additional_files_moves(old_album_folder, new_album_folder, patterns)
             self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
         except OSError as why:
-            log.error("Failed to move additional files from %r: %s", album_folder, why)
+            log.error("Failed to move additional files from %r: %s", old_album_folder, why)
+
+    def _album_folders(self):
+        """The old and new folder of this file's album, when its discs are in folders of their own.
+
+        Returns ``(old, new)`` when the album has two or more discs, its files are saved
+        from two or more sibling folders (one per disc) and they are all saved either
+        to one folder or to sibling folders. The old album folder is the one holding the
+        disc folders; with all discs in one folder there is none (the folder above is
+        not the album's, an artist folder for instance). Otherwise None.
+
+        Must be called on the main thread: it reads the album's other files.
+        """
+        config = get_config()
+        if not (config.setting['move_files'] and config.setting['move_additional_files']):
+            return None
+        album = getattr(self.parent_item, 'album', None)
+        if album is None or self._total_discs() < 2:
+            return None
+        files = list(album.iterfiles(save=True))
+        if self not in files:
+            return None
+        old_folder = os.path.dirname(os.path.normpath(self.filename))
+        old_album_folder = os.path.dirname(old_folder)
+        other_disc = None
+        for file in files:
+            folder = os.path.dirname(os.path.normpath(file.filename))
+            if os.path.dirname(folder) != old_album_folder:
+                return None
+            if other_disc is None and folder != old_folder:
+                other_disc = file
+        if other_disc is None:
+            return None
+        new_folder = os.path.normpath(os.path.dirname(self.make_filename(self.filename, self.metadata)))
+        other_new_folder = os.path.normpath(
+            os.path.dirname(other_disc.make_filename(other_disc.filename, other_disc.metadata))
+        )
+        if new_folder == other_new_folder:
+            new_album_folder = new_folder
+        elif os.path.dirname(new_folder) == os.path.dirname(other_new_folder):
+            new_album_folder = os.path.dirname(new_folder)
+        else:
+            return None
+        return old_album_folder, new_album_folder
 
     def _total_discs(self):
         try:
@@ -935,20 +974,6 @@ class File(MetadataItem):
             if any(os.path.splitext(name)[1].lower() in extensions for name in names):
                 return True
         return False
-
-    @staticmethod
-    def _new_album_folder(album):
-        """The album's new folder: the one folder its files are saved to, or the folder
-        holding the disc folders they are saved to. None if they are spread otherwise."""
-        folders = set()
-        for file in album.iterfiles():
-            folders.add(os.path.normpath(os.path.dirname(file.make_filename(file.filename, file.metadata))))
-        if len(folders) == 1:
-            return folders.pop()
-        parents = {os.path.dirname(folder) for folder in folders}
-        if len(parents) == 1:
-            return parents.pop()
-        return None
 
     @staticmethod
     def _is_same_directory(path1, path2):
