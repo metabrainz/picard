@@ -1,6 +1,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2026 Laurent Monin
+# Copyright (C) 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,16 +25,21 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.cluster import Cluster
+from picard.track import Track
+
 from picard.ui.itemviews import (
     MainPanel,
     TreeItem,
 )
 
 
-class FakeObj:
-    def __init__(self, name):
-        self.name = name
-        self.ui_item = None
+def mock_obj(name, spec=None):
+    item = Mock(spec=spec)
+    item.name = name
+    item.ui_item = None
+    item.can_remove = True
+    return item
 
 
 def _add(parent, obj):
@@ -82,8 +88,8 @@ def _sync_track_children(track_item, files):
 
 def test_removing_first_of_three_files_moves_to_next_file(qapp):
     view = _make_view()
-    track1, track2 = FakeObj('t1'), FakeObj('t2')
-    files = [FakeObj('f1'), FakeObj('f2'), FakeObj('f3')]
+    track1, track2 = mock_obj('t1'), mock_obj('t2')
+    files = [mock_obj('f1'), mock_obj('f2'), mock_obj('f3')]
     track1_item = _add(view, track1)
     for file in files:
         _add(track1_item, file)
@@ -103,8 +109,8 @@ def test_removing_first_of_three_files_moves_to_next_file(qapp):
 
 def test_removing_first_of_two_files_moves_to_track_showing_remaining_file(qapp):
     view = _make_view()
-    track1, track2 = FakeObj('t1'), FakeObj('t2')
-    files = [FakeObj('f1'), FakeObj('f2')]
+    track1, track2 = mock_obj('t1'), mock_obj('t2')
+    files = [mock_obj('f1'), mock_obj('f2')]
     track1_item = _add(view, track1)
     for file in files:
         _add(track1_item, file)
@@ -122,23 +128,62 @@ def test_removing_first_of_two_files_moves_to_track_showing_remaining_file(qapp)
     assert view.selectedItems() == [track1_item]
 
 
-def test_removing_track_moves_to_next_track(qapp):
-    # Removing a track only removes its files: the track row stays, but the
-    # cursor moves on to the next track.
+def test_removing_item_moves_to_next_item(qapp):
     view = _make_view()
-    tracks = [FakeObj('t1'), FakeObj('t2'), FakeObj('t3')]
+    objs = [mock_obj('t1'), mock_obj('t2'), mock_obj('t3')]
+    for obj in objs:
+        _add(view, obj)
+    view.setCurrentItem(objs[1].ui_item)
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), lambda objects: None, [objs[1]])
+    assert _current_obj(view).name == 't3'
+    assert [o.name for o in _selected_objs(view)] == ['t3']
+
+
+def test_removing_track_stays_on_track(qapp):
+    # Removing a track only removes its files: the cursor stays in the track.
+    view = _make_view()
+    tracks = [mock_obj(name='t1', spec=Track), mock_obj(name='t2', spec=Track), mock_obj(name='t3', spec=Track)]
     for track in tracks:
         _add(view, track)
     view.setCurrentItem(tracks[1].ui_item)
 
     MainPanel._remove_keeping_cursor(_make_panel(view), lambda objects: None, [tracks[1]])
-    assert _current_obj(view).name == 't3'
-    assert [o.name for o in _selected_objs(view)] == ['t3']
+    assert _current_obj(view).name == 't2'
+    assert [o.name for o in _selected_objs(view)] == ['t2']
+
+
+def test_removing_non_removable_item_stays_on_item(qapp):
+    # Removing a track only removes its files: the cursor stays in the track.
+    view = _make_view()
+    objs = [mock_obj(name='t1'), mock_obj(name='t2'), mock_obj(name='t3')]
+    objs[1].can_remove = False
+    for obj in objs:
+        _add(view, obj)
+    view.setCurrentItem(objs[1].ui_item)
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), lambda objects: None, [objs[1]])
+    assert _current_obj(view).name == 't2'
+    assert [o.name for o in _selected_objs(view)] == ['t2']
+
+
+def test_removing_special_cluster_item_stays_on_item(qapp):
+    # Removing a track only removes its files: the cursor stays in the track.
+    view = _make_view()
+    objs = [mock_obj(name='t1'), mock_obj(name='t2', spec=Cluster), mock_obj(name='t3')]
+    objs[1].special = True
+    for obj in objs:
+        _add(view, obj)
+    view.setCurrentItem(objs[1].ui_item)
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), lambda objects: None, [objs[1]])
+    assert _current_obj(view).name == 't2'
+    assert [o.name for o in _selected_objs(view)] == ['t2']
 
 
 def test_removing_last_row_moves_to_previous(qapp):
     view = _make_view()
-    objs = [FakeObj('a'), FakeObj('b')]
+    objs = [mock_obj('a'), mock_obj('b')]
     for obj in objs:
         _add(view, obj)
     view.setCurrentItem(objs[1].ui_item)
@@ -154,7 +199,7 @@ def test_removing_last_row_moves_to_previous(qapp):
 
 def test_removing_everything_falls_back_to_update_current_view(qapp):
     view = _make_view()
-    obj = FakeObj('a')
+    obj = mock_obj('a')
     _add(view, obj)
     view.setCurrentItem(obj.ui_item)
     panel = _make_panel(view)
@@ -169,7 +214,7 @@ def test_removing_surviving_last_track_stays_on_it(qapp):
     # below, so the cursor stays on it instead of moving up (repeated Del
     # would otherwise bounce between the last two tracks).
     view = _make_view()
-    tracks = [FakeObj('t1'), FakeObj('t2'), FakeObj('t3')]
+    tracks = [mock_obj('t1'), mock_obj('t2'), mock_obj('t3')]
     for track in tracks:
         _add(view, track)
     view.setCurrentItem(tracks[2].ui_item)
@@ -183,9 +228,9 @@ def test_removing_surviving_last_track_stays_on_it(qapp):
 
 def test_removing_parent_skips_its_children(qapp):
     view = _make_view()
-    album1, album2 = FakeObj('a1'), FakeObj('a2')
+    album1, album2 = mock_obj('a1'), mock_obj('a2')
     album1_item = _add(view, album1)
-    _add(album1_item, FakeObj('t1'))
+    _add(album1_item, mock_obj('t1'))
     _add(view, album2)
     view.expandAll()
     view.setCurrentItem(album1_item)
@@ -199,14 +244,72 @@ def test_removing_parent_skips_its_children(qapp):
     assert [o.name for o in _selected_objs(view)] == ['a2']
 
 
+def test_removingchild_moves_to_next_child(qapp):
+    view = _make_view()
+    parent1 = mock_obj('p1')
+    child1, child2 = mock_obj('c1'), mock_obj('c2')
+    parent1_item = _add(view, parent1)
+    child1_item = _add(parent1_item, child1)
+    _add(parent1_item, child2)
+    view.expandAll()
+    view.setCurrentItem(child1_item)
+
+    def remove(objects):
+        for obj in objects:
+            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child1])
+    assert _current_obj(view).name == 'c2'
+    assert [o.name for o in _selected_objs(view)] == ['c2']
+
+
+def test_removing_last_child_moves_to_previous_child(qapp):
+    view = _make_view()
+    parent1, parent2 = mock_obj('p1'), mock_obj('p2')
+    child1, child2 = mock_obj('c1'), mock_obj('c2')
+    parent1_item = _add(view, parent1)
+    _add(parent1_item, child1)
+    child2_item = _add(parent1_item, child2)
+    _add(view, parent2)
+    view.expandAll()
+    view.setCurrentItem(child2_item)
+
+    def remove(objects):
+        for obj in objects:
+            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child2])
+    assert _current_obj(view).name == 'c1'
+    assert [o.name for o in _selected_objs(view)] == ['c1']
+
+
+def test_removing_last_remaining_child_moves_to_parent(qapp):
+    view = _make_view()
+    parent1, parent2 = mock_obj('p1'), mock_obj('p2')
+    child1 = mock_obj('c1')
+    parent1_item = _add(view, parent1)
+    child1_item = _add(parent1_item, child1)
+    _add(view, parent2)
+    view.expandAll()
+    view.setCurrentItem(child1_item)
+
+    def remove(objects):
+        for obj in objects:
+            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child1])
+    assert _current_obj(view).name == 'p1'
+    assert [o.name for o in _selected_objs(view)] == ['p1']
+
+
 def test_fallback_selects_current_row(qapp):
     # When no candidate row survives, the fallback selects the row Qt made current
     view = _make_view()
-    objs = [FakeObj('a'), FakeObj('b'), FakeObj('c')]
+    objs = [mock_obj('a'), mock_obj('b'), mock_obj('c')]
     for obj in objs:
         _add(view, obj)
     view.setCurrentItem(objs[1].ui_item)
-    other = FakeObj('d')
+    other = mock_obj('d')
 
     def remove(objects):
         view.clear()

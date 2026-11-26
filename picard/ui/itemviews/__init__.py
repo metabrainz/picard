@@ -209,15 +209,45 @@ def _cursor_candidates(view, limit=5):
             index = index.parent()
         return path[::-1]
 
+    def is_candidate_obj(item):
+        return isinstance(item, TreeItem) and item.obj is not None
+
     indexes = sorted((QtCore.QModelIndex(i) for i in selected), key=row_path)
     # indexBelow() / indexAbove() follow the displayed rows, skipping collapsed and hidden ones
-    below = collect(indexes[-1], view.indexBelow)
+    last = indexes[-1]
+    below = collect(last, view.indexBelow)
     above = collect(indexes[0], view.indexAbove)
     candidates = []
+
+    last_item = view.itemFromIndex(last)
+
+    # For not-removable items keep the item selected
+    if is_candidate_obj(last_item):
+        obj = last_item.obj
+        if not obj.can_remove or isinstance(obj, Track) or (isinstance(obj, Cluster) and obj.special):
+            candidates.append(obj)
+
+    # For child items, select a close sibling or the parent
+    if parent := last_item.parent():
+        if is_candidate_obj(parent):
+            child_index = parent.indexOfChild(last_item)
+            # Is this the last child item?
+            if child_index + 1 == parent.childCount():
+                # If it is the only child item, select the parent
+                if child_index == 0:
+                    candidates.append(parent.obj)
+                # Otherwise select the previous one
+                else:
+                    prev_child = parent.child(child_index - 1)
+                    if is_candidate_obj(prev_child):
+                        candidates.append(prev_child.obj)
+
+    # Otherwise select the item after the last one
     for index in below + [view.currentIndex()] + above:
         item = view.itemFromIndex(index)
-        if isinstance(item, TreeItem) and item.obj is not None:
+        if is_candidate_obj(item):
             candidates.append(item.obj)
+
     return candidates
 
 
