@@ -5,14 +5,15 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024.
 # Akira Holm <apekattquest_monkeypython@users.noreply.translations.metabrainz.org>, 2026.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-11-26 15:16+0100\n"
-"PO-Revision-Date: 2026-10-22 23:13+0000\n"
-"Last-Translator: Akira Holm "
-"<apekattquest_monkeypython@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-11-27 15:13+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/3/constants/nb/>\n"
 "Language: nb_NO\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.10.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:192
@@ -3155,7 +3156,7 @@ msgstr ""
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "Preussisk"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
