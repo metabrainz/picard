@@ -198,11 +198,10 @@ class ScriptingOptionsPage(OptionsPage):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        list_items = self.ui.script_list.selectedItems()
-        if not list_items:
+        list_item = self._selected_script_item()
+        if not list_item:
             return
 
-        list_item = list_items[0]
         content = list_item.script.content
         if content:
             name = list_item.script.name.strip()
@@ -218,9 +217,8 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.add_script()
 
     def script_selected(self):
-        list_items = self.ui.script_list.selectedItems()
-        if list_items:
-            list_item = list_items[0]
+        list_item = self._selected_script_item()
+        if list_item:
             self.ui.tagger_script.setEnabled(True)
             self.ui.tagger_script.setText(list_item.script.content)
             self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
@@ -235,6 +233,11 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.export_button.setEnabled(False)
 
     def _on_text_changed(self):
+        # Immediately update the script content
+        list_item = self._selected_script_item()
+        if list_item:
+            list_item.script.content = self.ui.tagger_script.toPlainText()
+
         # Restart the debounce timer on every edit.
         self._debounce_timer.start()
 
@@ -243,11 +246,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.live_update_and_check()
 
     def live_update_and_check(self):
-        list_items = self.ui.script_list.selectedItems()
-        if not list_items:
+        list_item = self._selected_script_item()
+        if not list_item:
             return
-        list_item = list_items[0]
-        list_item.script.content = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         # Ensure the error bar is not visible unless there actually is an error.
@@ -293,6 +294,12 @@ class ScriptingOptionsPage(OptionsPage):
         if last_selected_script:
             self.ui.script_list.setCurrentItem(last_selected_script)
             last_selected_script.setSelected(True)
+
+    def _selected_script_item(self):
+        list_items = self.ui.script_list.selectedItems()
+        if list_items:
+            return list_items[0]
+        return None
 
     def _all_scripts(self):
         for item in qlistwidget_items(self.ui.script_list):
