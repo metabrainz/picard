@@ -19,14 +19,24 @@
 
 
 from functools import cache
+import html
+import re
 
 from picard.const.tags import ALL_TAGS
-from picard.i18n import gettext as _
+from picard.i18n import (
+    gettext as _,
+    gettext_constants,
+)
 from picard.tags.tagvar import (
+    FULL_DESCRIPTION_SECTIONS,
+    SECTIONS,
     TEXT_NO_DESCRIPTION,
     TagVar,
     _markdown,
 )
+
+
+_ANCHOR_RE = re.compile(r"<a href=['\"](?P<url>[^'\"]*)['\"]>(?P<text>.*?)</a>")
 
 
 @cache
@@ -43,6 +53,44 @@ def display_tag_full_description(item: TagVar) -> str:
     if not content:
         content = _markdown(_(TEXT_NO_DESCRIPTION))
     return content
+
+
+def _html_to_markdown(text: str) -> str:
+    """Convert the HTML of a section value (links and escaped characters) to Markdown."""
+    text = _ANCHOR_RE.sub(
+        # A link to another variable of the documentation is shown as code
+        lambda match: f"`{match['text']}`" if match['url'].startswith('#') else f"[{match['text']}]({match['url']})",
+        text,
+    )
+    return html.unescape(text)
+
+
+def display_tag_full_description_markdown(item: TagVar) -> str:
+    """Same content as display_tag_full_description(), as Markdown instead of HTML."""
+    parts = [ALL_TAGS.base_description_text(item)]
+    if item.additionaldesc:
+        parts.append(gettext_constants(item.additionaldesc))
+    for section_id in FULL_DESCRIPTION_SECTIONS:
+        section = SECTIONS[section_id]
+        values = [_html_to_markdown(value) for value in getattr(ALL_TAGS, section.tagvar_func)(item)]
+        if values:
+            parts.append(f'**{_(section.title)}:** {"; ".join(values)}.')
+    return '\n\n'.join(parts)
+
+
+def documented_script_variables() -> list[TagVar]:
+    """Return the variables listed in the script documentation, sorted by name.
+
+    These are the system variables and the ones registered by plugins, whether
+    hidden or not. System variables come before plugin variables with the same
+    name, so that plugins can add their own description of a variable.
+    """
+    # Inline import to avoid circular dependency: importing script_variables first
+    # imports picard.tags, which imports picard.const.tags, which imports picard.tags.
+    from picard.extension_points.script_variables import ext_point_script_variables
+
+    variables = [*ALL_TAGS, *ext_point_script_variables]
+    return sorted(variables, key=lambda var: var.script_name().lstrip('_'))
 
 
 def _get_tagvar_item(tagname):

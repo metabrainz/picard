@@ -89,8 +89,8 @@ def _compute_logic(operation, *args):
 
 @script_function(
     eval_args=False,
-    signature=N_("$if(if,then[,else])"),
-    documentation=N_("If `if` is not empty, it returns `then`, otherwise it returns `else`."),
+    signature=N_("$if(condition,then[,else])"),
+    documentation=N_("If `condition` is not empty, it returns `then`, otherwise it returns `else`."),
 )
 def func_if(parser, _if, _then, _else=None):
     if _if.eval(parser):
