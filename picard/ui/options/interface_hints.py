@@ -79,7 +79,7 @@ def _wizard_set_shown(shown: bool) -> None:
 
 class InterfaceHintsOptionsPage(OptionsPage):
     NAME = 'interface_hints'
-    TITLE = N_("Hints")
+    TITLE = N_("Hints and Warnings")
     PARENT = 'interface'
     SORT_ORDER = 70
     ACTIVE = True
