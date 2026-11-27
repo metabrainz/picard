@@ -167,10 +167,18 @@ def _refresh_item_colors_recursive(item):
 def _cursor_candidates(view, limit=5):
     """Return the objects whose rows may get the cursor once the selection is removed.
 
-    In order of preference: up to ``limit`` rows below the selection, the current
-    row, then up to ``limit`` rows above the selection. Selected rows and their
-    descendants are skipped. A few rows are kept in each direction because some
-    may be removed too (e.g. a cluster whose files were all removed).
+    In order of preference:
+
+    1. The last selected object itself, if removing it does not remove its row
+       (not removable, a track, or a special cluster).
+    2. If the last selected row is the last child of its parent, the nearest
+       previous sibling that is not removed, or the parent if there is none.
+    3. Up to ``limit`` rows below the selection, the current row, then up to
+       ``limit`` rows above the selection.
+
+    Selected rows and their descendants are skipped in the rows below and above.
+    A few rows are kept in each direction because some may be removed too
+    (e.g. a cluster whose files were all removed).
 
     The current row comes before the rows above: if it survives the removal
     (e.g. a track whose files were removed) and nothing follows it, the cursor
@@ -209,15 +217,47 @@ def _cursor_candidates(view, limit=5):
             index = index.parent()
         return path[::-1]
 
+    def is_candidate_obj(item):
+        return isinstance(item, TreeItem) and item.obj is not None
+
     indexes = sorted((QtCore.QModelIndex(i) for i in selected), key=row_path)
     # indexBelow() / indexAbove() follow the displayed rows, skipping collapsed and hidden ones
-    below = collect(indexes[-1], view.indexBelow)
+    last = indexes[-1]
+    below = collect(last, view.indexBelow)
     above = collect(indexes[0], view.indexAbove)
     candidates = []
+
+    last_item = view.itemFromIndex(last)
+
+    # For not-removable items keep the item selected
+    if is_candidate_obj(last_item):
+        obj = last_item.obj
+        if not obj.can_remove or isinstance(obj, Track) or (isinstance(obj, Cluster) and obj.special):
+            candidates.append(obj)
+
+    # For child items, select a close sibling or the parent
+    parent = last_item.parent() if last_item is not None else None
+    if parent is not None:
+        if is_candidate_obj(parent):
+            child_index = parent.indexOfChild(last_item)
+            # Is this the last child item?
+            if child_index + 1 == parent.childCount():
+                # Select the nearest previous sibling that is not removed
+                for i in range(child_index - 1, -1, -1):
+                    sibling = parent.child(i)
+                    if is_candidate_obj(sibling) and not is_removed(view.indexFromItem(sibling)):
+                        candidates.append(sibling.obj)
+                        break
+                # If there is none, select the parent
+                else:
+                    candidates.append(parent.obj)
+
+    # Otherwise select the item after the last one
     for index in below + [view.currentIndex()] + above:
         item = view.itemFromIndex(index)
-        if isinstance(item, TreeItem) and item.obj is not None:
+        if is_candidate_obj(item):
             candidates.append(item.obj)
+
     return candidates
 
 
@@ -368,8 +408,10 @@ class MainPanel(QtWidgets.QSplitter):
     def _remove_keeping_cursor(self, remove_func, objects):
         """Call ``remove_func(objects)``, then move the cursor past the removed rows.
 
-        The cursor goes to the row following the selection, or to the previous
-        one if there is none, like in usual lists. See _cursor_candidates().
+        The cursor stays on items that remain (e.g. tracks or non-removable
+        items). Otherwise it goes to the row following the selection, or for the
+        last child of an item to the previous sibling or the parent. See
+        _cursor_candidates().
         """
         view = self._selected_view
         candidates = _cursor_candidates(view)
