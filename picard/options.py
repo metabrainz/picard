@@ -73,6 +73,7 @@ from picard.const.defaults import (
     DEFAULT_TOOLBAR_LAYOUT,
     DEFAULT_TOP_TAGS,
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
+    DEFAULT_WEIGHTS,
 )
 from picard.i18n import N_
 from picard.util.cdrom import has_isrc_support
@@ -449,6 +450,7 @@ TextOption(
 IntOption('setting', 'log_verbosity', DEFAULT_LOG_LEVEL, title=N_("Log verbosity level"), in_profile=True)
 FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"), in_profile=True, bounds=(0.0, 1.0))
 FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"), in_profile=True, bounds=(0.0, 1.0))
+TextOption('setting', 'user_defined_weights', DEFAULT_WEIGHTS, title=N_("Custom weights"), in_profile=True)
 IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"), in_profile=True, bounds=(0, 100))
 ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags to show at the top"), in_profile=True)
 IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"), in_profile=True, bounds=(0, 100))

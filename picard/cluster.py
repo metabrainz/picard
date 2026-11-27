@@ -77,6 +77,7 @@ from picard.util import (
     format_time,
     iter_files_from_objects,
 )
+from picard.weight_loader import weight_loader
 from picard.workspace import workspace
 
 
@@ -425,7 +426,7 @@ class Cluster(FileList):
         Shared by the auto-apply path (:meth:`_match_to_release`) and the
         headless lookup command, which also needs the non-winning candidates.
         """
-        all_matches = [compare_to_release(self.metadata, release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
+        all_matches = [compare_to_release(self.metadata, release, weight_loader.cluster_weights) for release in releases]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
         if dbg := log.debug_if(DebugOpt.MATCHING):

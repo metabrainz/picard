@@ -45,6 +45,7 @@ class MatchingOptionsPage(OptionsPage):
         'match_min_margin': {'widgets': ['match_min_margin']},
         'track_matching_threshold': {'widgets': ['track_matching_threshold']},
         'ignore_track_duration_difference_under': {'widgets': ['ignore_track_duration_difference_under']},
+        'user_defined_weights': {'widgets': ['user_defined_weights']},
         'completeness_ignore_videos': {'widgets': ['completeness_ignore_videos']},
         'completeness_ignore_pregap': {'widgets': ['completeness_ignore_pregap']},
         'completeness_ignore_data': {'widgets': ['completeness_ignore_data']},
@@ -79,6 +80,7 @@ class MatchingOptionsPage(OptionsPage):
         self.ui.completeness_ignore_silence.setChecked(config.setting['completeness_ignore_silence'])
         self.ui.compare_ignore_tags.update(config.setting['compare_ignore_tags'])
         self.ui.compare_ignore_tags.set_user_sortable(False)
+        self.ui.user_defined_weights.setPlainText(config.setting['user_defined_weights'])
 
     def save(self):
         config = get_config()
@@ -95,6 +97,7 @@ class MatchingOptionsPage(OptionsPage):
         tags = list(self.ui.compare_ignore_tags.tags)
         if tags != config.setting['compare_ignore_tags']:
             config.setting['compare_ignore_tags'] = tags
+        config.setting['user_defined_weights'] = self.ui.user_defined_weights.toPlainText()
 
     def restore_defaults(self):
         self.ui.compare_ignore_tags.clear()
