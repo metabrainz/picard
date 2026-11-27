@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_tags_compatibility_id3.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -128,5 +128,6 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.enc_iso88591.setText(_("ISO-8859-1"))
         self.label_id3v23_join_with.setText(_("Join multiple ID3v2.3 tags with:"))
         self.id3v23_join_with.setToolTip(_("<html><head/><body><p>Default is \'/\' to maintain compatibility with previous Picard releases.</p><p>New alternatives are \';_\' or \'_/_\' or type your own. </p></body></html>"))
+        self.itunes_compatible_grouping.setToolTip(_("Controls how the grouping and work are saved to ID3 tags. When disabled (the default), the grouping is saved to the standard TIT1 frame and the work to a TXXX:WORK frame. When enabled, the grouping is saved to the iTunes-specific GRP1 frame and the work to the TIT1 frame, as used by newer iTunes versions. Either way, files that contain both a GRP1 and a TIT1 frame are always read with GRP1 as the grouping and TIT1 as the work."))
         self.itunes_compatible_grouping.setText(_("Save iTunes compatible grouping and work"))
         self.write_id3v1.setText(_("Also include ID3v1 tags in the files"))
