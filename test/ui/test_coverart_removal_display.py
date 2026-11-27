@@ -186,7 +186,7 @@ class _RemovalThumb:
 
 
 class _RemovalBox:
-    _REMOVAL_SETTINGS = CoverArtBox._REMOVAL_SETTINGS
+    _COVER_DISPLAY_SETTINGS = CoverArtBox._COVER_DISPLAY_SETTINGS
     update_metadata = CoverArtBox.update_metadata
 
     def __init__(self, item) -> None:
@@ -209,6 +209,7 @@ def _make_item(new_images: list[object], orig_images: list[object]):
     return SimpleNamespace(
         metadata=SimpleNamespace(images=ImageList(new_images)),
         orig_metadata=SimpleNamespace(images=ImageList(orig_images)),
+        iterfiles=lambda save=False: iter(()),
     )
 
 
