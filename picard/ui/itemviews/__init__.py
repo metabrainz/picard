@@ -233,14 +233,15 @@ def _cursor_candidates(view, limit=5):
             child_index = parent.indexOfChild(last_item)
             # Is this the last child item?
             if child_index + 1 == parent.childCount():
-                # If it is the only child item, select the parent
-                if child_index == 0:
-                    candidates.append(parent.obj)
-                # Otherwise select the previous one
+                # Select the nearest previous sibling that is not removed
+                for i in range(child_index - 1, -1, -1):
+                    sibling = parent.child(i)
+                    if is_candidate_obj(sibling) and not is_removed(view.indexFromItem(sibling)):
+                        candidates.append(sibling.obj)
+                        break
+                # If there is none, select the parent
                 else:
-                    prev_child = parent.child(child_index - 1)
-                    if is_candidate_obj(prev_child):
-                        candidates.append(prev_child.obj)
+                    candidates.append(parent.obj)
 
     # Otherwise select the item after the last one
     for index in below + [view.currentIndex()] + above:
