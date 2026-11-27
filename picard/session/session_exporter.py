@@ -234,9 +234,12 @@ class SessionExporter:
 
             if base_md is not None:
                 diff = file.metadata.diff(base_md)
+                # An empty value list represents an explicit deletion in the session.
+                changes = {tag: [] for tag in sorted(diff.deleted_tags)}
+                changes.update(diff.rawitems())
                 delta_tags = {
-                    k: MetadataHandler.as_list(v)
-                    for k, v in diff.rawitems()
+                    k: v
+                    for k, v in changes.items()
                     if k not in EXCLUDED_OVERRIDE_TAGS and not str(k).startswith(INTERNAL_TAG_PREFIX)
                 }
                 if delta_tags:

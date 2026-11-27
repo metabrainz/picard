@@ -30,10 +30,13 @@ from picard.album import (
     Album,
     NatAlbum,
 )
+from picard.file import File
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
+from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import SessionItemLocation
 from picard.session.session_exporter import SessionExporter
+from picard.session.session_loader import ItemGrouper
 
 import pytest
 
@@ -119,6 +122,31 @@ def test_session_exporter_export_file_item_unsaved(session_exporter: SessionExpo
     assert item['file_path'] == str(Path("/test/file.mp3"))
     assert "metadata" in item
     assert item['metadata']['tags']['title'] == ["Test Song"]
+
+
+@pytest.mark.parametrize('edit_title', [False, True])
+def test_file_tag_deletion_round_trip(session_exporter, tmp_path, edit_title, monkeypatch):
+    monkeypatch.setattr(File, 'tagger', Mock(), raising=False)
+    path = tmp_path / 'song.mp3'
+    file = File(str(path))
+    file.orig_metadata.update({'title': 'Song', 'composer': 'Original composer'})
+    file.metadata.copy(file.orig_metadata)
+    file.state = File.State.NORMAL
+    del file.metadata['composer']
+    if edit_title:
+        file.metadata['title'] = 'Edited title'
+    file.update()
+
+    item = session_exporter._export_file_item(file)
+    changes = ItemGrouper().extract_metadata([item])
+    file.metadata.copy(file.orig_metadata)
+    file.update()
+    MetadataHandler.apply_tag_deltas_if_any(Mock(files={str(path): file}), changes)
+
+    assert 'composer' not in file.metadata
+    assert 'composer' in file.metadata.deleted_tags
+    assert file.metadata['title'] == ('Edited title' if edit_title else 'Song')
+    assert file.state == File.State.CHANGED
 
 
 def test_session_exporter_export_ui_state(session_exporter: SessionExporter, cfg_options) -> None:

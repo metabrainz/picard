@@ -203,7 +203,10 @@ class MetadataHandler:
                 for key, values in tags.items():
                     if key in EXCLUDED_OVERRIDE_TAGS or str(key).startswith(INTERNAL_TAG_PREFIX):
                         continue
-                    md[key] = MetadataHandler.as_list(values)
+                    if values == []:
+                        del md[key]
+                    else:
+                        md[key] = MetadataHandler.as_list(values)
                 MetadataHandler.safe_apply_metadata(file, md)
             except (AttributeError, KeyError, OSError, ValueError, TypeError) as e:
                 log.debug(f"Error applying tag deltas to {fpath}: {e}")
