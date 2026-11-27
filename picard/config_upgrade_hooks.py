@@ -947,3 +947,19 @@ obsolete_options(
     '3.1.0dev2',
     ('persist', 'current_directory'),
 )
+
+
+@upgrade_config('3.1.0dev3')
+def migrate_quit_confirmation(config):
+    """Store the "do not show again" choice of the quit confirmation in the "hidden_message_boxes" persisted option."""
+    if not get_option_value(config.setting, 'quit_confirmation', BoolOption, True):
+        hidden = set(get_option_value(config.persist, 'hidden_message_boxes', ListOption, []))
+        hidden.add('quit_confirmation')
+        write_option(config.persist, 'hidden_message_boxes', sorted(hidden))
+    remove_option(config.setting, 'quit_confirmation')
+
+
+@upgrade_settings('3.1.0dev3')
+def remove_quit_confirmation_setting(settings):
+    """Remove the quit confirmation option from profiles, it is not profile-specific anymore."""
+    remove_option(settings, 'quit_confirmation')

@@ -43,6 +43,7 @@ from picard.ui.options import (
     OptionsPage,
     PageOptionConfigs,
 )
+from picard.ui.quitconfirmationdialog import QuitConfirmationDialog  # noqa: F401 # pylint: disable=unused-import
 from picard.ui.savewarningdialog import SaveWarningDialog  # noqa: F401 # pylint: disable=unused-import
 
 

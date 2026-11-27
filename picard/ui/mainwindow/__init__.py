@@ -176,6 +176,7 @@ from picard.ui.passworddialog import (
     ProxyDialog,
 )
 from picard.ui.player import NowPlayingService
+from picard.ui.quitconfirmationdialog import QuitConfirmationDialog
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -538,8 +539,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         super().showEvent(event)
 
     def closeEvent(self, event):
-        config = get_config()
-        if config.setting['quit_confirmation'] and not self.show_quit_confirmation():
+        if not self.show_quit_confirmation():
             event.ignore()
             return
         if self.player:
@@ -568,30 +568,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.tagger.stopping:
             return True
 
+        if QuitConfirmationDialog.is_hidden():
+            return True
+
         unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.values())
-        QMessageBox = QtWidgets.QMessageBox
-
         if unsaved_files > 0:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Question)
-            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-            msg.setWindowTitle(_("Unsaved Changes"))
-            msg.setText(_("Are you sure you want to quit Picard?"))
-            txt = (
-                ngettext(
-                    "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
-                    "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
-                    unsaved_files,
-                )
-                % unsaved_files
-            )
-            msg.setInformativeText(txt)
-            cancel = msg.addButton(QMessageBox.StandardButton.Cancel)
-            msg.setDefaultButton(cancel)
-            msg.addButton(_("&Quit Picard"), QMessageBox.ButtonRole.YesRole)
-            ret = msg.exec()
-
-            if ret == QMessageBox.StandardButton.Cancel:
+            dialog = QuitConfirmationDialog(self, unsaved_files)
+            if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Cancel:
                 return False
 
         return True

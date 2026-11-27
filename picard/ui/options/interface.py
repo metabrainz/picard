@@ -76,7 +76,6 @@ class InterfaceOptionsPage(OptionsPage):
         'ui_language': {},
         'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
-        'quit_confirmation': {'widgets': ['quit_confirmation']},
         'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
         'starting_directory': {'widgets': ['starting_directory']},
         'starting_directory_path': {'widgets': ['starting_directory_path']},
@@ -154,7 +153,6 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
             self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
             self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-            self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
             current_ui_language = config.setting['ui_language']
             self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
             self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
@@ -170,7 +168,6 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
         config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
         self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
-        config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
         new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())

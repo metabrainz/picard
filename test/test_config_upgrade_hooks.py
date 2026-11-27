@@ -972,6 +972,39 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.remove_message_box_settings(settings)
         self.assertEqual({'other': 1}, settings)
 
+    def test_migrate_quit_confirmation_disabled(self):
+        BoolOption('setting', 'quit_confirmation', True)
+        ListOption('persist', 'hidden_message_boxes', [])
+        self.config.setting['quit_confirmation'] = False
+        self.config.persist['hidden_message_boxes'] = ['new_user']
+
+        hooks.migrate_quit_confirmation(self.config)
+
+        self.assertEqual(['new_user', 'quit_confirmation'], self.config.persist['hidden_message_boxes'])
+        self.assertNotIn('quit_confirmation', self.config.setting)
+
+    def test_migrate_quit_confirmation_enabled(self):
+        BoolOption('setting', 'quit_confirmation', True)
+        ListOption('persist', 'hidden_message_boxes', [])
+        self.config.setting['quit_confirmation'] = True
+
+        hooks.migrate_quit_confirmation(self.config)
+
+        self.assertEqual([], self.config.persist['hidden_message_boxes'])
+        self.assertNotIn('quit_confirmation', self.config.setting)
+
+    def test_migrate_quit_confirmation_defaults(self):
+        ListOption('persist', 'hidden_message_boxes', [])
+
+        hooks.migrate_quit_confirmation(self.config)
+
+        self.assertEqual([], self.config.persist['hidden_message_boxes'])
+
+    def test_remove_quit_confirmation_setting(self):
+        settings = {'quit_confirmation': False, 'other': 1}
+        hooks.remove_quit_confirmation_setting(settings)
+        self.assertEqual({'other': 1}, settings)
+
 
 class TestRunConfigUpgradesInteractive(TestPicardConfigCommon):
     """run_config_upgrades threads the interactive flag to hooks that accept it."""
