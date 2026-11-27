@@ -952,7 +952,7 @@ class Tagger(WorkspaceHost, QtWidgets.QApplication):
         disc.read_and_lookup(partial(disc.read, device), on_error=self._disc_read_failed)
 
     def lookup_discid_from_logfile(self):
-        file_chooser = FileDialog(parent=self.window)
+        file_chooser = FileDialog(parent=self.window, history_key='cd_log_file')
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [

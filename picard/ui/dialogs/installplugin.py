@@ -46,6 +46,7 @@ from picard.ui.dialogs.plugin_error import show_plugin_error
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.theme import theme
 from picard.ui.util import (
+    FileDialog,
     context_menu_global_pos,
     context_menu_item,
     font_scaled_size,
@@ -510,11 +511,14 @@ class InstallPluginDialog(PicardDialog):
 
     def _browse_directory(self):
         """Open directory browser for local plugin selection."""
-        directory = QtWidgets.QFileDialog.getExistingDirectory(
-            self,
-            _("Select Plugin Directory"),
-            "",
-            QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
+        typed_path = self.path_edit.text().strip()
+        directory = FileDialog.getExistingDirectory(
+            parent=self,
+            caption=_("Select Plugin Directory"),
+            # Anything other than an existing directory would bypass the history
+            directory=typed_path if os.path.isdir(typed_path) else None,
+            options=QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
+            history_key='plugin_directory',
         )
         if directory:
             self.path_edit.setText(directory)

@@ -39,6 +39,7 @@ from picard.util import (
 from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.theme import theme
+from picard.ui.util import FileDialog
 
 
 class WrappedLabel(QtWidgets.QLabel):
@@ -347,10 +348,10 @@ class FileOrganizationPage(SetupWizardPage):
         self.browse_button.setEnabled(checked)
 
     def _browse_directory(self) -> None:
-        directory = QtWidgets.QFileDialog.getExistingDirectory(
-            self,
-            _("Select destination directory"),
-            self.move_to_edit.text(),
+        directory = FileDialog.getExistingDirectory(
+            parent=self,
+            caption=_("Select destination directory"),
+            directory=self.move_to_edit.text(),
         )
         if directory:
             self.move_to_edit.setText(directory)

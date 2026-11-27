@@ -21,7 +21,6 @@
 from collections import namedtuple
 from copy import deepcopy
 from functools import partial
-import os.path
 
 from PyQt6 import (
     QtCore,
@@ -111,11 +110,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     signal_update = QtCore.pyqtSignal()
     signal_selection_changed = QtCore.pyqtSignal()
     signal_index_changed = QtCore.pyqtSignal()
-
-    default_script_directory = os.path.normpath(
-        QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
-    )
-    default_script_filename = "picard_naming_script.ptsp"
 
     Profile = namedtuple('Profile', ['id', 'title', 'script_id'])
 

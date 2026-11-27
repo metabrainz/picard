@@ -927,3 +927,23 @@ def remove_message_box_settings(settings):
     """Remove the message box options from profiles, they are not profile-specific anymore."""
     remove_option(settings, 'show_new_user_dialog')
     remove_option(settings, 'file_save_warning')
+
+
+@upgrade_config('3.1.0dev2')
+def migrate_current_directory_to_dialog_history(config):
+    """Option "current_directory" was replaced by per-dialog "file_dialog_directories" entries."""
+    path = config.persist.raw_value('current_directory')
+    if not path or not isinstance(path, str):
+        return
+    directories = dict(config.persist['file_dialog_directories'])
+    for history_key in ('add_files', 'add_directory'):
+        directories.setdefault(history_key, path)
+    config.persist['file_dialog_directories'] = directories
+
+
+# Retired in 3.1.0dev2: current_directory is migrated by the hook above (its
+# value is read there before the key is purged).
+obsolete_options(
+    '3.1.0dev2',
+    ('persist', 'current_directory'),
+)
