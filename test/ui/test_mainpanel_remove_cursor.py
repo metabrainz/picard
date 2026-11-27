@@ -254,11 +254,7 @@ def test_removingchild_moves_to_next_child(qapp):
     view.expandAll()
     view.setCurrentItem(child1_item)
 
-    def remove(objects):
-        for obj in objects:
-            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
-
-    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child1])
+    MainPanel._remove_keeping_cursor(_make_panel(view), _remove_rows, [child1])
     assert _current_obj(view).name == 'c2'
     assert [o.name for o in _selected_objs(view)] == ['c2']
 
@@ -274,11 +270,7 @@ def test_removing_last_child_moves_to_previous_child(qapp):
     view.expandAll()
     view.setCurrentItem(child2_item)
 
-    def remove(objects):
-        for obj in objects:
-            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
-
-    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child2])
+    MainPanel._remove_keeping_cursor(_make_panel(view), _remove_rows, [child2])
     assert _current_obj(view).name == 'c1'
     assert [o.name for o in _selected_objs(view)] == ['c1']
 
@@ -293,11 +285,7 @@ def test_removing_last_remaining_child_moves_to_parent(qapp):
     view.expandAll()
     view.setCurrentItem(child1_item)
 
-    def remove(objects):
-        for obj in objects:
-            view.takeTopLevelItem(view.indexOfTopLevelItem(obj.ui_item))
-
-    MainPanel._remove_keeping_cursor(_make_panel(view), remove, [child1])
+    MainPanel._remove_keeping_cursor(_make_panel(view), _remove_rows, [child1])
     assert _current_obj(view).name == 'p1'
     assert [o.name for o in _selected_objs(view)] == ['p1']
 
