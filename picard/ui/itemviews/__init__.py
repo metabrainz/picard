@@ -456,7 +456,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
     @obj.setter
     def obj(self, obj):
-        if self._obj:
+        if self._obj is not None and self._obj.ui_item == self:
             self._obj.ui_item = None
         self._obj = obj
         if obj is not None:
@@ -705,7 +705,7 @@ class TrackItem(TreeItem):
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
                     for _i in range(oldnum - newnum):
-                        self.takeChild(newnum - 1).obj = None
+                        self.takeChild(newnum).obj = None
                     oldnum = newnum
                 for i in range(oldnum):  # update existing items
                     item = self.child(i)
@@ -721,6 +721,7 @@ class TrackItem(TreeItem):
                     # column set, not the detached file-view fallback (PICARD-3515).
                     for item in items:
                         item.update(update_track=False, update_selection=update_selection)
+
             self.setExpanded(True)
         if track.errors:
             self.setIcon(self.columns.status_icon_column, TrackItem.icon_error)
