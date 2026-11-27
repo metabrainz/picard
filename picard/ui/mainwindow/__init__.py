@@ -1946,13 +1946,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.action_map[action_id].setEnabled(bool(enabled))
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
-        if self.ignore_selection_changes:
-            return
-
+        # Always update the selected objects, even if selection changes are currently ignored.
+        # This ensures the proper objects are processed once ignore_selection_changes suspends.
         if objects is not None:
             self.selected_objects = objects
         else:
             objects = self.selected_objects
+
+        if self.ignore_selection_changes:
+            return
 
         self._update_actions()
 
