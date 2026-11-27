@@ -39,7 +39,6 @@ from picard.workspace import (
     set_workspace_provider,
     workspace,
 )
-
 from picard.workspace_events import workspace_events
 
 import pytest
