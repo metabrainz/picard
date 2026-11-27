@@ -46,6 +46,7 @@ from typing import (
     runtime_checkable,
 )
 
+from picard.cli.engine.confirmations import SessionConfirmations
 from picard.cli.engine.result import EngineResult
 from picard.cli.engine.settings import ConsoleSettings
 
@@ -87,6 +88,9 @@ class EngineSession(Protocol):
 
     # The settings of the console (``shell set``): limits that commands and frontends read.
     settings: ConsoleSettings
+
+    # The confirmations asked for (``confirm``), for this session only.
+    confirmations: SessionConfirmations
 
     # The lines typed (``shell history``), or None if the frontend keeps none.
     history: 'ConsoleHistory | None'
@@ -211,7 +215,9 @@ class EngineCommand:
     # selector / wildcard), 'handle' (a single handle), 'tag' (tag name),
     # 'option' (option name), 'option-value' (value of the option named by the
     # previous word), 'setting' (setting of the console), 'handle-kind' (prefix
-    # of handles), 'history' (what 'shell history' does), or '' (no completion). Used by the shell's tab-completer.
+    # of handles), 'confirmation' (key of a confirmation, and 'confirmation-all'
+    # which also offers 'all'), 'history' (what 'shell history' does), or ''
+    # (no completion). Used by the shell's tab-completer.
     # Missing entries default to no completion.
     arg_kinds: tuple[str, ...] = field(default_factory=tuple)
     # True for a command whose effect on disk is hard to undo (e.g. ``trash``).
@@ -219,10 +225,19 @@ class EngineCommand:
     # confirmation before running such a command, and an automated one can apply
     # its own policy.
     destructive: bool = False
-    # The key of a message of the GUI (see ``hidden_message_boxes``) whose "do not
-    # show again" choice turns that confirmation off (``save`` follows
-    # ``save_warning``, as the GUI does), or ''.
-    confirm_unless_hidden: str = ''
+    # The key of the confirmation of a destructive command, which ``confirm``
+    # turns on or off: the name of the command, with underscores, when left empty.
+    confirm_key: str = ''
+
+    def __post_init__(self):
+        if not self.destructive:
+            return
+        if not self.confirm_key:
+            default = self.name.replace(' ', '_').replace('-', '_')
+            object.__setattr__(self, 'confirm_key', default)
+        if self.confirm_key == 'all':
+            # 'confirm on all' and 'confirm off all' mean every confirmation.
+            raise ValueError("'all' cannot be the confirmation key of a command")
 
     def arg_kind(self, index: int) -> str:
         """Completion kind for the word at ``index`` (''/unknown).
@@ -267,7 +282,7 @@ class EngineCommandRegistry:
         args: tuple[str, ...] = (),
         arg_kinds: tuple[str, ...] = (),
         destructive: bool = False,
-        confirm_unless_hidden: str = '',
+        confirm_key: str = '',
     ) -> Callable[[CommandFunc], CommandFunc]:
         """Return a decorator declaring the decorated function as the command ``name``.
 
@@ -296,7 +311,7 @@ class EngineCommandRegistry:
                     args=args,
                     arg_kinds=arg_kinds,
                     destructive=destructive,
-                    confirm_unless_hidden=confirm_unless_hidden,
+                    confirm_key=confirm_key,
                 )
             )
             return run

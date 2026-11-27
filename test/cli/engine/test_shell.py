@@ -51,6 +51,11 @@ from picard.const.sys import IS_WIN
 from picard.workspace import workspace
 
 
+def _must_not_ask(question):
+    """A confirmation that fails the test if the console asks it."""
+    raise AssertionError("must not ask")
+
+
 class RunReplTest(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -176,30 +181,37 @@ class RunReplTest(PicardTestCase):
         self.assertEqual(1, len(questions))
         self.assertIn('cancelled', self.buf.getvalue())
 
-    def test_save_is_not_confirmed_when_the_warning_of_the_gui_is_hidden(self):
-        self.set_config_values(persist={'hidden_message_boxes': ['save_warning']})
+    def test_save_is_not_confirmed_when_it_is_turned_off_in_the_configuration(self):
+        self.set_config_values(persist={'shell_confirmations_off': ['save']})
 
-        def confirm(question):
-            raise AssertionError("must not ask")
-
-        run_repl(self.session, self.reg, self.out, self._lines('save a1', 'quit'), confirm=confirm)
+        run_repl(self.session, self.reg, self.out, self._lines('save a1', 'quit'), confirm=_must_not_ask)
         self.assertNotIn('cancelled', self.buf.getvalue())
 
     def test_needs_confirmation(self):
         cases = (
-            # destructive, confirm_unless_hidden, hidden messages, expected
+            # destructive, confirm_key, keys turned off, expected
             (False, '', [], False),
-            (False, 'save_warning', [], False),
-            (True, '', ['save_warning'], True),
-            (True, 'save_warning', [], True),
-            (True, 'save_warning', ['other'], True),
-            (True, 'save_warning', ['save_warning'], False),
+            (False, 'save', [], False),
+            (True, 'save', [], True),
+            (True, 'save', ['other'], True),
+            (True, 'save', ['save'], False),
         )
-        for destructive, key, hidden, expected in cases:
-            with self.subTest(destructive=destructive, key=key, hidden=hidden):
-                self.set_config_values(persist={'hidden_message_boxes': hidden})
-                command = MagicMock(destructive=destructive, confirm_unless_hidden=key)
+        for destructive, key, off, expected in cases:
+            with self.subTest(destructive=destructive, key=key, off=off):
+                self.set_config_values(persist={'shell_confirmations_off': off})
+                command = MagicMock(destructive=destructive, confirm_key=key)
                 self.assertEqual(expected, _needs_confirmation(command, self.session))
+
+    def test_a_destructive_command_has_a_key_from_its_name_by_default(self):
+        command = EngineCommand(name='wipe all', run=lambda session, args: EngineResult(), destructive=True)
+        self.assertEqual('wipe_all', command.confirm_key)
+
+    def test_a_destructive_command_is_not_confirmed_when_turned_off_in_the_session(self):
+        ran = self._register_destructive()
+        self.session.confirmations.set('wipe', False)
+
+        run_repl(self.session, self.reg, self.out, self._lines('wipe x', 'quit'), confirm=_must_not_ask)
+        self.assertEqual(1, len(ran))
 
     def test_ctrl_c_at_confirmation_cancels_the_command_and_continues(self):
         ran = self._register_destructive()
@@ -214,10 +226,7 @@ class RunReplTest(PicardTestCase):
         self.assertIn('a1', self.buf.getvalue())
 
     def test_non_destructive_command_is_not_confirmed(self):
-        def confirm(question):
-            raise AssertionError("must not ask")
-
-        run_repl(self.session, self.reg, self.out, self._lines('ls', 'quit'), confirm=confirm)
+        run_repl(self.session, self.reg, self.out, self._lines('ls', 'quit'), confirm=_must_not_ask)
         self.assertIn('a1', self.buf.getvalue())
 
     def test_trash_is_destructive(self):

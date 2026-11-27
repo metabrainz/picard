@@ -54,13 +54,16 @@ the metadata box shows), so the two cannot drift apart.
 | `disc read [device]` | read the TOC of the CD in a drive (by default the first of the `cd_lookup_device` option, as the GUI does) and load the matching release |
 | `disc read-log <path>` | the same from a CD ripper log file |
 | `disc read-tags <sel>` | the same from the disc information in the tags (`itunes_cddb_1`) of the files of the selection, which are matched to the release; needs no drive |
-| `save [sel]` | write tag changes to disk, renaming and moving the files as the options say (confirmed, as in the GUI, unless its warning was hidden in the GUI) |
+| `save [sel]` | write tag changes to disk, renaming and moving the files as the options say (confirmed, as in the GUI, unless `confirm off save`) |
 | `metadata show <selector> [tag...]` | the tags of files, tracks, albums or clusters, as the metadata box shows them when they are selected; a tag is a name or a pattern (see below) |
 | `metadata set <selector> <tag> <value>...` | set a tag, replacing its values (see below) |
 | `metadata add <selector> <tag> <value>...` | add values to a tag, after the ones it has |
 | `metadata rm-value <selector> <tag> <value>...` | remove values from a tag; a tag left with none is removed |
 | `metadata rm <selector> <tag>...` | remove tags, by name or pattern |
 | `move <sources> <destination>` | put files into a track (`a1.d2.t3`), a cluster, an album (matched to its tracks) or a bucket (`u`, `a1.u`), as dropping them in the GUI does (several files dropped on a track go to the following tracks of the album); the last word is the destination |
+| `confirm ls [key...]` | list the confirmations the console asks for before a destructive command, keyed by the name of the command (`option_save` for `option save`), with the commands that ask and where the state comes from |
+| `confirm on <key...\|all>`, `confirm off <key...\|all>` | ask or stop asking, for the confirmations named or `all` of them, for this session only (`confirm off save trash`, `confirm off all`) |
+| `confirm save [key...]` | write the confirmations set in this session to the configuration, in the option `shell_confirmations_off` (destructive) |
 | `shell get [name]` | show the settings of the console: `open_max` (the most pages `open` opens at once, 5) and `minted_max` (the most handles written after `minted:`, 12); a number, `-1` for no limit |
 | `shell history [count\|clear]` | list the lines typed in the console, numbered (the last `count`), or forget them all, in the console and in the history file |
 | `shell remint [kind]...` | mint the handles of a kind (`f`, `c`, `a`, `t`, `m`, `v`, `k`) again from 1 when no object of that kind is left, else it is reported as `in_use` and nothing changes; without a kind, all are tried |
@@ -99,8 +102,9 @@ that any frontend can show it; the quit and exit of the console are its own.
 
 Besides the commands, the console has a few things of its own: `quit` and
 `exit` (or Ctrl-D) leave, Ctrl-C cancels the line being typed or the command
-that runs, and a command declared destructive (`save`, `trash`, `logout`, `option save`) is
-confirmed first (`save` follows the "do not show again" choice of its warning in the GUI). The up and down keys recall the lines typed, also those of the
+that runs, and a command declared destructive (`save`, `trash`, `logout`, `option save`, `confirm save`) is
+confirmed first (`confirm off save` turns the one of `save` off for the session,
+`confirm save` keeps it). The up and down keys recall the lines typed, also those of the
 previous sessions: as in a shell, the history is kept in a file, readable by
 the user only, and an empty line, a line typed twice in a row and a line that
 starts with a space are not kept, and neither is `login <address>`, which holds the
@@ -412,7 +416,7 @@ Home: `picard/cli/engine/`; the console is `picard/cli/shell.py` with
    `EngineResult`** (`commands.py`, `result.py`). A command declares its name,
    positional args, completion hints, its usage, a line for the list of
    commands, and whether it is `destructive` (an interactive frontend asks before
-   running it, unless the message of the GUI it names in `confirm_unless_hidden` is hidden). The docstring of the function is the help of the command.
+   running it, unless `confirm off` turns its `confirm_key` off; it defaults to the name of the command, with underscores). The docstring of the function is the help of the command.
    `topics.py` has the texts of the topics, `builtins/help.py` the `help`
    command, made for the registry it describes.
 4. **`LocalEngineSession`** (`session.py`) — owns the handle registry, the

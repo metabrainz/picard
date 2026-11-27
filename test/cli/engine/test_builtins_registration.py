@@ -32,6 +32,10 @@ EXPECTED = {
     'collection add',
     'collection ls',
     'collection rm',
+    'confirm ls',
+    'confirm off',
+    'confirm on',
+    'confirm save',
     'disc read',
     'disc read-log',
     'disc read-tags',
@@ -67,7 +71,7 @@ EXPECTED = {
     'url',
 }
 
-DESTRUCTIVE = {'logout', 'option save', 'save', 'trash'}
+DESTRUCTIVE = {'confirm save', 'logout', 'option save', 'save', 'trash'}
 
 
 class BuiltinCommandsTest(PicardTestCase):
