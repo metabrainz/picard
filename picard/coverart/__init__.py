@@ -31,7 +31,10 @@ import traceback
 from picard import (
     log,
 )
-from picard.album import Album
+from picard.album import (
+    Album,
+    run_album_post_cover_art_processors,
+)
 from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.coverart.image import (
@@ -68,6 +71,9 @@ class CoverArt:
     def __init__(self, album: Album, metadata: Metadata, release: dict):
         self._queue_new()
         self.album: Album = album
+        # Cover art of a previous load keeps running after a reload, remember
+        # which load this instance belongs to.
+        self._album_load_token = album._load_token
         self.metadata: Metadata = metadata
         self.release = release  # not used in this class, but used by providers
         self.front_image_found: bool = False
@@ -119,6 +125,24 @@ class CoverArt:
             self.next_in_queue()
         else:
             log.debug("Cover art disabled by user options.")
+            self._finished()
+
+    def _finished(self):
+        """Cover art stage is over: notify plugins once the album is loaded."""
+        # The queue can end before the album is loaded (e.g. no provider has
+        # to wait for the network), so defer until tracks and files are set up.
+        self.album.run_when_loaded(self._run_post_cover_art_processors)
+
+    def _run_post_cover_art_processors(self):
+        # Checked when actually running, as the album can be removed or
+        # reloaded between the end of the queue and the end of the loading.
+        if self.album.id not in self.album.tagger.albums:
+            log.debug_if(DebugOpt.COVERART, "Cover art stage ended, but %s got removed", self.album)
+            return
+        if self._album_load_token is not self.album._load_token:
+            log.debug_if(DebugOpt.COVERART, "Cover art stage ended, but %s got reloaded", self.album)
+            return
+        run_album_post_cover_art_processors(self.album)
 
     def next_in_queue(self):
         """Run the next item in the queue.
@@ -133,6 +157,7 @@ class CoverArt:
         except StopIteration:
             self._queue_generator = None
             self.image_processing.wait_for_processing()
+            self._finished()
 
     def _all_images_satisfied(self, config=None) -> bool:
         """Check if all configured image needs have been met.

@@ -44,7 +44,6 @@ from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
-from picard.metadata import Metadata
 from picard.services import services
 from picard.session.constants import (
     RESTORABLE_CONFIG_KEYS,
@@ -489,12 +488,7 @@ class AlbumManager:
             if hasattr(self._tagger, 'album_added'):
                 self._tagger.album_added.emit(album)
 
-        album.loaded = False
-        album.metadata.clear()
-        album.genres.clear()
-        album._new_metadata = Metadata()
-        album._new_tracks = []
-        album._pending_tasks.clear()
+        album.reset_loading_state()
         album.add_task('session_restore', TaskType.CRITICAL, f'Session restore for {album_id}')
 
         with suppress(KeyError, TypeError, ValueError):
