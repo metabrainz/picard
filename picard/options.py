@@ -514,7 +514,6 @@ IntOption(
     bounds=(1, 100),
 )
 ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS, title=N_("Quick Menu options"), in_profile=True)
-BoolOption('setting', 'quit_confirmation', True, title=N_("Confirm quit if unsaved changes"), in_profile=True)
 TextOption(
     'setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email for saving ratings"), in_profile=True
 )

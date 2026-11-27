@@ -108,13 +108,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="quit_confirmation">
-        <property name="text">
-         <string>Show a quit confirmation dialog for unsaved changes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="filebrowser_horizontal_autoscroll">
         <property name="text">
          <string>Adjust horizontal position in file browser automatically</string>
@@ -200,7 +193,6 @@
   <tabstop>ui_language</tabstop>
   <tabstop>ui_theme</tabstop>
   <tabstop>allow_multi_dirs_selection</tabstop>
-  <tabstop>quit_confirmation</tabstop>
   <tabstop>filebrowser_horizontal_autoscroll</tabstop>
   <tabstop>starting_directory</tabstop>
   <tabstop>starting_directory_path</tabstop>
