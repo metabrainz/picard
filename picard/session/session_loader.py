@@ -57,6 +57,7 @@ from picard.session.session_data import (
 )
 from picard.session.track_mover import TrackMover
 from picard.workspace import workspace
+from picard.workspace_events import workspace_events
 
 
 if TYPE_CHECKING:
@@ -486,8 +487,7 @@ class AlbumManager:
         if not album:
             album = Album(album_id)
             self._tagger.albums[album_id] = album
-            if hasattr(self._tagger, 'album_added'):
-                self._tagger.album_added.emit(album)
+            workspace_events().album_added.emit(album)
 
         album.loaded = False
         album.metadata.clear()
