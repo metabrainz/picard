@@ -154,7 +154,7 @@ def test_removing_track_stays_on_track(qapp):
 
 
 def test_removing_non_removable_item_stays_on_item(qapp):
-    # Removing a track only removes its files: the cursor stays in the track.
+    # A non-removable item stays in place: the cursor does not move.
     view = _make_view()
     objs = [mock_obj(name='t1'), mock_obj(name='t2'), mock_obj(name='t3')]
     objs[1].can_remove = False
@@ -168,7 +168,7 @@ def test_removing_non_removable_item_stays_on_item(qapp):
 
 
 def test_removing_special_cluster_item_stays_on_item(qapp):
-    # Removing a track only removes its files: the cursor stays in the track.
+    # A special cluster (e.g. unclustered files) stays: the cursor does not move.
     view = _make_view()
     objs = [mock_obj(name='t1'), mock_obj(name='t2', spec=Cluster), mock_obj(name='t3')]
     objs[1].special = True
@@ -244,7 +244,7 @@ def test_removing_parent_skips_its_children(qapp):
     assert [o.name for o in _selected_objs(view)] == ['a2']
 
 
-def test_removingchild_moves_to_next_child(qapp):
+def test_removing_child_moves_to_next_child(qapp):
     view = _make_view()
     parent1 = mock_obj('p1')
     child1, child2 = mock_obj('c1'), mock_obj('c2')
