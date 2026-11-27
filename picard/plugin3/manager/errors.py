@@ -16,6 +16,9 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 
+from typing import ClassVar
+
+
 class PluginManagerError(Exception):
     """Base exception for plugin manager errors."""
 
@@ -138,3 +141,33 @@ class PluginUUIDConflictError(PluginManagerError):
             f'Plugin UUID {uuid} already exists in plugin "{existing_plugin_id}" '
             f'from source "{existing_source}". Cannot install from different source "{new_source}".'
         )
+
+
+class PluginSignatureError(PluginManagerError):
+    """Raised when a required plugin signature cannot be verified.
+
+    Attributes:
+        reason: One of 'no_match', 'unsigned', or 'unverifiable', describing why
+            verification did not succeed. 'unverifiable' means the signature
+            could not be checked (e.g. the verifier tool is unavailable) and is
+            the only case an explicit user override may bypass.
+    """
+
+    _REASON_MESSAGES: ClassVar[dict[str, str]] = {
+        'no_match': (
+            "requires a signature, but the repository is not signed by a trusted key "
+            "(this may indicate the repository was tampered with)"
+        ),
+        'unsigned': "requires a signature, but the repository is not signed",
+        'unverifiable': (
+            "requires a signature, but it could not be verified (the required verifier tool may not be installed)"
+        ),
+    }
+
+    def __init__(self, url, reason, message=None):
+        self.url = url
+        self.reason = reason
+        if message is None:
+            detail = self._REASON_MESSAGES.get(reason, f"signature verification failed ({reason})")
+            message = f"Plugin {url} {detail}"
+        super().__init__(message)

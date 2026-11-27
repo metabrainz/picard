@@ -27,6 +27,8 @@ from picard.plugin3.validator import (
     _is_placeholder_uuid,
     render_markdown,
     validate_manifest_dict,
+    validate_signing_key,
+    validate_signing_keys,
 )
 
 
@@ -423,3 +425,63 @@ code block
         manifest = _valid_manifest(uuid=uuid)
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
+
+
+class TestSigningKeyValidator(PicardTestCase):
+    @subtest_cases(
+        "key",
+        {
+            'ssh ed25519': ('ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghijklmnop',),
+            'ssh ed25519 with comment': ('ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij maintainer@example',),
+            'ssh rsa': ('ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDexample',),
+            'ssh ecdsa': ('ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTY',),
+            'ssh sk-ed25519': ('sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29t',),
+            'unusual/future ssh type accepted': ('ssh-future-type AAAAB3NzaC1yc2EAAAADAQABAAABgQDexample',),
+            'openpgp 40 hex': ('openpgp:4AC0A7FE37970823F5F4ABDDD859F01B646C07A7',),
+            'openpgp 64 hex': ('openpgp:' + 'a' * 64,),
+            'openpgp uppercase prefix tolerated': ('OpenPGP:4AC0A7FE37970823F5F4ABDDD859F01B646C07A7',),
+            'leading/trailing whitespace': ('  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij  ',),
+        },
+    )
+    def test_valid_signing_key(self, key):
+        self.assertIsNone(validate_signing_key(key))
+
+    @subtest_cases(
+        "key",
+        {
+            'empty': ('',),
+            'whitespace only': ('   ',),
+            'ssh missing body': ('ssh-ed25519',),
+            'ssh non-base64 body': ('ssh-ed25519 not valid base64!',),
+            'ssh body too short': ('ssh-ed25519 AAAA',),
+            'openpgp short fingerprint': ('openpgp:DEADBEEF',),
+            'openpgp non-hex fingerprint': ('openpgp:' + 'z' * 40,),
+            'bare fingerprint without prefix': ('4AC0A7FE37970823F5F4ABDDD859F01B646C07A7',),
+            'random single token': ('just-some-text',),
+        },
+    )
+    def test_invalid_signing_key(self, key):
+        self.assertIsNotNone(validate_signing_key(key))
+
+    def test_non_string_signing_key(self):
+        self.assertIsNotNone(validate_signing_key(123))
+
+    def test_validate_signing_keys_empty_or_absent(self):
+        self.assertEqual(validate_signing_keys(None), [])
+        self.assertEqual(validate_signing_keys([]), [])
+
+    def test_validate_signing_keys_not_a_list(self):
+        errors = validate_signing_keys('ssh-ed25519 AAAA')
+        self.assertIn("Field 'signing_keys' must be an array", errors)
+
+    def test_validate_signing_keys_all_valid(self):
+        keys = [
+            'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij',
+            'openpgp:4AC0A7FE37970823F5F4ABDDD859F01B646C07A7',
+        ]
+        self.assertEqual(validate_signing_keys(keys), [])
+
+    def test_validate_signing_keys_collects_each_error(self):
+        keys = ['bad', 'openpgp:DEADBEEF']
+        errors = validate_signing_keys(keys)
+        self.assertEqual(len(errors), 2)

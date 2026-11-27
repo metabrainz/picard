@@ -69,6 +69,7 @@ from picard.plugin3.manager import (
     PluginNoUUIDError,
     PluginRefNotFoundError,
     PluginRefSwitchError,
+    PluginSignatureError,
 )
 from picard.plugin3.manifest import generate_manifest_template
 from picard.plugin3.output import PluginCliOutput
@@ -756,6 +757,7 @@ class PluginCLI(BaseCLI):
         reinstall = getattr(self._args, 'reinstall', False)
         force_blacklisted = getattr(self._args, 'force_blacklisted', False)
         no_git = getattr(self._args, 'no_git', False)
+        allow_unverified = getattr(self._args, 'allow_unverified', False)
         yes = getattr(self._args, 'yes', False)
 
         if force_blacklisted:
@@ -946,7 +948,13 @@ class PluginCLI(BaseCLI):
                     self._out.warning('Local repository has uncommitted changes')
 
                 plugin_id = self._manager.install_plugin(
-                    url, ref, reinstall, force_blacklisted, enable_after_install=True, no_git=no_git
+                    url,
+                    ref,
+                    reinstall,
+                    force_blacklisted,
+                    enable_after_install=True,
+                    no_git=no_git,
+                    allow_unverified=allow_unverified,
                 )
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
@@ -962,7 +970,14 @@ class PluginCLI(BaseCLI):
                     success, result = self._handle_dirty_error(
                         e,
                         lambda **kw: self._manager.install_plugin(
-                            url, ref, reinstall, force_blacklisted, enable_after_install=True, no_git=no_git, **kw
+                            url,
+                            ref,
+                            reinstall,
+                            force_blacklisted,
+                            enable_after_install=True,
+                            no_git=no_git,
+                            allow_unverified=allow_unverified,
+                            **kw,
                         ),
                     )
                     if not success:
@@ -975,6 +990,13 @@ class PluginCLI(BaseCLI):
                     self._out.info(
                         f'Use {self._out.d_option("--force-blacklisted")} to install anyway (not recommended)'
                     )
+                    return ExitCode.ERROR
+                elif isinstance(e, PluginSignatureError):
+                    self._out.error(str(e))
+                    if e.reason == 'unverifiable':
+                        self._out.info(
+                            f'Use {self._out.d_option("--allow-unverified")} to install anyway (not recommended)'
+                        )
                     return ExitCode.ERROR
                 elif isinstance(e, PluginManifestNotFoundError):
                     self._out.error(f'No MANIFEST.toml found in {e.source}')
