@@ -26,7 +26,9 @@ the "out of band" flow, where it showed the code for the user to copy.)
 
 The redirect is received by the browser integration of the GUI when it runs,
 otherwise by :class:`LoginRedirectReceiver`; both complete the login with
-:func:`receive_login_redirect`.
+:func:`receive_login_redirect`. When the browser runs on another machine and
+could not reach Picard, the address it was redirected to can be given by hand
+to :func:`finish_login_redirect`.
 
 A frontend decides how the URL is opened; the GUI opens a browser, a console
 prints the URL.
@@ -134,6 +136,22 @@ def parse_login_redirect(query: str) -> 'LoginRedirect | None':
     if not value('state') or not (value('code') or value('error')):
         return None
     return LoginRedirect(value('state'), value('code'), value('error'), value('error_description'))
+
+
+def finish_login_redirect(redirect: LoginRedirect) -> None:
+    """Complete a login begun by :func:`start_login` with a redirect given by hand.
+
+    For a browser that could not reach Picard (it runs on another machine); a
+    redirect that reaches Picard is handled by :func:`receive_login_redirect`.
+    The callback given to :func:`start_login` is called when it is done. It must
+    be the same process: the URL and the code are bound to secrets kept in
+    memory (PKCE, and the state).
+
+    Raises :class:`~picard.oauth.OAuthInvalidStateError` if the redirect is not
+    that of a login begun in this process (or was already used).
+    """
+    authorization_finished = _oauth_manager().verify_state(redirect.state)
+    _complete_login(redirect, authorization_finished)
 
 
 def receive_login_redirect(query: str) -> tuple[int, str]:
