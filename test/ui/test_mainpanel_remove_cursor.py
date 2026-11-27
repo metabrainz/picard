@@ -302,6 +302,54 @@ def test_removing_last_remaining_child_moves_to_parent(qapp):
     assert [o.name for o in _selected_objs(view)] == ['p1']
 
 
+def _remove_rows(objects):
+    """Remove the rows of objects, whatever their level in the tree."""
+    for obj in objects:
+        item = obj.ui_item
+        (item.parent() or item.treeWidget().invisibleRootItem()).removeChild(item)
+
+
+def _select(view, *objs):
+    view.setCurrentItem(objs[-1].ui_item)
+    for obj in objs:
+        obj.ui_item.setSelected(True)
+
+
+def test_removing_all_children_moves_to_parent(qapp):
+    # All siblings are removed together: the cursor goes to the parent, not to
+    # a removed sibling and then to a row of another hierarchy level.
+    view = _make_view()
+    parent1, parent2 = mock_obj('p1'), mock_obj('p2')
+    child1, child2 = mock_obj('c1'), mock_obj('c2')
+    parent1_item = _add(view, parent1)
+    _add(parent1_item, child1)
+    _add(parent1_item, child2)
+    _add(view, parent2)
+    view.expandAll()
+    _select(view, child1, child2)
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), _remove_rows, [child1, child2])
+    assert _current_obj(view).name == 'p1'
+    assert [o.name for o in _selected_objs(view)] == ['p1']
+
+
+def test_removing_last_two_children_moves_to_remaining_sibling(qapp):
+    # The previous sibling is removed too: use the nearest sibling that survives.
+    view = _make_view()
+    parent1, parent2 = mock_obj('p1'), mock_obj('p2')
+    child1, child2, child3 = mock_obj('c1'), mock_obj('c2'), mock_obj('c3')
+    parent1_item = _add(view, parent1)
+    for child in (child1, child2, child3):
+        _add(parent1_item, child)
+    _add(view, parent2)
+    view.expandAll()
+    _select(view, child2, child3)
+
+    MainPanel._remove_keeping_cursor(_make_panel(view), _remove_rows, [child2, child3])
+    assert _current_obj(view).name == 'c1'
+    assert [o.name for o in _selected_objs(view)] == ['c1']
+
+
 def test_fallback_selects_current_row(qapp):
     # When no candidate row survives, the fallback selects the row Qt made current
     view = _make_view()
