@@ -40,6 +40,7 @@ from weakref import WeakKeyDictionary
 from picard import collection
 from picard.album import Album
 from picard.cli.engine.candidates import Candidate
+from picard.cli.engine.confirmations import SessionConfirmations
 from picard.cli.engine.handles import HandleRegistry
 from picard.cli.engine.navigation import PathNavigator
 from picard.cli.engine.options import SessionOptions
@@ -99,6 +100,8 @@ class LocalEngineSession:
         self.activity: str | None = None
         # The settings of the console, for this session only.
         self.settings = ConsoleSettings()
+        # Which confirmations are asked for, for this session only.
+        self.confirmations = SessionConfirmations()
         # The lines typed, set by a console that keeps them (see EngineSession).
         self.history = None
         self._handles = HandleRegistry(classify_entity)

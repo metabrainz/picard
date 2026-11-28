@@ -42,6 +42,7 @@ import os
 import re
 
 from picard import log
+from picard.cli.engine.confirmations import confirmation_keys
 from picard.cli.engine.dispatch import (
     split_command_name,
     split_line,
@@ -302,6 +303,11 @@ def complete(line: str, text: str, registry, session) -> list[str]:
         arg_matches = [tag for tag in _tag_names() if tag.startswith(text)]
     elif kind == 'option':
         arg_matches = [name for name in session.option_names() if name.startswith(text)]
+    elif kind in {'confirmation', 'confirmation-all'}:
+        words = list(confirmation_keys(registry))
+        if kind == 'confirmation-all':
+            words.append('all')
+        arg_matches = [word for word in words if word.startswith(text)]
     elif kind == 'history':
         arg_matches = [word for word in ('clear',) if word.startswith(text)]
     elif kind == 'handle-kind':
