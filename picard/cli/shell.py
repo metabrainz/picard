@@ -53,6 +53,7 @@ from picard.cli.engine.dispatch import (
 from picard.cli.engine.render import render_result
 from picard.cli.status import ShellStatus
 from picard.cli.subcommand import Subcommand
+from picard.config import get_config
 from picard.const.appdirs import shell_history_file
 from picard.const.sys import IS_WIN
 from picard.notification import set_notifier_sink
@@ -251,11 +252,11 @@ def _ask_yes_no(question: str) -> bool:
 
 
 def _needs_confirmation(command, session) -> bool:
-    """Whether the console asks before running ``command``: it is destructive, and its option does not say otherwise."""
+    """Whether the console asks before running ``command``: it is destructive, and its message is not hidden."""
     if not command.destructive:
         return False
-    if command.confirm_unless:
-        return bool(session.describe_option(command.confirm_unless)['value'])
+    if command.confirm_unless_hidden:
+        return command.confirm_unless_hidden not in get_config().persist['hidden_message_boxes']
     return True
 
 

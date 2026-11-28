@@ -176,8 +176,8 @@ class RunReplTest(PicardTestCase):
         self.assertEqual(1, len(questions))
         self.assertIn('cancelled', self.buf.getvalue())
 
-    def test_save_is_not_confirmed_when_the_option_of_the_gui_is_off(self):
-        self.set_config_values(setting={'file_save_warning': False})
+    def test_save_is_not_confirmed_when_the_warning_of_the_gui_is_hidden(self):
+        self.set_config_values(persist={'hidden_message_boxes': ['save_warning']})
 
         def confirm(question):
             raise AssertionError("must not ask")
@@ -185,16 +185,21 @@ class RunReplTest(PicardTestCase):
         run_repl(self.session, self.reg, self.out, self._lines('save a1', 'quit'), confirm=confirm)
         self.assertNotIn('cancelled', self.buf.getvalue())
 
-    def test_the_option_is_read_from_the_session(self):
-        # 'option set file_save_warning false' is for this console only: the
-        # value to follow is the one the session describes, not the configuration's.
-        command = self.reg.get('save')
-        session = MagicMock()
-        for value, expected in ((True, True), (False, False)):
-            with self.subTest(value=value):
-                session.describe_option.return_value = {'value': value}
-                self.assertEqual(expected, _needs_confirmation(command, session))
-        session.describe_option.assert_called_with('file_save_warning')
+    def test_needs_confirmation(self):
+        cases = (
+            # destructive, confirm_unless_hidden, hidden messages, expected
+            (False, '', [], False),
+            (False, 'save_warning', [], False),
+            (True, '', ['save_warning'], True),
+            (True, 'save_warning', [], True),
+            (True, 'save_warning', ['other'], True),
+            (True, 'save_warning', ['save_warning'], False),
+        )
+        for destructive, key, hidden, expected in cases:
+            with self.subTest(destructive=destructive, key=key, hidden=hidden):
+                self.set_config_values(persist={'hidden_message_boxes': hidden})
+                command = MagicMock(destructive=destructive, confirm_unless_hidden=key)
+                self.assertEqual(expected, _needs_confirmation(command, self.session))
 
     def test_ctrl_c_at_confirmation_cancels_the_command_and_continues(self):
         ran = self._register_destructive()

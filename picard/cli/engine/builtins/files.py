@@ -228,8 +228,8 @@ def _cmd_file_add(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     args=('selector',),
     arg_kinds=('selector',),
     destructive=True,
-    # The GUI asks too, unless "Confirm when saving" is off.
-    confirm_unless='file_save_warning',
+    # The GUI asks too, unless its warning was hidden.
+    confirm_unless_hidden='save_warning',
 )
 def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     """Write the tag changes of the selected objects to disk.
@@ -240,9 +240,8 @@ def _cmd_save(session: EngineSession, args: dict[str, Any]) -> EngineResult:
     show' first. Each file is reported as saved, error, or pending if it was still
     being saved when the command stopped waiting.
 
-    The console asks for a confirmation, as the GUI does, unless the option
-    file_save_warning ("Confirm when saving") is off: 'option set file_save_warning
-    false' turns it off for this session.
+    The console asks for a confirmation, as the GUI does, unless the save warning
+    was hidden with its "do not show again" checkbox in the GUI.
 
     Examples:
       save
