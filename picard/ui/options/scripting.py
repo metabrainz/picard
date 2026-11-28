@@ -73,6 +73,10 @@ class ScriptCheckError(OptionsCheckError):
     pass
 
 
+class ScriptUnavailableFunctionWarning(ScriptCheckError):
+    """An unavailable plugin function must not prevent saving the options."""
+
+
 class ScriptFileError(OptionsCheckError):
     pass
 
@@ -254,9 +258,10 @@ class ScriptingOptionsPage(OptionsPage):
         # Ensure the error bar is not visible unless there actually is an error.
         self.ui.script_error.hide()
         try:
-            self.check()
+            self.check(report_unknown_functions=True)
         except OptionsCheckError as e:
-            list_item.has_error = True
+            # Show unknown functions in the editor, but allow users to save settings.
+            list_item.has_error = not isinstance(e, ScriptUnavailableFunctionWarning)
             self.ui.script_error.setStyleSheet(stylesheet_validation_error())
             self.ui.script_error.setText(e.info)
             self.ui.script_error.show()
@@ -267,12 +272,19 @@ class ScriptingOptionsPage(OptionsPage):
         widget = self.ui.script_list
         widget.setCurrentRow(widget.bad_row)
 
-    def check(self):
+    def check(self, *, report_unknown_functions=False):
+        """Missing plugin functions warn but do not block the Options dialog."""
         parser = ScriptParser()
+        script = self.ui.tagger_script.toPlainText()
+        unknown_functions = []
         try:
-            parser.eval(self.ui.tagger_script.toPlainText())
+            parser.parse(script, unknown_functions=unknown_functions)
+            if not unknown_functions:
+                parser.eval(script)
         except Exception as e:
             raise ScriptCheckError(_("Script Error"), str(e)) from None
+        if report_unknown_functions and unknown_functions:
+            raise ScriptUnavailableFunctionWarning(_("Script Error"), str(unknown_functions[0]))
 
     def restore_defaults(self):
         # Remove existing scripts
