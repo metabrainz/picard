@@ -39,6 +39,7 @@ from picard.workspace import (
     set_workspace_provider,
     workspace,
 )
+from picard.workspace_events import workspace_events
 
 import pytest
 
@@ -211,6 +212,23 @@ def _make_cached_album_loader(tmp_path: Path, album_id: str) -> tuple[SessionLoa
     }
     path = _write_session(tmp_path, data)
     return loader, album_mock, path
+
+
+def test_restoring_cached_album_announces_new_album(tmp_path, cfg_options):
+    picard_config.get_config().setting["session_safe_restore"] = False
+    picard_config.get_config().setting["session_no_mb_requests_on_load"] = True
+    tagger = MockQtTagger()
+    loader = SessionLoader(tagger)
+    path = _write_session(tmp_path, {'version': 1, 'mb_cache': {'album-123': {'id': 'album-123'}}, 'items': []})
+    announced = []
+    workspace_events().album_added.connect(announced.append)
+    try:
+        with patch('picard.session.session_loader.Album') as album_cls:
+            loader.load_from_path(path)
+            assert announced == [album_cls.return_value]
+            assert tagger.albums['album-123'] is announced[0]
+    finally:
+        workspace_events().album_added.disconnect(announced.append)
 
 
 def test_session_loader_requests_allowed(tmp_path: Path, mock_single_shot, cfg_options) -> None:
